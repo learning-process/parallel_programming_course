@@ -1,1 +1,1 @@
-# parallel_programming_course
+# Parallel Programming Course
