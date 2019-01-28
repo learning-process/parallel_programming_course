@@ -29,6 +29,7 @@ matrix:
         - test -n $CC  && unset CC
         - test -n $CXX && unset CXX
       install:
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade cmake -v
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install open-mpi
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install libomp
     ######################################################
