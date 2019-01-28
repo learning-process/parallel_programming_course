@@ -1,13 +1,15 @@
 // Copyright 2018 Nesterov Alexander
 #include <assert.h>
-#include <mpi.h>
+#include <omp.h>
 #include <iostream>
 
 int main(int argc, char* argv[]) {
-#pragma omp parallel for
-    for (size_t i = 0; i < 10; i++) {
-        std::cout << i << " ";
+    #pragma omp parallel
+    {
+        #pragma omp critical
+        {
+            std::cout << "Thread ID = " << omp_get_thread_num() << '\n';
+        }
     }
-    std::cout << '\n';
     return 0;
 }
