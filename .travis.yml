@@ -1,0 +1,48 @@
+language: cpp
+
+matrix:
+  include:
+    #######################################################
+    - os: linux
+      dist: xenial
+      compiler: gcc
+      before_install:
+        - test -n $CC  && unset CC
+        - test -n $CXX && unset CXX
+      install:
+        - sudo apt-get install libcr-dev mpich2 mpich2-doc
+      script:
+        - python scripts/lint.py
+        - mkdir build
+        - cd build
+        - cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON ..
+        - cppcheck -j4 --project=compile_commands.json &> log_cppcheck
+        - python ../scripts/static_analysis.py log_cppcheck
+        - cmake --build .
+        - source run.sh
+    # #######################################################
+    # - os: linux
+    #   dist: xenial
+    #   compiler: clang
+    #   install:
+    #     - sudo apt-get install libiomp*
+    #   script:
+    #     - python build.py build clang
+    #     - python build.py test clang
+    #     - python build.py benchmark clang
+    # #######################################################
+    # - os: windows
+    #   script:
+    #     - python build.py build msvc
+    #     # - python build.py test msvc # Tests failed
+    #     - python build.py benchmark msvc
+    # #######################################################
+    # - os: osx
+    #   osx_image: xcode10.1
+    #   install:
+    #     - HOMEBREW_NO_AUTO_UPDATE=1 brew install libomp
+    #   script:
+    #     - python build.py build clang
+    #     # - python build.py test clang # Tests failed
+    #     # - python build.py benchmark clang # Build failed
+    # #######################################################
