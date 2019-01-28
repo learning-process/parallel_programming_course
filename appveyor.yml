@@ -24,6 +24,7 @@ build_script:
   - cmd: mkdir build
   - cmd: cd build
   - cmd: cmake -G "%CMAKE_GENERATOR%" ^
+               -DCMAKE_BUILD_TYPE=RELEASE ^
                -DMPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
                -DMPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ^
                -DMPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
