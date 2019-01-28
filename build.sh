@@ -5,6 +5,6 @@ if [ ! -d "build" ]; then
 fi
 
 cd build
-cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON ..
+cmake -D CMAKE_BUILD_TYPE=Release ..
 cmake --build .
 cd ..
