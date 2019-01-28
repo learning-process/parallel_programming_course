@@ -33,5 +33,5 @@ build_script:
                -DMPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
                -DMPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ..
   - cmd: cmake --build .
-  - cmd: mpiexec.exe -np 4 modules\test_tasks\mpi\%configuration%\mpi.exe
-  - cmd: modules\test_tasks\omp\%configuration%\omp.exe
+  - cmd: cd ..
+  - cmd: run.bat
