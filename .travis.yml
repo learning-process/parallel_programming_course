@@ -10,25 +10,28 @@ matrix:
         - test -n $CC  && unset CC
         - test -n $CXX && unset CXX
       install:
-        - sudo apt-get install cppcheck lam-runtime mpich openmpi-bin libopenmpi-dev
+        - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
       script:
         - python scripts/lint.py
         - mkdir build
         - cd build
-        - cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON ..
+        - cmake -D CMAKE_BUILD_TYPE=Release ..
         - cmake --build .
         - cd ..
         - source run.sh
-    # #######################################################
-    # - os: linux
-    #   dist: xenial
-    #   compiler: clang
-    #   install:
-    #     - sudo apt-get install libiomp*
-    #   script:
-    #     - python build.py build clang
-    #     - python build.py test clang
-    #     - python build.py benchmark clang
+    #######################################################
+    - os: linux
+      dist: xenial
+      compiler: clang
+      install:
+        - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
+      script:
+        - python scripts/lint.py
+        - mkdir build
+        - cd build
+        - cmake -D CMAKE_BUILD_TYPE=Release ..
+        - cmake --build .
+        - cd ..
     # #######################################################
     # - os: windows
     #   script:
