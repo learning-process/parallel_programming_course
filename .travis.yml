@@ -26,19 +26,22 @@ matrix:
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
       script:
-        - python scripts/lint.py
         - mkdir build
         - cd build
         - cmake -D CMAKE_BUILD_TYPE=Release ..
         - cmake --build .
         - cd ..
-    # #######################################################
-    # - os: windows
-    #   script:
-    #     - python build.py build msvc
-    #     # - python build.py test msvc # Tests failed
-    #     - python build.py benchmark msvc
-    # #######################################################
+        - source run.sh
+    #######################################################
+    - os: windows
+      script:
+        - mkdir build
+        - cd build
+        - cmake -D CMAKE_BUILD_TYPE=Release ..
+        - cmake --build .
+        - cd ..
+        - source run.sh
+    #######################################################
     # - os: osx
     #   osx_image: xcode10.1
     #   install:
