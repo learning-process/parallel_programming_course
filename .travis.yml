@@ -11,6 +11,7 @@ matrix:
         - test -n $CXX && unset CXX
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
+        - sudo apt-get install libomp-dev
     #######################################################
     - os: linux
       dist: xenial
@@ -20,6 +21,7 @@ matrix:
         - test -n $CXX && unset CXX
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
+        - sudo apt-get install libomp-dev
     ######################################################
     - os: osx
       osx_image: xcode10.1
@@ -37,4 +39,4 @@ script:
 - cmake -D CMAKE_BUILD_TYPE=Release ..
 - cmake --build .
 - cd ..
-- source run.sh
+- if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then source run.sh; fi
