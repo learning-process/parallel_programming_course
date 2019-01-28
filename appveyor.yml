@@ -30,4 +30,4 @@ build_script:
                -DMPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ..
   - cmd: cmake --build .
   - cmd: cd ..
-  - ps: run.bat
+  - cmd: run.bat
