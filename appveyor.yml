@@ -1,27 +1,19 @@
 environment:
   matrix:
     - CMAKE_GENERATOR: "Visual Studio 11 2012"
-      BUILD_SHARED_LIBS: ON
-      ENABLE_MPI: ON
       MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
 
     - CMAKE_GENERATOR: "Visual Studio 12 2013"
-      BUILD_SHARED_LIBS: ON
-      ENABLE_MPI: ON
       MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
 
     - CMAKE_GENERATOR: "Visual Studio 14 2015"
-      BUILD_SHARED_LIBS: ON
-      ENABLE_MPI: ON
       MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
 
     # - CMAKE_GENERATOR: "Visual Studio 15 2017"
-    #   BUILD_SHARED_LIBS: OFF
-    #   ENABLE_MPI: ON
     #   MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
 
 configuration:
-  - Debug
+  # - Debug
   - Release
 
 install:
@@ -35,14 +27,11 @@ build_script:
   - cmd: python scripts/lint.py
   - cmd: mkdir build
   - cmd: cd build
-  - cmd: cmake -D CMAKE_BUILD_TYPE=Release ..
-  # - cmd: cmake -Hsrc -Bbuild -G "%CMAKE_GENERATOR%" ^
-  #              -DBUILD_SHARED_LIBS=%BUILD_SHARED_LIBS% ^
-  #              -DENABLE_PYTHON=%ENABLE_PYTHON% ^
-  #              -DENABLE_MPI=%ENABLE_MPI% ^
-  #              -DMPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
-  #              -DMPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ^
-  #              -DMPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
-  #              -DMPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ..
+  - cmd: cmake -G "%CMAKE_GENERATOR%" ^
+               -DMPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
+               -DMPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ^
+               -DMPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
+               -DMPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ..
   - cmd: cmake --build .
   - cmd: mpiexec.exe -np 4 modules\test_tasks\mpi\%configuration%\mpi.exe
+  - cmd: modules\test_tasks\omp\%configuration%\omp.exe
