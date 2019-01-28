@@ -30,6 +30,7 @@ matrix:
         - test -n $CXX && unset CXX
       install:
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install open-mpi
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew install libomp
     ######################################################
 
 script:
@@ -40,4 +41,3 @@ script:
 - cmake --build .
 - cd ..
 - source run.sh
-# - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then source run.sh; fi
