@@ -9,12 +9,8 @@ environment:
     - CMAKE_GENERATOR: "Visual Studio 14 2015"
       MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
 
-    # - CMAKE_GENERATOR: "Visual Studio 15 2017"
-    #   MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
-
-configuration:
-  # - Debug
-  - Release
+    - CMAKE_GENERATOR: "Visual Studio 15 2017"
+      MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
 
 install:
   - ps: Start-FileDownload 'https://download.microsoft.com/download/B/2/E/B2EB83FE-98C2-4156-834A-E1711E6884FB/MSMpiSetup.exe'
@@ -34,4 +30,4 @@ build_script:
                -DMPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ..
   - cmd: cmake --build .
   - cmd: cd ..
-  - run.bat
+  - ps: run.bat
