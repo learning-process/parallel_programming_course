@@ -1,1 +1,1 @@
-mpirun -np 4 ./build/modules/test_tasks/mpi/mpi
+mpirun -np 2 ./build/modules/test_tasks/mpi/mpi

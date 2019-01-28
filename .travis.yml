@@ -39,4 +39,5 @@ script:
 - cmake -D CMAKE_BUILD_TYPE=Release ..
 - cmake --build .
 - cd ..
-- if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then source run.sh; fi
+- source run.sh
+# - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then source run.sh; fi
