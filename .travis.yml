@@ -40,4 +40,5 @@ script:
 - cmake -D CMAKE_BUILD_TYPE=Release ..
 - cmake --build .
 - cd ..
+- export OMP_NUM_THREADS=4
 - source run.sh
