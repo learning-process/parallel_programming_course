@@ -4,6 +4,9 @@ image:
   - Visual Studio 2015
   - Visual Studio 2017
 
+environment:
+    - MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
+
 install:
   - ps: Start-FileDownload 'https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisetup.exe'
   - MSMpiSetup.exe -unattend
@@ -15,7 +18,6 @@ build_script:
   - cmd: python scripts/lint.py
   - cmd: mkdir build
   - cmd: cd build
-  - cmd: set MPI_HOME="C:/Program Files (x86)/Microsoft SDKs/MPI"
   - cmd: cmake -DMPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
                -DMPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ^
                -DMPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
