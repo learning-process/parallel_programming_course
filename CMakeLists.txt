@@ -2,12 +2,12 @@ cmake_minimum_required( VERSION 2.8 )
 
 message( STATUS "Parallel Programming Course" )
 
-find_package( MPI REQUIRED )
+find_package( MPI )
 if( MPI_FOUND )
     include_directories( ${MPI_INCLUDE_PATH} )
 endif( MPI_FOUND )
 
-find_package( OpenMP REQUIRED )
+find_package( OpenMP )
 if (OPENMP_FOUND)
     if(NOT TARGET OpenMP::OpenMP_CXX)
         add_library(OpenMP_TARGET INTERFACE)
