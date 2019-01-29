@@ -30,7 +30,7 @@ matrix:
         - test -n $CXX && unset CXX
       install:
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install open-mpi
-        - HOMEBREW_NO_AUTO_UPDATE=1 brew install libomp
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew install libomp clang-omp
     ######################################################
 
 script:
