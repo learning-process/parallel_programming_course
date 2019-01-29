@@ -20,7 +20,7 @@ build_script:
   - cmd: python scripts/lint.py
   - cmd: mkdir build
   - cmd: cd build
-  - cmd: cmake -G %CMAKE_GENERATOR% ^
+  - cmd: cmake -G "%CMAKE_GENERATOR%" ^
                -DMPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
                -DMPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ^
                -DMPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
