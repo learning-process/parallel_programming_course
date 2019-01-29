@@ -1,5 +1,9 @@
 environment:
   matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2010
+      MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2012
+      MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
       MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
