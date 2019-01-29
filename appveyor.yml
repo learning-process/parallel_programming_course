@@ -1,11 +1,11 @@
-image:
-  - Visual Studio 2012
-  - Visual Studio 2013
-  - Visual Studio 2015
-  - Visual Studio 2017
-
 environment:
-    - MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
 
 install:
   - ps: Start-FileDownload 'https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisetup.exe'
