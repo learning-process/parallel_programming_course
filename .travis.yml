@@ -33,7 +33,7 @@ matrix:
         - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
         - HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade cmake
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install open-mpi
-        - HOMEBREW_NO_AUTO_UPDATE=1 brew install llvm CLIUtils/apple/libomp libiomp
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew install llvm CLIUtils/apple/libomp homebrew/boneyard/libiomp
     ######################################################
     
 addons:
