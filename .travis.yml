@@ -24,23 +24,13 @@ matrix:
         - sudo apt-get install libomp-dev
     ######################################################
     - os: osx
-      env: BUILD_TYPE=Release VERBOSE=1 CXX_FLAGS=-std=c++11
       osx_image: xcode10.1
-      before_install:
-        - test -n $CC  && unset CC
-        - test -n $CXX && unset CXX
       install:
         - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
         - HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade cmake
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install open-mpi
-        - HOMEBREW_NO_AUTO_UPDATE=1 brew install llvm CLIUtils/apple/libomp homebrew/boneyard/libiomp
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew install llvm CLIUtils/apple/libomp
     ######################################################
-    
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.9
     
 script:
 - python scripts/lint.py
