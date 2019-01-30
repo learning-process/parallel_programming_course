@@ -1,3 +1,4 @@
+sudo: false
 language: cpp
 
 matrix:
@@ -10,8 +11,8 @@ matrix:
         - test -n $CC  && unset CC
         - test -n $CXX && unset CXX
       install:
-        - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
-        - sudo apt-get install libomp-dev
+        - apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
+        - apt-get install libomp-dev
     #######################################################
     - os: linux
       dist: xenial
@@ -20,10 +21,11 @@ matrix:
         - test -n $CC  && unset CC
         - test -n $CXX && unset CXX
       install:
-        - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
-        - sudo apt-get install libomp-dev
+        - apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
+        - apt-get install libomp-dev
     ######################################################
     - os: osx
+      env: BUILD_TYPE=Release VERBOSE=1 CXX_FLAGS=-std=c++11
       osx_image: xcode10.1
       before_install:
         - test -n $CC  && unset CC
@@ -34,7 +36,13 @@ matrix:
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install open-mpi
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install CLIUtils/apple/libomp
     ######################################################
-
+    
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.9
+    
 script:
 - python scripts/lint.py
 - mkdir build
@@ -44,3 +52,7 @@ script:
 - cd ..
 - export OMP_NUM_THREADS=4
 - source run.sh
+
+
+notifications:
+  email: false
