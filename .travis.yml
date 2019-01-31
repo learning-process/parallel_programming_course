@@ -6,9 +6,38 @@ matrix:
     - os: linux
       dist: xenial
       compiler: gcc
+      addons:
+        apt:
+          sources: ubuntu-toolchain-r-test
+          packages: g++-5
+      env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
       install:
-        - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
-        - sudo apt-get install libomp-dev libtbb-dev
+       - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
+       - sudo apt-get install libomp-dev libtbb-dev
+    #######################################################
+    - os: linux
+     dist: xenial
+     compiler: gcc
+     addons:
+       apt:
+         sources: ubuntu-toolchain-r-test
+         packages: g++-6
+     env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+     install:
+      - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
+      - sudo apt-get install libomp-dev libtbb-dev
+    #######################################################
+    - os: linux
+    dist: xenial
+    compiler: gcc
+    addons:
+      apt:
+        sources: ubuntu-toolchain-r-test
+        packages: g++-7
+    env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    install:
+     - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
+     - sudo apt-get install libomp-dev libtbb-dev
     #######################################################
     - os: linux
       dist: xenial
@@ -18,11 +47,28 @@ matrix:
         - sudo apt-get install libomp-dev libtbb-dev
     ######################################################
     - os: osx
-      osx_image:
-        - xcode10.1
-        - xcode9.4
-        - xcode9
-        - xcode8
+      osx_image: xcode10.1
+      env: HOMEBREW_NO_AUTO_UPDATE=1
+      install:
+        - brew install open-mpi
+        - brew install libomp tbb
+    ######################################################
+    - os: osx
+      osx_image: xcode9.4
+      env: HOMEBREW_NO_AUTO_UPDATE=1
+      install:
+        - brew install open-mpi
+        - brew install libomp tbb
+    ######################################################
+    - os: osx
+      osx_image: xcode9
+      env: HOMEBREW_NO_AUTO_UPDATE=1
+      install:
+        - brew install open-mpi
+        - brew install libomp tbb
+    ######################################################
+    - os: osx
+      osx_image: xcode8
       env: HOMEBREW_NO_AUTO_UPDATE=1
       install:
         - brew install open-mpi
