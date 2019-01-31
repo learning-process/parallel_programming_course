@@ -8,21 +8,21 @@ matrix:
       compiler: gcc
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
-        - sudo apt-get install libomp-dev
+        - sudo apt-get install libomp-dev libtbb-dev
     #######################################################
     - os: linux
       dist: xenial
       compiler: clang
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
-        - sudo apt-get install libomp-dev
+        - sudo apt-get install libomp-dev libtbb-dev
     ######################################################
     - os: osx
       osx_image: xcode10.1
       env: HOMEBREW_NO_AUTO_UPDATE=1
       install:
         - brew install open-mpi
-        - brew install libomp
+        - brew install libomp tbb
     ######################################################
 
 script:
