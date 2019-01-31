@@ -1,16 +1,38 @@
-function run_mpi_file {
-  if [ -f "${PWD}$1" ]; then mpirun -np 2 .$1; else echo "File $1 does not exist!"; fi
-}
+#!/bin/bash
 
-function run_omp_file {
-    if [ -f "${PWD}$1" ]; then .$1; else echo "File $1 does not exist!"; fi
+check_exist_file() {
+    [ -f "${PWD}$1" ]
 }
 
 echo "##########################################"
 echo "mpi"
 echo "##########################################"
-run_mpi_file "/build/modules/test_tasks/mpi/mpi"
+FILE="/build/modules/test_tasks/mpi/mpi"
+if check_exist_file $FILE;
+then
+    mpirun -np 2 .$FILE;
+else
+    echo "File $FILE not exists!";
+fi
+
 echo "##########################################"
 echo "omp"
 echo "##########################################"
-run_omp_file "/build/modules/test_tasks/omp/omp"
+FILE="/build/modules/test_tasks/omp/omp"
+if check_exist_file $FILE;
+then
+    .$FILE;
+else
+    echo "File $FILE not exists!";
+fi
+
+echo "##########################################"
+echo "tbb"
+echo "##########################################"
+FILE="/build/modules/test_tasks/tbb/tbb"
+if check_exist_file $FILE;
+then
+    .$FILE;
+else
+    echo "File $FILE not exists!";
+fi
