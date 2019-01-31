@@ -6,9 +6,6 @@ matrix:
     - os: linux
       dist: xenial
       compiler: gcc
-      before_install:
-        - test -n $CC  && unset CC
-        - test -n $CXX && unset CXX
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
         - sudo apt-get install libomp-dev
@@ -23,13 +20,9 @@ matrix:
     - os: osx
       osx_image: xcode10.1
       env: HOMEBREW_NO_AUTO_UPDATE=1
-      before_install:
-        - echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.bash_profile
+      install:
         - brew install open-mpi
         - brew install libomp
-      install:
-        - brew upgrade cmake
-        
     ######################################################
     
 script:
