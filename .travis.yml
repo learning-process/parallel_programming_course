@@ -8,7 +8,7 @@ matrix:
       compiler: gcc
       before_install:
         - wget https://github.com/01org/tbb/releases/download/2019_U3/tbb2019_20181203oss_lin.tgz -P /tmp
-        - tar zxvf tbb2019_20181203oss_lin.tgz -C /tmp
+        - tar zxvf /tmp/tbb2019_20181203oss_lin.tgz -C /tmp
         - source /tmp/tbb2019_20181203oss/bin/tbbvars.sh
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
@@ -19,7 +19,7 @@ matrix:
       compiler: clang
       before_install:
         - wget https://github.com/01org/tbb/releases/download/2019_U3/tbb2019_20181203oss_lin.tgz -P /tmp
-        - tar zxvf tbb2019_20181203oss_lin.tgz -C /tmp
+        - tar zxvf /tmp/tbb2019_20181203oss_lin.tgz -C /tmp
         - source /tmp/tbb2019_20181203oss/bin/tbbvars.sh
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
