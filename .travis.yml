@@ -24,7 +24,7 @@ matrix:
         - brew install open-mpi
         - brew install libomp
     ######################################################
-    
+
 script:
 - python scripts/lint.py
 - mkdir build
@@ -34,7 +34,6 @@ script:
 - cd ..
 - export OMP_NUM_THREADS=4
 - source run.sh
-
 
 notifications:
   email: false
