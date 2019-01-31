@@ -8,9 +8,7 @@ matrix:
       compiler: gcc
       before_install:
         - git clone https://github.com/01org/tbb /tmp/tbb
-        - cd /tmp/tbb
-        - make -j4
-        - sudo make install
+        - ./tmp/tbb/Makefile
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
         - sudo apt-get install libomp-dev
@@ -20,9 +18,7 @@ matrix:
       compiler: clang
       before_install:
         - git clone https://github.com/01org/tbb /tmp/tbb
-        - cd /tmp/tbb
-        - make -j4
-        - sudo make install
+        - ./tmp/tbb/Makefile
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
         - sudo apt-get install libomp-dev
