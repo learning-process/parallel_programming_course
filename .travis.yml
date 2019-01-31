@@ -18,7 +18,11 @@ matrix:
         - sudo apt-get install libomp-dev libtbb-dev
     ######################################################
     - os: osx
-      osx_image: xcode10.1
+      osx_image:
+        - xcode10.1
+        - xcode9.4
+        - xcode9
+        - xcode8
       env: HOMEBREW_NO_AUTO_UPDATE=1
       install:
         - brew install open-mpi
