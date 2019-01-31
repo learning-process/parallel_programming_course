@@ -6,22 +6,16 @@ matrix:
     - os: linux
       dist: xenial
       compiler: gcc
-      before_install:
-        - git clone https://github.com/01org/tbb /tmp/tbb
-        - ./tmp/tbb/Makefile
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
-        - sudo apt-get install libomp-dev
+        - sudo apt-get install libomp-dev libtbb-dev
     #######################################################
     - os: linux
       dist: xenial
       compiler: clang
-      before_install:
-        - git clone https://github.com/01org/tbb /tmp/tbb
-        - ./tmp/tbb/Makefile
       install:
         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
-        - sudo apt-get install libomp-dev
+        - sudo apt-get install libomp-dev libtbb-dev
     ######################################################
     - os: osx
       osx_image: xcode10.1
