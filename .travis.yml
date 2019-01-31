@@ -21,7 +21,10 @@ matrix:
         - sudo apt-get install libomp-dev
     ######################################################
     - os: osx
+      osx_image: xcode10.1
       env: HOMEBREW_NO_AUTO_UPDATE=1
+      before_install:
+        - echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.bash_profile
       install:
         - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
         - brew upgrade cmake
