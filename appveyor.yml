@@ -19,7 +19,8 @@ install:
   - ps: Start-FileDownload 'https://github.com/01org/tbb/releases/download/2019_U3/tbb2019_20181203oss_win.zip'
   - mkdir "C:\Program Files (x86)\IntelSWTools"
   - unzip "tbb2019_20181203oss_win.zip" "C:\Program Files (x86)\IntelSWTools\"
-  - "C:\\Program Files (x86)\\IntelSWTools\\tbb2019_20181203oss\\bin\\tbbvars.bat" intel64
+  - cd "C:\Program Files (x86)\IntelSWTools\"
+  - tbb2019_20181203oss\bin\tbbvars.bat intel64
 
 build_script:
   - cmd: python scripts/lint.py
