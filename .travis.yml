@@ -9,9 +9,6 @@ matrix:
           sources: ubuntu-toolchain-r-test
           packages: g++-4.9
       env: MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
-      install:
-         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
-         - sudo apt-get install libomp-dev libtbb-dev
 
     - os: linux
       dist: xenial
@@ -20,9 +17,6 @@ matrix:
           sources: ubuntu-toolchain-r-test
           packages: g++-5
       env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
-      install:
-         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
-         - sudo apt-get install libomp-dev libtbb-dev
 
     - os: linux
       dist: xenial
@@ -31,9 +25,6 @@ matrix:
           sources: ubuntu-toolchain-r-test
           packages: g++-6
       env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-      install:
-         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
-         - sudo apt-get install libomp-dev libtbb-dev
 
     - os: linux
       dist: xenial
@@ -42,11 +33,7 @@ matrix:
           sources: ubuntu-toolchain-r-test
           packages: g++-7
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-      install:
-         - sudo apt-get install lam-runtime mpich openmpi-bin libopenmpi-dev
-         - sudo apt-get install libomp-dev libtbb-dev
-      env:
-        - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+
     - os: linux
       dist: trusty
       addons:
