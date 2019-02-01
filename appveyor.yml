@@ -17,8 +17,9 @@ install:
   - ps: Start-FileDownload 'https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisdk.msi'
   - msmpisdk.msi /passive
   - ps: Start-FileDownload 'https://github.com/01org/tbb/releases/download/2019_U3/tbb2019_20181203oss_win.zip'
-  - unzip "tbb2019_20181203oss_win.zip"
-  - tbb2019_20181203oss/bin/tbbvars.bat ia32
+  - mkdir "C:\Program Files (x86)\IntelSWTools"
+  - unzip "tbb2019_20181203oss_win.zip" "C:\Program Files (x86)\IntelSWTools\"
+  - "C:\\Program Files (x86)\\IntelSWTools\\tbb2019_20181203oss\\bin\\tbbvars.bat" intel64
 
 build_script:
   - cmd: python scripts/lint.py
