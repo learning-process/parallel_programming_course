@@ -31,16 +31,6 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: llvm-toolchain-trusty-3.9
-          packages: clang-3.9
-      env: MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
-
-    - os: linux
-      dist: xenial
-      compiler: clang
-      addons:
-        apt:
-          sources: llvm-toolchain-trusty-4.0
           packages: clang-4.0
       env: MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0"
 
@@ -49,9 +39,12 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: llvm-toolchain-trusty-5.0
           packages: clang-5.0
       env: MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+
+    - os: linux
+      dist: xenial
+      compiler: clang
 
     - os: osx
       env: HOMEBREW_NO_AUTO_UPDATE=1
@@ -59,11 +52,11 @@ matrix:
 
     - os: osx
       env: HOMEBREW_NO_AUTO_UPDATE=1
-      osx_image: xcode9.4
+      osx_image: xcode10
 
     - os: osx
       env: HOMEBREW_NO_AUTO_UPDATE=1
-      osx_image: xcode9.2
+      osx_image: xcode9.4
 
 before_install:
 - eval "${MATRIX_EVAL}"
