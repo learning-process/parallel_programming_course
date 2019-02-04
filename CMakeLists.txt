@@ -22,15 +22,13 @@ if( OpenMP_FOUND )
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif( OpenMP_FOUND )
 
-
-
 if( WIN32 )
     include(cmake/TBBGet.cmake)
     tbb_get(TBB_ROOT tbb_root SOURCE_CODE)
     find_package( TBB )
-else( WIN32 )
-    include( cmake/FindTBB.cmake )
 endif( WIN32 )
+
+include( cmake/FindTBB.cmake )
 if( TBB_FOUND )
     message(STATUS "Found TBB: TRUE (found version \"${TBB_VERSION_MAJOR}.${TBB_VERSION_MINOR}\") ")
     include_directories( ${TBB_INCLUDE_DIRS} )
