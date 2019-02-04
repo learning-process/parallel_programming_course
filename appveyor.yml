@@ -18,13 +18,14 @@ install:
   - msmpisdk.msi /passive
   - ps: Start-FileDownload 'https://github.com/01org/tbb/releases/download/2019_U3/tbb2019_20181203oss_win.zip'
   - unzip tbb2019_20181203oss_win.zip
-  - set TBB_ROOT="%cd%/tbb2019_20181203oss"
+  - set TBB_ROOT_SOURCE="%cd%/tbb2019_20181203oss"
 
 build_script:
   - cmd: python scripts/lint.py
   - cmd: mkdir build
   - cmd: cd build
   - cmd: cmake -G "%CMAKE_GENERATOR%" ^
+               -DTBB_ROOT:PATH="%TBB_ROOT_SOURCE%" ^
                -DMPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
                -DMPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ^
                -DMPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
