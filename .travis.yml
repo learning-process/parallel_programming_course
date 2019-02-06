@@ -4,23 +4,17 @@ matrix:
   include:
     - os: linux
       dist: xenial
-      addons:
-        apt:
-          packages: g++-5
+      before_install: sudo apt-get install -qq g++-5
       env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
 
     - os: linux
       dist: xenial
-      addons:
-        apt:
-          packages: g++-6
+      before_install: sudo apt-get install -qq g++-6
       env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
 
     - os: linux
       dist: xenial
-      addons:
-        apt:
-          packages: g++-7
+      before_install: sudo apt-get install -qq g++-7
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
     - os: linux
@@ -55,10 +49,8 @@ matrix:
       env: HOMEBREW_NO_AUTO_UPDATE=1
       osx_image: xcode9.4
 
-before_install:
-- eval "${MATRIX_EVAL}"
-
 install:
+- eval "${MATRIX_EVAL}"
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew install open-mpi libomp tbb; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install lam-runtime; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install mpich openmpi-bin libopenmpi-dev; fi
