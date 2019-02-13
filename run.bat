@@ -2,14 +2,14 @@
 echo "##########################################"
 echo "mpi"
 echo "##########################################"
-mpiexec.exe -np 4 build\modules\test_tasks\mpi\Debug\mpi.exe
+mpiexec.exe -np 4 build\bin\mpi_test.exe
 
 echo "##########################################"
 echo "omp"
 echo "##########################################"
-build\modules\test_tasks\omp\Debug\omp.exe
+build\bin\omp_test.exe
 
 echo "##########################################"
 echo "tbb"
 echo "##########################################"
-build\modules\test_tasks\tbb\Debug\tbb.exe
+build\bin\tbb_test.exe

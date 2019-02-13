@@ -7,7 +7,7 @@ check_exist_file() {
 echo "##########################################"
 echo "mpi"
 echo "##########################################"
-FILE="/build/modules/test_tasks/mpi/mpi"
+FILE="/build/bin/mpi_test"
 if check_exist_file $FILE;
 then
     mpirun -np 2 .$FILE;
@@ -18,7 +18,7 @@ fi
 echo "##########################################"
 echo "omp"
 echo "##########################################"
-FILE="/build/modules/test_tasks/omp/omp"
+FILE="/build/bin/omp_test"
 if check_exist_file $FILE;
 then
     .$FILE;
@@ -29,7 +29,7 @@ fi
 echo "##########################################"
 echo "tbb"
 echo "##########################################"
-FILE="/build/modules/test_tasks/tbb/tbb"
+FILE="/build/bin/tbb_test"
 if check_exist_file $FILE;
 then
     .$FILE;

@@ -2,6 +2,14 @@ cmake_minimum_required( VERSION 2.8 )
 
 message( STATUS "Parallel Programming Course" )
 
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/arch" )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/lib" )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin" )
+
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/arch" )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/lib" )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin" )
+
 if( CMAKE_VERSION VERSION_LESS "3.1" )
     if( CMAKE_CXX_COMPILER_ID STREQUAL "GNU" )
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
@@ -23,20 +31,29 @@ if( OpenMP_FOUND )
 endif( OpenMP_FOUND )
 
 if( WIN32 )
-    set( TBB_VERSION_ELEM "tbb2018_20171205oss")
-    set( TBB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build/tbb_downloaded/${TBB_VERSION_ELEM}_win" )
     include( cmake/TBBGet.cmake )
-    tbb_get( TBB_ROOT tbb_root RELEASE_TAG "2018_U2" CONFIG_DIR TBB_DIR )
+    tbb_get( TBB_ROOT tbb_root RELEASE_TAG "2019_U2" CONFIG_DIR TBB_DIR )
+
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        set(SYSTEM_BIT "intel64")
+    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+        set(SYSTEM_BIT "ia32")
+    endif()
+
+    file( GLOB TBB_PRE_LIB "${tbb_root}/lib/${SYSTEM_BIT}/vc14/*.lib" )
+    file( COPY ${TBB_PRE_LIB} DESTINATION "${CMAKE_BINARY_DIR}/bin")
+
     find_package( TBB )
 else( WIN32 )
     include( cmake/FindTBB.cmake )
-    if( TBB_FOUND )
-        message(STATUS "Found TBB: TRUE (found version \"${TBB_VERSION_MAJOR}.${TBB_VERSION_MINOR}\") ")
-        include_directories( ${TBB_INCLUDE_DIRS} )
-    else( TBB_FOUND )
-        message(STATUS "Not found TBB")
-    endif( TBB_FOUND )
 endif( WIN32 )
+
+if( TBB_FOUND )
+    message(STATUS "Found TBB: TRUE (found version \"${TBB_VERSION_MAJOR}.${TBB_VERSION_MINOR}\") ")
+    include_directories( ${TBB_INCLUDE_DIRS} )
+else( TBB_FOUND )
+    message(STATUS "Not found TBB")
+endif( TBB_FOUND )
 
 if( UNIX )
     set(CMAKE_C_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Werror")

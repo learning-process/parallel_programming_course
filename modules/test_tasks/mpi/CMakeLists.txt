@@ -1,4 +1,4 @@
-project( mpi )
+project( mpi_test )
 
 message( STATUS "-- " ${PROJECT_NAME} )
 add_executable( ${PROJECT_NAME} main.cpp )
