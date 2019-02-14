@@ -1,4 +1,4 @@
-project( omp_test )
+project( test_omp )
 
 if ( OpenMP_FOUND )
     message( STATUS "-- " ${PROJECT_NAME} )

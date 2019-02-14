@@ -1,7 +1,6 @@
 // Copyright 2018 Nesterov Alexander
-#include <assert.h>
 #include <mpi.h>
-#include <iostream>
+#include <stdio.h>
 
 int main(int argc, char* argv[]) {
     int status, rank, size;
@@ -10,12 +9,17 @@ int main(int argc, char* argv[]) {
 
     status = MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (status != MPI_SUCCESS) { return -1; }
+    if (rank == 0) {
+      printf("----------------------------------\n");
+      printf("MPI Test Program\n");
+      printf("----------------------------------\n");
+    }
+    MPI_Barrier(MPI_COMM_WORLD);
 
     status = MPI_Comm_size(MPI_COMM_WORLD, &size);
     if (status != MPI_SUCCESS) { return -1; }
 
-    std::cout << "Process #" << rank << '\n';
-    std::cout << "Count process: " << size << '\n';
+    printf("Process: %d | Count process: %d\n", rank, size);
 
     status = MPI_Finalize();
     if (status != MPI_SUCCESS) { return -1; }

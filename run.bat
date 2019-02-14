@@ -1,15 +1,4 @@
 @echo off
-echo "##########################################"
-echo "mpi"
-echo "##########################################"
-mpiexec.exe -np 4 build\bin\mpi_test.exe
-
-echo "##########################################"
-echo "omp"
-echo "##########################################"
-build\bin\omp_test.exe
-
-echo "##########################################"
-echo "tbb"
-echo "##########################################"
-build\bin\tbb_test.exe
+for /r "." %%a in (build\bin\*_mpi.exe) do mpiexec -np 4 %%~fa
+for /r "." %%a in (build\bin\*_omp.exe) do %%~fa
+for /r "." %%a in (build\bin\*_tbb.exe) do %%~fa

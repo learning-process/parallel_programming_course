@@ -1,4 +1,4 @@
-project( tbb_test )
+project( test_tbb )
 
 message( STATUS "-- " ${PROJECT_NAME} )
 add_executable( ${PROJECT_NAME} main.cpp )

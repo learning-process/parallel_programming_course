@@ -4,6 +4,9 @@
 #include <iostream>
 
 int main(int argc, char* argv[]) {
+    std::cout << "----------------------------------" << '\n';
+    std::cout << "OpenMP Test Program" << '\n';
+    std::cout << "----------------------------------" << '\n';
     #pragma omp parallel
     {
         #pragma omp critical

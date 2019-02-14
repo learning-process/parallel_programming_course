@@ -4,6 +4,9 @@
 #include <iostream>
 
 int main(int argc, char* argv[]) {
+    std::cout << "----------------------------------" << '\n';
+    std::cout << "TBB Test Program" << '\n';
+    std::cout << "----------------------------------" << '\n';
     tbb::flow::graph g;
     tbb::flow::continue_node< tbb::flow::continue_msg > hello(g,
         [](const tbb::flow::continue_msg &) { std::cout << "Hello"; });
