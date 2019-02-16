@@ -72,7 +72,7 @@ script:
 - cmake --build .
 - cd ..
 - export OMP_NUM_THREADS=4
-- source run.sh
+- source scripts/run.sh
 
 notifications:
   email: false

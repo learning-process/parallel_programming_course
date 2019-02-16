@@ -29,4 +29,4 @@ build_script:
   - cmd: cmake --build .
   - cmd: cd ..
   - cmd: set OMP_NUM_THREADS=4
-  - cmd: run.bat
+  - cmd: scripts/run.bat
