@@ -25,10 +25,10 @@ exit_flag = True
 for dirs, node, files in os.walk(project_directory):
     for file in files:
         if re.search(pattern_filename, file) != None:
-            if re.search(r'(task_2)|(task_3)|(test_task)|(experimental)', dirs) != None:
+            if re.search(r'(task_1)|(task_2)|(task_3)|(test_task)', dirs) != None:
                 os.chdir(dirs)
                 print(dirs + " -> " + file)
-                command = sys.executable + ' ' + cpplint_path + ' ' + file
+                command = sys.executable + ' ' + cpplint_path + ' --linelength=120 ' + file
                 status = StartTests(command)
                 if status:
                     print("\033[0;32mSuccess: " + file + "\033[0;0m");
