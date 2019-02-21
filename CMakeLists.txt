@@ -29,7 +29,7 @@ if( WIN32 )
         set(SYSTEM_BIT "ia32")
     endif()
 
-    file( GLOB TBB_PRE_LIB "${tbb_root}/lib/${SYSTEM_BIT}/vc14/*.lib" )
+    file( GLOB TBB_PRE_LIB  "${tbb_root}/bin/${SYSTEM_BIT}/vc14/*.dll" )
     file( COPY ${TBB_PRE_LIB} DESTINATION "${CMAKE_BINARY_DIR}/bin")
 
     find_package( TBB )
