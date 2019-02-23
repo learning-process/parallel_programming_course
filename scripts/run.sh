@@ -4,7 +4,7 @@ for file in $FILES_MPI; do
     echo "--------------------------------"
     echo $(basename $file)
     echo "--------------------------------"
-    mpirun -np 4 $file
+    mpirun -np 2 $file
 done
 
 FILES_OMP="build/bin/*_omp"
