@@ -51,7 +51,10 @@ script:
 - python scripts/lint.py
 - mkdir build
 - cd build
-- cmake -D CMAKE_BUILD_TYPE=Release ..
+- cmake -D USE_MPI=ON \
+        -D USE_OMP=ON \
+        -D USE_TBB=ON \
+        -D CMAKE_BUILD_TYPE=RELEASE ..
 - cmake --build .
 - cd ..
 - export OMP_NUM_THREADS=4

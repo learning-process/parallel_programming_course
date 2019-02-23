@@ -1,14 +1,20 @@
-project( test_mpi )
+set(PROJECT_NAME "test_mpi")
 
-message( STATUS "-- " ${PROJECT_NAME} )
-add_executable( ${PROJECT_NAME} main.cpp )
+if( USE_MPI )
+    project( ${PROJECT_NAME} )
 
-if( MPI_COMPILE_FLAGS )
-    set_target_properties( ${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}" )
-endif( MPI_COMPILE_FLAGS )
+    message( STATUS "-- " ${PROJECT_NAME} )
+    add_executable( ${PROJECT_NAME} main.cpp )
 
-if( MPI_LINK_FLAGS )
-    set_target_properties( ${PROJECT_NAME} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}" )
-endif( MPI_LINK_FLAGS )
+    if( MPI_COMPILE_FLAGS )
+        set_target_properties( ${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}" )
+    endif( MPI_COMPILE_FLAGS )
 
-target_link_libraries( ${PROJECT_NAME} ${MPI_LIBRARIES} )
+    if( MPI_LINK_FLAGS )
+        set_target_properties( ${PROJECT_NAME} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}" )
+    endif( MPI_LINK_FLAGS )
+
+    target_link_libraries( ${PROJECT_NAME} ${MPI_LIBRARIES} )
+else( USE_MPI )
+    message( STATUS "-- ${PROJECT_NAME} - NOT BUILD!"  )
+endif( USE_MPI )

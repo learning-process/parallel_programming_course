@@ -2,7 +2,7 @@
 FILES_MPI="build/bin/*_mpi"
 for file in $FILES_MPI; do
     echo "--------------------------------"
-    echo $file
+    echo $(basename $file)
     echo "--------------------------------"
     mpirun -np 4 $file
 done
@@ -10,7 +10,7 @@ done
 FILES_OMP="build/bin/*_omp"
 for file in $FILES_OMP; do
     echo "--------------------------------"
-    echo $file
+    echo $(basename $file)
     echo "--------------------------------"
     ./$file
 done
@@ -18,7 +18,7 @@ done
 FILES_TBB="build/bin/*_tbb"
 for file in $FILES_TBB; do
     echo "--------------------------------"
-    echo $file
+    echo $(basename $file)
     echo "--------------------------------"
     ./$file
 done
