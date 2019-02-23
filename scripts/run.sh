@@ -4,7 +4,8 @@ for file in $FILES_MPI; do
     echo "--------------------------------"
     echo $(basename $file)
     echo "--------------------------------"
-    mpirun -np 2 $file
+    NUM_PROC=$(cat /proc/cpuinfo|grep processor|wc -l )
+    mpirun -np $NUM_PROC $file
 done
 
 FILES_OMP="build/bin/*_omp"
