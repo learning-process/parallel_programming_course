@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/learning-process/parallel_programming_course.svg?branch=master)](https://travis-ci.com/learning-process/parallel_programming_course)
-[![Build status](https://ci.appveyor.com/api/projects/status/t46nd9gyt7iirdy8/branch/master?svg=true)](https://ci.appveyor.com/project/allnes/parallel-programming-course/branch/master)
+[![Build Status](https://travis-ci.com/allnes/parallel_programming_course.svg?branch=master)](https://travis-ci.com/allnes/parallel_programming_course)
+[![Build status](https://ci.appveyor.com/api/projects/status/6kpr5wpfp35f01n2/branch/master?svg=true)](https://ci.appveyor.com/project/allnes/parallel-programming-course-6g25d/branch/master)
 
 # Практика по параллельному программированию
 В практике ркассматриваются следующие технологии параллельного программирования:
