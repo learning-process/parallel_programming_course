@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.com/learning-process/parallel_programming_course.svg?branch=master)](https://travis-ci.com/learning-process/parallel_programming_course)
 [![Build status](https://ci.appveyor.com/api/projects/status/t46nd9gyt7iirdy8/branch/master?svg=true)](https://ci.appveyor.com/project/allnes/parallel-programming-course/branch/master)
 
-# По техническим причинам продолжение обслуживания репозитория по 25.02.2019
 # Практика по параллельному программированию
 В практике ркассматриваются следующие технологии параллельного программирования:
 * MPI
@@ -97,7 +96,7 @@ add_subdirectory(nesterov_a_vector_sum)
 
   Пример pull-request'а находится в pull-request'ах проекта.
 
-* Работаем со своим fork-репозитроием. В ветке НЕ `master`!!! Название ветки аналогично названию директории для вашей задачи. К примеру создание ветки:
-```
-git checkout -b nesterov_a_vector_sum
-```
+* Работаем со своим fork-репозитроием. Работаем в отдельной ветке и <b>НЕ в `master`!!!</b> Название ветки аналогично названию директории для вашей задачи. К примеру создание ветки:
+  ```
+  git checkout -b nesterov_a_vector_sum
+  ```
