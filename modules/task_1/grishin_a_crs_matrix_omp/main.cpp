@@ -49,14 +49,16 @@ void GenerateCRS(crsMatrix *mtx, int n, int cntInRow) {
                 mtx->Col[i * cntInRow + j] = std::rand() % n;
                 f = 0;
                 for (k = 0; k < j; k++)
-                    if (mtx->Col[i * cntInRow + j] == mtx->Col[i * cntInRow + k])
+                    if (mtx->Col[i * cntInRow + j]
+                        == mtx->Col[i * cntInRow + k])
                         f = 1;
             } while (f == 1);
         }
         // Сортируем номера столбцов в строке i
         for (j = 0; j < cntInRow - 1; j++)
             for (k = 0; k < cntInRow - 1; k++)
-                if (mtx->Col[i * cntInRow + k] > mtx->Col[i * cntInRow + k + 1]) {
+                if (mtx->Col[i * cntInRow + k]
+                    > mtx->Col[i * cntInRow + k + 1]) {
                     tmp = mtx->Col[i * cntInRow + k];
                     mtx->Col[i * cntInRow + k] = mtx->Col[i * cntInRow + k + 1];
                     mtx->Col[i * cntInRow + k + 1] = tmp;
@@ -211,7 +213,8 @@ int main(int argc, char **argv) {
 
     std::cout << "Size of matrix = " << SizeM << "x" << SizeM << std::endl;
     std::cout << "Not NULL elements in ROW = " << NNZRow << std::endl;
-    std::cout << "Serial Time: " << std::fixed << std::setprecision(8) << serialTime << std::endl;
+    std::cout << "Serial Time: " <<
+        std::fixed << std::setprecision(8) << serialTime << std::endl;
 
 
 
