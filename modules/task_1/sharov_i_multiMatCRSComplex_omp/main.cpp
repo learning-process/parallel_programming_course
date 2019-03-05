@@ -1,5 +1,6 @@
 // Copyright 2019 Sharov Ivan
 #include <assert.h>
+#include <stdio.h>
 #include <omp.h>
 #include <iostream>
 #include <cmath>
@@ -111,19 +112,40 @@ struct Matrix {
     TComplex *Value;
     int*Col;
     int*RowIndex;
-};
 
-Matrix InitializeMatrix(int N, int M, int NZ) {
-    Matrix mat;
-    mat.N = N;
-    mat.M = M;
-    mat.NZ = NZ;
-    mat.Value = new TComplex[NZ];
-    mat.Col = new int[NZ];
-    mat.RowIndex = new int[N + 1];
-    Matrix* p = &mat;
-    return mat;
-}
+    Matrix(int n, int m, int nz) : N(n), M(m), NZ(nz) {
+        Value = new TComplex[NZ];
+        Col = new int[NZ];
+        RowIndex = new int[N + 1];
+    }
+
+    Matrix(Matrix &mat) : N(mat.N), M(mat.M), NZ(mat.N) {
+        Value = new TComplex[mat.NZ];
+        for (int i = 0; i < mat.NZ; i++)
+            Value[i] = mat.Value[i];
+        Col = new int[mat.NZ];
+        for (int i = 0; i < mat.NZ; i++)
+            Col[i] = mat.Col[i];
+        RowIndex = new int[mat.N + 1];
+        for (int i = 0; i < mat.N + 1; i++)
+            RowIndex[i] = mat.RowIndex[i];
+    }
+
+    Matrix(Matrix &&mat) : N(mat.N), M(mat.M), NZ(mat.N) {
+        Value = new TComplex[mat.NZ];
+        for (int i = 0; i < mat.NZ; i++)
+            Value[i] = mat.Value[i];
+        Col = new int[mat.NZ];
+        for (int i = 0; i < mat.NZ; i++)
+            Col[i] = mat.Col[i];
+        RowIndex = new int[mat.N + 1];
+        for (int i = 0; i < mat.N + 1; i++)
+            RowIndex[i] = mat.RowIndex[i];
+        delete mat.Value;
+        delete mat.Col;
+        delete mat.RowIndex;
+    }
+};
 
 void Print(int N, int M, Matrix *mat) {
     int k = 0;
@@ -257,7 +279,7 @@ void multiplication(Matrix *A, Matrix *BT) {
         indexrow.push_back(rowNZ + indexrow[i]);
     }
 
-    Matrix* C = &InitializeMatrix(A -> N, BT -> N, columns.size());
+    Matrix* C = &Matrix(A -> N, BT -> N, columns.size());
 
     for (unsigned int j = 0; j < columns.size(); j++) {
         C -> Col[j] = columns[j];
@@ -300,9 +322,9 @@ int main(int argc, char* argv[]) {
     }
 
     printf("Zadacha 1. The multiplication of sparse matrices. CRS. Complex type.\n");
-    Matrix *A = &InitializeMatrix(n, m, nzInRow*n);
-    Matrix *B = &InitializeMatrix(n2, m2, nzInRow2*n2);
-    Matrix *BT = &InitializeMatrix(m2, n2, nzInRow2*m2);
+    Matrix *A = &Matrix(n, m, nzInRow*n);
+    Matrix *B = &Matrix(n2, m2, nzInRow2*n2);
+    Matrix *BT = &Matrix(m2, n2, nzInRow2*m2);
     GetMatrix(n, m, nzInRow, A);
 
     if ((A->N < 15) && (A->M < 15)) {
