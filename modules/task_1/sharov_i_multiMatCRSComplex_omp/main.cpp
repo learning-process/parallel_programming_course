@@ -20,7 +20,7 @@ class TComplex {
     int Im;
 
  public:
-	explicit TComplex(int a = 0, int b = 0);
+    explicit TComplex(int a = 0, int b = 0);
     ~TComplex();
     void Print();
     void Input();
@@ -88,9 +88,9 @@ TComplex TComplex::operator *(const TComplex &D) {
 
 TComplex TComplex::operator /(const TComplex &R) {
     TComplex res;
-    if ((R.Re == 0) && (R.Im == 0))
-        std::cout << "you can`t divide by 0";
-    else {
+	if ((R.Re == 0) && (R.Im == 0)) {
+		std::cout << "you can`t divide by 0";
+    } else {
         res.Re = (Re*R.Re + Im*R.Im) / (R.Re*R.Re + R.Im*R.Im);
         res.Im = (Im*R.Re - R.Im*Re) / (R.Re*R.Re + R.Im*R.Im);
     }
