@@ -20,7 +20,7 @@ class TComplex {
     int Im;
 
  public:
-    TComplex(int a = 0, int b = 0);
+	explicit TComplex(int a = 0, int b = 0);
     ~TComplex();
     void Print();
     void Input();
@@ -90,8 +90,7 @@ TComplex TComplex::operator /(const TComplex &R) {
     TComplex res;
     if ((R.Re == 0) && (R.Im == 0))
         std::cout << "you can`t divide by 0";
-    else
-    {
+    else {
         res.Re = (Re*R.Re + Im*R.Im) / (R.Re*R.Re + R.Im*R.Im);
         res.Im = (Im*R.Re - R.Im*Re) / (R.Re*R.Re + R.Im*R.Im);
     }
@@ -115,15 +114,15 @@ struct Matrix {
 };
 
 Matrix InitializeMatrix(int N, int M, int NZ) {
-	Matrix mat;
-	mat.N = N;
-	mat.M = M;
-	mat.NZ = NZ;
-	mat.Value = new TComplex[NZ];
-	mat.Col = new int[NZ];
-	mat.RowIndex = new int[N + 1];
-	Matrix* p = &mat;
-	return mat;
+    Matrix mat;
+    mat.N = N;
+    mat.M = M;
+    mat.NZ = NZ;
+    mat.Value = new TComplex[NZ];
+    mat.Col = new int[NZ];
+    mat.RowIndex = new int[N + 1];
+    Matrix* p = &mat;
+    return mat;
 }
 
 void Print(int N, int M, Matrix *mat) {
@@ -147,7 +146,6 @@ void Print(int N, int M, Matrix *mat) {
 }
 
 void GetMatrix(int N, int M, int countinrow, Matrix *mat) {
- 
     int tmp;
     bool flag;
 
@@ -177,8 +175,7 @@ void GetMatrix(int N, int M, int countinrow, Matrix *mat) {
     }
 
     int startIndex = 0;
-    for (int i = 0; i < (N + 1); i++)
-    {
+    for (int i = 0; i < (N + 1); i++) {
         mat -> RowIndex[i] = startIndex;
         startIndex = startIndex + countinrow;
     }
@@ -242,7 +239,7 @@ void multiplication(Matrix *A, Matrix *BT) {
     for (int i = 0; i < A -> N; i++) {
         rowNZ = 0;
         for (int j = 0; j < BT -> N; j++) {
-            TComplex summa = 0;
+            TComplex summa = TComplex(0, 0);
             for (int s = A -> RowIndex[i]; s < A -> RowIndex[i + 1]; s++) {
                 for (int r = BT -> RowIndex[j]; r < BT -> RowIndex[j + 1]; r++) {
                     if (A -> Col[s] == BT -> Col[r]) {
@@ -303,26 +300,24 @@ int main(int argc, char* argv[]) {
     }
 
     printf("Zadacha 1. The multiplication of sparse matrices. CRS. Complex type.\n");
-	Matrix *A = &InitializeMatrix(n, m, nzInRow*n);
-	Matrix *B = &InitializeMatrix(n2, m2, nzInRow2*n2);
-	Matrix *BT = &InitializeMatrix(m2, n2, nzInRow2*m2);
-	
-	GetMatrix(n, m, nzInRow, A);
+    Matrix *A = &InitializeMatrix(n, m, nzInRow*n);
+    Matrix *B = &InitializeMatrix(n2, m2, nzInRow2*n2);
+    Matrix *BT = &InitializeMatrix(m2, n2, nzInRow2*m2);
+    GetMatrix(n, m, nzInRow, A);
 
-	if ((A->N < 15) && (A->M < 15)) {
-		printf_s("matrix A \n");
-		Print(n, m, A);
-	}
+    if ((A->N < 15) && (A->M < 15)) {
+        printf_s("matrix A \n");
+        Print(n, m, A);
+    }
 
-	
-	GetMatrix(n2, m2, nzInRow, B);
+    GetMatrix(n2, m2, nzInRow, B);
 
-	if ((B->N < 15) && (B->M < 15)) {
-		printf_s("matrix B \n");
-		Print(n2, m2, B);
-	}
+    if ((B->N < 15) && (B->M < 15)) {
+        printf_s("matrix B \n");
+        Print(n2, m2, B);
+    }
 
-	Transposing(B, BT);
-	multiplication(A, BT);
+    Transposing(B, BT);
+    multiplication(A, BT);
     return 0;
 }
