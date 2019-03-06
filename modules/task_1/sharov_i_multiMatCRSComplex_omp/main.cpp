@@ -31,7 +31,7 @@ class TComplex {
     TComplex operator *(const TComplex &c);
     TComplex operator -(const TComplex &c);
     TComplex operator /(const TComplex &c);
-	double modul() {
+    double modul() {
         double tmp;
         tmp = sqrt(static_cast<double>((Re*Re) + (Im*Im)));
         return static_cast<double>(tmp);
