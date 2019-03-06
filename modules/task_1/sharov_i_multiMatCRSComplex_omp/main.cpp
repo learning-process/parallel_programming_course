@@ -132,7 +132,7 @@ struct Matrix {
     }
 };
 
-void Print(int N, int M, Matrix *mat) {
+void Print(int N, int M, const Matrix *mat) {
     int k = 0;
     int col;
 
@@ -152,7 +152,7 @@ void Print(int N, int M, Matrix *mat) {
     printf("\n");
 }
 
-void GetMatrix(int N, int M, int countinrow, Matrix *mat) {
+void GetMatrix(int N, int M, int countinrow, const Matrix *mat) {
     int tmp;
     bool flag;
 
@@ -188,7 +188,7 @@ void GetMatrix(int N, int M, int countinrow, Matrix *mat) {
     }
 }
 
-void Transposing(Matrix *B, Matrix *BT) {
+void Transposing(Matrix *B, const Matrix *BT) {
     for (int i = 0; i < B -> NZ; i++) {
         BT -> Value[i] = TComplex(0, 0);
     }
@@ -234,7 +234,7 @@ void Transposing(Matrix *B, Matrix *BT) {
     }
 }
 
-void multiplication(Matrix *A, Matrix *BT) {
+void multiplication(const Matrix *A, const Matrix *BT) {
     double t1, t2;
     std::vector<TComplex> val;
     std::vector<int> columns;
