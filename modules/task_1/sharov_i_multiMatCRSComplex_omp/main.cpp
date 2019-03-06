@@ -119,7 +119,7 @@ struct Matrix {
         RowIndex = new int[N + 1];
     }
 
-    Matrix(Matrix &mat) : N(mat.N), M(mat.M), NZ(mat.N) {
+    Matrix(Matrix &mat) : N(mat.N), M(mat.M), NZ(mat.NZ) {
         Value = new TComplex[mat.NZ];
         for (int i = 0; i < mat.NZ; i++)
             Value[i] = mat.Value[i];
@@ -264,20 +264,20 @@ void multiplication(const Matrix *A, const Matrix *BT) {
         indexrow.push_back(rowNZ + indexrow[i]);
     }
 
-    Matrix* C = &Matrix(A -> N, BT -> N, columns.size());
+    Matrix C(A -> N, BT -> N, columns.size());
 
     for (unsigned int j = 0; j < columns.size(); j++) {
-        C -> Col[j] = columns[j];
-        C -> Value[j] = val[j];
+        C.Col[j] = columns[j];
+        C.Value[j] = val[j];
     }
 
     for (int i = 0; i < (A -> N + 1); i++)
-        C -> RowIndex[i] = indexrow[i];
+        C.RowIndex[i] = indexrow[i];
     t2 = omp_get_wtime();
 
-    if ((C -> N < 50) && (C -> M < 15)) {
+    if ((C.N < 50) && (C.M < 15)) {
         printf("Result matrix C: \n");
-        Print(C -> N, C -> M, C);
+        Print(C.N, C.M, &C);
         printf(" \n");
     }
     printf("Runtime:  %f\n", t2 - t1);
@@ -307,9 +307,9 @@ int main(int argc, char* argv[]) {
     }
 
     printf("Zadacha 1. The multiplication of sparse matrices. CRS. Complex type.\n");
-    Matrix A = Matrix(n, m, nzInRow*n);
-    Matrix B = Matrix(n2, m2, nzInRow2*n2);
-    Matrix BT = Matrix(m2, n2, nzInRow2*m2);
+    Matrix A(n, m, nzInRow*n);
+    Matrix B(n2, m2, nzInRow2*n2);
+    Matrix BT(m2, n2, nzInRow2*m2);
     GetMatrix(n, m, nzInRow, &A);
 
     if ((A.N < 15) && (A.M < 15)) {
