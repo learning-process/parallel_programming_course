@@ -52,13 +52,13 @@ void TComplex::Print() {
     if ((Re == 0) && (Im == 0))
         std::cout << "0";
     if ((Re == 0) && (Im != 0))
-        printf_s(" %di ", Im);
+        printf(" %di ", Im);
     if ((Re != 0) && (Im == 0))
-        printf_s(" %d ", Re);
+        printf(" %d ", Re);
     if ((Re != 0) && (Im != 0) && (Im > 0))
-        printf_s(" %d+%di ", Re, Im);
+        printf(" %d+%di ", Re, Im);
     if ((Re != 0) && (Im != 0) && (Im < 0))
-        printf_s(" %d%di ", Re, Im);
+        printf(" %d%di ", Re, Im);
 }
 
 void TComplex::Input() {
@@ -130,21 +130,6 @@ struct Matrix {
         for (int i = 0; i < mat.N + 1; i++)
             RowIndex[i] = mat.RowIndex[i];
     }
-
-    Matrix(Matrix &&mat) : N(mat.N), M(mat.M), NZ(mat.N) {
-        Value = new TComplex[mat.NZ];
-        for (int i = 0; i < mat.NZ; i++)
-            Value[i] = mat.Value[i];
-        Col = new int[mat.NZ];
-        for (int i = 0; i < mat.NZ; i++)
-            Col[i] = mat.Col[i];
-        RowIndex = new int[mat.N + 1];
-        for (int i = 0; i < mat.N + 1; i++)
-            RowIndex[i] = mat.RowIndex[i];
-        delete mat.Value;
-        delete mat.Col;
-        delete mat.RowIndex;
-    }
 };
 
 void Print(int N, int M, Matrix *mat) {
@@ -159,12 +144,12 @@ void Print(int N, int M, Matrix *mat) {
                 k++;
                 col++;
             } else {
-                printf_s("0 ");
+                printf("0 ");
             }
-            if (j == (M - 1)) printf_s("\n");
+            if (j == (M - 1)) printf("\n");
         }
     }
-    printf_s("\n");
+    printf("\n");
 }
 
 void GetMatrix(int N, int M, int countinrow, Matrix *mat) {
@@ -244,7 +229,7 @@ void Transposing(Matrix *B, Matrix *BT) {
     }
 
     if ((BT -> N < 15) && (BT -> M < 15)) {
-        printf_s("\n matrix Bt \n");
+        printf("\n matrix Bt \n");
         Print(BT -> N, BT -> M, BT);
     }
 }
@@ -291,55 +276,55 @@ void multiplication(Matrix *A, Matrix *BT) {
     t2 = omp_get_wtime();
 
     if ((C -> N < 50) && (C -> M < 15)) {
-        printf_s("Result matrix C: \n");
+        printf("Result matrix C: \n");
         Print(C -> N, C -> M, C);
-        printf_s(" \n");
+        printf(" \n");
     }
-    printf_s("Runtime:  %f\n", t2 - t1);
+    printf("Runtime:  %f\n", t2 - t1);
 }
 
 int main(int argc, char* argv[]) {
-    int n, m, nzInRow, n2, m2, nzInRow2;
-    if (argc != 7) {
-        printf_s("Invalid input count of parametres.\n");
-        exit(1);
-    }
+	int n, m, nzInRow, n2, m2, nzInRow2;
+	if (argc != 7) {
+		printf("Invalid input count of parametres.\n");
+		exit(1);
+	}
 
-    n = atoi(argv[1]);
-    m = atoi(argv[2]);
-    nzInRow = atoi(argv[3]);
-    n2 = atoi(argv[4]);
-    m2 = atoi(argv[5]);
-    nzInRow2 = atoi(argv[6]);
+	n = atoi(argv[1]);
+	m = atoi(argv[2]);
+	nzInRow = atoi(argv[3]);
+	n2 = atoi(argv[4]);
+	m2 = atoi(argv[5]);
+	nzInRow2 = atoi(argv[6]);
 
-    if ((nzInRow > m) || (nzInRow2 > m2)) {
-        printf_s("Invalid input count of notnull in string.\n");
-        exit(1);
-    }
-    if (m != n2) {
-        printf_s("Invalid input: M1 != N2 .\n");
-        exit(1);
-    }
+	if ((nzInRow > m) || (nzInRow2 > m2)) {
+		printf("Invalid input count of notnull in string.\n");
+		exit(1);
+	}
+	if (m != n2) {
+		printf("Invalid input: M1 != N2 .\n");
+		exit(1);
+	}
 
-    printf("Zadacha 1. The multiplication of sparse matrices. CRS. Complex type.\n");
-    Matrix *A = &Matrix(n, m, nzInRow*n);
-    Matrix *B = &Matrix(n2, m2, nzInRow2*n2);
-    Matrix *BT = &Matrix(m2, n2, nzInRow2*m2);
-    GetMatrix(n, m, nzInRow, A);
+	printf("Zadacha 1. The multiplication of sparse matrices. CRS. Complex type.\n");
+	Matrix A = Matrix(n, m, nzInRow*n);
+	Matrix B = Matrix(n2, m2, nzInRow2*n2);
+	Matrix BT = Matrix(m2, n2, nzInRow2*m2);
+	GetMatrix(n, m, nzInRow, &A);
 
-    if ((A->N < 15) && (A->M < 15)) {
-        printf_s("matrix A \n");
-        Print(n, m, A);
-    }
+	if ((A.N < 15) && (A.M < 15)) {
+		printf("matrix A \n");
+		Print(n, m, &A);
+	}
 
-    GetMatrix(n2, m2, nzInRow, B);
+	GetMatrix(n2, m2, nzInRow, &B);
 
-    if ((B->N < 15) && (B->M < 15)) {
-        printf_s("matrix B \n");
-        Print(n2, m2, B);
-    }
+	if ((B.N < 15) && (B.M < 15)) {
+		printf("matrix B \n");
+		Print(n2, m2, &B);
+	}
 
-    Transposing(B, BT);
-    multiplication(A, BT);
-    return 0;
+	Transposing(&B, &BT);
+	multiplication(&A, &BT);
+	return 0;
 }
