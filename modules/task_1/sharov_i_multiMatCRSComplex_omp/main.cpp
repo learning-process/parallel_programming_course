@@ -284,47 +284,47 @@ void multiplication(Matrix *A, Matrix *BT) {
 }
 
 int main(int argc, char* argv[]) {
-	int n, m, nzInRow, n2, m2, nzInRow2;
-	if (argc != 7) {
-		printf("Invalid input count of parametres.\n");
-		exit(1);
-	}
+    int n, m, nzInRow, n2, m2, nzInRow2;
+    if (argc != 7) {
+        printf("Invalid input count of parametres.\n");
+        exit(1);
+    }
 
-	n = atoi(argv[1]);
-	m = atoi(argv[2]);
-	nzInRow = atoi(argv[3]);
-	n2 = atoi(argv[4]);
-	m2 = atoi(argv[5]);
-	nzInRow2 = atoi(argv[6]);
+    n = atoi(argv[1]);
+    m = atoi(argv[2]);
+    nzInRow = atoi(argv[3]);
+    n2 = atoi(argv[4]);
+    m2 = atoi(argv[5]);
+    nzInRow2 = atoi(argv[6]);
 
-	if ((nzInRow > m) || (nzInRow2 > m2)) {
-		printf("Invalid input count of notnull in string.\n");
-		exit(1);
-	}
-	if (m != n2) {
-		printf("Invalid input: M1 != N2 .\n");
-		exit(1);
-	}
+    if ((nzInRow > m) || (nzInRow2 > m2)) {
+        printf("Invalid input count of notnull in string.\n");
+        exit(1);
+    }
+    if (m != n2) {
+        printf("Invalid input: M1 != N2 .\n");
+        exit(1);
+    }
 
-	printf("Zadacha 1. The multiplication of sparse matrices. CRS. Complex type.\n");
-	Matrix A = Matrix(n, m, nzInRow*n);
-	Matrix B = Matrix(n2, m2, nzInRow2*n2);
-	Matrix BT = Matrix(m2, n2, nzInRow2*m2);
-	GetMatrix(n, m, nzInRow, &A);
+    printf("Zadacha 1. The multiplication of sparse matrices. CRS. Complex type.\n");
+    Matrix A = Matrix(n, m, nzInRow*n);
+    Matrix B = Matrix(n2, m2, nzInRow2*n2);
+    Matrix BT = Matrix(m2, n2, nzInRow2*m2);
+    GetMatrix(n, m, nzInRow, &A);
 
-	if ((A.N < 15) && (A.M < 15)) {
-		printf("matrix A \n");
-		Print(n, m, &A);
-	}
+    if ((A.N < 15) && (A.M < 15)) {
+        printf("matrix A \n");
+        Print(n, m, &A);
+    }
 
-	GetMatrix(n2, m2, nzInRow, &B);
+    GetMatrix(n2, m2, nzInRow, &B);
 
-	if ((B.N < 15) && (B.M < 15)) {
-		printf("matrix B \n");
-		Print(n2, m2, &B);
-	}
+    if ((B.N < 15) && (B.M < 15)) {
+        printf("matrix B \n");
+        Print(n2, m2, &B);
+    }
 
-	Transposing(&B, &BT);
-	multiplication(&A, &BT);
-	return 0;
+    Transposing(&B, &BT);
+    multiplication(&A, &BT);
+    return 0;
 }
