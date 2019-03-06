@@ -31,7 +31,11 @@ class TComplex {
     TComplex operator *(const TComplex &c);
     TComplex operator -(const TComplex &c);
     TComplex operator /(const TComplex &c);
-    double TComplex::modul(void);
+	double modul() {
+        double tmp;
+        tmp = sqrt(static_cast<double>((Re*Re) + (Im*Im)));
+        return static_cast<double>(tmp);
+    }
 };
 
 TComplex::TComplex(int a, int b) {
@@ -96,13 +100,6 @@ TComplex TComplex::operator /(const TComplex &R) {
         res.Im = (Im*R.Re - R.Im*Re) / (R.Re*R.Re + R.Im*R.Im);
     }
     return res;
-}
-
-
-double TComplex::modul() {
-    double tmp;
-    tmp = sqrt(static_cast<double>((Re*Re) + (Im*Im)));
-    return static_cast<double>(tmp);
 }
 
 struct Matrix {
