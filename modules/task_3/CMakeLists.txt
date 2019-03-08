@@ -2,3 +2,4 @@ message(STATUS "Task 3")
 
 add_subdirectory(lalykin_o_radix_batcher_task3_tbb)
 add_subdirectory(gladyshev_a_gauss_tbb)
+add_subdirectory(romanov_a_multidim_mc_task_3_tbb)
