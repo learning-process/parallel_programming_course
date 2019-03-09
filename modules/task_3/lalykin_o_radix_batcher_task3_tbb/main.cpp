@@ -275,7 +275,7 @@ class Task {
 
     void RunDefault() {
         int i;
-        Size = 5000123;
+        Size = 40;
 
         list = new union Int32[Size];
         listS = new union Int32[Size];
