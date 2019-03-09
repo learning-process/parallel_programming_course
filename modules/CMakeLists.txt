@@ -1,4 +1,5 @@
-add_subdirectory( test_tasks )
-add_subdirectory( task_1 )
-add_subdirectory( task_2 )
-add_subdirectory( task_3 )
+SUBDIRLIST(subdirs ${CMAKE_CURRENT_SOURCE_DIR})
+
+foreach(subd ${subdirs})
+  add_subdirectory(${subd})
+endforeach()
