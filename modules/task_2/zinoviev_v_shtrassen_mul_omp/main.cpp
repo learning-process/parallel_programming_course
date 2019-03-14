@@ -4,7 +4,7 @@
 #include <iostream>
 #include <random>
 
-double* matrix_sum(double* A, double* B, int size) {
+inline double* matrix_sum(double* A, double* B, int size) {
   double * C = new double[size];
   for (int i = 0; i < size; ++i) {
     C[i] = A[i] + B[i];
@@ -12,7 +12,7 @@ double* matrix_sum(double* A, double* B, int size) {
   return C;
 }
 
-double* matrix_sub(double* A, double* B, int size) {
+inline double* matrix_sub(double* A, double* B, int size) {
   double * C = new double[size];
   for (int i = 0; i < size; ++i) {
     C[i] = A[i] - B[i];
@@ -20,7 +20,7 @@ double* matrix_sub(double* A, double* B, int size) {
   return C;
 }
 
-double* matrix_mul(double* A, double* B, int n) {
+inline double* matrix_mul(double* A, double* B, int n) {
   int size = n * n;
   double * C = new double[size];
   for (int i = 0; i < n; ++i) {
@@ -230,7 +230,7 @@ double* expand_shtrassen_omp(double* A, double* B, int n) {
     int new_size = 0;
     for (int i = 0; i < n; ++i) {
       if (check_pow[i] == n) {
-        return shtrassen_mul(A, B, n);
+        return shtrassen_mul_omp(A, B, n);
       }
       if (n < check_pow[i]) {
         new_size = check_pow[i];
@@ -253,7 +253,7 @@ double* expand_shtrassen_omp(double* A, double* B, int n) {
       }
     }
     double* res_s = nullptr;
-    res_s = shtrassen_mul(new_A, new_B, new_size);
+    res_s = shtrassen_mul_omp(new_A, new_B, new_size);
 
     double* aligned_mat = new double[n*n];
 #pragma omp parallel for
