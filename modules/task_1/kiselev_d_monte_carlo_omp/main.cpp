@@ -5,48 +5,58 @@
 #include <random>
 
 #define DEFAULT_NPOINTS 10000
-#define DEFAULT_LEFT_BORDER 0.0
-#define DEFAULT_RIGHT_BORDER 1.0
 
-/* This is a simple parabola function, which we
-   will integrate using the Monte Carlo method. */
-double parabola(double x) {
-    return x * x;
+// Ellipsoid options
+#define ELLPS_A 1.0
+#define ELLPS_B 2.0
+#define ELLPS_C 3.0
+
+// Limits of integration
+#define X1 -1.0
+#define X2 1.0
+
+#define Y1 -2.0
+#define Y2 2.0
+
+#define Z1 -3.0
+#define Z2 3.0
+
+// This is a simple elipsoid function, which we
+// will integrate using the Monte Carlo method.
+double ellipsoid(double x, double y, double z) {
+    return - 1.0 + pow(x / ELLPS_A, 2)
+                 + pow(y / ELLPS_B, 2)
+                 + pow(z / ELLPS_C, 2);
 }
 
 int main(int argc, char *argv[]) {
-    int nPoints;
-    double leftBorder, rightBorder;
-
-    if (argc == 1) {
-        nPoints = DEFAULT_NPOINTS;
-        leftBorder = DEFAULT_LEFT_BORDER;
-        rightBorder = DEFAULT_RIGHT_BORDER;
-    } else {
-        nPoints = atoi(argv[1]);
-        leftBorder = atof(argv[2]);
-        rightBorder = atof(argv[3]);
-    }
-
-    // Creating a generator and distribution
-    // for random double numbers in the range
+    // Creating a generator and distributions
+    // for random double numbers in the ranges
     std::random_device rd;
     std::default_random_engine generator(rd());
-    std::uniform_real_distribution<double> distribution(
-        leftBorder, std::nextafter(rightBorder, DBL_MAX));
+    std::uniform_real_distribution<> xAxisDistr(X1, X2);
+    std::uniform_real_distribution<> yAxisDistr(Y1, Y2);
+    std::uniform_real_distribution<> zAxisDistr(Z1, Z2);
 
-    // The sum of the random values of our parabola
-    double sum = 0.0;
+    int nPoints = (argc == 1) ? DEFAULT_NPOINTS : atoi(argv[1]);
+
+    // Ellipsoid hit counting
+    int nHitsOnEllipsoid = 0;
     for (int i = 0; i < nPoints; i++) {
-        double randX = distribution(generator);
-        sum += parabola(randX);
+        double value = ellipsoid(xAxisDistr(generator),
+                                 yAxisDistr(generator),
+                                 zAxisDistr(generator));
+        if (value <= 0) nHitsOnEllipsoid++;
     }
 
     // Calculation of the result according to the Monte Carlo method
-    double avgValue = sum / nPoints;
-    double result = (rightBorder - leftBorder) * avgValue;
+    double avgValueOfHits = static_cast<double>(nHitsOnEllipsoid) / nPoints;
+    double res = (X2 - X1) * (Y2 - Y1) * (Z2 - Z1) * avgValueOfHits;
+    double realRes = 4.0 / 3.0 * std::acos(-1) * ELLPS_A * ELLPS_B * ELLPS_C;
 
     std::cout.precision(8);
-    std::cout << "Result: " << std::fixed << result << std::endl;
+    std::cout << "Result: " << std::fixed << res << std::endl
+              << "Real result: " << std::fixed << realRes << std::endl
+              << "Error: " << std::fixed << res - realRes << std::endl;
     return 0;
 }
