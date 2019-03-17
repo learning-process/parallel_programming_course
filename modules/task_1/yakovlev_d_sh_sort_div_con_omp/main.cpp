@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     ShellMerge(pdArr, pdResArr, nSizeArr);
 
     std::cout << "Computer has been beginning a solving for serial version!" << std::endl;
-    ShellsSort(pdCopyArr, nSizeArr);
+    std::sort(pdCopyArr, pdCopyArr + nSizeArr);
 
     string sLess = "matching!";
     for (uint32_t i = 0; i < nSizeArr; i++) {
