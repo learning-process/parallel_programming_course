@@ -9,7 +9,7 @@
 #include <string>
 
 double* CreateMatrix(int N) {
-    double *matrix = new double [N*N];
+    double *matrix = new double[N*N];
     return matrix;
 }
 
