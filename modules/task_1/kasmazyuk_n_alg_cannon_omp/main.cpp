@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
     PrintMatrix(B, size);
     }
 
-    Canon(A, B, C, size, 2);
+    Canon(A, B, C, size, q);
 
     if (size < 5)
     PrintMatrix(C, size);
