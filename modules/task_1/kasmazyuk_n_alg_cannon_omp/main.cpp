@@ -1,16 +1,19 @@
-#include <iostream>
+// Copyright 2019 Kasmazyuk Nikita
 #include <math.h>
-#include <time.h>
-#include <fstream>
-#include <random>
+#include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+#include <string>
 
-double* CreateMatrix(int N){
-	double *matrix = new double [N*N];
-	return matrix;
+double* CreateMatrix (int N) {
+    double *matrix = new double [N*N];
+    return matrix;
 }
 
-void PrintMatrix (double* matrix,int N){ 
+void PrintMatrix (double* matrix, int N) { 
 for (int i = 0; i < N*N; i += N) {
         for (int j = 0; j< N; j++)
             std::cout << matrix[i + j] << " ";
@@ -20,10 +23,10 @@ for (int i = 0; i < N*N; i += N) {
 }
 
 void RandMatrix(double* matrix1, double* matrix2, int N){ 
-	for (int i = 0; i < N*N; ++i) {
+    for (int i = 0; i < N*N; ++i) {
             matrix1[i] = (std::rand() % 10000) / 1000.0f;
-			matrix2[i] = (std::rand() % 10000) / 1000.0f;
-		}
+            matrix2[i] = (std::rand() % 10000) / 1000.0f;
+        }
 }
 
 void ClearMatrix(double *C, int N){ 
@@ -45,43 +48,41 @@ void Canon (double *A, double *B, double* C, int n, int q) {
     for (int i = 0; i < q; ++i) {
         for (int j = 0; j < q; ++j) {
             for (int k = 0; k < q; ++k) {
-                MultMatrix(&A[(i*n + (j+i+k)%q)*blockSize], &B[(((i+j+k)%q)*n + j)*blockSize], &C[(i*n + j)*blockSize], blockSize, n);
+                MultMatrix(&A[(i*n + (j+i+k)%q)*blockSize], &B[(((i+j+k)%q)*n + j)*blockSize],
+					&C[(i*n + j)*blockSize], blockSize, n);
             }
         }
     }
 }
 
-int main(int argc, char** argv)
-{
-	int size = 4;
-	int q = 2;
-	double *A, *B, *C;
+int main(int argc, char** argv) {
+    int size = 4;
+    int q = 2;
+    double *A, *B, *C;
 
-	if (argc > 2)
-	{
-	size = atoi (argv[1]);
-	q = atoi (argv[2]);
-	}
+    if (argc > 2) {
+    size = atoi(argv[1]);
+    q = atoi(argv[2]);
+    }
 
-	A = CreateMatrix(size);
-	B = CreateMatrix(size);
-	C = CreateMatrix(size);
+    A = CreateMatrix(size);
+    B = CreateMatrix(size);
+    C = CreateMatrix(size);
 
-	ClearMatrix(C,size);
+    ClearMatrix(C, size);
 
-	RandMatrix(A, B, size);
-	if (size < 5)
-	{
-	PrintMatrix(A,size);
-	PrintMatrix(B,size);
-	}
+    RandMatrix(A, B, size);
+    if (size < 5) {
+    PrintMatrix(A, size);
+    PrintMatrix(B, size);
+    }
 
-	Canon(A,B,C,size,2);
+    Canon(A, B, C, size,2);
 
-	if (size < 5)
-	PrintMatrix(C,size);
+    if (size < 5)
+    PrintMatrix(C, size);
 
-	system("PAUSE");
+    system("PAUSE");
 
-	return 0;
+    return 0;
 }
