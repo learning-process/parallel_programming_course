@@ -1,4 +1,6 @@
+//  Copyright 2019 Aglikov Ilya
 #include <iostream>
+#include <algorithm>
 
 void insertsort(int* arr, int size);
 void shellsort(int* arr, int size);
@@ -46,8 +48,7 @@ void insertsort(int* arr, int size) {
     }
 }
 
-void shellsort(int* arr, int size)
-{
+void shellsort(int* arr, int size) {
     int step = size / 2;
     while (step > 0) {
         for (int i = 0; i < size - step; i++) {
