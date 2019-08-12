@@ -48,7 +48,7 @@ install:
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install libomp-dev libtbb-dev; fi
 
 script:
-- git pull --recurse-submodules
+- git submodule update --init --recursive
 - python scripts/lint.py
 - mkdir build
 - cd build
