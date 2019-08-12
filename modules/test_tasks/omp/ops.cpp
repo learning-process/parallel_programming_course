@@ -3,10 +3,9 @@
 #include <string>
 #include <random>
 #include <ctime>
-#include "ops.h"
+#include "../../../modules/test_tasks/omp/ops.h"
 
-std::vector<int> getRandomVector(size_t sz)
-{
+std::vector<int> getRandomVector(size_t sz) {
     std::mt19937 gen;
     gen.seed(time(0));
     std::vector<int> vec(sz);
@@ -14,8 +13,7 @@ std::vector<int> getRandomVector(size_t sz)
     return vec;
 }
 
-int getParallelOperations(std::vector<int> vec, std::string ops)
-{
+int getParallelOperations(std::vector<int> vec, std::string ops) {
     const size_t sz = vec.size();
     int reduction_elem = 1;
     if (ops == "+") {
@@ -37,8 +35,7 @@ int getParallelOperations(std::vector<int> vec, std::string ops)
     return reduction_elem;
 }
 
-int getSequentialOperations(std::vector<int> vec, std::string ops)
-{
+int getSequentialOperations(std::vector<int> vec, std::string ops) {
     const size_t sz = vec.size();
     int reduction_elem = 1;
     if (ops == "+") {
