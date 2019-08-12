@@ -2,7 +2,10 @@ cmake_minimum_required( VERSION 2.8 )
 
 message( STATUS "Parallel Programming Course" )
 
-include( cmake/Configure.cmake )
+include( "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Configure.cmake" )
+
+############################### gtest ###############################
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/gtest")
 
 ################################ MPI ################################
 option(USE_MPI OFF)

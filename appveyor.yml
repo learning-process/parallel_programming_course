@@ -18,6 +18,7 @@ install:
   - msmpisdk.msi /passive
 
 build_script:
+  - cmd: git pull --recurse-submodules
   - cmd: python scripts/lint.py
   - cmd: mkdir build
   - cmd: cd build
