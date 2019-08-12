@@ -3,7 +3,7 @@
 #include <string>
 #include <random>
 #include <ctime>
-#include "../../../modules/test_tasks/omp/ops.h"
+#include "../../../modules/test_tasks/test_omp/ops.h"
 
 std::vector<int> getRandomVector(size_t sz) {
     std::mt19937 gen;
