@@ -2,6 +2,11 @@ get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 enable_testing()
 
 if( USE_MPI )
+    if( UNIX )
+        set(CMAKE_C_FLAGS  "${CMAKE_CXX_FLAGS} -Wno-unused-variable")
+        set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wno-unused-variable")
+    endif( UNIX )
+    
     set(ProjectId "${ProjectId}_mpi")
     project( ${ProjectId} )
     message( STATUS "-- " ${ProjectId} )
@@ -23,7 +28,7 @@ if( USE_MPI )
     endif( MPI_LINK_FLAGS )
     target_link_libraries( ${ProjectId} ${MPI_LIBRARIES} )
     target_link_libraries(${ProjectId} gtest gtest_main)
-    
+
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
 else( USE_MPI )
