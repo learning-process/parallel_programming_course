@@ -59,7 +59,7 @@ if( USE_TBB )
 
     if( TBB_FOUND )
         message(STATUS "Found TBB: TRUE (found version \"${TBB_VERSION_MAJOR}.${TBB_VERSION_MINOR}\") ")
-        include_directories( ${TBB_INCLUDE_DIRS} )
+        include_directories("${tbb_root}/include")
     else( TBB_FOUND )
         set( USE_TBB OFF )
     endif( TBB_FOUND )

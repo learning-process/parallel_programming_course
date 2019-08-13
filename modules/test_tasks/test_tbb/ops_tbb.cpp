@@ -5,6 +5,7 @@
 #include <random>
 #include <ctime>
 #include <functional>
+#include <numeric>
 #include "../../../modules/test_tasks/test_tbb/ops_tbb.h"
 
 std::vector<int> getRandomVector(int sz) {
