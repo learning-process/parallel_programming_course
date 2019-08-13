@@ -13,7 +13,7 @@ for file in $FILES_OMP; do
     echo "--------------------------------"
     echo $(basename $file)
     echo "--------------------------------"
-    ./$file
+    ./$file --gtest_repeat=10
 done
 
 FILES_TBB="build/bin/*_tbb"
@@ -21,5 +21,5 @@ for file in $FILES_TBB; do
     echo "--------------------------------"
     echo $(basename $file)
     echo "--------------------------------"
-    ./$file
+    ./$file --gtest_repeat=10
 done
