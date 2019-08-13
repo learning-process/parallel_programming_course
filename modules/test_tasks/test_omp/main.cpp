@@ -1,24 +1,23 @@
 // Copyright 2018 Nesterov Alexander
 #include <gtest/gtest.h>
-#include <omp.h>
 #include <vector>
-#include "./ops.h"
+#include "./ops_omp.h"
 
-TEST(Parallel_Operations, Test_Sum) {
+TEST(Parallel_Operations_OpenMP, Test_Sum) {
     std::vector<int> vec = getRandomVector(100);
     int sequential_sum = getSequentialOperations(vec, "+");
     int parallel_sum = getParallelOperations(vec, "+");
     ASSERT_EQ(sequential_sum, parallel_sum);
 }
 
-TEST(Parallel_Operations, Test_Diff) {
+TEST(Parallel_Operations_OpenMP, Test_Diff) {
     std::vector<int> vec = getRandomVector(100);
     int sequential_diff = getSequentialOperations(vec, "-");
     int parallel_diff = getParallelOperations(vec, "-");
     ASSERT_EQ(sequential_diff, parallel_diff);
 }
 
-TEST(Parallel_Operations, Test_Mult) {
+TEST(Parallel_Operations_OpenMP, Test_Mult) {
     std::vector<int> vec = getRandomVector(10);
     int sequential_mult = getSequentialOperations(vec, "*");
     int parallel_mult = getParallelOperations(vec, "*");

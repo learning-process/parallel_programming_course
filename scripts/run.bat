@@ -10,12 +10,12 @@ for /r "." %%a in (build\bin\*_omp.exe) do (
     echo -------------------------------------
     echo %%~na
     echo -------------------------------------
-    %%~fa
+    %%~fa --gtest_repeat=10
 )
 
 for /r "." %%a in (build\bin\*_tbb.exe) do (
     echo -------------------------------------
     echo %%~na
     echo -------------------------------------
-    %%~fa
+    %%~fa --gtest_repeat=10
 )

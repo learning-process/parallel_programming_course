@@ -1,9 +1,10 @@
 // Copyright 2018 Nesterov Alexander
+#include <omp.h>
 #include <vector>
 #include <string>
 #include <random>
 #include <ctime>
-#include "../../../modules/test_tasks/test_omp/ops.h"
+#include "../../../modules/test_tasks/test_omp/ops_omp.h"
 
 std::vector<int> getRandomVector(size_t sz) {
     std::mt19937 gen;

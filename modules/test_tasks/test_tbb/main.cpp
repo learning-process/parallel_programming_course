@@ -1,17 +1,30 @@
 // Copyright 2018 Nesterov Alexander
-#include <assert.h>
-#include <tbb/tbb.h>
-#include <iostream>
+#include <gtest/gtest.h>
+#include <vector>
+#include "./ops_tbb.h"
 
-int main(int argc, char* argv[]) {
-    tbb::flow::graph g;
-    tbb::flow::continue_node< tbb::flow::continue_msg > hello(g,
-        [](const tbb::flow::continue_msg &) { std::cout << "Hello"; });
+TEST(Parallel_Operations_TBB, Test_Sum) {
+    std::vector<int> vec = getRandomVector(100);
+    int sequential_sum = getSequentialOperations(vec, "+");
+    int parallel_sum = getParallelOperations(vec, "+");
+    ASSERT_EQ(sequential_sum, parallel_sum);
+}
 
-    tbb::flow::continue_node< tbb::flow::continue_msg> world(g,
-        [](const tbb::flow::continue_msg &) { std::cout << " World\n"; });
-    tbb::flow::make_edge(hello, world);
-    hello.try_put(tbb::flow::continue_msg());
-    g.wait_for_all();
-    return 0;
+TEST(Parallel_Operations_TBB, Test_Diff) {
+    std::vector<int> vec = getRandomVector(100);
+    int sequential_diff = getSequentialOperations(vec, "-");
+    int parallel_diff = getParallelOperations(vec, "-");
+    ASSERT_EQ(sequential_diff, parallel_diff);
+}
+
+TEST(Parallel_Operations_TBB, Test_Mult) {
+    std::vector<int> vec = getRandomVector(10);
+    int sequential_mult = getSequentialOperations(vec, "*");
+    int parallel_mult = getParallelOperations(vec, "*");
+    ASSERT_EQ(sequential_mult, parallel_mult);
+}
+
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
