@@ -6,6 +6,7 @@ include( "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Configure.cmake" )
 
 ############################### gtest ###############################
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/gtest")
+include_directories("${CMAKE_SOURCE_DIR}/3rdparty/gtest/googletest/include")
 
 ################################ MPI ################################
 option(USE_MPI OFF)

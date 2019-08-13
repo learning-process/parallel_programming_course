@@ -7,7 +7,7 @@
 
 std::vector<int> getRandomVector(size_t sz) {
     std::mt19937 gen;
-    gen.seed(time(0));
+    gen.seed(static_cast<unsigned int>(time(0)));
     std::vector<int> vec(sz);
     for (size_t i = 0; i < sz; i++) { vec[i] = gen() % 100; }
     return vec;
