@@ -2,6 +2,7 @@ cmake_minimum_required( VERSION 2.8 )
 
 message( STATUS "Parallel Programming Course" )
 
+include_directories("${CMAKE_SOURCE_DIR}/3rdparty/gtest_mpi/include")
 if(WIN32)
     option(gtest_force_shared_crt "" TRUE)
 endif(WIN32)
@@ -22,7 +23,6 @@ if( USE_MPI )
         set( USE_MPI OFF )
     endif( MPI_FOUND )
 endif( USE_MPI )
-include_directories("${CMAKE_SOURCE_DIR}/3rdparty/gtest_mpi/include")
 
 ############################### OpenMP ##############################
 option(USE_OMP OFF)
