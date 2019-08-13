@@ -22,6 +22,7 @@ if( USE_MPI )
         set( USE_MPI OFF )
     endif( MPI_FOUND )
 endif( USE_MPI )
+include_directories("${CMAKE_SOURCE_DIR}/3rdparty/gtest_mpi/include")
 
 ############################### OpenMP ##############################
 option(USE_OMP OFF)

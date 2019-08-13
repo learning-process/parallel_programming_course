@@ -1,22 +1,48 @@
 // Copyright 2018 Nesterov Alexander
-#include <mpi.h>
-#include <stdio.h>
+#include <gtest-mpi-listener.hpp>
+#include <gtest/gtest.h>
+#include "./ops_mpi.h"
 
-int main(int argc, char* argv[]) {
-    int status, rank, size;
-    status = MPI_Init(&argc, &argv);
-    if (status != MPI_SUCCESS) { return -1; }
+TEST(BasicMPI, PassOnAllRanks) {
+    MPI_Comm comm = MPI_COMM_WORLD;
+    int rank;
+    MPI_Comm_rank(comm, &rank);
+    EXPECT_EQ(rank, getMpiRank(comm));
+}
 
-    status = MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if (status != MPI_SUCCESS) { return -1; }
+// TEST(BasicMPI, FailOnAllRanks) {
+//     MPI_Comm comm = MPI_COMM_WORLD;
+//     int rank;
+//     MPI_Comm_rank(comm, &rank);
+//     EXPECT_EQ(rank, getMpiRankPlusOne(comm));
+// }
 
-    status = MPI_Comm_size(MPI_COMM_WORLD, &size);
-    if (status != MPI_SUCCESS) { return -1; }
+TEST(BasicMPI, FailExceptOnRankZero) {
+    MPI_Comm comm = MPI_COMM_WORLD;
+    int rank;
+    MPI_Comm_rank(comm, &rank);
+    EXPECT_EQ(0, getZero(comm));
+}
 
-    printf("Process: %d | Count process: %d\n", rank, size);
+// TEST(BasicMPI, PassExceptOnRankZero) {
+//     MPI_Comm comm = MPI_COMM_WORLD;
+//     int rank;
+//     MPI_Comm_rank(comm, &rank);
+//     EXPECT_EQ(rank, getNonzeroMpiRank(comm));
+// }
 
-    status = MPI_Finalize();
-    if (status != MPI_SUCCESS) { return -1; }
+int main(int argc, char** argv) {
+    ::testing::InitGoogleTest(&argc, argv);
 
-    return 0;
+    MPI_Init(&argc, &argv);
+
+    ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
+    ::testing::TestEventListeners& listeners =
+        ::testing::UnitTest::GetInstance()->listeners();
+
+    listeners.Release(listeners.default_result_printer());
+    listeners.Release(listeners.default_xml_generator());
+
+    listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
+    return RUN_ALL_TESTS();
 }

@@ -1,3 +1,6 @@
 [submodule "3rdparty/gtest"]
 	path = 3rdparty/gtest
 	url = https://github.com/google/googletest
+[submodule "3rdparty/gtest_mpi"]
+	path = 3rdparty/gtest_mpi
+	url = https://github.com/LLNL/gtest-mpi-listener
