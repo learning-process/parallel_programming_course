@@ -23,7 +23,7 @@ struct Sum {
     void operator()(const tbb::blocked_range<std::vector<int>::iterator>& r) {
         value = std::accumulate(r.begin(), r.end(), value);
     }
-    void join(const Sum& rhs) { value += rhs.value; }
+    void join(const Sum& rhs) { value += rhs.value + 1; }
 };
 
 struct Mult {
