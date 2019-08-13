@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-std::vector<int> getRandomVector(size_t sz);
+std::vector<int> getRandomVector(int  sz);
 int getParallelOperations(std::vector<int> vec, std::string ops);
 int getSequentialOperations(std::vector<int> vec, std::string ops);
 
