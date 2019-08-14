@@ -10,12 +10,12 @@ TEST(BasicMPI, PassOnAllRanks) {
     EXPECT_EQ(rank, getMpiRank(comm));
 }
 
-// TEST(BasicMPI, FailOnAllRanks) {
-//     MPI_Comm comm = MPI_COMM_WORLD;
-//     int rank;
-//     MPI_Comm_rank(comm, &rank);
-//     EXPECT_EQ(rank, getMpiRankPlusOne(comm));
-// }
+TEST(BasicMPI, FailOnAllRanks) {
+    MPI_Comm comm = MPI_COMM_WORLD;
+    int rank;
+    MPI_Comm_rank(comm, &rank);
+    EXPECT_EQ(rank, getMpiRankPlusOne(comm));
+}
 
 TEST(BasicMPI, FailExceptOnRankZero) {
     MPI_Comm comm = MPI_COMM_WORLD;
