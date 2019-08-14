@@ -43,7 +43,7 @@ before_install:
 
 install:
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew install open-mpi libomp tbb; fi
-- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install libcr-dev mpich2 mpich2-doc; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then source 3rdparty/travis-install-mpi.sh; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install libomp-dev libtbb-dev; fi
 
 script:
