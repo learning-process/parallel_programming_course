@@ -2,11 +2,11 @@
 #ifndef MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
 #define MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
 
-#include <mpi.h>
+#include <vector>
+#include <string>
 
-int getMpiRank(MPI_Comm comm);
-int getMpiRankPlusOne(MPI_Comm comm);
-int getZero(MPI_Comm comm);
-int getNonzeroMpiRank(MPI_Comm comm);
+std::vector<int> getRandomVector(int  sz);
+int getParallelOperations(std::vector<int> vec, std::string ops);
+int getSequentialOperations(std::vector<int> vec, std::string ops);
 
 #endif  // MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_

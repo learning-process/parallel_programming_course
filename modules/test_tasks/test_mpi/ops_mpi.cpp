@@ -1,24 +1,35 @@
 // Copyright 2018 Nesterov Alexander
+#include <mpi.h>
+#include <vector>
+#include <string>
+#include <random>
+#include <ctime>
 #include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
 
-int getMpiRank(MPI_Comm comm) {
-    int out;
-    MPI_Comm_rank(comm, &out);
-    return out;
+
+std::vector<int> getRandomVector(int sz) {
+    std::mt19937 gen;
+    gen.seed(static_cast<unsigned int>(time(0)));
+    std::vector<int> vec(sz);
+    for (int  i = 0; i < sz; i++) { vec[i] = gen() % 100; }
+    return vec;
 }
 
-int getMpiRankPlusOne(MPI_Comm comm) {
-    int out;
-    MPI_Comm_rank(comm, &out);
-    return (out+1);
-}
-
-int getZero(MPI_Comm comm) {
-  return 0;
-}
-
-int getNonzeroMpiRank(MPI_Comm comm) {
-  int out;
-  MPI_Comm_rank(comm, &out);
-  return (out ? out : 1);
+int getSequentialOperations(std::vector<int> vec, std::string ops) {
+    const int  sz = vec.size();
+    int reduction_elem = 0;
+    if (ops == "+") {
+        for (int  i = 0; i < sz; i++) {
+            reduction_elem += vec[i];
+        }
+    } else if (ops == "-") {
+        for (int  i = 0; i < sz; i++) {
+            reduction_elem -= vec[i];
+        }
+    } else if (ops == "*") {
+        for (int  i = 0; i < sz; i++) {
+            reduction_elem *= vec[i];
+        }
+    }
+    return reduction_elem;
 }
