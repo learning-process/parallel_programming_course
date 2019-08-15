@@ -40,7 +40,7 @@ TEST(Parallel_Operations_MPI, Test_Diff) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Mult) {
+TEST(Parallel_Operations_MPI, Test_Max) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
@@ -50,11 +50,12 @@ TEST(Parallel_Operations_MPI, Test_Mult) {
         global_vec = getRandomVector(count_size_vector);
     }
 
-    int global_mult = getParallelOperations(global_vec, count_size_vector, "*");
+    int global_max;
+    global_max = getParallelOperations(global_vec, count_size_vector, "max");
 
     if (rank == 0) {
-        int reference_mult = getSequentialOperations(global_vec, "*");
-        ASSERT_EQ(reference_mult, global_mult);
+        int reference_max = getSequentialOperations(global_vec, "max");
+        ASSERT_EQ(reference_max, global_max);
     }
 }
 

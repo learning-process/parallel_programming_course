@@ -4,6 +4,7 @@
 #include <string>
 #include <random>
 #include <ctime>
+#include <algorithm>
 #include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
 
 
@@ -26,10 +27,10 @@ int getSequentialOperations(std::vector<int> vec, std::string ops) {
         for (int  i = 0; i < sz; i++) {
             reduction_elem -= vec[i];
         }
-    } else if (ops == "*") {
-        reduction_elem = 1;
-        for (int  i = 0; i < sz; i++) {
-            reduction_elem *= vec[i];
+    } else if (ops == "max") {
+        reduction_elem = vec[0];
+        for (int  i = 1; i < sz; i++) {
+            reduction_elem = std::max(reduction_elem, vec[i]);
         }
     }
     return reduction_elem;
@@ -62,7 +63,7 @@ int getParallelOperations(std::vector<int> global_vec,
     int local_sum = getSequentialOperations(local_vec, ops);
     MPI_Op op_code;
     if (ops == "+" || ops == "-") { op_code = MPI_SUM; }
-    if (ops == "*") { op_code = MPI_PROD; }
+    if (ops == "max") { op_code = MPI_MAX; }
     MPI_Reduce(&local_sum, &global_sum, 1, MPI_INT, op_code, 0, MPI_COMM_WORLD);
     return global_sum;
 }
