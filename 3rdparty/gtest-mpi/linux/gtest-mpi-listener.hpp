@@ -67,9 +67,9 @@ class MPIEnvironment : public ::testing::Environment {
     int is_mpi_initialized;
     ASSERT_EQ(MPI_Initialized(&is_mpi_initialized), MPI_SUCCESS);
     if (!is_mpi_initialized) {
-      printf("MPI must be initialized before RUN_ALL_TESTS!\n");
-      printf("Add '::testing::InitGoogleTest(&argc, argv);\n");
-      printf("     MPI_Init(&argc, &argv);' to your 'main' function!\n");
+      printf("\e[0;32m[==========]\e[0m MPI must be initialized before RUN_ALL_TESTS!\n");
+      printf("\e[0;32m[----------]\e[0m Add '::testing::InitGoogleTest(&argc, argv);\n");
+      printf("\e[0;32m[----------]\e[0m MPI_Init(&argc, &argv);' to your 'main' function!\n");
       FAIL();
     }
   }
@@ -108,9 +108,9 @@ class MPIMinimalistPrinter : public ::testing::EmptyTestEventListener
     int is_mpi_initialized;
     assert(MPI_Initialized(&is_mpi_initialized) == MPI_SUCCESS);
     if (!is_mpi_initialized) {
-      printf("MPI must be initialized before RUN_ALL_TESTS!\n");
-      printf("Add '::testing::InitGoogleTest(&argc, argv);\n");
-      printf("     MPI_Init(&argc, &argv);' to your 'main' function!\n");
+      printf("\e[0;32m[==========]\e[0m MPI must be initialized before RUN_ALL_TESTS!\n");
+      printf("\e[0;32m[----------]\e[0m Add '::testing::InitGoogleTest(&argc, argv);\n");
+      printf("\e[0;32m[----------]\e[0m MPI_Init(&argc, &argv);' to your 'main' function!\n");
       assert(0);
     }
     MPI_Comm_dup(MPI_COMM_WORLD, &comm);
@@ -123,9 +123,9 @@ class MPIMinimalistPrinter : public ::testing::EmptyTestEventListener
    int is_mpi_initialized;
    assert(MPI_Initialized(&is_mpi_initialized) == MPI_SUCCESS);
    if (!is_mpi_initialized) {
-     printf("MPI must be initialized before RUN_ALL_TESTS!\n");
-     printf("Add '::testing::InitGoogleTest(&argc, argv);\n");
-     printf("     MPI_Init(&argc, &argv);' to your 'main' function!\n");
+     printf("\e[0;32m[==========]\e[0m MPI must be initialized before RUN_ALL_TESTS!\n");
+     printf("\e[0;32m[----------]\e[0m Add '::testing::InitGoogleTest(&argc, argv);\n");
+     printf("\e[0;32m[----------]\e[0m MPI_Init(&argc, &argv);' to your 'main' function!\n");
      assert(0);
    }
 
@@ -139,9 +139,9 @@ class MPIMinimalistPrinter : public ::testing::EmptyTestEventListener
     int is_mpi_initialized;
     assert(MPI_Initialized(&is_mpi_initialized) == MPI_SUCCESS);
     if (!is_mpi_initialized) {
-      printf("MPI must be initialized before RUN_ALL_TESTS!\n");
-      printf("Add '::testing::InitGoogleTest(&argc, argv);\n");
-      printf("     MPI_Init(&argc, &argv);' to your 'main' function!\n");
+      printf("\e[0;32m[==========]\e[0m MPI must be initialized before RUN_ALL_TESTS!\n");
+      printf("\e[0;32m[----------]\e[0m Add '::testing::InitGoogleTest(&argc, argv);\n");
+      printf("\e[0;32m[----------]\e[0m MPI_Init(&argc, &argv);' to your 'main' function!\n");
       assert(0);
     }
 
