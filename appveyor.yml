@@ -32,7 +32,8 @@ build_script:
                -D MPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
                -D MPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ^
                -D MPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
-               -D MPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ..
+               -D MPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" .. ^
+               -A Win32
   - cmd: cmake --build .
   - cmd: cd ..
   - cmd: set OMP_NUM_THREADS=4

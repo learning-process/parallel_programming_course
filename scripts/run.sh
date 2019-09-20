@@ -20,7 +20,15 @@ for file in $FILES_MPI; do
     echo "--------------------------------"
     echo $(basename $file)
     echo "--------------------------------"
-    NUM_PROC=$(cat /proc/cpuinfo|grep processor|wc -l )
+    if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
+        NUM_PROC=$(cat /proc/cpuinfo|grep processor|wc -l)
+    elif [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+        NUM_PROC=$(sysctl -a | grep machdep.cpu | grep thread_count | cut -d ' ' -f 2)
+    else
+        echo "Unknown OS"
+        NUM_PROC="1"
+    fi
+    echo "NUM_PROC: " $NUM_PROC
     for i in {1..10}; do
         mpirun -np $NUM_PROC $file
     done
