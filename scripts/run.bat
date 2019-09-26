@@ -18,6 +18,6 @@ for /r "." %%a in (build\bin\*_mpi.exe) do (
     echo %%~na
     echo -------------------------------------
     for /l %%x in (1, 1, 10) do (
-        mpiexec -np 4 %%~fa
+        mpiexec -np 4 %%~fa || exit /b 1
     )
 )
