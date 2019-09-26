@@ -1,64 +1,3 @@
-[![Build Status](https://travis-ci.com/learning-process/parallel_programming_course.svg?branch=master)](https://travis-ci.com/learning-process/parallel_programming_course)
-[![Build status](https://ci.appveyor.com/api/projects/status/t46nd9gyt7iirdy8/branch/master?svg=true)](https://ci.appveyor.com/project/allnes/parallel-programming-course/branch/master)
-
-# Практика по параллельному программированию
-В практике рассматриваются следующие технологии параллельного программирования:
-* MPI
-* OpenMP
-* TBB
-
-### Правила работы
-1. <b>Не</b> отлаживаемся в репозитории, для этого у вас есть локальные машины и все скрипты (стиль кодирования)
-2. <b>Уважаем</b> время других и не задерживаем очередь
-3. <b>Тщательно</b> проверяем программу на зависания
-
-## 1. Установка компонент для корректной работы
-### Submodules
-Проект не будет собираться полностью пока вы не скачаете все модули репозитория командой:
-```
-git submodule update --init --recursive
-```
-### MPI
-  * <b>Windows (MSVC)</b>:
-    Ссылка на установочные файлы [здесь](https://www.microsoft.com/en-us/download/details.aspx?id=57467).
-    Обязательно надо установить следующие файлы: `msmpisdk.msi` и `msmpisetup.exe`
-  * <b>Linux (gcc и clang)</b>:
-  ```
-  sudo apt install mpich
-  sudo apt install openmpi-bin
-  sudo apt install libopenmpi-dev
-  ```
-  * <b>MacOS (apple clang)</b>:
-  ```
-  brew install open-mpi
-  ```
-
-### OpenMP
-  OpenMP встроен в компиляторы `gcc` и `msvc`, но все таки часть компонент нужно установить для некоторых систем:
-  * <b>Linux (gcc и clang)</b>:
-  ```
-  sudo apt install libomp-dev
-  ```
-  * <b>MacOS (apple clang)</b>: Система сильно нестабильная, пока не рекомендуется использовать ее для OpenMP!
-  ```
-  brew install libomp
-  ```
-
-### TBB
-  * <b>Windows (MSVC)</b>: CMake при использовании этого проекта на Windows сам устанвливает TBB.
-  * <b>Linux (gcc и clang)</b>:
-  ```
-  sudo apt-get install libtbb-dev
-  ```
-  * <b>MacOS (apple clang)</b>:
-  ```
-  brew install tbb
-  ```
-
-## 2. Построение проекта с помощью CMake
-Переходим в директорию с исходным кодом.
-
-1) Получаем конфигурационные файлы для сборки: makefile, .sln и т.д.
 
   ```
   mkdir build
@@ -79,7 +18,7 @@ git submodule update --init --recursive
   ```
 3) Находим и запускаем исполняемый файл в директории `<наш проект>/build/bin`
 
-## 3. Инстркция по размещению своих исходных кодов в проекте
+## 3. Инструкция по размещению своих исходных кодов в проекте
 * В директории `modules` есть папки с задачами: `task_1`, `task_2`, `task_3`.
 Находим директорию соотвествующую вашей задаче и переходим в нее. Создаем папку с названием `<фамилия>_<инициал имени>_<краткое название задачи>`. К примеру: `task1/nesterov_a_vector_sum`.
 * Теперь переходим в созданную нами директорию и начинаем работу над задачей. В данной директории должны быть всего 4 файла и все (кроме `CMakeLists.txt`) написанные вами:
@@ -101,7 +40,7 @@ git submodule update --init --recursive
   git checkout -b nesterov_a_vector_sum
   ```
 
-## 4. Инструкция по размещению отчетов в проекте
+## 4. Инстркция по размещению отчетов в проекте
 
 * В директории `reports` размещаем <b>pdf-файл</b> с отчетом.
 Отчет должен называться следующим образом - `<фамилия>_<инициал имени>_<краткое название задачи>.pdf`
@@ -118,8 +57,9 @@ git submodule update --init --recursive
 ## Использование стиля кодирования
 Для проверки стиля кодирования используется Google C++ Style.
 * Описание стиля находится [здесь](https://google.github.io/styleguide/cppguide.html).
-* Проверить стиль можно с помощью скрипта:
+* Проверить стиль можно с помощью скрипта (скрипт работает с 2-ой версией python):  
   ```
-  python scripts/lint.py
+  cd <корень исходного проекта>
+  python2 scripts/lint.py
   ```
 <i>Невывполнение правил ведет к покраснению сборки проекта.</i>
