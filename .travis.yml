@@ -42,6 +42,7 @@ before_install:
 - eval "${MATRIX_EVAL}"
 
 install:
+- if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew update-reset; fi
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew install open-mpi libomp tbb; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install mpich libmpich-dev; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install libomp-dev libtbb-dev; fi
