@@ -1,65 +1,118 @@
 
+
+# Mastering parallel programming
+The following parallel programming technologies are considered in practice:
+* `MPI`
+* `OpenMP`
+* `TBB`
+
+## Rules for submissions
+1. You are not supposed to trigger CI jobs by frequent updates of your pull request. First you should test you work locally with all the scripts (code style)
+    * Respect others time and don't slow down the job queue
+2. Carefully check if the program can hang
+
+## 1. Set up your environment
+### Fetch submodules before building the project
+```
+git submodule update --init --recursive
+```
+### `MPI`
+  * **Windows (MSVC)**:
+    [Installers link.](https://www.microsoft.com/en-us/download/details.aspx?id=57467) You have to install `msmpisdk.msi` and `msmpisetup.exe`.
+  * **Linux (`gcc` and `clang`)**:
   ```
-  mkdir build
-  cd build
+  sudo apt install mpich
+  sudo apt install openmpi-bin
+  sudo apt install libopenmpi-dev
+  ```
+  * **MacOS (apple clang)**:
+  ```
+  brew install open-mpi
+  ```
+
+### `OpenMP`
+  `OpenMP` is included into `gcc` and `msvc`, but some components should be installed additionally:
+  * **Linux (`gcc` and `clang`)**:
+  ```
+  sudo apt install libomp-dev
+  ```
+  * **MacOS (apple clang)**: The system is completely unstable thus you are not recommended to use it with `OpenMP`!
+  ```
+  brew install libomp
+  ```
+
+### `TBB`
+  * **Windows (`MSVC`)**: `CMake` installs `TBB` while you run `cmake` for that project on Windows.
+  * **Linux (`gcc` and `clang`)**:
+  ```
+  sudo apt-get install libtbb-dev
+  ```
+  * **MacOS (apple clang)**:
+  ```
+  brew install tbb
+  ```
+
+## 2. Build the project with `CMake`
+Navigate to a source code folder.
+
+1) Configure the build: `Makefile`, `.sln`, etc.
+
+  ```
+  mkdir build && cd build
   cmake -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON ..
-  cd ..
   ```
-<i>Комментарий про ключи CMake:</i>
-- `-D USE_MPI=ON` отвечает за сборку зависимостей и проектов свзанных с MPI.
-- `-D USE_OMP=ON` отвечает за сборку зависимостей и проектов свзанных с OpenMP.
-- `-D USE_TBB=ON` отвечает за сборку зависимостей и проектов свзанных с TBB.
+*Help on CMake keys:*
+- `-D USE_MPI=ON` enbale `MPI` labs.
+- `-D USE_OMP=ON` enable `OpenMP` labs.
+- `-D USE_TBB=ON` enable `TBB` labs.
 
-<i>Соотвественно, если что-то не потребуется, то флаг можно не указывать.</i>
+*A corresponding flag can be omitted if it's not needed.*
 
-2) Собираем  проект:
+2) Build the project:
   ```
-  cmake --build build --config RELEASE
+  cmake --build . --config RELEASE
   ```
-3) Находим и запускаем исполняемый файл в директории `<наш проект>/build/bin`
+3) Run `<project's folder>/build/bin`
 
-## 3. Инструкция по размещению своих исходных кодов в проекте
-* В директории `modules` есть папки с задачами: `task_1`, `task_2`, `task_3`.
-Находим директорию соотвествующую вашей задаче и переходим в нее. Создаем папку с названием `<фамилия>_<инициал имени>_<краткое название задачи>`. К примеру: `task1/nesterov_a_vector_sum`.
-* Теперь переходим в созданную нами директорию и начинаем работу над задачей. В данной директории должны быть всего 4 файла и все (кроме `CMakeLists.txt`) написанные вами:
-  - `main.cpp` - google тесты для вашей задачи, количество тестов должно быть 5 или больше.
-  - `vector_sum.h`   - заголовочный файл с прототипами функций вашей задачи, название файла такое же, как и `<краткое название задачи>`.
-  - `vector_sum.cpp` - исходные коды реализации функций вашей задачи, название файла такое же, как и `<краткое название задачи>`.
-  - `CMakeLists.txt` - конфигурация вашего проекта. Пример для каждой конфигурации находятся в директории `test_tasks`.
-* Название pull-request'а выглядит следующим образом:
+## 3. How to submit you work
+* There are `task_1`, `task_2`, `task_3` folders in `modules` directory. There are 3 task for the semester. Move to a folder of your task. Make a directory named `<last name>_<first letter of name>_<short task name>`. Example: `task1/nesterov_a_vector_sum`.
+* Go into the newly created folder and begin you work on the task. There must be only 4 files and 3 of them must be written by you:
+  - `main.cpp` - google tests for the task. The number of tests must be 4 or greater.
+  - `vector_sum.h`   - a header file with function prototypes, name it in the same way as `<short task name>`.
+  - `vector_sum.cpp` - the task implementation, name it in the same way as `<short task name>`.
+  - `CMakeLists.txt` - a file to configure your project. Examples for each configuration can be found in `test_tasks`.
+* Name your pull request in the following way:
   ```
-  <Фамилия Имя>. Задача <Номер задачи (Их 3 в этом семестре)>. <Полное название задачи>.
-  Нестеров Александр. Задач 1. Сумма элементов вектора.
+  <Фамилия Имя>. Задача <Номер задачи>. <Полное название задачи>.
+  Нестеров Александр. Задача 1. Сумма элементов вектора.
   ```
-* В описание pull-request'а пишем полную постановку задачи.
+* Provide the full task definition in pull request's description.
 
-  Пример pull-request'а находится в pull-request'ах проекта.
+  Example pull request is located in repo's pull requests.
 
-* Работаем со своим fork-репозитроием. Работаем в отдельной ветке и <b>НЕ в `master`!!!</b> Название ветки аналогично названию директории для вашей задачи. К примеру создание ветки:
+* Work on your fork-repository. Keep your work on a separate branch and **NOT on `master`!!!**. Name you branch in the same way as your task's folder. To create a branch run:
   ```
   git checkout -b nesterov_a_vector_sum
   ```
 
-## 4. Инстркция по размещению отчетов в проекте
+## 4. How to submit your report to the project
 
-* В директории `reports` размещаем <b>pdf-файл</b> с отчетом.
-Отчет должен называться следующим образом - `<фамилия>_<инициал имени>_<краткое название задачи>.pdf`
+* Place `<last name>_<first letter of name>_<short task name>.pdf` containing the report in [the `reports` folder](reports).
 
   ```
   nesterov_a_vector_sum.pdf
   ```
-* Название pull-request'а для отчета выглядит следующим образом:
+* Pull request's name for the report looks in the following way:
   ```
   <Фамилия Имя>. Отчет. <Полное название задачи>.
   Нестеров Александр. Отчет. Сумма элементов вектора.
   ```
 
-## Использование стиля кодирования
-Для проверки стиля кодирования используется Google C++ Style.
-* Описание стиля находится [здесь](https://google.github.io/styleguide/cppguide.html).
-* Проверить стиль можно с помощью скрипта (скрипт работает с 2-ой версией python):  
-  ```
-  cd <корень исходного проекта>
-  python2 scripts/lint.py
-  ```
-<i>Невывполнение правил ведет к покраснению сборки проекта.</i>
+## Code style
+Please, follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
+Code style can be verified with [the script](scripts/lint.py) (it runs with Python 2):
+```
+cd <source project root>
+python2 scripts/lint.py
+```
+*Failing to follow the rules makes the project build red.*
