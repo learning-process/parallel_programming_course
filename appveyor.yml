@@ -29,6 +29,7 @@ build_script:
                -D USE_MPI=ON ^
                -D USE_OMP=ON ^
                -D USE_TBB=ON ^
+               -D USE_STD=ON ^
                -D MPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
                -D MPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ^
                -D MPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
