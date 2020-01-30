@@ -6,6 +6,7 @@ The following parallel programming technologies are considered in practice:
 * `MPI`
 * `OpenMP`
 * `TBB`
+* `std::thread`
 
 ## Rules for submissions
 1. You are not supposed to trigger CI jobs by frequent updates of your pull request. First you should test you work locally with all the scripts (code style)
