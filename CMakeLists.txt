@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 2.8 )
+cmake_minimum_required( VERSION 3.2 )
 
 message( STATUS "Parallel Programming Course" )
 
@@ -41,6 +41,12 @@ if( USE_OMP )
     endif( OpenMP_FOUND )
 endif( USE_OMP )
 
+############################ std::thread ############################
+option(USE_STD OFF)
+if( USE_STD )
+    find_package( Threads )
+endif( USE_STD )
+
 ################################ TBB ################################
 option(USE_TBB OFF)
 if( USE_TBB )
@@ -71,4 +77,5 @@ if( USE_TBB )
 endif( USE_TBB )
 
 ############################## Modules ##############################
+include_directories(3rdparty/unapproved)
 add_subdirectory(modules)
