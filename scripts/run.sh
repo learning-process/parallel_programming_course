@@ -15,6 +15,14 @@ for file in $FILES_TBB; do
     ./$file --gtest_repeat=10
 done
 
+FILES_STD="build/bin/*_std"
+for file in $FILES_STD; do
+    echo "--------------------------------"
+    echo $(basename $file)
+    echo "--------------------------------"
+    ./$file --gtest_repeat=10
+done
+
 FILES_MPI="build/bin/*_mpi"
 for file in $FILES_MPI; do
     echo "--------------------------------"
