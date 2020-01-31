@@ -1,55 +1,57 @@
 #!/bin/bash
-start_omp=`date +%s`
-    FILES_OMP="build/bin/*_omp"
-    for file in $FILES_OMP; do
+FILES_OMP="build/bin/*_omp"
+for file in $FILES_OMP; do
+    start_omp=`date +%s`
         echo "--------------------------------"
         echo $(basename $file)
         echo "--------------------------------"
         ./$file --gtest_repeat=10
-    done
-end_omp=`date +%s`
-runtime=$((end_omp-start_omp))
-if [ "$runtime" -gt "5" ]
-then
-    echo "Alert: runtime > 5 sec. runtime = $runtime sec."
-    exit 1
-fi
+    end_omp=`date +%s`
+    runtime=$((end_omp-start_omp))
+    if [ "$runtime" -gt "5" ]
+    then
+        echo "Alert: runtime > 5 sec. runtime = $runtime sec."
+        exit 1
+    fi
+done
 
-start_tbb=`date +%s`
-    FILES_TBB="build/bin/*_tbb"
-    for file in $FILES_TBB; do
+
+FILES_TBB="build/bin/*_tbb"
+for file in $FILES_TBB; do
+    start_tbb=`date +%s`
         echo "--------------------------------"
         echo $(basename $file)
         echo "--------------------------------"
         ./$file --gtest_repeat=10
-    done
-end_tbb=`date +%s`
-runtime=$((end_tbb-start_tbb))
-if [ "$runtime" -gt "5" ]
-then
-    echo "Alert: runtime > 5 sec. runtime = $runtime sec."
-    exit 1
-fi
+    end_tbb=`date +%s`
+    runtime=$((end_tbb-start_tbb))
+    if [ "$runtime" -gt "5" ]
+    then
+        echo "Alert: runtime > 5 sec. runtime = $runtime sec."
+        exit 1
+    fi
+done
 
-start_std=`date +%s`
-    FILES_STD="build/bin/*_std"
-    for file in $FILES_STD; do
+
+FILES_STD="build/bin/*_std"
+for file in $FILES_STD; do
+    start_std=`date +%s`
         echo "--------------------------------"
         echo $(basename $file)
         echo "--------------------------------"
         ./$file --gtest_repeat=10
-    done
-end_std=`date +%s`
-runtime=$((end_std-start_std))
-if [ "$runtime" -gt "5" ]
-then
-    echo "Alert: runtime > 5 sec. runtime = $runtime sec."
-    exit 1
-fi
+    end_std=`date +%s`
+    runtime=$((end_std-start_std))
+    if [ "$runtime" -gt "5" ]
+    then
+        echo "Alert: runtime > 5 sec. runtime = $runtime sec."
+        exit 1
+    fi
+done
 
-start_mpi=`date +%s`
-    FILES_MPI="build/bin/*_mpi"
-    for file in $FILES_MPI; do
+FILES_MPI="build/bin/*_mpi"
+for file in $FILES_MPI; do
+    start_mpi=`date +%s`
         echo "--------------------------------"
         echo $(basename $file)
         echo "--------------------------------"
@@ -65,11 +67,11 @@ start_mpi=`date +%s`
         for i in {1..10}; do
             mpirun -np $NUM_PROC $file || exit 1
         done
-    done
-end_mpi=`date +%s`
-runtime=$((end_mpi-start_mpi))
-if [ "$runtime" -gt "5" ]
-then
-    echo "Alert: runtime > 5 sec. runtime = $runtime sec."
-    exit 1
-fi
+    end_mpi=`date +%s`
+    runtime=$((end_mpi-start_mpi))
+    if [ "$runtime" -gt "5" ]
+    then
+        echo "Alert: runtime > 5 sec. runtime = $runtime sec."
+        exit 1
+    fi
+done
