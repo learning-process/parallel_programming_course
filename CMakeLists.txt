@@ -76,6 +76,16 @@ if( USE_TBB )
     endif( TBB_FOUND )
 endif( USE_TBB )
 
+############################### LATEX ###############################
+option(USE_LATEX OFF)
+if( USE_LATEX )
+    if ( UNIX )
+        include( cmake/UseLATEX.cmake )
+    else( UNIX )
+        set( USE_LATEX OFF )
+    endif( UNIX )
+endif( USE_LATEX )
+
 ############################## Modules ##############################
 include_directories(3rdparty/unapproved)
 add_subdirectory(modules)
