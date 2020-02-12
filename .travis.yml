@@ -50,6 +50,10 @@ install:
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install libomp-dev libtbb-dev; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt install texlive*; fi
 
+cache:
+  directories:
+    - $HOME/build
+
 script:
 - git submodule update --init --recursive
 - python scripts/lint.py
