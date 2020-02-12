@@ -19,6 +19,8 @@ install:
   - set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
   - ps: Start-FileDownload 'https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisdk.msi'
   - msmpisdk.msi /passive
+  - ps: choco install -y miktex
+  - cmd:  refreshenv
 
 build_script:
   - cmd: git submodule update --init --recursive
