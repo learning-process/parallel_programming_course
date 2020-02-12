@@ -46,6 +46,8 @@ install:
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew unlink python@2; fi
 
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew install open-mpi libomp tbb; fi
+- if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew install mactex; fi
+
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install mpich libmpich-dev; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install libomp-dev libtbb-dev; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt install texlive*; fi
