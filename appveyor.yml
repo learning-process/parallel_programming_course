@@ -23,6 +23,9 @@ install:
   # - setup-2.9.6942-x64.exe -unattend
   # - cmd: refreshenv
   - cinst -y imagemagick -PackageParameters LegacySupport=true
+  - cinst -y xpdf-utils
+  - refreshenv
+  - pdflatex -version
 
 build_script:
   - cmd: git submodule update --init --recursive
