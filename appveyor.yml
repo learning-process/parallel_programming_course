@@ -19,7 +19,7 @@ install:
   - set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
   - ps: Start-FileDownload 'https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisdk.msi'
   - msmpisdk.msi /passive
-  - ps: . ".\scripts\appveyor_install_texlive-latest.ps1"
+  - ps: . "scripts\appveyor_install_texlive-latest.ps1"
   - refreshenv
   - pdflatex -version
 
