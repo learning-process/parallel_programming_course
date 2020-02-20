@@ -23,8 +23,7 @@ install:
   # - setup-2.9.6942-x64.exe -unattend
   # - cmd: refreshenv
   - ps: Start-FileDownload 'https://imagemagick.org/download/binaries/ImageMagick-7.0.9-24-Q16-x86-dll.exe'
-  - ImageMagick-7.0.9-24-Q16-x86-dll.exe -unattend
-
+  - ps: Start-Process -FilePath "ImageMagick-7.0.9-24-Q16-x86-dll.exe" -ArgumentList "/S" -Wait
 
 build_script:
   - cmd: git submodule update --init --recursive
@@ -32,10 +31,11 @@ build_script:
   - cmd: mkdir build
   - cmd: cd build
   - cmd: cmake -G "%CMAKE_GENERATOR%" ^
-               -D USE_MPI=ON ^
-               -D USE_OMP=ON ^
-               -D USE_TBB=ON ^
-               -D USE_STD=ON ^
+               -D USE_MPI=ON   ^
+               -D USE_OMP=ON   ^
+               -D USE_TBB=ON   ^
+               -D USE_STD=ON   ^
+               -D USE_LATEX=ON ^
                -D MPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
                -D MPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" ^
                -D MPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
