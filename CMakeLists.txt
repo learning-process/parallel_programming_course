@@ -79,7 +79,11 @@ endif( USE_TBB )
 ############################### LATEX ###############################
 option(USE_LATEX OFF)
 if( USE_LATEX )
-    include( cmake/UseLATEX.cmake )
+    if ( NOT APPLE )
+        include( cmake/UseLATEX.cmake )
+    else( NOT APPLE )
+        set( USE_LATEX OFF )
+    endif( NOT APPLE )
 endif( USE_LATEX )
 
 ############################## Modules ##############################
