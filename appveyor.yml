@@ -19,9 +19,12 @@ install:
   - set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
   - ps: Start-FileDownload 'https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisdk.msi'
   - msmpisdk.msi /passive
-  - ps: Start-FileDownload 'http://ctan.math.illinois.edu/systems/win32/miktex/setup/windows-x64/setup-2.9.6942-x64.exe'
-  - setup-2.9.6942-x64.exe -unattend
-  - cmd: refreshenv
+  # - ps: Start-FileDownload 'http://ctan.math.illinois.edu/systems/win32/miktex/setup/windows-x64/setup-2.9.6942-x64.exe'
+  # - setup-2.9.6942-x64.exe -unattend
+  # - cmd: refreshenv
+  - ps: Start-FileDownload 'https://imagemagick.org/download/binaries/ImageMagick-7.0.9-24-Q16-x86-dll.exe'
+  - ImageMagick-7.0.9-24-Q16-x86-dll.exe -unattend
+
 
 build_script:
   - cmd: git submodule update --init --recursive
