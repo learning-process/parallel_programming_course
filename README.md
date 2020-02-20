@@ -114,12 +114,12 @@ Navigate to a source code folder.
   - `vector_sum.tex` - a LaTeX report file which consider information about your program, name it in the same way as `<short task name>`.
   - `CMakeLists.txt` - a file to configure your project. Examples for each configuration can be found in `test_tasks/test_latex`.
 * Name your pull request in the following way:
-  * For tasks:
+  * for tasks:
   ```
   <Фамилия Имя>. Задача <Номер задачи>. <Полное название задачи>.
   Нестеров Александр. Задача 1. Сумма элементов вектора.
   ```
-  * For report:
+  * for report:
   ```
   <Фамилия Имя>. Отчет. <Полное название задачи>.
   Нестеров Александр. Отчет. Сумма элементов вектора.
