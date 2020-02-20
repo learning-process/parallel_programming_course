@@ -76,6 +76,16 @@ if( USE_TBB )
     endif( TBB_FOUND )
 endif( USE_TBB )
 
+############################### LATEX ###############################
+option(USE_LATEX OFF)
+if( USE_LATEX )
+    if ( NOT APPLE )
+        include( cmake/UseLATEX.cmake )
+    else( NOT APPLE )
+        set( USE_LATEX OFF )
+    endif( NOT APPLE )
+endif( USE_LATEX )
+
 ############################## Modules ##############################
 include_directories(3rdparty/unapproved)
 add_subdirectory(modules)

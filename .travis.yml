@@ -44,17 +44,18 @@ before_install:
 install:
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew update-reset; fi
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew unlink python@2; fi
-
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew install open-mpi libomp tbb; fi
+
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install mpich libmpich-dev; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install libomp-dev libtbb-dev; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt install texlive*; fi
 
 script:
 - git submodule update --init --recursive
 - python scripts/lint.py
 - mkdir build
 - cd build
-- cmake -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+- cmake -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON -D CMAKE_BUILD_TYPE=RELEASE ..
 - cmake --build . --config -j4
 - cd ..
 - export OMP_NUM_THREADS=4
