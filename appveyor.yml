@@ -22,8 +22,7 @@ install:
   # - ps: Start-FileDownload 'http://ctan.math.illinois.edu/systems/win32/miktex/setup/windows-x64/setup-2.9.6942-x64.exe'
   # - setup-2.9.6942-x64.exe -unattend
   # - cmd: refreshenv
-  - ps: Start-FileDownload 'https://imagemagick.org/download/binaries/ImageMagick-7.0.9-24-Q16-x86-dll.exe'
-  - ps: Start-Process -FilePath "ImageMagick-7.0.9-24-Q16-x86-dll.exe" -ArgumentList "/S" -Wait
+  - cinst -y imagemagick -PackageParameters LegacySupport=true
 
 build_script:
   - cmd: git submodule update --init --recursive
