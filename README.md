@@ -2,11 +2,15 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/t46nd9gyt7iirdy8/branch/master?svg=true)](https://ci.appveyor.com/project/allnes/parallel-programming-course/branch/master)
 
 # Parallel programming course
+
 The following parallel programming technologies are considered in practice:
-* `MPI`
-* `OpenMP`
-* `TBB`
-* `std::thread`
+  * `MPI`
+  * `OpenMP`
+  * `TBB`
+  * `std::thread`
+
+The following reporting technologies are considered in practice:
+  * `LaTex`
 
 ## Rules for submissions
 1. You are not supposed to trigger CI jobs by frequent updates of your pull request. First you should test you work locally with all the scripts (code style)
