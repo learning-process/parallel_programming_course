@@ -29,6 +29,7 @@ build_script:
   - cmd: mkdir build
   - cmd: cd build
   - cmd: cmake -G "%CMAKE_GENERATOR%" ^
+               -D USE_SEQ=ON   ^
                -D USE_MPI=ON   ^
                -D USE_OMP=ON   ^
                -D USE_TBB=ON   ^

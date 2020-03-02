@@ -1,4 +1,22 @@
 #!/bin/bash
+
+FILES_SEQ="build/bin/*_seq"
+for file in $FILES_SEQ; do
+    start_seq=`date +%s`
+        echo "--------------------------------"
+        echo $(basename $file)
+        echo "--------------------------------"
+        ./$file --gtest_repeat=10
+    end_seq=`date +%s`
+    runtime=$((end_seq-start_seq))
+    if [ "$runtime" -gt "5" ]
+    then
+        echo "Alert: runtime > 5 sec. runtime = $runtime sec."
+        exit 1
+    fi
+done
+
+
 FILES_OMP="build/bin/*_omp"
 for file in $FILES_OMP; do
     start_omp=`date +%s`

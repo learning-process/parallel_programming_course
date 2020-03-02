@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/learning-process/parallel_programming_course.svg?branch=master)](https://travis-ci.com/learning-process/parallel_programming_course)
-[![Build status](https://ci.appveyor.com/api/projects/status/t46nd9gyt7iirdy8/branch/master?svg=true)](https://ci.appveyor.com/project/allnes/parallel-programming-course/branch/master)
+[![Build Status](https://travis-ci.com/allnes/pp_2020_spring.svg?branch=master)](https://travis-ci.com/allnes/pp_2020_spring)
+[![Build status](https://ci.appveyor.com/api/projects/status/ofu3hvr28bwp44vg/branch/master?svg=true)](https://ci.appveyor.com/project/allnes/pp-2020-spring/branch/master)
 
 # Parallel programming course
 
@@ -84,10 +84,11 @@ Navigate to a source code folder.
 
   ```
   mkdir build && cd build
-  cmake -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON ..
+  cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON ..
   ```
 *Help on CMake keys:*
-- `-D USE_MPI=ON` enbale `MPI` labs.
+- `-D USE_SEQ=ON` enable `Sequential` labs (based on OpenMP's CMakeLists.txt).
+- `-D USE_MPI=ON` enable `MPI` labs.
 - `-D USE_OMP=ON` enable `OpenMP` labs.
 - `-D USE_TBB=ON` enable `TBB` labs.
 - `-D USE_STD=ON` enable `std::thread` labs.
@@ -106,7 +107,7 @@ Navigate to a source code folder.
 ## 3. How to submit you work
 * There are `task_1`, `task_2`, `task_3`,  `reports` folders in `modules` directory. There are 3 task and 1 report for the semester. Move to a folder of your task. Make a directory named `<last name>_<first letter of name>_<short task name>`. Example: `task1/nesterov_a_vector_sum`.
 * Go into the newly created folder and begin you work on the task. There must be only 4 files and 3 of them must be written by you:
-  - `main.cpp` - google tests for the task. The number of tests must be 4 or greater.
+  - `main.cpp` - google tests for the task. The number of tests must be 5 or greater.
   - `vector_sum.h`   - a header file with function prototypes, name it in the same way as `<short task name>`.
   - `vector_sum.cpp` - the task implementation, name it in the same way as `<short task name>`.
   - `CMakeLists.txt` - a file to configure your project. Examples for each configuration can be found in `test_tasks`.

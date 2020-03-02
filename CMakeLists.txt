@@ -30,7 +30,7 @@ endif( USE_MPI )
 
 ############################### OpenMP ##############################
 option(USE_OMP OFF)
-if( USE_OMP )
+if( USE_OMP OR USE_SEQ )
     find_package( OpenMP )
     if( OpenMP_FOUND )
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
@@ -39,7 +39,7 @@ if( USE_OMP )
     else( OpenMP_FOUND )
         set( USE_OMP OFF )
     endif( OpenMP_FOUND )
-endif( USE_OMP )
+endif( USE_OMP OR USE_SEQ )
 
 ############################ std::thread ############################
 option(USE_STD OFF)
