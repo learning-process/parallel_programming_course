@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/allnes/pp_2020_spring.svg?branch=master)](https://travis-ci.com/allnes/pp_2020_spring)
-[![Build status](https://ci.appveyor.com/api/projects/status/ofu3hvr28bwp44vg/branch/master?svg=true)](https://ci.appveyor.com/project/allnes/pp-2020-spring/branch/master)
+[![Build Status](https://travis-ci.com/learning-process/parallel_programming_course.svg?branch=master)](https://travis-ci.com/learning-process/parallel_programming_course)
+[![Build status](https://ci.appveyor.com/api/projects/status/t46nd9gyt7iirdy8/branch/master?svg=true)](https://ci.appveyor.com/project/allnes/parallel-programming-course/branch/master)
 
 # Parallel programming course
 
