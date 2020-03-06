@@ -1,0 +1,131 @@
+name: Build application
+
+on: [push, pull_request]
+
+jobs:
+  ubuntu-gcc-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup environment
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install g++-9
+        sudo apt-get install mpich libmpich-dev
+        sudo apt-get install libomp-9-dev libtbb-dev
+        sudo apt-get install texlive*
+    - name: Update submodules
+      run: git submodule update --init --recursive
+    - name: Run linter
+      run: python scripts/lint.py
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake --build . --config -j4
+        cd ..
+      env:
+        CC: gcc-9
+        CXX: g++-9
+    - name: Run tests
+      run: |
+        export OMP_NUM_THREADS=4
+        source scripts/run.sh
+  ubuntu-clang-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup environment
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update 
+        sudo apt-get install clang-8 mpich libmpich-dev libomp-9-dev libtbb-dev texlive*
+    - name: Update submodules
+      run: git submodule update --init --recursive
+    - name: Run linter
+      run: python scripts/lint.py
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake --build . --config -j4
+        cd ..
+      env:
+        CC: clang-8
+        CXX: clang++-8
+    - name: Run tests
+      run: |
+        export OMP_NUM_THREADS=4
+        source scripts/run.sh
+  macos-clang-build:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup environment
+      run: |
+        brew update-reset
+        brew unlink python@2
+        brew install open-mpi libomp tbb
+    - name: Update submodules
+      run: git submodule update --init --recursive
+    - name: Run linter
+      run: python scripts/lint.py
+    - name: Build
+      run: |
+        export LDFLAGS="$LDFLAGS -L$(brew --prefix libomp)/lib"
+        export CFLAGS="$CFLAGS -I$(brew --prefix libomp)/include -I$(brew --prefix tbb)/include"
+        export CXXFLAGS="$CXXFLAGS -I$(brew --prefix libomp)/include -I$(brew --prefix tbb)/include"
+        mkdir build
+        cd build
+        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake --build . --config -j4
+        cd ..
+    - name: Run tests
+      run: |
+        export OMP_NUM_THREADS=4
+        source scripts/run.sh
+  windows-msvc-build:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cmake_generator:
+          - Visual Studio 14 2015
+          - Visual Studio 15 2017
+          - Visual Studio 16 2019
+    steps:
+    - uses: actions/checkout@v1
+    - name: Download dependencies
+      run: |
+        Invoke-WebRequest https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisetup.exe -OutFile msmpisetup.exe
+        Invoke-WebRequest https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisdk.msi -OutFile msmpisdk.msi
+      shell: pwsh
+    - name: Setup environment
+      run: |
+        MSMpiSetup.exe -unattend
+        set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
+        msmpisdk.msi /passive
+        powershell -file "scripts\appveyor_install_miktex-latest-minimal.ps1"
+        refreshenv
+        pdflatex -version
+      shell: cmd
+    - name: Update submodules
+      run: git submodule update --init --recursive
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        cmake -G "%CMAKE_GENERATOR%" -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON -D MPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" -D MPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" .. -A Win32
+        cmake --build .
+        cd ..
+        set OMP_NUM_THREADS=4
+        scripts/run.bat
+      env:
+        CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
+    - name: Run tests
+      run: |
+        set OMP_NUM_THREADS=4
+        scripts/run.bat
