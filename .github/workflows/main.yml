@@ -89,42 +89,27 @@ jobs:
         source scripts/run.sh
   windows-msvc-build:
     runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        cmake_generator:
-          - Visual Studio 14 2015
-          - Visual Studio 15 2017
-          - Visual Studio 16 2019
     steps:
     - uses: actions/checkout@v1
     - name: Download dependencies
       run: |
         Invoke-WebRequest https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisetup.exe -OutFile msmpisetup.exe
         Invoke-WebRequest https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisdk.msi -OutFile msmpisdk.msi
-      shell: pwsh
-    - name: Setup environment
+    - name: Install MPI
       run: |
         MSMpiSetup.exe -unattend
-        set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
         msmpisdk.msi /passive
-        powershell -file "scripts\appveyor_install_miktex-latest-minimal.ps1"
-        refreshenv
-        pdflatex -version
       shell: cmd
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: Build
       run: |
+        set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
         mkdir build
-        cd build
-        cmake -G "%CMAKE_GENERATOR%" -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON -D MPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" -D MPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" .. -A Win32
-        cmake --build .
-        cd ..
-        set OMP_NUM_THREADS=4
-        scripts/run.bat
+        cd build && cmake -G "Visual Studio 16 2019" -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D MPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" -D MPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" .. -A Win32 && cmake --build .
       env:
-        CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
+        MPI_HOME: C:/Program Files (x86)/Microsoft SDKs/MPI
+      shell: cmd
     - name: Run tests
       run: |
         set OMP_NUM_THREADS=4
