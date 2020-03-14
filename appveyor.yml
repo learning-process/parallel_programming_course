@@ -9,10 +9,6 @@ environment:
       CMAKE_GENERATOR: "Visual Studio 16 2019"
       MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
 
-artifacts:
-  - path: build
-    name: build
-
 install:
   - ps: Start-FileDownload 'https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisetup.exe'
   - MSMpiSetup.exe -unattend
