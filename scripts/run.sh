@@ -2,6 +2,7 @@
 
 FILES_SEQ="build/bin/*_seq"
 for file in $FILES_SEQ; do
+    if [ "$file" = "build/bin/*_seq" ]; then continue; fi
     echo "--------------------------------"
     echo $(basename $file)
     echo "--------------------------------"
@@ -10,6 +11,7 @@ done
 
 FILES_OMP="build/bin/*_omp"
 for file in $FILES_OMP; do
+    if [ "$file" = "build/bin/*_omp" ]; then continue; fi
     echo "--------------------------------"
     echo $(basename $file)
     echo "--------------------------------"
@@ -18,6 +20,7 @@ done
 
 FILES_TBB="build/bin/*_tbb"
 for file in $FILES_TBB; do
+    if [ "$file" = "build/bin/*_tbb" ]; then continue; fi
     echo "--------------------------------"
     echo $(basename $file)
     echo "--------------------------------"
@@ -26,6 +29,7 @@ done
 
 FILES_STD="build/bin/*_std"
 for file in $FILES_STD; do
+    if [ "$file" = "build/bin/*_std" ]; then continue; fi
     echo "--------------------------------"
     echo $(basename $file)
     echo "--------------------------------"
@@ -34,12 +38,13 @@ done
 
 FILES_MPI="build/bin/*_mpi"
 for file in $FILES_MPI; do
+    if [ "$file" = "build/bin/*_mpi" ]; then continue; fi
     echo "--------------------------------"
     echo $(basename $file)
     echo "--------------------------------"
-    if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
+    if [[ $OSTYPE == "linux-gnu" ]]; then
         NUM_PROC=$(cat /proc/cpuinfo|grep processor|wc -l)
-    elif [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+    elif [[ $OSTYPE == "darwin"* ]]; then
         NUM_PROC=$(sysctl -a | grep machdep.cpu | grep thread_count | cut -d ' ' -f 2)
     else
         echo "Unknown OS"
