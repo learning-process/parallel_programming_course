@@ -67,7 +67,7 @@ jobs:
     - name: Setup environment
       run: |
         brew update-reset
-        brew unlink python@2
+#        brew unlink python@2
         brew install open-mpi libomp tbb
     - name: Update submodules
       run: git submodule update --init --recursive
@@ -98,6 +98,7 @@ jobs:
     - name: Install MPI
       run: |
         MSMpiSetup.exe -unattend
+        set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
         msmpisdk.msi /passive
       shell: cmd
     - name: Update submodules
