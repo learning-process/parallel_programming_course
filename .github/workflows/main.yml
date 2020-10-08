@@ -67,7 +67,6 @@ jobs:
     - name: Setup environment
       run: |
         brew update-reset
-#        brew unlink python@2
         brew install open-mpi libomp tbb
     - name: Update submodules
       run: git submodule update --init --recursive
