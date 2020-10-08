@@ -142,3 +142,7 @@ cd <source project root>
 python2 scripts/lint.py
 ```
 *Failing to follow the rules makes the project build red.*
+
+And finally, 
+
+**All information of the course is in WIKI!!!**
