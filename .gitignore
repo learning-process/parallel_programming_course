@@ -3,3 +3,4 @@ mpich
 cmake-build-release
 cmake-build-debug
 .idea/
+.vscode/
