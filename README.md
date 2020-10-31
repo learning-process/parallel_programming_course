@@ -114,6 +114,14 @@ Navigate to a source code folder.
 * Go into the newly created folder and begin you work on the report. There must be only 2 files and 1 of them must be written by you:
   - `vector_sum.tex` - a LaTeX report file which consider information about your program, name it in the same way as `<short task name>`.
   - `CMakeLists.txt` - a file to configure your project. Examples for each configuration can be found in `test_tasks/test_latex`.
+* The number of directories will increase with time. To build only your project, you need to do the following:
+  ```
+  cmake --build . --target <name task's directory> --config RELEASE
+  ```
+  Example:
+  ```
+  cmake --build . --target nesterov_a_vector_sum --config RELEASE
+  ```
 * Name your pull request in the following way:
   * for tasks:
   ```
