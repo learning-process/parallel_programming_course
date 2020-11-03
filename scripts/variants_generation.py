@@ -4,7 +4,7 @@ import csv
 from xlsxwriter.workbook import Workbook
 
 NUM_TASKS = 3
-NUM_STUDENTS = 25
+NUM_STUDENTS = 29
 NUM_VARIANTS = 27
 csvfile = 'variants.csv'
 
