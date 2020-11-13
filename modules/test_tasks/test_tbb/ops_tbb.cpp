@@ -3,14 +3,13 @@
 #include <vector>
 #include <string>
 #include <random>
-#include <ctime>
 #include <functional>
 #include <numeric>
 #include "../../../modules/test_tasks/test_tbb/ops_tbb.h"
 
 std::vector<int> getRandomVector(int sz) {
-    std::mt19937 gen;
-    gen.seed(static_cast<unsigned int>(time(0)));
+    std::random_device dev;
+    std::mt19937 gen(dev());
     std::vector<int> vec(sz);
     for (int i = 0; i < sz; i++) { vec[i] = gen() % 100; }
     return vec;
@@ -36,7 +35,7 @@ struct Mult {
     void join(const Mult& rhs) { value *= rhs.value; }
 };
 
-int getParallelOperations(std::vector<int> vec, std::string ops) {
+int getParallelOperations(std::vector<int> vec, const std::string& ops) {
     int reduction_elem = 1;
     if (ops == "+") {
         Sum sum;
@@ -60,7 +59,7 @@ int getParallelOperations(std::vector<int> vec, std::string ops) {
     return reduction_elem;
 }
 
-int getSequentialOperations(std::vector<int> vec, std::string ops) {
+int getSequentialOperations(std::vector<int> vec, const std::string& ops) {
     const int sz = vec.size();
     int reduction_elem = 1;
     if (ops == "+") {

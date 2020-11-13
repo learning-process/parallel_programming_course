@@ -3,20 +3,19 @@
 #include <string>
 #include <utility>
 #include <random>
-#include <ctime>
 #include <iostream>
 #include "../../../modules/test_tasks/test_std/ops_std.h"
 #include "../../../3rdparty/unapproved/unapproved.h"
 
 std::vector<int> getRandomVector(int  sz) {
-    std::mt19937 gen;
-    gen.seed(static_cast<unsigned int>(time(0)));
+    std::random_device dev;
+    std::mt19937 gen(dev());
     std::vector<int> vec(sz);
     for (int  i = 0; i < sz; i++) { vec[i] = gen() % 100; }
     return vec;
 }
 
-void atomOps(std::vector<int> vec, std::string ops, std::promise<int> &&pr) {
+void atomOps(std::vector<int> vec, const std::string& ops, std::promise<int> &&pr) {
     const int  sz = vec.size();
     int reduction_elem = 0;
     if (ops == "+") {
@@ -31,7 +30,7 @@ void atomOps(std::vector<int> vec, std::string ops, std::promise<int> &&pr) {
     pr.set_value(reduction_elem);
 }
 
-int getParallelOperations(std::vector<int> vec, std::string ops) {
+int getParallelOperations(std::vector<int> vec, const std::string& ops) {
     const int nthreads = std::thread::hardware_concurrency();
     const int delta = (vec.end() - vec.begin()) / nthreads;
 
@@ -56,7 +55,7 @@ int getParallelOperations(std::vector<int> vec, std::string ops) {
     return reduction_elem;
 }
 
-int getSequentialOperations(std::vector<int> vec, std::string ops) {
+int getSequentialOperations(std::vector<int> vec, const std::string& ops) {
     const int  sz = vec.size();
     int reduction_elem = 0;
     if (ops == "+") {

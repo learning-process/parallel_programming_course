@@ -3,13 +3,13 @@
 #include <vector>
 #include <string>
 #include <random>
-#include <ctime>
 #include <algorithm>
 #include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
 
 
 std::vector<int> getRandomVector(int sz) {
-    std::mt19937 gen(static_cast<unsigned int>(time(nullptr)));
+    std::random_device dev;
+    std::mt19937 gen(dev());
     std::vector<int> vec(sz);
     for (int  i = 0; i < sz; i++) { vec[i] = gen() % 100; }
     return vec;
