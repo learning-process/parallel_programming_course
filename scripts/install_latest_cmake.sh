@@ -4,7 +4,7 @@ mkdir "${DEPS_DIR}" && cd "${DEPS_DIR}"
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     travis_retry wget --no-check-certificate https://cmake.org/files/v3.18/cmake-3.18.0-Darwin-x86_64.dmg
-    yes | hdiutil attach right_here cmake-3.18.0-Darwin-x86_64.dmg > /dev/null
+    yes | hdiutil attach cmake-3.18.0-Darwin-x86_64.dmg > /dev/null
     installer -package /Volumes/cmake-3.18.0-Darwin-x86_64/cmake-3.18.0-Darwin-x86_64.pkg -target /
     hdiutil detach /Volumes/cmake-3.18.0-Darwin-x86_64
 fi
