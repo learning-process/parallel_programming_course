@@ -42,6 +42,7 @@ before_install:
 - eval "${MATRIX_EVAL}"
 
 install:
+- source scripts/install_latest_cmake.sh
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew update-reset; fi
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew unlink python@2; fi
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew install open-mpi libomp tbb; fi

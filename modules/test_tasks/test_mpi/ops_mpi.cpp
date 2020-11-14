@@ -3,20 +3,19 @@
 #include <vector>
 #include <string>
 #include <random>
-#include <ctime>
 #include <algorithm>
 #include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
 
 
 std::vector<int> getRandomVector(int sz) {
-    std::mt19937 gen;
-    gen.seed(static_cast<unsigned int>(time(0)));
+    std::random_device dev;
+    std::mt19937 gen(dev());
     std::vector<int> vec(sz);
     for (int  i = 0; i < sz; i++) { vec[i] = gen() % 100; }
     return vec;
 }
 
-int getSequentialOperations(std::vector<int> vec, std::string ops) {
+int getSequentialOperations(std::vector<int> vec, const std::string& ops) {
     const int  sz = vec.size();
     int reduction_elem = 0;
     if (ops == "+") {
@@ -37,7 +36,7 @@ int getSequentialOperations(std::vector<int> vec, std::string ops) {
 }
 
 int getParallelOperations(std::vector<int> global_vec,
-                          int count_size_vector, std::string ops) {
+                          int count_size_vector, const std::string& ops) {
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -45,7 +44,7 @@ int getParallelOperations(std::vector<int> global_vec,
 
     if (rank == 0) {
         for (int proc = 1; proc < size; proc++) {
-            MPI_Send(&global_vec[0] + proc * delta, delta,
+            MPI_Send(global_vec.data() + proc * delta, delta,
                         MPI_INT, proc, 0, MPI_COMM_WORLD);
         }
     }
@@ -56,7 +55,7 @@ int getParallelOperations(std::vector<int> global_vec,
                                      global_vec.begin() + delta);
     } else {
         MPI_Status status;
-        MPI_Recv(&local_vec[0], delta, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+        MPI_Recv(local_vec.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
 
     int global_sum = 0;
