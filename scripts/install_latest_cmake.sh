@@ -3,9 +3,10 @@ DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
 mkdir "${DEPS_DIR}" && cd "${DEPS_DIR}"
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-    travis_retry wget --no-check-certificate https://cmake.org/files/v3.18/cmake-3.18.0-Darwin-x86_64.dmg
-    yes | hdiutil attach -mountpoint /Volumes/cmake-3.18.0-Darwin-x86_64 cmake-3.18.0-Darwin-x86_64.dmg > /dev/null
-    hdiutil detach /Volumes/cmake-3.18.0-Darwin-x86_64
+    travis_retry wget --no-check-certificate https://cmake.org/files/v3.18/cmake-3.18.0-Linux-x86_64.tar.gz
+    tar -xvf cmake-3.18.0-Linux-x86_64.tar.gz > /dev/null
+    mv cmake-3.18.0-Linux-x86_64 cmake-install
+    sudo mv -r cmake-install/CMake.app /Applications/CMake.app
 fi
 
 if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
