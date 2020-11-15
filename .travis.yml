@@ -7,7 +7,9 @@ matrix:
       addons:
         apt:
           sources: ubuntu-toolchain-r-test
-          packages: g++-5
+          packages:
+            - g++-5
+            - cppcheck
       env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
       before_script:
         - python scripts/lint.py
@@ -17,7 +19,9 @@ matrix:
       addons:
         apt:
           sources: ubuntu-toolchain-r-test
-          packages: g++-8
+          packages:
+            - g++-8
+            - cppcheck
       env: MATRIX_EVAL="CC=gcc-8 && CXX=g++-8
 
     - os: linux
@@ -25,12 +29,18 @@ matrix:
       compiler: clang
       addons:
         apt:
-          packages: clang-5.0
+          packages:
+            - clang-5.0
+            - cppcheck
       env: MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
 
     - os: linux
       dist: xenial
       compiler: clang
+      addons:
+        apt:
+          packages:
+            - cppcheck
 
     - os: osx
       osx_image: xcode10.1
@@ -46,6 +56,7 @@ install:
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew update-reset; fi
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew unlink python@2; fi
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew install open-mpi libomp tbb; fi
+- if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew install cppcheck; fi
 
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install mpich libmpich-dev; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install libomp-dev libtbb-dev; fi

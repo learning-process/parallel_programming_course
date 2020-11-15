@@ -60,7 +60,7 @@ int getParallelOperations(std::vector<int> global_vec,
 
     int global_sum = 0;
     int local_sum = getSequentialOperations(local_vec, ops);
-    MPI_Op op_code;
+    MPI_Op op_code = MPI_OP_NULL;
     if (ops == "+" || ops == "-") { op_code = MPI_SUM; }
     if (ops == "max") { op_code = MPI_MAX; }
     MPI_Reduce(&local_sum, &global_sum, 1, MPI_INT, op_code, 0, MPI_COMM_WORLD);

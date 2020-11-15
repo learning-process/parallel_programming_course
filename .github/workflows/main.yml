@@ -12,6 +12,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install g++-9
+        sudo apt-get install cppcheck
         sudo apt-get install mpich libmpich-dev
         sudo apt-get install libomp-9-dev libtbb-dev
         sudo apt-get install texlive*
@@ -40,7 +41,8 @@ jobs:
     - name: Setup environment
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update 
+        sudo apt-get update
+        sudo apt-get install cppcheck
         sudo apt-get install clang-8 mpich libmpich-dev libomp-9-dev libtbb-dev texlive*
     - name: Update submodules
       run: git submodule update --init --recursive
@@ -69,6 +71,7 @@ jobs:
         brew update-reset
         brew unlink python@3.8
         brew install open-mpi libomp tbb
+        brew install cppcheck
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: Run linter
