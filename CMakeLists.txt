@@ -8,8 +8,6 @@ endif(WIN32)
 
 include( "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Configure.cmake" )
 
-project( "Parallel Programming Course" )
-
 ############################### GTest ###############################
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/gtest")
 include_directories("${CMAKE_SOURCE_DIR}/3rdparty/gtest/googletest/include")
