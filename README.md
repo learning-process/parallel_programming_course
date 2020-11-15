@@ -23,10 +23,26 @@ The following reporting technologies are considered in practice:
 git submodule update --init --recursive
 ```
 
+### Static analysis of project
+  * **Windows (MSVC)**:
+  
+  Unsupported operating system!
+  
+  * **Linux (`gcc` and `clang`)**:
+  ```
+  sudo apt install cppcheck
+  ```
+  * **MacOS (apple clang)**:
+  ```
+  brew install cppcheck
+  ```
+
 ### Parallel programming technologies
 ### `MPI`
   * **Windows (MSVC)**:
-    [Installers link.](https://www.microsoft.com/en-us/download/details.aspx?id=57467) You have to install `msmpisdk.msi` and `msmpisetup.exe`.
+  
+  [Installers link.](https://www.microsoft.com/en-us/download/details.aspx?id=57467) You have to install `msmpisdk.msi` and `msmpisetup.exe`.
+  
   * **Linux (`gcc` and `clang`)**:
   ```
   sudo apt install mpich
@@ -39,7 +55,9 @@ git submodule update --init --recursive
   ```
 
 ### `OpenMP`
+  
   `OpenMP` is included into `gcc` and `msvc`, but some components should be installed additionally:
+  
   * **Linux (`gcc` and `clang`)**:
   ```
   sudo apt install libomp-dev
@@ -50,7 +68,10 @@ git submodule update --init --recursive
   ```
 
 ### `TBB`
-  * **Windows (`MSVC`)**: `CMake` installs `TBB` while you run `cmake` for that project on Windows.
+  * **Windows (`MSVC`)**: 
+  
+  `CMake` installs `TBB` while you run `cmake` for that project on Windows.
+  
   * **Linux (`gcc` and `clang`)**:
   ```
   sudo apt-get install libtbb-dev
