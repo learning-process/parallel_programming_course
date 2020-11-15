@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.com/learning-process/parallel_programming_course.svg?branch=master)](https://travis-ci.com/learning-process/parallel_programming_course)
 ![Build application](https://github.com/learning-process/parallel_programming_course/workflows/Build%20application/badge.svg?branch=master)
+[![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6ImxlYXJuaW5nLXByb2Nlc3MiLCJyZXBvMSI6InBhcmFsbGVsX3Byb2dyYW1taW5nX2NvdXJzZSIsImluY2x1ZGVMaW50IjpmYWxzZSwiYXV0aG9ySWQiOjI0ODQyLCJpYXQiOjE2MDU0NTM3MDV9.CAHpnB6YIOUynZL6wXqSHSQfztfAGhtyqhEpbPeP9XA)](https://www.deepcode.ai/app/gh/learning-process/parallel_programming_course/_/dashboard?utm_content=gh%2Flearning-process%2Fparallel_programming_course)
 
 # Parallel programming course
 
@@ -126,7 +127,7 @@ Navigate to a source code folder.
   * View report `<project's folder>/build/modules/reports/<report's folder>`
 
 ## 3. How to submit you work
-* There are `task_1`, `task_2`, `task_3`, `task_4`, `reports` folders in `modules` directory. There are 3 task and 1 report for the semester. Move to a folder of your task. Make a directory named `<last name>_<first letter of name>_<short task name>`. Example: `task1/nesterov_a_vector_sum`.
+* There are `task_1`, `task_2`, `task_3`, `task_4`, `reports` folders in `modules` directory. There are 4 tasks and 1 report for the semester. Move to a folder of your task. Make a directory named `<last name>_<first letter of name>_<short task name>`. Example: `task1/nesterov_a_vector_sum`.
 * Go into the newly created folder and begin you work on the task. There must be only 4 files and 3 of them must be written by you:
   - `main.cpp` - google tests for the task. The number of tests must be 5 or greater.
   - `vector_sum.h`   - a header file with function prototypes, name it in the same way as `<short task name>`.
