@@ -1,13 +1,14 @@
 cmake_minimum_required( VERSION 3.15 )
 
 message( STATUS "Parallel Programming Course" )
-project( "Parallel Programming Course" )
 
 if(WIN32)
     option(gtest_force_shared_crt "" TRUE)
 endif(WIN32)
 
 include( "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Configure.cmake" )
+
+project( "Parallel Programming Course" )
 
 ############################### GTest ###############################
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/gtest")
