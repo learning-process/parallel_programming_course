@@ -71,6 +71,7 @@ jobs:
         brew update-reset
         brew unlink python@3.8
         brew install open-mpi libomp tbb
+        brew install cppcheck
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: Run linter
