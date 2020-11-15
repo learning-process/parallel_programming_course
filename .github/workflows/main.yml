@@ -16,10 +16,11 @@ jobs:
         sudo apt-get install mpich libmpich-dev
         sudo apt-get install libomp-9-dev libtbb-dev
         sudo apt-get install texlive*
+        sudo apt-get install python3-pip
+        sudo pip install --upgrade pip
+        sudo pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
-    - name: Run linter
-      run: python scripts/lint.py
     - name: Build
       run: |
         mkdir build
@@ -44,10 +45,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install cppcheck
         sudo apt-get install clang-8 mpich libmpich-dev libomp-9-dev libtbb-dev texlive*
+        sudo apt-get install python3-pip
+        sudo pip install --upgrade pip
+        sudo pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
-    - name: Run linter
-      run: python scripts/lint.py
     - name: Build
       run: |
         mkdir build
@@ -72,10 +74,10 @@ jobs:
         brew unlink python@3.8
         brew install open-mpi libomp tbb
         brew install cppcheck
+        sudo pip install --upgrade pip
+        sudo pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
-    - name: Run linter
-      run: python scripts/lint.py
     - name: Build
       run: |
         export LDFLAGS="$LDFLAGS -L$(brew --prefix libomp)/lib"

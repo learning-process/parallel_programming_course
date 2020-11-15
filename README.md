@@ -38,6 +38,13 @@ git submodule update --init --recursive
   brew install cppcheck
   ```
 
+### Code style analysis
+Please, follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
+
+```
+pip install cpplint # (Python3)
+```
+
 ### Parallel programming technologies
 ### `MPI`
   * **Windows (MSVC)**:
@@ -164,13 +171,6 @@ Navigate to a source code folder.
   git checkout -b nesterov_a_vector_sum
   ```
 
-## Code style
-Please, follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
-Code style can be verified with [the script](scripts/lint.py) (it runs with Python 2):
-```
-cd <source project root>
-python2 scripts/lint.py
-```
 *Failing to follow the rules makes the project build red.*
 
 And finally, 

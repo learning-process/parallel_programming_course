@@ -11,8 +11,6 @@ matrix:
             - g++-5
             - cppcheck
       env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
-      before_script:
-        - python scripts/lint.py
 
     - os: linux
       dist: bionic
@@ -57,14 +55,18 @@ install:
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew unlink python@2; fi
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew install open-mpi libomp tbb; fi
 - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then brew install cppcheck; fi
+- if [[ $TRAVIS_OS_NAME == 'osx' ]]; then curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py; fi
+- if [[ $TRAVIS_OS_NAME == 'osx' ]]; then sudo python3 -m pip install setuptools cpplint; fi
 
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install mpich libmpich-dev; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install libomp-dev libtbb-dev; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt install texlive*; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt install python3-pip; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo pip install --upgrade pip; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo pip install setuptools cpplint; fi
 
 script:
 - git submodule update --init --recursive
-- python scripts/lint.py
 - mkdir build
 - cd build
 - cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON -D CMAKE_BUILD_TYPE=RELEASE ..
