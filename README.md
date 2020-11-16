@@ -2,7 +2,7 @@
 ![Build application](https://github.com/learning-process/parallel_programming_course/workflows/Build%20application/badge.svg?branch=master)
 [![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6ImxlYXJuaW5nLXByb2Nlc3MiLCJyZXBvMSI6InBhcmFsbGVsX3Byb2dyYW1taW5nX2NvdXJzZSIsImluY2x1ZGVMaW50IjpmYWxzZSwiYXV0aG9ySWQiOjI0ODQyLCJpYXQiOjE2MDU0NTM3MDV9.CAHpnB6YIOUynZL6wXqSHSQfztfAGhtyqhEpbPeP9XA)](https://www.deepcode.ai/app/gh/learning-process/parallel_programming_course/_/dashboard?utm_content=gh%2Flearning-process%2Fparallel_programming_course)
 
-# Parallel programming course
+# Parallel Programming Course
 
 The following parallel programming technologies are considered in practice:
   * `MPI`
@@ -37,6 +37,13 @@ git submodule update --init --recursive
   ```
   brew install cppcheck
   ```
+
+### Code style analysis
+Please, follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
+
+```
+pip install cpplint # (Python3)
+```
 
 ### Parallel programming technologies
 ### `MPI`
@@ -164,13 +171,6 @@ Navigate to a source code folder.
   git checkout -b nesterov_a_vector_sum
   ```
 
-## Code style
-Please, follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
-Code style can be verified with [the script](scripts/lint.py) (it runs with Python 2):
-```
-cd <source project root>
-python2 scripts/lint.py
-```
 *Failing to follow the rules makes the project build red.*
 
 And finally, 

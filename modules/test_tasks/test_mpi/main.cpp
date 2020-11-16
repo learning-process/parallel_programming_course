@@ -1,8 +1,8 @@
 // Copyright 2018 Nesterov Alexander
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <vector>
 #include "./ops_mpi.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, Test_Sum) {
     int rank;
