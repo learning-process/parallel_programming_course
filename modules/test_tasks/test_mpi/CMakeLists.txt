@@ -11,12 +11,12 @@ if( USE_MPI )
     project( ${ProjectId} )
     message( STATUS "-- " ${ProjectId} )
 
-    file(GLOB_RECURSE header_files "*.h")
-    file(GLOB_RECURSE source_files "*.cpp")
-    set(PACK_LIB "${ProjectId}_lib")
-    add_library(${PACK_LIB} STATIC ${header_files} ${source_files})
+    file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.h)
 
-    add_executable( ${ProjectId} ${source_files} )
+    set(PACK_LIB "${ProjectId}_lib")
+    add_library(${PACK_LIB} STATIC ${ALL_SOURCE_FILES} )
+
+    add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
 
     target_link_libraries(${ProjectId} ${PACK_LIB})
     if( MPI_COMPILE_FLAGS )
@@ -33,7 +33,6 @@ if( USE_MPI )
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
 
     if( UNIX )
-        file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.h)
         foreach (SOURCE_FILE ${ALL_SOURCE_FILES})
             string(FIND ${SOURCE_FILE} ${PROJECT_BINARY_DIR} PROJECT_TRDPARTY_DIR_FOUND)
             if (NOT ${PROJECT_TRDPARTY_DIR_FOUND} EQUAL -1)
@@ -55,6 +54,19 @@ if( USE_MPI )
                 ${ALL_SOURCE_FILES}
         )
     endif( UNIX )
+
+    SET(ARGS_FOR_CHECK_COUNT_TESTS "")
+    foreach (FILE_ELEM ${ALL_SOURCE_FILES})
+        set(ARGS_FOR_CHECK_COUNT_TESTS "${ARGS_FOR_CHECK_COUNT_TESTS} ${FILE_ELEM}")
+    endforeach ()
+
+    find_package(Python3 REQUIRED)
+    add_custom_target("${ProjectId}_check_count_tests" ALL
+            COMMAND "${Python3_EXECUTABLE}"
+                ${CMAKE_SOURCE_DIR}/scripts/check_count_tests.py
+                ${ProjectId}
+                ${ARGS_FOR_CHECK_COUNT_TESTS}
+    )
 else( USE_MPI )
     message( STATUS "-- ${ProjectId} - NOT BUILD!"  )
 endif( USE_MPI )

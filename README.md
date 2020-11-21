@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.com/learning-process/parallel_programming_course.svg?branch=master)](https://travis-ci.com/learning-process/parallel_programming_course)
 ![Build application](https://github.com/learning-process/parallel_programming_course/workflows/Build%20application/badge.svg?branch=master)
 [![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6ImxlYXJuaW5nLXByb2Nlc3MiLCJyZXBvMSI6InBhcmFsbGVsX3Byb2dyYW1taW5nX2NvdXJzZSIsImluY2x1ZGVMaW50IjpmYWxzZSwiYXV0aG9ySWQiOjI0ODQyLCJpYXQiOjE2MDU0NTM3MDV9.CAHpnB6YIOUynZL6wXqSHSQfztfAGhtyqhEpbPeP9XA)](https://www.deepcode.ai/app/gh/learning-process/parallel_programming_course/_/dashboard?utm_content=gh%2Flearning-process%2Fparallel_programming_course)
 
