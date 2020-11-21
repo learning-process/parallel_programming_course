@@ -44,7 +44,7 @@ TEST(Parallel_Operations_MPI, Test_Diff_2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 10;
+    const int count_size_vector = 100;
 
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
@@ -81,7 +81,7 @@ TEST(Parallel_Operations_MPI, Test_Max_2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 10;
+    const int count_size_vector = 100;
 
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
