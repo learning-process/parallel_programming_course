@@ -76,17 +76,8 @@ if( USE_TBB )
     endif( TBB_FOUND )
 endif( USE_TBB )
 
-############################### LATEX ###############################
-option(USE_LATEX OFF)
-if( USE_LATEX )
-    if ( NOT APPLE )
-        include( cmake/UseLATEX.cmake )
-    else( NOT APPLE )
-        set( USE_LATEX OFF )
-    endif( NOT APPLE )
-endif( USE_LATEX )
-
 ############################## CPPLINT ##############################
+find_package(Python3 REQUIRED)
 enable_testing()
 if( NOT WIN32 )
     include(cmake/Cpplint.cmake)

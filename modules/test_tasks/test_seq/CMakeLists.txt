@@ -46,7 +46,6 @@ if ( USE_SEQ )
         set(ARGS_FOR_CHECK_COUNT_TESTS "${ARGS_FOR_CHECK_COUNT_TESTS} ${FILE_ELEM}")
     endforeach ()
 
-    find_package(Python3 REQUIRED)
     add_custom_target("${ProjectId}_check_count_tests" ALL
             COMMAND "${Python3_EXECUTABLE}"
             ${CMAKE_SOURCE_DIR}/scripts/check_count_tests.py

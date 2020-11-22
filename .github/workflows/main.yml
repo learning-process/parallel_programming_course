@@ -15,7 +15,6 @@ jobs:
         sudo apt-get install cppcheck
         sudo apt-get install mpich libmpich-dev
         sudo apt-get install libomp-9-dev libtbb-dev
-        sudo apt-get install texlive*
         sudo apt-get install python3-pip
         sudo pip install --upgrade pip
         sudo pip install setuptools cpplint
@@ -25,7 +24,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cmake --build . --config -j4
         cd ..
       env:
@@ -44,7 +43,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install cppcheck
-        sudo apt-get install clang-8 mpich libmpich-dev libomp-9-dev libtbb-dev texlive*
+        sudo apt-get install clang-8 mpich libmpich-dev libomp-9-dev libtbb-dev
         sudo apt-get install python3-pip
         sudo pip install --upgrade pip
         sudo pip install setuptools cpplint
@@ -54,7 +53,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cmake --build . --config -j4
         cd ..
       env:
@@ -85,7 +84,7 @@ jobs:
         export CXXFLAGS="$CXXFLAGS -I$(brew --prefix libomp)/include -I$(brew --prefix tbb)/include"
         mkdir build
         cd build
-        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D USE_LATEX=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cmake --build . --config -j4
         cd ..
     - name: Run tests
