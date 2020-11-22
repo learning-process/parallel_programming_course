@@ -114,7 +114,7 @@ Navigate to a source code folder.
   * Run `<project's folder>/build/bin`
 
 ## 3. How to submit you work
-* There are `task_1`, `task_2`, `task_3`, `task_4` folders in `modules` directory. There are 4 tasks and 1 report for the semester. Move to a folder of your task. Make a directory named `<last name>_<first letter of name>_<short task name>`. Example: `task1/nesterov_a_vector_sum`.
+* There are `task_1`, `task_2`, `task_3`, `task_4` folders in `modules` directory. There are 4 tasks for the semester. Move to a folder of your task. Make a directory named `<last name>_<first letter of name>_<short task name>`. Example: `task1/nesterov_a_vector_sum`.
 * Go into the newly created folder and begin you work on the task. There must be only 4 files and 3 of them must be written by you:
   - `main.cpp` - google tests for the task. The number of tests must be 5 or greater.
   - `vector_sum.h`   - a header file with function prototypes, name it in the same way as `<short task name>`.
