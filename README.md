@@ -122,11 +122,11 @@ Navigate to a source code folder.
   - `CMakeLists.txt` - a file to configure your project. Examples for each configuration can be found in `test_tasks`.
 * The number of directories will increase with time. To build only your project, you need to do the following:
   ```
-  cmake --build . --target <name task's directory> --config RELEASE
+  cmake --build . --target <name task's directory>_<name_technology> --config RELEASE
   ```
   Example:
   ```
-  cmake --build . --target nesterov_a_vector_sum --config RELEASE
+  cmake --build . --target nesterov_a_vector_sum_mpi --config RELEASE
   ```
 * Name your pull request in the following way:
   * for tasks:
