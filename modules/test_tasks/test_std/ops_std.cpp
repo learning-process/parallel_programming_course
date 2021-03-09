@@ -15,20 +15,26 @@ std::vector<int> getRandomVector(int  sz) {
     return vec;
 }
 
+std::mutex my_mutex;
+
 void atomOps(std::vector<int> vec, const std::string& ops, std::promise<int> &&pr) {
     const int  sz = vec.size();
     int reduction_elem = 0;
     if (ops == "+") {
         for (int  i = 0; i < sz; i++) {
+            std::lock_guard<std::mutex> my_lock(my_mutex);
             reduction_elem += vec[i];
         }
     } else if (ops == "-") {
         for (int  i = 0; i < sz; i++) {
+            std::lock_guard<std::mutex> my_lock(my_mutex);
             reduction_elem -= vec[i];
         }
     }
     pr.set_value(reduction_elem);
 }
+
+
 
 int getParallelOperations(std::vector<int> vec, const std::string& ops) {
     const int nthreads = std::thread::hardware_concurrency();
