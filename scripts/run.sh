@@ -6,6 +6,14 @@ ctest --extra-verbose --repeat-until-fail 10 --timeout 10 --build-and-test
 # shellcheck disable=SC2103
 cd ..
 
+FILES_STD="build/bin/*_std"
+for file in $FILES_STD; do
+        echo "--------------------------------"
+        echo $(basename $file)
+        echo "--------------------------------"
+        valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+done
+
 FILES_MPI="build/bin/*_mpi"
 for file in $FILES_MPI; do
     if [ "$file" = "build/bin/*_mpi" ]; then continue; fi
