@@ -16,8 +16,8 @@ jobs:
         sudo apt-get install mpich libmpich-dev
         sudo apt-get install libomp-9-dev libtbb-dev
         sudo apt-get install python3-pip
-        sudo pip install --upgrade pip
-        sudo pip install setuptools cpplint
+        sudo python3 -m pip install --upgrade pip
+        sudo python3 -m pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: Build
