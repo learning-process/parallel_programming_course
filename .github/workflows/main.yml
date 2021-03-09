@@ -45,8 +45,8 @@ jobs:
         sudo apt-get install cppcheck
         sudo apt-get install clang-8 mpich libmpich-dev libomp-9-dev libtbb-dev
         sudo apt-get install python3-pip
-        sudo pip install --upgrade pip
-        sudo pip install setuptools cpplint
+        sudo python3 -m pip install --upgrade pip
+        sudo python3 -m pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: Build
@@ -73,8 +73,8 @@ jobs:
         brew unlink python@3.8
         brew install open-mpi libomp tbb
         brew install cppcheck
-        sudo pip install --upgrade pip
-        sudo pip install setuptools cpplint
+        sudo python3 -m pip install --upgrade pip
+        sudo python3 -m pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: Build
