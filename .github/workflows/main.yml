@@ -26,7 +26,7 @@ jobs:
         mkdir build
         cd build
         cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
-        cmake --parallel 4 --build .
+        make -j4
         cd ..
       env:
         CC: gcc-9
@@ -56,7 +56,7 @@ jobs:
         mkdir build
         cd build
         cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
-        cmake --parallel 4 --build .
+        make -j4
         cd ..
       env:
         CC: clang-8
@@ -87,7 +87,7 @@ jobs:
         mkdir build
         cd build
         cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
-        cmake --parallel 4 --build .
+        make -j4
         cd ..
     - name: Run tests
       run: |
@@ -113,7 +113,8 @@ jobs:
       run: |
         set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
         mkdir build
-        cd build && cmake -G "Visual Studio 16 2019" -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D MPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" -D MPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" .. -A Win32 && cmake --parallel 4 --build .
+        cd build && cmake -G "Visual Studio 16 2019" -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D MPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" -D MPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" .. -A Win32
+        cmake --build .
       env:
         MPI_HOME: C:/Program Files (x86)/Microsoft SDKs/MPI
       shell: cmd
