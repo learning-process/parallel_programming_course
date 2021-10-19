@@ -15,11 +15,6 @@ The following parallel programming technologies are considered in practice:
 2. Carefully check if the program can hang
 
 ## 1. Set up your environment
-### Fetch submodules before building the project
-```
-git submodule update --init --recursive
-```
-
 ### Static analysis of project
   * **Windows (MSVC)**:
   
