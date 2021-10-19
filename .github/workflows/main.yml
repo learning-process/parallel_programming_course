@@ -86,7 +86,7 @@ jobs:
         export CXXFLAGS="$CXXFLAGS -I$(brew --prefix libomp)/include -I$(brew --prefix tbb)/include"
         mkdir build
         cd build
-        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=OFF -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         make -j4
         cd ..
     - name: Run tests
