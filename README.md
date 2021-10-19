@@ -1,5 +1,6 @@
 ![Build application](https://github.com/learning-process/parallel_programming_course/workflows/Build%20application/badge.svg?branch=master)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/learning-process/parallel_programming_course.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/learning-process/parallel_programming_course/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/learning-process/parallel_programming_course.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/learning-process/parallel_programming_course/context:python)
 
 # Parallel Programming Course
 
@@ -15,11 +16,6 @@ The following parallel programming technologies are considered in practice:
 2. Carefully check if the program can hang
 
 ## 1. Set up your environment
-### Fetch submodules before building the project
-```
-git submodule update --init --recursive
-```
-
 ### Static analysis of project
   * **Windows (MSVC)**:
   
