@@ -79,10 +79,10 @@ endif( USE_TBB )
 ############################## CPPLINT ##############################
 find_package(Python3 REQUIRED)
 enable_testing()
-if( NOT WIN32 )
+if( APPLE )
     include(cmake/Cpplint.cmake)
     cpplint_add_subdirectory(modules)
-endif( NOT WIN32 )
+endif( APPLE )
 
 ############################## Modules ##############################
 include_directories(3rdparty/unapproved)
