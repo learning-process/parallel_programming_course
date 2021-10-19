@@ -2,6 +2,8 @@ cmake_minimum_required( VERSION 3.15 )
 
 message( STATUS "Parallel Programming Course" )
 
+include( cmake/Git.cmake )
+
 if(WIN32)
     option(gtest_force_shared_crt "" TRUE)
 endif(WIN32)
