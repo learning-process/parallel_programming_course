@@ -1,6 +1,4 @@
 ![Build application](https://github.com/learning-process/parallel_programming_course/workflows/Build%20application/badge.svg?branch=master)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/learning-process/parallel_programming_course.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/learning-process/parallel_programming_course/alerts/)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/learning-process/parallel_programming_course.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/learning-process/parallel_programming_course/context:python)
 
 # Parallel Programming Course
 
