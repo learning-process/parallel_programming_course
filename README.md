@@ -89,7 +89,12 @@ Navigate to a source code folder.
 
   ```
   mkdir build && cd build
-  cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON ..
+  cmake -D USE_SEQ=ON \
+        -D USE_MPI=ON \
+        -D USE_OMP=ON \
+        -D USE_TBB=ON \
+        -D USE_STD=ON \
+        -D USE_STYLE_CHECKER=ON ..
   ```
 *Help on CMake keys:*
 - `-D USE_SEQ=ON` enable `Sequential` labs (based on OpenMP's CMakeLists.txt).
@@ -97,6 +102,7 @@ Navigate to a source code folder.
 - `-D USE_OMP=ON` enable `OpenMP` labs.
 - `-D USE_TBB=ON` enable `TBB` labs.
 - `-D USE_STD=ON` enable `std::thread` labs.
+- `-D USE_STYLE_CHECKER=ON` enable style check with build project.
 
 *A corresponding flag can be omitted if it's not needed.*
 
@@ -125,8 +131,8 @@ Navigate to a source code folder.
 * Name your pull request in the following way:
   * for tasks:
   ```
-  <Фамилия Имя>. Задача <Номер задачи>. <Полное название задачи>.
-  Нестеров Александр. Задача 1. Сумма элементов вектора.
+  <Фамилия Имя>. Задача <Номер задачи>. Вариант <Номер варианта>. <Полное название задачи>.
+  Нестеров Александр. Задача 1. Вариант 123. Сумма элементов вектора.
   ```
  
 * Provide the full task definition in pull request's description.
