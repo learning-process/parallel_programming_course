@@ -75,8 +75,8 @@ jobs:
         brew unlink python@3.8
         brew install open-mpi libomp tbb
         brew install cppcheck
-        sudo python3 -m pip install --upgrade pip
-        sudo python3 -m pip install setuptools cpplint
+        /Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11 -m pip install --upgrade pip
+        /Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11 -m pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: Build
