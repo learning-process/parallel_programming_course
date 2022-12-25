@@ -12,9 +12,9 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install g++-9
-        sudo apt-get install cppcheck
+        sudo apt-get install cppcheck ninja-build
         sudo apt-get install mpich libmpich-dev
-        sudo apt-get install libomp-9-dev libtbb-dev
+        sudo apt-get install libomp-dev libtbb-dev
         sudo apt-get install python3-pip
         sudo python3 -m pip install --upgrade pip
         sudo python3 -m pip install setuptools cpplint
@@ -25,7 +25,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         make -j4
         cd ..
       env:
@@ -43,8 +43,8 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install cppcheck
-        sudo apt-get install clang-8 mpich libmpich-dev libomp-9-dev libtbb-dev
+        sudo apt-get install cppcheck ninja-build
+        sudo apt-get install clang-8 mpich libmpich-dev libomp-dev libtbb-dev
         sudo apt-get install python3-pip
         sudo python3 -m pip install --upgrade pip
         sudo python3 -m pip install setuptools cpplint
@@ -55,7 +55,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         make -j4
         cd ..
       env:

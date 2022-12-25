@@ -27,7 +27,10 @@ if( USE_MPI )
         set_target_properties( ${ProjectId} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}" )
     endif( MPI_LINK_FLAGS )
     target_link_libraries( ${ProjectId} ${MPI_LIBRARIES} )
-    target_link_libraries(${ProjectId} gtest gtest_main)
+    target_link_libraries(${ProjectId}
+            gtest
+            gtest_main
+            ${CMAKE_BINARY_DIR}/boost-install/lib/libboost_mpi.a)
 
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
@@ -67,7 +70,6 @@ if( USE_MPI )
                 ${ARGS_FOR_CHECK_COUNT_TESTS}
     )
 
-#    add_dependencies(${ProjectId} boost_ext_lib)
 else( USE_MPI )
     message( STATUS "-- ${ProjectId} - NOT BUILD!"  )
 endif( USE_MPI )

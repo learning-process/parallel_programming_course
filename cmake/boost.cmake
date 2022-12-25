@@ -1,25 +1,28 @@
-# Download and unpack boost at configure time
-configure_file(${CMAKE_SOURCE_DIR}/cmake/cmake_configure/boost.txt.in boost-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-        RESULT_VARIABLE result
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/boost-download )
+# Build Core Boost components
+execute_process(
+        COMMAND ${CMAKE_COMMAND}
+            -G ${CMAKE_GENERATOR}
+            -S ${CMAKE_SOURCE_DIR}/3rdparty/boost
+            -B ${CMAKE_BINARY_DIR}/boost-build
+            -D CMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/boost-install
+            -D BOOST_ENABLE_MPI=ON
+        RESULT_VARIABLE result)
 if(result)
     message(FATAL_ERROR "CMake step for boost failed: ${result}")
 endif()
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        RESULT_VARIABLE result
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/boost-download )
+execute_process(
+        COMMAND ${CMAKE_COMMAND} --build "${CMAKE_BINARY_DIR}/boost-build"
+        RESULT_VARIABLE result)
 if(result)
     message(FATAL_ERROR "Build step for boost failed: ${result}")
 endif()
-
-# Prevent overriding the parent project's compiler/linker
-# settings on Windows
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+execute_process(
+        COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}/boost-build"
+        RESULT_VARIABLE result)
+if(result)
+    message(FATAL_ERROR "Install step for boost failed: ${result}")
+endif()
 
 # Add boost directly to our build. This defines
 # the gtest and gtest_main targets.
-add_subdirectory(
-        ${CMAKE_SOURCE_DIR}/3rdparty/boost
-        ${CMAKE_BINARY_DIR}/boost-build
-        EXCLUDE_FROM_ALL)
+include_directories(${CMAKE_BINARY_DIR}/boost-install/include)
