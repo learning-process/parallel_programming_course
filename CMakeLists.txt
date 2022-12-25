@@ -9,15 +9,17 @@ if(WIN32)
 endif(WIN32)
 
 include( "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Configure.cmake" )
+############################### Boost ###############################
+#ExternalProject_add(
+#        boost_ext_lib
+#        SOURCE_DIR  ${CMAKE_SOURCE_DIR}/3rdparty/boost
+#        BINARY_DIR  ${CMAKE_BINARY_DIR}/build_boost
+#        INSTALL_DIR ${CMAKE_BINARY_DIR}/install_boost
+#)
+#ExternalProject_Get_Property(boost_ext_lib install_dir_boost)
 
 ############################### gtest ###############################
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/gtest")
-include_directories("${CMAKE_SOURCE_DIR}/3rdparty/gtest/googletest/include")
-if( WIN32 )
-    include_directories("${CMAKE_SOURCE_DIR}/3rdparty/gtest-mpi/win")
-else( WIN32 )
-    include_directories("${CMAKE_SOURCE_DIR}/3rdparty/gtest-mpi/linux")
-endif( WIN32 )
+include(cmake/gtest.cmake)
 
 ################################ MPI ################################
 option(USE_MPI OFF)

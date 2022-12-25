@@ -66,6 +66,8 @@ if( USE_MPI )
                 ${ProjectId}
                 ${ARGS_FOR_CHECK_COUNT_TESTS}
     )
+
+#    add_dependencies(${ProjectId} boost_ext_lib)
 else( USE_MPI )
     message( STATUS "-- ${ProjectId} - NOT BUILD!"  )
 endif( USE_MPI )
