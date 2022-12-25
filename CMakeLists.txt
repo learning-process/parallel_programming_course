@@ -2,21 +2,13 @@ cmake_minimum_required( VERSION 3.12 )
 
 message( STATUS "Parallel Programming Course" )
 
-include( cmake/Git.cmake )
-
 if(WIN32)
     option(gtest_force_shared_crt "" TRUE)
 endif(WIN32)
 
 include( "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Configure.cmake" )
 ############################### Boost ###############################
-#ExternalProject_add(
-#        boost_ext_lib
-#        SOURCE_DIR  ${CMAKE_SOURCE_DIR}/3rdparty/boost
-#        BINARY_DIR  ${CMAKE_BINARY_DIR}/build_boost
-#        INSTALL_DIR ${CMAKE_BINARY_DIR}/install_boost
-#)
-#ExternalProject_Get_Property(boost_ext_lib install_dir_boost)
+include(cmake/boost.cmake)
 
 ############################### gtest ###############################
 include(cmake/gtest.cmake)

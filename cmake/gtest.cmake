@@ -20,14 +20,14 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 # Add googletest directly to our build. This defines
 # the gtest and gtest_main targets.
 add_subdirectory(
-        ${CMAKE_BINARY_DIR}/googletest-src
+        ${CMAKE_SOURCE_DIR}/3rdparty/googletest
         ${CMAKE_BINARY_DIR}/googletest-build
         EXCLUDE_FROM_ALL)
 
 # The gtest/gtest_main targets carry header search path
 # dependencies automatically when using CMake 2.8.11 or
 # later. Otherwise we have to add them here ourselves.
-include_directories("${CMAKE_BINARY_DIR}/googletest-src/googletest/include")
+include_directories("${CMAKE_SOURCE_DIR}/3rdparty/googletest/googletest/include")
 
 if( WIN32 )
     include_directories("${CMAKE_SOURCE_DIR}/3rdparty/gtest-mpi/win")
