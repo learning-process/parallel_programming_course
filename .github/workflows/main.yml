@@ -3,84 +3,84 @@ name: Build application
 on: [push, pull_request]
 
 jobs:
-  ubuntu-gcc-build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install g++-9
-        sudo apt-get install cppcheck ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-bin
-        sudo apt-get install libomp-dev
-        sudo apt-get install python3-pip
-        sudo python3 -m pip install --upgrade pip
-        sudo python3 -m pip install setuptools cpplint
-        sudo apt-get install valgrind
-    - name: Update submodules
-      run: git submodule update --init --recursive
-    - name: CMake configure
-      run: |
-        mkdir build
-        cd build
-        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
-        cd ..
-      env:
-        CC: gcc-9
-        CXX: g++-9
-    - name: Ninja build
-      run: |
-        cd build
-        ninja
-        cd ..
-      env:
-        CC: gcc-9
-        CXX: g++-9
-    - name: Run tests
-      run: |
-        export OMP_NUM_THREADS=4
-        source scripts/run.sh
-  ubuntu-clang-build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install clang*
-        sudo apt-get install cppcheck ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-bin
-        sudo apt-get install libomp-dev
-        sudo apt-get install python3-pip
-        sudo python3 -m pip install --upgrade pip
-        sudo python3 -m pip install setuptools cpplint
-        sudo apt-get install valgrind
-    - name: Update submodules
-      run: git submodule update --init --recursive
-    - name: CMake configure
-      run: |
-        mkdir build
-        cd build
-        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
-        cd ..
-      env:
-        CC: clang
-        CXX: clang++
-    - name: Ninja build
-      run: |
-        cd build
-        ninja
-        cd ..
-      env:
-        CC: clang
-        CXX: clang++
-    - name: Run tests
-      run: |
-        export OMP_NUM_THREADS=4
-        source scripts/run.sh
+#  ubuntu-gcc-build:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v1
+#    - name: Setup environment
+#      run: |
+#        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+#        sudo apt-get update
+#        sudo apt-get install g++-9
+#        sudo apt-get install cppcheck ninja-build
+#        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+#        sudo apt-get install libomp-dev
+#        sudo apt-get install python3-pip
+#        sudo python3 -m pip install --upgrade pip
+#        sudo python3 -m pip install setuptools cpplint
+#        sudo apt-get install valgrind
+#    - name: Update submodules
+#      run: git submodule update --init --recursive
+#    - name: CMake configure
+#      run: |
+#        mkdir build
+#        cd build
+#        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+#        cd ..
+#      env:
+#        CC: gcc-9
+#        CXX: g++-9
+#    - name: Ninja build
+#      run: |
+#        cd build
+#        ninja
+#        cd ..
+#      env:
+#        CC: gcc-9
+#        CXX: g++-9
+#    - name: Run tests
+#      run: |
+#        export OMP_NUM_THREADS=4
+#        source scripts/run.sh
+#  ubuntu-clang-build:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v1
+#    - name: Setup environment
+#      run: |
+#        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+#        sudo apt-get update
+#        sudo apt-get install clang*
+#        sudo apt-get install cppcheck ninja-build
+#        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+#        sudo apt-get install libomp-dev
+#        sudo apt-get install python3-pip
+#        sudo python3 -m pip install --upgrade pip
+#        sudo python3 -m pip install setuptools cpplint
+#        sudo apt-get install valgrind
+#    - name: Update submodules
+#      run: git submodule update --init --recursive
+#    - name: CMake configure
+#      run: |
+#        mkdir build
+#        cd build
+#        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+#        cd ..
+#      env:
+#        CC: clang
+#        CXX: clang++
+#    - name: Ninja build
+#      run: |
+#        cd build
+#        ninja
+#        cd ..
+#      env:
+#        CC: clang
+#        CXX: clang++
+#    - name: Run tests
+#      run: |
+#        export OMP_NUM_THREADS=4
+#        source scripts/run.sh
   macos-clang-build:
     runs-on: macOS-latest
     steps:
@@ -109,32 +109,32 @@ jobs:
       run: |
         export OMP_NUM_THREADS=4
         source scripts/run_mac.sh
-  windows-msvc-build:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Download dependencies
-      run: |
-        Invoke-WebRequest https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe -OutFile msmpisetup.exe
-        Invoke-WebRequest https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisdk.msi -OutFile msmpisdk.msi
-    - name: Install MPI
-      run: |
-        MSMpiSetup.exe -unattend
-        set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
-        msmpisdk.msi /passive
-      shell: cmd
-    - name: Update submodules
-      run: git submodule update --init --recursive
-    - name: Build
-      run: |
-        set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
-        mkdir build
-        cd build && cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D MPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" -D MPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" .. -A Win32
-        cmake --build .
-      env:
-        MPI_HOME: C:/Program Files (x86)/Microsoft SDKs/MPI
-      shell: cmd
-    - name: Run tests
-      run: |
-        set OMP_NUM_THREADS=4
-        scripts/run.bat
+#  windows-msvc-build:
+#    runs-on: windows-latest
+#    steps:
+#    - uses: actions/checkout@v1
+#    - name: Download dependencies
+#      run: |
+#        Invoke-WebRequest https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe -OutFile msmpisetup.exe
+#        Invoke-WebRequest https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisdk.msi -OutFile msmpisdk.msi
+#    - name: Install MPI
+#      run: |
+#        MSMpiSetup.exe -unattend
+#        set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
+#        msmpisdk.msi /passive
+#      shell: cmd
+#    - name: Update submodules
+#      run: git submodule update --init --recursive
+#    - name: Build
+#      run: |
+#        set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
+#        mkdir build
+#        cd build && cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D MPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" -D MPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" -D MPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x86/msmpi.lib" .. -A Win32
+#        cmake --build .
+#      env:
+#        MPI_HOME: C:/Program Files (x86)/Microsoft SDKs/MPI
+#      shell: cmd
+#    - name: Run tests
+#      run: |
+#        set OMP_NUM_THREADS=4
+#        scripts/run.bat
