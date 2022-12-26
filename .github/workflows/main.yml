@@ -88,11 +88,11 @@ jobs:
     - name: Setup environment
       run: |
         brew update-reset
-        brew unlink python@3.10
         brew install cppcheck ninja 
         brew install mpich llvm libomp valgrind
-        sudo python3 -m pip install --upgrade pip
-        sudo python3 -m pip install setuptools cpplint
+        brew link python@3.10
+        /usr/local/bin/python3.10 -m pip install --upgrade pip
+        /usr/local/bin/python3.10 -m pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: Build
