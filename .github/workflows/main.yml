@@ -90,9 +90,9 @@ jobs:
         brew update-reset
         brew install cppcheck ninja 
         brew install mpich llvm libomp valgrind
-        brew link python@3.10
-        /usr/local/bin/python3.10 -m pip install --upgrade pip
-        /usr/local/bin/python3.10 -m pip install setuptools cpplint
+#        brew link --overwrite python@3.11
+#        /usr/local/bin/python3.11 -m pip install --upgrade pip
+#        /usr/local/bin/python3.11 -m pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: Build
