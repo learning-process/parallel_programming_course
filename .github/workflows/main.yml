@@ -13,7 +13,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install g++-9
         sudo apt-get install cppcheck ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-*
+        sudo apt-get install openmpi-*
         sudo apt-get install libomp-dev
         sudo apt-get install python3-pip
         sudo python3 -m pip install --upgrade pip
@@ -52,7 +52,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install clang*
         sudo apt-get install cppcheck ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-*
+        sudo apt-get install openmpi-*
         sudo apt-get install libomp-dev
         sudo apt-get install python3-pip
         sudo python3 -m pip install --upgrade pip
