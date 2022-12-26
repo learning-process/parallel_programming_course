@@ -88,6 +88,7 @@ jobs:
     - name: Setup environment
       run: |
         rm '/usr/local/bin/2to3'
+        rm '/usr/local/bin/2to3-3.11'
         brew update-reset
         brew install cppcheck ninja 
         brew install mpich llvm libomp
