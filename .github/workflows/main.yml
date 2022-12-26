@@ -115,8 +115,8 @@ jobs:
     - uses: actions/checkout@v1
     - name: Download dependencies
       run: |
-        Invoke-WebRequest https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisetup.exe -OutFile msmpisetup.exe
-        Invoke-WebRequest https://github.com/Microsoft/Microsoft-MPI/releases/download/v10.0/msmpisdk.msi -OutFile msmpisdk.msi
+        Invoke-WebRequest https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe -OutFile msmpisetup.exe
+        Invoke-WebRequest https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisdk.msi -OutFile msmpisdk.msi
     - name: Install MPI
       run: |
         MSMpiSetup.exe -unattend
