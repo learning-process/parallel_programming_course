@@ -87,14 +87,13 @@ jobs:
     - uses: actions/checkout@v1
     - name: Setup environment
       run: |
-        
+        rm '/usr/local/bin/2to3'
         brew update-reset
         brew install cppcheck ninja 
-        brew install mpich llvm libomp valgrind
+        brew install mpich llvm libomp
         brew link --overwrite python@3.10
-        export PATH=/usr/local/opt/python/libexec/bin:$PATH
-#        /usr/local/bin/python3.11 -m pip install --upgrade pip
-#        /usr/local/bin/python3.11 -m pip install setuptools cpplint
+        /usr/local/bin/python3.10 -m pip install --upgrade pip
+        /usr/local/bin/python3.10 -m pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: Build
