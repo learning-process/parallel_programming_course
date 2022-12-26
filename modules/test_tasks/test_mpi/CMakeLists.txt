@@ -28,8 +28,8 @@ if( USE_MPI )
     endif( MPI_LINK_FLAGS )
     target_link_libraries( ${ProjectId} ${MPI_LIBRARIES} )
     target_link_libraries(${ProjectId}
-            gtest
-            gtest_main
+            ${CMAKE_BINARY_DIR}/googletest-install/lib/libgtest.a
+            ${CMAKE_BINARY_DIR}/googletest-install/lib/libgtest_main.a
             ${CMAKE_BINARY_DIR}/boost-install/lib/libboost_mpi.a)
 
     enable_testing()
@@ -43,10 +43,10 @@ if( USE_MPI )
             endif ()
         endforeach ()
 
-        find_program(CPPCHECK cppcheck)
+        find_program(CPPCHECK_EXEC cppcheck)
         add_custom_target(
                 "${ProjectId}_cppcheck" ALL
-                COMMAND ${CPPCHECK}
+                COMMAND ${CPPCHECK_EXEC}
                 --enable=warning,performance,portability,information,missingInclude
                 --language=c++
                 --std=c++11

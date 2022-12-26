@@ -4,3 +4,6 @@
 [submodule "3rdparty/boost"]
 	path = 3rdparty/boost
 	url = https://github.com/boostorg/boost
+[submodule "3rdparty/onetbb"]
+	path = 3rdparty/onetbb
+	url = https://github.com/oneapi-src/oneTBB

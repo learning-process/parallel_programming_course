@@ -23,6 +23,4 @@ if(result)
     message(FATAL_ERROR "Install step for boost failed: ${result}")
 endif()
 
-# Add boost directly to our build. This defines
-# the gtest and gtest_main targets.
 include_directories(${CMAKE_BINARY_DIR}/boost-install/include)

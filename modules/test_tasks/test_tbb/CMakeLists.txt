@@ -13,12 +13,11 @@ if ( USE_TBB )
     add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
 
     target_link_libraries(${ProjectId} ${PACK_LIB})
-    if( WIN32 )
-        target_link_libraries(${ProjectId} ${TBB_IMPORTED_TARGETS})
-    else( WIN32 )
-        target_link_libraries(${ProjectId} ${TBB_LIBRARIES})
-    endif( WIN32 )
-    target_link_libraries(${ProjectId} gtest gtest_main)
+    target_link_libraries(${ProjectId}
+            ${CMAKE_BINARY_DIR}/onetbb-install/lib/libtbb.so)
+    target_link_libraries(${ProjectId}
+            ${CMAKE_BINARY_DIR}/googletest-install/lib/libgtest.a
+            ${CMAKE_BINARY_DIR}/googletest-install/lib/libgtest_main.a)
 
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
@@ -31,10 +30,10 @@ if ( USE_TBB )
             endif ()
         endforeach ()
 
-        find_program(CPPCHECK cppcheck)
+        find_program(CPPCHECK_EXEC cppcheck)
         add_custom_target(
                 "${ProjectId}_cppcheck" ALL
-                COMMAND ${CPPCHECK}
+                COMMAND ${CPPCHECK_EXEC}
                 --enable=warning,performance,portability,information,missingInclude
                 --language=c++
                 --std=c++11
