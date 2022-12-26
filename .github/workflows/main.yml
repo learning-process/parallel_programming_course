@@ -13,19 +13,26 @@ jobs:
         sudo apt-get update
         sudo apt-get install g++-9
         sudo apt-get install cppcheck ninja-build
-        sudo apt-get install mpich libmpich-dev
-        sudo apt-get install libomp-dev libtbb-dev
+        sudo apt-get install mpich libmpich*
+        sudo apt-get install libomp-dev
         sudo apt-get install python3-pip
         sudo python3 -m pip install --upgrade pip
         sudo python3 -m pip install setuptools cpplint
         sudo apt-get install valgrind
     - name: Update submodules
       run: git submodule update --init --recursive
-    - name: Build
+    - name: CMake configure
       run: |
         mkdir build
         cd build
         cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cd ..
+      env:
+        CC: gcc-9
+        CXX: g++-9
+    - name: Ninja build
+      run: |
+        cd build
         ninja
         cd ..
       env:
@@ -43,19 +50,28 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
+        sudo apt-get install clang*
         sudo apt-get install cppcheck ninja-build
-        sudo apt-get install clang* mpich libmpich-dev libomp-dev libtbb-dev
+        sudo apt-get install mpich libmpich*
+        sudo apt-get install libomp-dev
         sudo apt-get install python3-pip
         sudo python3 -m pip install --upgrade pip
         sudo python3 -m pip install setuptools cpplint
         sudo apt-get install valgrind
     - name: Update submodules
       run: git submodule update --init --recursive
-    - name: Build
+    - name: CMake configure
       run: |
         mkdir build
         cd build
         cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cd ..
+      env:
+        CC: clang
+        CXX: clang++
+    - name: Ninja build
+      run: |
+        cd build
         ninja
         cd ..
       env:
