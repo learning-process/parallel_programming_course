@@ -110,7 +110,7 @@ jobs:
         export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig"
         mkdir build
         cd build
-        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=OFF -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
     - name: Ninja build
       run: |
