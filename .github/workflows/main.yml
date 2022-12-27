@@ -105,11 +105,13 @@ jobs:
         export LDFLAGS="$LDFLAGS -L$(brew --prefix libomp)/lib"
         export CFLAGS="$CFLAGS -I$(brew --prefix libomp)/include -I$(brew --prefix tbb)/include"
         export CXXFLAGS="$CXXFLAGS -I$(brew --prefix libomp)/include -I$(brew --prefix tbb)/include"
+        export PATH="/usr/local/opt/openssl@3/bin:$PATH"
+        export LDFLAGS="-L/usr/local/opt/openssl@3/lib"
+        export CPPFLAGS="-I/usr/local/opt/openssl@3/include"
+        export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig"
         mkdir build
         cd build
-        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON \
-        -D OPENSSL_ROOT_DIR=/usr/local/opt/openssl@3 -D OPENSSL_LIBRARIES=/usr/local/opt/openssl@3/lib \
-        -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         ninja
         cd ..
     - name: Run tests
