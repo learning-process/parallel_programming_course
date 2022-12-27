@@ -94,7 +94,7 @@ jobs:
         brew install cppcheck ninja 
         brew install openssl
         brew link --force openssl
-        brew install mpich llvm libomp
+        brew install mpich llvm libomp clang-omp
         brew link --overwrite python@3.10
         /usr/local/bin/python3.10 -m pip install --upgrade pip
         /usr/local/bin/python3.10 -m pip install setuptools cpplint
