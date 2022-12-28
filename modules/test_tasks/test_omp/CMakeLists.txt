@@ -15,6 +15,7 @@ if ( USE_OMP )
     target_link_libraries(${ProjectId} ${PACK_LIB})
     target_link_directories(${ProjectId} PUBLIC ${CMAKE_BINARY_DIR}/googletest-install/lib)
     target_link_libraries(${ProjectId} gtest gtest_main)
+    target_link_libraries(${ProjectId} ${OpenMP_libomp_LIBRARY})
 
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
