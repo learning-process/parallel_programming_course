@@ -137,6 +137,8 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
     - name: Setup MPI
       uses: mpi4py/setup-mpi@v1
       with:
