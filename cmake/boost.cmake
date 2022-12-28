@@ -6,12 +6,13 @@ execute_process(
             -B ${CMAKE_BINARY_DIR}/boost-build
             -D CMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/boost-install
             -D BOOST_ENABLE_MPI=ON
+            -D CMAKE_BUILD_TYPE=RELEASE
         RESULT_VARIABLE result)
 if(result)
     message(FATAL_ERROR "CMake step for boost failed: ${result}")
 endif()
 execute_process(
-        COMMAND ${CMAKE_COMMAND} --build "${CMAKE_BINARY_DIR}/boost-build"
+        COMMAND ${CMAKE_COMMAND} --build "${CMAKE_BINARY_DIR}/boost-build" --config Release --parallel
         RESULT_VARIABLE result)
 if(result)
     message(FATAL_ERROR "Build step for boost failed: ${result}")
