@@ -102,24 +102,30 @@ jobs:
       run: git submodule update --init --recursive
     - name: CMake configure
       run: |
-        export LDFLAGS="$LDFLAGS -L$(brew --prefix libomp)/lib -L/usr/local/opt/openssl@3/lib"
-        export CFLAGS="$CFLAGS -I$(brew --prefix libomp)/include -I/usr/local/opt/openssl@3/include"
-        export CXXFLAGS="$CXXFLAGS -I$(brew --prefix libomp)/include -I/usr/local/opt/openssl@3/include"
-        export CPPFLAGS="$CPPFLAGS -I$(brew --prefix libomp)/include -I/usr/local/opt/openssl@3/include"
-        export PATH="/usr/local/opt/openssl@3/bin:$PATH"
-        export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig"
+        export LDFLAGS="$LDFLAGS -L/usr/local/opt/openssl/lib"
+        export CFLAGS="$CFLAGS -I/usr/local/opt/openssl/include"
+        export CXXFLAGS="$CXXFLAGS -I/usr/local/opt/openssl/include"
+        export CPPFLAGS="$CPPFLAGS -I/usr/local/opt/openssl/include"
+        export PATH="/usr/local/opt/openssl/bin:$PATH"
+        export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
         mkdir build
         cd build
-        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=OFF -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
-        cd ..
+        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE \
+             -DOpenMP_CXX_FLAGS="-Xclang -fopenmp -I/usr/local/opt/libomp/include" \
+             -DOpenMP_C_FLAGS="-Xclang -fopenmp -I/usr/local/opt/libomp/include" \
+             -DOpenMP_CXX_FLAGS="-Xclang -fopenmp -I/usr/local/opt/libomp/include" \
+             -DOpenMP_C_FLAGS="-Xclang -fopenmp -I/usr/local/opt/libomp/include" \
+             -DOpenMP_CXX_LIB_NAMES=libomp  -DOpenMP_C_LIB_NAMES=libomp  \
+             -DOpenMP_libomp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib  \
+             -DCMAKE_SHARED_LINKER_FLAGS="-L/usr/local/opt/libomp/lib -lomp -Wl,-rpath,/usr/local/opt/libomp/lib" ..
     - name: Ninja build
       run: |
-        export LDFLAGS="$LDFLAGS -L$(brew --prefix libomp)/lib -L/usr/local/opt/openssl@3/lib"
-        export CFLAGS="$CFLAGS -I$(brew --prefix libomp)/include -I/usr/local/opt/openssl@3/include"
-        export CXXFLAGS="$CXXFLAGS -I$(brew --prefix libomp)/include -I/usr/local/opt/openssl@3/include"
-        export CPPFLAGS="$CPPFLAGS -I$(brew --prefix libomp)/include -I/usr/local/opt/openssl@3/include"
-        export PATH="/usr/local/opt/openssl@3/bin:$PATH"
-        export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig"
+        export LDFLAGS="$LDFLAGS -L/usr/local/opt/openssl/lib"
+        export CFLAGS="$CFLAGS -I/usr/local/opt/openssl/include"
+        export CXXFLAGS="$CXXFLAGS -I/usr/local/opt/openssl/include"
+        export CPPFLAGS="$CPPFLAGS -I/usr/local/opt/openssl/include"
+        export PATH="/usr/local/opt/openssl/bin:$PATH"
+        export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
         cd build
         ninja
         cd ..
