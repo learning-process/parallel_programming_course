@@ -6,12 +6,13 @@ execute_process(
         -B ${CMAKE_BINARY_DIR}/onetbb-build
         -D CMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/onetbb-install
         -D TBB_TEST=OFF
+        -D CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         RESULT_VARIABLE result)
 if(result)
     message(FATAL_ERROR "CMake step for onetbb failed: ${result}")
 endif()
 execute_process(
-        COMMAND ${CMAKE_COMMAND} --build "${CMAKE_BINARY_DIR}/onetbb-build"
+        COMMAND ${CMAKE_COMMAND} --build "${CMAKE_BINARY_DIR}/onetbb-build" --config ${CMAKE_BUILD_TYPE} --parallel
         RESULT_VARIABLE result)
 if(result)
     message(FATAL_ERROR "Build step for onetbb failed: ${result}")
