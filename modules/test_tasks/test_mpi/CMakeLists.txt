@@ -27,10 +27,9 @@ if( USE_MPI )
         set_target_properties( ${ProjectId} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}" )
     endif( MPI_LINK_FLAGS )
     target_link_libraries( ${ProjectId} ${MPI_LIBRARIES} )
-    target_link_libraries(${ProjectId}
-            ${CMAKE_BINARY_DIR}/googletest-install/lib/libgtest.a
-            ${CMAKE_BINARY_DIR}/googletest-install/lib/libgtest_main.a
-            ${CMAKE_BINARY_DIR}/boost-install/lib/libboost_mpi.a)
+    target_link_directories(${ProjectId} PUBLIC ${CMAKE_BINARY_DIR}/googletest-install/lib)
+    target_link_directories(${ProjectId} PUBLIC ${CMAKE_BINARY_DIR}/boost-install/lib)
+    target_link_libraries(${ProjectId} gtest gtest_main boost_mpi)
 
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})

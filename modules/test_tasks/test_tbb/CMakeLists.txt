@@ -13,11 +13,9 @@ if ( USE_TBB )
     add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
 
     target_link_libraries(${ProjectId} ${PACK_LIB})
-    target_link_libraries(${ProjectId}
-            ${CMAKE_BINARY_DIR}/onetbb-install/lib/libtbb.so)
-    target_link_libraries(${ProjectId}
-            ${CMAKE_BINARY_DIR}/googletest-install/lib/libgtest.a
-            ${CMAKE_BINARY_DIR}/googletest-install/lib/libgtest_main.a)
+    target_link_directories(${ProjectId} PUBLIC ${CMAKE_BINARY_DIR}/onetbb-install/lib)
+    target_link_directories(${ProjectId} PUBLIC ${CMAKE_BINARY_DIR}/googletest-install/lib)
+    target_link_libraries(${ProjectId} gtest gtest_main tbb tbbmalloc tbbmalloc_proxy)
 
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
