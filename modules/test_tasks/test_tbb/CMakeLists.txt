@@ -15,7 +15,7 @@ if ( USE_TBB )
     target_link_libraries(${ProjectId} ${PACK_LIB})
     target_link_directories(${ProjectId} PUBLIC ${CMAKE_BINARY_DIR}/onetbb-install/lib)
     target_link_directories(${ProjectId} PUBLIC ${CMAKE_BINARY_DIR}/googletest-install/lib)
-    target_link_libraries(${ProjectId} gtest gtest_main tbb tbbmalloc tbbmalloc_proxy)
+    target_link_libraries(${ProjectId} gtest gtest_main tbb)
 
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
