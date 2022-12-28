@@ -14,6 +14,7 @@ execute_process(
             -D CMAKE_CXX_FLAGS_RELEASE=${CMAKE_CXX_FLAGS}
             -D CMAKE_CXX_FLAGS_DEBUG=${CMAKE_CXX_FLAGS}
             -D CMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+            -D BOOST_INSTALL_LAYOUT=system
         RESULT_VARIABLE result)
 if(result)
     message(FATAL_ERROR "CMake step for boost failed: ${result}")
