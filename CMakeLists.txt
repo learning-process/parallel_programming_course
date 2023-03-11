@@ -3,12 +3,12 @@ cmake_minimum_required( VERSION 3.12 )
 message( STATUS "Parallel Programming Course" )
 
 include(cmake/configure.cmake)
-include(cmake/boost.cmake)
 include(cmake/gtest.cmake)
 
 ################################ MPI ################################
 option(USE_MPI OFF)
 if( USE_MPI )
+    include(cmake/boost.cmake)
     find_package( MPI )
     if( MPI_FOUND )
         include_directories( ${MPI_INCLUDE_PATH} )
