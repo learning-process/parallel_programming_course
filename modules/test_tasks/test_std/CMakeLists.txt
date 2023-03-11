@@ -13,6 +13,7 @@ if ( USE_STD )
     add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
 
     target_link_libraries(${ProjectId} ${PACK_LIB})
+    target_link_directories(${ProjectId} PUBLIC ${CMAKE_BINARY_DIR}/googletest-install/lib)
     target_link_libraries(${ProjectId} gtest gtest_main)
     target_link_libraries (${ProjectId} Threads::Threads)
 
@@ -27,10 +28,10 @@ if ( USE_STD )
             endif ()
         endforeach ()
 
-        find_program(CPPCHECK cppcheck)
+        find_program(CPPCHECK_EXEC cppcheck)
         add_custom_target(
                 "${ProjectId}_cppcheck" ALL
-                COMMAND ${CPPCHECK}
+                COMMAND ${CPPCHECK_EXEC}
                 --enable=warning,performance,portability,information,missingInclude
                 --language=c++
                 --std=c++11

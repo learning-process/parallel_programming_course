@@ -13,6 +13,10 @@ The following parallel programming technologies are considered in practice:
     * Respect others time and don't slow down the job queue
 2. Carefully check if the program can hang
 
+## 0. Download all submodules
+  ```
+  git submodule update --init --recursive
+  ```
 ## 1. Set up your environment
 ### Static analysis of project
   * **Windows (MSVC)**:

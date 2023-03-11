@@ -1,9 +1,9 @@
 // Copyright 2018 Nesterov Alexander
-#include <mpi.h>
 #include <vector>
 #include <string>
 #include <random>
-#include <algorithm>
+#include <boost/mpi/communicator.hpp>
+#include <boost/mpi/collectives.hpp>
 #include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
 
 
@@ -37,32 +37,30 @@ int getSequentialOperations(std::vector<int> vec, const std::string& ops) {
 
 int getParallelOperations(std::vector<int> global_vec,
                           int count_size_vector, const std::string& ops) {
-    int size, rank;
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    const int delta = count_size_vector / size;
+    boost::mpi::communicator world;
+    const int delta = count_size_vector / world.size();
 
-    if (rank == 0) {
-        for (int proc = 1; proc < size; proc++) {
-            MPI_Send(global_vec.data() + proc * delta, delta,
-                        MPI_INT, proc, 0, MPI_COMM_WORLD);
+    if (world.rank() == 0) {
+        for (int proc = 1; proc < world.size(); proc++) {
+            world.send(proc, 0, global_vec.data() + proc * delta, delta);
         }
     }
 
     std::vector<int> local_vec(delta);
-    if (rank == 0) {
+    if (world.rank() == 0) {
         local_vec = std::vector<int>(global_vec.begin(),
                                      global_vec.begin() + delta);
     } else {
-        MPI_Status status;
-        MPI_Recv(local_vec.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+        world.recv(0, 0, local_vec.data(), delta);
     }
 
     int global_sum = 0;
     int local_sum = getSequentialOperations(local_vec, ops);
-    MPI_Op op_code = MPI_OP_NULL;
-    if (ops == "+" || ops == "-") { op_code = MPI_SUM; }
-    if (ops == "max") { op_code = MPI_MAX; }
-    MPI_Reduce(&local_sum, &global_sum, 1, MPI_INT, op_code, 0, MPI_COMM_WORLD);
+    if (ops == "+" || ops == "-") {
+        reduce(world, local_sum, global_sum, std::plus<int>(), 0);
+    }
+    if (ops == "max") {
+        reduce(world, local_sum, global_sum, boost::mpi::maximum<int>(), 0);
+    }
     return global_sum;
 }
