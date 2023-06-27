@@ -1,6 +1,6 @@
-// Copyright 2018 Nesterov Alexander
-#ifndef MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
-#define MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
+// Copyright 2023 Nesterov Alexander
+#ifndef TASKS_TEST_TASKS_TEST_MPI_OPS_MPI_H_
+#define TASKS_TEST_TASKS_TEST_MPI_OPS_MPI_H_
 
 #include <vector>
 #include <string>
@@ -10,4 +10,4 @@ int getParallelOperations(std::vector<int> global_vec,
                           int count_size_vector, const std::string& ops);
 int getSequentialOperations(std::vector<int> vec, const std::string& ops);
 
-#endif  // MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
+#endif  // TASKS_TEST_TASKS_TEST_MPI_OPS_MPI_H_

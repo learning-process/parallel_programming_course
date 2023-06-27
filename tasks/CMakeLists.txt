@@ -1,4 +1,4 @@
-message(STATUS "Modules")
+message(STATUS "Student's tasks")
 
 SUBDIRLIST(subdirs ${CMAKE_CURRENT_SOURCE_DIR})
 

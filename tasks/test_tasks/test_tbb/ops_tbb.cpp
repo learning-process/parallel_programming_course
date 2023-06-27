@@ -1,11 +1,11 @@
-// Copyright 2018 Nesterov Alexander
+// Copyright 2023 Nesterov Alexander
 #include <tbb/tbb.h>
 #include <vector>
 #include <string>
 #include <random>
 #include <functional>
 #include <numeric>
-#include "../../../modules/test_tasks/test_tbb/ops_tbb.h"
+#include "../../../tasks/test_tasks/test_tbb/ops_tbb.h"
 
 std::vector<int> getRandomVector(int sz) {
     std::random_device dev;

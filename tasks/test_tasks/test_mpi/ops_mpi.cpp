@@ -1,11 +1,10 @@
-// Copyright 2018 Nesterov Alexander
+// Copyright 2023 Nesterov Alexander
 #include <vector>
 #include <string>
 #include <random>
 #include <boost/mpi/communicator.hpp>
 #include <boost/mpi/collectives.hpp>
-#include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
-
+#include "../../../tasks/test_tasks/test_mpi/ops_mpi.h"
 
 std::vector<int> getRandomVector(int sz) {
     std::random_device dev;
