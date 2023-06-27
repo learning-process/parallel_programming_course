@@ -27,7 +27,9 @@ if( USE_MPI )
         set_target_properties( ${ProjectId} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}" )
     endif( MPI_LINK_FLAGS )
     target_link_libraries( ${ProjectId} ${MPI_LIBRARIES} )
-    target_link_libraries(${ProjectId} gtest gtest_main)
+    target_link_directories(${ProjectId} PUBLIC ${CMAKE_BINARY_DIR}/googletest-install/lib)
+    target_link_directories(${ProjectId} PUBLIC ${CMAKE_BINARY_DIR}/boost-install/lib)
+    target_link_libraries(${ProjectId} gtest gtest_main boost_mpi)
 
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
@@ -40,10 +42,10 @@ if( USE_MPI )
             endif ()
         endforeach ()
 
-        find_program(CPPCHECK cppcheck)
+        find_program(CPPCHECK_EXEC cppcheck)
         add_custom_target(
                 "${ProjectId}_cppcheck" ALL
-                COMMAND ${CPPCHECK}
+                COMMAND ${CPPCHECK_EXEC}
                 --enable=warning,performance,portability,information,missingInclude
                 --language=c++
                 --std=c++11
@@ -66,6 +68,7 @@ if( USE_MPI )
                 ${ProjectId}
                 ${ARGS_FOR_CHECK_COUNT_TESTS}
     )
+
 else( USE_MPI )
     message( STATUS "-- ${ProjectId} - NOT BUILD!"  )
 endif( USE_MPI )
