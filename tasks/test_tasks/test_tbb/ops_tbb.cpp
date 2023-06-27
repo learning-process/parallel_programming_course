@@ -1,4 +1,4 @@
-// Copyright 2018 Nesterov Alexander
+// Copyright 2023 Nesterov Alexander
 #include <tbb/tbb.h>
 #include <vector>
 #include <string>

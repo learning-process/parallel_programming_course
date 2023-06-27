@@ -1,4 +1,4 @@
-// Copyright 2018 Nesterov Alexander
+// Copyright 2023 Nesterov Alexander
 #include <gtest/gtest.h>
 #include <vector>
 #include "../../../3rdparty/unapproved/unapproved.h"
