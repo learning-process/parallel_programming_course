@@ -4,7 +4,7 @@
 #include <utility>
 #include <random>
 #include <iostream>
-#include "../../../modules/test_tasks/test_std/ops_std.h"
+#include "../../../tasks/test_tasks/test_std/ops_std.h"
 #include "../../../3rdparty/unapproved/unapproved.h"
 
 std::vector<int> getRandomVector(int  sz) {

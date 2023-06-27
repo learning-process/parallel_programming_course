@@ -4,7 +4,7 @@
 #include <string>
 #include <random>
 #include <iostream>
-#include "../../../modules/test_tasks/test_omp/ops_omp.h"
+#include "../../../tasks/test_tasks/test_omp/ops_omp.h"
 
 std::vector<int> getRandomVector(int  sz) {
     std::random_device dev;

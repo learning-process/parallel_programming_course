@@ -47,9 +47,9 @@ find_package(Python3 REQUIRED)
 enable_testing()
 if( NOT (APPLE OR WIN32) )
     include(cmake/cpplint.cmake)
-    cpplint_add_subdirectory(modules)
+    cpplint_add_subdirectory(tasks)
 endif( NOT (APPLE OR WIN32) )
 
 ############################## Modules ##############################
 include_directories(3rdparty/unapproved)
-add_subdirectory(modules)
+add_subdirectory(tasks)
