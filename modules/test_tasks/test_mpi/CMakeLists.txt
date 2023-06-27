@@ -42,7 +42,7 @@ if( USE_MPI )
             endif ()
         endforeach ()
 
-        find_program(CPPCHECK_EXEC cppcheck)
+        find_program(CPPCHECK_EXEC /usr/bin/cppcheck)
         add_custom_target(
                 "${ProjectId}_cppcheck" ALL
                 COMMAND ${CPPCHECK_EXEC}
