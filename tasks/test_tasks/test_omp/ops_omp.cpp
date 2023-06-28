@@ -1,10 +1,10 @@
-// Copyright 2018 Nesterov Alexander
+// Copyright 2023 Nesterov Alexander
 #include <omp.h>
 #include <vector>
 #include <string>
 #include <random>
 #include <iostream>
-#include "../../../modules/test_tasks/test_omp/ops_omp.h"
+#include "../../../tasks/test_tasks/test_omp/ops_omp.h"
 
 std::vector<int> getRandomVector(int  sz) {
     std::random_device dev;
