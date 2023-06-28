@@ -1,39 +1,8 @@
 // Copyright 2023 Nesterov Alexander
 #include <gtest/gtest.h>
 #include <vector>
-#include "../../../modules/core/task.hpp"
-
-template <class T>
-class TestTask : public ppc::core::Task {
- public:
-    explicit TestTask(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
-    bool pre_processing() override {
-        input_ = reinterpret_cast<T*>(taskData->inputs[0]);
-        output_ = reinterpret_cast<T*>(taskData->outputs[0]);
-        output_[0] = 0;
-        return true;
-    };
-    bool validation() override {
-        if (taskData->outputs_count[0] == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-    bool run() override {
-        for (int i = 0; i < taskData->inputs_count[0]; i++) {
-            output_[0] += input_[i];
-        }
-        return true;
-    };
-    bool post_processing() override {
-        return true;
-    };
-
- private:
-    T* input_{};
-    T* output_{};
-};
+#include "core/include/task.hpp"
+#include "core/tests/test_task.hpp"
 
 TEST(core_tests, check_int32_t) {
     // Create data
@@ -46,12 +15,29 @@ TEST(core_tests, check_int32_t) {
     taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
     taskData->outputs_count.emplace_back(out.size());
     // Create Task
-    TestTask<int32_t> testTask(taskData);
+    ppc::test::TestTask<int32_t> testTask(taskData);
     testTask.pre_processing();
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);
     testTask.run();
     ASSERT_EQ(out[0], in.size());
+}
+
+TEST(core_tests, check_validate_func) {
+    // Create data
+    std::vector<int32_t> in(20, 1);
+    std::vector<int32_t> out(2, 0);
+    // Create TaskData
+    std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+    taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+    taskData->inputs_count.emplace_back(in.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+    taskData->outputs_count.emplace_back(out.size());
+    // Create Task
+    ppc::test::TestTask<int32_t> testTask(taskData);
+    testTask.pre_processing();
+    bool isValid = testTask.validation();
+    ASSERT_EQ(isValid, false);
 }
 
 TEST(core_tests, check_double) {
@@ -65,7 +51,7 @@ TEST(core_tests, check_double) {
     taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
     taskData->outputs_count.emplace_back(out.size());
     // Create Task
-    TestTask<double> testTask(taskData);
+    ppc::test::TestTask<double> testTask(taskData);
     testTask.pre_processing();
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);
@@ -84,7 +70,7 @@ TEST(core_tests, check_uint8_t) {
     taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
     taskData->outputs_count.emplace_back(out.size());
     // Create Task
-    TestTask<uint8_t> testTask(taskData);
+    ppc::test::TestTask<uint8_t> testTask(taskData);
     testTask.pre_processing();
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);
@@ -103,7 +89,7 @@ TEST(core_tests, check_int64_t) {
     taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
     taskData->outputs_count.emplace_back(out.size());
     // Create Task
-    TestTask<int64_t> testTask(taskData);
+    ppc::test::TestTask<int64_t> testTask(taskData);
     testTask.pre_processing();
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);
@@ -122,7 +108,7 @@ TEST(core_tests, check_float) {
     taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
     taskData->outputs_count.emplace_back(out.size());
     // Create Task
-    TestTask<float> testTask(taskData);
+    ppc::test::TestTask<float> testTask(taskData);
     testTask.pre_processing();
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);

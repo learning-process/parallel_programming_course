@@ -53,5 +53,6 @@ endif( NOT (APPLE OR WIN32) )
 
 ############################## Modules ##############################
 include_directories(3rdparty/unapproved)
+include_directories(modules)
 add_subdirectory(modules)
 add_subdirectory(tasks)

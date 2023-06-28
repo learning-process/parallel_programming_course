@@ -1,7 +1,7 @@
 // Copyright 2023 Nesterov Alexander
 
-#ifndef MODULES_CORE_TASK_HPP_
-#define MODULES_CORE_TASK_HPP_
+#ifndef MODULES_CORE_INCLUDE_TASK_HPP_
+#define MODULES_CORE_INCLUDE_TASK_HPP_
 
 #include <cstdint>
 #include <vector>
@@ -31,8 +31,6 @@ class Task {
     virtual bool run() = 0;
     // post-processing of output data
     virtual bool post_processing() = 0;
-    // this function should have performance measurement (in seconds) of run() function
-    double perf();
     // get input and output data
     std::shared_ptr<TaskData> get_data() const;
 
@@ -43,4 +41,4 @@ class Task {
 }  // namespace core
 }  // namespace ppc
 
-#endif  // MODULES_CORE_TASK_HPP_
+#endif  // MODULES_CORE_INCLUDE_TASK_HPP_
