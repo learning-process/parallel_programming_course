@@ -11,9 +11,20 @@ if ( USE_TBB )
     add_library(${PACK_LIB} STATIC ${ALL_SOURCE_FILES} )
 
     add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
+    add_dependencies(${ProjectId} ppc_onetbb)
 
     target_link_libraries(${ProjectId} ${PACK_LIB})
-    target_link_libraries(${ProjectId} gtest gtest_main tbb)
+    if (APPLE)
+        target_link_libraries(${ProjectId} gtest gtest_main)
+
+        file(GLOB TBB_APPLE_LIBS "${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib/*.dylib")
+
+        foreach (tbb_lib ${TBB_APPLE_LIBS})
+            target_link_libraries(${ProjectId} ${tbb_lib})
+        endforeach ()
+    elseif ()
+        target_link_libraries(${ProjectId} gtest gtest_main tbb)
+    endif ()
 
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
