@@ -14,7 +14,7 @@ include(ExternalProject)
             BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build"
             INSTALL_COMMAND   "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install"
             TEST_COMMAND      "")
-elseif ()
+else ()
     option(TBB_TEST "Enable testing" OFF)
     add_subdirectory(${CMAKE_SOURCE_DIR}/3rdparty/onetbb)
 endif ()

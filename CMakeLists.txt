@@ -55,6 +55,7 @@ include(cmake/boost.cmake)
 
 include_directories(3rdparty)
 include_directories(modules)
+include_directories(tasks)
 
 add_subdirectory(modules)
 add_subdirectory(tasks)
