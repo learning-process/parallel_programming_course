@@ -10,27 +10,23 @@ if ( USE_TBB )
     set(PACK_LIB "${ProjectId}_lib")
     add_library(${PACK_LIB} STATIC ${ALL_SOURCE_FILES} )
 
-    add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
+    if (APPLE)
+        link_directories(${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib)
+    endif (APPLE)
 
+    add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
     target_link_libraries(${ProjectId} ${PACK_LIB})
+
     if (APPLE)
         add_dependencies(${ProjectId} ppc_onetbb)
-        target_link_libraries(${ProjectId} gtest gtest_main)
+    endif (APPLE)
 
-        file(GLOB TBB_APPLE_LIBS "${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib/*.dylib")
-
-        foreach (tbb_lib ${TBB_APPLE_LIBS})
-            target_link_libraries(${ProjectId} ${tbb_lib})
-            configure_file(${tbb_lib} "${CMAKE_BINARY_DIR}/bin" COPYONLY)
-        endforeach ()
-    else ()
-        target_link_libraries(${ProjectId} gtest gtest_main tbb)
-    endif ()
+    target_link_libraries(${ProjectId} gtest gtest_main tbb)
 
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
 
     CPPCHECK_AND_COUNTS_TESTS("${ProjectId}" "${ALL_SOURCE_FILES}")
-else( USE_TBB )
+else ( USE_TBB )
     message( STATUS "-- ${ProjectId} - NOT BUILD!"  )
-endif( USE_TBB )
+endif ( USE_TBB )
