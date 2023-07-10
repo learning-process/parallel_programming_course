@@ -19,42 +19,7 @@ if ( USE_OMP )
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
 
-    if( UNIX )
-        foreach (SOURCE_FILE ${ALL_SOURCE_FILES})
-            string(FIND ${SOURCE_FILE} ${PROJECT_BINARY_DIR} PROJECT_TRDPARTY_DIR_FOUND)
-            if (NOT ${PROJECT_TRDPARTY_DIR_FOUND} EQUAL -1)
-                list(REMOVE_ITEM ALL_SOURCE_FILES ${SOURCE_FILE})
-            endif ()
-        endforeach ()
-
-        if (NOT APPLE)
-            find_program(CPPCHECK_EXEC /usr/bin/cppcheck)
-            add_custom_target(
-                    "${ProjectId}_cppcheck" ALL
-                    COMMAND ${CPPCHECK_EXEC}
-                    --enable=warning,performance,portability,information
-                    --language=c++
-                    --std=c++11
-                    --error-exitcode=1
-                    --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
-                    --verbose
-                    --quiet
-                    ${ALL_SOURCE_FILES}
-            )
-        ENDIF ()
-    endif( UNIX )
-
-    SET(ARGS_FOR_CHECK_COUNT_TESTS "")
-    foreach (FILE_ELEM ${ALL_SOURCE_FILES})
-        set(ARGS_FOR_CHECK_COUNT_TESTS "${ARGS_FOR_CHECK_COUNT_TESTS} ${FILE_ELEM}")
-    endforeach ()
-
-    add_custom_target("${ProjectId}_check_count_tests" ALL
-            COMMAND "${Python3_EXECUTABLE}"
-            ${CMAKE_SOURCE_DIR}/scripts/check_count_tests.py
-            ${ProjectId}
-            ${ARGS_FOR_CHECK_COUNT_TESTS}
-    )
+    CPPCHECK_AND_COUNTS_TESTS(${ProjectId} ${PROJECT_BINARY_DIR} ${ALL_SOURCE_FILES})
 else( USE_OMP )
     message( STATUS "-- ${ProjectId} - NOT BUILD!"  )
 endif( USE_OMP )
