@@ -45,6 +45,7 @@ if( USE_MPI )
                 "${ProjectId}_cppcheck" ALL
                 COMMAND ${CPPCHECK_EXEC}
                 --enable=warning,performance,portability,information
+                --suppress=missingInclude
                 --language=c++
                 --std=c++11
                 --error-exitcode=1
