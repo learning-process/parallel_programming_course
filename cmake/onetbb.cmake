@@ -1,34 +1,20 @@
 # Build Core OneTBB components
-execute_process(
-        COMMAND ${CMAKE_COMMAND}
-        -G ${CMAKE_GENERATOR}
-        -S ${CMAKE_SOURCE_DIR}/3rdparty/onetbb
-        -B ${CMAKE_BINARY_DIR}/onetbb-build
-        -D CMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/onetbb-install
-        -D TBB_TEST=OFF
-        -D CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -D CMAKE_EXE_LINKER_FLAGS=${CMAKE_EXE_LINKER_FLAGS}
-        -D CMAKE_C_FLAGS_RELEASE=${CMAKE_C_FLAGS}
-        -D CMAKE_C_FLAGS_DEBUG=${CMAKE_C_FLAGS}
-        -D CMAKE_C_FLAGS=${CMAKE_C_FLAGS}
-        -D CMAKE_CXX_FLAGS_RELEASE=${CMAKE_CXX_FLAGS}
-        -D CMAKE_CXX_FLAGS_DEBUG=${CMAKE_CXX_FLAGS}
-        -D CMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
-        RESULT_VARIABLE result)
-if(result)
-    message(FATAL_ERROR "CMake step for onetbb failed: ${result}")
-endif()
-execute_process(
-        COMMAND ${CMAKE_COMMAND} --build "${CMAKE_BINARY_DIR}/onetbb-build" --config ${CMAKE_BUILD_TYPE} --parallel
-        RESULT_VARIABLE result)
-if(result)
-    message(FATAL_ERROR "Build step for onetbb failed: ${result}")
-endif()
-execute_process(
-        COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}/onetbb-build"
-        RESULT_VARIABLE result)
-if(result)
-    message(FATAL_ERROR "Install step for onetbb failed: ${result}")
-endif()
+include_directories(${CMAKE_SOURCE_DIR}/3rdparty/onetbb/include)
 
-include_directories(${CMAKE_BINARY_DIR}/onetbb-install/include)
+if (APPLE)
+include(ExternalProject)
+    ExternalProject_Add(ppc_onetbb
+            SOURCE_DIR        "${CMAKE_SOURCE_DIR}/3rdparty/onetbb"
+            PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb
+            BINARY_DIR        "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build"
+            INSTALL_DIR       "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install"
+            CONFIGURE_COMMAND "${CMAKE_COMMAND}" -S "${CMAKE_SOURCE_DIR}/3rdparty/onetbb/" -B "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build/"
+            -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -G${CMAKE_GENERATOR}
+            -DTBB_TEST=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+            BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build"
+            INSTALL_COMMAND   "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install"
+            TEST_COMMAND      "")
+else ()
+    option(TBB_TEST "Enable testing" OFF)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/3rdparty/onetbb)
+endif ()

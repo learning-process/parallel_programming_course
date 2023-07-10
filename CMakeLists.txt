@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 3.12 )
+cmake_minimum_required( VERSION 3.25 )
 
 message( STATUS "Parallel Programming Course" )
 
@@ -8,7 +8,6 @@ include(cmake/gtest.cmake)
 ################################ MPI ################################
 option(USE_MPI OFF)
 if( USE_MPI )
-    include(cmake/boost.cmake)
     find_package( MPI )
     if( MPI_FOUND )
         include_directories( ${MPI_INCLUDE_PATH} )
@@ -52,7 +51,11 @@ if( NOT (APPLE OR WIN32) )
 endif( NOT (APPLE OR WIN32) )
 
 ############################## Modules ##############################
-include_directories(3rdparty/unapproved)
+include(cmake/boost.cmake)
+
+include_directories(3rdparty)
 include_directories(modules)
+include_directories(tasks)
+
 add_subdirectory(modules)
 add_subdirectory(tasks)

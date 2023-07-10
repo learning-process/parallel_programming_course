@@ -12,6 +12,7 @@ add_library(${PACK_LIB} STATIC ${ALL_SOURCE_FILES} )
 add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
 
 target_link_libraries(${ProjectId} ${PACK_LIB})
+target_link_libraries(${ProjectId} core_lib)
 target_link_libraries(${ProjectId} gtest gtest_main)
 
 enable_testing()

@@ -1,3 +1,11 @@
+if(MSVC)
+    option(gtest_force_shared_crt "" TRUE)
+endif(MSVC)
+
+if (APPLE)
+    set(CMAKE_SHARED_LIBRARY_RUNTIME_C_FLAG TRUE)
+endif(APPLE)
+
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/arch" )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/lib" )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin" )
@@ -42,4 +50,42 @@ MACRO(SUBDIRLIST result curdir)
     ENDIF()
   ENDFOREACH()
   SET(${result} ${dirlist})
+ENDMACRO()
+
+MACRO(CPPCHECK_AND_COUNTS_TESTS ProjectId ALL_SOURCE_FILES)
+    if( UNIX )
+        foreach (SOURCE_FILE ${ALL_SOURCE_FILES})
+            string(FIND ${SOURCE_FILE} ${PROJECT_BINARY_DIR} PROJECT_TRDPARTY_DIR_FOUND)
+            if (NOT ${PROJECT_TRDPARTY_DIR_FOUND} EQUAL -1)
+                list(REMOVE_ITEM ALL_SOURCE_FILES ${SOURCE_FILE})
+            endif ()
+        endforeach ()
+        if (NOT APPLE)
+            find_program(CPPCHECK_EXEC /usr/bin/cppcheck)
+            add_custom_target(
+                    "${ProjectId}_cppcheck" ALL
+                    COMMAND ${CPPCHECK_EXEC}
+                    --enable=warning,performance,portability,information
+                    --language=c++
+                    --std=c++11
+                    --error-exitcode=1
+                    --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
+                    --verbose
+                    --quiet
+                    ${ALL_SOURCE_FILES}
+            )
+        ENDIF ()
+    endif( UNIX )
+
+    SET(ARGS_FOR_CHECK_COUNT_TESTS "")
+    foreach (FILE_ELEM ${ALL_SOURCE_FILES})
+        set(ARGS_FOR_CHECK_COUNT_TESTS "${ARGS_FOR_CHECK_COUNT_TESTS} ${FILE_ELEM}")
+    endforeach ()
+
+    add_custom_target("${ProjectId}_check_count_tests" ALL
+            COMMAND "${Python3_EXECUTABLE}"
+            ${CMAKE_SOURCE_DIR}/scripts/check_count_tests.py
+            ${ProjectId}
+            ${ARGS_FOR_CHECK_COUNT_TESTS}
+    )
 ENDMACRO()
