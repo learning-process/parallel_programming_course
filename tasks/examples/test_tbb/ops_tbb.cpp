@@ -5,7 +5,7 @@
 #include <random>
 #include <functional>
 #include <numeric>
-#include "../../../tasks/test_tasks/test_tbb/ops_tbb.h"
+#include "examples/test_tbb/ops_tbb.h"
 
 std::vector<int> getRandomVector(int sz) {
     std::random_device dev;

@@ -23,7 +23,7 @@ if ( USE_TBB )
             target_link_libraries(${ProjectId} ${tbb_lib})
             configure_file(${tbb_lib} "${CMAKE_BINARY_DIR}/bin" COPYONLY)
         endforeach ()
-    elseif ()
+    else ()
         target_link_libraries(${ProjectId} gtest gtest_main tbb)
     endif ()
 
