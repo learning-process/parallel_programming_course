@@ -19,7 +19,7 @@ if ( USE_STD )
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
 
-    CPPCHECK_AND_COUNTS_TESTS(${ProjectId} ${PROJECT_BINARY_DIR} ${ALL_SOURCE_FILES})
+    CPPCHECK_AND_COUNTS_TESTS("${ProjectId}" "${ALL_SOURCE_FILES}")
 else( USE_STD )
     message( STATUS "-- ${ProjectId} - NOT BUILD!"  )
 endif( USE_STD )
