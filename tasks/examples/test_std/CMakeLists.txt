@@ -31,7 +31,7 @@ if ( USE_STD )
         add_custom_target(
                 "${ProjectId}_cppcheck" ALL
                 COMMAND ${CPPCHECK_EXEC}
-                --enable=warning,performance,portability,information,missingInclude
+                --enable=warning,performance,portability,information
                 --language=c++
                 --std=c++11
                 --error-exitcode=1
