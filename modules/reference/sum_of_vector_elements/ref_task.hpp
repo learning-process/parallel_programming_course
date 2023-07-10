@@ -12,14 +12,14 @@
 namespace ppc {
 namespace reference {
 
-template<class T>
+template<class InOutType>
 class SumOfVectorElements : public ppc::core::Task {
  public:
     explicit SumOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
     bool pre_processing() override {
         // Init vectors
-        input_ = std::vector<T>(taskData->inputs_count[0]);
-        auto tmp_ptr = reinterpret_cast<T*>(taskData->inputs[0]);
+        input_ = std::vector<InOutType>(taskData->inputs_count[0]);
+        auto tmp_ptr = reinterpret_cast<InOutType*>(taskData->inputs[0]);
         for (int i = 0; i < taskData->inputs_count[0]; i++) {
             input_[i] = tmp_ptr[i];
         }
@@ -43,13 +43,13 @@ class SumOfVectorElements : public ppc::core::Task {
     }
 
     bool post_processing() override {
-        reinterpret_cast<T*>(taskData->outputs[0])[0] = sum;
+        reinterpret_cast<InOutType*>(taskData->outputs[0])[0] = sum;
         return true;
     }
 
  private:
-    std::vector<T> input_;
-    T sum;
+    std::vector<InOutType> input_;
+    InOutType sum;
 };
 
 }  // namespace reference
