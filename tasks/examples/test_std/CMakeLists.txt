@@ -27,20 +27,21 @@ if ( USE_STD )
             endif ()
         endforeach ()
 
-        find_program(CPPCHECK_EXEC cppcheck)
-        add_custom_target(
-                "${ProjectId}_cppcheck" ALL
-                COMMAND ${CPPCHECK_EXEC}
-                --enable=warning,performance,portability,information
-                --suppress=missingInclude
-                --language=c++
-                --std=c++11
-                --error-exitcode=1
-                --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
-                --verbose
-                --quiet
-                ${ALL_SOURCE_FILES}
-        )
+        if (NOT APPLE)
+            find_program(CPPCHECK_EXEC /usr/bin/cppcheck)
+            add_custom_target(
+                    "${ProjectId}_cppcheck" ALL
+                    COMMAND ${CPPCHECK_EXEC}
+                    --enable=warning,performance,portability,information
+                    --language=c++
+                    --std=c++11
+                    --error-exitcode=1
+                    --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
+                    --verbose
+                    --quiet
+                    ${ALL_SOURCE_FILES}
+            )
+        ENDIF ()
     endif( UNIX )
 
     SET(ARGS_FOR_CHECK_COUNT_TESTS "")

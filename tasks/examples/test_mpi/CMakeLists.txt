@@ -39,21 +39,21 @@ if( USE_MPI )
                 list(REMOVE_ITEM ALL_SOURCE_FILES ${SOURCE_FILE})
             endif ()
         endforeach ()
-
-        find_program(CPPCHECK_EXEC /usr/bin/cppcheck)
-        add_custom_target(
-                "${ProjectId}_cppcheck" ALL
-                COMMAND ${CPPCHECK_EXEC}
-                --enable=warning,performance,portability,information
-                --suppress=missingInclude
-                --language=c++
-                --std=c++11
-                --error-exitcode=1
-                --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
-                --verbose
-                --quiet
-                ${ALL_SOURCE_FILES}
-        )
+        if (NOT APPLE)
+            find_program(CPPCHECK_EXEC /usr/bin/cppcheck)
+            add_custom_target(
+                    "${ProjectId}_cppcheck" ALL
+                    COMMAND ${CPPCHECK_EXEC}
+                    --enable=warning,performance,portability,information
+                    --language=c++
+                    --std=c++11
+                    --error-exitcode=1
+                    --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
+                    --verbose
+                    --quiet
+                    ${ALL_SOURCE_FILES}
+            )
+        ENDIF ()
     endif( UNIX )
 
     SET(ARGS_FOR_CHECK_COUNT_TESTS "")
