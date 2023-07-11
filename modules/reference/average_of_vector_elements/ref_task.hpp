@@ -39,9 +39,7 @@ class AverageOfVectorElements : public ppc::core::Task {
 
     bool run() override {
         average = static_cast<OutType>(std::accumulate(input_.begin(), input_.end(), 0.0));
-        std::cout << average << std::endl;
         average /= static_cast<OutType>(taskData->inputs_count[0]);
-        std::cout << average << std::endl;
         return true;
     }
 
