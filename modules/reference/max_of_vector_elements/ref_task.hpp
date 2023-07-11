@@ -25,7 +25,7 @@ class MaxOfVectorElements : public ppc::core::Task {
             input_[i] = tmp_ptr[i];
         }
         // Init value for output
-        max = 0;
+        max = 0.0;
         max_index = 0;
         return true;
     }
@@ -52,11 +52,9 @@ class MaxOfVectorElements : public ppc::core::Task {
     }
 
     bool run() override {
-        auto result = std::max_element(input_.begin(), input_.end(), [](int a, int b) {
-            return std::abs(a) < std::abs(b);
-        });
+        auto result = std::max_element(input_.begin(), input_.end());
         max = static_cast<InOutType>(*result);
-        max_index = std::distance(input_.begin(), result);
+        max_index = static_cast<IndexType>(std::distance(input_.begin(), result));
         return true;
     }
 
