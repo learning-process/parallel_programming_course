@@ -145,6 +145,8 @@ jobs:
         mpi: msmpi
     - name: Setup Ninja
       uses: seanmiddleditch/gha-setup-ninja@master
+      run: |
+        dir ${GITHUB_WORKSPACE}/ninja-build
     - name: Download dependencies
       run: |
         choco install openssl
