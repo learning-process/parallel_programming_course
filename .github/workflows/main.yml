@@ -137,16 +137,14 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Setup Ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
     - name: Setup MPI
       uses: mpi4py/setup-mpi@v1
       with:
         mpi: msmpi
-    - name: Setup Ninja
-      uses: seanmiddleditch/gha-setup-ninja@master
-      run: |
-        dir ${GITHUB_WORKSPACE}/ninja-build
     - name: Download dependencies
       run: |
         choco install openssl
@@ -156,7 +154,7 @@ jobs:
       run: |
         mkdir build
         cd build 
-        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -DCMAKE_C_COMPILER=cl.exe -DCMAKE_CXX_COMPILER=cl.exe -DCMAKE_MAKE_PROGRAM=ninja.exe -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
     - name: Ninja build
       run: |
