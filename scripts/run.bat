@@ -1,8 +1,8 @@
 @echo off
 
 cd build
-ctest --extra-verbose --repeat-until-fail 10 --timeout 100000 --build-and-test
-"C:\Program Files\Microsoft MPI\Bin\mpiexec.exe" -np 4 ctest --extra-verbose --repeat-until-fail 10 --timeout 100000 --build-and-test || exit 1
+ctest --extra-verbose --build-config Release --repeat-until-fail 10 --timeout 100000 --build-and-test
+"C:\Program Files\Microsoft MPI\Bin\mpiexec.exe" -np 4 ctest --extra-verbose --build-config Release --repeat-until-fail 10 --timeout 100000 --build-and-test || exit 1
 cd ..
 
 @REM for /r "." %%a in (build\bin\*_ref.exe) do (
