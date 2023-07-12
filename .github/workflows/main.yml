@@ -143,6 +143,8 @@ jobs:
       uses: mpi4py/setup-mpi@v1
       with:
         mpi: msmpi
+    - name: Setup Ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
     - name: Download dependencies
       run: |
         choco install openssl
@@ -152,12 +154,12 @@ jobs:
       run: |
         mkdir build
         cd build 
-        cmake -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
-    - name: MSBuild
+    - name: Ninja build
       run: |
-        cd build 
-        cmake --build . --config Release --parallel 
+        cd build
+        ninja
         cd ..
     - name: Run tests
       run: |
