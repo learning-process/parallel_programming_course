@@ -155,8 +155,7 @@ jobs:
         mkdir build
         cd build 
         "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        set MSVC_PATH="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\14.16\bin\Hostx64\x64\cl.exe"
-        cmake -DCMAKE_C_COMPILER=%MSVC_PATH% -DCMAKE_CXX_COMPILER=%MSVC_PATH% -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -DCMAKE_C_COMPILER="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\14.16\bin\Hostx64\x64\cl.exe" -DCMAKE_CXX_COMPILER="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\14.16\bin\Hostx64\x64\cl.exe" -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
     - name: Ninja build
       run: |
