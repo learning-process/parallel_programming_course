@@ -27,7 +27,7 @@ TEST(num_of_alternations_signs, check_int32_t) {
     ASSERT_EQ(isValid, true);
     testTask.run();
     testTask.post_processing();
-    ASSERT_EQ(out[0], in.size() / 2);
+    ASSERT_EQ(out[0], in.size() - 1);
 }
 
 TEST(num_of_alternations_signs, check_validate_func) {
