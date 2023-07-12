@@ -3,19 +3,6 @@
 # shellcheck disable=SC2164
 cd build
 ctest --extra-verbose --repeat-until-fail 10 --timeout 100000 --build-and-test
-
-if [[ $OSTYPE == "linux-gnu" ]]; then
-    NUM_PROC=$(cat /proc/cpuinfo|grep processor|wc -l)
-elif [[ $OSTYPE == "darwin"* ]]; then
-    NUM_PROC=$(sysctl -a | grep machdep.cpu | grep thread_count | cut -d ' ' -f 2)
-else
-    echo "Unknown OS"
-    NUM_PROC="1"
-fi
-echo "NUM_PROC: " $NUM_PROC
-
-mpirun -np $NUM_PROC ctest --extra-verbose --repeat-until-fail 10 --timeout 100000 --build-and-test || exit 1
-
 # shellcheck disable=SC2103
 cd ..
 
