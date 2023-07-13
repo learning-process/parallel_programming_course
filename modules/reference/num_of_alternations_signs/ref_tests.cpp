@@ -83,7 +83,7 @@ TEST(num_of_alternations_signs, check_int8_t) {
     taskData->outputs_count.emplace_back(out.size());
 
     // Create Task
-    ppc::reference::NumOfAlternationsSigns<uint8_t, uint64_t> testTask(taskData);
+    ppc::reference::NumOfAlternationsSigns<int8_t, uint64_t> testTask(taskData);
     testTask.pre_processing();
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);

@@ -33,7 +33,7 @@ class NearestNeighborElements : public ppc::core::Task {
 
     bool validation() override {
         // Check count elements of output
-        if (taskData->outputs_count[0] == 2 && taskData->outputs_count[1]) {
+        if (taskData->outputs_count[0] == 2 && taskData->outputs_count[1] == 2) {
             return true;
         } else {
             return false;
@@ -45,13 +45,13 @@ class NearestNeighborElements : public ppc::core::Task {
         int rot_left = 1;
         rotate(rotate_in.begin(), rotate_in.begin() + rot_left, rotate_in.end());
 
-        auto temp_res = std::vector<bool>(input_.size());
+        auto temp_res = std::vector<InOutType>(input_.size());
         std::transform(input_.begin(), input_.end(), rotate_in.begin(), temp_res.begin(),
                        [](InOutType x, InOutType y) { return std::abs(x - y); });
 
         auto result = std::min_element(temp_res.begin(), temp_res.end() - 1);
-        l_elem = static_cast<InOutType>(*result);
-        l_elem_index = static_cast<IndexType>(std::distance(input_.begin(), result));
+        l_elem_index = static_cast<IndexType>(std::distance(temp_res.begin(), result));
+        l_elem = input_[l_elem_index];
 
         r_elem_index = l_elem_index + 1;
         r_elem = input_[r_elem_index];
@@ -62,7 +62,7 @@ class NearestNeighborElements : public ppc::core::Task {
         reinterpret_cast<InOutType*>(taskData->outputs[0])[0] = l_elem;
         reinterpret_cast<InOutType*>(taskData->outputs[0])[1] = r_elem;
         reinterpret_cast<IndexType*>(taskData->outputs[1])[0] = l_elem_index;
-        reinterpret_cast<IndexType*>(taskData->outputs[1])[0] = r_elem_index;
+        reinterpret_cast<IndexType*>(taskData->outputs[1])[1] = r_elem_index;
         return true;
     }
 

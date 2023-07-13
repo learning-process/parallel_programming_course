@@ -83,7 +83,7 @@ TEST(num_of_orderly_violations, check_int8_t) {
     taskData->outputs_count.emplace_back(out.size());
 
     // Create Task
-    ppc::reference::NumOfOrderlyViolations<uint8_t, uint64_t> testTask(taskData);
+    ppc::reference::NumOfOrderlyViolations<int8_t, uint64_t> testTask(taskData);
     testTask.pre_processing();
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);
