@@ -150,11 +150,13 @@ jobs:
         choco install openssl
     - name: Update submodules
       run: git submodule update --init --recursive
+    - name: Enable Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       run: |
         mkdir build
         cd build 
-        cmake -G "Ninja" -D CMAKE_CXX_COMPILER=cl -D CMAKE_C_COMPILER=cl -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -G "Ninja" -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
     - name: Ninja build
       run: |
