@@ -154,8 +154,14 @@ jobs:
       run: |
         mkdir build
         cd build 
-        "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        cmake -DCMAKE_C_COMPILER="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\14.16\bin\Hostx64\x64\cl.exe" -DCMAKE_CXX_COMPILER="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\14.16\bin\Hostx64\x64\cl.exe" -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -G "Ninja" ^
+          -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release ^
+          -D CMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_DEST_WIN }}\scripts\buildsystems\vcpkg.cmake ^
+          -D VCPKG_TARGET_TRIPLET=x64-windows-static-release ^
+          -D VERBOSE_CONFIGURE=ON ^
+          -D CMAKE_CXX_COMPILER=cl ^
+          -D CMAKE_C_COMPILER=cl ^
+          -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
     - name: Ninja build
       run: |
