@@ -154,14 +154,7 @@ jobs:
       run: |
         mkdir build
         cd build 
-        cmake -G "Ninja" ^
-          -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release ^
-          -D CMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_DEST_WIN }}\scripts\buildsystems\vcpkg.cmake ^
-          -D VCPKG_TARGET_TRIPLET=x64-windows-static-release ^
-          -D VERBOSE_CONFIGURE=ON ^
-          -D CMAKE_CXX_COMPILER=cl ^
-          -D CMAKE_C_COMPILER=cl ^
-          -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -G "Ninja" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_DEST_WIN }}\scripts\buildsystems\vcpkg.cmake -D VCPKG_TARGET_TRIPLET=x64-windows-static-release -D VERBOSE_CONFIGURE=ON -D CMAKE_CXX_COMPILER=cl -D CMAKE_C_COMPILER=cl -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
     - name: Ninja build
       run: |
