@@ -1,7 +1,7 @@
 // Copyright 2023 Nesterov Alexander
 
-#ifndef MODULES_REFERENCE_NUM_OF_ALTERNATIONS_SIGNS_REF_TASK_HPP_
-#define MODULES_REFERENCE_NUM_OF_ALTERNATIONS_SIGNS_REF_TASK_HPP_
+#ifndef MODULES_REFERENCE_NEAREST_NEIGHBOR_ELEMENTS_REF_TASK_HPP_
+#define MODULES_REFERENCE_NEAREST_NEIGHBOR_ELEMENTS_REF_TASK_HPP_
 
 #include <gtest/gtest.h>
 #include <vector>
@@ -75,4 +75,4 @@ class NearestNeighborElements : public ppc::core::Task {
 }  // namespace reference
 }  // namespace ppc
 
-#endif  // MODULES_REFERENCE_NUM_OF_ALTERNATIONS_SIGNS_REF_TASK_HPP_
+#endif  // MODULES_REFERENCE_NEAREST_NEIGHBOR_ELEMENTS_REF_TASK_HPP_
