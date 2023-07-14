@@ -25,7 +25,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
       env:
         CC: gcc-9
@@ -64,7 +64,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
       env:
         CC: clang
@@ -156,7 +156,7 @@ jobs:
       run: |
         mkdir build
         cd build 
-        cmake -G "Ninja" -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -G "Ninja" -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
     - name: Ninja build
       run: |
@@ -167,4 +167,3 @@ jobs:
       run: |
         set OMP_NUM_THREADS=4
         scripts/run.bat
- 

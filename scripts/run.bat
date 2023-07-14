@@ -8,9 +8,7 @@ for /r "." %%a in (build\bin\*_mpi.exe) do (
     echo -------------------------------------
     echo %%~na
     echo -------------------------------------
-    for /l %%x in (1, 1, 1) do (
-        "C:\Program Files\Microsoft MPI\Bin\mpiexec.exe" -np 4 %%~fa || exit 1
-    )
+    "C:\Program Files\Microsoft MPI\Bin\mpiexec.exe" -np 4 %%~fa --gtest_repeat=10 || exit 1
 )
 
 @REM for /r "." %%a in (build\bin\*_ref.exe) do (

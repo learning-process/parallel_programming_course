@@ -46,10 +46,8 @@ for file in $FILES_MPI; do
         NUM_PROC="1"
     fi
     echo "NUM_PROC: " $NUM_PROC
-    # shellcheck disable=SC2034
-    for i in {1..10}; do
-        mpirun -np $NUM_PROC $file || exit 1
-    done
+
+    mpirun -np $NUM_PROC $file --gtest_repeat=10 || exit 1
 done
 
 # FILES_OMP="build/bin/*_omp"
