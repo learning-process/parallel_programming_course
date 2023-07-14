@@ -17,6 +17,7 @@ class AverageOfVectorElements : public ppc::core::Task {
  public:
     explicit AverageOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
     bool pre_processing() override {
+        internal_order_test();
         // Init vectors
         input_ = std::vector<InType>(taskData->inputs_count[0]);
         auto tmp_ptr = reinterpret_cast<InType*>(taskData->inputs[0]);

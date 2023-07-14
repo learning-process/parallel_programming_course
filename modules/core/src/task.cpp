@@ -13,3 +13,6 @@ std::shared_ptr<ppc::core::TaskData> ppc::core::Task::get_data() const {
 ppc::core::Task::Task(std::shared_ptr<TaskData> taskData_) {
     set_data(std::move(taskData_));
 }
+
+ppc::core::Task::~Task() {
+}

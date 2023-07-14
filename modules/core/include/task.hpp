@@ -3,9 +3,11 @@
 #ifndef MODULES_CORE_INCLUDE_TASK_HPP_
 #define MODULES_CORE_INCLUDE_TASK_HPP_
 
+#include <source_location>
 #include <cstdint>
 #include <vector>
 #include <memory>
+#include <iostream>
 
 namespace ppc {
 namespace core {
@@ -23,18 +25,23 @@ class Task {
     explicit Task(std::shared_ptr<TaskData> taskData_);
     // set input and output data
     void set_data(std::shared_ptr<TaskData> taskData_);
-    // pre-processing of input data
-    virtual bool pre_processing() = 0;
     // validation of data and validation of task attributes before running
     virtual bool validation() = 0;
+    // pre-processing of input data
+    virtual bool pre_processing() = 0;
     // realization of current task
     virtual bool run() = 0;
     // post-processing of output data
     virtual bool post_processing() = 0;
     // get input and output data
     std::shared_ptr<TaskData> get_data() const;
-
+    ~Task();
  protected:
+    void internal_order_test(const std::source_location &location = std::source_location::current()) {
+        std::cout << location.file_name() << ":"
+                  << location.line() << ":"
+                  << location.function_name();
+    }
     std::shared_ptr<TaskData> taskData;
 };
 
