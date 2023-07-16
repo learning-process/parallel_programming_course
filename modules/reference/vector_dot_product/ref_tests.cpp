@@ -135,7 +135,7 @@ TEST(vector_dot_product, check_int64_t) {
     const uint64_t count_data = 297;
     std::vector<int64_t> in1(count_data, 1);
     std::vector<int64_t> in2(count_data, 1);
-    std::vector<int32_t> out(1, 0);
+    std::vector<int64_t> out(1, 0);
     for (int i = 0; i < count_data; i++) {
         in1[i] = i + 1; in2[i] = (i + 1) * (i + 1);
     }
