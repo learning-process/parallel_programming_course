@@ -51,8 +51,8 @@ class Task {
  private:
     std::vector<std::string> functions_order;
     std::shared_ptr<std::mutex> mtx = std::make_shared<std::mutex>();
-    std::vector<std::string> right_functions_order = {"set_data", "validation", "pre_processing", "run", "post_processing"};
-
+    std::vector<std::string> right_functions_order =
+            {"set_data", "validation", "pre_processing", "run", "post_processing"};
 };
 
 }  // namespace core

@@ -30,8 +30,7 @@ void ppc::core::Task::internal_order_test(const std::string& str)  {
 ppc::core::Task::~Task() {
     if (functions_order.size() != 5) {
         throw std::length_error("ORDER OF FUCTIONS IS NOT RIGHT: " + std::to_string(functions_order.size()));
-    }
-    else {
+    } else {
         for (int i = 0; i < functions_order.size(); i++) {
             if (functions_order[i] != right_functions_order[i]) {
                 throw std::invalid_argument("ORDER OF FUCTIONS IS NOT RIGHT: \n" +
