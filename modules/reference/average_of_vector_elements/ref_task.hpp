@@ -30,6 +30,7 @@ class AverageOfVectorElements : public ppc::core::Task {
     }
 
     bool validation() override {
+        internal_order_test();
         // Check count elements of output
         if (taskData->outputs_count[0] == 1) {
             return true;
@@ -39,12 +40,14 @@ class AverageOfVectorElements : public ppc::core::Task {
     }
 
     bool run() override {
+        internal_order_test();
         average = static_cast<OutType>(std::accumulate(input_.begin(), input_.end(), 0.0));
         average /= static_cast<OutType>(taskData->inputs_count[0]);
         return true;
     }
 
     bool post_processing() override {
+        internal_order_test();
         reinterpret_cast<OutType*>(taskData->outputs[0])[0] = average;
         return true;
     }

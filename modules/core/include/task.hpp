@@ -3,11 +3,11 @@
 #ifndef MODULES_CORE_INCLUDE_TASK_HPP_
 #define MODULES_CORE_INCLUDE_TASK_HPP_
 
-#include <source_location>
 #include <cstdint>
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <string>
 
 namespace ppc {
 namespace core {
@@ -36,12 +36,9 @@ class Task {
     // get input and output data
     std::shared_ptr<TaskData> get_data() const;
     ~Task();
+
  protected:
-    void internal_order_test(const std::source_location &location = std::source_location::current()) {
-        std::cout << location.file_name() << ":"
-                  << location.line() << ":"
-                  << location.function_name();
-    }
+    void internal_order_test(const std::string& str = __builtin_FUNCTION());
     std::shared_ptr<TaskData> taskData;
 };
 
