@@ -27,26 +27,21 @@ TEST(average_of_vector_elements, check_int32_t) {
 }
 
 TEST(average_of_vector_elements, check_validate_func) {
-    auto test_func = []() {
-        // Create data
-        std::vector<int32_t> in(125, 1);
-        std::vector<double> out(2, 0);
+    // Create data
+    std::vector<int32_t> in(125, 1);
+    std::vector<double> out(2, 0);
 
-        // Create TaskData
-        std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
-        taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-        taskData->inputs_count.emplace_back(in.size());
-        taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-        taskData->outputs_count.emplace_back(out.size());
+    // Create TaskData
+    std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+    taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+    taskData->inputs_count.emplace_back(in.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+    taskData->outputs_count.emplace_back(out.size());
 
-        // Create Task
-        ppc::reference::AverageOfVectorElements<int32_t, double> testTask(taskData);
-        testTask.pre_processing();
-        bool isValid = testTask.validation();
-        ASSERT_EQ(isValid, false);
-    };
-
-    EXPECT_DEATH(test_func(), "");
+    // Create Task
+    ppc::reference::AverageOfVectorElements<int32_t, double> testTask(taskData);
+    bool isValid = testTask.validation();
+    ASSERT_EQ(isValid, false);
 }
 
 TEST(average_of_vector_elements, check_double) {

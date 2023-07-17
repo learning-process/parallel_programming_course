@@ -34,55 +34,45 @@ TEST(vector_dot_product, check_int32_t) {
 }
 
 TEST(vector_dot_product, check_validate_func) {
-    auto test_func = []() {
-        // Create data
-        std::vector<int32_t> in1(125, 1);
-        std::vector<int32_t> in2(125, 1);
-        std::vector<int32_t> out(2, 0);
+    // Create data
+    std::vector<int32_t> in1(125, 1);
+    std::vector<int32_t> in2(125, 1);
+    std::vector<int32_t> out(2, 0);
 
-        // Create TaskData
-        std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
-        taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in1.data()));
-        taskData->inputs_count.emplace_back(in1.size());
-        taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in2.data()));
-        taskData->inputs_count.emplace_back(in2.size());
-        taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-        taskData->outputs_count.emplace_back(out.size());
+    // Create TaskData
+    std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+    taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in1.data()));
+    taskData->inputs_count.emplace_back(in1.size());
+    taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in2.data()));
+    taskData->inputs_count.emplace_back(in2.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+    taskData->outputs_count.emplace_back(out.size());
 
-        // Create Task
-        ppc::reference::VectorDotProduct<int32_t> testTask(taskData);
-        testTask.pre_processing();
-        bool isValid = testTask.validation();
-        ASSERT_EQ(isValid, false);
-    };
-
-    EXPECT_DEATH(test_func(), "");
+    // Create Task
+    ppc::reference::VectorDotProduct<int32_t> testTask(taskData);
+    bool isValid = testTask.validation();
+    ASSERT_EQ(isValid, false);
 }
 
 TEST(vector_dot_product, check_validate_func_2) {
-    auto test_func = []() {
-        // Create data
-        std::vector<int32_t> in1(125, 1);
-        std::vector<int32_t> in2(124, 1);
-        std::vector<int32_t> out(1, 0);
+    // Create data
+    std::vector<int32_t> in1(125, 1);
+    std::vector<int32_t> in2(124, 1);
+    std::vector<int32_t> out(1, 0);
 
-        // Create TaskData
-        std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
-        taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in1.data()));
-        taskData->inputs_count.emplace_back(in1.size());
-        taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in2.data()));
-        taskData->inputs_count.emplace_back(in2.size());
-        taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-        taskData->outputs_count.emplace_back(out.size());
+    // Create TaskData
+    std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+    taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in1.data()));
+    taskData->inputs_count.emplace_back(in1.size());
+    taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in2.data()));
+    taskData->inputs_count.emplace_back(in2.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+    taskData->outputs_count.emplace_back(out.size());
 
-        // Create Task
-        ppc::reference::VectorDotProduct<int32_t> testTask(taskData);
-        testTask.pre_processing();
-        bool isValid = testTask.validation();
-        ASSERT_EQ(isValid, false);
-    };
-
-    EXPECT_DEATH(test_func(), "");
+    // Create Task
+    ppc::reference::VectorDotProduct<int32_t> testTask(taskData);
+    bool isValid = testTask.validation();
+    ASSERT_EQ(isValid, false);
 }
 
 TEST(vector_dot_product, check_double) {

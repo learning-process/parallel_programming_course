@@ -6,11 +6,11 @@
 #include <cstdint>
 #include <vector>
 #include <memory>
+#include <mutex>
 #include <iostream>
 #include <string>
 
-namespace ppc {
-namespace core {
+namespace ppc::core {
 
 struct TaskData {
     std::vector<uint8_t *> inputs;
@@ -40,7 +40,7 @@ class Task {
     virtual bool post_processing() = 0;
 
     // get input and output data
-    std::shared_ptr<TaskData> get_data() const;
+    [[nodiscard]] std::shared_ptr<TaskData> get_data() const;
 
     ~Task();
 
@@ -50,12 +50,10 @@ class Task {
 
  private:
     std::vector<std::string> functions_order;
-    std::shared_ptr<std::mutex> mtx = std::make_shared<std::mutex>();
     std::vector<std::string> right_functions_order =
             {"set_data", "validation", "pre_processing", "run", "post_processing"};
 };
 
-}  // namespace core
-}  // namespace ppc
+}  // namespace ppc::core
 
 #endif  // MODULES_CORE_INCLUDE_TASK_HPP_

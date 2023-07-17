@@ -50,6 +50,12 @@ if( NOT (APPLE OR WIN32) )
     cpplint_add_subdirectory(modules)
 endif( NOT (APPLE OR WIN32) )
 
+######################### Performance mode ##########################
+option(USE_PERF_MODE OFF)
+if( USE_PERF_MODE )
+    add_compile_definitions(ENABLE_PERF_MODE)
+endif( USE_PERF_MODE )
+
 ############################## Modules ##############################
 include(cmake/boost.cmake)
 

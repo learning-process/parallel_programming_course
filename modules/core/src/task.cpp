@@ -4,12 +4,8 @@
 #include <stdexcept>
 
 void ppc::core::Task::set_data(std::shared_ptr<TaskData> taskData_) {
-    taskData = std::move(taskData_);
-
-    mtx->lock();
     functions_order.clear();
-    mtx->unlock();
-
+    taskData = std::move(taskData_);
     internal_order_test();
 }
 
@@ -22,16 +18,13 @@ ppc::core::Task::Task(std::shared_ptr<TaskData> taskData_) {
 }
 
 void ppc::core::Task::internal_order_test(const std::string& str)  {
-    mtx->lock();
     functions_order.push_back(str);
-    mtx->unlock();
-}
 
-ppc::core::Task::~Task() {
-    if (functions_order.size() != 5) {
-        throw std::length_error("ORDER OF FUCTIONS IS NOT RIGHT: " + std::to_string(functions_order.size()));
+    if (functions_order.size() > 5) {
+        throw std::length_error("COUNT CALLS OF FUCTIONS IS NOT RIGHT: "
+                                + std::to_string(functions_order.size()));
     } else {
-        for (int i = 0; i < functions_order.size(); i++) {
+        for (auto i = 0; i < functions_order.size(); i++) {
             if (functions_order[i] != right_functions_order[i]) {
                 throw std::invalid_argument("ORDER OF FUCTIONS IS NOT RIGHT: \n" +
                      std::string("Serial number: ") + std::to_string(i + 1) + "\n" +
@@ -40,4 +33,8 @@ ppc::core::Task::~Task() {
             }
         }
     }
+}
+
+ppc::core::Task::~Task() {
+    functions_order.clear();
 }

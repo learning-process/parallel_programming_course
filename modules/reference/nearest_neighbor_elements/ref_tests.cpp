@@ -36,29 +36,24 @@ TEST(nearest_neighbor_elements, check_int32_t) {
 }
 
 TEST(nearest_neighbor_elements, check_validate_func) {
-    auto test_func = []() {
-        // Create data
-        std::vector<int32_t> in(125, 1);
-        std::vector<int32_t> out(2, 0);
-        std::vector<uint64_t> out_index(1, 0);
+    // Create data
+    std::vector<int32_t> in(125, 1);
+    std::vector<int32_t> out(2, 0);
+    std::vector<uint64_t> out_index(1, 0);
 
-        // Create TaskData
-        std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
-        taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-        taskData->inputs_count.emplace_back(in.size());
-        taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-        taskData->outputs_count.emplace_back(out.size());
-        taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-        taskData->outputs_count.emplace_back(out_index.size());
+    // Create TaskData
+    std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+    taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+    taskData->inputs_count.emplace_back(in.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+    taskData->outputs_count.emplace_back(out.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+    taskData->outputs_count.emplace_back(out_index.size());
 
-        // Create Task
-        ppc::reference::NearestNeighborElements<int32_t, uint64_t> testTask(taskData);
-        testTask.pre_processing();
-        bool isValid = testTask.validation();
-        EXPECT_EQ(isValid, false);
-    };
-
-    EXPECT_DEATH(test_func(), "");
+    // Create Task
+    ppc::reference::NearestNeighborElements<int32_t, uint64_t> testTask(taskData);
+    bool isValid = testTask.validation();
+    EXPECT_EQ(isValid, false);
 }
 
 TEST(nearest_neighbor_elements, check_double) {
