@@ -23,6 +23,7 @@ jobs:
       run: git submodule update --init --recursive
     - name: CMake configure
       run: |
+        
         mkdir build
         cd build
         cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
@@ -62,6 +63,8 @@ jobs:
       run: git submodule update --init --recursive
     - name: CMake configure
       run: |
+        export CC=/usr/local/bin/gcc
+        export CXX=/usr/local/bin/g++
         mkdir build
         cd build
         cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
