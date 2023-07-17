@@ -24,18 +24,10 @@ struct PerfResults {
 
 class Perf {
  public:
-    // Init performance analysis with initialized task and initialized data
-    explicit Perf(std::shared_ptr<Task> task_);
-    // Set task with initialized task and initialized data for performance analysis c
-    void set_task(std::shared_ptr<Task> task_);
-    // Check performance of task's run() function
-    void pipeline_run(std::shared_ptr<PerfAttr> perfAttr, std::shared_ptr<ppc::core::PerfResults> perfResults);
-    // Check performance of full task's pipeline:  pre_processing() -> validation() -> run() -> post_processing()
-    void task_run(std::shared_ptr<PerfAttr> perfAttr, std::shared_ptr<ppc::core::PerfResults> perfResults);
- private:
-    std::shared_ptr<Task> task;
-    static void common_run(std::shared_ptr<PerfAttr> perfAttr, std::function<void()> pipeline,
-                           std::shared_ptr<ppc::core::PerfResults> perfResults);
+    // Check performance of test function
+    void pipeline_run(const std::function<void()>& test_function,
+                      std::shared_ptr<PerfAttr> perfAttr,
+                      std::shared_ptr<ppc::core::PerfResults> perfResults);
 };
 
 }  // namespace core

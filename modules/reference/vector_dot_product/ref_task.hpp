@@ -17,6 +17,7 @@ class VectorDotProduct : public ppc::core::Task {
  public:
     explicit VectorDotProduct(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
     bool pre_processing() override {
+        internal_order_test();
         // Init vectors
         input_ = std::vector< std::vector<InOutType> >(2);
         for (int i = 0; i < input_.size(); i++) {
@@ -33,6 +34,7 @@ class VectorDotProduct : public ppc::core::Task {
     }
 
     bool validation() override {
+        internal_order_test();
         // Check count elements of output
         if (taskData->outputs_count[0] == 1 &&
             taskData->inputs_count[0] == taskData->inputs_count[1]) {
@@ -43,11 +45,13 @@ class VectorDotProduct : public ppc::core::Task {
     }
 
     bool run() override {
+        internal_order_test();
         dor_product = std::inner_product(input_[0].begin(), input_[0].end(), input_[1].begin(), 0.0);
         return true;
     }
 
     bool post_processing() override {
+        internal_order_test();
         reinterpret_cast<InOutType*>(taskData->outputs[0])[0] = dor_product;
         return true;
     }

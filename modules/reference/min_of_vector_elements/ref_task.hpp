@@ -18,6 +18,7 @@ class MinOfVectorElements : public ppc::core::Task {
  public:
     explicit MinOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
     bool pre_processing() override {
+        internal_order_test();
         // Init vectors
         input_ = std::vector<InOutType>(taskData->inputs_count[0]);
         auto tmp_ptr = reinterpret_cast<InOutType*>(taskData->inputs[0]);
@@ -31,6 +32,7 @@ class MinOfVectorElements : public ppc::core::Task {
     }
 
     bool validation() override {
+        internal_order_test();
         bool isCountValuesCorrect, isCountIndexesCorrect;
         // Check count elements of output
         if (taskData->outputs_count[0] == 1) {
@@ -52,6 +54,7 @@ class MinOfVectorElements : public ppc::core::Task {
     }
 
     bool run() override {
+        internal_order_test();
         auto result = std::min_element(input_.begin(), input_.end());
         min = static_cast<InOutType>(*result);
         min_index = static_cast<IndexType>(std::distance(input_.begin(), result));
@@ -59,6 +62,7 @@ class MinOfVectorElements : public ppc::core::Task {
     }
 
     bool post_processing() override {
+        internal_order_test();
         reinterpret_cast<InOutType*>(taskData->outputs[0])[0] = min;
         reinterpret_cast<IndexType*>(taskData->outputs[1])[0] = min_index;
         return true;
