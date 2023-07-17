@@ -50,7 +50,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install clang-15
+        sudo apt-get install clang-14
         sudo apt-get install cppcheck ninja-build
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install libomp-dev
@@ -67,16 +67,16 @@ jobs:
         cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
       env:
-        CC: clang-15
-        CXX: clang++-15
+        CC: clang-14
+        CXX: clang++-14
     - name: Ninja build
       run: |
         cd build
         ninja
         cd ..
       env:
-        CC: clang-15
-        CXX: clang++-15
+        CC: clang-14
+        CXX: clang++-14
     - name: Run tests
       run: |
         export OMP_NUM_THREADS=4
