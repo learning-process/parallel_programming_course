@@ -150,6 +150,9 @@ jobs:
         source scripts/run_mac.sh
   windows-msvc-build:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
     steps:
     - uses: actions/checkout@v1
     - name: Setup Ninja
@@ -172,14 +175,12 @@ jobs:
       with:
           key: ${{ github.job }}
     - name: CMake configure
-      shell: bash
       run: |
         mkdir build
         cd build 
         cmake -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G "Ninja" -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
     - name: Ninja build
-      shell: bash
       run: |
         cd build
         ninja
