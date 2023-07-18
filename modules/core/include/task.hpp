@@ -50,7 +50,7 @@ class Task {
  private:
     std::vector<std::string> functions_order;
     std::vector<std::string> right_functions_order =
-            {"set_data", "validation", "pre_processing", "run", "post_processing"};
+            {"validation", "pre_processing", "run", "post_processing"};
 };
 
 }  // namespace ppc::core
