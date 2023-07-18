@@ -36,7 +36,7 @@ class SumValuesByRowsMatrix : public ppc::core::Task {
         internal_order_test();
         // Check count elements of output
         if (taskData->inputs_count[1] == 2 &&
-            taskData->outputs_count[0] == reinterpret_cast<IndexType*>(taskData->inputs[1])[1]) {
+            taskData->outputs_count[0] == reinterpret_cast<IndexType*>(taskData->inputs[1])[0]) {
             return true;
         } else {
             return false;
@@ -45,15 +45,15 @@ class SumValuesByRowsMatrix : public ppc::core::Task {
 
     bool run() override {
         internal_order_test();
-        for (int i = 0; i < cols; i++) {
-            sum_[i] = std::accumulate(input_.begin() + rows * i, input_.begin() + rows * (i + 1), 0.f);
+        for (int i = 0; i < rows; i++) {
+            sum_[i] = std::accumulate(input_.begin() + cols * i, input_.begin() + cols * (i + 1), 0.f);
         }
         return true;
     }
 
     bool post_processing() override {
         internal_order_test();
-        for (IndexType i = 0; i < cols; i++) {
+        for (IndexType i = 0; i < rows; i++) {
             reinterpret_cast<InOutType*>(taskData->outputs[0])[i] = sum_[i];
         }
         return true;
