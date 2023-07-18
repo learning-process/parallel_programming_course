@@ -2,7 +2,7 @@
 
 # shellcheck disable=SC2164
 cd build
-ctest --extra-verbose --repeat-until-fail 10 --timeout 100000 --build-and-test
+ctest --extra-verbose --repeat-until-fail 10 --timeout 100000 --build-and-test || exit 1
 # shellcheck disable=SC2103
 cd ..
 
