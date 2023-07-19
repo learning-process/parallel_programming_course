@@ -166,10 +166,10 @@ jobs:
         choco install openssl
     - name: Update submodules
       run: git submodule update --init --recursive
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+    - name: Setup ccache
+      uses: Chocobo1/setup-ccache-action@v1
       with:
-          key: ${{ github.job }}
+        windows_compile_environment: msvc
     - name: CMake configure
       shell: bash
       run: |
