@@ -1,21 +1,23 @@
 // Copyright 2023 Nesterov Alexander
 
-#ifndef MODULES_REFERENCE_SUM_OF_VECTOR_ELEMENTS_REF_TASK_HPP_
-#define MODULES_REFERENCE_SUM_OF_VECTOR_ELEMENTS_REF_TASK_HPP_
+#ifndef MODULES_REFERENCE_NUM_OF_ORDERLY_VIOLATIONS_REF_TASK_HPP_
+#define MODULES_REFERENCE_NUM_OF_ORDERLY_VIOLATIONS_REF_TASK_HPP_
 
 #include <gtest/gtest.h>
 #include <vector>
 #include <memory>
+#include <functional>
+#include <algorithm>
 #include <numeric>
 #include "core/include/task.hpp"
 
 namespace ppc {
 namespace reference {
 
-template<class InOutType>
-class SumOfVectorElements : public ppc::core::Task {
+template<class InOutType, class CountType>
+class NumOfOrderlyViolations : public ppc::core::Task {
  public:
-    explicit SumOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
+    explicit NumOfOrderlyViolations(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
     bool pre_processing() override {
         internal_order_test();
         // Init vectors
@@ -25,7 +27,7 @@ class SumOfVectorElements : public ppc::core::Task {
             input_[i] = tmp_ptr[i];
         }
         // Init value for output
-        sum = 0;
+        num = 0;
         return true;
     }
 
@@ -41,22 +43,30 @@ class SumOfVectorElements : public ppc::core::Task {
 
     bool run() override {
         internal_order_test();
-        sum = std::accumulate(input_.begin(), input_.end(), 0);
+        auto rotate_in = input_;
+        int rot_left = 1;
+        rotate(rotate_in.begin(), rotate_in.begin() + rot_left, rotate_in.end());
+
+        auto temp_res = std::vector<bool>(input_.size());
+        std::transform(input_.begin(), input_.end(), rotate_in.begin(), temp_res.begin(),
+                       [](InOutType x, InOutType y) { return x > y; });
+
+        num = std::count_if(temp_res.begin(), temp_res.end() - 1, [](InOutType elem) { return elem; });
         return true;
     }
 
     bool post_processing() override {
         internal_order_test();
-        reinterpret_cast<InOutType*>(taskData->outputs[0])[0] = sum;
+        reinterpret_cast<CountType*>(taskData->outputs[0])[0] = num;
         return true;
     }
 
  private:
     std::vector<InOutType> input_;
-    InOutType sum;
+    CountType num;
 };
 
 }  // namespace reference
 }  // namespace ppc
 
-#endif  // MODULES_REFERENCE_SUM_OF_VECTOR_ELEMENTS_REF_TASK_HPP_
+#endif  // MODULES_REFERENCE_NUM_OF_ORDERLY_VIOLATIONS_REF_TASK_HPP_

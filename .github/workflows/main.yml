@@ -11,7 +11,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install g++-9
+        sudo apt-get install gcc-12 g++-12
         sudo apt-get install cppcheck ninja-build
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install libomp-dev
@@ -21,23 +21,28 @@ jobs:
         sudo apt-get install valgrind
     - name: Update submodules
       run: git submodule update --init --recursive
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ github.job }}
     - name: CMake configure
       run: |
         mkdir build
         cd build
-        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
       env:
-        CC: gcc-9
-        CXX: g++-9
+        CC: gcc-12
+        CXX: g++-12
     - name: Ninja build
       run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cd build
         ninja
         cd ..
       env:
-        CC: gcc-9
-        CXX: g++-9
+        CC: gcc-12
+        CXX: g++-12
     - name: Run tests
       run: |
         export OMP_NUM_THREADS=4
@@ -50,7 +55,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install clang*
+        sudo apt-get install clang-14
         sudo apt-get install cppcheck ninja-build
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install libomp-dev
@@ -60,23 +65,28 @@ jobs:
         sudo apt-get install valgrind
     - name: Update submodules
       run: git submodule update --init --recursive
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ github.job }}
     - name: CMake configure
       run: |
         mkdir build
         cd build
-        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
       env:
-        CC: clang
-        CXX: clang++
+        CC: clang-14
+        CXX: clang++-14
     - name: Ninja build
       run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cd build
         ninja
         cd ..
       env:
-        CC: clang
-        CXX: clang++
+        CC: clang-14
+        CXX: clang++-14
     - name: Run tests
       run: |
         export OMP_NUM_THREADS=4
@@ -100,6 +110,10 @@ jobs:
         /usr/local/bin/python3.10 -m pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ github.job }}
     - name: CMake configure
       run: |
         export LDFLAGS="$LDFLAGS -L/usr/local/opt/openssl/lib"
@@ -110,7 +124,7 @@ jobs:
         export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
         mkdir build
         cd build
-        cmake -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE \
+        cmake -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE \
              -DOpenMP_CXX_FLAGS="-Xclang -fopenmp -I/usr/local/opt/libomp/include" \
              -DOpenMP_C_FLAGS="-Xclang -fopenmp -I/usr/local/opt/libomp/include" \
              -DOpenMP_CXX_FLAGS="-Xclang -fopenmp -I/usr/local/opt/libomp/include" \
@@ -120,6 +134,7 @@ jobs:
              -DCMAKE_SHARED_LINKER_FLAGS="-L/usr/local/opt/libomp/lib -lomp -Wl,-rpath,/usr/local/opt/libomp/lib" ..
     - name: Ninja build
       run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         export LDFLAGS="$LDFLAGS -L/usr/local/opt/openssl/lib"
         export CFLAGS="$CFLAGS -I/usr/local/opt/openssl/include"
         export CXXFLAGS="$CXXFLAGS -I/usr/local/opt/openssl/include"
@@ -135,6 +150,9 @@ jobs:
         source scripts/run_mac.sh
   windows-msvc-build:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
     steps:
     - uses: actions/checkout@v1
     - name: Add msbuild to PATH
@@ -148,16 +166,22 @@ jobs:
         choco install openssl
     - name: Update submodules
       run: git submodule update --init --recursive
+    - name: Setup ccache
+      uses: Chocobo1/setup-ccache-action@v1
+      with:
+        windows_compile_environment: msvc
     - name: CMake configure
+      shell: bash
       run: |
         mkdir build
         cd build 
-        cmake -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
+        cmake -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=OFF -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
     - name: MSBuild
+      shell: bash
       run: |
-        cd build 
-        cmake --build . --config Release --parallel 
+        cd build
+        cmake --build . --config Release --parallel
         cd ..
     - name: Run tests
       run: |

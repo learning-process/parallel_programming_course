@@ -28,9 +28,9 @@ class Perf {
     explicit Perf(std::shared_ptr<Task> task_);
     // Set task with initialized task and initialized data for performance analysis c
     void set_task(std::shared_ptr<Task> task_);
-    // Check performance of task's run() function
-    void pipeline_run(std::shared_ptr<PerfAttr> perfAttr, std::shared_ptr<ppc::core::PerfResults> perfResults);
     // Check performance of full task's pipeline:  pre_processing() -> validation() -> run() -> post_processing()
+    void pipeline_run(std::shared_ptr<PerfAttr> perfAttr, std::shared_ptr<ppc::core::PerfResults> perfResults);
+    // Check performance of task's run() function
     void task_run(std::shared_ptr<PerfAttr> perfAttr, std::shared_ptr<ppc::core::PerfResults> perfResults);
  private:
     std::shared_ptr<Task> task;

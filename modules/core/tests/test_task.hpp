@@ -16,6 +16,7 @@ class TestTask : public ppc::core::Task {
  public:
     explicit TestTask(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
     bool pre_processing() override {
+        internal_order_test();
         input_ = reinterpret_cast<T*>(taskData->inputs[0]);
         output_ = reinterpret_cast<T*>(taskData->outputs[0]);
         output_[0] = 0;
@@ -23,6 +24,7 @@ class TestTask : public ppc::core::Task {
     }
 
     bool validation() override {
+        internal_order_test();
         if (taskData->outputs_count[0] == 1) {
             return true;
         } else {
@@ -31,6 +33,7 @@ class TestTask : public ppc::core::Task {
     }
 
     bool run() override {
+        internal_order_test();
         for (int i = 0; i < taskData->inputs_count[0]; i++) {
             output_[0] += input_[i];
         }
@@ -38,6 +41,7 @@ class TestTask : public ppc::core::Task {
     }
 
     bool post_processing() override {
+        internal_order_test();
         return true;
     }
 

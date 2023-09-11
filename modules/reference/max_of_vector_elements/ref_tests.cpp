@@ -2,13 +2,14 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include "core/include/task.hpp"
-#include "core/tests/test_task.hpp"
-#include "core/include/perf.hpp"
+#include "reference/max_of_vector_elements/ref_task.hpp"
 
-TEST(core_tests, check_int32_t) {
+TEST(max_of_vector_elements, check_int32_t) {
     // Create data
-    std::vector<int32_t> in(20, 1);
+    std::vector<int32_t> in(1256, 1);
     std::vector<int32_t> out(1, 0);
+    std::vector<uint64_t> out_index(1, 0);
+    in[328] = 10;
 
     // Create TaskData
     std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
@@ -16,39 +17,68 @@ TEST(core_tests, check_int32_t) {
     taskData->inputs_count.emplace_back(in.size());
     taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
     taskData->outputs_count.emplace_back(out.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+    taskData->outputs_count.emplace_back(out_index.size());
 
     // Create Task
-    ppc::test::TestTask<int32_t> testTask(taskData);
+    ppc::reference::MaxOfVectorElements<int32_t, uint64_t> testTask(taskData);
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);
     testTask.pre_processing();
     testTask.run();
     testTask.post_processing();
-    ASSERT_EQ(out[0], in.size());
+    ASSERT_EQ(out[0], 10);
+    ASSERT_EQ(out_index[0], 328);
 }
 
-TEST(core_tests, check_validate_func) {
+TEST(max_of_vector_elements, check_validate_func_1) {
     // Create data
-    std::vector<int32_t> in(20, 1);
+    std::vector<int32_t> in(125, 1);
     std::vector<int32_t> out(2, 0);
+    std::vector<uint64_t> out_index(1, 0);
 
     // Create TaskData
     std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
-    taskData->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+    taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
     taskData->inputs_count.emplace_back(in.size());
-    taskData->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
     taskData->outputs_count.emplace_back(out.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+    taskData->outputs_count.emplace_back(out_index.size());
 
     // Create Task
-    ppc::test::TestTask<int32_t> testTask(taskData);
+    ppc::reference::MaxOfVectorElements<int32_t, uint64_t> testTask(taskData);
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, false);
 }
 
-TEST(core_tests, check_double) {
+TEST(max_of_vector_elements, check_validate_func_2) {
     // Create data
-    std::vector<double> in(20, 1);
+    std::vector<int32_t> in(125, 1);
+    std::vector<int32_t> out(1, 0);
+    std::vector<uint64_t> out_index(2, 0);
+
+    // Create TaskData
+    std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+    taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+    taskData->inputs_count.emplace_back(in.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+    taskData->outputs_count.emplace_back(out.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+    taskData->outputs_count.emplace_back(out_index.size());
+
+    // Create Task
+    ppc::reference::MaxOfVectorElements<int32_t, uint64_t> testTask(taskData);
+    bool isValid = testTask.validation();
+    ASSERT_EQ(isValid, false);
+}
+
+TEST(max_of_vector_elements, check_double) {
+    // Create data
+    std::vector<double> in(25680, 1);
     std::vector<double> out(1, 0);
+    std::vector<uint64_t> out_index(1, 0);
+    in[2] = 1.0001;
 
     // Create TaskData
     std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
@@ -56,21 +86,25 @@ TEST(core_tests, check_double) {
     taskData->inputs_count.emplace_back(in.size());
     taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
     taskData->outputs_count.emplace_back(out.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+    taskData->outputs_count.emplace_back(out_index.size());
 
     // Create Task
-    ppc::test::TestTask<double> testTask(taskData);
+    ppc::reference::MaxOfVectorElements<double, uint64_t> testTask(taskData);
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);
     testTask.pre_processing();
     testTask.run();
     testTask.post_processing();
-    EXPECT_NEAR(out[0], in.size(), 1e-6);
+    EXPECT_NEAR(out[0], 1.0001, 1e-6);
+    ASSERT_EQ(out_index[0], 2);
 }
 
-TEST(core_tests, check_uint8_t) {
+TEST(max_of_vector_elements, check_uint8_t) {
     // Create data
-    std::vector<uint8_t> in(20, 1);
+    std::vector<uint8_t> in(255, 1);
     std::vector<uint8_t> out(1, 0);
+    std::vector<uint64_t> out_index(1, 0);
 
     // Create TaskData
     std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
@@ -78,21 +112,26 @@ TEST(core_tests, check_uint8_t) {
     taskData->inputs_count.emplace_back(in.size());
     taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
     taskData->outputs_count.emplace_back(out.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+    taskData->outputs_count.emplace_back(out_index.size());
 
     // Create Task
-    ppc::test::TestTask<uint8_t> testTask(taskData);
+    ppc::reference::MaxOfVectorElements<uint8_t, uint64_t> testTask(taskData);
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);
     testTask.pre_processing();
     testTask.run();
     testTask.post_processing();
-    ASSERT_EQ(out[0], in.size());
+    EXPECT_NEAR(out[0], 1, 1e-6);
+    ASSERT_EQ(out_index[0], 0);
 }
 
-TEST(core_tests, check_int64_t) {
+TEST(max_of_vector_elements, check_int64_t) {
     // Create data
-    std::vector<int64_t> in(20, 1);
+    std::vector<int64_t> in(75836, 1);
     std::vector<int64_t> out(1, 0);
+    std::vector<uint64_t> out_index(1, 0);
+    in[345] = 256;
 
     // Create TaskData
     std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
@@ -100,21 +139,26 @@ TEST(core_tests, check_int64_t) {
     taskData->inputs_count.emplace_back(in.size());
     taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
     taskData->outputs_count.emplace_back(out.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+    taskData->outputs_count.emplace_back(out_index.size());
 
     // Create Task
-    ppc::test::TestTask<int64_t> testTask(taskData);
+    ppc::reference::MaxOfVectorElements<int64_t, uint64_t> testTask(taskData);
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);
     testTask.pre_processing();
     testTask.run();
     testTask.post_processing();
-    ASSERT_EQ(out[0], in.size());
+    EXPECT_NEAR(out[0], 256, 1e-6);
+    ASSERT_EQ(out_index[0], 345);
 }
 
-TEST(core_tests, check_float) {
+TEST(max_of_vector_elements, check_float) {
     // Create data
-    std::vector<float> in(20, 1);
+    std::vector<float> in(1, 1);
     std::vector<float> out(1, 0);
+    std::vector<uint64_t> out_index(1, 0);
+    in[0] = 1.01;
 
     // Create TaskData
     std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
@@ -122,93 +166,16 @@ TEST(core_tests, check_float) {
     taskData->inputs_count.emplace_back(in.size());
     taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
     taskData->outputs_count.emplace_back(out.size());
+    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+    taskData->outputs_count.emplace_back(out_index.size());
 
     // Create Task
-    ppc::test::TestTask<float> testTask(taskData);
+    ppc::reference::MaxOfVectorElements<float, uint64_t> testTask(taskData);
     bool isValid = testTask.validation();
     ASSERT_EQ(isValid, true);
     testTask.pre_processing();
     testTask.run();
     testTask.post_processing();
-    EXPECT_NEAR(out[0], in.size(), 1e-3);
+    EXPECT_NEAR(out[0], 1.01, 1e-6);
+    ASSERT_EQ(out_index[0], 0);
 }
-
-TEST(core_tests, check_wrong_order) {
-    // Create data
-    std::vector<float> in(20, 1);
-    std::vector<float> out(1, 0);
-
-    // Create TaskData
-    std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
-    taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-    taskData->inputs_count.emplace_back(in.size());
-    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-    taskData->outputs_count.emplace_back(out.size());
-
-    // Create Task
-    ppc::test::TestTask<float> testTask(taskData);
-    bool isValid = testTask.validation();
-    ASSERT_EQ(isValid, true);
-    testTask.pre_processing();
-    ASSERT_ANY_THROW(testTask.post_processing());
-}
-
-TEST(core_tests, check_perf_pipeline) {
-    // Create data
-    std::vector<uint32_t> in(2000, 1);
-    std::vector<uint32_t> out(1, 0);
-
-    // Create TaskData
-    auto taskData = std::make_shared<ppc::core::TaskData>();
-    taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-    taskData->inputs_count.emplace_back(in.size());
-    taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-    taskData->outputs_count.emplace_back(out.size());
-
-    // Create Task
-    auto testTask = std::make_shared<ppc::test::TestTask<uint32_t>>(taskData);
-
-    // Create Perf attributes
-    auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
-    perfAttr->num_running = 10;
-
-    // Create and init perf results
-    auto perfResults = std::make_shared<ppc::core::PerfResults>();
-
-    // Create Perf analyzer
-    ppc::core::Perf perfAnalyzer(testTask);
-    perfAnalyzer.pipeline_run(perfAttr, perfResults);
-
-    ASSERT_LE(perfResults->time_sec, 10.0);
-    EXPECT_EQ(out[0], in.size());
-}
-
-//    TEST(core_tests, check_perf_task) {
-//        // Create data
-//        std::vector<uint32_t> in(2000, 1);
-//        std::vector<uint32_t> out(1, 0);
-//
-//        // Create TaskData
-//        auto taskData = std::make_shared<ppc::core::TaskData>();
-//        taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-//        taskData->inputs_count.emplace_back(in.size());
-//        taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-//        taskData->outputs_count.emplace_back(out.size());
-//
-//        // Create Task
-//        auto testTask = std::make_shared<ppc::test::TestTask<uint32_t>>(taskData);
-//
-//        // Create Perf attributes
-//        auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
-//        perfAttr->num_running = 10;
-//
-//        // Create and init perf results
-//        auto perfResults = std::make_shared<ppc::core::PerfResults>();
-//
-//        // Create Perf analyzer
-//        ppc::core::Perf perfAnalyzer(testTask);
-//        perfAnalyzer.task_run(perfAttr, perfResults);
-//
-//        ASSERT_LE(perfResults->time_sec, 10.0);
-//        EXPECT_EQ(out[0], in.size());
-//    }

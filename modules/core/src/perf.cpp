@@ -15,8 +15,8 @@ void ppc::core::Perf::set_task(std::shared_ptr<Task> task_) {
 void ppc::core::Perf::pipeline_run(std::shared_ptr<PerfAttr> perfAttr,
                                    std::shared_ptr<ppc::core::PerfResults> perfResults) {
     common_run(std::move(perfAttr), [&]() {
-        task->pre_processing();
         task->validation();
+        task->pre_processing();
         task->run();
         task->post_processing();
     }, std::move(perfResults));
@@ -24,9 +24,12 @@ void ppc::core::Perf::pipeline_run(std::shared_ptr<PerfAttr> perfAttr,
 
 void ppc::core::Perf::task_run(std::shared_ptr<PerfAttr> perfAttr,
                                std::shared_ptr<ppc::core::PerfResults> perfResults) {
+    task->validation();
+    task->pre_processing();
     common_run(std::move(perfAttr), [&]() {
         task->run();
     }, std::move(perfResults));
+    task->post_processing();
 }
 
 void ppc::core::Perf::common_run(std::shared_ptr<PerfAttr> perfAttr, std::function<void()> pipeline,
