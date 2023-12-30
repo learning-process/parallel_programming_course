@@ -2,10 +2,10 @@
 #ifndef TASKS_EXAMPLES_TEST_STD_OPS_STD_H_
 #define TASKS_EXAMPLES_TEST_STD_OPS_STD_H_
 
-#include <vector>
 #include <string>
+#include <vector>
 
-std::vector<int> getRandomVector(int  sz);
+std::vector<int> getRandomVector(int sz);
 int getParallelOperations(std::vector<int> vec, const std::string& ops);
 int getSequentialOperations(std::vector<int> vec, const std::string& ops);
 

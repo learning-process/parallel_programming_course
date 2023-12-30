@@ -41,15 +41,6 @@ if( USE_TBB )
     include(cmake/onetbb.cmake)
 endif( USE_TBB )
 
-############################## CPPLINT ##############################
-find_package(Python3 REQUIRED)
-enable_testing()
-if( NOT (APPLE OR WIN32) )
-    include(cmake/cpplint.cmake)
-    cpplint_add_subdirectory(tasks)
-    cpplint_add_subdirectory(modules)
-endif( NOT (APPLE OR WIN32) )
-
 ######################### Performance mode ##########################
 option(USE_PERF_MODE OFF)
 if( USE_PERF_MODE )
@@ -65,3 +56,4 @@ include_directories(tasks)
 
 add_subdirectory(modules)
 add_subdirectory(tasks)
+add_subdirectory(first_samples)

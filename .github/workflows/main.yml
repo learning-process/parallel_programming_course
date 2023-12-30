@@ -15,9 +15,6 @@ jobs:
         sudo apt-get install cppcheck ninja-build
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install libomp-dev
-        sudo apt-get install python3-pip
-        sudo python3 -m pip install --upgrade pip
-        sudo python3 -m pip install setuptools cpplint
         sudo apt-get install valgrind
     - name: Update submodules
       run: git submodule update --init --recursive
@@ -55,13 +52,11 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install clang-14
+        sudo apt-get install clang-15
         sudo apt-get install cppcheck ninja-build
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
-        sudo apt-get install libomp-dev
+        sudo apt-get install libomp-15-dev
         sudo apt-get install python3-pip
-        sudo python3 -m pip install --upgrade pip
-        sudo python3 -m pip install setuptools cpplint
         sudo apt-get install valgrind
     - name: Update submodules
       run: git submodule update --init --recursive
@@ -76,8 +71,8 @@ jobs:
         cmake -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
         cd ..
       env:
-        CC: clang-14
-        CXX: clang++-14
+        CC: clang-15
+        CXX: clang++-15
     - name: Ninja build
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -85,8 +80,8 @@ jobs:
         ninja
         cd ..
       env:
-        CC: clang-14
-        CXX: clang++-14
+        CC: clang-15
+        CXX: clang++-15
     - name: Run tests
       run: |
         export OMP_NUM_THREADS=4
@@ -97,17 +92,11 @@ jobs:
     - uses: actions/checkout@v1
     - name: Setup environment
       run: |
-        rm '/usr/local/bin/2to3' '/usr/local/bin/2to3-3.11' '/usr/local/bin/idle3.11' '/usr/local/bin/idle3'
-        rm '/usr/local/bin/pydoc3.11' '/usr/local/bin/pydoc3' '/usr/local/bin/python3.11' '/usr/local/bin/python3'
-        rm '/usr/local/bin/python3.11-config' '/usr/local/bin/python3-config'
         brew update-reset
         brew install cppcheck ninja
         brew install openssl
         brew link --force openssl
         brew install mpich llvm libomp
-        brew link --overwrite python@3.10
-        /usr/local/bin/python3.10 -m pip install --upgrade pip
-        /usr/local/bin/python3.10 -m pip install setuptools cpplint
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: ccache
