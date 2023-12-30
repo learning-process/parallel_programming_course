@@ -15,9 +15,6 @@ jobs:
         sudo apt-get install cppcheck ninja-build
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install libomp-dev
-        sudo apt-get install python3-pip
-        sudo python3 -m pip install --upgrade pip
-        sudo python3 -m pip install setuptools cpplint
         sudo apt-get install valgrind
     - name: Update submodules
       run: git submodule update --init --recursive
@@ -60,8 +57,6 @@ jobs:
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install libomp-15-dev
         sudo apt-get install python3-pip
-        sudo python3 -m pip install --upgrade pip
-        sudo python3 -m pip install setuptools cpplint
         sudo apt-get install valgrind
     - name: Update submodules
       run: git submodule update --init --recursive

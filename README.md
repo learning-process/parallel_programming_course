@@ -35,9 +35,7 @@ The following parallel programming technologies are considered in practice:
 ### Code style analysis
 Please, follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
 
-```
-pip install cpplint # (Python3)
-```
+Code style is checked using [clang-format](https://clang.llvm.org/docs/ClangFormat.html) tool.
 
 ### Parallel programming technologies
 ### `MPI`
