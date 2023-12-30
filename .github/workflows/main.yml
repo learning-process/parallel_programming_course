@@ -87,7 +87,7 @@ jobs:
         export OMP_NUM_THREADS=4
         source scripts/run.sh
   macos-clang-build:
-    runs-on: macOS-latest
+    runs-on: macos-latest-xlarge
     steps:
     - uses: actions/checkout@v1
     - name: Setup environment
