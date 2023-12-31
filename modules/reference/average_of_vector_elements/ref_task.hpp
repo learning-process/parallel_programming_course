@@ -17,9 +17,7 @@ namespace reference {
 template <class InType, class OutType>
 class AverageOfVectorElements : public ppc::core::Task {
  public:
-  explicit AverageOfVectorElements(
-      std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(taskData_) {}
+  explicit AverageOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
   bool pre_processing() override {
     internal_order_test();
     // Init vectors
@@ -45,8 +43,7 @@ class AverageOfVectorElements : public ppc::core::Task {
 
   bool run() override {
     internal_order_test();
-    average = static_cast<OutType>(
-        std::accumulate(input_.begin(), input_.end(), 0.0));
+    average = static_cast<OutType>(std::accumulate(input_.begin(), input_.end(), 0.0));
     average /= static_cast<OutType>(taskData->inputs_count[0]);
     return true;
   }

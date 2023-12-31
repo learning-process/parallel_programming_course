@@ -19,8 +19,7 @@ TEST(most_different_neighbor_elements, check_int32_t) {
   in[235] = 4000;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -29,8 +28,7 @@ TEST(most_different_neighbor_elements, check_int32_t) {
   taskData->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<int32_t, uint64_t> testTask(
-      taskData);
+  ppc::reference::MostDifferentNeighborElements<int32_t, uint64_t> testTask(taskData);
   bool isValid = testTask.validation();
   EXPECT_EQ(isValid, true);
   testTask.pre_processing();
@@ -49,8 +47,7 @@ TEST(most_different_neighbor_elements, check_validate_func) {
   std::vector<uint64_t> out_index(1, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -59,8 +56,7 @@ TEST(most_different_neighbor_elements, check_validate_func) {
   taskData->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<int32_t, uint64_t> testTask(
-      taskData);
+  ppc::reference::MostDifferentNeighborElements<int32_t, uint64_t> testTask(taskData);
   bool isValid = testTask.validation();
   EXPECT_EQ(isValid, false);
 }
@@ -77,8 +73,7 @@ TEST(most_different_neighbor_elements, check_double) {
   in[190] = 9000.9;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -87,8 +82,7 @@ TEST(most_different_neighbor_elements, check_double) {
   taskData->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<double, uint64_t> testTask(
-      taskData);
+  ppc::reference::MostDifferentNeighborElements<double, uint64_t> testTask(taskData);
   bool isValid = testTask.validation();
   EXPECT_EQ(isValid, true);
   testTask.pre_processing();
@@ -116,8 +110,7 @@ TEST(most_different_neighbor_elements, check_int8_t) {
   in[6] = -56;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -126,8 +119,7 @@ TEST(most_different_neighbor_elements, check_int8_t) {
   taskData->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<int8_t, uint64_t> testTask(
-      taskData);
+  ppc::reference::MostDifferentNeighborElements<int8_t, uint64_t> testTask(taskData);
   bool isValid = testTask.validation();
   EXPECT_EQ(isValid, true);
   testTask.pre_processing();
@@ -159,8 +151,7 @@ TEST(most_different_neighbor_elements, check_int64_t) {
   in[21] = 1119;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -169,8 +160,7 @@ TEST(most_different_neighbor_elements, check_int64_t) {
   taskData->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<int64_t, uint64_t> testTask(
-      taskData);
+  ppc::reference::MostDifferentNeighborElements<int64_t, uint64_t> testTask(taskData);
   bool isValid = testTask.validation();
   EXPECT_EQ(isValid, true);
   testTask.pre_processing();
@@ -194,8 +184,7 @@ TEST(most_different_neighbor_elements, check_float) {
   in[1] = -990.0025;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -204,8 +193,7 @@ TEST(most_different_neighbor_elements, check_float) {
   taskData->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<float, uint64_t> testTask(
-      taskData);
+  ppc::reference::MostDifferentNeighborElements<float, uint64_t> testTask(taskData);
   bool isValid = testTask.validation();
   EXPECT_EQ(isValid, true);
   testTask.pre_processing();

@@ -43,21 +43,15 @@ int getParallelOperations(std::vector<int> vec, const std::string& ops) {
   int reduction_elem = 1;
   if (ops == "+") {
     Sum sum;
-    tbb::parallel_reduce(
-        tbb::blocked_range<std::vector<int>::iterator>(vec.begin(), vec.end()),
-        sum);
+    tbb::parallel_reduce(tbb::blocked_range<std::vector<int>::iterator>(vec.begin(), vec.end()), sum);
     reduction_elem += sum.value;
   } else if (ops == "-") {
     Sum diff;
-    tbb::parallel_reduce(
-        tbb::blocked_range<std::vector<int>::iterator>(vec.begin(), vec.end()),
-        diff);
+    tbb::parallel_reduce(tbb::blocked_range<std::vector<int>::iterator>(vec.begin(), vec.end()), diff);
     reduction_elem -= diff.value;
   } else if (ops == "*") {
     Mult mult;
-    tbb::parallel_reduce(
-        tbb::blocked_range<std::vector<int>::iterator>(vec.begin(), vec.end()),
-        mult);
+    tbb::parallel_reduce(tbb::blocked_range<std::vector<int>::iterator>(vec.begin(), vec.end()), mult);
     reduction_elem *= mult.value;
   }
   return reduction_elem;

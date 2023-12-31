@@ -13,8 +13,7 @@ TEST(sum_values_by_rows_matrix, check_int32_t) {
   std::vector<int32_t> out(37, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
@@ -41,8 +40,7 @@ TEST(sum_values_by_rows_matrix, check_validate_func1) {
   std::vector<int32_t> out(39, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
@@ -63,8 +61,7 @@ TEST(sum_values_by_rows_matrix, check_validate_func2) {
   std::vector<int32_t> out(37, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
@@ -85,8 +82,7 @@ TEST(sum_values_by_rows_matrix, check_double) {
   std::vector<double> out(37, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
@@ -116,8 +112,7 @@ TEST(sum_values_by_rows_matrix, check_int8_t) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
@@ -147,8 +142,7 @@ TEST(sum_values_by_rows_matrix, check_int64_t) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
@@ -179,8 +173,7 @@ TEST(sum_values_by_rows_matrix, check_float) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
@@ -196,8 +189,6 @@ TEST(sum_values_by_rows_matrix, check_float) {
   testTask.run();
   testTask.post_processing();
   for (int i = 0; i < in_index[0]; i++) {
-    EXPECT_NEAR(out[i],
-                in_index[1] * (in_index[1] + 1) * (2 * in_index[1] + 1) / 6.f,
-                1e-6);
+    EXPECT_NEAR(out[i], in_index[1] * (in_index[1] + 1) * (2 * in_index[1] + 1) / 6.f, 1e-6);
   }
 }

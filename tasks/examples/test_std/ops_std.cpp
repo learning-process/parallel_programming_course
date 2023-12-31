@@ -21,8 +21,7 @@ std::vector<int> getRandomVector(int sz) {
 
 std::mutex my_mutex;
 
-void atomOps(std::vector<int> vec, const std::string &ops,
-             std::promise<int> &&pr) {
+void atomOps(std::vector<int> vec, const std::string &ops, std::promise<int> &&pr) {
   const int sz = vec.size();
   int reduction_elem = 0;
   if (ops == "+") {
@@ -50,8 +49,7 @@ int getParallelOperations(std::vector<int> vec, const std::string &ops) {
   int reduction_elem = 0;
   for (int i = 0; i < nthreads; i++) {
     futures[i] = promises[i].get_future();
-    std::vector<int> tmp_vec(vec.begin() + i * delta,
-                             vec.begin() + (i + 1) * delta);
+    std::vector<int> tmp_vec(vec.begin() + i * delta, vec.begin() + (i + 1) * delta);
     threads[i] = std::thread(atomOps, tmp_vec, ops, std::move(promises[i]));
     threads[i].join();
     reduction_elem += futures[i].get();
