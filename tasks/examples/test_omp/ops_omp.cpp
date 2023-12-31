@@ -112,17 +112,17 @@ bool TestOMPTaskParallel::run() {
   int res = 1;
   double start = omp_get_wtime();
   if (ops == "+") {
-#pragma omp parallel for reduction(+ : reduction_elem)
+#pragma omp parallel for reduction(+ : res)
     for (int i = 0; i < input_.size(); i++) {
       res += input_[i];
     }
   } else if (ops == "-") {
-#pragma omp parallel for reduction(- : reduction_elem)
+#pragma omp parallel for reduction(- : res)
     for (int i = 0; i < input_.size(); i++) {
       res -= input_[i];
     }
   } else if (ops == "*") {
-#pragma omp parallel for reduction(* : reduction_elem)
+#pragma omp parallel for reduction(* : res)
     for (int i = 0; i < input_.size(); i++) {
       res *= input_[i];
     }
