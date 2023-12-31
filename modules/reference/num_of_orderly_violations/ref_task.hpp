@@ -38,11 +38,7 @@ class NumOfOrderlyViolations : public ppc::core::Task {
   bool validation() override {
     internal_order_test();
     // Check count elements of output
-    if (taskData->outputs_count[0] == 1) {
-      return true;
-    } else {
-      return false;
-    }
+    return taskData->outputs_count[0] == 1;
   }
 
   bool run() override {

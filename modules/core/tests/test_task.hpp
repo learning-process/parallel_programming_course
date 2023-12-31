@@ -28,11 +28,7 @@ class TestTask : public ppc::core::Task {
 
   bool validation() override {
     internal_order_test();
-    if (taskData->outputs_count[0] == 1) {
-      return true;
-    } else {
-      return false;
-    }
+    return taskData->outputs_count[0] == 1;
   }
 
   bool run() override {
