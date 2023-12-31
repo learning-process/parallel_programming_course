@@ -61,7 +61,7 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector,
   int global_sum = 0;
   int local_sum = getSequentialOperations(local_vec, ops);
   if (ops == "+" || ops == "-") {
-    reduce(world, local_sum, global_sum, std::plus<int>(), 0);
+    reduce(world, local_sum, global_sum, std::plus<>(), 0);
   }
   if (ops == "max") {
     reduce(world, local_sum, global_sum, boost::mpi::maximum<int>(), 0);

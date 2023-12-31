@@ -15,8 +15,8 @@ void ppc::core::Perf::set_task(std::shared_ptr<Task> task_) {
 }
 
 void ppc::core::Perf::pipeline_run(
-    std::shared_ptr<PerfAttr> perfAttr,
-    std::shared_ptr<ppc::core::PerfResults> perfResults) {
+    const std::shared_ptr<PerfAttr>& perfAttr,
+    const std::shared_ptr<ppc::core::PerfResults>& perfResults) {
   common_run(
       std::move(perfAttr),
       [&]() {
@@ -29,8 +29,8 @@ void ppc::core::Perf::pipeline_run(
 }
 
 void ppc::core::Perf::task_run(
-    std::shared_ptr<PerfAttr> perfAttr,
-    std::shared_ptr<ppc::core::PerfResults> perfResults) {
+    const std::shared_ptr<PerfAttr>& perfAttr,
+    const std::shared_ptr<ppc::core::PerfResults>& perfResults) {
   task->validation();
   task->pre_processing();
   common_run(
@@ -39,8 +39,8 @@ void ppc::core::Perf::task_run(
 }
 
 void ppc::core::Perf::common_run(
-    std::shared_ptr<PerfAttr> perfAttr, std::function<void()> pipeline,
-    std::shared_ptr<ppc::core::PerfResults> perfResults) {
+    const std::shared_ptr<PerfAttr>& perfAttr, const std::function<void()>& pipeline,
+    const std::shared_ptr<ppc::core::PerfResults>& perfResults) {
   auto begin = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < perfAttr->num_running; i++) {
     pipeline();

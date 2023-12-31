@@ -36,24 +36,13 @@ class MaxOfVectorElements : public ppc::core::Task {
 
   bool validation() override {
     internal_order_test();
-    bool isCountValuesCorrect, isCountIndexesCorrect;
+    bool isCountValuesCorrect;
+    bool isCountIndexesCorrect;
     // Check count elements of output
-    if (taskData->outputs_count[0] == 1) {
-      isCountValuesCorrect = true;
-    } else {
-      isCountValuesCorrect = false;
-    }
-    if (taskData->outputs_count[1] == 1) {
-      isCountIndexesCorrect = true;
-    } else {
-      isCountIndexesCorrect = false;
-    }
+    isCountValuesCorrect = taskData->outputs_count[0] == 1;
+    isCountIndexesCorrect = taskData->outputs_count[1] == 1;
 
-    if (isCountValuesCorrect && isCountIndexesCorrect) {
-      return true;
-    } else {
-      return false;
-    }
+    return isCountValuesCorrect && isCountIndexesCorrect;
   }
 
   bool run() override {

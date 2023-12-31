@@ -38,11 +38,7 @@ class NumOfAlternationsSigns : public ppc::core::Task {
   bool validation() override {
     internal_order_test();
     // Check count elements of output
-    if (taskData->outputs_count[0] == 1) {
-      return true;
-    } else {
-      return false;
-    }
+    return taskData->outputs_count[0] == 1;
   }
 
   bool run() override {
@@ -53,7 +49,7 @@ class NumOfAlternationsSigns : public ppc::core::Task {
 
     auto temp_res = input_;
     std::transform(input_.begin(), input_.end(), rotate_in.begin(),
-                   temp_res.begin(), std::multiplies<int>());
+                   temp_res.begin(), std::multiplies<>());
 
     num = std::count_if(temp_res.begin(), temp_res.end() - 1,
                         [](InOutType elem) { return elem < 0; });
