@@ -4,6 +4,7 @@
 #include <omp.h>
 
 #include <iostream>
+#include <numeric>
 #include <random>
 #include <string>
 #include <vector>
@@ -85,22 +86,24 @@ bool TestOMPTaskParallel::validation() {
 bool TestOMPTaskParallel::run() {
   internal_order_test();
   double start = omp_get_wtime();
+  auto temp_res = res;
   if (ops == "+") {
-#pragma omp parallel for reduction(+ : res)
+#pragma omp parallel for reduction(+ : temp_res)
     for (int i = 0; i < input_.size(); i++) {
-      res += input_[i];
+      temp_res += input_[i];
     }
   } else if (ops == "-") {
-#pragma omp parallel for reduction(- : res)
+#pragma omp parallel for reduction(- : temp_res)
     for (int i = 0; i < input_.size(); i++) {
-      res -= input_[i];
+      temp_res -= input_[i];
     }
   } else if (ops == "*") {
-#pragma omp parallel for reduction(* : res)
+#pragma omp parallel for reduction(* : temp_res)
     for (int i = 0; i < input_.size(); i++) {
-      res *= input_[i];
+      temp_res *= input_[i];
     }
   }
+  res = temp_res;
   double finish = omp_get_wtime();
   std::cout << "How measure time in OpenMP: " << finish - start << std::endl;
   return true;
