@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "./ops_tbb.h"
+#include "./ops_tbb.hpp"
 
 TEST(Parallel_Operations_TBB, Test_Sum) {
   std::vector<int> vec = getRandomVector(100);

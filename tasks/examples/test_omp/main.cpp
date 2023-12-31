@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "./ops_omp.h"
+#include "./ops_omp.hpp"
 
 TEST(Parallel_Operations_OpenMP, Test_Sum) {
   std::vector<int> vec = getRandomVector(100);

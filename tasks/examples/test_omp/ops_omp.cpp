@@ -1,5 +1,5 @@
 // Copyright 2023 Nesterov Alexander
-#include "examples/test_omp/ops_omp.h"
+#include "examples/test_omp/ops_omp.hpp"
 
 #include <omp.h>
 
