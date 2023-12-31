@@ -40,9 +40,10 @@ class Perf {
 
  private:
   std::shared_ptr<Task> task;
-  static void common_run(const std::shared_ptr<PerfAttr>& perfAttr,
-                         const std::function<void()>& pipeline,
-                         const std::shared_ptr<ppc::core::PerfResults>& perfResults);
+  static void common_run(
+      const std::shared_ptr<PerfAttr>& perfAttr,
+      const std::function<void()>& pipeline,
+      const std::shared_ptr<ppc::core::PerfResults>& perfResults);
 };
 
 }  // namespace core

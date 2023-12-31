@@ -39,7 +39,8 @@ void ppc::core::Perf::task_run(
 }
 
 void ppc::core::Perf::common_run(
-    const std::shared_ptr<PerfAttr>& perfAttr, const std::function<void()>& pipeline,
+    const std::shared_ptr<PerfAttr>& perfAttr,
+    const std::function<void()>& pipeline,
     const std::shared_ptr<ppc::core::PerfResults>& perfResults) {
   auto begin = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < perfAttr->num_running; i++) {
