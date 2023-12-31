@@ -11,8 +11,7 @@
 
 #include "core/include/task.hpp"
 
-namespace ppc {
-namespace reference {
+namespace ppc::reference {
 
 template <class InOutType>
 class SumOfVectorElements : public ppc::core::Task {
@@ -59,7 +58,7 @@ class SumOfVectorElements : public ppc::core::Task {
   InOutType sum;
 };
 
-}  // namespace reference
-}  // namespace ppc
+} // namespace ppc::reference
+
 
 #endif  // MODULES_REFERENCE_SUM_OF_VECTOR_ELEMENTS_REF_TASK_HPP_

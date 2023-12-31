@@ -8,3 +8,4 @@ scripts/variants.csv
 scripts/variants.xlsx
 venv*
 sln/
+.DS_Store

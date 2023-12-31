@@ -10,8 +10,7 @@
 
 #include "core/include/task.hpp"
 
-namespace ppc {
-namespace test {
+namespace ppc::test {
 
 template <class T>
 class TestTask : public ppc::core::Task {
@@ -53,7 +52,7 @@ class TestTask : public ppc::core::Task {
   T *output_{};
 };
 
-}  // namespace test
-}  // namespace ppc
+} // namespace ppc::test
+
 
 #endif  // MODULES_CORE_TESTS_TEST_TASK_HPP_

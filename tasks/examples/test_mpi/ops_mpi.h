@@ -1,13 +1,48 @@
 // Copyright 2023 Nesterov Alexander
-#ifndef TASKS_EXAMPLES_TEST_MPI_OPS_MPI_H_
-#define TASKS_EXAMPLES_TEST_MPI_OPS_MPI_H_
+#pragma once
 
+#include <gtest/gtest.h>
+
+#include <memory>
+#include <numeric>
 #include <string>
+#include <utility>
 #include <vector>
+#include "core/include/task.hpp"
+#include <boost/mpi/collectives.hpp>
+#include <boost/mpi/communicator.hpp>
 
-std::vector<int> getRandomVector(int sz);
 int getParallelOperations(std::vector<int> global_vec, int count_size_vector,
                           const std::string& ops);
-int getSequentialOperations(std::vector<int> vec, const std::string& ops);
+std::vector<int> getRandomVector(int sz);
 
-#endif  // TASKS_EXAMPLES_TEST_MPI_OPS_MPI_H_
+class TestMPITaskSequential : public ppc::core::Task {
+ public:
+  explicit TestMPITaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_,
+                                 std::string ops_)
+      : Task(std::move(taskData_)), ops(std::move(ops_)) {}
+  bool pre_processing() override;
+  bool validation() override;
+  bool run() override;
+  bool post_processing() override;
+ private:
+  std::vector<int> input_;
+  int res{};
+  std::string ops;
+};
+
+class TestMPITaskParallel : public ppc::core::Task {
+ public:
+  explicit TestMPITaskParallel(std::shared_ptr<ppc::core::TaskData> taskData_,
+                               std::string ops_)
+      : Task(std::move(taskData_)), ops(std::move(ops_)) {}
+  bool pre_processing() override;
+  bool validation() override;
+  bool run() override;
+  bool post_processing() override;
+ private:
+  std::vector<int> input_, local_input_;
+  int res{};
+  std::string ops;
+  boost::mpi::communicator world;
+};
