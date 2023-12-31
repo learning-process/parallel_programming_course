@@ -12,7 +12,7 @@ if ( USE_OMP )
 
     add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
 
-    target_link_libraries(${ProjectId} ${PACK_LIB})
+    target_link_libraries(${ProjectId} ${PACK_LIB} core_lib)
     target_link_libraries(${ProjectId} gtest gtest_main)
     target_link_libraries(${ProjectId} ${OpenMP_libomp_LIBRARY})
 

@@ -18,6 +18,47 @@ std::vector<int> getRandomVector(int sz) {
   return vec;
 }
 
+bool TestOMPTaskSequential::pre_processing() {
+  internal_order_test();
+  // Init vectors
+  input_ = std::vector<int>(taskData->inputs_count[0]);
+  auto tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
+  for (int i = 0; i < taskData->inputs_count[0]; i++) {
+    input_[i] = tmp_ptr[i];
+  }
+  // Init value for output
+  res = 0;
+  return true;
+}
+
+bool TestOMPTaskSequential::validation() {
+  internal_order_test();
+  // Check count elements of output
+  if (taskData->outputs_count[0] == 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool TestOMPTaskSequential::run() {
+  internal_order_test();
+  if (ops == "+") {
+    res = std::accumulate(input_.begin(), input_.end(), 1);
+  } else if (ops == "-") {
+    res = 1 - std::accumulate(input_.begin(), input_.end(), 0);
+  } else if (ops == "*") {
+    res = std::accumulate(input_.begin(), input_.end(), 1, std::multiplies<>());
+  }
+  return true;
+}
+
+bool TestOMPTaskSequential::post_processing() {
+  internal_order_test();
+  reinterpret_cast<int*>(taskData->outputs[0])[0] = res;
+  return true;
+}
+
 int getParallelOperations(std::vector<int> vec, const std::string& ops) {
   const int sz = vec.size();
   int reduction_elem = 1;
@@ -43,21 +84,56 @@ int getParallelOperations(std::vector<int> vec, const std::string& ops) {
   return reduction_elem;
 }
 
-int getSequentialOperations(std::vector<int> vec, const std::string& ops) {
-  const int sz = vec.size();
-  int reduction_elem = 1;
+bool TestOMPTaskParallel::pre_processing() {
+  internal_order_test();
+  // Init vectors
+  input_ = std::vector<int>(taskData->inputs_count[0]);
+  auto tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
+  for (int i = 0; i < taskData->inputs_count[0]; i++) {
+    input_[i] = tmp_ptr[i];
+  }
+  // Init value for output
+  res = 0;
+  return true;
+}
+
+bool TestOMPTaskParallel::validation() {
+  internal_order_test();
+  // Check count elements of output
+  if (taskData->outputs_count[0] == 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool TestOMPTaskParallel::run() {
+  internal_order_test();
+  int res = 1;
+  double start = omp_get_wtime();
   if (ops == "+") {
-    for (int i = 0; i < sz; i++) {
-      reduction_elem += vec[i];
+#pragma omp parallel for reduction(+ : reduction_elem)
+    for (int i = 0; i < input_.size(); i++) {
+      res += input_[i];
     }
   } else if (ops == "-") {
-    for (int i = 0; i < sz; i++) {
-      reduction_elem -= vec[i];
+#pragma omp parallel for reduction(- : reduction_elem)
+    for (int i = 0; i < input_.size(); i++) {
+      res -= input_[i];
     }
   } else if (ops == "*") {
-    for (int i = 0; i < sz; i++) {
-      reduction_elem *= vec[i];
+#pragma omp parallel for reduction(* : reduction_elem)
+    for (int i = 0; i < input_.size(); i++) {
+      res *= input_[i];
     }
   }
-  return reduction_elem;
+  double finish = omp_get_wtime();
+  std::cout << "How measure time in OpenMP: " << finish - start << std::endl;
+  return true;
+}
+
+bool TestOMPTaskParallel::post_processing() {
+  internal_order_test();
+  reinterpret_cast<int*>(taskData->outputs[0])[0] = res;
+  return true;
 }
