@@ -19,9 +19,7 @@ namespace reference {
 template <class InOutType, class IndexType>
 class NearestNeighborElements : public ppc::core::Task {
  public:
-  explicit NearestNeighborElements(
-      std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(taskData_) {}
+  explicit NearestNeighborElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
   bool pre_processing() override {
     internal_order_test();
     // Init vectors
@@ -53,13 +51,11 @@ class NearestNeighborElements : public ppc::core::Task {
     rotate(rotate_in.begin(), rotate_in.begin() + rot_left, rotate_in.end());
 
     auto temp_res = std::vector<InOutType>(input_.size());
-    std::transform(input_.begin(), input_.end(), rotate_in.begin(),
-                   temp_res.begin(),
+    std::transform(input_.begin(), input_.end(), rotate_in.begin(), temp_res.begin(),
                    [](InOutType x, InOutType y) { return std::abs(x - y); });
 
     auto result = std::min_element(temp_res.begin(), temp_res.end() - 1);
-    l_elem_index =
-        static_cast<IndexType>(std::distance(temp_res.begin(), result));
+    l_elem_index = static_cast<IndexType>(std::distance(temp_res.begin(), result));
     l_elem = input_[l_elem_index];
 
     r_elem_index = l_elem_index + 1;

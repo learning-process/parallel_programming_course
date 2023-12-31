@@ -18,8 +18,7 @@ namespace reference {
 template <class InOutType, class IndexType>
 class MaxOfVectorElements : public ppc::core::Task {
  public:
-  explicit MaxOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(taskData_) {}
+  explicit MaxOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
   bool pre_processing() override {
     internal_order_test();
     // Init vectors

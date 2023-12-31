@@ -17,8 +17,7 @@ namespace reference {
 template <class InOutType>
 class VectorDotProduct : public ppc::core::Task {
  public:
-  explicit VectorDotProduct(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(taskData_) {}
+  explicit VectorDotProduct(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
   bool pre_processing() override {
     internal_order_test();
     // Init vectors
@@ -39,8 +38,7 @@ class VectorDotProduct : public ppc::core::Task {
   bool validation() override {
     internal_order_test();
     // Check count elements of output
-    if (taskData->outputs_count[0] == 1 &&
-        taskData->inputs_count[0] == taskData->inputs_count[1]) {
+    if (taskData->outputs_count[0] == 1 && taskData->inputs_count[0] == taskData->inputs_count[1]) {
       return true;
     } else {
       return false;
@@ -49,8 +47,7 @@ class VectorDotProduct : public ppc::core::Task {
 
   bool run() override {
     internal_order_test();
-    dor_product = std::inner_product(input_[0].begin(), input_[0].end(),
-                                     input_[1].begin(), 0.0);
+    dor_product = std::inner_product(input_[0].begin(), input_[0].end(), input_[1].begin(), 0.0);
     return true;
   }
 

@@ -15,8 +15,7 @@ namespace ppc::test {
 template <class T>
 class TestTask : public ppc::core::Task {
  public:
-  explicit TestTask(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(taskData_) {}
+  explicit TestTask(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
   bool pre_processing() override {
     internal_order_test();
     input_ = reinterpret_cast<T *>(taskData->inputs[0]);
@@ -52,7 +51,6 @@ class TestTask : public ppc::core::Task {
   T *output_{};
 };
 
-} // namespace ppc::test
-
+}  // namespace ppc::test
 
 #endif  // MODULES_CORE_TESTS_TEST_TASK_HPP_

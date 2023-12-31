@@ -17,8 +17,7 @@ namespace reference {
 template <class InOutType, class IndexType>
 class SumValuesByRowsMatrix : public ppc::core::Task {
  public:
-  explicit SumValuesByRowsMatrix(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(taskData_) {}
+  explicit SumValuesByRowsMatrix(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
   bool pre_processing() override {
     internal_order_test();
     // Init vectors
@@ -39,8 +38,7 @@ class SumValuesByRowsMatrix : public ppc::core::Task {
     internal_order_test();
     // Check count elements of output
     if (taskData->inputs_count[1] == 2 &&
-        taskData->outputs_count[0] ==
-            reinterpret_cast<IndexType*>(taskData->inputs[1])[0]) {
+        taskData->outputs_count[0] == reinterpret_cast<IndexType*>(taskData->inputs[1])[0]) {
       return true;
     } else {
       return false;
@@ -50,8 +48,7 @@ class SumValuesByRowsMatrix : public ppc::core::Task {
   bool run() override {
     internal_order_test();
     for (int i = 0; i < rows; i++) {
-      sum_[i] = std::accumulate(input_.begin() + cols * i,
-                                input_.begin() + cols * (i + 1), 0.f);
+      sum_[i] = std::accumulate(input_.begin() + cols * i, input_.begin() + cols * (i + 1), 0.f);
     }
     return true;
   }

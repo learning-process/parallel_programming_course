@@ -19,9 +19,7 @@ namespace reference {
 template <class InOutType, class CountType>
 class NumOfOrderlyViolations : public ppc::core::Task {
  public:
-  explicit NumOfOrderlyViolations(
-      std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(taskData_) {}
+  explicit NumOfOrderlyViolations(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
   bool pre_processing() override {
     internal_order_test();
     // Init vectors
@@ -52,12 +50,10 @@ class NumOfOrderlyViolations : public ppc::core::Task {
     rotate(rotate_in.begin(), rotate_in.begin() + rot_left, rotate_in.end());
 
     auto temp_res = std::vector<bool>(input_.size());
-    std::transform(input_.begin(), input_.end(), rotate_in.begin(),
-                   temp_res.begin(),
+    std::transform(input_.begin(), input_.end(), rotate_in.begin(), temp_res.begin(),
                    [](InOutType x, InOutType y) { return x > y; });
 
-    num = std::count_if(temp_res.begin(), temp_res.end() - 1,
-                        [](InOutType elem) { return elem; });
+    num = std::count_if(temp_res.begin(), temp_res.end() - 1, [](InOutType elem) { return elem; });
     return true;
   }
 

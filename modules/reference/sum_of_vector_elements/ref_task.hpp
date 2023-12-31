@@ -15,8 +15,7 @@ namespace ppc::reference {
 template <class InOutType>
 class SumOfVectorElements : public ppc::core::Task {
  public:
-  explicit SumOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(taskData_) {}
+  explicit SumOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
   bool pre_processing() override {
     internal_order_test();
     // Init vectors
