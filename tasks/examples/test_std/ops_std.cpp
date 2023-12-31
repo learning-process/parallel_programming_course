@@ -42,9 +42,9 @@ int getParallelOperations(std::vector<int> vec, const std::string &ops) {
   const int nthreads = std::thread::hardware_concurrency();
   const int delta = (vec.end() - vec.begin()) / nthreads;
 
-  std::promise<int> *promises = new std::promise<int>[nthreads];
-  std::future<int> *futures = new std::future<int>[nthreads];
-  std::thread *threads = new std::thread[nthreads];
+  auto *promises = new std::promise<int>[nthreads];
+  auto *futures = new std::future<int>[nthreads];
+  auto *threads = new std::thread[nthreads];
 
   int reduction_elem = 0;
   for (int i = 0; i < nthreads; i++) {

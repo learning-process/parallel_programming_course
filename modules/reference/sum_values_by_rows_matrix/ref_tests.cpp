@@ -108,7 +108,7 @@ TEST(sum_values_by_rows_matrix, check_int8_t) {
   std::vector<uint64_t> in_index = {37, 38};
   std::vector<int8_t> out(37, 0);
   for (auto i = 0; i < in.size(); ++i) {
-    in[i] = i % 2 ? -2 : 2;
+    in[i] = (i % 2) != 0 ? -2 : 2;
   }
 
   // Create TaskData

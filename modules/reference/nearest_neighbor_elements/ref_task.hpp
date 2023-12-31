@@ -37,11 +37,7 @@ class NearestNeighborElements : public ppc::core::Task {
   bool validation() override {
     internal_order_test();
     // Check count elements of output
-    if (taskData->outputs_count[0] == 2 && taskData->outputs_count[1] == 2) {
-      return true;
-    } else {
-      return false;
-    }
+    return taskData->outputs_count[0] == 2 && taskData->outputs_count[1] == 2;
   }
 
   bool run() override {
