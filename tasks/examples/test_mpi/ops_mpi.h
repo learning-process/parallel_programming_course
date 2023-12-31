@@ -12,8 +12,6 @@
 #include <boost/mpi/collectives.hpp>
 #include <boost/mpi/communicator.hpp>
 
-int getParallelOperations(std::vector<int> global_vec, int count_size_vector,
-                          const std::string& ops);
 std::vector<int> getRandomVector(int sz);
 
 class TestMPITaskSequential : public ppc::core::Task {
