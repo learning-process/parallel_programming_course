@@ -38,8 +38,7 @@ class VectorDotProduct : public ppc::core::Task {
   bool validation() override {
     internal_order_test();
     // Check count elements of output
-    return taskData->outputs_count[0] == 1 &&
-           taskData->inputs_count[0] == taskData->inputs_count[1];
+    return taskData->outputs_count[0] == 1 && taskData->inputs_count[0] == taskData->inputs_count[1];
   }
 
   bool run() override {

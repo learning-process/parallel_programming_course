@@ -37,10 +37,8 @@ class SumValuesByRowsMatrix : public ppc::core::Task {
   bool validation() override {
     internal_order_test();
     // Check count elements of output
-    return static_cast<bool>(
-        taskData->inputs_count[1] == 2 &&
-        taskData->outputs_count[0] ==
-            reinterpret_cast<IndexType*>(taskData->inputs[1])[0]);
+    return static_cast<bool>(taskData->inputs_count[1] == 2 &&
+                             taskData->outputs_count[0] == reinterpret_cast<IndexType*>(taskData->inputs[1])[0]);
   }
 
   bool run() override {
