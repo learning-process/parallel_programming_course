@@ -6,6 +6,38 @@ ctest --extra-verbose --repeat-until-fail 10 --timeout 100000 --build-and-test |
 # shellcheck disable=SC2103
 cd ..
 
+FILES_SEQ="build/bin/*_seq"
+for file in $FILES_SEQ; do
+        echo "--------------------------------"
+        echo $(basename $file)
+        echo "--------------------------------"
+        ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+done
+
+FILES_STD="build/bin/*_std"
+for file in $FILES_STD; do
+        echo "--------------------------------"
+        echo $(basename $file)
+        echo "--------------------------------"
+        ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+done
+
+FILES_OMP="build/bin/*_omp"
+for file in $FILES_OMP; do
+       echo "--------------------------------"
+       echo $(basename $file)
+       echo "--------------------------------"
+      ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+done
+
+FILES_TBB="build/bin/*_tbb"
+for file in $FILES_TBB; do
+       echo "--------------------------------"
+       echo $(basename $file)
+       echo "--------------------------------"
+      ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+done
+
 FILES_MPI="build/bin/*_mpi"
 for file in $FILES_MPI; do
     if [ "$file" = "build/bin/*_mpi" ]; then continue; fi
