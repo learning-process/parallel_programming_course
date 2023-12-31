@@ -2,15 +2,15 @@
 #pragma once
 
 #include <gtest/gtest.h>
-
+#include <boost/mpi/collectives.hpp>
+#include <boost/mpi/communicator.hpp>
 #include <memory>
 #include <numeric>
 #include <string>
 #include <utility>
 #include <vector>
+
 #include "core/include/task.hpp"
-#include <boost/mpi/collectives.hpp>
-#include <boost/mpi/communicator.hpp>
 
 std::vector<int> getRandomVector(int sz);
 
@@ -23,6 +23,7 @@ class TestMPITaskSequential : public ppc::core::Task {
   bool validation() override;
   bool run() override;
   bool post_processing() override;
+
  private:
   std::vector<int> input_;
   int res{};
@@ -38,6 +39,7 @@ class TestMPITaskParallel : public ppc::core::Task {
   bool validation() override;
   bool run() override;
   bool post_processing() override;
+
  private:
   std::vector<int> input_, local_input_;
   int res{};

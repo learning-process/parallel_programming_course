@@ -45,7 +45,7 @@ bool TestMPITaskSequential::run() {
   if (ops == "+") {
     res = std::accumulate(input_.begin(), input_.end(), 0);
   } else if (ops == "-") {
-    res = - std::accumulate(input_.begin(), input_.end(), 0);
+    res = -std::accumulate(input_.begin(), input_.end(), 0);
   } else if (ops == "max") {
     res = *std::max_element(input_.begin(), input_.end());
   }
@@ -107,7 +107,7 @@ bool TestMPITaskParallel::run() {
   if (ops == "+") {
     local_res = std::accumulate(local_input_.begin(), local_input_.end(), 0);
   } else if (ops == "-") {
-    local_res = - std::accumulate(local_input_.begin(), local_input_.end(), 0);
+    local_res = -std::accumulate(local_input_.begin(), local_input_.end(), 0);
   } else if (ops == "max") {
     local_res = *std::max_element(local_input_.begin(), local_input_.end());
   }

@@ -83,9 +83,11 @@ TEST(Parallel_Operations_MPI, Test_Diff) {
     // Create TaskData
     std::shared_ptr<ppc::core::TaskData> taskDataSeq =
         std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataSeq->inputs.emplace_back(
+        reinterpret_cast<uint8_t*>(global_vec.data()));
     taskDataSeq->inputs_count.emplace_back(global_vec.size());
-    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
+    taskDataSeq->outputs.emplace_back(
+        reinterpret_cast<uint8_t*>(reference_diff.data()));
     taskDataSeq->outputs_count.emplace_back(reference_diff.size());
 
     // Create Task
@@ -110,9 +112,11 @@ TEST(Parallel_Operations_MPI, Test_Diff_2) {
   if (world.rank() == 0) {
     const int count_size_vector = 120;
     global_vec = getRandomVector(count_size_vector);
-    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataPar->inputs.emplace_back(
+        reinterpret_cast<uint8_t*>(global_vec.data()));
     taskDataPar->inputs_count.emplace_back(global_vec.size());
-    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_diff.data()));
+    taskDataPar->outputs.emplace_back(
+        reinterpret_cast<uint8_t*>(global_diff.data()));
     taskDataPar->outputs_count.emplace_back(global_diff.size());
   }
 
@@ -129,9 +133,11 @@ TEST(Parallel_Operations_MPI, Test_Diff_2) {
     // Create TaskData
     std::shared_ptr<ppc::core::TaskData> taskDataSeq =
         std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataSeq->inputs.emplace_back(
+        reinterpret_cast<uint8_t*>(global_vec.data()));
     taskDataSeq->inputs_count.emplace_back(global_vec.size());
-    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
+    taskDataSeq->outputs.emplace_back(
+        reinterpret_cast<uint8_t*>(reference_diff.data()));
     taskDataSeq->outputs_count.emplace_back(reference_diff.size());
 
     // Create Task
@@ -156,9 +162,11 @@ TEST(Parallel_Operations_MPI, Test_Max) {
   if (world.rank() == 0) {
     const int count_size_vector = 240;
     global_vec = getRandomVector(count_size_vector);
-    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataPar->inputs.emplace_back(
+        reinterpret_cast<uint8_t*>(global_vec.data()));
     taskDataPar->inputs_count.emplace_back(global_vec.size());
-    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_max.data()));
+    taskDataPar->outputs.emplace_back(
+        reinterpret_cast<uint8_t*>(global_max.data()));
     taskDataPar->outputs_count.emplace_back(global_max.size());
   }
 
