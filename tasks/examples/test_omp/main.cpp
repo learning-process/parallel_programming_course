@@ -31,11 +31,11 @@ TEST(Parallel_Operations_OpenMP, Test_Sum) {
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataPar->outputs_count.emplace_back(ref_res.size());
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
+  taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataSeq, "+");
+  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "+");
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -70,11 +70,11 @@ TEST(Parallel_Operations_OpenMP, Test_Diff) {
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataPar->outputs_count.emplace_back(ref_res.size());
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
+  taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataSeq, "-");
+  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "-");
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -108,11 +108,11 @@ TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataPar->outputs_count.emplace_back(ref_res.size());
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
+  taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataSeq, "-");
+  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "-");
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -146,11 +146,11 @@ TEST(Parallel_Operations_OpenMP, Test_Mult) {
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataPar->outputs_count.emplace_back(ref_res.size());
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
+  taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataSeq, "*");
+  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "*");
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -184,11 +184,11 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataPar->outputs_count.emplace_back(ref_res.size());
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
+  taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataSeq, "*");
+  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "*");
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();

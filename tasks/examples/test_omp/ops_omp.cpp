@@ -13,7 +13,7 @@ std::vector<int> getRandomVector(int sz) {
   std::mt19937 gen(dev());
   std::vector<int> vec(sz);
   for (int i = 0; i < sz; i++) {
-    vec[i] = gen() % 100;
+    vec[i] = gen() % 100 + 1;
   }
   return vec;
 }
@@ -27,7 +27,7 @@ bool TestOMPTaskSequential::pre_processing() {
     input_[i] = tmp_ptr[i];
   }
   // Init value for output
-  res = 0;
+  res = 1;
   return true;
 }
 
@@ -46,7 +46,7 @@ bool TestOMPTaskSequential::run() {
   if (ops == "+") {
     res = std::accumulate(input_.begin(), input_.end(), 1);
   } else if (ops == "-") {
-    res = 1 - std::accumulate(input_.begin(), input_.end(), 0);
+    res -= std::accumulate(input_.begin(), input_.end(), 0);
   } else if (ops == "*") {
     res = std::accumulate(input_.begin(), input_.end(), 1, std::multiplies<>());
   }
@@ -59,31 +59,6 @@ bool TestOMPTaskSequential::post_processing() {
   return true;
 }
 
-int getParallelOperations(std::vector<int> vec, const std::string& ops) {
-  const int sz = vec.size();
-  int reduction_elem = 1;
-  double start = omp_get_wtime();
-  if (ops == "+") {
-#pragma omp parallel for reduction(+ : reduction_elem)
-    for (int i = 0; i < sz; i++) {
-      reduction_elem += vec[i];
-    }
-  } else if (ops == "-") {
-#pragma omp parallel for reduction(- : reduction_elem)
-    for (int i = 0; i < sz; i++) {
-      reduction_elem -= vec[i];
-    }
-  } else if (ops == "*") {
-#pragma omp parallel for reduction(* : reduction_elem)
-    for (int i = 0; i < sz; i++) {
-      reduction_elem *= vec[i];
-    }
-  }
-  double finish = omp_get_wtime();
-  std::cout << "How measure time in OpenMP: " << finish - start << std::endl;
-  return reduction_elem;
-}
-
 bool TestOMPTaskParallel::pre_processing() {
   internal_order_test();
   // Init vectors
@@ -93,7 +68,7 @@ bool TestOMPTaskParallel::pre_processing() {
     input_[i] = tmp_ptr[i];
   }
   // Init value for output
-  res = 0;
+  res = 1;
   return true;
 }
 
@@ -109,7 +84,6 @@ bool TestOMPTaskParallel::validation() {
 
 bool TestOMPTaskParallel::run() {
   internal_order_test();
-  int res = 1;
   double start = omp_get_wtime();
   if (ops == "+") {
 #pragma omp parallel for reduction(+ : res)
