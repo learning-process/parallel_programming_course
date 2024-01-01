@@ -72,5 +72,10 @@ for file in $FILES_MPI; do
     fi
     echo "NUM_PROC: " $NUM_PROC
 
-    mpirun --oversubscribe -np $NUM_PROC $file --gtest_repeat=10 || exit 1
+    if [[ $OSTYPE == "linux-gnu" ]]; then
+        mpirun --oversubscribe -np $NUM_PROC $file --gtest_repeat=10 || exit 1
+    elif [[ $OSTYPE == "darwin"* ]]; then
+        mpirun -np $NUM_PROC $file --gtest_repeat=10 || exit 1
+    fi
+
 done
