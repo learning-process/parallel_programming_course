@@ -2,8 +2,8 @@
 #include "examples/test_std/ops_std.hpp"
 
 #include <iostream>
-#include <random>
 #include <numeric>
+#include <random>
 #include <string>
 #include <utility>
 #include <vector>
