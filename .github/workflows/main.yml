@@ -22,6 +22,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
           key: ${{ github.job }}
+          create-symlink: true
     - name: CMake configure
       run: |
         mkdir build
@@ -33,7 +34,6 @@ jobs:
         CXX: g++-12
     - name: Ninja build
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cd build
         ninja
         cd ..
@@ -64,6 +64,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
           key: ${{ github.job }}
+          create-symlink: true
     - name: CMake configure
       run: |
         mkdir build
@@ -75,7 +76,6 @@ jobs:
         CXX: clang++-15
     - name: Ninja build
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cd build
         ninja
         cd ..
@@ -93,43 +93,27 @@ jobs:
     - name: Setup environment
       run: |
         brew update-reset
-        brew install cppcheck ninja
+        brew install cppcheck ninja mpich llvm
+        brew install libomp
+        brew link libomp --overwrite --force
         brew install openssl
-        brew link --force openssl
-        brew install mpich llvm libomp
+        brew link openssl --overwrite --force
     - name: Update submodules
       run: git submodule update --init --recursive
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
           key: ${{ github.job }}
+          create-symlink: true
     - name: CMake configure
       run: |
-        export LDFLAGS="$LDFLAGS -L/usr/local/opt/openssl/lib"
-        export CFLAGS="$CFLAGS -I/usr/local/opt/openssl/include"
-        export CXXFLAGS="$CXXFLAGS -I/usr/local/opt/openssl/include"
-        export CPPFLAGS="$CPPFLAGS -I/usr/local/opt/openssl/include"
-        export PATH="/usr/local/opt/openssl/bin:$PATH"
-        export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
         mkdir build
         cd build
         cmake -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE \
-             -DOpenMP_CXX_FLAGS="-Xclang -fopenmp -I/usr/local/opt/libomp/include" \
-             -DOpenMP_C_FLAGS="-Xclang -fopenmp -I/usr/local/opt/libomp/include" \
-             -DOpenMP_CXX_FLAGS="-Xclang -fopenmp -I/usr/local/opt/libomp/include" \
-             -DOpenMP_C_FLAGS="-Xclang -fopenmp -I/usr/local/opt/libomp/include" \
-             -DOpenMP_CXX_LIB_NAMES=libomp  -DOpenMP_C_LIB_NAMES=libomp  \
-             -DOpenMP_libomp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib  \
-             -DCMAKE_SHARED_LINKER_FLAGS="-L/usr/local/opt/libomp/lib -lomp -Wl,-rpath,/usr/local/opt/libomp/lib" ..
+          -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" \
+          -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include" ..
     - name: Ninja build
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        export LDFLAGS="$LDFLAGS -L/usr/local/opt/openssl/lib"
-        export CFLAGS="$CFLAGS -I/usr/local/opt/openssl/include"
-        export CXXFLAGS="$CXXFLAGS -I/usr/local/opt/openssl/include"
-        export CPPFLAGS="$CPPFLAGS -I/usr/local/opt/openssl/include"
-        export PATH="/usr/local/opt/openssl/bin:$PATH"
-        export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
         cd build
         ninja
         cd ..
