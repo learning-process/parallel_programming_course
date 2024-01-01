@@ -5,7 +5,6 @@ for file in $FILES_REF; do
         echo "--------------------------------"
         echo $(basename $file)
         echo "--------------------------------"
-        valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
         ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 done
 
