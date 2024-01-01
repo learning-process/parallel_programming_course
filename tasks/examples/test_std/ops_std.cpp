@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <random>
+#include <numeric>
 #include <string>
 #include <utility>
 #include <vector>
