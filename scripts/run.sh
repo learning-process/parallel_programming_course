@@ -5,7 +5,9 @@ for file in $FILES_REF; do
         echo "--------------------------------"
         echo $(basename $file)
         echo "--------------------------------"
-        valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+        if [[ $OSTYPE == "linux-gnu" ]]; then
+          valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+        fi
         ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 done
 
@@ -14,7 +16,9 @@ for file in $FILES_SEQ; do
         echo "--------------------------------"
         echo $(basename $file)
         echo "--------------------------------"
-        valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+        if [[ $OSTYPE == "linux-gnu" ]]; then
+          valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+        fi
         ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 done
 
@@ -23,7 +27,9 @@ for file in $FILES_STD; do
         echo "--------------------------------"
         echo $(basename $file)
         echo "--------------------------------"
-        valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+        if [[ $OSTYPE == "linux-gnu" ]]; then
+          valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+        fi
         ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 done
 
@@ -32,7 +38,9 @@ for file in $FILES_OMP; do
        echo "--------------------------------"
        echo $(basename $file)
        echo "--------------------------------"
-#       valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+#        if [[ $OSTYPE == "linux-gnu" ]]; then
+#          valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+#        fi
       ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 done
 
@@ -41,7 +49,9 @@ for file in $FILES_TBB; do
        echo "--------------------------------"
        echo $(basename $file)
        echo "--------------------------------"
-#       valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+#        if [[ $OSTYPE == "linux-gnu" ]]; then
+#          valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+#        fi
       ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 done
 
