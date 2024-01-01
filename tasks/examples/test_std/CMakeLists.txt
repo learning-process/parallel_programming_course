@@ -12,7 +12,7 @@ if ( USE_STD )
 
     add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
 
-    target_link_libraries(${ProjectId} ${PACK_LIB})
+    target_link_libraries(${ProjectId} ${PACK_LIB} core_lib)
     target_link_libraries(${ProjectId} gtest gtest_main)
     target_link_libraries (${ProjectId} Threads::Threads)
 
