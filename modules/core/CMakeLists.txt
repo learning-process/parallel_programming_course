@@ -3,7 +3,7 @@ get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 set(ProjectId "${ProjectId}")
 message( STATUS "-- " ${ProjectId} )
 
-file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.h)
+file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.h *.hpp)
 
 set(PACK_LIB "${ProjectId}_lib")
 add_library(${PACK_LIB} STATIC ${ALL_SOURCE_FILES} )

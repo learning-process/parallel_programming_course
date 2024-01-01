@@ -4,7 +4,7 @@ if ( USE_OMP )
     set(ProjectId "${ProjectId}_omp")
     message( STATUS "-- " ${ProjectId} )
 
-    file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.hpp)
+    file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.h *.hpp)
 
     set(PACK_LIB "${ProjectId}_lib")
     add_library(${PACK_LIB} STATIC ${ALL_SOURCE_FILES} )
