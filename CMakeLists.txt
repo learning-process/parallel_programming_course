@@ -1,5 +1,6 @@
 cmake_minimum_required( VERSION 3.25 )
 
+project( parallel_programming_course )
 message( STATUS "Parallel Programming Course" )
 
 include(cmake/configure.cmake)

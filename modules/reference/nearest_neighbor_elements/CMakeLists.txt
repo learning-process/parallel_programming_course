@@ -1,7 +1,6 @@
 get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
 set(ProjectId "${ProjectId}_ref")
-project( ${ProjectId} )
 message( STATUS "-- " ${ProjectId} )
 
 file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.h)

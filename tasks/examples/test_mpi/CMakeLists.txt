@@ -8,7 +8,6 @@ if( USE_MPI )
     endif( UNIX )
 
     set(ProjectId "${ProjectId}_mpi")
-    project( ${ProjectId} )
     message( STATUS "-- " ${ProjectId} )
 
     file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.hpp)

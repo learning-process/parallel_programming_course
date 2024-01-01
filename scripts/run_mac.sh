@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# shellcheck disable=SC2164
-cd build
-ctest --extra-verbose --repeat-until-fail 10 --timeout 100000 --build-and-test || exit 1
-# shellcheck disable=SC2103
-cd ..
+FILES_REF="build/bin/*_ref"
+for file in $FILES_REF; do
+        echo "--------------------------------"
+        echo $(basename $file)
+        echo "--------------------------------"
+        valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+        ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+done
 
 FILES_SEQ="build/bin/*_seq"
 for file in $FILES_SEQ; do

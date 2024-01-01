@@ -2,7 +2,6 @@ get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
 if ( USE_TBB )
     set(ProjectId "${ProjectId}_tbb")
-    project( ${ProjectId} )
     message( STATUS "-- " ${ProjectId} )
 
     file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.hpp)
