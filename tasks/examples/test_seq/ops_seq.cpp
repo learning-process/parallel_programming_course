@@ -1,13 +1,6 @@
 // Copyright 2023 Nesterov Alexander
 #include "examples/test_seq/ops_seq.hpp"
 
-#include <omp.h>
-
-#include <iostream>
-#include <random>
-#include <string>
-#include <vector>
-
 bool TestTaskSequential::pre_processing() {
   internal_order_test();
   // Init value for input and output
@@ -19,11 +12,7 @@ bool TestTaskSequential::pre_processing() {
 bool TestTaskSequential::validation() {
   internal_order_test();
   // Check count elements of output
-  if (taskData->inputs_count[0] == 1 && taskData->outputs_count[0]) {
-    return true;
-  } else {
-    return false;
-  }
+  return taskData->inputs_count[0] == 1 && taskData->outputs_count[0] == 1;
 }
 
 bool TestTaskSequential::run() {

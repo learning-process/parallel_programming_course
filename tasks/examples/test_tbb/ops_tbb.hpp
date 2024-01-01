@@ -5,8 +5,38 @@
 #include <string>
 #include <vector>
 
+#include "core/include/task.hpp"
+
 std::vector<int> getRandomVector(int sz);
-int getParallelOperations(std::vector<int> vec, const std::string& ops);
-int getSequentialOperations(std::vector<int> vec, const std::string& ops);
+
+class TestTBBTaskSequential : public ppc::core::Task {
+ public:
+  explicit TestTBBTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_, std::string ops_)
+      : Task(std::move(taskData_)), ops(std::move(ops_)) {}
+  bool pre_processing() override;
+  bool validation() override;
+  bool run() override;
+  bool post_processing() override;
+
+ private:
+  std::vector<int> input_;
+  int res{};
+  std::string ops;
+};
+
+class TestTBBTaskParallel : public ppc::core::Task {
+ public:
+  explicit TestTBBTaskParallel(std::shared_ptr<ppc::core::TaskData> taskData_, std::string ops_)
+      : Task(std::move(taskData_)), ops(std::move(ops_)) {}
+  bool pre_processing() override;
+  bool validation() override;
+  bool run() override;
+  bool post_processing() override;
+
+ private:
+  std::vector<int> input_;
+  int res{};
+  std::string ops;
+};
 
 #endif  // TASKS_EXAMPLES_TEST_TBB_OPS_TBB_H_
