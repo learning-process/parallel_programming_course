@@ -21,7 +21,7 @@ bool TestMPITaskSequential::pre_processing() {
   internal_order_test();
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
-  auto tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
+  auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
   for (int i = 0; i < taskData->inputs_count[0]; i++) {
     input_[i] = tmp_ptr[i];
   }
@@ -33,11 +33,7 @@ bool TestMPITaskSequential::pre_processing() {
 bool TestMPITaskSequential::validation() {
   internal_order_test();
   // Check count elements of output
-  if (taskData->outputs_count[0] == 1) {
-    return true;
-  } else {
-    return false;
-  }
+  return taskData->outputs_count[0] == 1;
 }
 
 bool TestMPITaskSequential::run() {
@@ -69,7 +65,7 @@ bool TestMPITaskParallel::pre_processing() {
   if (world.rank() == 0) {
     // Init vectors
     input_ = std::vector<int>(taskData->inputs_count[0]);
-    auto tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
+    auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
     for (int i = 0; i < taskData->inputs_count[0]; i++) {
       input_[i] = tmp_ptr[i];
     }
@@ -92,11 +88,7 @@ bool TestMPITaskParallel::validation() {
   internal_order_test();
   if (world.rank() == 0) {
     // Check count elements of output
-    if (taskData->outputs_count[0] == 1) {
-      return true;
-    } else {
-      return false;
-    }
+    return taskData->outputs_count[0] == 1;
   }
   return true;
 }

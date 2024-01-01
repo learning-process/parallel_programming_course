@@ -46,7 +46,7 @@ class NumOfAlternationsSigns : public ppc::core::Task {
     rotate(rotate_in.begin(), rotate_in.begin() + rot_left, rotate_in.end());
 
     auto temp_res = input_;
-    std::transform(input_.begin(), input_.end(), rotate_in.begin(), temp_res.begin(), std::multiplies<int>());
+    std::transform(input_.begin(), input_.end(), rotate_in.begin(), temp_res.begin(), std::multiplies<>());
 
     num = std::count_if(temp_res.begin(), temp_res.end() - 1, [](InOutType elem) { return elem < 0; });
     return true;

@@ -22,7 +22,7 @@ jobs:
         apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-dev,valgrind
         cmake_command: cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         config_file: .clang-tidy
-        exclude: 3rdparty
+        exclude: "3rdparty/*"
         split_workflow: false
         lgtm_comment_body: ""
       env:
