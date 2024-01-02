@@ -1,7 +1,6 @@
 // Copyright 2023 Nesterov Alexander
 
-#ifndef MODULES_REFERENCE_SUM_OF_VECTOR_ELEMENTS_REF_TASK_HPP_
-#define MODULES_REFERENCE_SUM_OF_VECTOR_ELEMENTS_REF_TASK_HPP_
+#pragma once
 
 #include <gtest/gtest.h>
 
@@ -11,14 +10,12 @@
 
 #include "core/include/task.hpp"
 
-namespace ppc {
-namespace reference {
+namespace ppc::reference {
 
 template <class InOutType>
 class SumOfVectorElements : public ppc::core::Task {
  public:
-  explicit SumOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(taskData_) {}
+  explicit SumOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
   bool pre_processing() override {
     internal_order_test();
     // Init vectors
@@ -55,7 +52,4 @@ class SumOfVectorElements : public ppc::core::Task {
   InOutType sum;
 };
 
-}  // namespace reference
-}  // namespace ppc
-
-#endif  // MODULES_REFERENCE_SUM_OF_VECTOR_ELEMENTS_REF_TASK_HPP_
+}  // namespace ppc::reference

@@ -5,92 +5,225 @@
 #include <boost/mpi/environment.hpp>
 #include <vector>
 
-#include "./ops_mpi.h"
+#include "./ops_mpi.hpp"
 
 TEST(Parallel_Operations_MPI, Test_Sum) {
   boost::mpi::communicator world;
   std::vector<int> global_vec;
-  const int count_size_vector = 120;
+  std::vector<int32_t> global_sum(1, 0);
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
+    const int count_size_vector = 120;
     global_vec = getRandomVector(count_size_vector);
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataPar->inputs_count.emplace_back(global_vec.size());
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_sum.data()));
+    taskDataPar->outputs_count.emplace_back(global_sum.size());
   }
 
-  int global_sum = getParallelOperations(global_vec, count_size_vector, "+");
+  TestMPITaskParallel testMpiTaskParallel(taskDataPar, "+");
+  ASSERT_EQ(testMpiTaskParallel.validation(), true);
+  testMpiTaskParallel.pre_processing();
+  testMpiTaskParallel.run();
+  testMpiTaskParallel.post_processing();
 
   if (world.rank() == 0) {
-    int reference_sum = getSequentialOperations(global_vec, "+");
-    ASSERT_EQ(reference_sum, global_sum);
+    // Create data
+    std::vector<int32_t> reference_sum(1, 0);
+
+    // Create TaskData
+    std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataSeq->inputs_count.emplace_back(global_vec.size());
+    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_sum.data()));
+    taskDataSeq->outputs_count.emplace_back(reference_sum.size());
+
+    // Create Task
+    TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "+");
+    ASSERT_EQ(testMpiTaskSequential.validation(), true);
+    testMpiTaskSequential.pre_processing();
+    testMpiTaskSequential.run();
+    testMpiTaskSequential.post_processing();
+
+    ASSERT_EQ(reference_sum[0], global_sum[0]);
   }
 }
 
 TEST(Parallel_Operations_MPI, Test_Diff) {
   boost::mpi::communicator world;
   std::vector<int> global_vec;
-  const int count_size_vector = 120;
+  std::vector<int32_t> global_diff(1, 0);
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
+    const int count_size_vector = 240;
     global_vec = getRandomVector(count_size_vector);
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataPar->inputs_count.emplace_back(global_vec.size());
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_diff.data()));
+    taskDataPar->outputs_count.emplace_back(global_diff.size());
   }
 
-  int global_diff = getParallelOperations(global_vec, count_size_vector, "-");
+  TestMPITaskParallel testMpiTaskParallel(taskDataPar, "-");
+  ASSERT_EQ(testMpiTaskParallel.validation(), true);
+  testMpiTaskParallel.pre_processing();
+  testMpiTaskParallel.run();
+  testMpiTaskParallel.post_processing();
 
   if (world.rank() == 0) {
-    int reference_diff = getSequentialOperations(global_vec, "-");
-    ASSERT_EQ(reference_diff, global_diff);
+    // Create data
+    std::vector<int32_t> reference_diff(1, 0);
+
+    // Create TaskData
+    std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataSeq->inputs_count.emplace_back(global_vec.size());
+    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
+    taskDataSeq->outputs_count.emplace_back(reference_diff.size());
+
+    // Create Task
+    TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "-");
+    ASSERT_EQ(testMpiTaskSequential.validation(), true);
+    testMpiTaskSequential.pre_processing();
+    testMpiTaskSequential.run();
+    testMpiTaskSequential.post_processing();
+
+    ASSERT_EQ(reference_diff[0], global_diff[0]);
   }
 }
 
 TEST(Parallel_Operations_MPI, Test_Diff_2) {
   boost::mpi::communicator world;
   std::vector<int> global_vec;
-  const int count_size_vector = 120;
+  std::vector<int32_t> global_diff(1, 0);
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
+    const int count_size_vector = 120;
     global_vec = getRandomVector(count_size_vector);
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataPar->inputs_count.emplace_back(global_vec.size());
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_diff.data()));
+    taskDataPar->outputs_count.emplace_back(global_diff.size());
   }
 
-  int global_diff = getParallelOperations(global_vec, count_size_vector, "-");
+  TestMPITaskParallel testMpiTaskParallel(taskDataPar, "-");
+  ASSERT_EQ(testMpiTaskParallel.validation(), true);
+  testMpiTaskParallel.pre_processing();
+  testMpiTaskParallel.run();
+  testMpiTaskParallel.post_processing();
 
   if (world.rank() == 0) {
-    int reference_diff = getSequentialOperations(global_vec, "-");
-    ASSERT_EQ(reference_diff, global_diff);
+    // Create data
+    std::vector<int32_t> reference_diff(1, 0);
+
+    // Create TaskData
+    std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataSeq->inputs_count.emplace_back(global_vec.size());
+    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
+    taskDataSeq->outputs_count.emplace_back(reference_diff.size());
+
+    // Create Task
+    TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "-");
+    ASSERT_EQ(testMpiTaskSequential.validation(), true);
+    testMpiTaskSequential.pre_processing();
+    testMpiTaskSequential.run();
+    testMpiTaskSequential.post_processing();
+
+    ASSERT_EQ(reference_diff[0], global_diff[0]);
   }
 }
 
 TEST(Parallel_Operations_MPI, Test_Max) {
   boost::mpi::communicator world;
   std::vector<int> global_vec;
-  const int count_size_vector = 120;
+  std::vector<int32_t> global_max(1, 0);
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
+    const int count_size_vector = 240;
     global_vec = getRandomVector(count_size_vector);
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataPar->inputs_count.emplace_back(global_vec.size());
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_max.data()));
+    taskDataPar->outputs_count.emplace_back(global_max.size());
   }
 
-  int global_max;
-  global_max = getParallelOperations(global_vec, count_size_vector, "max");
+  TestMPITaskParallel testMpiTaskParallel(taskDataPar, "max");
+  ASSERT_EQ(testMpiTaskParallel.validation(), true);
+  testMpiTaskParallel.pre_processing();
+  testMpiTaskParallel.run();
+  testMpiTaskParallel.post_processing();
 
   if (world.rank() == 0) {
-    int reference_max = getSequentialOperations(global_vec, "max");
-    ASSERT_EQ(reference_max, global_max);
+    // Create data
+    std::vector<int32_t> reference_max(1, 0);
+
+    // Create TaskData
+    std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataSeq->inputs_count.emplace_back(global_vec.size());
+    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));
+    taskDataSeq->outputs_count.emplace_back(reference_max.size());
+
+    // Create Task
+    TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "max");
+    ASSERT_EQ(testMpiTaskSequential.validation(), true);
+    testMpiTaskSequential.pre_processing();
+    testMpiTaskSequential.run();
+    testMpiTaskSequential.post_processing();
+
+    ASSERT_EQ(reference_max[0], global_max[0]);
   }
 }
 
 TEST(Parallel_Operations_MPI, Test_Max_2) {
   boost::mpi::communicator world;
   std::vector<int> global_vec;
-  const int count_size_vector = 120;
+  std::vector<int32_t> global_max(1, 0);
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
+    const int count_size_vector = 120;
     global_vec = getRandomVector(count_size_vector);
+    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataPar->inputs_count.emplace_back(global_vec.size());
+    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_max.data()));
+    taskDataPar->outputs_count.emplace_back(global_max.size());
   }
 
-  int global_max;
-  global_max = getParallelOperations(global_vec, count_size_vector, "max");
+  TestMPITaskParallel testMpiTaskParallel(taskDataPar, "max");
+  ASSERT_EQ(testMpiTaskParallel.validation(), true);
+  testMpiTaskParallel.pre_processing();
+  testMpiTaskParallel.run();
+  testMpiTaskParallel.post_processing();
 
   if (world.rank() == 0) {
-    int reference_max = getSequentialOperations(global_vec, "max");
-    ASSERT_EQ(reference_max, global_max);
+    // Create data
+    std::vector<int32_t> reference_max(1, 0);
+
+    // Create TaskData
+    std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    taskDataSeq->inputs_count.emplace_back(global_vec.size());
+    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));
+    taskDataSeq->outputs_count.emplace_back(reference_max.size());
+
+    // Create Task
+    TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "max");
+    ASSERT_EQ(testMpiTaskSequential.validation(), true);
+    testMpiTaskSequential.pre_processing();
+    testMpiTaskSequential.run();
+    testMpiTaskSequential.post_processing();
+
+    ASSERT_EQ(reference_max[0], global_max[0]);
   }
 }
 
@@ -98,8 +231,7 @@ int main(int argc, char** argv) {
   boost::mpi::environment env(argc, argv);
   boost::mpi::communicator world;
   ::testing::InitGoogleTest(&argc, argv);
-  ::testing::TestEventListeners& listeners =
-      ::testing::UnitTest::GetInstance()->listeners();
+  ::testing::TestEventListeners& listeners = ::testing::UnitTest::GetInstance()->listeners();
   if (world.rank() != 0) {
     delete listeners.Release(listeners.default_result_printer());
   }

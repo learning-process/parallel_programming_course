@@ -8,17 +8,16 @@ if( USE_MPI )
     endif( UNIX )
 
     set(ProjectId "${ProjectId}_mpi")
-    project( ${ProjectId} )
     message( STATUS "-- " ${ProjectId} )
 
-    file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.h)
+    file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.h *.hpp)
 
     set(PACK_LIB "${ProjectId}_lib")
     add_library(${PACK_LIB} STATIC ${ALL_SOURCE_FILES} )
 
     add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
 
-    target_link_libraries(${ProjectId} ${PACK_LIB})
+    target_link_libraries(${ProjectId} ${PACK_LIB} core_lib)
     if( MPI_COMPILE_FLAGS )
         set_target_properties( ${ProjectId} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}" )
     endif( MPI_COMPILE_FLAGS )

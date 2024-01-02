@@ -19,9 +19,7 @@ namespace reference {
 template <class InOutType, class CountType>
 class NumOfAlternationsSigns : public ppc::core::Task {
  public:
-  explicit NumOfAlternationsSigns(
-      std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(taskData_) {}
+  explicit NumOfAlternationsSigns(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
   bool pre_processing() override {
     internal_order_test();
     // Init vectors
@@ -48,11 +46,9 @@ class NumOfAlternationsSigns : public ppc::core::Task {
     rotate(rotate_in.begin(), rotate_in.begin() + rot_left, rotate_in.end());
 
     auto temp_res = input_;
-    std::transform(input_.begin(), input_.end(), rotate_in.begin(),
-                   temp_res.begin(), std::multiplies<>());
+    std::transform(input_.begin(), input_.end(), rotate_in.begin(), temp_res.begin(), std::multiplies<>());
 
-    num = std::count_if(temp_res.begin(), temp_res.end() - 1,
-                        [](InOutType elem) { return elem < 0; });
+    num = std::count_if(temp_res.begin(), temp_res.end() - 1, [](InOutType elem) { return elem < 0; });
     return true;
   }
 

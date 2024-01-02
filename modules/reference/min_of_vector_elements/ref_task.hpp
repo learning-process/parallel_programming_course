@@ -18,8 +18,7 @@ namespace reference {
 template <class InOutType, class IndexType>
 class MinOfVectorElements : public ppc::core::Task {
  public:
-  explicit MinOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(taskData_) {}
+  explicit MinOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
   bool pre_processing() override {
     internal_order_test();
     // Init vectors
