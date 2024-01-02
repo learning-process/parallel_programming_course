@@ -1,5 +1,5 @@
 // Copyright 2023 Nesterov Alexander
-#include "examples/test_mpi/ops_mpi.hpp"
+#include "mpi/example/ops_mpi.hpp"
 
 #include <algorithm>
 #include <functional>

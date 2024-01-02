@@ -1,5 +1,5 @@
 // Copyright 2023 Nesterov Alexander
-#include "examples/test_std/ops_std.hpp"
+#include "std/example/ops_std.hpp"
 
 #include <future>
 #include <iostream>

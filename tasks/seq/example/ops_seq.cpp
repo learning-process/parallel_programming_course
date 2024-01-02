@@ -1,5 +1,5 @@
 // Copyright 2023 Nesterov Alexander
-#include "examples/test_seq/ops_seq.hpp"
+#include "seq/example/ops_seq.hpp"
 
 bool TestTaskSequential::pre_processing() {
   internal_order_test();
