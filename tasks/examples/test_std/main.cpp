@@ -4,7 +4,6 @@
 #include <thread>
 #include <vector>
 
-
 #include "./ops_std.h"
 
 TEST(Parallel_Operations_Std_Threads, Test_Sum) {
