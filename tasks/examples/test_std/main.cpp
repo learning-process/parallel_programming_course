@@ -1,9 +1,9 @@
 // Copyright 2023 Nesterov Alexander
 #include <gtest/gtest.h>
 
+#include <thread>
 #include <vector>
 
-#include "../../../3rdparty/unapproved/unapproved.h"
 #include "./ops_std.h"
 
 TEST(Parallel_Operations_Std_Threads, Test_Sum) {
