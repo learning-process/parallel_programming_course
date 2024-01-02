@@ -6,7 +6,9 @@ jobs:
   ubuntu-gcc-build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
     - name: Setup environment
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -16,8 +18,6 @@ jobs:
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
-    - name: Update submodules
-      run: git submodule update --init --recursive
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -25,18 +25,13 @@ jobs:
           create-symlink: true
     - name: CMake configure
       run: |
-        mkdir build
-        cd build
-        cmake -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
-        cd ..
+        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: gcc-12
         CXX: g++-12
     - name: Ninja build
       run: |
-        cd build
-        ninja
-        cd ..
+        cmake --build build
       env:
         CC: gcc-12
         CXX: g++-12
@@ -47,7 +42,9 @@ jobs:
   ubuntu-clang-build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
     - name: Setup environment
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -58,8 +55,6 @@ jobs:
         sudo apt-get install libomp-15-dev
         sudo apt-get install python3-pip
         sudo apt-get install valgrind
-    - name: Update submodules
-      run: git submodule update --init --recursive
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -67,18 +62,13 @@ jobs:
           create-symlink: true
     - name: CMake configure
       run: |
-        mkdir build
-        cd build
-        cmake -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
-        cd ..
+        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: clang-15
         CXX: clang++-15
     - name: Ninja build
       run: |
-        cd build
-        ninja
-        cd ..
+        cmake --build build
       env:
         CC: clang-15
         CXX: clang++-15
@@ -89,7 +79,9 @@ jobs:
   macos-clang-build:
     runs-on: macOS-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
     - name: Setup environment
       run: |
         brew update-reset
@@ -98,8 +90,6 @@ jobs:
         brew link libomp --overwrite --force
         brew install openssl
         brew link openssl --overwrite --force
-    - name: Update submodules
-      run: git submodule update --init --recursive
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -107,27 +97,25 @@ jobs:
           create-symlink: true
     - name: CMake configure
       run: |
-        mkdir build
-        cd build
-        cmake -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE \
+        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=ON -D USE_TBB=ON -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE \
           -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" \
-          -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include" ..
+          -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
     - name: Ninja build
       run: |
-        cd build
-        ninja
-        cd ..
+        cmake --build build
     - name: Run tests
       run: |
         export OMP_NUM_THREADS=4
-        source scripts/run_mac.sh
+        source scripts/run.sh
   windows-msvc-build:
     runs-on: windows-latest
     defaults:
       run:
         shell: bash
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
     - name: Setup MPI
@@ -137,8 +125,6 @@ jobs:
     - name: Download dependencies
       run: |
         choco install openssl
-    - name: Update submodules
-      run: git submodule update --init --recursive
     - name: Setup ccache
       uses: Chocobo1/setup-ccache-action@v1
       with:
@@ -146,16 +132,11 @@ jobs:
     - name: CMake configure
       shell: bash
       run: |
-        mkdir build
-        cd build 
-        cmake -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=OFF -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE ..
-        cd ..
+        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=OFF -D USE_STD=ON -D CMAKE_BUILD_TYPE=RELEASE
     - name: MSBuild
       shell: bash
       run: |
-        cd build
-        cmake --build . --config Release --parallel
-        cd ..
+        cmake --build build --config Release --parallel
     - name: Run tests
       run: |
         set OMP_NUM_THREADS=4

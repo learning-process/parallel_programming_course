@@ -35,15 +35,12 @@ class Perf {
   void pipeline_run(const std::shared_ptr<PerfAttr>& perfAttr,
                     const std::shared_ptr<ppc::core::PerfResults>& perfResults);
   // Check performance of task's run() function
-  void task_run(const std::shared_ptr<PerfAttr>& perfAttr,
-                const std::shared_ptr<ppc::core::PerfResults>& perfResults);
+  void task_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::shared_ptr<ppc::core::PerfResults>& perfResults);
 
  private:
   std::shared_ptr<Task> task;
-  static void common_run(
-      const std::shared_ptr<PerfAttr>& perfAttr,
-      const std::function<void()>& pipeline,
-      const std::shared_ptr<ppc::core::PerfResults>& perfResults);
+  static void common_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::function<void()>& pipeline,
+                         const std::shared_ptr<ppc::core::PerfResults>& perfResults);
 };
 
 }  // namespace core

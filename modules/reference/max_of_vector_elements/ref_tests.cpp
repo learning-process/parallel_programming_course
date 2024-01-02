@@ -14,8 +14,7 @@ TEST(max_of_vector_elements, check_int32_t) {
   in[328] = 10;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -41,8 +40,7 @@ TEST(max_of_vector_elements, check_validate_func_1) {
   std::vector<uint64_t> out_index(1, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -63,8 +61,7 @@ TEST(max_of_vector_elements, check_validate_func_2) {
   std::vector<uint64_t> out_index(2, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -86,8 +83,7 @@ TEST(max_of_vector_elements, check_double) {
   in[2] = 1.0001;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -113,8 +109,7 @@ TEST(max_of_vector_elements, check_uint8_t) {
   std::vector<uint64_t> out_index(1, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -141,8 +136,7 @@ TEST(max_of_vector_elements, check_int64_t) {
   in[345] = 256;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -169,8 +163,7 @@ TEST(max_of_vector_elements, check_float) {
   in[0] = 1.01;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));

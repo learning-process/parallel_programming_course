@@ -2,17 +2,16 @@ get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
 if ( USE_SEQ )
     set(ProjectId "${ProjectId}_seq")
-    project( ${ProjectId} )
     message( STATUS "-- " ${ProjectId} )
 
-    file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.h)
+    file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.h *.hpp)
 
     set(PACK_LIB "${ProjectId}_lib")
     add_library(${PACK_LIB} STATIC ${ALL_SOURCE_FILES} )
 
     add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
 
-    target_link_libraries(${ProjectId} ${PACK_LIB})
+    target_link_libraries(${ProjectId} ${PACK_LIB} core_lib)
     target_link_libraries(${ProjectId} gtest gtest_main)
 
     enable_testing()

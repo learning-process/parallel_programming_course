@@ -12,8 +12,7 @@ int main(int argc, char** argv) {
   boost::mpi::communicator world;
 
   world.barrier();
-  std::cout << "Processor = " << boost::mpi::environment::processor_name()
-            << std::endl;
+  std::cout << "Processor = " << boost::mpi::environment::processor_name() << std::endl;
   std::cout << "Rank = " << world.rank() << std::endl;
   std::cout << "Number of processors = " << world.size() << std::endl;
 
