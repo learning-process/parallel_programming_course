@@ -1,4 +1,4 @@
-message(STATUS "Examples")
+message(STATUS "OpenMP tasks")
 
 SUBDIRLIST(subdirs ${CMAKE_CURRENT_SOURCE_DIR})
 

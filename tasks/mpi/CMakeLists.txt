@@ -1,4 +1,4 @@
-message(STATUS "Task 2")
+message(STATUS "MPI tasks")
 
 SUBDIRLIST(subdirs ${CMAKE_CURRENT_SOURCE_DIR})
 
