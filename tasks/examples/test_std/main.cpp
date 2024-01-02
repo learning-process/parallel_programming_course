@@ -4,7 +4,7 @@
 #include <thread>
 #include <vector>
 
-#include "./ops_std.h"
+#include "./ops_std.hpp"
 
 TEST(Parallel_Operations_Std_Threads, Test_Sum) {
   auto nthreads = std::thread::hardware_concurrency() * 10;
