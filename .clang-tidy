@@ -30,6 +30,7 @@ Checks: >
   -bugprone-unchecked-optional-access,
   -clang-analyzer-security.insecureAPI.rand,
   -clang-analyzer-optin.cplusplus.UninitializedObject,
+  -modernize-loop-convert,
 
 WarningsAsErrors: "*"
 
