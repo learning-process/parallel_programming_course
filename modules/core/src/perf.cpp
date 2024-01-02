@@ -5,9 +5,7 @@
 #include <iostream>
 #include <utility>
 
-ppc::core::Perf::Perf(std::shared_ptr<Task> task_) {
-  set_task(std::move(task_));
-}
+ppc::core::Perf::Perf(std::shared_ptr<Task> task_) { set_task(std::move(task_)); }
 
 void ppc::core::Perf::set_task(std::shared_ptr<Task> task_) { task = std::move(task_); }
 
