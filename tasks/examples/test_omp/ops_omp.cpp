@@ -23,7 +23,7 @@ bool TestOMPTaskSequential::pre_processing() {
   internal_order_test();
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
-  auto tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
+  auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
   for (int i = 0; i < taskData->inputs_count[0]; i++) {
     input_[i] = tmp_ptr[i];
   }
@@ -60,7 +60,7 @@ bool TestOMPTaskParallel::pre_processing() {
   internal_order_test();
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
-  auto tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
+  auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
   for (int i = 0; i < taskData->inputs_count[0]; i++) {
     input_[i] = tmp_ptr[i];
   }
@@ -72,11 +72,7 @@ bool TestOMPTaskParallel::pre_processing() {
 bool TestOMPTaskParallel::validation() {
   internal_order_test();
   // Check count elements of output
-  if (taskData->outputs_count[0] == 1) {
-    return true;
-  } else {
-    return false;
-  }
+  return taskData->outputs_count[0] == 1;
 }
 
 bool TestOMPTaskParallel::run() {
@@ -85,18 +81,18 @@ bool TestOMPTaskParallel::run() {
   auto temp_res = res;
   if (ops == "+") {
 #pragma omp parallel for reduction(+ : temp_res)
-    for (int i = 0; i < input_.size(); i++) {
-      temp_res += input_[i];
+    for (int in : input_) {
+      temp_res += in;
     }
   } else if (ops == "-") {
 #pragma omp parallel for reduction(- : temp_res)
-    for (int i = 0; i < input_.size(); i++) {
-      temp_res -= input_[i];
+    for (int in : input_) {
+      temp_res -= in;
     }
   } else if (ops == "*") {
 #pragma omp parallel for reduction(* : temp_res)
-    for (int i = 0; i < input_.size(); i++) {
-      temp_res *= input_[i];
+    for (int in : input_) {
+      temp_res *= in;
     }
   }
   res = temp_res;

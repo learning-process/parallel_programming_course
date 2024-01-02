@@ -23,7 +23,7 @@ bool TestTBBTaskSequential::pre_processing() {
   internal_order_test();
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
-  auto tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
+  auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
   for (int i = 0; i < taskData->inputs_count[0]; i++) {
     input_[i] = tmp_ptr[i];
   }
@@ -60,7 +60,7 @@ bool TestTBBTaskParallel::pre_processing() {
   internal_order_test();
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
-  auto tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
+  auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
   for (int i = 0; i < taskData->inputs_count[0]; i++) {
     input_[i] = tmp_ptr[i];
   }
