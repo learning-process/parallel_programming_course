@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "core/include/task.hpp"
+#include "core/task/include/task.hpp"
 
 class TestTaskSequential : public ppc::core::Task {
  public:

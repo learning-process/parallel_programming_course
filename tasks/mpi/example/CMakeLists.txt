@@ -17,7 +17,7 @@ if( USE_MPI )
 
     add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
 
-    target_link_libraries(${ProjectId} ${PACK_LIB} core_lib)
+    target_link_libraries(${ProjectId} ${PACK_LIB} task_core_lib)
     if( MPI_COMPILE_FLAGS )
         set_target_properties( ${ProjectId} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}" )
     endif( MPI_COMPILE_FLAGS )

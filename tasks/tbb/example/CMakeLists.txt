@@ -14,7 +14,7 @@ if ( USE_TBB )
     endif (APPLE)
 
     add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
-    target_link_libraries(${ProjectId} ${PACK_LIB} core_lib)
+    target_link_libraries(${ProjectId} ${PACK_LIB} task_core_lib)
 
     if (APPLE)
         add_dependencies(${ProjectId} ppc_onetbb)

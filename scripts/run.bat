@@ -1,11 +1,7 @@
 @echo off
 
-for /r "." %%a in (build\bin\*_ref.exe) do (
-    echo -------------------------------------
-    echo %%~na
-    echo -------------------------------------
-    %%~fa --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating || exit 1
-)
+build\bin\core_func_tests.exe --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating || exit 1
+build\bin\reference_func_tests.exe --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating || exit 1
 
 for /r "." %%a in (build\bin\*_mpi.exe) do (
     echo -------------------------------------

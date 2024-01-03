@@ -1,15 +1,12 @@
 #!/bin/bash
 
-FILES_REF="build/bin/*_ref"
-for file in $FILES_REF; do
-        echo "--------------------------------"
-        echo $(basename $file)
-        echo "--------------------------------"
-        if [[ $OSTYPE == "linux-gnu" ]]; then
-          valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
-        fi
-        ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
-done
+if [[ $OSTYPE == "linux-gnu" ]]; then
+  valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./build/bin/core_func_tests
+  valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./build/bin/reference_func_tests
+fi
+
+./build/bin/core_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+./build/bin/reference_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 
 FILES_SEQ="build/bin/*_seq"
 for file in $FILES_SEQ; do
