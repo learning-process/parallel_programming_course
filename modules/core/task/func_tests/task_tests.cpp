@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "core/task/include/task.hpp"
 #include "core/task/func_tests/test_task.hpp"
+#include "core/task/include/task.hpp"
 
 TEST(task_tests, check_int32_t) {
   // Create data
