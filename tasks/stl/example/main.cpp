@@ -4,9 +4,9 @@
 #include <thread>
 #include <vector>
 
-#include "./ops_std.hpp"
+#include "./ops_stl.hpp"
 
-TEST(Parallel_Operations_Std_Threads, Test_Sum) {
+TEST(Parallel_Operations_STL_Threads, Test_Sum) {
   auto nthreads = std::thread::hardware_concurrency() * 10;
   std::vector<int> vec = getRandomVector(static_cast<int>(nthreads));
   // Create data
@@ -20,11 +20,11 @@ TEST(Parallel_Operations_Std_Threads, Test_Sum) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestSTDTaskSequential testStdTaskSequential(taskDataSeq, "+");
-  ASSERT_EQ(testStdTaskSequential.validation(), true);
-  testStdTaskSequential.pre_processing();
-  testStdTaskSequential.run();
-  testStdTaskSequential.post_processing();
+  TestSTLTaskSequential TestSTLTaskSequential(taskDataSeq, "+");
+  ASSERT_EQ(TestSTLTaskSequential.validation(), true);
+  TestSTLTaskSequential.pre_processing();
+  TestSTLTaskSequential.run();
+  TestSTLTaskSequential.post_processing();
 
   // Create data
   std::vector<int> par_res(1, 0);
@@ -37,15 +37,15 @@ TEST(Parallel_Operations_Std_Threads, Test_Sum) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestSTDTaskParallel testStdTaskParallel(taskDataPar, "+");
-  ASSERT_EQ(testStdTaskParallel.validation(), true);
-  testStdTaskParallel.pre_processing();
-  testStdTaskParallel.run();
-  testStdTaskParallel.post_processing();
+  TestSTLTaskParallel TestSTLTaskParallel(taskDataPar, "+");
+  ASSERT_EQ(TestSTLTaskParallel.validation(), true);
+  TestSTLTaskParallel.pre_processing();
+  TestSTLTaskParallel.run();
+  TestSTLTaskParallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
-TEST(Parallel_Operations_Std_Threads, Test_Sum_2) {
+TEST(Parallel_Operations_STL_Threads, Test_Sum_2) {
   auto nthreads = std::thread::hardware_concurrency() * 11;
   std::vector<int> vec = getRandomVector(static_cast<int>(nthreads));
   // Create data
@@ -59,11 +59,11 @@ TEST(Parallel_Operations_Std_Threads, Test_Sum_2) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestSTDTaskSequential testStdTaskSequential(taskDataSeq, "+");
-  ASSERT_EQ(testStdTaskSequential.validation(), true);
-  testStdTaskSequential.pre_processing();
-  testStdTaskSequential.run();
-  testStdTaskSequential.post_processing();
+  TestSTLTaskSequential TestSTLTaskSequential(taskDataSeq, "+");
+  ASSERT_EQ(TestSTLTaskSequential.validation(), true);
+  TestSTLTaskSequential.pre_processing();
+  TestSTLTaskSequential.run();
+  TestSTLTaskSequential.post_processing();
 
   // Create data
   std::vector<int> par_res(1, 0);
@@ -76,15 +76,15 @@ TEST(Parallel_Operations_Std_Threads, Test_Sum_2) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestSTDTaskParallel testStdTaskParallel(taskDataPar, "+");
-  ASSERT_EQ(testStdTaskParallel.validation(), true);
-  testStdTaskParallel.pre_processing();
-  testStdTaskParallel.run();
-  testStdTaskParallel.post_processing();
+  TestSTLTaskParallel TestSTLTaskParallel(taskDataPar, "+");
+  ASSERT_EQ(TestSTLTaskParallel.validation(), true);
+  TestSTLTaskParallel.pre_processing();
+  TestSTLTaskParallel.run();
+  TestSTLTaskParallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
-TEST(Parallel_Operations_Std_Threads, Test_Sum_3) {
+TEST(Parallel_Operations_STL_Threads, Test_Sum_3) {
   auto nthreads = std::thread::hardware_concurrency() * 13;
   std::vector<int> vec = getRandomVector(static_cast<int>(nthreads));
   // Create data
@@ -98,11 +98,11 @@ TEST(Parallel_Operations_Std_Threads, Test_Sum_3) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestSTDTaskSequential testStdTaskSequential(taskDataSeq, "+");
-  ASSERT_EQ(testStdTaskSequential.validation(), true);
-  testStdTaskSequential.pre_processing();
-  testStdTaskSequential.run();
-  testStdTaskSequential.post_processing();
+  TestSTLTaskSequential TestSTLTaskSequential(taskDataSeq, "+");
+  ASSERT_EQ(TestSTLTaskSequential.validation(), true);
+  TestSTLTaskSequential.pre_processing();
+  TestSTLTaskSequential.run();
+  TestSTLTaskSequential.post_processing();
 
   // Create data
   std::vector<int> par_res(1, 0);
@@ -115,15 +115,15 @@ TEST(Parallel_Operations_Std_Threads, Test_Sum_3) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestSTDTaskParallel testStdTaskParallel(taskDataPar, "+");
-  ASSERT_EQ(testStdTaskParallel.validation(), true);
-  testStdTaskParallel.pre_processing();
-  testStdTaskParallel.run();
-  testStdTaskParallel.post_processing();
+  TestSTLTaskParallel TestSTLTaskParallel(taskDataPar, "+");
+  ASSERT_EQ(TestSTLTaskParallel.validation(), true);
+  TestSTLTaskParallel.pre_processing();
+  TestSTLTaskParallel.run();
+  TestSTLTaskParallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
-TEST(Parallel_Operations_Std_Threads, Test_Diff) {
+TEST(Parallel_Operations_STL_Threads, Test_Diff) {
   auto nthreads = std::thread::hardware_concurrency() * 14;
   std::vector<int> vec = getRandomVector(static_cast<int>(nthreads));
   // Create data
@@ -137,11 +137,11 @@ TEST(Parallel_Operations_Std_Threads, Test_Diff) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestSTDTaskSequential testStdTaskSequential(taskDataSeq, "-");
-  ASSERT_EQ(testStdTaskSequential.validation(), true);
-  testStdTaskSequential.pre_processing();
-  testStdTaskSequential.run();
-  testStdTaskSequential.post_processing();
+  TestSTLTaskSequential TestSTLTaskSequential(taskDataSeq, "-");
+  ASSERT_EQ(TestSTLTaskSequential.validation(), true);
+  TestSTLTaskSequential.pre_processing();
+  TestSTLTaskSequential.run();
+  TestSTLTaskSequential.post_processing();
 
   // Create data
   std::vector<int> par_res(1, 0);
@@ -154,15 +154,15 @@ TEST(Parallel_Operations_Std_Threads, Test_Diff) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestSTDTaskParallel testStdTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(testStdTaskParallel.validation(), true);
-  testStdTaskParallel.pre_processing();
-  testStdTaskParallel.run();
-  testStdTaskParallel.post_processing();
+  TestSTLTaskParallel TestSTLTaskParallel(taskDataPar, "-");
+  ASSERT_EQ(TestSTLTaskParallel.validation(), true);
+  TestSTLTaskParallel.pre_processing();
+  TestSTLTaskParallel.run();
+  TestSTLTaskParallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
-TEST(Parallel_Operations_Std_Threads, Test_Diff_2) {
+TEST(Parallel_Operations_STL_Threads, Test_Diff_2) {
   auto nthreads = std::thread::hardware_concurrency() * 15;
   std::vector<int> vec = getRandomVector(static_cast<int>(nthreads));
   // Create data
@@ -176,11 +176,11 @@ TEST(Parallel_Operations_Std_Threads, Test_Diff_2) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestSTDTaskSequential testStdTaskSequential(taskDataSeq, "-");
-  ASSERT_EQ(testStdTaskSequential.validation(), true);
-  testStdTaskSequential.pre_processing();
-  testStdTaskSequential.run();
-  testStdTaskSequential.post_processing();
+  TestSTLTaskSequential TestSTLTaskSequential(taskDataSeq, "-");
+  ASSERT_EQ(TestSTLTaskSequential.validation(), true);
+  TestSTLTaskSequential.pre_processing();
+  TestSTLTaskSequential.run();
+  TestSTLTaskSequential.post_processing();
 
   // Create data
   std::vector<int> par_res(1, 0);
@@ -193,11 +193,11 @@ TEST(Parallel_Operations_Std_Threads, Test_Diff_2) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestSTDTaskParallel testStdTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(testStdTaskParallel.validation(), true);
-  testStdTaskParallel.pre_processing();
-  testStdTaskParallel.run();
-  testStdTaskParallel.post_processing();
+  TestSTLTaskParallel TestSTLTaskParallel(taskDataPar, "-");
+  ASSERT_EQ(TestSTLTaskParallel.validation(), true);
+  TestSTLTaskParallel.pre_processing();
+  TestSTLTaskParallel.run();
+  TestSTLTaskParallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 

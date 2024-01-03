@@ -9,9 +9,9 @@
 
 std::vector<int> getRandomVector(int sz);
 
-class TestSTDTaskSequential : public ppc::core::Task {
+class TestSTLTaskSequential : public ppc::core::Task {
  public:
-  explicit TestSTDTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_, std::string ops_)
+  explicit TestSTLTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_, std::string ops_)
       : Task(std::move(taskData_)), ops(std::move(ops_)) {}
   bool pre_processing() override;
   bool validation() override;
@@ -24,9 +24,9 @@ class TestSTDTaskSequential : public ppc::core::Task {
   std::string ops;
 };
 
-class TestSTDTaskParallel : public ppc::core::Task {
+class TestSTLTaskParallel : public ppc::core::Task {
  public:
-  explicit TestSTDTaskParallel(std::shared_ptr<ppc::core::TaskData> taskData_, std::string ops_)
+  explicit TestSTLTaskParallel(std::shared_ptr<ppc::core::TaskData> taskData_, std::string ops_)
       : Task(std::move(taskData_)), ops(std::move(ops_)) {}
   bool pre_processing() override;
   bool validation() override;

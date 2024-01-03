@@ -1,4 +1,4 @@
-message(STATUS "std::thread tasks")
+message(STATUS "STL tasks")
 
 SUBDIRLIST(subdirs ${CMAKE_CURRENT_SOURCE_DIR})
 

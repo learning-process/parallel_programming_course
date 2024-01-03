@@ -22,8 +22,8 @@ for file in $FILES_SEQ; do
         ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 done
 
-FILES_STD="build/bin/*_std"
-for file in $FILES_STD; do
+FILES_STL="build/bin/*_stl"
+for file in $FILES_STL; do
         echo "--------------------------------"
         echo $(basename $file)
         echo "--------------------------------"

@@ -35,7 +35,7 @@ for /r "." %%a in (build\bin\*_tbb.exe) do (
     %%~fa --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating || exit 1
 )
 
-for /r "." %%a in (build\bin\*_std.exe) do (
+for /r "." %%a in (build\bin\*_stl.exe) do (
     echo -------------------------------------
     echo %%~na
     echo -------------------------------------
