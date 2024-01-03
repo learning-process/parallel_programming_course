@@ -1,5 +1,5 @@
+message(STATUS "TBB tasks")
 if ( USE_TBB )
-  message(STATUS "TBB tasks")
   set(exec_func_tests "tbb_func_tests")
   set(exec_perf_tests "tbb_perf_tests")
   set(project_suffix "_tbb")

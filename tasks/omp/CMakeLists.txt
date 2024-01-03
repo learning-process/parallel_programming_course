@@ -1,5 +1,5 @@
+message(STATUS "OpenMP tasks")
 if ( USE_OMP )
-  message(STATUS "OpenMP tasks")
   set(exec_func_tests "omp_func_tests")
   set(exec_perf_tests "omp_perf_tests")
   set(project_suffix "_omp")
