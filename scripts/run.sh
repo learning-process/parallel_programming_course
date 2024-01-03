@@ -14,20 +14,20 @@ fi
 ./build/bin/core_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 ./build/bin/ref_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 
-if [[ $OSTYPE == "linux-gnu" ]]; then
-    NUM_PROC=$(cat /proc/cpuinfo|grep processor|wc -l)
-elif [[ $OSTYPE == "darwin"* ]]; then
-    NUM_PROC=$(sysctl -a | grep machdep.cpu | grep thread_count | cut -d ' ' -f 2)
-else
-    echo "Unknown OS"
-    NUM_PROC="1"
-fi
-echo "NUM_PROC: " $NUM_PROC
+#if [[ $OSTYPE == "linux-gnu" ]]; then
+#    NUM_PROC=$(cat /proc/cpuinfo|grep processor|wc -l)
+#elif [[ $OSTYPE == "darwin"* ]]; then
+#    NUM_PROC=$(sysctl -a | grep machdep.cpu | grep thread_count | cut -d ' ' -f 2)
+#else
+#    echo "Unknown OS"
+#    NUM_PROC="1"
+#fi
+#echo "NUM_PROC: " $NUM_PROC
 
 if [[ $OSTYPE == "linux-gnu" ]]; then
-    mpirun --oversubscribe -np $NUM_PROC ./build/bin/mpi_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+    mpirun --oversubscribe -np 4 ./build/bin/mpi_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 elif [[ $OSTYPE == "darwin"* ]]; then
-    mpirun -np $NUM_PROC ./build/bin/mpi_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+    mpirun -np 2 ./build/bin/mpi_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 fi
 
 ./build/bin/mpi_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
