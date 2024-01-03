@@ -1,6 +1,6 @@
 message(STATUS "Reference tasks")
-set(exec_func_tests "reference_func_tests")
-set(exec_perf_tests "reference_perf_tests")
+set(exec_func_tests "ref_func_tests")
+set(exec_perf_tests "ref_perf_tests")
 set(project_suffix "_ref")
 
 SUBDIRLIST(subdirs ${CMAKE_CURRENT_SOURCE_DIR})
