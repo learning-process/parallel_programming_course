@@ -5,7 +5,7 @@
 #include <boost/mpi/environment.hpp>
 #include <vector>
 
-#include "./ops_mpi.hpp"
+#include "mpi/example/include/ops_mpi.hpp"
 
 TEST(Parallel_Operations_MPI, Test_Sum) {
   boost::mpi::communicator world;
