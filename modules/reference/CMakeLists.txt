@@ -14,7 +14,15 @@ foreach(subd ${subdirs})
 
   project(${PACK_LIB})
   file(GLOB_RECURSE LIB_SOURCE_FILES ${PATH_PREFIX}/include/* ${PATH_PREFIX}/src/*)
-  add_library(${PACK_LIB} STATIC ${LIB_SOURCE_FILES})
+
+  file(GLOB SRC_RES ${PATH_PREFIX}/src/*)
+  list(LENGTH SRC_RES RES_LEN)
+  if(RES_LEN EQUAL 0)
+    add_library(${PACK_LIB} INTERFACE ${LIB_SOURCE_FILES})
+  else()
+    add_library(${PACK_LIB} STATIC ${LIB_SOURCE_FILES})
+  endif()
+
   set_target_properties(${PACK_LIB} PROPERTIES LINKER_LANGUAGE CXX)
 
   file(GLOB_RECURSE TMP_FUNC_TESTS_SOURCE_FILES ${PATH_PREFIX}/func_tests/*)
@@ -25,8 +33,8 @@ foreach(subd ${subdirs})
 endforeach()
 
 add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
-target_link_libraries(${exec_func_tests} task_core_lib)
-target_link_libraries(${exec_func_tests} gtest gtest_main)
+target_link_libraries(${exec_func_tests} PUBLIC task_core_lib)
+target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
 
 #add_executable( ${exec_perf_tests} ${PERF_TESTS_SOURCE_FILES} )
 #target_link_libraries(${exec_perf_tests} task_core_lib)
@@ -37,8 +45,8 @@ foreach(subd ${subdirs})
   set(PROJECT_ID "${PROJECT_ID}${project_suffix}")
   set(PACK_LIB "${PROJECT_ID}_lib")
 
-  target_link_libraries(${exec_func_tests} ${PACK_LIB})
-#  target_link_libraries(${exec_perf_tests} ${PACK_LIB})
+  target_link_libraries(${exec_func_tests} PUBLIC ${PACK_LIB})
+#  target_link_libraries(${exec_perf_tests} PUBLIC ${PACK_LIB})
 endforeach()
 
 enable_testing()
