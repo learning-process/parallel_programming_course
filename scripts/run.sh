@@ -5,6 +5,7 @@ if [[ $OSTYPE == "linux-gnu" ]]; then
   valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./build/bin/ref_func_tests
 #  valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./build/bin/omp_func_tests
   valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./build/bin/seq_func_tests
+  valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./build/bin/stl_func_tests
 #  valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./build/bin/tbb_func_tests
 fi
 
@@ -12,18 +13,8 @@ fi
 ./build/bin/ref_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 ./build/bin/omp_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 ./build/bin/seq_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+./build/bin/stl_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 ./build/bin/tbb_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
-
-FILES_STL="build/bin/*_stl"
-for file in $FILES_STL; do
-        echo "--------------------------------"
-        echo $(basename $file)
-        echo "--------------------------------"
-        if [[ $OSTYPE == "linux-gnu" ]]; then
-          valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
-        fi
-        ./$file --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
-done
 
 FILES_MPI="build/bin/*_mpi"
 for file in $FILES_MPI; do

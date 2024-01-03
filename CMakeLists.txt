@@ -38,10 +38,10 @@ if( USE_OMP OR USE_SEQ )
 endif( USE_OMP OR USE_SEQ )
 
 ############################ std::thread ############################
-option(USE_STD OFF)
-if( USE_STD )
+option(USE_STL OFF)
+if( USE_STL )
     find_package( Threads )
-endif( USE_STD )
+endif( USE_STL )
 
 ################################ TBB ################################
 option(USE_TBB OFF)
