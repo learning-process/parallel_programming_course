@@ -1,4 +1,4 @@
-message(STATUS "Reference")
+message(STATUS "Reference tasks")
 set(exec_func_tests "reference_func_tests")
 set(exec_perf_tests "reference_perf_tests")
 set(project_suffix "_ref")

@@ -1,7 +1,7 @@
 # Build Core OneTBB components
 include_directories(${CMAKE_SOURCE_DIR}/3rdparty/onetbb/include)
 
-if (APPLE)
+if (LINUX OR APPLE)
 include(ExternalProject)
     ExternalProject_Add(ppc_onetbb
             SOURCE_DIR        "${CMAKE_SOURCE_DIR}/3rdparty/onetbb"

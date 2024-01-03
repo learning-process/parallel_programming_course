@@ -1,4 +1,4 @@
-message(STATUS "Core")
+message(STATUS "Core module")
 set(exec_func_tests "core_func_tests")
 set(exec_perf_tests "core_perf_tests")
 set(project_suffix "_core")
