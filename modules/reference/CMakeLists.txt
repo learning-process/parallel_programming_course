@@ -37,17 +37,15 @@ target_link_libraries(${exec_func_tests} PUBLIC task_core_lib)
 
 add_dependencies(${exec_func_tests} ppc_googletest)
 target_link_directories(${exec_func_tests} PUBLIC ${CMAKE_BINARY_DIR}/ppc_googletest/install/lib)
-if (NOT MSVC)
-  target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
-endif ()
+target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
 
 #add_executable( ${exec_perf_tests} ${PERF_TESTS_SOURCE_FILES} )
 #target_link_libraries(${exec_perf_tests} task_core_lib)
 #
-#add_dependencies(${exec_func_tests} ppc_googletest)
-#target_link_directories(${exec_func_tests} PUBLIC ${CMAKE_BINARY_DIR}/ppc_googletest/install/lib)
+#add_dependencies(${exec_perf_tests} ppc_googletest)
+#target_link_directories(${exec_perf_tests} PUBLIC ${CMAKE_BINARY_DIR}/ppc_googletest/install/lib)
 #if (NOT MSVC)
-#  target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
+#  target_link_libraries(${exec_perf_tests} PUBLIC gtest gtest_main)
 #endif ()
 
 foreach(subd ${subdirs})
