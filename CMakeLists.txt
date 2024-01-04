@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 3.25 )
 
-project( parallel_programming_course )
+project(parallel_programming_course)
 message( STATUS "Parallel Programming Course" )
 
 include(cmake/configure.cmake)
@@ -38,10 +38,10 @@ if( USE_OMP OR USE_SEQ )
 endif( USE_OMP OR USE_SEQ )
 
 ############################ std::thread ############################
-option(USE_STD OFF)
-if( USE_STD )
+option(USE_STL OFF)
+if( USE_STL )
     find_package( Threads )
-endif( USE_STD )
+endif( USE_STL )
 
 ################################ TBB ################################
 option(USE_TBB OFF)
@@ -49,11 +49,19 @@ if( USE_TBB )
     include(cmake/onetbb.cmake)
 endif( USE_TBB )
 
+######################### Functional mode ##########################
+option(USE_FUNC_TESTS OFF)
+if( USE_FUNC_TESTS )
+    message( STATUS "Enable functional tests" )
+    add_compile_definitions(USE_FUNC_TESTS)
+endif( USE_FUNC_TESTS )
+
 ######################### Performance mode ##########################
-option(USE_PERF_MODE OFF)
-if( USE_PERF_MODE )
-    add_compile_definitions(ENABLE_PERF_MODE)
-endif( USE_PERF_MODE )
+option(USE_PERF_TESTS OFF)
+if( USE_PERF_TESTS )
+    message( STATUS "Enable performance tests" )
+    add_compile_definitions(USE_PERF_TESTS)
+endif( USE_PERF_TESTS )
 
 ############################## Modules ##############################
 include(cmake/boost.cmake)

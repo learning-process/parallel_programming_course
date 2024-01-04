@@ -52,7 +52,7 @@ MACRO(SUBDIRLIST result curdir)
   SET(${result} ${dirlist})
 ENDMACRO()
 
-MACRO(CPPCHECK_AND_COUNTS_TESTS ProjectId ALL_SOURCE_FILES)
+MACRO(CPPCHECK_TEST ProjectId ALL_SOURCE_FILES)
     if( UNIX )
         foreach (SOURCE_FILE ${ALL_SOURCE_FILES})
             string(FIND ${SOURCE_FILE} ${PROJECT_BINARY_DIR} PROJECT_TRDPARTY_DIR_FOUND)
@@ -76,16 +76,4 @@ MACRO(CPPCHECK_AND_COUNTS_TESTS ProjectId ALL_SOURCE_FILES)
             )
         ENDIF ()
     endif( UNIX )
-
-    SET(ARGS_FOR_CHECK_COUNT_TESTS "")
-    foreach (FILE_ELEM ${ALL_SOURCE_FILES})
-        set(ARGS_FOR_CHECK_COUNT_TESTS "${ARGS_FOR_CHECK_COUNT_TESTS} ${FILE_ELEM}")
-    endforeach ()
-
-    add_custom_target("${ProjectId}_check_count_tests" ALL
-            COMMAND "${Python3_EXECUTABLE}"
-            ${CMAKE_SOURCE_DIR}/scripts/check_count_tests.py
-            ${ProjectId}
-            ${ARGS_FOR_CHECK_COUNT_TESTS}
-    )
 ENDMACRO()
