@@ -100,10 +100,7 @@ jobs:
           create-symlink: true
     - name: CMake configure
       run: |
-        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja \ 
-          -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE \ 
-          -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" \ 
-          -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
+        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
     - name: Ninja build
       run: |
         cmake --build build
@@ -137,7 +134,7 @@ jobs:
     - name: CMake configure
       shell: bash
       run: |
-        cmake -G Ninja -S . -B build -D CMAKE_C_COMPILER=cl -D CMAKE_CXX_COMPILER=cl -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=OFF -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE
+        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=OFF -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE
     - name: MSBuild
       shell: bash
       run: |
