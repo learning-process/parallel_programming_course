@@ -27,7 +27,7 @@ fi
 if [[ $OSTYPE == "linux-gnu" ]]; then
   mpirun --oversubscribe -np 4 ./build/bin/mpi_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 elif [[ $OSTYPE == "darwin"* ]]; then
-  ./build/bin/mpi_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+  mpirun -np 2 ./build/bin/mpi_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 fi
 
 ./build/bin/omp_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
