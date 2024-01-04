@@ -34,7 +34,10 @@ endforeach()
 
 add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
 target_link_libraries(${exec_func_tests} PUBLIC task_core_lib)
-target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
+target_link_directories(${exec_func_tests} PUBLIC ${CMAKE_BINARY_DIR}/ppc_googletest/install/lib)
+if (NOT MSVC)
+  target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
+endif ()
 
 #add_executable( ${exec_perf_tests} ${PERF_TESTS_SOURCE_FILES} )
 #target_link_libraries(${exec_perf_tests} task_core_lib)
