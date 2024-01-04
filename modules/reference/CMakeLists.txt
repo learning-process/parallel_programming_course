@@ -53,5 +53,5 @@ enable_testing()
 add_test(NAME ${exec_func_tests} COMMAND ${exec_func_tests})
 #add_test(NAME ${exec_perf_tests} COMMAND ${exec_perf_tests})
 
-CPPCHECK_AND_COUNTS_TESTS("${exec_func_tests}" "${FUNC_TESTS_SOURCE_FILES}")
-#CPPCHECK_AND_COUNTS_TESTS("${exec_perf_tests}" "${PERF_TESTS_SOURCE_FILES}")
+CPPCHECK_TEST("${exec_func_tests}" "${FUNC_TESTS_SOURCE_FILES}")
+#CPPCHECK_TEST("${exec_perf_tests}" "${PERF_TESTS_SOURCE_FILES}")

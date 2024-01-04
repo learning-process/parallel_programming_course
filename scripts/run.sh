@@ -25,13 +25,13 @@ fi
 #echo "NUM_PROC: " $NUM_PROC
 
 if [[ $OSTYPE == "linux-gnu" ]]; then
-    mpirun --oversubscribe -np 4 ./build/bin/mpi_func_tests --gtest_repeat=10
+    mpirun --oversubscribe -np 4 ./build/bin/mpi_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 elif [[ $OSTYPE == "darwin"* ]]; then
     # shellcheck disable=SC2164
-    mpirun --oversubscribe -np 2 ./build/bin/mpi_func_tests
+    mpirun -np 2 ./build/bin/mpi_func_tests
 fi
 
-./build/bin/omp_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
-./build/bin/seq_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
-./build/bin/stl_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
-./build/bin/tbb_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+./build/bin/omp_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+./build/bin/seq_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+./build/bin/stl_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+./build/bin/tbb_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating

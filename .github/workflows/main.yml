@@ -35,6 +35,9 @@ jobs:
       env:
         CC: gcc-12
         CXX: g++-12
+    - name: Check number tests
+      run: |
+        source scripts/run_num_test.sh
     - name: Run tests
       run: |
         export OMP_NUM_THREADS=4
