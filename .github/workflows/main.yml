@@ -114,7 +114,7 @@ jobs:
     - name: Run tests
       run: |
         export OMP_NUM_THREADS=4
-        export DISABLE_VALGRIND=1
+        export ASAN_RUN=1
         source scripts/run.sh
   macos-clang-build:
     runs-on: macOS-latest
