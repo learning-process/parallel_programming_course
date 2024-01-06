@@ -31,8 +31,8 @@ TEST(example_perf_test, pipeline) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  ppc::core::Perf perfAnalyzer(testTaskSequential);
-  perfAnalyzer.pipeline_run(perfAttr, perfResults);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(count, out[0]);
 }
@@ -62,8 +62,8 @@ TEST(example_perf_test, task_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  ppc::core::Perf perfAnalyzer(testTaskSequential);
-  perfAnalyzer.task_run(perfAttr, perfResults);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(count, out[0]);
 }
