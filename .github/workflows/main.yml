@@ -79,6 +79,43 @@ jobs:
       run: |
         export OMP_NUM_THREADS=4
         source scripts/run.sh
+  ubuntu-clang-address-sanitizer-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Setup environment
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install clang-15
+        sudo apt-get install cppcheck ninja-build
+        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+        sudo apt-get install libomp-15-dev
+        sudo apt-get install python3-pip
+        sudo apt-get install valgrind
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ github.job }}
+          create-symlink: true
+    - name: CMake configure
+      run: |
+        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON
+      env:
+        CC: clang-15
+        CXX: clang++-15
+    - name: Ninja build
+      run: |
+        cmake --build build
+      env:
+        CC: clang-15
+        CXX: clang++-15
+    - name: Run tests
+      run: |
+        export OMP_NUM_THREADS=4
+        source scripts/run.sh
   macos-clang-build:
     runs-on: macOS-latest
     steps:
