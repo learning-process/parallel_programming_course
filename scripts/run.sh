@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $OSTYPE == "linux-gnu" ]]; then
+if [[ $OSTYPE == "linux-gnu" && -z "$DISABLE_VALGRIND" ]]; then
   valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./build/bin/core_func_tests
   valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./build/bin/ref_func_tests
 

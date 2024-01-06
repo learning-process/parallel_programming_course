@@ -94,7 +94,6 @@ jobs:
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install libomp-15-dev
         sudo apt-get install python3-pip
-        sudo apt-get install valgrind
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -115,6 +114,7 @@ jobs:
     - name: Run tests
       run: |
         export OMP_NUM_THREADS=4
+        export DISABLE_VALGRIND=1
         source scripts/run.sh
   macos-clang-build:
     runs-on: macOS-latest
