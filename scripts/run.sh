@@ -36,3 +36,6 @@ fi
 ./build/bin/seq_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 ./build/bin/stl_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 ./build/bin/tbb_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+
+# Temporary run of perf tests
+./build/bin/seq_perf_tests

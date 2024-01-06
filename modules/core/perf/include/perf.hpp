@@ -13,6 +13,8 @@
 namespace ppc {
 namespace core {
 
+const static double MAX_TIME = 10;
+
 struct PerfAttr {
   // count of task's running
   uint64_t num_running;
@@ -36,6 +38,8 @@ class Perf {
                     const std::shared_ptr<ppc::core::PerfResults>& perfResults);
   // Check performance of task's run() function
   void task_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::shared_ptr<ppc::core::PerfResults>& perfResults);
+  // Pint results for automation checkers
+  static void print_perf_statistic(const std::shared_ptr<PerfResults>& perfResults);
 
  private:
   std::shared_ptr<Task> task;
