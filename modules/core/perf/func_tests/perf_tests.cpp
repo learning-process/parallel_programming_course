@@ -109,8 +109,7 @@ TEST(perf_tests, check_perf_task) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTask =
-  std::make_shared<ppc::test::TestTask<uint32_t>>(taskData);
+  auto testTask = std::make_shared<ppc::test::TestTask<uint32_t>>(taskData);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -140,8 +139,7 @@ TEST(perf_tests, check_perf_task_float) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTask =
-  std::make_shared<ppc::test::TestTask<float>>(taskData);
+  auto testTask = std::make_shared<ppc::test::TestTask<float>>(taskData);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
