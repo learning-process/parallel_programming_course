@@ -29,7 +29,6 @@ Checks: >
   -bugprone-implicit-widening-of-multiplication-result,
   -bugprone-unchecked-optional-access,
   -clang-analyzer-security.insecureAPI.rand,
-  -clang-analyzer-optin.cplusplus.UninitializedObject,
   -modernize-loop-convert,
 
 WarningsAsErrors: "*"
