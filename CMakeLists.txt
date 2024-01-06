@@ -6,6 +6,9 @@ message( STATUS "Parallel Programming Course" )
 include(cmake/configure.cmake)
 include(cmake/gtest.cmake)
 
+option(ENABLE_ADDRESS_SANITIZER OFF)
+include(cmake/asan.cmake)
+
 ################################ MPI ################################
 option(USE_MPI OFF)
 if( USE_MPI )
