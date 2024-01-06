@@ -34,10 +34,10 @@ if ( USE_TBB )
   endforeach()
 
   add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
-  target_link_libraries(${exec_func_tests} PUBLIC task_core_lib)
+  target_link_libraries(${exec_func_tests} PUBLIC core_module_lib)
 
 #  add_executable( ${exec_perf_tests} ${PERF_TESTS_SOURCE_FILES} )
-#  target_link_libraries(${exec_perf_tests} PUBLIC task_core_lib)
+#  target_link_libraries(${exec_perf_tests} PUBLIC core_module_lib)
 
   foreach(subd ${subdirs})
     get_filename_component(PROJECT_ID ${subd} NAME)
