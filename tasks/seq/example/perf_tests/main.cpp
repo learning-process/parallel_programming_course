@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "seq/example/include/ops_seq.hpp"
 #include "core/perf/include/perf.hpp"
+#include "seq/example/include/ops_seq.hpp"
 
 TEST(example_perf_test, pipeline) {
   const int count = 100;

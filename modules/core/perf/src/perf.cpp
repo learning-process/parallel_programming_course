@@ -1,12 +1,13 @@
 // Copyright 2023 Nesterov Alexander
-#include <gtest/gtest.h>
 #include "core/perf/include/perf.hpp"
 
+#include <gtest/gtest.h>
+
 #include <chrono>
-#include <iostream>
-#include <utility>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
+#include <utility>
 
 ppc::core::Perf::Perf(std::shared_ptr<Task> task_) { set_task(std::move(task_)); }
 
