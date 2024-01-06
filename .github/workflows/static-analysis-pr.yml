@@ -30,3 +30,27 @@ jobs:
         CXX: clang++-16
     - if: steps.review.outputs.total_comments > 0
       run: exit 1
+  clang-tidy-for-gcc-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Update submodules
+      run: git submodule update --init --recursive
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ github.job }}
+    - uses: ZedThree/clang-tidy-review@v0.14.0
+      id: review
+      with:
+        build_dir: build
+        apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-16-dev,valgrind
+        cmake_command: cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        config_file: .clang-tidy
+        exclude: 3rdparty
+        split_workflow: true
+        lgtm_comment_body: ""
+    - if: steps.review.outputs.total_comments > 0
+      run: exit 1
