@@ -29,6 +29,11 @@ void ppc::core::Perf::task_run(const std::shared_ptr<PerfAttr>& perfAttr,
   common_run(
       std::move(perfAttr), [&]() { task->run(); }, std::move(perfResults));
   task->post_processing();
+
+  task->validation();
+  task->pre_processing();
+  task->run();
+  task->post_processing();
 }
 
 void ppc::core::Perf::common_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::function<void()>& pipeline,
@@ -39,5 +44,5 @@ void ppc::core::Perf::common_run(const std::shared_ptr<PerfAttr>& perfAttr, cons
   }
   auto end = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count();
-  perfResults->time_sec = duration * 1e-9;
+  perfResults->time_sec = static_cast<double>(duration) * 1e-9;
 }

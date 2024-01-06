@@ -108,23 +108,23 @@ TEST(perf_tests, check_perf_task) {
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskData->outputs_count.emplace_back(out.size());
 
-  //        // Create Task
-  //        auto testTask =
-  //        std::make_shared<ppc::test::TestTask<uint32_t>>(taskData);
-  //
-  //        // Create Perf attributes
-  //        auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
-  //        perfAttr->num_running = 10;
-  //
-  //        // Create and init perf results
-  //        auto perfResults = std::make_shared<ppc::core::PerfResults>();
-  //
-  //        // Create Perf analyzer
-  //        ppc::core::Perf perfAnalyzer(testTask);
-  //        perfAnalyzer.task_run(perfAttr, perfResults);
-  //
-  //        ASSERT_LE(perfResults->time_sec, 10.0);
-  //        EXPECT_EQ(out[0], in.size());
+  // Create Task
+  auto testTask =
+  std::make_shared<ppc::test::TestTask<uint32_t>>(taskData);
+
+  // Create Perf attributes
+  auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
+  perfAttr->num_running = 10;
+
+  // Create and init perf results
+  auto perfResults = std::make_shared<ppc::core::PerfResults>();
+
+  // Create Perf analyzer
+  ppc::core::Perf perfAnalyzer(testTask);
+  perfAnalyzer.task_run(perfAttr, perfResults);
+
+  ASSERT_LE(perfResults->time_sec, 10.0);
+  EXPECT_EQ(out[0], in.size());
 }
 
 TEST(perf_tests, check_perf_task_float) {
@@ -139,21 +139,21 @@ TEST(perf_tests, check_perf_task_float) {
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskData->outputs_count.emplace_back(out.size());
 
-  //        // Create Task
-  //        auto testTask =
-  //        std::make_shared<ppc::test::TestTask<float>>(taskData);
-  //
-  //        // Create Perf attributes
-  //        auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
-  //        perfAttr->num_running = 10;
-  //
-  //        // Create and init perf results
-  //        auto perfResults = std::make_shared<ppc::core::PerfResults>();
-  //
-  //        // Create Perf analyzer
-  //        ppc::core::Perf perfAnalyzer(testTask);
-  //        perfAnalyzer.task_run(perfAttr, perfResults);
-  //
-  //        ASSERT_LE(perfResults->time_sec, 10.0);
-  //        EXPECT_EQ(out[0], in.size());
+  // Create Task
+  auto testTask =
+  std::make_shared<ppc::test::TestTask<float>>(taskData);
+
+  // Create Perf attributes
+  auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
+  perfAttr->num_running = 10;
+
+  // Create and init perf results
+  auto perfResults = std::make_shared<ppc::core::PerfResults>();
+
+  // Create Perf analyzer
+  ppc::core::Perf perfAnalyzer(testTask);
+  perfAnalyzer.task_run(perfAttr, perfResults);
+
+  ASSERT_LE(perfResults->time_sec, 10.0);
+  EXPECT_EQ(out[0], in.size());
 }
