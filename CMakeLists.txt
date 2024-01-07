@@ -75,4 +75,4 @@ include_directories(tasks)
 
 add_subdirectory(modules)
 add_subdirectory(tasks)
-add_subdirectory(first_samples)
+add_subdirectory(1stsamples)
