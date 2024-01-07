@@ -1,6 +1,13 @@
 // Copyright 2023 Nesterov Alexander
 #include "seq/example/include/ops_seq.hpp"
 
+#include <thread>
+
+auto awake_time() {
+  using std::chrono::operator"" ms;
+  return std::chrono::steady_clock::now() + 200ms;
+}
+
 bool TestTaskSequential::pre_processing() {
   internal_order_test();
   // Init value for input and output
@@ -20,6 +27,7 @@ bool TestTaskSequential::run() {
   for (size_t i = 0; i < input_; i++) {
     res++;
   }
+  std::this_thread::sleep_until(awake_time());
   return true;
 }
 

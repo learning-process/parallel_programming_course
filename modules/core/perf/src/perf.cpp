@@ -77,8 +77,10 @@ void ppc::core::Perf::print_perf_statistic(const std::shared_ptr<PerfResults>& p
 
   std::stringstream perf_res_str;
   perf_res_str << std::fixed << std::setprecision(10) << perfResults->time_sec;
-  if (perfResults->time_sec > MAX_TIME) {
-    std::cerr << "Task need to execute < " << MAX_TIME << " secs: " << perfResults->time_sec;
+  if (perfResults->time_sec < PerfResults::MIN_TIME || perfResults->time_sec > PerfResults::MAX_TIME) {
+    std::cerr << "Task execute time need to be: ";
+    std::cerr << PerfResults::MIN_TIME << " secs. < time < " << PerfResults::MAX_TIME << " secs." << std::endl;
+    std::cerr << "Original time in secs: " << perfResults->time_sec;
     exit(1);
   }
 

@@ -13,8 +13,6 @@
 namespace ppc {
 namespace core {
 
-const static double MAX_TIME = 10;
-
 struct PerfAttr {
   // count of task's running
   uint64_t num_running;
@@ -22,8 +20,10 @@ struct PerfAttr {
 
 struct PerfResults {
   // measurement of task's time (in seconds)
-  long double time_sec = 0.0;
+  double time_sec = 0.0;
   enum TypeOfRunning { PIPELINE, TASK_RUN, NONE } type_of_running = NONE;
+  constexpr const static double MAX_TIME = 10.0;
+  constexpr const static double MIN_TIME = 1.0;
 };
 
 class Perf {
