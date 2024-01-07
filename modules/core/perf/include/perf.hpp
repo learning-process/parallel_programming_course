@@ -23,7 +23,7 @@ struct PerfResults {
   double time_sec = 0.0;
   enum TypeOfRunning { PIPELINE, TASK_RUN, NONE } type_of_running = NONE;
   constexpr const static double MAX_TIME = 10.0;
-  constexpr const static double MIN_TIME = 1.0;
+  constexpr const static double MIN_TIME = 0.05;
 };
 
 class Perf {

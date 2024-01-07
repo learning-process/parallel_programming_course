@@ -5,7 +5,7 @@
 
 auto awake_time() {
   using std::chrono::operator"" ms;
-  return std::chrono::steady_clock::now() + 200ms;
+  return std::chrono::steady_clock::now() + 20ms;
 }
 
 bool TestTaskSequential::pre_processing() {
