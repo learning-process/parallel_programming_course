@@ -23,7 +23,7 @@ class AverageOfVectorElements : public ppc::core::Task {
     // Init vectors
     input_ = std::vector<InType>(taskData->inputs_count[0]);
     auto tmp_ptr = reinterpret_cast<InType*>(taskData->inputs[0]);
-    for (int i = 0; i < taskData->inputs_count[0]; i++) {
+    for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
       input_[i] = tmp_ptr[i];
     }
     // Init value for output

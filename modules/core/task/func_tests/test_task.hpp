@@ -31,7 +31,7 @@ class TestTask : public ppc::core::Task {
 
   bool run() override {
     internal_order_test();
-    for (int i = 0; i < taskData->inputs_count[0]; i++) {
+    for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
       output_[0] += input_[i];
     }
     return true;

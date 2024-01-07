@@ -23,7 +23,7 @@ TEST(sum_of_vector_elements, check_int32_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], in.size());
+  ASSERT_EQ(static_cast<uint64_t>(out[0]), in.size());
 }
 
 TEST(sum_of_vector_elements, check_validate_func) {
@@ -79,7 +79,7 @@ TEST(sum_of_vector_elements, check_uint8_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], in.size());
+  ASSERT_EQ(static_cast<uint64_t>(out[0]), in.size());
 }
 
 TEST(sum_of_vector_elements, check_int64_t) {
@@ -99,7 +99,7 @@ TEST(sum_of_vector_elements, check_int64_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], in.size());
+  ASSERT_EQ(static_cast<uint64_t>(out[0]), in.size());
 }
 
 TEST(sum_of_vector_elements, check_float) {

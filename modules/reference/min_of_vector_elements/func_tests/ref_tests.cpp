@@ -30,7 +30,7 @@ TEST(min_of_vector_elements, check_int32_t) {
   testTask.run();
   testTask.post_processing();
   ASSERT_EQ(out[0], -10);
-  ASSERT_EQ(out_index[0], 328);
+  ASSERT_EQ(out_index[0], 328ull);
 }
 
 TEST(min_of_vector_elements, check_validate_func_1) {
@@ -99,7 +99,7 @@ TEST(min_of_vector_elements, check_double) {
   testTask.run();
   testTask.post_processing();
   EXPECT_NEAR(out[0], -1.0001, 1e-6);
-  ASSERT_EQ(out_index[0], 2);
+  ASSERT_EQ(out_index[0], 2ull);
 }
 
 TEST(min_of_vector_elements, check_uint8_t) {
@@ -125,7 +125,7 @@ TEST(min_of_vector_elements, check_uint8_t) {
   testTask.run();
   testTask.post_processing();
   EXPECT_NEAR(out[0], 1, 1e-6);
-  ASSERT_EQ(out_index[0], 0);
+  ASSERT_EQ(out_index[0], 0ull);
 }
 
 TEST(min_of_vector_elements, check_int64_t) {
@@ -152,7 +152,7 @@ TEST(min_of_vector_elements, check_int64_t) {
   testTask.run();
   testTask.post_processing();
   EXPECT_NEAR(out[0], -256, 1e-6);
-  ASSERT_EQ(out_index[0], 345);
+  ASSERT_EQ(out_index[0], 345ull);
 }
 
 TEST(min_of_vector_elements, check_float) {
@@ -179,5 +179,5 @@ TEST(min_of_vector_elements, check_float) {
   testTask.run();
   testTask.post_processing();
   EXPECT_NEAR(out[0], -1.01, 1e-6);
-  ASSERT_EQ(out_index[0], 0);
+  ASSERT_EQ(out_index[0], 0ull);
 }

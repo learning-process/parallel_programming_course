@@ -25,7 +25,7 @@ TEST(task_tests, check_int32_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], in.size());
+  ASSERT_EQ(static_cast<size_t>(out[0]), in.size());
 }
 
 TEST(task_tests, check_validate_func) {
@@ -87,7 +87,7 @@ TEST(task_tests, check_uint8_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], in.size());
+  ASSERT_EQ(static_cast<size_t>(out[0]), in.size());
 }
 
 TEST(task_tests, check_int64_t) {
@@ -109,7 +109,7 @@ TEST(task_tests, check_int64_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], in.size());
+  ASSERT_EQ(static_cast<size_t>(out[0]), in.size());
 }
 
 TEST(task_tests, check_float) {

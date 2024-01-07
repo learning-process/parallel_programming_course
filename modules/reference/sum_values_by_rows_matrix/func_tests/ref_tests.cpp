@@ -28,8 +28,8 @@ TEST(sum_values_by_rows_matrix, check_int32_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  for (int i = 0; i < in_index[0]; i++) {
-    ASSERT_EQ(out[0], 2 * in_index[0]);
+  for (size_t i = 0; i < in_index[0]; i++) {
+    ASSERT_EQ(static_cast<uint64_t>(out[0]), 2 * in_index[0]);
   }
 }
 
@@ -97,7 +97,7 @@ TEST(sum_values_by_rows_matrix, check_double) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  for (int i = 0; i < in_index[0]; i++) {
+  for (size_t i = 0; i < in_index[0]; i++) {
     EXPECT_NEAR(out[i], 1.0, 1e-6);
   }
 }
@@ -107,7 +107,7 @@ TEST(sum_values_by_rows_matrix, check_int8_t) {
   std::vector<int8_t> in(1406);
   std::vector<uint64_t> in_index = {37, 38};
   std::vector<int8_t> out(37, 0);
-  for (auto i = 0; i < in.size(); ++i) {
+  for (size_t i = 0; i < in.size(); ++i) {
     in[i] = (i % 2) != 0 ? -2 : 2;
   }
 
@@ -127,7 +127,7 @@ TEST(sum_values_by_rows_matrix, check_int8_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  for (int i = 0; i < in_index[0]; i++) {
+  for (size_t i = 0; i < in_index[0]; i++) {
     ASSERT_EQ(out[0], 0);
   }
 }
@@ -137,7 +137,7 @@ TEST(sum_values_by_rows_matrix, check_int64_t) {
   std::vector<int64_t> in(1406);
   std::vector<uint64_t> in_index = {37, 38};
   std::vector<int64_t> out(37, 0);
-  for (auto i = 0; i < in.size(); ++i) {
+  for (size_t i = 0; i < in.size(); ++i) {
     in[i] = (i % 38) + 1;
   }
 
@@ -157,8 +157,8 @@ TEST(sum_values_by_rows_matrix, check_int64_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  for (int i = 0; i < in_index[0]; i++) {
-    ASSERT_EQ(out[0], (in_index[1] * (in_index[1] + 1)) / 2);
+  for (size_t i = 0; i < in_index[0]; i++) {
+    ASSERT_EQ(out[0], static_cast<int64_t>(in_index[1] * (in_index[1] + 1)) / 2);
   }
 }
 
@@ -167,7 +167,7 @@ TEST(sum_values_by_rows_matrix, check_float) {
   std::vector<float> in(1406);
   std::vector<uint64_t> in_index = {37, 38};
   std::vector<float> out(37, 0);
-  for (auto i = 0; i < in.size(); ++i) {
+  for (size_t i = 0; i < in.size(); ++i) {
     in[i] = static_cast<float>((i % 38) + 1);
     in[i] *= in[i];
   }
@@ -188,7 +188,7 @@ TEST(sum_values_by_rows_matrix, check_float) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  for (int i = 0; i < in_index[0]; i++) {
+  for (size_t i = 0; i < in_index[0]; i++) {
     EXPECT_NEAR(out[i], in_index[1] * (in_index[1] + 1) * (2 * in_index[1] + 1) / 6.f, 1e-6);
   }
 }
