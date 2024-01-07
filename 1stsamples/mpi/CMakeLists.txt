@@ -2,10 +2,7 @@ get_filename_component(Project_ID ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 set(Project_ID "sample_${Project_ID}")
 message( STATUS "-- " ${Project_ID} )
 
-find_package( MPI )
-if(USE_MPI AND MPI_FOUND)
-    include_directories( ${MPI_INCLUDE_PATH} )
-
+if(USE_MPI)
     add_executable( ${Project_ID} main.cpp )
 
     if(MPI_COMPILE_FLAGS)
