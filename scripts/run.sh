@@ -14,6 +14,19 @@ fi
 ./build/bin/core_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 ./build/bin/ref_func_tests  --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 
+if [[ -z "$ASAN_RUN" ]]; then
+  if [[ $OSTYPE == "linux-gnu" ]]; then
+    mpirun --oversubscribe -np 4 ./build/bin/sample_mpi
+    mpirun --oversubscribe -np 4 ./build/bin/sample_mpi_boost
+  elif [[ $OSTYPE == "darwin"* ]]; then
+    mpirun -np 2 ./build/bin/sample_mpi
+    mpirun -np 2 ./build/bin/sample_mpi_boost
+  fi
+fi
+./build/bin/sample_omp
+./build/bin/sample_stl
+./build/bin/sample_tbb
+
 #if [[ $OSTYPE == "linux-gnu" ]]; then
 #    NUM_PROC=$(cat /proc/cpuinfo|grep processor|wc -l)
 #elif [[ $OSTYPE == "darwin"* ]]; then
