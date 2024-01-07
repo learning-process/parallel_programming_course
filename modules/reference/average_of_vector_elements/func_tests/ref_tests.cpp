@@ -114,7 +114,7 @@ TEST(average_of_vector_elements, check_int64_t) {
 
 TEST(average_of_vector_elements, check_float) {
   // Create data
-  std::vector<float> in(1, 1.5);
+  std::vector<float> in(1, 1.5f);
   std::vector<double> out(1, 0);
 
   // Create TaskData
