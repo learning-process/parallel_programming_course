@@ -23,9 +23,7 @@ struct PerfAttr {
 struct PerfResults {
   // measurement of task's time (in seconds)
   long double time_sec = 0.0;
-  enum TypeOfRunning {
-    PIPELINE, TASK_RUN, NONE
-  } type_of_running = NONE;
+  enum TypeOfRunning { PIPELINE, TASK_RUN, NONE } type_of_running = NONE;
 };
 
 class Perf {

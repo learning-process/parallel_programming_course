@@ -42,7 +42,6 @@ void ppc::core::Perf::task_run(const std::shared_ptr<PerfAttr>& perfAttr,
   task->pre_processing();
   task->run();
   task->post_processing();
-
 }
 
 void ppc::core::Perf::common_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::function<void()>& pipeline,
