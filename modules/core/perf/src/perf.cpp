@@ -61,6 +61,8 @@ void ppc::core::Perf::print_perf_statistic(const std::shared_ptr<PerfResults>& p
   std::string perf_regex_template("perf_tests");
   std::string type_test_name;
 
+  auto time_secs = perfResults->time_sec;
+
   if (perfResults->type_of_running == PerfResults::TypeOfRunning::TASK_RUN) {
     type_test_name = "task_run";
   } else if (perfResults->type_of_running == PerfResults::TypeOfRunning::PIPELINE) {
@@ -76,12 +78,13 @@ void ppc::core::Perf::print_perf_statistic(const std::shared_ptr<PerfResults>& p
   relative_path.erase(last_found_position, relative_path.length() - 1);
 
   std::stringstream perf_res_str;
-  perf_res_str << std::fixed << std::setprecision(10) << perfResults->time_sec;
-  if (perfResults->time_sec < PerfResults::MIN_TIME || perfResults->time_sec > PerfResults::MAX_TIME) {
+  if (time_secs > PerfResults::MIN_TIME && time_secs < PerfResults::MAX_TIME) {
+    perf_res_str << std::fixed << std::setprecision(10) << time_secs;
+  } else {
     std::cerr << "Task execute time need to be: ";
     std::cerr << PerfResults::MIN_TIME << " secs. < time < " << PerfResults::MAX_TIME << " secs." << std::endl;
-    std::cerr << "Original time in secs: " << perfResults->time_sec;
-    exit(1);
+    std::cerr << "Original time in secs: " << time_secs;
+    perf_res_str << std::fixed << std::setprecision(10) << -1.0;
   }
 
   std::cout << relative_path << ":" << type_test_name << ":" << perf_res_str.str() << std::endl;
