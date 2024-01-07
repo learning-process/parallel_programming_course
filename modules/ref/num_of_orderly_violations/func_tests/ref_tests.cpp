@@ -124,9 +124,9 @@ TEST(num_of_orderly_violations, check_int64_t) {
 
 TEST(num_of_orderly_violations, check_float) {
   // Create data
-  std::vector<float> in(3, 1);
+  std::vector<float> in(3, 1.f);
   std::vector<uint64_t> out(1, 0);
-  in[1] = -1.0001;
+  in[1] = -1.0001f;
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();

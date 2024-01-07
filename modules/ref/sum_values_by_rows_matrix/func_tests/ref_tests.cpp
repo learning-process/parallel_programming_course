@@ -166,7 +166,7 @@ TEST(sum_values_by_rows_matrix, check_float) {
   // Create data
   std::vector<float> in(1406);
   std::vector<uint64_t> in_index = {37, 38};
-  std::vector<float> out(37, 0);
+  std::vector<float> out(37, 0.f);
   for (size_t i = 0; i < in.size(); ++i) {
     in[i] = static_cast<float>((i % 38) + 1);
     in[i] *= in[i];

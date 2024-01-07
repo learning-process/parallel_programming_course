@@ -65,7 +65,7 @@ TEST(task_tests, check_double) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  EXPECT_NEAR(out[0], in.size(), 1e-6);
+  EXPECT_NEAR(out[0], static_cast<double>(in.size()), 1e-6);
 }
 
 TEST(task_tests, check_uint8_t) {

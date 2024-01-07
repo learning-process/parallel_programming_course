@@ -174,14 +174,14 @@ TEST(nearest_neighbor_elements, check_int64_t) {
 
 TEST(nearest_neighbor_elements, check_float) {
   // Create data
-  std::vector<float> in(20, 1);
-  std::vector<float> out(2, 0);
+  std::vector<float> in(20, 1.f);
+  std::vector<float> out(2, 0.f);
   std::vector<uint64_t> out_index(2, 0);
   for (size_t i = 0; i < in.size(); i++) {
     in[i] += (i + 1.f) * 2.5f;
   }
-  in[0] = 0.001;
-  in[1] = 0.0025;
+  in[0] = 0.001f;
+  in[1] = 0.0025f;
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
@@ -199,8 +199,8 @@ TEST(nearest_neighbor_elements, check_float) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  EXPECT_NEAR(out[0], 0.001, 1e-4);
-  EXPECT_NEAR(out[1], 0.0025, 1e-4);
+  EXPECT_NEAR(out[0], 0.001f, 1e-4f);
+  EXPECT_NEAR(out[1], 0.0025f, 1e-4f);
   EXPECT_EQ(out_index[0], 0ull);
   EXPECT_EQ(out_index[1], 1ull);
 }

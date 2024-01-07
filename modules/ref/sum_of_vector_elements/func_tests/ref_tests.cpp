@@ -104,8 +104,8 @@ TEST(sum_of_vector_elements, check_int64_t) {
 
 TEST(sum_of_vector_elements, check_float) {
   // Create data
-  std::vector<float> in(1, 1);
-  std::vector<float> out(1, 0);
+  std::vector<float> in(1, 1.f);
+  std::vector<float> out(1, 0.f);
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
@@ -119,5 +119,5 @@ TEST(sum_of_vector_elements, check_float) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  EXPECT_NEAR(out[0], in.size(), 1e-3);
+  EXPECT_NEAR(out[0], static_cast<float>(in.size()), 1e-3f);
 }

@@ -157,10 +157,10 @@ TEST(min_of_vector_elements, check_int64_t) {
 
 TEST(min_of_vector_elements, check_float) {
   // Create data
-  std::vector<float> in(1, 1);
-  std::vector<float> out(1, 0);
+  std::vector<float> in(1, 1.f);
+  std::vector<float> out(1, 0.f);
   std::vector<uint64_t> out_index(1, 0);
-  in[0] = -1.01;
+  in[0] = -1.01f;
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
@@ -178,6 +178,6 @@ TEST(min_of_vector_elements, check_float) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  EXPECT_NEAR(out[0], -1.01, 1e-6);
+  EXPECT_NEAR(out[0], -1.01f, 1e-6f);
   ASSERT_EQ(out_index[0], 0ull);
 }
