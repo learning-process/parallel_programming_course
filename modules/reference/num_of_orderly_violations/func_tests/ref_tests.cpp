@@ -11,7 +11,7 @@ TEST(num_of_orderly_violations, check_int32_t) {
   // Create data
   std::vector<int32_t> in(1256, 1);
   std::vector<uint64_t> out(1, 0);
-  for (int i = 0; i < in.size(); i++) {
+  for (size_t i = 0; i < in.size(); i++) {
     if (i % 2 == 0) {
       in[i] *= -1;
     }
@@ -72,7 +72,7 @@ TEST(num_of_orderly_violations, check_double) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], 3);
+  ASSERT_EQ(out[0], 3ull);
 }
 
 TEST(num_of_orderly_violations, check_int8_t) {
@@ -94,14 +94,14 @@ TEST(num_of_orderly_violations, check_int8_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], 0);
+  ASSERT_EQ(out[0], 0ull);
 }
 
 TEST(num_of_orderly_violations, check_int64_t) {
   // Create data
   std::vector<int64_t> in(75836, 1);
   std::vector<uint64_t> out(1, 0);
-  for (int i = 500; i < in.size() - 600; i++) {
+  for (size_t i = 500; i < in.size() - 600; i++) {
     in[i] *= -1;
   }
 
@@ -119,7 +119,7 @@ TEST(num_of_orderly_violations, check_int64_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], 1);
+  ASSERT_EQ(out[0], 1ull);
 }
 
 TEST(num_of_orderly_violations, check_float) {
@@ -142,5 +142,5 @@ TEST(num_of_orderly_violations, check_float) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], 1);
+  ASSERT_EQ(out[0], 1ull);
 }

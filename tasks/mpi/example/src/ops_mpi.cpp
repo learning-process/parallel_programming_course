@@ -22,7 +22,7 @@ bool TestMPITaskSequential::pre_processing() {
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
   auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
-  for (int i = 0; i < taskData->inputs_count[0]; i++) {
+  for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
     input_[i] = tmp_ptr[i];
   }
   // Init value for output
@@ -66,7 +66,7 @@ bool TestMPITaskParallel::pre_processing() {
     // Init vectors
     input_ = std::vector<int>(taskData->inputs_count[0]);
     auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
-    for (int i = 0; i < taskData->inputs_count[0]; i++) {
+    for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
       input_[i] = tmp_ptr[i];
     }
     for (int proc = 1; proc < world.size(); proc++) {

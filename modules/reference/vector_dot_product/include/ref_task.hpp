@@ -22,10 +22,10 @@ class VectorDotProduct : public ppc::core::Task {
     internal_order_test();
     // Init vectors
     input_ = std::vector<std::vector<InOutType> >(2);
-    for (int i = 0; i < input_.size(); i++) {
+    for (size_t i = 0; i < input_.size(); i++) {
       input_[i] = std::vector<InOutType>(taskData->inputs_count[i]);
       auto tmp_ptr_ = reinterpret_cast<InOutType*>(taskData->inputs[i]);
-      for (int j = 0; j < taskData->inputs_count[i]; j++) {
+      for (unsigned j = 0; j < taskData->inputs_count[i]; j++) {
         input_[i][j] = tmp_ptr_[j];
       }
     }

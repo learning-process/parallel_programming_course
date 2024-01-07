@@ -23,7 +23,7 @@ class SumValuesByRowsMatrix : public ppc::core::Task {
     // Init vectors
     input_ = std::vector<InOutType>(taskData->inputs_count[0]);
     auto tmp_ptr = reinterpret_cast<InOutType*>(taskData->inputs[0]);
-    for (int i = 0; i < taskData->inputs_count[0]; i++) {
+    for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
       input_[i] = tmp_ptr[i];
     }
     rows = reinterpret_cast<IndexType*>(taskData->inputs[1])[0];
@@ -43,7 +43,7 @@ class SumValuesByRowsMatrix : public ppc::core::Task {
 
   bool run() override {
     internal_order_test();
-    for (int i = 0; i < rows; i++) {
+    for (size_t i = 0; i < rows; i++) {
       sum_[i] = std::accumulate(input_.begin() + cols * i, input_.begin() + cols * (i + 1), 0.f);
     }
     return true;

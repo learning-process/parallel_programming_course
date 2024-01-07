@@ -24,7 +24,7 @@ bool TestSTLTaskSequential::pre_processing() {
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
   auto *tmp_ptr = reinterpret_cast<int *>(taskData->inputs[0]);
-  for (int i = 0; i < taskData->inputs_count[0]; i++) {
+  for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
     input_[i] = tmp_ptr[i];
   }
   // Init value for output
@@ -60,12 +60,12 @@ void atomOps(std::vector<int> vec, const std::string &ops, std::promise<int> &&p
   auto sz = vec.size();
   int reduction_elem = 0;
   if (ops == "+") {
-    for (int i = 0; i < sz; i++) {
+    for (size_t i = 0; i < sz; i++) {
       std::lock_guard<std::mutex> my_lock(my_mutex);
       reduction_elem += vec[i];
     }
   } else if (ops == "-") {
-    for (int i = 0; i < sz; i++) {
+    for (size_t i = 0; i < sz; i++) {
       std::lock_guard<std::mutex> my_lock(my_mutex);
       reduction_elem -= vec[i];
     }
@@ -78,7 +78,7 @@ bool TestSTLTaskParallel::pre_processing() {
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
   auto *tmp_ptr = reinterpret_cast<int *>(taskData->inputs[0]);
-  for (int i = 0; i < taskData->inputs_count[0]; i++) {
+  for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
     input_[i] = tmp_ptr[i];
   }
   // Init value for output
@@ -101,7 +101,7 @@ bool TestSTLTaskParallel::run() {
   auto *futures = new std::future<int>[nthreads];
   auto *threads = new std::thread[nthreads];
 
-  for (int i = 0; i < nthreads; i++) {
+  for (unsigned i = 0; i < nthreads; i++) {
     futures[i] = promises[i].get_future();
     std::vector<int> tmp_vec(input_.begin() + i * delta, input_.begin() + (i + 1) * delta);
     threads[i] = std::thread(atomOps, tmp_vec, ops, std::move(promises[i]));

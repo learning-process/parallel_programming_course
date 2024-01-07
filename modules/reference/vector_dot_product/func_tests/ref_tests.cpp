@@ -12,7 +12,7 @@ TEST(vector_dot_product, check_int32_t) {
   std::vector<int32_t> in1(count_data, 1);
   std::vector<int32_t> in2(count_data, 1);
   std::vector<int32_t> out(1, 0);
-  for (int i = 0; i < count_data; i++) {
+  for (size_t i = 0; i < count_data; i++) {
     in1[i] = i + 1;
     in2[i] = i + 1;
   }
@@ -33,7 +33,7 @@ TEST(vector_dot_product, check_int32_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], (count_data * (count_data + 1) * (2 * count_data + 1)) / 6);
+  ASSERT_EQ(static_cast<uint64_t>(out[0]), (count_data * (count_data + 1) * (2 * count_data + 1)) / 6);
 }
 
 TEST(vector_dot_product, check_validate_func) {
@@ -108,7 +108,7 @@ TEST(vector_dot_product, check_int8_t) {
   std::vector<int8_t> in1(126, 1);
   std::vector<int8_t> in2(126, 1);
   std::vector<int8_t> out(1, 0);
-  for (int i = 0; i < in1.size(); ++i) {
+  for (size_t i = 0; i < in1.size(); ++i) {
     in1[i] = in2[i] = (i % 2 == 0) ? 1 : -1;
   }
 
@@ -128,7 +128,7 @@ TEST(vector_dot_product, check_int8_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], in1.size());
+  ASSERT_EQ(static_cast<size_t>(out[0]), in1.size());
 }
 
 TEST(vector_dot_product, check_int64_t) {
@@ -137,7 +137,7 @@ TEST(vector_dot_product, check_int64_t) {
   std::vector<int64_t> in1(count_data, 1);
   std::vector<int64_t> in2(count_data, 1);
   std::vector<int64_t> out(1, 0);
-  for (int i = 0; i < count_data; i++) {
+  for (uint64_t i = 0; i < count_data; i++) {
     in1[i] = i + 1;
     in2[i] = (i + 1) * (i + 1);
   }
@@ -158,7 +158,7 @@ TEST(vector_dot_product, check_int64_t) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  ASSERT_EQ(out[0], (count_data * count_data * (count_data + 1) * (count_data + 1)) / 4);
+  ASSERT_EQ(out[0], static_cast<int64_t>(count_data * count_data * (count_data + 1) * (count_data + 1)) / 4);
 }
 
 TEST(vector_dot_product, check_float) {
