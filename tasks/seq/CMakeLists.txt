@@ -49,13 +49,11 @@ if (USE_SEQ AND (USE_FUNC_TESTS OR USE_PERF_TESTS))
   endif (USE_PERF_TESTS)
 
   foreach (EXEC_FUNC ${LIST_OF_EXEC_TESTS})
-    target_link_libraries(${EXEC_FUNC} PUBLIC core_module_lib)
+    target_link_libraries(${EXEC_FUNC} PUBLIC core_module_lib ${exec_func_lib})
 
     add_dependencies(${EXEC_FUNC} ppc_googletest)
     target_link_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_googletest/install/lib")
     target_link_libraries(${EXEC_FUNC} PUBLIC gtest gtest_main)
-    target_link_libraries(${EXEC_FUNC} PUBLIC ${exec_func_lib})
-
     enable_testing()
     add_test(NAME ${EXEC_FUNC} COMMAND ${EXEC_FUNC})
   endforeach ()

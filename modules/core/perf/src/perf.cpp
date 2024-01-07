@@ -15,6 +15,8 @@ void ppc::core::Perf::set_task(std::shared_ptr<Task> task_) { task = std::move(t
 
 void ppc::core::Perf::pipeline_run(const std::shared_ptr<PerfAttr>& perfAttr,
                                    const std::shared_ptr<ppc::core::PerfResults>& perfResults) {
+  perfResults->type_of_running = PerfResults::TypeOfRunning::PIPELINE;
+
   common_run(
       std::move(perfAttr),
       [&]() {
@@ -28,6 +30,8 @@ void ppc::core::Perf::pipeline_run(const std::shared_ptr<PerfAttr>& perfAttr,
 
 void ppc::core::Perf::task_run(const std::shared_ptr<PerfAttr>& perfAttr,
                                const std::shared_ptr<ppc::core::PerfResults>& perfResults) {
+  perfResults->type_of_running = PerfResults::TypeOfRunning::TASK_RUN;
+
   task->validation();
   task->pre_processing();
   common_run(
@@ -38,6 +42,7 @@ void ppc::core::Perf::task_run(const std::shared_ptr<PerfAttr>& perfAttr,
   task->pre_processing();
   task->run();
   task->post_processing();
+
 }
 
 void ppc::core::Perf::common_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::function<void()>& pipeline,
@@ -52,13 +57,31 @@ void ppc::core::Perf::common_run(const std::shared_ptr<PerfAttr>& perfAttr, cons
 }
 
 void ppc::core::Perf::print_perf_statistic(const std::shared_ptr<PerfResults>& perfResults) {
-  std::cout << ::testing::UnitTest::GetInstance()->current_test_info()->test_case_name() << "_";
-  std::cout << ::testing::UnitTest::GetInstance()->current_test_info()->name() << ":";
-  std::stringstream stream;
-  stream << std::fixed << std::setprecision(10) << perfResults->time_sec;
+  std::string relative_path(::testing::UnitTest::GetInstance()->current_test_info()->file());
+  std::string ppc_regex_template("parallel_programming_course");
+  std::string perf_regex_template("perf_tests");
+  std::string type_test_name;
+
+  if (perfResults->type_of_running == PerfResults::TypeOfRunning::TASK_RUN) {
+    type_test_name = "task_run";
+  } else if (perfResults->type_of_running == PerfResults::TypeOfRunning::PIPELINE) {
+    type_test_name = "pipeline";
+  } else if (perfResults->type_of_running == PerfResults::TypeOfRunning::NONE) {
+    type_test_name = "none";
+  }
+
+  auto first_found_position = relative_path.find(ppc_regex_template) + ppc_regex_template.length() + 1;
+  relative_path.erase(0, first_found_position);
+
+  auto last_found_position = relative_path.find(perf_regex_template) - 1;
+  relative_path.erase(last_found_position, relative_path.length() - 1);
+
+  std::stringstream perf_res_str;
+  perf_res_str << std::fixed << std::setprecision(10) << perfResults->time_sec;
   if (perfResults->time_sec > MAX_TIME) {
     std::cerr << "Task need to execute < " << MAX_TIME << " secs: " << perfResults->time_sec;
     exit(1);
   }
-  std::cout << stream.str() << std::endl;
+
+  std::cout << relative_path << ":" << type_test_name << ":" << perf_res_str.str() << std::endl;
 }

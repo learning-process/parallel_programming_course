@@ -6,7 +6,7 @@
 #include "core/perf/include/perf.hpp"
 #include "seq/example/include/ops_seq.hpp"
 
-TEST(example_perf_test, pipeline) {
+TEST(sequential_example_perf_test, test_pipeline_run) {
   const int count = 100;
 
   // Create data
@@ -32,12 +32,12 @@ TEST(example_perf_test, pipeline) {
 
   // Create Perf analyzer
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
-  perfAnalyzer->task_run(perfAttr, perfResults);
+  perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(count, out[0]);
 }
 
-TEST(example_perf_test, task_run) {
+TEST(sequential_example_perf_test, test_task_run) {
   const int count = 100;
 
   // Create data
