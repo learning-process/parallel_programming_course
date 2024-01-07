@@ -3,10 +3,7 @@
 
 #include <thread>
 
-auto awake_time() {
-  using std::chrono::operator"" ms;
-  return std::chrono::steady_clock::now() + 10ms;
-}
+using namespace std::chrono_literals;
 
 bool TestTaskSequential::pre_processing() {
   internal_order_test();
@@ -27,7 +24,7 @@ bool TestTaskSequential::run() {
   for (int i = 0; i < input_; i++) {
     res++;
   }
-  std::this_thread::sleep_until(awake_time());
+  std::this_thread::sleep_for(20ms);
   return true;
 }
 
