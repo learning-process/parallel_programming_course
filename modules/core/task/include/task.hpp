@@ -54,7 +54,7 @@ class Task {
   std::vector<std::string> functions_order;
   std::vector<std::string> right_functions_order = {"validation", "pre_processing", "run", "post_processing"};
   const double max_test_time = 1.0;
-  std::chrono::steady_clock::time_point tmp_time_point;
+  std::chrono::high_resolution_clock::time_point tmp_time_point;
 };
 
 }  // namespace ppc::core
