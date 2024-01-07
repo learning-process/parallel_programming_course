@@ -81,17 +81,17 @@ bool TestOMPTaskParallel::run() {
   auto temp_res = res;
   if (ops == "+") {
 #pragma omp parallel for reduction(+ : temp_res)
-    for (size_t i = 0; i < input_.size(); i++) {
+    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
       temp_res += input_[i];
     }
   } else if (ops == "-") {
 #pragma omp parallel for reduction(- : temp_res)
-    for (size_t i = 0; i < input_.size(); i++) {
+    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
       temp_res -= input_[i];
     }
   } else if (ops == "*") {
 #pragma omp parallel for reduction(* : temp_res)
-    for (size_t i = 0; i < input_.size(); i++) {
+    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
       temp_res *= input_[i];
     }
   }
