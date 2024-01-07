@@ -163,9 +163,9 @@ TEST(vector_dot_product, check_int64_t) {
 
 TEST(vector_dot_product, check_float) {
   // Create data
-  std::vector<float> in1(1, -1.3);
-  std::vector<float> in2(1, 1.2);
-  std::vector<float> out(1, 0);
+  std::vector<float> in1(1, -1.3f);
+  std::vector<float> in2(1, 1.2f);
+  std::vector<float> out(1, 0.f);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
@@ -183,5 +183,5 @@ TEST(vector_dot_product, check_float) {
   testTask.pre_processing();
   testTask.run();
   testTask.post_processing();
-  EXPECT_NEAR(out[0], in1.size() * (-1.3) * 1.2, 1e-3);
+  EXPECT_NEAR(out[0], in1.size() * (-1.3f) * 1.2f, 1e-3f);
 }
