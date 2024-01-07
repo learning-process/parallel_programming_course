@@ -44,7 +44,7 @@ class Task {
   // get input and output data
   [[nodiscard]] std::shared_ptr<TaskData> get_data() const;
 
-  ~Task();
+  virtual ~Task();
 
  protected:
   void internal_order_test(const std::string &str = __builtin_FUNCTION());

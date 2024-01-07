@@ -12,7 +12,7 @@ TEST(nearest_neighbor_elements, check_int32_t) {
   std::vector<int32_t> in(1256, 1);
   std::vector<int32_t> out(2, 0);
   std::vector<uint64_t> out_index(2, 0);
-  for (int i = 0; i < in.size(); i++) {
+  for (size_t i = 0; i < in.size(); i++) {
     in[i] = 2 * i;
   }
   in[234] = 0;
@@ -36,8 +36,8 @@ TEST(nearest_neighbor_elements, check_int32_t) {
   testTask.post_processing();
   EXPECT_EQ(out[0], 0);
   EXPECT_EQ(out[1], 1);
-  EXPECT_EQ(out_index[0], 234);
-  EXPECT_EQ(out_index[1], 235);
+  EXPECT_EQ(out_index[0], 234ull);
+  EXPECT_EQ(out_index[1], 235ull);
 }
 
 TEST(nearest_neighbor_elements, check_validate_func) {
@@ -66,7 +66,7 @@ TEST(nearest_neighbor_elements, check_double) {
   std::vector<double> in(25680, 1);
   std::vector<double> out(2, 0);
   std::vector<uint64_t> out_index(2, 0);
-  for (int i = 0; i < in.size(); i++) {
+  for (size_t i = 0; i < in.size(); i++) {
     in[i] = 2 * i;
   }
   in[189] = 0.1;
@@ -90,8 +90,8 @@ TEST(nearest_neighbor_elements, check_double) {
   testTask.post_processing();
   EXPECT_NEAR(out[0], 0.1, 1e-6);
   EXPECT_NEAR(out[1], 0.9, 1e-6);
-  EXPECT_EQ(out_index[0], 189);
-  EXPECT_EQ(out_index[1], 190);
+  EXPECT_EQ(out_index[0], 189ull);
+  EXPECT_EQ(out_index[1], 190ull);
 }
 
 TEST(nearest_neighbor_elements, check_int8_t) {
@@ -99,7 +99,7 @@ TEST(nearest_neighbor_elements, check_int8_t) {
   std::vector<int8_t> in(250, -1);
   std::vector<int8_t> out(2, 0);
   std::vector<uint64_t> out_index(2, 0);
-  for (int i = 0; i < in.size(); i++) {
+  for (size_t i = 0; i < in.size(); i++) {
     if (i % 2 == 0) {
       in[i] = -50;
     } else {
@@ -127,8 +127,8 @@ TEST(nearest_neighbor_elements, check_int8_t) {
   testTask.post_processing();
   EXPECT_EQ(out[0], 8);
   EXPECT_EQ(out[1], -8);
-  EXPECT_EQ(out_index[0], 5);
-  EXPECT_EQ(out_index[1], 6);
+  EXPECT_EQ(out_index[0], 5ull);
+  EXPECT_EQ(out_index[1], 6ull);
 }
 
 TEST(nearest_neighbor_elements, check_int64_t) {
@@ -136,7 +136,7 @@ TEST(nearest_neighbor_elements, check_int64_t) {
   std::vector<int64_t> in(75836, 1);
   std::vector<int64_t> out(2, 0);
   std::vector<uint64_t> out_index(2, 0);
-  for (int i = 0; i < in.size(); i++) {
+  for (size_t i = 0; i < in.size(); i++) {
     if (i % 3 == 0) {
       in[i] = 10;
     }
@@ -168,8 +168,8 @@ TEST(nearest_neighbor_elements, check_int64_t) {
   testTask.post_processing();
   EXPECT_EQ(out[0], -100);
   EXPECT_EQ(out[1], -119);
-  EXPECT_EQ(out_index[0], 20);
-  EXPECT_EQ(out_index[1], 21);
+  EXPECT_EQ(out_index[0], 20ull);
+  EXPECT_EQ(out_index[1], 21ull);
 }
 
 TEST(nearest_neighbor_elements, check_float) {
@@ -177,7 +177,7 @@ TEST(nearest_neighbor_elements, check_float) {
   std::vector<float> in(20, 1);
   std::vector<float> out(2, 0);
   std::vector<uint64_t> out_index(2, 0);
-  for (int i = 0; i < in.size(); i++) {
+  for (size_t i = 0; i < in.size(); i++) {
     in[i] += (i + 1.f) * 2.5f;
   }
   in[0] = 0.001;
@@ -201,6 +201,6 @@ TEST(nearest_neighbor_elements, check_float) {
   testTask.post_processing();
   EXPECT_NEAR(out[0], 0.001, 1e-4);
   EXPECT_NEAR(out[1], 0.0025, 1e-4);
-  EXPECT_EQ(out_index[0], 0);
-  EXPECT_EQ(out_index[1], 1);
+  EXPECT_EQ(out_index[0], 0ull);
+  EXPECT_EQ(out_index[1], 1ull);
 }

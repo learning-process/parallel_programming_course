@@ -21,7 +21,7 @@ void ppc::core::Task::internal_order_test(const std::string& str) {
 
   functions_order.push_back(str);
 
-  for (auto i = 0; i < functions_order.size(); i++) {
+  for (size_t i = 0; i < functions_order.size(); i++) {
     if (functions_order[i] != right_functions_order[i % right_functions_order.size()]) {
       throw std::invalid_argument("ORDER OF FUCTIONS IS NOT RIGHT: \n" + std::string("Serial number: ") +
                                   std::to_string(i + 1) + "\n" + std::string("Yours function: ") + functions_order[i] +
