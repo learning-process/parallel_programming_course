@@ -3,6 +3,7 @@
 #ifndef MODULES_CORE_INCLUDE_TASK_HPP_
 #define MODULES_CORE_INCLUDE_TASK_HPP_
 
+#include <chrono>
 #include <cstdint>
 #include <iostream>
 #include <memory>
@@ -16,6 +17,7 @@ struct TaskData {
   std::vector<std::uint32_t> inputs_count;
   std::vector<uint8_t *> outputs;
   std::vector<std::uint32_t> outputs_count;
+  enum StateOfTesting { FUNC, PERF } state_of_testing;
 };
 
 // Memory of inputs and outputs need to be initialized before create object of
@@ -51,6 +53,8 @@ class Task {
  private:
   std::vector<std::string> functions_order;
   std::vector<std::string> right_functions_order = {"validation", "pre_processing", "run", "post_processing"};
+  const double max_test_time = 1.0;
+  std::chrono::steady_clock::time_point tmp_time_point;
 };
 
 }  // namespace ppc::core

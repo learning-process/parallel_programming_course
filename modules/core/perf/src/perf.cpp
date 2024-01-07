@@ -11,7 +11,10 @@
 
 ppc::core::Perf::Perf(std::shared_ptr<Task> task_) { set_task(std::move(task_)); }
 
-void ppc::core::Perf::set_task(std::shared_ptr<Task> task_) { task = std::move(task_); }
+void ppc::core::Perf::set_task(std::shared_ptr<Task> task_) {
+  task_->get_data()->state_of_testing = TaskData::StateOfTesting::PERF;
+  task = std::move(task_);
+}
 
 void ppc::core::Perf::pipeline_run(const std::shared_ptr<PerfAttr>& perfAttr,
                                    const std::shared_ptr<ppc::core::PerfResults>& perfResults) {
@@ -85,6 +88,7 @@ void ppc::core::Perf::print_perf_statistic(const std::shared_ptr<PerfResults>& p
     std::cerr << PerfResults::MIN_TIME << " secs. < time < " << PerfResults::MAX_TIME << " secs." << std::endl;
     std::cerr << "Original time in secs: " << time_secs;
     perf_res_str << std::fixed << std::setprecision(10) << -1.0;
+    EXPECT_TRUE(time_secs > PerfResults::MIN_TIME && time_secs < PerfResults::MAX_TIME);
   }
 
   std::cout << relative_path << ":" << type_test_name << ":" << perf_res_str.str() << std::endl;
