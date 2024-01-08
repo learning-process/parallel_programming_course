@@ -1,7 +1,7 @@
 // Copyright 2023 Nesterov Alexander
 #include <iostream>
-#include <thread>
 #include <string>
+#include <thread>
 
 void task(const std::string& msg) { std::cout << "thread number: " + msg << std::endl; }
 
