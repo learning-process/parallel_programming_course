@@ -178,5 +178,35 @@ jobs:
         cmake --build build --config Release --parallel
     - name: Run tests
       run: |
-        set OMP_NUM_THREADS=4
         scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 4
+  windows-clang-build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+    - name: CMake configure
+      run: |
+        cmake -S . -B build -A x64 -T ClangCL -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE
+      env:
+        CC: clang-cl
+        CXX: clang-cl
+    - name: Ninja build
+      run: |
+        cmake --build build --config Release --parallel -v
+      env:
+        CC: clang-cl
+        CXX: clang-cl
+    - name: Run tests
+      run: |
+        scripts/run.bat
+      env:
+        CLANG_BUILD: 1
+        OMP_NUM_THREADS: 4
