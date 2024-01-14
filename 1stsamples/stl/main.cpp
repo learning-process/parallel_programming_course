@@ -6,7 +6,7 @@
 
 void task(const std::string& msg) { std::cout << "thread number: " + msg << std::endl; }
 
-int main(int argc, char** argv) {
+int main() {
   const auto num_max_threads = std::thread::hardware_concurrency();
   std::cout << "Number of threads = " << num_max_threads << std::endl;
   std::vector<std::thread> thr(num_max_threads);

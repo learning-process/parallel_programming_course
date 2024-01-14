@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-int main(int argc, char** argv) {
+int main() {
 #pragma omp parallel
   {
     std::cout << "Thread number = " << omp_get_thread_num() << std::endl;

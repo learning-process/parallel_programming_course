@@ -16,4 +16,4 @@ int fib_func(int n) {
   return x + y;
 }
 
-int main(int argc, char** argv) { return fib_func(10) - 55; }
+int main() { return fib_func(10) - 55; }
