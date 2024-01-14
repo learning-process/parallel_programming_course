@@ -212,8 +212,11 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
     - name: CMake configure
-      run: |
-        cmake -S . -B build -A x64 -T ClangCL -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE
+      run: >
+        cmake -S . -B build -A x64 -T ClangCL
+        -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: clang-cl
         CXX: clang-cl
