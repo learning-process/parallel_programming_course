@@ -18,6 +18,7 @@ if( USE_MPI )
     else( MPI_FOUND )
         set( USE_MPI OFF )
     endif( MPI_FOUND )
+    include(cmake/boost.cmake)
 endif( USE_MPI )
 
 ############################### OpenMP ##############################
@@ -32,11 +33,15 @@ if( USE_OMP OR USE_SEQ )
         if ( MSVC AND MSVC_VERSION GREATER 1919 )
             set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /openmp:experimental")
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /openmp:experimental")
-            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /openmp:experimental")
+            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
             add_compile_options(/openmp:experimental)
         endif()
     else( OpenMP_FOUND )
-        message(FATAL_ERROR "OpenMP NOT FOUND")
+        if (WIN32)
+            message(WARNING "OpenMP NOT FOUND")
+        else()
+            message(FATAL_ERROR "OpenMP NOT FOUND")
+        endif()
     endif( OpenMP_FOUND )
 endif( USE_OMP OR USE_SEQ )
 
@@ -67,7 +72,6 @@ if( USE_PERF_TESTS )
 endif( USE_PERF_TESTS )
 
 ############################## Modules ##############################
-include(cmake/boost.cmake)
 
 include_directories(3rdparty)
 include_directories(modules)
