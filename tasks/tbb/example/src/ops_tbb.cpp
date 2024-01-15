@@ -7,7 +7,10 @@
 #include <numeric>
 #include <random>
 #include <string>
+#include <thread>
 #include <vector>
+
+using namespace std::chrono_literals;
 
 std::vector<int> getRandomVector(int sz) {
   std::random_device dev;
@@ -47,6 +50,7 @@ bool TestTBBTaskSequential::run() {
   } else if (ops == "*") {
     res = std::accumulate(input_.begin(), input_.end(), 1, std::multiplies<>());
   }
+  std::this_thread::sleep_for(20ms);
   return true;
 }
 
