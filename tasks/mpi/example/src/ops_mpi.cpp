@@ -5,7 +5,10 @@
 #include <functional>
 #include <random>
 #include <string>
+#include <thread>
 #include <vector>
+
+using namespace std::chrono_literals;
 
 std::vector<int> getRandomVector(int sz) {
   std::random_device dev;
@@ -109,6 +112,7 @@ bool TestMPITaskParallel::run() {
   } else if (ops == "max") {
     reduce(world, local_res, res, boost::mpi::maximum<int>(), 0);
   }
+  std::this_thread::sleep_for(20ms);
   return true;
 }
 
