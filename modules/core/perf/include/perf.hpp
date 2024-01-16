@@ -16,6 +16,7 @@ namespace core {
 struct PerfAttr {
   // count of task's running
   uint64_t num_running;
+  std::function<double(void)> current_timer = [&] { return 0.0; };
 };
 
 struct PerfResults {

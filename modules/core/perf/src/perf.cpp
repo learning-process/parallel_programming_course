@@ -3,7 +3,6 @@
 
 #include <gtest/gtest.h>
 
-#include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -49,13 +48,12 @@ void ppc::core::Perf::task_run(const std::shared_ptr<PerfAttr>& perfAttr,
 
 void ppc::core::Perf::common_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::function<void()>& pipeline,
                                  const std::shared_ptr<ppc::core::PerfResults>& perfResults) {
-  auto begin = std::chrono::high_resolution_clock::now();
+  auto begin = perfAttr->current_timer();
   for (uint64_t i = 0; i < perfAttr->num_running; i++) {
     pipeline();
   }
-  auto end = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count();
-  perfResults->time_sec = static_cast<double>(duration) * 1e-9;
+  auto end = perfAttr->current_timer();
+  perfResults->time_sec = end - begin;
 }
 
 void ppc::core::Perf::print_perf_statistic(const std::shared_ptr<PerfResults>& perfResults) {

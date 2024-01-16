@@ -26,6 +26,9 @@ TEST(sequential_example_perf_test, test_pipeline_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
+  perfAttr->current_timer = [&] {
+    return std::chrono::duration<double>(std::chrono::system_clock::now().time_since_epoch()).count();
+  };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -57,6 +60,10 @@ TEST(sequential_example_perf_test, test_task_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
+  perfAttr->current_timer = [&] {
+    auto duration_in_seconds = std::chrono::duration<double>(std::chrono::system_clock::now().time_since_epoch());
+    return duration_in_seconds.count();
+  };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
