@@ -6,15 +6,18 @@
 #include <numeric>
 #include <random>
 #include <string>
+#include <thread>
 #include <utility>
 #include <vector>
+
+using namespace std::chrono_literals;
 
 std::vector<int> getRandomVector(int sz) {
   std::random_device dev;
   std::mt19937 gen(dev());
   std::vector<int> vec(sz);
   for (int i = 0; i < sz; i++) {
-    vec[i] = gen() % 100;
+    vec[i] = static_cast<int>(gen()) % 100;
   }
   return vec;
 }
@@ -45,6 +48,7 @@ bool TestSTLTaskSequential::run() {
   } else if (ops == "-") {
     res -= std::accumulate(input_.begin(), input_.end(), 0);
   }
+  std::this_thread::sleep_for(20ms);
   return true;
 }
 

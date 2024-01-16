@@ -153,3 +153,8 @@ TEST(task_tests, check_wrong_order) {
   testTask.pre_processing();
   ASSERT_ANY_THROW(testTask.post_processing());
 }
+
+int main(int argc, char **argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

@@ -24,8 +24,12 @@ jobs:
           key: ${{ github.job }}
           create-symlink: true
     - name: CMake configure
-      run: |
-        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE
+      run: >
+        cmake -S . -B build
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: gcc-12
         CXX: g++-12
@@ -64,8 +68,11 @@ jobs:
           key: ${{ github.job }}
           create-symlink: true
     - name: CMake configure
-      run: |
-        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE
+      run: >
+        cmake -S . -B build 
+        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: clang-15
         CXX: clang++-15
@@ -100,8 +107,12 @@ jobs:
           key: ${{ github.job }}
           create-symlink: true
     - name: CMake configure
-      run: |
-        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON
+      run: >
+        cmake -S . -B build
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON
       env:
         CC: clang-15
         CXX: clang++-15
@@ -136,8 +147,12 @@ jobs:
           key: ${{ github.job }}
           create-symlink: true
     - name: CMake configure
-      run: |
-        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
+      run: >
+        cmake -S . -B build
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
+        -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
     - name: Ninja build
       run: |
         cmake --build build
@@ -170,8 +185,12 @@ jobs:
         windows_compile_environment: msvc
     - name: CMake configure
       shell: bash
-      run: |
-        cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE
+      run: >
+        cmake -S . -B build
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE
     - name: MSBuild
       shell: bash
       run: |
@@ -193,8 +212,11 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
     - name: CMake configure
-      run: |
-        cmake -S . -B build -A x64 -T ClangCL -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE
+      run: >
+        cmake -S . -B build -A x64 -T ClangCL
+        -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: clang-cl
         CXX: clang-cl

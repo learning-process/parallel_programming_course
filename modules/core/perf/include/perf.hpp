@@ -16,11 +16,15 @@ namespace core {
 struct PerfAttr {
   // count of task's running
   uint64_t num_running;
+  std::function<double(void)> current_timer = [&] { return 0.0; };
 };
 
 struct PerfResults {
   // measurement of task's time (in seconds)
-  long double time_sec;
+  double time_sec = 0.0;
+  enum TypeOfRunning { PIPELINE, TASK_RUN, NONE } type_of_running = NONE;
+  constexpr const static double MAX_TIME = 10.0;
+  constexpr const static double MIN_TIME = 0.05;
 };
 
 class Perf {
@@ -36,6 +40,8 @@ class Perf {
                     const std::shared_ptr<ppc::core::PerfResults>& perfResults);
   // Check performance of task's run() function
   void task_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::shared_ptr<ppc::core::PerfResults>& perfResults);
+  // Pint results for automation checkers
+  static void print_perf_statistic(const std::shared_ptr<PerfResults>& perfResults);
 
  private:
   std::shared_ptr<Task> task;

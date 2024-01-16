@@ -1,5 +1,9 @@
-// Copyright 2023 Nesterov Alexander
+// Copyright 2024 Nesterov Alexander
 #include "seq/example/include/ops_seq.hpp"
+
+#include <thread>
+
+using namespace std::chrono_literals;
 
 bool TestTaskSequential::pre_processing() {
   internal_order_test();
@@ -20,6 +24,7 @@ bool TestTaskSequential::run() {
   for (int i = 0; i < input_; i++) {
     res++;
   }
+  std::this_thread::sleep_for(20ms);
   return true;
 }
 

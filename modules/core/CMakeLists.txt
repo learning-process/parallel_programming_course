@@ -1,7 +1,8 @@
-message(STATUS "Core module")
-set(exec_func_tests "core_func_tests")
-set(exec_perf_tests "core_perf_tests")
-set(project_suffix "_core")
+get_filename_component(MODULE_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+message(STATUS      "${MODULE_NAME} tasks")
+set(exec_func_tests "${MODULE_NAME}_func_tests")
+set(exec_func_lib   "${MODULE_NAME}_module_lib")
+set(project_suffix  "_${MODULE_NAME}")
 
 SUBDIRLIST(subdirs ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -9,46 +10,27 @@ foreach(subd ${subdirs})
   get_filename_component(PROJECT_ID ${subd} NAME)
   set(PATH_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/${subd}")
   set(PROJECT_ID "${PROJECT_ID}${project_suffix}")
-  set(PACK_LIB "${PROJECT_ID}_lib")
   message(STATUS "-- " ${PROJECT_ID})
 
-  project(${PACK_LIB})
-  file(GLOB_RECURSE LIB_SOURCE_FILES ${PATH_PREFIX}/include/* ${PATH_PREFIX}/src/*)
-  add_library(${PACK_LIB} STATIC ${LIB_SOURCE_FILES})
-  set_target_properties(${PACK_LIB} PROPERTIES LINKER_LANGUAGE CXX)
+  file(GLOB_RECURSE TMP_LIB_SOURCE_FILES ${PATH_PREFIX}/include/* ${PATH_PREFIX}/src/*)
+  list(APPEND LIB_SOURCE_FILES ${TMP_LIB_SOURCE_FILES})
 
   file(GLOB_RECURSE TMP_FUNC_TESTS_SOURCE_FILES ${PATH_PREFIX}/func_tests/*)
-  set(FUNC_TESTS_SOURCE_FILES "${FUNC_TESTS_SOURCE_FILES};${TMP_FUNC_TESTS_SOURCE_FILES}")
-
-#  file(GLOB_RECURSE TMP_PERF_TESTS_SOURCE_FILES ${PATH_PREFIX}/perf_tests/*)
-#  set(PERF_TESTS_SOURCE_FILES "${PERF_TESTS_SOURCE_FILES};${TMP_PERF_TESTS_SOURCE_FILES}")
+  list(APPEND FUNC_TESTS_SOURCE_FILES ${TMP_FUNC_TESTS_SOURCE_FILES})
 endforeach()
+
+project(${exec_func_lib})
+add_library(${exec_func_lib} STATIC ${LIB_SOURCE_FILES})
+set_target_properties(${exec_func_lib} PROPERTIES LINKER_LANGUAGE CXX)
 
 add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
 add_dependencies(${exec_func_tests} ppc_googletest)
 target_link_directories(${exec_func_tests} PUBLIC ${CMAKE_BINARY_DIR}/ppc_googletest/install/lib)
 target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
 
-#add_executable( ${exec_perf_tests} ${PERF_TESTS_SOURCE_FILES} )
-#target_link_libraries(${exec_perf_tests} task_core_lib)
-#add_dependencies(${exec_perf_tests} ppc_googletest)
-#target_link_directories(${exec_perf_tests} PUBLIC ${CMAKE_BINARY_DIR}/ppc_googletest/install/lib)
-#if (NOT MSVC)
-#  target_link_libraries(${exec_perf_tests} PUBLIC gtest gtest_main)
-#endif ()
-
-foreach(subd ${subdirs})
-  get_filename_component(PROJECT_ID ${subd} NAME)
-  set(PROJECT_ID "${PROJECT_ID}${project_suffix}")
-  set(PACK_LIB "${PROJECT_ID}_lib")
-
-  target_link_libraries(${exec_func_tests} PUBLIC ${PACK_LIB})
-#  target_link_libraries(${exec_perf_tests} ${PACK_LIB})
-endforeach()
+target_link_libraries(${exec_func_tests} PUBLIC ${exec_func_lib})
 
 enable_testing()
 add_test(NAME ${exec_func_tests} COMMAND ${exec_func_tests})
-#add_test(NAME ${exec_perf_tests} COMMAND ${exec_perf_tests})
 
 CPPCHECK_TEST("${exec_func_tests}" "${FUNC_TESTS_SOURCE_FILES}")
-#CPPCHECK_TEST("${exec_perf_tests}" "${PERF_TESTS_SOURCE_FILES}")
