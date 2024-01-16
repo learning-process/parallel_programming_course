@@ -1,11 +1,11 @@
 // Copyright 2023 Nesterov Alexander
 #include <gtest/gtest.h>
+#include <omp.h>
 
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
 #include "omp/example/include/ops_omp.hpp"
-#include <omp.h>
 
 TEST(openmp_example_perf_test, test_pipeline_run) {
   const int count = 100;
@@ -27,9 +27,7 @@ TEST(openmp_example_perf_test, test_pipeline_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  perfAttr->current_timer = [&] {
-    return omp_get_wtime();
-  };
+  perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -61,9 +59,7 @@ TEST(openmp_example_perf_test, test_task_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  perfAttr->current_timer = [&] {
-    return omp_get_wtime();
-  };
+  perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
