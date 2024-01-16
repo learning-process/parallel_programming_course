@@ -5,6 +5,7 @@
 
 #include "core/perf/include/perf.hpp"
 #include "mpi/example/include/ops_mpi.hpp"
+#include <boost/mpi/timer.hpp>
 
 TEST(mpi_example_perf_test, test_pipeline_run) {
   boost::mpi::communicator world;
@@ -31,6 +32,10 @@ TEST(mpi_example_perf_test, test_pipeline_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
+  const boost::mpi::timer current_timer;
+  perfAttr->current_timer = [&] {
+    return current_timer.elapsed();
+  };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -69,6 +74,10 @@ TEST(mpi_example_perf_test, test_task_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
+  const boost::mpi::timer current_timer;
+  perfAttr->current_timer = [&] {
+    return current_timer.elapsed();
+  };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
