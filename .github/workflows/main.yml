@@ -174,7 +174,7 @@ jobs:
     - name: Setup MPI
       uses: mpi4py/setup-mpi@v1
       with:
-        mpi: msmpi
+        mpi: intelmpi
     - name: Download dependencies
       run: |
         choco install openssl
