@@ -7,7 +7,7 @@ include(cmake/configure.cmake)
 include(cmake/gtest.cmake)
 
 option(ENABLE_ADDRESS_SANITIZER OFF)
-include(cmake/asan.cmake)
+include(cmake/sanitizers.cmake)
 
 ################################ MPI ################################
 option(USE_MPI OFF)
