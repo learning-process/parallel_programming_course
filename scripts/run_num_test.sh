@@ -30,31 +30,23 @@ echo tbb_func_tests
 echo "--------------------------------"
 python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/tbb_func_tests"
 
-#echo "--------------------------------"
-#echo core_perf_tests
-#echo "--------------------------------"
-#python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/core_perf_tests"
-#echo "--------------------------------"
-#echo ref_perf_tests
-#echo "--------------------------------"
-#python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/ref_perf_tests"
-#echo "--------------------------------"
-#echo mpi_perf_tests
-#echo "--------------------------------"
-#python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/mpi_perf_tests"
-#echo "--------------------------------"
-#echo omp_perf_tests
-#echo "--------------------------------"
-#python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/omp_perf_tests"
+echo "--------------------------------"
+echo mpi_perf_tests
+echo "--------------------------------"
+python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/mpi_perf_tests"
+echo "--------------------------------"
+echo omp_perf_tests
+echo "--------------------------------"
+python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/omp_perf_tests"
 echo "--------------------------------"
 echo seq_perf_tests
 echo "--------------------------------"
 python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/seq_perf_tests"
-#echo "--------------------------------"
-#echo stl_perf_tests
-#echo "--------------------------------"
-#python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/stl_perf_tests"
-#echo "--------------------------------"
-#echo tbb_perf_tests
-#echo "--------------------------------"
-#python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/tbb_perf_tests"
+echo "--------------------------------"
+echo stl_perf_tests
+echo "--------------------------------"
+python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/stl_perf_tests"
+echo "--------------------------------"
+echo tbb_perf_tests
+echo "--------------------------------"
+python3 "$BASEDIR/scripts/check_number_tests.py" "$BASEDIR/build/bin/tbb_perf_tests"
