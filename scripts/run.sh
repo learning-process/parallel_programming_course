@@ -49,16 +49,3 @@ fi
 ./build/bin/seq_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 ./build/bin/stl_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
 ./build/bin/tbb_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
-
-# Temporary run of perf tests
-if [[ -z "$ASAN_RUN" ]]; then
-  if [[ $OSTYPE == "linux-gnu" ]]; then
-    mpirun --oversubscribe -np 4 ./build/bin/mpi_perf_tests
-  elif [[ $OSTYPE == "darwin"* ]]; then
-    mpirun -np 2 ./build/bin/mpi_perf_tests
-  fi
-fi
-./build/bin/omp_perf_tests
-./build/bin/seq_perf_tests
-./build/bin/stl_perf_tests
-./build/bin/tbb_perf_tests
