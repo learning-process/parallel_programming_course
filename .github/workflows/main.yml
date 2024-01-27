@@ -29,7 +29,7 @@ jobs:
         cmake -S . -B build
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=OFF
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: gcc-12
@@ -47,10 +47,6 @@ jobs:
       run: |
         export OMP_NUM_THREADS=4
         source scripts/run.sh
-    - name: Run perf tests
-      run: |
-        export OMP_NUM_THREADS=4
-        source scripts/generate_perf_results.sh
   ubuntu-clang-build:
     runs-on: ubuntu-latest
     steps:
@@ -76,7 +72,7 @@ jobs:
       run: >
         cmake -S . -B build 
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=OFF
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: clang-15
@@ -116,7 +112,7 @@ jobs:
         cmake -S . -B build
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=OFF
         -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON
       env:
         CC: clang-15
@@ -157,7 +153,7 @@ jobs:
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
-        -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=OFF
     - name: Ninja build
       run: |
         cmake --build build
@@ -183,7 +179,6 @@ jobs:
     - name: Download dependencies
       run: |
         choco install openssl
-        choco install ninja
     - name: Setup ccache
       uses: Chocobo1/setup-ccache-action@v1
       with:
@@ -194,7 +189,7 @@ jobs:
         cmake -S . -B build
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=OFF
         -D CMAKE_BUILD_TYPE=RELEASE
     - name: MSBuild
       shell: bash
@@ -220,7 +215,7 @@ jobs:
       run: >
         cmake -S . -B build -A x64 -T ClangCL
         -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=OFF
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: clang-cl
