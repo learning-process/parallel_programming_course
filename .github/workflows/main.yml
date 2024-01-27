@@ -29,7 +29,7 @@ jobs:
         cmake -S . -B build
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=OFF
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: gcc-12
@@ -72,7 +72,7 @@ jobs:
       run: >
         cmake -S . -B build 
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=OFF
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: clang-15
@@ -153,7 +153,7 @@ jobs:
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
-        -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=OFF
+        -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
     - name: Ninja build
       run: |
         cmake --build build
@@ -189,7 +189,7 @@ jobs:
         cmake -S . -B build
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=OFF
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
     - name: MSBuild
       shell: bash
@@ -215,7 +215,7 @@ jobs:
       run: >
         cmake -S . -B build -A x64 -T ClangCL
         -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=OFF
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: clang-cl

@@ -1,8 +1,5 @@
-environment:
-  matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-      CMAKE_GENERATOR: Visual Studio 17 2022
-      MPI_HOME: "C:/Program Files (x86)/Microsoft SDKs/MPI"
+image:
+  - Visual Studio 2022
 
 artifacts:
   - path: build\perf_stat_dir
@@ -14,11 +11,12 @@ install:
   - set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
   - ps: Start-FileDownload 'https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisdk.msi'
   - msmpisdk.msi /passive
+  - python3 -m pip install xlsxwriter
 
 build_script:
   - cmd: git submodule update --init --recursive
   - cmd: mkdir build
-  - cmd: cmake -G "%CMAKE_GENERATOR%" -S . -B build ^
+  - cmd: cmake -S . -B build   ^
                -D USE_SEQ=ON   ^
                -D USE_MPI=ON   ^
                -D USE_OMP=ON   ^
