@@ -11,6 +11,9 @@ install:
   - set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
   - ps: Start-FileDownload 'https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisdk.msi'
   - msmpisdk.msi /passive
+  - set MPI_EXEC=C:\Program Files\Microsoft MPI
+  - set MPI_ROOT=C:\Program Files (x86)\Microsoft SDKS\MPI
+  - set PATH=%MPI_EXEC%\Bin;%PATH%
   - choco install python3
   - python -m pip install xlsxwriter
 
@@ -19,16 +22,12 @@ build_script:
   - cmd: mkdir build
   - cmd: cmake -S . -B build   ^
                -D USE_SEQ=ON   ^
-               -D USE_MPI=OFF  ^
+               -D USE_MPI=ON  ^
                -D USE_OMP=ON   ^
                -D USE_TBB=ON   ^
                -D USE_STL=ON   ^
                -D USE_FUNC_TESTS=OFF  ^
                -D USE_PERF_TESTS=ON   ^
-               -D CMAKE_BUILD_TYPE=RELEASE   ^
-               -D MPI_C_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
-               -D MPI_C_LIBRARIES:PATH="%MPI_HOME%/Lib/x64/msmpi.lib" ^
-               -D MPI_CXX_INCLUDE_PATH:PATH="%MPI_HOME%/Include" ^
-               -D MPI_CXX_LIBRARIES:PATH="%MPI_HOME%/Lib/x64/msmpi.lib"
+               -D CMAKE_BUILD_TYPE=RELEASE
   - cmd: cmake --build build --config Release --parallel
   - cmd: scripts/generate_perf_results.bat
