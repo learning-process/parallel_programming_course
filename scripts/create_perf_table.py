@@ -19,7 +19,7 @@ set_of_task_name = []
 logs_file = open(logs_path, "r")
 logs_lines = logs_file.readlines()
 for line in logs_lines:
-    pattern = r'tasks\/(\w*)\/(\w*):(\w*):(-*\d*\.\d*)'
+    pattern = r'tasks(\/|\\)(\w*)(\/|\\)(\w*):(\w*):(-*\d*\.\d*)'
     result = re.findall(pattern, line)
     if len(result):
         task_name = result[0][1]
@@ -31,7 +31,7 @@ for line in logs_lines:
             result_tables[perf_type][task_name][ttype] = -1.0
 
 for line in logs_lines:
-    pattern = r'tasks\/(\w*)\/(\w*):(\w*):(-*\d*\.\d*)'
+    pattern = r'tasks(\/|\\)(\w*)(\/|\\)(\w*):(\w*):(-*\d*\.\d*)'
     result = re.findall(pattern, line)
     if len(result):
         task_type = result[0][0]
