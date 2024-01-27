@@ -12,7 +12,7 @@ install:
   - ps: Start-FileDownload 'https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisdk.msi'
   - msmpisdk.msi /passive
   - choco install python3
-  - python3 -m pip install xlsxwriter
+  - python -m pip install xlsxwriter
 
 build_script:
   - cmd: git submodule update --init --recursive
