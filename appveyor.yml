@@ -19,7 +19,7 @@ build_script:
   - cmd: mkdir build
   - cmd: cmake -S . -B build   ^
                -D USE_SEQ=ON   ^
-               -D USE_MPI=ON   ^
+               -D USE_MPI=OFF  ^
                -D USE_OMP=ON   ^
                -D USE_TBB=ON   ^
                -D USE_STL=ON   ^

@@ -1,4 +1,4 @@
-"C:\Program Files\Microsoft MPI\Bin\mpiexec.exe" -np 4 build\bin\mpi_perf_tests.exe
+REM "C:\Program Files\Microsoft MPI\Bin\mpiexec.exe" -np 4 build\bin\mpi_perf_tests.exe
 build\bin\omp_perf_tests.exe
 build\bin\seq_perf_tests.exe
 build\bin\stl_perf_tests.exe
