@@ -1,6 +1,6 @@
 [![Build application](https://github.com/learning-process/parallel_programming_course/actions/workflows/main.yml/badge.svg)](https://github.com/learning-process/parallel_programming_course/actions/workflows/main.yml)
 
-# Parallel Programming Course
+# Parallel Programming Cours
 
 The following parallel programming technologies are considered in practice:
   * `MPI`
