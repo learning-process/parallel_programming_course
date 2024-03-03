@@ -18,6 +18,7 @@ jobs:
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
+        python3 -m pip install xlsxwriter
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -42,7 +43,7 @@ jobs:
     - name: Check number tests
       run: |
         source scripts/run_num_test.sh
-    - name: Run tests
+    - name: Run func tests
       run: |
         export OMP_NUM_THREADS=4
         source scripts/run.sh
@@ -178,7 +179,6 @@ jobs:
     - name: Download dependencies
       run: |
         choco install openssl
-        choco install ninja
     - name: Setup ccache
       uses: Chocobo1/setup-ccache-action@v1
       with:

@@ -1,0 +1,35 @@
+image:
+  - Visual Studio 2022
+
+artifacts:
+  - path: build\perf_stat_dir
+    name: perf_stat_dir
+
+install:
+  - ps: Start-FileDownload 'https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe'
+  - MSMpiSetup.exe -unattend
+  - set PATH=C:\Program Files\Microsoft MPI\Bin;%PATH%
+  - ps: Start-FileDownload 'https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisdk.msi'
+  - msmpisdk.msi /passive
+  - set MPI_EXEC=C:\Program Files\Microsoft MPI
+  - set MPI_ROOT=C:\Program Files (x86)\Microsoft SDKS\MPI
+  - set PATH=%MPI_EXEC%\Bin;%PATH%
+  - choco install python3
+  - python -m pip install xlsxwriter
+
+build_script:
+  - cmd: git submodule update --init --recursive
+  - cmd: mkdir build
+  - cmd: cmake -S . -B build   ^
+               -D USE_SEQ=ON   ^
+               -D USE_MPI=OFF  ^
+               -D USE_OMP=ON   ^
+               -D USE_TBB=ON   ^
+               -D USE_STL=ON   ^
+               -D USE_FUNC_TESTS=OFF  ^
+               -D USE_PERF_TESTS=ON   ^
+               -D CMAKE_BUILD_TYPE=RELEASE
+  - cmd: cmake --build build --config Release --parallel
+  - cmd: mkdir build\perf_stat_dir
+  - cmd: scripts\run_perf_collector.bat > build\perf_stat_dir\perf_log.txt
+  - cmd: python scripts\create_perf_table.py --input build\perf_stat_dir\perf_log.txt --output build\perf_stat_dir
