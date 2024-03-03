@@ -30,4 +30,6 @@ build_script:
                -D USE_PERF_TESTS=ON   ^
                -D CMAKE_BUILD_TYPE=RELEASE
   - cmd: cmake --build build --config Release --parallel
-  - cmd: scripts/generate_perf_results.bat
+  - cmd: mkdir build\perf_stat_dir
+  - cmd: scripts\run_perf_collector.bat > build\perf_stat_dir\perf_log.txt
+  - cmd: python scripts\create_perf_table.py --input build\perf_stat_dir\perf_log.txt --output build\perf_stat_dir
