@@ -9,3 +9,4 @@ scripts/variants.xlsx
 venv*
 sln/
 .DS_Store
+.cache
