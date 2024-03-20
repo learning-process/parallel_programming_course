@@ -82,7 +82,7 @@ Navigate to a source code folder.
 
   ```
   mkdir build && cd build
-  cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON ..
+  cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=Release ..
   ```
 *Help on CMake keys:*
 - `-D USE_SEQ=ON` enable `Sequential` labs (based on OpenMP's CMakeLists.txt).
@@ -92,6 +92,7 @@ Navigate to a source code folder.
 - `-D USE_STL=ON` enable `std::thread` labs.
 - `-D USE_FUNC_TESTS=ON` enable functional tests.
 - `-D USE_PERF_TESTS=ON` enable performance tests.
+- `-D CMAKE_BUILD_TYPE=Release` required parameter for stable work of repo.
 
 *A corresponding flag can be omitted if it's not needed.*
 
@@ -111,6 +112,31 @@ Navigate to a source code folder.
   - `src` - a source files directory with functions realization.
 * We need to know that exist 10 executable files for running:
   - `<mpi, omp, seq, stl, tbb>_<func, perf>_tests` e.g. `omp_perf_tests` - executable file for performance tests of OpenMP practice tasks.
+* Name your group of tests and current test in the following way:
+  * for functional tests:
+```
+TEST(<last name>_<first letter of name>_<short task name>_<technology>, <any_name_of_test_case>) {
+...
+}
+e.g.
+TEST(nesterov_a_vector_sum_omp, test_sum) {
+...
+}
+```
+  * for performance tests:
+```
+TEST(<last name>_<first letter of name>_<short task name>_<technology>, <type_of_performance_validation>) {
+...
+}
+e.g.
+TEST(nesterov_a_vector_sum_stl, test_pipeline_run) {
+...
+}
+TEST(nesterov_a_vector_sum_stl, test_task_run) {
+...
+}
+```
+* All tests need to be written without main() function
 * Name your pull request in the following way:
   * for tasks:
   ```
