@@ -114,29 +114,29 @@ Navigate to a source code folder.
   - `<mpi, omp, seq, stl, tbb>_<func, perf>_tests` e.g. `omp_perf_tests` - executable file for performance tests of OpenMP practice tasks.
 * Name your group of tests and current test in the following way:
   * for functional tests:
-```
-TEST(<last name>_<first letter of name>_<short task name>_<technology>, <any_name_of_test_case>) {
-...
-}
-e.g.
-TEST(nesterov_a_vector_sum_omp, test_sum) {
-...
-}
-```
+  ```
+  TEST(<last name>_<first letter of name>_<short task name>_<technology>, <any_name_of_test_case>) {
+  ...
+  }
+  e.g.
+  TEST(nesterov_a_vector_sum_omp, test_sum) {
+  ...
+  }
+  ```
   * for performance tests:
-```
-TEST(<last name>_<first letter of name>_<short task name>_<technology>, <type_of_performance_validation>) {
-...
-}
-e.g.
-TEST(nesterov_a_vector_sum_stl, test_pipeline_run) {
-...
-}
-TEST(nesterov_a_vector_sum_stl, test_task_run) {
-...
-}
-```
-* All tests need to be written without main() function
+  ```
+  TEST(<last name>_<first letter of name>_<short task name>_<technology>, <type_of_performance_validation>) {
+  ...
+  }
+  e.g.
+  TEST(nesterov_a_vector_sum_stl, test_pipeline_run) {
+  ...
+  }
+  TEST(nesterov_a_vector_sum_stl, test_task_run) {
+  ...
+  }
+  ```
+* All tests need to be written without `main()` function
 * Name your pull request in the following way:
   * for tasks:
   ```
