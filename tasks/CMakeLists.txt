@@ -30,6 +30,8 @@ else ()
     message(WARNING "TBB tasks not build!")
 endif ()
 
+add_compile_definitions(PATH_TO_PPC_PROJECT="${CMAKE_SOURCE_DIR}")
+
 foreach(TASK_TYPE ${LIST_OF_TASKS})
     set(PATH_TO_TASK "${CMAKE_CURRENT_SOURCE_DIR}/${TASK_TYPE}")
     get_filename_component(MODULE_NAME ${PATH_TO_TASK} NAME)
