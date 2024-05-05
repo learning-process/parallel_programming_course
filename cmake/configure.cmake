@@ -62,7 +62,7 @@ MACRO(CPPCHECK_TEST ProjectId ALL_SOURCE_FILES)
                     --enable=warning,performance,portability,information
                     --language=c++
                     --std=c++11
-                    --disable=missingInclude
+                    --suppress=missingInclude
                     --error-exitcode=1
                     --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
                     --verbose
