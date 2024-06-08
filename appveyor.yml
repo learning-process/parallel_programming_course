@@ -14,7 +14,7 @@ install:
   - set MPI_EXEC=C:\Program Files\Microsoft MPI
   - set MPI_ROOT=C:\Program Files (x86)\Microsoft SDKS\MPI
   - set PATH=%MPI_EXEC%\Bin;%PATH%
-  - choco install python3
+  - choco install python3 --execution-timeout 6000
   - python -m pip install xlsxwriter
 
 build_script:
