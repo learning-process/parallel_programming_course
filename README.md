@@ -25,7 +25,7 @@ The following parallel programming technologies are considered in practice:
   
   * **Linux (`gcc` and `clang`)**:
   ```
-  sudo apt install cppcheck
+  sudo apt install -y cppcheck
   ```
   * **MacOS (apple clang)**:
   ```
@@ -45,9 +45,7 @@ Code style is checked using [clang-format](https://clang.llvm.org/docs/ClangForm
   
   * **Linux (`gcc` and `clang`)**:
   ```
-  sudo apt install mpich
-  sudo apt install openmpi-bin
-  sudo apt install libopenmpi-dev
+  sudo apt install -y mpich openmpi-bin libopenmpi-dev
   ```
   * **MacOS (apple clang)**:
   ```
@@ -60,7 +58,7 @@ Code style is checked using [clang-format](https://clang.llvm.org/docs/ClangForm
   
   * **Linux (`gcc` and `clang`)**:
   ```
-  sudo apt install libomp-dev
+  sudo apt install -y libomp-dev
   ```
   * **MacOS (`llvm`)**:
   ```
@@ -78,11 +76,11 @@ Code style is checked using [clang-format](https://clang.llvm.org/docs/ClangForm
 ## 2. Build the project with `CMake`
 Navigate to a source code folder.
 
-1) Configure the build: `Makefile`, `.sln`, etc.
+1. Configure the build: `Makefile`, `.sln`, etc.
 
   ```
   mkdir build && cd build
-  cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=Release ..
+  cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D USE_CPPCHECK=ON -D CMAKE_BUILD_TYPE=Release ..
   ```
 *Help on CMake keys:*
 - `-D USE_SEQ=ON` enable `Sequential` labs (based on OpenMP's CMakeLists.txt).
@@ -92,15 +90,16 @@ Navigate to a source code folder.
 - `-D USE_STL=ON` enable `std::thread` labs.
 - `-D USE_FUNC_TESTS=ON` enable functional tests.
 - `-D USE_PERF_TESTS=ON` enable performance tests.
+- `-D USE_CPPCHECK=ON` enable cppcheck.
 - `-D CMAKE_BUILD_TYPE=Release` required parameter for stable work of repo.
 
 *A corresponding flag can be omitted if it's not needed.*
 
-2) Build the project:
+2. Build the project:
   ```
   cmake --build . --config RELEASE
   ```
-3) Check the task
+3. Check the task
   * Run `<project's folder>/build/bin`
 
 ## 3. How to submit you work
