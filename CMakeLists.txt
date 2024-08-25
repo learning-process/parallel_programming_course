@@ -77,6 +77,8 @@ if( USE_COVERAGE )
     message( STATUS "Enable code test coverage" )
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lgcov")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -lgcov")
 endif( USE_COVERAGE )
 
 ############################## Modules ##############################
