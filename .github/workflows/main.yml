@@ -256,10 +256,12 @@ jobs:
       run: >
         cmake -S . -B build
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -D CMAKE_C_COMPILER=gcc-13 -D CMAKE_CXX_COMPILER=g++-13
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D USE_COVERAGE=ON
         -D CMAKE_BUILD_TYPE=RELEASE
         -D CMAKE_VERBOSE_MAKEFILE=ON
+        -DCMAKE_C_FLAGS="--coverage"
+        -DCMAKE_CXX_FLAGS="--coverage"
       env:
         CC: gcc-13
         CXX: g++-13
@@ -279,7 +281,7 @@ jobs:
     - name: Generate Coverage Data
       run: |
         cd build
-        gcovr -r ../ --output ../coverage.xml
+        gcovr -r ../ --xml --output ../coverage.xml
         cat ../coverage.xml
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
