@@ -259,16 +259,13 @@ jobs:
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D USE_COVERAGE=ON
         -D CMAKE_BUILD_TYPE=RELEASE
-        -DCMAKE_C_FLAGS="--coverage"
-        -DCMAKE_CXX_FLAGS="--coverage"
-        -DCMAKE_EXE_LINKER_FLAGS="-lgcov"
-        -DCMAKE_SHARED_LINKER_FLAGS="-lgcov"
+        -D CMAKE_VERBOSE_MAKEFILE=ON
       env:
         CC: gcc-13
         CXX: g++-13
     - name: Ninja build
       run: |
-        cmake --build build --parallel -v
+        cmake --build build --parallel
       env:
         CC: gcc-13
         CXX: g++-13
@@ -280,7 +277,10 @@ jobs:
         export OMP_NUM_THREADS=4
         source scripts/run.sh
     - name: Generate Coverage Data
-      run: gcovr -r . --xml-pretty --output coverage.xml
+      run: |
+        cd build
+        gcovr -r ../ --output ../coverage.xml
+        cat ../coverage.xml
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
       with:
