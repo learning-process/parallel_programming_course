@@ -3,16 +3,6 @@ cmake_minimum_required( VERSION 3.25 )
 project(parallel_programming_course)
 message( STATUS "Parallel Programming Course" )
 
-######################### Code coverage### ##########################
-option(USE_COVERAGE OFF)
-if( USE_COVERAGE )
-    message( STATUS "Enable code test coverage" )
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lgcov")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -lgcov")
-endif( USE_COVERAGE )
-
 include(cmake/configure.cmake)
 include(cmake/gtest.cmake)
 
