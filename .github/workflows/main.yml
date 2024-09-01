@@ -276,8 +276,9 @@ jobs:
         export OMP_NUM_THREADS=4
         source scripts/run.sh
     - name: Generate Coverage Data
-      run: lcov --directory . --capture --output-file coverage.info
+      run: gcovr -r . --xml-pretty --output coverage.xml
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+        files: coverage.xml
