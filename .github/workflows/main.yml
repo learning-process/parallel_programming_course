@@ -244,33 +244,24 @@ jobs:
         submodules: recursive
     - name: Setup environment
       run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install gcc-13 g++-13
+        sudo apt-get install gcc g++
         sudo apt-get install cppcheck ninja-build
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
-        sudo apt-get install lcov gcovr
+        sudo apt-get install gcovr
     - name: CMake configure
       run: >
         cmake -S . -B build
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D CMAKE_C_COMPILER=gcc-13 -D CMAKE_CXX_COMPILER=g++-13
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
         -D CMAKE_VERBOSE_MAKEFILE=ON
-        -DCMAKE_C_FLAGS="--coverage"
-        -DCMAKE_CXX_FLAGS="--coverage"
-      env:
-        CC: gcc-13
-        CXX: g++-13
+        -D USE_COVERAGE=ON
     - name: Ninja build
       run: |
         cmake --build build --parallel
-      env:
-        CC: gcc-13
-        CXX: g++-13
     - name: Check number tests
       run: |
         source scripts/run_num_test.sh
