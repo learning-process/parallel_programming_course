@@ -36,8 +36,7 @@ void ppc::core::Perf::task_run(const std::shared_ptr<PerfAttr>& perfAttr,
 
   task->validation();
   task->pre_processing();
-  common_run(
-      std::move(perfAttr), [&]() { task->run(); }, std::move(perfResults));
+  common_run(std::move(perfAttr), [&]() { task->run(); }, std::move(perfResults));
   task->post_processing();
 
   task->validation();
