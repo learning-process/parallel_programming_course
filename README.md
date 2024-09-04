@@ -10,9 +10,9 @@ The following parallel programming technologies are considered in practice:
   * `std::thread`
 
 ## Rules for submissions
-1. You are not supposed to trigger CI jobs by frequent updates of your pull request. First you should test you work locally with all the scripts (code style)
+1. You are not supposed to trigger CI jobs by frequent updates of your pull request. First you should test you work locally with all the scripts (code style).
     * Respect others time and don't slow down the job queue
-2. Carefully check if the program can hang
+2. Carefully check if the program can hang.
 
 ## 0. Download all submodules
   ```
