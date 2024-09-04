@@ -71,14 +71,6 @@ if( USE_PERF_TESTS )
     add_compile_definitions(USE_PERF_TESTS)
 endif( USE_PERF_TESTS )
 
-######################### Code coverage### ##########################
-option(USE_COVERAGE OFF)
-if( USE_COVERAGE )
-    message( STATUS "Enable code test coverage" )
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
-endif( USE_COVERAGE )
-
 ############################## Modules ##############################
 
 include_directories(3rdparty)
