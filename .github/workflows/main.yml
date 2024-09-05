@@ -17,7 +17,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install gcc-12 g++-12
+        sudo apt-get install gcc-13 g++-13
         sudo apt-get install cppcheck ninja-build
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install libomp-dev
@@ -36,14 +36,14 @@ jobs:
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
-        CC: gcc-12
-        CXX: g++-12
+        CC: gcc-13
+        CXX: g++-13
     - name: Ninja build
       run: |
         cmake --build build
       env:
-        CC: gcc-12
-        CXX: g++-12
+        CC: gcc-13
+        CXX: g++-13
     - name: Check number tests
       run: |
         source scripts/run_num_test.sh
@@ -61,12 +61,13 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install clang-15
         sudo apt-get install cppcheck ninja-build
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
-        sudo apt-get install libomp-15-dev
         sudo apt-get install python3-pip
         sudo apt-get install valgrind
+        wget https://apt.llvm.org/llvm.sh
+        chmod u+x llvm.sh
+        sudo ./llvm.sh 18 all
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -79,14 +80,14 @@ jobs:
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
-        CC: clang-15
-        CXX: clang++-15
+        CC: clang-18
+        CXX: clang++-18
     - name: Ninja build
       run: |
         cmake --build build
       env:
-        CC: clang-15
-        CXX: clang++-15
+        CC: clang-18
+        CXX: clang++-18
     - name: Run tests
       run: |
         export OMP_NUM_THREADS=4
@@ -101,11 +102,12 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install clang-15
         sudo apt-get install cppcheck ninja-build
         sudo apt-get install mpich libmpich* mpi* openmpi-bin
-        sudo apt-get install libomp-15-dev
         sudo apt-get install python3-pip
+        wget https://apt.llvm.org/llvm.sh
+        chmod u+x llvm.sh
+        sudo ./llvm.sh 18 all
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -119,14 +121,14 @@ jobs:
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
       env:
-        CC: clang-15
-        CXX: clang++-15
+        CC: clang-18
+        CXX: clang++-18
     - name: Ninja build
       run: |
         cmake --build build
       env:
-        CC: clang-15
-        CXX: clang++-15
+        CC: clang-18
+        CXX: clang++-18
     - name: Run tests
       run: |
         export OMP_NUM_THREADS=4
