@@ -13,6 +13,8 @@
 
 #include "core/task/include/task.hpp"
 
+namespace nesterov_a_test_task_mpi {
+
 std::vector<int> getRandomVector(int sz);
 
 class TestMPITaskSequential : public ppc::core::Task {
@@ -45,3 +47,5 @@ class TestMPITaskParallel : public ppc::core::Task {
   std::string ops;
   boost::mpi::communicator world;
 };
+
+}  // namespace nesterov_a_vector_sum_mpi
