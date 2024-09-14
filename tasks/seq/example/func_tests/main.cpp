@@ -20,7 +20,7 @@ TEST(Sequential, Test_Sum_10) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequential testTaskSequential(taskDataSeq);
+  nesterov_a_test_task_seq::TestTaskSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -43,7 +43,7 @@ TEST(Sequential, Test_Sum_20) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequential testTaskSequential(taskDataSeq);
+  nesterov_a_test_task_seq::TestTaskSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -66,7 +66,7 @@ TEST(Sequential, Test_Sum_50) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequential testTaskSequential(taskDataSeq);
+  nesterov_a_test_task_seq::TestTaskSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -89,7 +89,7 @@ TEST(Sequential, Test_Sum_70) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequential testTaskSequential(taskDataSeq);
+  nesterov_a_test_task_seq::TestTaskSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -112,7 +112,7 @@ TEST(Sequential, Test_Sum_100) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequential testTaskSequential(taskDataSeq);
+  nesterov_a_test_task_seq::TestTaskSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
