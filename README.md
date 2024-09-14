@@ -112,6 +112,21 @@ Navigate to a source code folder.
   - `src` - a source files directory with functions realization.
 * We need to know that exist 10 executable files for running:
   - `<mpi, omp, seq, stl, tbb>_<func, perf>_tests` e.g. `omp_perf_tests` - executable file for performance tests of OpenMP practice tasks.
+* All prototypes and classes in the `include` directory must be namespace escaped, name your namespace in the following way:
+  ```
+  namespace <last name>_<first letter of name>_<short task name>_<technology> {
+  ...
+  }
+  e.g.
+  namespace nesterov_a_test_task_seq {
+  
+  std::vector<int> getRandomVector(int sz);
+  class TestTaskSequential : public ppc::core::Task {
+  ...
+  };
+
+  }  // namespace nesterov_a_test_task_seq
+  ```
 * Name your group of tests and current test in the following way:
   * for functional tests:
   ```
