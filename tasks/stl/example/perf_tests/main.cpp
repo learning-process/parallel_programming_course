@@ -21,7 +21,7 @@ TEST(stl_example_perf_test, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskSTL = std::make_shared<TestSTLTaskSequential>(taskDataSeq, "+");
+  auto testTaskSTL = std::make_shared<nesterov_a_test_task_stl::TestSTLTaskSequential>(taskDataSeq, "+");
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -58,7 +58,7 @@ TEST(stl_example_perf_test, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskSTL = std::make_shared<TestSTLTaskSequential>(taskDataSeq, "+");
+  auto testTaskSTL = std::make_shared<nesterov_a_test_task_stl::TestSTLTaskSequential>(taskDataSeq, "+");
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
