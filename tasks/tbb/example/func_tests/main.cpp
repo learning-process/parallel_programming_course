@@ -6,7 +6,7 @@
 #include "tbb/example/include/ops_tbb.hpp"
 
 TEST(Parallel_Operations_TBB, Test_Sum) {
-  std::vector<int> vec = getRandomVector(100);
+  std::vector<int> vec = nesterov_a_test_task_tbb::getRandomVector(100);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -18,7 +18,7 @@ TEST(Parallel_Operations_TBB, Test_Sum) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "+");
+  nesterov_a_test_task_tbb::TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "+");
   ASSERT_EQ(testTbbTaskSequential.validation(), true);
   testTbbTaskSequential.pre_processing();
   testTbbTaskSequential.run();
@@ -35,7 +35,7 @@ TEST(Parallel_Operations_TBB, Test_Sum) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "+");
+  nesterov_a_test_task_tbb::TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "+");
   ASSERT_EQ(testTbbTaskParallel.validation(), true);
   testTbbTaskParallel.pre_processing();
   testTbbTaskParallel.run();
@@ -44,7 +44,7 @@ TEST(Parallel_Operations_TBB, Test_Sum) {
 }
 
 TEST(Parallel_Operations_TBB, Test_Diff) {
-  std::vector<int> vec = getRandomVector(100);
+  std::vector<int> vec = nesterov_a_test_task_tbb::getRandomVector(100);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -56,7 +56,7 @@ TEST(Parallel_Operations_TBB, Test_Diff) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "-");
+  nesterov_a_test_task_tbb::TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "-");
   ASSERT_EQ(testTbbTaskSequential.validation(), true);
   testTbbTaskSequential.pre_processing();
   testTbbTaskSequential.run();
@@ -73,7 +73,7 @@ TEST(Parallel_Operations_TBB, Test_Diff) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "-");
+  nesterov_a_test_task_tbb::TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "-");
   ASSERT_EQ(testTbbTaskParallel.validation(), true);
   testTbbTaskParallel.pre_processing();
   testTbbTaskParallel.run();
@@ -82,7 +82,7 @@ TEST(Parallel_Operations_TBB, Test_Diff) {
 }
 
 TEST(Parallel_Operations_TBB, Test_Diff_2) {
-  std::vector<int> vec = getRandomVector(50);
+  std::vector<int> vec = nesterov_a_test_task_tbb::getRandomVector(50);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -94,7 +94,7 @@ TEST(Parallel_Operations_TBB, Test_Diff_2) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "-");
+  nesterov_a_test_task_tbb::TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "-");
   ASSERT_EQ(testTbbTaskSequential.validation(), true);
   testTbbTaskSequential.pre_processing();
   testTbbTaskSequential.run();
@@ -111,7 +111,7 @@ TEST(Parallel_Operations_TBB, Test_Diff_2) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "-");
+  nesterov_a_test_task_tbb::TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "-");
   ASSERT_EQ(testTbbTaskParallel.validation(), true);
   testTbbTaskParallel.pre_processing();
   testTbbTaskParallel.run();
@@ -120,7 +120,7 @@ TEST(Parallel_Operations_TBB, Test_Diff_2) {
 }
 
 TEST(Parallel_Operations_TBB, Test_Mult) {
-  std::vector<int> vec = getRandomVector(10);
+  std::vector<int> vec = nesterov_a_test_task_tbb::getRandomVector(10);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -132,7 +132,7 @@ TEST(Parallel_Operations_TBB, Test_Mult) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "*");
+  nesterov_a_test_task_tbb::TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "*");
   ASSERT_EQ(testTbbTaskSequential.validation(), true);
   testTbbTaskSequential.pre_processing();
   testTbbTaskSequential.run();
@@ -149,7 +149,7 @@ TEST(Parallel_Operations_TBB, Test_Mult) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "*");
+  nesterov_a_test_task_tbb::TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "*");
   ASSERT_EQ(testTbbTaskParallel.validation(), true);
   testTbbTaskParallel.pre_processing();
   testTbbTaskParallel.run();
@@ -158,7 +158,7 @@ TEST(Parallel_Operations_TBB, Test_Mult) {
 }
 
 TEST(Parallel_Operations_TBB, Test_Mult_2) {
-  std::vector<int> vec = getRandomVector(5);
+  std::vector<int> vec = nesterov_a_test_task_tbb::getRandomVector(5);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -170,7 +170,7 @@ TEST(Parallel_Operations_TBB, Test_Mult_2) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "*");
+  nesterov_a_test_task_tbb::TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "*");
   ASSERT_EQ(testTbbTaskSequential.validation(), true);
   testTbbTaskSequential.pre_processing();
   testTbbTaskSequential.run();
@@ -187,7 +187,7 @@ TEST(Parallel_Operations_TBB, Test_Mult_2) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "*");
+  nesterov_a_test_task_tbb::TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "*");
   ASSERT_EQ(testTbbTaskParallel.validation(), true);
   testTbbTaskParallel.pre_processing();
   testTbbTaskParallel.run();

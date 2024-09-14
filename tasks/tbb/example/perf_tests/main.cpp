@@ -22,7 +22,7 @@ TEST(tbb_example_perf_test, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskTBB = std::make_shared<TestTBBTaskSequential>(taskDataSeq, "+");
+  auto testTaskTBB = std::make_shared<nesterov_a_test_task_tbb::TestTBBTaskSequential>(taskDataSeq, "+");
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -55,7 +55,7 @@ TEST(tbb_example_perf_test, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskTBB = std::make_shared<TestTBBTaskSequential>(taskDataSeq, "+");
+  auto testTaskTBB = std::make_shared<nesterov_a_test_task_tbb::TestTBBTaskSequential>(taskDataSeq, "+");
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();

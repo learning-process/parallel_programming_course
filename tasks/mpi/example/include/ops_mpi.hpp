@@ -48,4 +48,4 @@ class TestMPITaskParallel : public ppc::core::Task {
   boost::mpi::communicator world;
 };
 
-}  // namespace nesterov_a_vector_sum_mpi
+}  // namespace nesterov_a_test_task_mpi

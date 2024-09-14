@@ -20,4 +20,4 @@ class TestTaskSequential : public ppc::core::Task {
   int input_{}, res{};
 };
 
-}  // namespace nesterov_a_test_task_omp
+}  // namespace nesterov_a_test_task_seq
