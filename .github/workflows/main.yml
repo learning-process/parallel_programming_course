@@ -44,9 +44,6 @@ jobs:
       env:
         CC: gcc-13
         CXX: g++-13
-    - name: Check number tests
-      run: |
-        source scripts/run_num_test.sh
     - name: Run func tests
       run: |
         export OMP_NUM_THREADS=4
@@ -264,9 +261,6 @@ jobs:
     - name: Ninja build
       run: |
         cmake --build build --parallel
-    - name: Check number tests
-      run: |
-        source scripts/run_num_test.sh
     - name: Run tests
       run: |
         export OMP_NUM_THREADS=4

@@ -106,7 +106,7 @@ Navigate to a source code folder.
 ## 3. How to submit you work
 * There are `mpi`, `omp`, `seq`, `stl`, `tbb` folders in `tasks` directory. Move to a folder of your task. Make a directory named `<last name>_<first letter of name>_<short task name>`. Example: `seq/nesterov_a_vector_sum`. Please name all tasks same name directory. If `seq` task named `seq/nesterov_a_vector_sum` then  `omp` task need to be named `omp/nesterov_a_vector_sum`.
 * Go into the newly created folder and begin you work on the task. There must be only 4 directory with files:
-  - `func_tests` - google tests directory with files for the functional tests of task. The number of tests must be 5 or greater.
+  - `func_tests` - google tests directory with files for the functional tests of task.
   - `include`    - a header files directory with function prototypes.
   - `perf_tests` - google tests directory with files for the performance tests of task. The number of tests must be 2 - `run_task` and `run_pipeline`.
   - `src` - a source files directory with functions realization.
