@@ -1,3 +1,11 @@
 ignore:
   - "**/perf_tests/**"
   - "**/func_tests/**"
+coverage:
+  status:
+    project:
+      default:
+        threshold: 1%
+    patch:
+      default:
+        threshold: 5%
