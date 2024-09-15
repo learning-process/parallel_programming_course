@@ -6,6 +6,8 @@
 
 #include "core/task/include/task.hpp"
 
+namespace nesterov_a_test_task_seq {
+
 class TestTaskSequential : public ppc::core::Task {
  public:
   explicit TestTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
@@ -17,3 +19,5 @@ class TestTaskSequential : public ppc::core::Task {
  private:
   int input_{}, res{};
 };
+
+}  // namespace nesterov_a_test_task_seq

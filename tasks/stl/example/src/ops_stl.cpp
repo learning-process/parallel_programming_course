@@ -12,7 +12,7 @@
 
 using namespace std::chrono_literals;
 
-std::vector<int> getRandomVector(int sz) {
+std::vector<int> nesterov_a_test_task_stl::getRandomVector(int sz) {
   std::random_device dev;
   std::mt19937 gen(dev());
   std::vector<int> vec(sz);
@@ -22,7 +22,7 @@ std::vector<int> getRandomVector(int sz) {
   return vec;
 }
 
-bool TestSTLTaskSequential::pre_processing() {
+bool nesterov_a_test_task_stl::TestSTLTaskSequential::pre_processing() {
   internal_order_test();
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
@@ -35,13 +35,13 @@ bool TestSTLTaskSequential::pre_processing() {
   return true;
 }
 
-bool TestSTLTaskSequential::validation() {
+bool nesterov_a_test_task_stl::TestSTLTaskSequential::validation() {
   internal_order_test();
   // Check count elements of output
   return taskData->outputs_count[0] == 1;
 }
 
-bool TestSTLTaskSequential::run() {
+bool nesterov_a_test_task_stl::TestSTLTaskSequential::run() {
   internal_order_test();
   if (ops == "+") {
     res = std::accumulate(input_.begin(), input_.end(), 0);
@@ -52,7 +52,7 @@ bool TestSTLTaskSequential::run() {
   return true;
 }
 
-bool TestSTLTaskSequential::post_processing() {
+bool nesterov_a_test_task_stl::TestSTLTaskSequential::post_processing() {
   internal_order_test();
   reinterpret_cast<int *>(taskData->outputs[0])[0] = res;
   return true;
@@ -77,7 +77,7 @@ void atomOps(std::vector<int> vec, const std::string &ops, std::promise<int> &&p
   pr.set_value(reduction_elem);
 }
 
-bool TestSTLTaskParallel::pre_processing() {
+bool nesterov_a_test_task_stl::TestSTLTaskParallel::pre_processing() {
   internal_order_test();
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
@@ -90,13 +90,13 @@ bool TestSTLTaskParallel::pre_processing() {
   return true;
 }
 
-bool TestSTLTaskParallel::validation() {
+bool nesterov_a_test_task_stl::TestSTLTaskParallel::validation() {
   internal_order_test();
   // Check count elements of output
   return taskData->outputs_count[0] == 1;
 }
 
-bool TestSTLTaskParallel::run() {
+bool nesterov_a_test_task_stl::TestSTLTaskParallel::run() {
   internal_order_test();
   const auto nthreads = std::thread::hardware_concurrency();
   const auto delta = (input_.end() - input_.begin()) / nthreads;
@@ -119,7 +119,7 @@ bool TestSTLTaskParallel::run() {
   return true;
 }
 
-bool TestSTLTaskParallel::post_processing() {
+bool nesterov_a_test_task_stl::TestSTLTaskParallel::post_processing() {
   internal_order_test();
   reinterpret_cast<int *>(taskData->outputs[0])[0] = res;
   return true;

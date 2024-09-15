@@ -6,7 +6,7 @@
 #include "omp/example/include/ops_omp.hpp"
 
 TEST(Parallel_Operations_OpenMP, Test_Sum) {
-  std::vector<int> vec = getRandomVector(100);
+  std::vector<int> vec = nesterov_a_test_task_omp::getRandomVector(100);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -18,7 +18,7 @@ TEST(Parallel_Operations_OpenMP, Test_Sum) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "+");
+  nesterov_a_test_task_omp::TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "+");
   ASSERT_EQ(testOmpTaskSequential.validation(), true);
   testOmpTaskSequential.pre_processing();
   testOmpTaskSequential.run();
@@ -35,7 +35,7 @@ TEST(Parallel_Operations_OpenMP, Test_Sum) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "+");
+  nesterov_a_test_task_omp::TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "+");
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -45,7 +45,7 @@ TEST(Parallel_Operations_OpenMP, Test_Sum) {
 }
 
 TEST(Parallel_Operations_OpenMP, Test_Diff) {
-  std::vector<int> vec = getRandomVector(100);
+  std::vector<int> vec = nesterov_a_test_task_omp::getRandomVector(100);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -57,7 +57,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "-");
+  nesterov_a_test_task_omp::TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "-");
   ASSERT_EQ(testOmpTaskSequential.validation(), true);
   testOmpTaskSequential.pre_processing();
   testOmpTaskSequential.run();
@@ -74,7 +74,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "-");
+  nesterov_a_test_task_omp::TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "-");
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -83,7 +83,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff) {
 }
 
 TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
-  std::vector<int> vec = getRandomVector(10);
+  std::vector<int> vec = nesterov_a_test_task_omp::getRandomVector(10);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -95,7 +95,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "-");
+  nesterov_a_test_task_omp::TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "-");
   ASSERT_EQ(testOmpTaskSequential.validation(), true);
   testOmpTaskSequential.pre_processing();
   testOmpTaskSequential.run();
@@ -112,7 +112,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "-");
+  nesterov_a_test_task_omp::TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "-");
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -121,7 +121,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
 }
 
 TEST(Parallel_Operations_OpenMP, Test_Mult) {
-  std::vector<int> vec = getRandomVector(10);
+  std::vector<int> vec = nesterov_a_test_task_omp::getRandomVector(10);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -133,7 +133,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "*");
+  nesterov_a_test_task_omp::TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "*");
   ASSERT_EQ(testOmpTaskSequential.validation(), true);
   testOmpTaskSequential.pre_processing();
   testOmpTaskSequential.run();
@@ -150,7 +150,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "*");
+  nesterov_a_test_task_omp::TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "*");
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -159,7 +159,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult) {
 }
 
 TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
-  std::vector<int> vec = getRandomVector(5);
+  std::vector<int> vec = nesterov_a_test_task_omp::getRandomVector(5);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -171,7 +171,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
   taskDataSeq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "*");
+  nesterov_a_test_task_omp::TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "*");
   ASSERT_EQ(testOmpTaskSequential.validation(), true);
   testOmpTaskSequential.pre_processing();
   testOmpTaskSequential.run();
@@ -188,7 +188,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "*");
+  nesterov_a_test_task_omp::TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "*");
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();

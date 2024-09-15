@@ -6,6 +6,8 @@
 
 #include "core/task/include/task.hpp"
 
+namespace nesterov_a_test_task_omp {
+
 std::vector<int> getRandomVector(int sz);
 
 class TestOMPTaskSequential : public ppc::core::Task {
@@ -37,3 +39,5 @@ class TestOMPTaskParallel : public ppc::core::Task {
   int res{};
   std::string ops;
 };
+
+}  // namespace nesterov_a_test_task_omp

@@ -22,7 +22,7 @@ TEST(openmp_example_perf_test, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskOMP = std::make_shared<TestOMPTaskSequential>(taskDataSeq, "+");
+  auto testTaskOMP = std::make_shared<nesterov_a_test_task_omp::TestOMPTaskSequential>(taskDataSeq, "+");
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -54,7 +54,7 @@ TEST(openmp_example_perf_test, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskOMP = std::make_shared<TestOMPTaskSequential>(taskDataSeq, "+");
+  auto testTaskOMP = std::make_shared<nesterov_a_test_task_omp::TestOMPTaskSequential>(taskDataSeq, "+");
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
