@@ -47,7 +47,7 @@ class TestTask : public ppc::core::Task {
     return true;
   }
 
- protected:
+ private:
   T *input_{};
   T *output_{};
   bool pause;
