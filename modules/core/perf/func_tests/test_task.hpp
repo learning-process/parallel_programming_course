@@ -17,7 +17,8 @@ namespace ppc::test {
 template <class T>
 class TestTask : public ppc::core::Task {
  public:
-  explicit TestTask(std::shared_ptr<ppc::core::TaskData> taskData_, bool pause_ = false) : Task(taskData_), pause(pause_) {}
+  explicit TestTask(std::shared_ptr<ppc::core::TaskData> taskData_, bool pause_ = false)
+      : Task(taskData_), pause(pause_) {}
   bool pre_processing() override {
     internal_order_test();
     input_ = reinterpret_cast<T *>(taskData->inputs[0]);
