@@ -10,12 +10,14 @@
 
 #include "core/task/include/task.hpp"
 
+using namespace std::chrono_literals;
+
 namespace ppc::test {
 
 template <class T>
 class TestTask : public ppc::core::Task {
  public:
-  explicit TestTask(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
+  explicit TestTask(std::shared_ptr<ppc::core::TaskData> taskData_, bool pause_ = false) : Task(taskData_), pause(pause_) {}
   bool pre_processing() override {
     internal_order_test();
     input_ = reinterpret_cast<T *>(taskData->inputs[0]);
@@ -34,6 +36,9 @@ class TestTask : public ppc::core::Task {
     for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
       output_[0] += input_[i];
     }
+    if (pause) {
+      std::this_thread::sleep_for(20ms);
+    }
     return true;
   }
 
@@ -42,9 +47,10 @@ class TestTask : public ppc::core::Task {
     return true;
   }
 
- private:
+ protected:
   T *input_{};
   T *output_{};
+  bool pause;
 };
 
 }  // namespace ppc::test
