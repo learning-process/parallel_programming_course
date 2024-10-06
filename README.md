@@ -19,19 +19,6 @@ The following parallel programming technologies are considered in practice:
   git submodule update --init --recursive
   ```
 ## 1. Set up your environment
-### Static analysis of project
-  * **Windows (MSVC)**:
-  
-  Unsupported operating system!
-  
-  * **Linux (`gcc` and `clang`)**:
-  ```
-  sudo apt install -y cppcheck
-  ```
-  * **MacOS (apple clang)**:
-  ```
-  brew install cppcheck
-  ```
 
 ### Code style analysis
 Please, follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
@@ -81,7 +68,7 @@ Navigate to a source code folder.
 
   ```
   mkdir build && cd build
-  cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D USE_CPPCHECK=ON -D CMAKE_BUILD_TYPE=Release ..
+  cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=Release ..
   ```
 *Help on CMake keys:*
 - `-D USE_SEQ=ON` enable `Sequential` labs (based on OpenMP's CMakeLists.txt).
@@ -91,7 +78,6 @@ Navigate to a source code folder.
 - `-D USE_STL=ON` enable `std::thread` labs.
 - `-D USE_FUNC_TESTS=ON` enable functional tests.
 - `-D USE_PERF_TESTS=ON` enable performance tests.
-- `-D USE_CPPCHECK=ON` enable cppcheck.
 - `-D CMAKE_BUILD_TYPE=Release` required parameter for stable work of repo.
 
 *A corresponding flag can be omitted if it's not needed.*
