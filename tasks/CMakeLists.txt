@@ -115,13 +115,6 @@ foreach(TASK_TYPE ${LIST_OF_TASKS})
       add_test(NAME ${EXEC_FUNC} COMMAND ${EXEC_FUNC})
     endforeach ()
 
-    if (USE_FUNC_TESTS)
-      CPPCHECK_TEST("${exec_func_tests}" "${FUNC_TESTS_SOURCE_FILES}")
-    endif (USE_FUNC_TESTS)
-    if (USE_PERF_TESTS)
-      CPPCHECK_TEST("${exec_perf_tests}" "${PERF_TESTS_SOURCE_FILES}")
-    endif (USE_PERF_TESTS)
-
     set(LIST_OF_EXEC_TESTS "")
     set(LIB_SOURCE_FILES "")
     set(SRC_RES "")

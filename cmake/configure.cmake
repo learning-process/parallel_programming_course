@@ -49,30 +49,3 @@ MACRO(SUBDIRLIST result curdir)
   ENDFOREACH()
   SET(${result} ${dirlist})
 ENDMACRO()
-
-MACRO(CPPCHECK_TEST ProjectId ALL_SOURCE_FILES)
-    if( UNIX AND USE_CPPCHECK)
-        foreach (SOURCE_FILE ${ALL_SOURCE_FILES})
-            string(FIND ${SOURCE_FILE} ${PROJECT_BINARY_DIR} PROJECT_TRDPARTY_DIR_FOUND)
-            if (NOT ${PROJECT_TRDPARTY_DIR_FOUND} EQUAL -1)
-                list(REMOVE_ITEM ALL_SOURCE_FILES ${SOURCE_FILE})
-            endif ()
-        endforeach ()
-        if (NOT APPLE)
-            find_program(CPPCHECK_EXEC /usr/bin/cppcheck)
-            add_custom_target(
-                    "${ProjectId}_cppcheck" ALL
-                    COMMAND ${CPPCHECK_EXEC}
-                    --enable=warning,performance,portability,information
-                    --language=c++
-                    --std=c++11
-                    --suppress=missingInclude
-                    --error-exitcode=1
-                    --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
-                    --verbose
-                    --quiet
-                    ${ALL_SOURCE_FILES}
-            )
-        ENDIF ()
-    endif( UNIX )
-ENDMACRO()

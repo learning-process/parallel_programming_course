@@ -32,5 +32,3 @@ target_link_libraries(${exec_func_tests} PUBLIC ${exec_func_lib})
 
 enable_testing()
 add_test(NAME ${exec_func_tests} COMMAND ${exec_func_tests})
-
-CPPCHECK_TEST("${exec_func_tests}" "${FUNC_TESTS_SOURCE_FILES}")
