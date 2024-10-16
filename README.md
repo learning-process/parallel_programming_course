@@ -16,7 +16,7 @@ The following parallel programming technologies are considered in practice:
 
 ## 0. Download all submodules
   ```
-  git submodule update --init --recursive
+  git submodule update --init --recursive --depth=1
   ```
 ## 1. Set up your environment
 
