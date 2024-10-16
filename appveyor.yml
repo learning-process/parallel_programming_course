@@ -18,7 +18,7 @@ install:
   - python -m pip install xlsxwriter
 
 build_script:
-  - cmd: git submodule update --init --recursive
+  - cmd: git submodule update --init --recursive --depth=1
   - cmd: mkdir build
   - cmd: cmake -S . -B build   ^
                -D USE_SEQ=ON   ^
