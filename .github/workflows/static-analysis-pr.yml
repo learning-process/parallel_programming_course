@@ -49,4 +49,6 @@ jobs:
         split_workflow: true
         lgtm_comment_body: ""
     - if: steps.review.outputs.total_comments > 0
-      run: exit 1
+      run: |
+        echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
+        exit 1
