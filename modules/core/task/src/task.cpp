@@ -1,4 +1,3 @@
-// Copyright 2023 Nesterov Alexander
 #include "core/task/include/task.hpp"
 
 #include <gtest/gtest.h>

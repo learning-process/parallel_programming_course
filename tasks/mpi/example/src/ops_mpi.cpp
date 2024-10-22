@@ -1,4 +1,3 @@
-// Copyright 2023 Nesterov Alexander
 #include "mpi/example/include/ops_mpi.hpp"
 
 #include <algorithm>

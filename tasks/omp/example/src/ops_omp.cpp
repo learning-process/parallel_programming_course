@@ -1,4 +1,3 @@
-// Copyright 2023 Nesterov Alexander
 #include "omp/example/include/ops_omp.hpp"
 
 #include <omp.h>

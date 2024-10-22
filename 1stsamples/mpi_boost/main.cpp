@@ -1,4 +1,3 @@
-// Copyright 2023 Nesterov Alexander
 #include <mpi.h>
 
 #include <boost/mpi/communicator.hpp>

@@ -1,4 +1,3 @@
-// Copyright 2023 Nesterov Alexander
 #include <tbb/tbb.h>
 
 #include <iostream>

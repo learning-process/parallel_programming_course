@@ -1,4 +1,3 @@
-// Copyright 2023 Nesterov Alexander
 #include <iostream>
 #include <string>
 #include <thread>
