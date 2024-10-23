@@ -17,8 +17,7 @@ template <class InOutType, class IndexType>
 class MinOfVectorElements : public ppc::core::Task {
  public:
   explicit MinOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
-  bool pre_processing() override {
-    internal_order_test();
+  bool pre_processing_impl() override {
     // Init vectors
     input_ = std::vector<InOutType>(taskData->inputs_count[0]);
     auto tmp_ptr = reinterpret_cast<InOutType*>(taskData->inputs[0]);
@@ -31,8 +30,7 @@ class MinOfVectorElements : public ppc::core::Task {
     return true;
   }
 
-  bool validation() override {
-    internal_order_test();
+  bool validation_impl() override {
     bool isCountValuesCorrect;
     bool isCountIndexesCorrect;
     // Check count elements of output
@@ -42,16 +40,14 @@ class MinOfVectorElements : public ppc::core::Task {
     return isCountValuesCorrect && isCountIndexesCorrect;
   }
 
-  bool run() override {
-    internal_order_test();
+  bool run_impl() override {
     auto result = std::min_element(input_.begin(), input_.end());
     min = static_cast<InOutType>(*result);
     min_index = static_cast<IndexType>(std::distance(input_.begin(), result));
     return true;
   }
 
-  bool post_processing() override {
-    internal_order_test();
+  bool post_processing_impl() override {
     reinterpret_cast<InOutType*>(taskData->outputs[0])[0] = min;
     reinterpret_cast<IndexType*>(taskData->outputs[1])[0] = min_index;
     return true;

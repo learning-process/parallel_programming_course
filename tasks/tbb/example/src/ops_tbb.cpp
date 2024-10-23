@@ -21,8 +21,7 @@ std::vector<int> nesterov_a_test_task_tbb::getRandomVector(int sz) {
   return vec;
 }
 
-bool nesterov_a_test_task_tbb::TestTBBTaskSequential::pre_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_tbb::TestTBBTaskSequential::pre_processing_impl() {
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
   auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
@@ -34,14 +33,12 @@ bool nesterov_a_test_task_tbb::TestTBBTaskSequential::pre_processing() {
   return true;
 }
 
-bool nesterov_a_test_task_tbb::TestTBBTaskSequential::validation() {
-  internal_order_test();
+bool nesterov_a_test_task_tbb::TestTBBTaskSequential::validation_impl() {
   // Check count elements of output
   return taskData->outputs_count[0] == 1;
 }
 
-bool nesterov_a_test_task_tbb::TestTBBTaskSequential::run() {
-  internal_order_test();
+bool nesterov_a_test_task_tbb::TestTBBTaskSequential::run_impl() {
   if (ops == "+") {
     res = std::accumulate(input_.begin(), input_.end(), 1);
   } else if (ops == "-") {
@@ -53,14 +50,12 @@ bool nesterov_a_test_task_tbb::TestTBBTaskSequential::run() {
   return true;
 }
 
-bool nesterov_a_test_task_tbb::TestTBBTaskSequential::post_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_tbb::TestTBBTaskSequential::post_processing_impl() {
   reinterpret_cast<int*>(taskData->outputs[0])[0] = res;
   return true;
 }
 
-bool nesterov_a_test_task_tbb::TestTBBTaskParallel::pre_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_tbb::TestTBBTaskParallel::pre_processing_impl() {
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
   auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
@@ -72,14 +67,12 @@ bool nesterov_a_test_task_tbb::TestTBBTaskParallel::pre_processing() {
   return true;
 }
 
-bool nesterov_a_test_task_tbb::TestTBBTaskParallel::validation() {
-  internal_order_test();
+bool nesterov_a_test_task_tbb::TestTBBTaskParallel::validation_impl() {
   // Check count elements of output
   return taskData->outputs_count[0] == 1;
 }
 
-bool nesterov_a_test_task_tbb::TestTBBTaskParallel::run() {
-  internal_order_test();
+bool nesterov_a_test_task_tbb::TestTBBTaskParallel::run_impl() {
   if (ops == "+") {
     res += oneapi::tbb::parallel_reduce(
         oneapi::tbb::blocked_range<std::vector<int>::iterator>(input_.begin(), input_.end()), 0,
@@ -108,8 +101,7 @@ bool nesterov_a_test_task_tbb::TestTBBTaskParallel::run() {
   return true;
 }
 
-bool nesterov_a_test_task_tbb::TestTBBTaskParallel::post_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_tbb::TestTBBTaskParallel::post_processing_impl() {
   reinterpret_cast<int*>(taskData->outputs[0])[0] = res;
   return true;
 }

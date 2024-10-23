@@ -18,8 +18,7 @@ template <class InOutType, class IndexType>
 class MostDifferentNeighborElements : public ppc::core::Task {
  public:
   explicit MostDifferentNeighborElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
-  bool pre_processing() override {
-    internal_order_test();
+  bool pre_processing_impl() override {
     // Init vectors
     input_ = std::vector<InOutType>(taskData->inputs_count[0]);
     auto tmp_ptr = reinterpret_cast<InOutType*>(taskData->inputs[0]);
@@ -32,14 +31,12 @@ class MostDifferentNeighborElements : public ppc::core::Task {
     return true;
   }
 
-  bool validation() override {
-    internal_order_test();
+  bool validation_impl() override {
     // Check count elements of output
     return taskData->outputs_count[0] == 2 && taskData->outputs_count[1] == 2;
   }
 
-  bool run() override {
-    internal_order_test();
+  bool run_impl() override {
     auto rotate_in = input_;
     int rot_left = 1;
     rotate(rotate_in.begin(), rotate_in.begin() + rot_left, rotate_in.end());
@@ -57,8 +54,7 @@ class MostDifferentNeighborElements : public ppc::core::Task {
     return true;
   }
 
-  bool post_processing() override {
-    internal_order_test();
+  bool post_processing_impl() override {
     reinterpret_cast<InOutType*>(taskData->outputs[0])[0] = l_elem;
     reinterpret_cast<InOutType*>(taskData->outputs[0])[1] = r_elem;
     reinterpret_cast<IndexType*>(taskData->outputs[1])[0] = l_elem_index;
