@@ -16,6 +16,26 @@ std::shared_ptr<ppc::core::TaskData> ppc::core::Task::get_data() const { return 
 
 ppc::core::Task::Task(std::shared_ptr<TaskData> taskData_) { set_data(std::move(taskData_)); }
 
+bool ppc::core::Task::validation() {
+  internal_order_test();
+  return validation_impl();
+}
+
+bool ppc::core::Task::pre_processing() {
+  internal_order_test();
+  return pre_processing_impl();
+}
+
+bool ppc::core::Task::run() {
+  internal_order_test();
+  return run_impl();
+}
+
+bool ppc::core::Task::post_processing() {
+  internal_order_test();
+  return post_processing_impl();
+}
+
 void ppc::core::Task::internal_order_test(const std::string& str) {
   if (!functions_order.empty() && str == functions_order.back() && str == "run") return;
 

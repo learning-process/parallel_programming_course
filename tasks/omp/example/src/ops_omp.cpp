@@ -22,8 +22,7 @@ std::vector<int> nesterov_a_test_task_omp::getRandomVector(int sz) {
   return vec;
 }
 
-bool nesterov_a_test_task_omp::TestOMPTaskSequential::pre_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_omp::TestOMPTaskSequential::pre_processing_impl() {
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
   auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
@@ -35,14 +34,12 @@ bool nesterov_a_test_task_omp::TestOMPTaskSequential::pre_processing() {
   return true;
 }
 
-bool nesterov_a_test_task_omp::TestOMPTaskSequential::validation() {
-  internal_order_test();
+bool nesterov_a_test_task_omp::TestOMPTaskSequential::validation_impl() {
   // Check count elements of output
   return taskData->outputs_count[0] == 1;
 }
 
-bool nesterov_a_test_task_omp::TestOMPTaskSequential::run() {
-  internal_order_test();
+bool nesterov_a_test_task_omp::TestOMPTaskSequential::run_impl() {
   if (ops == "+") {
     res = std::accumulate(input_.begin(), input_.end(), 1);
   } else if (ops == "-") {
@@ -54,14 +51,12 @@ bool nesterov_a_test_task_omp::TestOMPTaskSequential::run() {
   return true;
 }
 
-bool nesterov_a_test_task_omp::TestOMPTaskSequential::post_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_omp::TestOMPTaskSequential::post_processing_impl() {
   reinterpret_cast<int*>(taskData->outputs[0])[0] = res;
   return true;
 }
 
-bool nesterov_a_test_task_omp::TestOMPTaskParallel::pre_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_omp::TestOMPTaskParallel::pre_processing_impl() {
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
   auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
@@ -73,14 +68,12 @@ bool nesterov_a_test_task_omp::TestOMPTaskParallel::pre_processing() {
   return true;
 }
 
-bool nesterov_a_test_task_omp::TestOMPTaskParallel::validation() {
-  internal_order_test();
+bool nesterov_a_test_task_omp::TestOMPTaskParallel::validation_impl() {
   // Check count elements of output
   return taskData->outputs_count[0] == 1;
 }
 
-bool nesterov_a_test_task_omp::TestOMPTaskParallel::run() {
-  internal_order_test();
+bool nesterov_a_test_task_omp::TestOMPTaskParallel::run_impl() {
   double start = omp_get_wtime();
   auto temp_res = res;
   if (ops == "+") {
@@ -105,8 +98,7 @@ bool nesterov_a_test_task_omp::TestOMPTaskParallel::run() {
   return true;
 }
 
-bool nesterov_a_test_task_omp::TestOMPTaskParallel::post_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_omp::TestOMPTaskParallel::post_processing_impl() {
   reinterpret_cast<int*>(taskData->outputs[0])[0] = res;
   return true;
 }

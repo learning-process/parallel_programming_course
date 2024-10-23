@@ -30,16 +30,16 @@ class Task {
   void set_data(std::shared_ptr<TaskData> taskData_);
 
   // validation of data and validation of task attributes before running
-  virtual bool validation() = 0;
+  virtual bool validation();
 
   // pre-processing of input data
-  virtual bool pre_processing() = 0;
+  virtual bool pre_processing();
 
   // realization of current task
-  virtual bool run() = 0;
+  virtual bool run();
 
   // post-processing of output data
-  virtual bool post_processing() = 0;
+  virtual bool post_processing();
 
   // get input and output data
   [[nodiscard]] std::shared_ptr<TaskData> get_data() const;
@@ -49,6 +49,18 @@ class Task {
  protected:
   void internal_order_test(const std::string &str = __builtin_FUNCTION());
   std::shared_ptr<TaskData> taskData;
+
+  // implementation of "validation" function
+  virtual bool validation_impl() = 0;
+
+  // implementation of "pre_processing" function
+  virtual bool pre_processing_impl() = 0;
+
+  // implementation of "run" function
+  virtual bool run_impl() = 0;
+
+  // implementation of "post_processing" function
+  virtual bool post_processing_impl() = 0;
 
  private:
   std::vector<std::string> functions_order;

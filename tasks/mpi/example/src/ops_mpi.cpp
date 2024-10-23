@@ -20,8 +20,7 @@ std::vector<int> nesterov_a_test_task_mpi::getRandomVector(int sz) {
   return vec;
 }
 
-bool nesterov_a_test_task_mpi::TestMPITaskSequential::pre_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_mpi::TestMPITaskSequential::pre_processing_impl() {
   // Init vectors
   input_ = std::vector<int>(taskData->inputs_count[0]);
   auto* tmp_ptr = reinterpret_cast<int*>(taskData->inputs[0]);
@@ -33,14 +32,12 @@ bool nesterov_a_test_task_mpi::TestMPITaskSequential::pre_processing() {
   return true;
 }
 
-bool nesterov_a_test_task_mpi::TestMPITaskSequential::validation() {
-  internal_order_test();
+bool nesterov_a_test_task_mpi::TestMPITaskSequential::validation_impl() {
   // Check count elements of output
   return taskData->outputs_count[0] == 1;
 }
 
-bool nesterov_a_test_task_mpi::TestMPITaskSequential::run() {
-  internal_order_test();
+bool nesterov_a_test_task_mpi::TestMPITaskSequential::run_impl() {
   if (ops == "+") {
     res = std::accumulate(input_.begin(), input_.end(), 0);
   } else if (ops == "-") {
@@ -51,14 +48,12 @@ bool nesterov_a_test_task_mpi::TestMPITaskSequential::run() {
   return true;
 }
 
-bool nesterov_a_test_task_mpi::TestMPITaskSequential::post_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_mpi::TestMPITaskSequential::post_processing_impl() {
   reinterpret_cast<int*>(taskData->outputs[0])[0] = res;
   return true;
 }
 
-bool nesterov_a_test_task_mpi::TestMPITaskParallel::pre_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_mpi::TestMPITaskParallel::pre_processing_impl() {
   unsigned int delta = 0;
   if (world.rank() == 0) {
     delta = taskData->inputs_count[0] / world.size();
@@ -87,8 +82,7 @@ bool nesterov_a_test_task_mpi::TestMPITaskParallel::pre_processing() {
   return true;
 }
 
-bool nesterov_a_test_task_mpi::TestMPITaskParallel::validation() {
-  internal_order_test();
+bool nesterov_a_test_task_mpi::TestMPITaskParallel::validation_impl() {
   if (world.rank() == 0) {
     // Check count elements of output
     return taskData->outputs_count[0] == 1;
@@ -96,8 +90,7 @@ bool nesterov_a_test_task_mpi::TestMPITaskParallel::validation() {
   return true;
 }
 
-bool nesterov_a_test_task_mpi::TestMPITaskParallel::run() {
-  internal_order_test();
+bool nesterov_a_test_task_mpi::TestMPITaskParallel::run_impl() {
   int local_res;
   if (ops == "+") {
     local_res = std::accumulate(local_input_.begin(), local_input_.end(), 0);
@@ -116,8 +109,7 @@ bool nesterov_a_test_task_mpi::TestMPITaskParallel::run() {
   return true;
 }
 
-bool nesterov_a_test_task_mpi::TestMPITaskParallel::post_processing() {
-  internal_order_test();
+bool nesterov_a_test_task_mpi::TestMPITaskParallel::post_processing_impl() {
   if (world.rank() == 0) {
     reinterpret_cast<int*>(taskData->outputs[0])[0] = res;
   }

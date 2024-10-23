@@ -21,10 +21,10 @@ class TestMPITaskSequential : public ppc::core::Task {
  public:
   explicit TestMPITaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_, std::string ops_)
       : Task(std::move(taskData_)), ops(std::move(ops_)) {}
-  bool pre_processing() override;
-  bool validation() override;
-  bool run() override;
-  bool post_processing() override;
+  bool pre_processing_impl() override;
+  bool validation_impl() override;
+  bool run_impl() override;
+  bool post_processing_impl() override;
 
  private:
   std::vector<int> input_;
@@ -36,10 +36,10 @@ class TestMPITaskParallel : public ppc::core::Task {
  public:
   explicit TestMPITaskParallel(std::shared_ptr<ppc::core::TaskData> taskData_, std::string ops_)
       : Task(std::move(taskData_)), ops(std::move(ops_)) {}
-  bool pre_processing() override;
-  bool validation() override;
-  bool run() override;
-  bool post_processing() override;
+  bool pre_processing_impl() override;
+  bool validation_impl() override;
+  bool run_impl() override;
+  bool post_processing_impl() override;
 
  private:
   std::vector<int> input_, local_input_;
