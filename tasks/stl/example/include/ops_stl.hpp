@@ -1,4 +1,3 @@
-// Copyright 2023 Nesterov Alexander
 #ifndef TASKS_EXAMPLES_TEST_STD_OPS_STD_H_
 #define TASKS_EXAMPLES_TEST_STD_OPS_STD_H_
 

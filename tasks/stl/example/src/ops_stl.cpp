@@ -1,4 +1,3 @@
-// Copyright 2023 Nesterov Alexander
 #include "stl/example/include/ops_stl.hpp"
 
 #include <future>

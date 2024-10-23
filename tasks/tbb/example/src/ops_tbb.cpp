@@ -1,4 +1,3 @@
-// Copyright 2023 Nesterov Alexander
 #include "tbb/example/include/ops_tbb.hpp"
 
 #include <tbb/tbb.h>

@@ -1,5 +1,3 @@
-// Copyright 2023 Nesterov Alexander
-
 #ifndef MODULES_CORE_TESTS_TEST_TASK_HPP_
 #define MODULES_CORE_TESTS_TEST_TASK_HPP_
 

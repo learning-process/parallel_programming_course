@@ -1,4 +1,3 @@
-// Copyright 2024 Nesterov Alexander
 #include "seq/example/include/ops_seq.hpp"
 
 #include <thread>
