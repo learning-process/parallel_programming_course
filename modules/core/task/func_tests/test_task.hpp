@@ -37,6 +37,6 @@ class TestTask : public ppc::core::Task {
   T *output_{};
 };
 
-}  // namespace ppc::test
+}  // namespace ppc::test::task
 
 #endif  // MODULES_CORE_TESTS_TEST_TASK_HPP_

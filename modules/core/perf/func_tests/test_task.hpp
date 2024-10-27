@@ -4,8 +4,8 @@
 #include <gtest/gtest.h>
 
 #include <memory>
-#include <vector>
 #include <thread>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 
@@ -45,6 +45,6 @@ class TestTask : public ppc::core::Task {
   bool enableSleep = false;
 };
 
-}  // namespace ppc::test
+}  // namespace ppc::test::perf
 
 #endif  // MODULES_CORE_TESTS_TEST_TASK_HPP_
