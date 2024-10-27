@@ -272,7 +272,7 @@ jobs:
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+        token: db9388ce-cf24-4840-b282-8e0070d8666f
         files: coverage.xml
     - name: Generate lcov Coverage Data
       run: |
