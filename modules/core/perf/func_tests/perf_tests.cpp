@@ -18,7 +18,7 @@ TEST(perf_tests, check_perf_pipeline) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTask = std::make_shared<ppc::test::TestTask<uint32_t>>(taskData);
+  auto testTask = std::make_shared<ppc::test::perf::TestTask<uint32_t>>(taskData);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -33,7 +33,7 @@ TEST(perf_tests, check_perf_pipeline) {
 
   // Get perf statistic
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_LE(perfResults->time_sec, 10.0);
+  ASSERT_LE(perfResults->time_sec, ppc::core::PerfResults::MAX_TIME);
   EXPECT_EQ(out[0], in.size());
 }
 
@@ -50,7 +50,7 @@ TEST(perf_tests, check_perf_pipeline_float) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTask = std::make_shared<ppc::test::TestTask<float>>(taskData);
+  auto testTask = std::make_shared<ppc::test::perf::TestTask<float>>(taskData);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -65,11 +65,11 @@ TEST(perf_tests, check_perf_pipeline_float) {
 
   // Get perf statistic
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_LE(perfResults->time_sec, 10.0);
+  ASSERT_LE(perfResults->time_sec, ppc::core::PerfResults::MAX_TIME);
   EXPECT_EQ(out[0], in.size());
 }
 
-TEST(perf_tests, check_perf_pipeline_uint8_t) {
+TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
   // Create data
   std::vector<uint8_t> in(128, 1);
   std::vector<uint8_t> out(1, 0);
@@ -82,11 +82,17 @@ TEST(perf_tests, check_perf_pipeline_uint8_t) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTask = std::make_shared<ppc::test::TestTask<uint8_t>>(taskData);
+  auto testTask = std::make_shared<ppc::test::perf::TestTask<uint8_t>>(taskData, true);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
-  perfAttr->num_running = 10;
+  perfAttr->num_running = 1;
+  const auto t0 = std::chrono::high_resolution_clock::now();
+  perfAttr->current_timer = [&] {
+    auto current_time_point = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+    return static_cast<double>(duration) * 1e-9;
+  };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -96,8 +102,8 @@ TEST(perf_tests, check_perf_pipeline_uint8_t) {
   perfAnalyzer.pipeline_run(perfAttr, perfResults);
 
   // Get perf statistic
-  ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_LE(perfResults->time_sec, 10.0);
+  ASSERT_ANY_THROW(ppc::core::Perf::print_perf_statistic(perfResults));
+  ASSERT_GE(perfResults->time_sec, ppc::core::PerfResults::MAX_TIME);
   EXPECT_EQ(out[0], in.size());
 }
 
@@ -114,7 +120,7 @@ TEST(perf_tests, check_perf_task) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTask = std::make_shared<ppc::test::TestTask<uint32_t>>(taskData);
+  auto testTask = std::make_shared<ppc::test::perf::TestTask<uint32_t>>(taskData);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -128,8 +134,9 @@ TEST(perf_tests, check_perf_task) {
   perfAnalyzer.task_run(perfAttr, perfResults);
 
   // Get perf statistic
+  perfResults->type_of_running = ppc::core::PerfResults::NONE;
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_LE(perfResults->time_sec, 10.0);
+  ASSERT_LE(perfResults->time_sec, ppc::core::PerfResults::MAX_TIME);
   EXPECT_EQ(out[0], in.size());
 }
 
@@ -146,7 +153,7 @@ TEST(perf_tests, check_perf_task_float) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTask = std::make_shared<ppc::test::TestTask<float>>(taskData);
+  auto testTask = std::make_shared<ppc::test::perf::TestTask<float>>(taskData);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -160,7 +167,8 @@ TEST(perf_tests, check_perf_task_float) {
   perfAnalyzer.task_run(perfAttr, perfResults);
 
   // Get perf statistic
+  perfResults->type_of_running = ppc::core::PerfResults::PIPELINE;
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_LE(perfResults->time_sec, 10.0);
+  ASSERT_LE(perfResults->time_sec, ppc::core::PerfResults::MAX_TIME);
   EXPECT_EQ(out[0], in.size());
 }

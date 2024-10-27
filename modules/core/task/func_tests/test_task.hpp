@@ -8,7 +8,7 @@
 
 #include "core/task/include/task.hpp"
 
-namespace ppc::test {
+namespace ppc::test::task {
 
 template <class T>
 class TestTask : public ppc::core::Task {

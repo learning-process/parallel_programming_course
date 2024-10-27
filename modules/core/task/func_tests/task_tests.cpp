@@ -18,7 +18,7 @@ TEST(task_tests, check_int32_t) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::TestTask<int32_t> testTask(taskData);
+  ppc::test::task::TestTask<int32_t> testTask(taskData);
   bool isValid = testTask.validation();
   ASSERT_EQ(isValid, true);
   testTask.pre_processing();
@@ -40,7 +40,7 @@ TEST(task_tests, check_validate_func) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::TestTask<int32_t> testTask(taskData);
+  ppc::test::task::TestTask<int32_t> testTask(taskData);
   bool isValid = testTask.validation();
   ASSERT_EQ(isValid, false);
 }
@@ -58,7 +58,7 @@ TEST(task_tests, check_double) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::TestTask<double> testTask(taskData);
+  ppc::test::task::TestTask<double> testTask(taskData);
   bool isValid = testTask.validation();
   ASSERT_EQ(isValid, true);
   testTask.pre_processing();
@@ -80,7 +80,7 @@ TEST(task_tests, check_uint8_t) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::TestTask<uint8_t> testTask(taskData);
+  ppc::test::task::TestTask<uint8_t> testTask(taskData);
   bool isValid = testTask.validation();
   ASSERT_EQ(isValid, true);
   testTask.pre_processing();
@@ -102,7 +102,7 @@ TEST(task_tests, check_int64_t) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::TestTask<int64_t> testTask(taskData);
+  ppc::test::task::TestTask<int64_t> testTask(taskData);
   bool isValid = testTask.validation();
   ASSERT_EQ(isValid, true);
   testTask.pre_processing();
@@ -124,7 +124,7 @@ TEST(task_tests, check_float) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::TestTask<float> testTask(taskData);
+  ppc::test::task::TestTask<float> testTask(taskData);
   bool isValid = testTask.validation();
   ASSERT_EQ(isValid, true);
   testTask.pre_processing();
@@ -146,7 +146,7 @@ TEST(task_tests, check_wrong_order) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::TestTask<float> testTask(taskData);
+  ppc::test::task::TestTask<float> testTask(taskData);
   bool isValid = testTask.validation();
   ASSERT_EQ(isValid, true);
   testTask.pre_processing();

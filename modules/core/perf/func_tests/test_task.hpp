@@ -5,15 +5,19 @@
 
 #include <memory>
 #include <vector>
+#include <thread>
 
 #include "core/task/include/task.hpp"
 
-namespace ppc::test {
+using namespace std::chrono_literals;
+
+namespace ppc::test::perf {
 
 template <class T>
 class TestTask : public ppc::core::Task {
  public:
-  explicit TestTask(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
+  explicit TestTask(std::shared_ptr<ppc::core::TaskData> taskData_, bool enableSleep_ = false)
+      : Task(taskData_), enableSleep(enableSleep_) {}
   bool pre_processing_impl() override {
     input_ = reinterpret_cast<T *>(taskData->inputs[0]);
     output_ = reinterpret_cast<T *>(taskData->outputs[0]);
@@ -27,6 +31,9 @@ class TestTask : public ppc::core::Task {
     for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
       output_[0] += input_[i];
     }
+    if (enableSleep) {
+      std::this_thread::sleep_for(20000ms);
+    }
     return true;
   }
 
@@ -35,6 +42,7 @@ class TestTask : public ppc::core::Task {
  private:
   T *input_{};
   T *output_{};
+  bool enableSleep = false;
 };
 
 }  // namespace ppc::test
