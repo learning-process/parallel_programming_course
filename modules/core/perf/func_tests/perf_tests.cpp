@@ -31,6 +31,8 @@ TEST(perf_tests, check_perf_pipeline) {
   ppc::core::Perf perfAnalyzer(testTask);
   perfAnalyzer.pipeline_run(perfAttr, perfResults);
 
+  // Get perf statistic
+  ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_LE(perfResults->time_sec, 10.0);
   EXPECT_EQ(out[0], in.size());
 }
@@ -61,6 +63,8 @@ TEST(perf_tests, check_perf_pipeline_float) {
   ppc::core::Perf perfAnalyzer(testTask);
   perfAnalyzer.pipeline_run(perfAttr, perfResults);
 
+  // Get perf statistic
+  ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_LE(perfResults->time_sec, 10.0);
   EXPECT_EQ(out[0], in.size());
 }
@@ -91,6 +95,8 @@ TEST(perf_tests, check_perf_pipeline_uint8_t) {
   ppc::core::Perf perfAnalyzer(testTask);
   perfAnalyzer.pipeline_run(perfAttr, perfResults);
 
+  // Get perf statistic
+  ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_LE(perfResults->time_sec, 10.0);
   EXPECT_EQ(out[0], in.size());
 }
@@ -121,6 +127,8 @@ TEST(perf_tests, check_perf_task) {
   ppc::core::Perf perfAnalyzer(testTask);
   perfAnalyzer.task_run(perfAttr, perfResults);
 
+  // Get perf statistic
+  ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_LE(perfResults->time_sec, 10.0);
   EXPECT_EQ(out[0], in.size());
 }
@@ -151,6 +159,8 @@ TEST(perf_tests, check_perf_task_float) {
   ppc::core::Perf perfAnalyzer(testTask);
   perfAnalyzer.task_run(perfAttr, perfResults);
 
+  // Get perf statistic
+  ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_LE(perfResults->time_sec, 10.0);
   EXPECT_EQ(out[0], in.size());
 }
