@@ -20,7 +20,6 @@ bool nesterov_a_test_task_seq::TestTaskSequential::run_impl() {
   for (int i = 0; i < input_; i++) {
     res++;
   }
-  std::this_thread::sleep_for(20ms);
   return true;
 }
 
