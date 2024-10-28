@@ -11,7 +11,7 @@ TEST(mpi_example_perf_test, test_pipeline_run) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_sum(1, 0);
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
   int count_size_vector;
   if (world.rank() == 0) {
     count_size_vector = 120;
@@ -51,7 +51,7 @@ TEST(mpi_example_perf_test, test_task_run) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_sum(1, 0);
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
   int count_size_vector;
   if (world.rank() == 0) {
     count_size_vector = 120;

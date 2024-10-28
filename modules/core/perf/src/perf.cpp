@@ -77,15 +77,16 @@ void ppc::core::Perf::print_perf_statistic(const std::shared_ptr<PerfResults>& p
   relative_path.erase(last_found_position, relative_path.length() - 1);
 
   std::stringstream perf_res_str;
-  if (time_secs > PerfResults::MIN_TIME && time_secs < PerfResults::MAX_TIME) {
+  if (time_secs < PerfResults::MAX_TIME) {
     perf_res_str << std::fixed << std::setprecision(10) << time_secs;
+    std::cout << relative_path << ":" << type_test_name << ":" << perf_res_str.str() << std::endl;
   } else {
-    std::cerr << "Task execute time need to be: ";
-    std::cerr << PerfResults::MIN_TIME << " secs. < time < " << PerfResults::MAX_TIME << " secs." << std::endl;
-    std::cerr << "Original time in secs: " << time_secs;
+    std::stringstream errMsg;
+    errMsg << std::endl << "Task execute time need to be: ";
+    errMsg << "time < " << PerfResults::MAX_TIME << " secs." << std::endl;
+    errMsg << "Original time in secs: " << time_secs << std::endl;
     perf_res_str << std::fixed << std::setprecision(10) << -1.0;
-    EXPECT_TRUE(time_secs > PerfResults::MIN_TIME && time_secs < PerfResults::MAX_TIME);
+    std::cout << relative_path << ":" << type_test_name << ":" << perf_res_str.str() << std::endl;
+    throw std::runtime_error(errMsg.str().c_str());
   }
-
-  std::cout << relative_path << ":" << type_test_name << ":" << perf_res_str.str() << std::endl;
 }

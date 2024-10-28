@@ -4,9 +4,9 @@ cmake-build-release*
 cmake-build-debug*
 .idea/
 .vscode/
-scripts/variants.csv
-scripts/variants.xlsx
-venv*
+scripts/variants*.csv
+scripts/variants*.xlsx
+*venv*
 sln/
 .DS_Store
 .cache

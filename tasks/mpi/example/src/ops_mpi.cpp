@@ -104,7 +104,6 @@ bool nesterov_a_test_task_mpi::TestMPITaskParallel::run_impl() {
   } else if (ops == "max") {
     reduce(world, local_res, res, boost::mpi::maximum<int>(), 0);
   }
-  std::this_thread::sleep_for(20ms);
   return true;
 }
 

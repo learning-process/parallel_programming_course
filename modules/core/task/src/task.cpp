@@ -5,15 +5,15 @@
 #include <stdexcept>
 #include <utility>
 
-void ppc::core::Task::set_data(std::shared_ptr<TaskData> taskData_) {
+void ppc::core::Task::set_data(TaskDataPtr taskData_) {
   taskData_->state_of_testing = TaskData::StateOfTesting::FUNC;
   functions_order.clear();
   taskData = std::move(taskData_);
 }
 
-std::shared_ptr<ppc::core::TaskData> ppc::core::Task::get_data() const { return taskData; }
+ppc::core::TaskDataPtr ppc::core::Task::get_data() const { return taskData; }
 
-ppc::core::Task::Task(std::shared_ptr<TaskData> taskData_) { set_data(std::move(taskData_)); }
+ppc::core::Task::Task(TaskDataPtr taskData_) { set_data(std::move(taskData_)); }
 
 bool ppc::core::Task::validation() {
   internal_order_test();

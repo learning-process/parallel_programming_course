@@ -16,7 +16,7 @@ namespace reference {
 template <class InOutType, class IndexType>
 class MaxOfVectorElements : public ppc::core::Task {
  public:
-  explicit MaxOfVectorElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
+  explicit MaxOfVectorElements(ppc::core::TaskDataPtr taskData_) : Task(taskData_) {}
   bool pre_processing_impl() override {
     // Init vectors
     input_ = std::vector<InOutType>(taskData->inputs_count[0]);

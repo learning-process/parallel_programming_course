@@ -18,7 +18,7 @@ TEST(most_different_neighbor_elements, check_int32_t) {
   in[235] = 4000;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+  auto taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -46,7 +46,7 @@ TEST(most_different_neighbor_elements, check_validate_func) {
   std::vector<uint64_t> out_index(1, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+  auto taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -72,7 +72,7 @@ TEST(most_different_neighbor_elements, check_double) {
   in[190] = 9000.9;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+  auto taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -109,7 +109,7 @@ TEST(most_different_neighbor_elements, check_int8_t) {
   in[6] = -56;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+  auto taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -150,7 +150,7 @@ TEST(most_different_neighbor_elements, check_int64_t) {
   in[21] = 1119;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+  auto taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -183,7 +183,7 @@ TEST(most_different_neighbor_elements, check_float) {
   in[1] = -990.0025f;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+  auto taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskData->inputs_count.emplace_back(in.size());
   taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
