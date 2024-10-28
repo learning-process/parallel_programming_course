@@ -17,7 +17,7 @@ namespace reference {
 template <class InOutType, class IndexType>
 class NearestNeighborElements : public ppc::core::Task {
  public:
-  explicit NearestNeighborElements(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(taskData_) {}
+  explicit NearestNeighborElements(ppc::core::TaskDataPtr taskData_) : Task(taskData_) {}
   bool pre_processing_impl() override {
     // Init vectors
     input_ = std::vector<InOutType>(taskData->inputs_count[0]);

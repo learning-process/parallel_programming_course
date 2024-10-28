@@ -6,7 +6,7 @@ cmake-build-debug*
 .vscode/
 scripts/variants.csv
 scripts/variants.xlsx
-venv*
+*venv*
 sln/
 .DS_Store
 .cache

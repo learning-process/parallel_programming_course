@@ -11,7 +11,7 @@ TEST(Parallel_Operations_MPI, Test_Sum) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_sum(1, 0);
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
     const int count_size_vector = 120;
@@ -33,7 +33,7 @@ TEST(Parallel_Operations_MPI, Test_Sum) {
     std::vector<int32_t> reference_sum(1, 0);
 
     // Create TaskData
-    std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
     taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     taskDataSeq->inputs_count.emplace_back(global_vec.size());
     taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_sum.data()));
@@ -55,7 +55,7 @@ TEST(Parallel_Operations_MPI, Test_Diff) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_diff(1, 0);
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
     const int count_size_vector = 240;
@@ -77,7 +77,7 @@ TEST(Parallel_Operations_MPI, Test_Diff) {
     std::vector<int32_t> reference_diff(1, 0);
 
     // Create TaskData
-    std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
     taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     taskDataSeq->inputs_count.emplace_back(global_vec.size());
     taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
@@ -99,7 +99,7 @@ TEST(Parallel_Operations_MPI, Test_Diff_2) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_diff(1, 0);
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
     const int count_size_vector = 120;
@@ -121,7 +121,7 @@ TEST(Parallel_Operations_MPI, Test_Diff_2) {
     std::vector<int32_t> reference_diff(1, 0);
 
     // Create TaskData
-    std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
     taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     taskDataSeq->inputs_count.emplace_back(global_vec.size());
     taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
@@ -143,7 +143,7 @@ TEST(Parallel_Operations_MPI, Test_Max) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_max(1, 0);
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
     const int count_size_vector = 240;
@@ -165,7 +165,7 @@ TEST(Parallel_Operations_MPI, Test_Max) {
     std::vector<int32_t> reference_max(1, 0);
 
     // Create TaskData
-    std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
     taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     taskDataSeq->inputs_count.emplace_back(global_vec.size());
     taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));
@@ -187,7 +187,7 @@ TEST(Parallel_Operations_MPI, Test_Max_2) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_max(1, 0);
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
     const int count_size_vector = 120;
@@ -209,7 +209,7 @@ TEST(Parallel_Operations_MPI, Test_Max_2) {
     std::vector<int32_t> reference_max(1, 0);
 
     // Create TaskData
-    std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
     taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     taskDataSeq->inputs_count.emplace_back(global_vec.size());
     taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));

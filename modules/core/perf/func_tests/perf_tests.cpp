@@ -82,8 +82,7 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
   taskData->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTask = std::make_shared<ppc::test::perf::TestTask<uint8_t>>(taskData, true);
-
+  auto testTask = std::make_shared<ppc::test::perf::FakePerfTask<uint8_t>>(taskData);
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 1;

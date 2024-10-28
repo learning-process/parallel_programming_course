@@ -18,14 +18,16 @@ struct TaskData {
   enum StateOfTesting { FUNC, PERF } state_of_testing;
 };
 
+using TaskDataPtr = std::shared_ptr<ppc::core::TaskData>;
+
 // Memory of inputs and outputs need to be initialized before create object of
 // Task class
 class Task {
  public:
-  explicit Task(std::shared_ptr<TaskData> taskData_);
+  explicit Task(TaskDataPtr taskData_);
 
   // set input and output data
-  void set_data(std::shared_ptr<TaskData> taskData_);
+  void set_data(TaskDataPtr taskData_);
 
   // validation of data and validation of task attributes before running
   virtual bool validation();
@@ -40,13 +42,13 @@ class Task {
   virtual bool post_processing();
 
   // get input and output data
-  [[nodiscard]] std::shared_ptr<TaskData> get_data() const;
+  [[nodiscard]] TaskDataPtr get_data() const;
 
   virtual ~Task();
 
  protected:
   void internal_order_test(const std::string &str = __builtin_FUNCTION());
-  std::shared_ptr<TaskData> taskData;
+  TaskDataPtr taskData;
 
   // implementation of "validation" function
   virtual bool validation_impl() = 0;

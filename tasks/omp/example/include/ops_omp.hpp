@@ -11,7 +11,7 @@ std::vector<int> getRandomVector(int sz);
 
 class TestOMPTaskSequential : public ppc::core::Task {
  public:
-  explicit TestOMPTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_, std::string ops_)
+  explicit TestOMPTaskSequential(ppc::core::TaskDataPtr taskData_, std::string ops_)
       : Task(std::move(taskData_)), ops(std::move(ops_)) {}
   bool pre_processing_impl() override;
   bool validation_impl() override;
@@ -26,7 +26,7 @@ class TestOMPTaskSequential : public ppc::core::Task {
 
 class TestOMPTaskParallel : public ppc::core::Task {
  public:
-  explicit TestOMPTaskParallel(std::shared_ptr<ppc::core::TaskData> taskData_, std::string ops_)
+  explicit TestOMPTaskParallel(ppc::core::TaskDataPtr taskData_, std::string ops_)
       : Task(std::move(taskData_)), ops(std::move(ops_)) {}
   bool pre_processing_impl() override;
   bool validation_impl() override;
