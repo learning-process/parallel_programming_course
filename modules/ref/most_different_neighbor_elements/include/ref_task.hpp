@@ -17,7 +17,7 @@ namespace reference {
 template <class InOutType, class IndexType>
 class MostDifferentNeighborElements : public ppc::core::Task {
  public:
-  explicit MostDifferentNeighborElements (ppc::core::TaskDataPtr taskData_) : Task(taskData_) {}
+  explicit MostDifferentNeighborElements(ppc::core::TaskDataPtr taskData_) : Task(taskData_) {}
   bool pre_processing_impl() override {
     // Init vectors
     input_ = std::vector<InOutType>(taskData->inputs_count[0]);

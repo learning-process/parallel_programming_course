@@ -12,7 +12,7 @@ std::vector<int> getRandomVector(int sz);
 
 class TestSTLTaskSequential : public ppc::core::Task {
  public:
-  explicit TestSTLTaskSequential (ppc::core::TaskDataPtr taskData_, std::string ops_)
+  explicit TestSTLTaskSequential(ppc::core::TaskDataPtr taskData_, std::string ops_)
       : Task(std::move(taskData_)), ops(std::move(ops_)) {}
   bool pre_processing_impl() override;
   bool validation_impl() override;
@@ -27,7 +27,7 @@ class TestSTLTaskSequential : public ppc::core::Task {
 
 class TestSTLTaskParallel : public ppc::core::Task {
  public:
-  explicit TestSTLTaskParallel (ppc::core::TaskDataPtr taskData_, std::string ops_)
+  explicit TestSTLTaskParallel(ppc::core::TaskDataPtr taskData_, std::string ops_)
       : Task(std::move(taskData_)), ops(std::move(ops_)) {}
   bool pre_processing_impl() override;
   bool validation_impl() override;
