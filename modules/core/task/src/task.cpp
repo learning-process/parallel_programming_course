@@ -4,6 +4,7 @@
 
 #include <stdexcept>
 #include <utility>
+#include <iomanip>
 
 void ppc::core::Task::set_data(TaskDataPtr taskData_) {
   taskData_->state_of_testing = TaskData::StateOfTesting::FUNC;
@@ -56,9 +57,14 @@ void ppc::core::Task::internal_order_test(const std::string& str) {
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - tmp_time_point).count();
     auto current_time = static_cast<double>(duration) * 1e-9;
-    if (current_time > max_test_time) {
-      std::cerr << "Current test work more than " << max_test_time << " secs: " << current_time << std::endl;
-      EXPECT_TRUE(current_time < max_test_time);
+    if (current_time < max_test_time) {
+      std::cout << "Test time:" << std::fixed << std::setprecision(10) << current_time;
+    } else {
+      std::stringstream err_msg;
+      err_msg << "\nTask execute time need to be: ";
+      err_msg << "time < " << max_test_time << " secs.\n";
+      err_msg << "Original time in secs: " << current_time << std::endl;
+      throw std::runtime_error(err_msg.str().c_str());
     }
   }
 }
