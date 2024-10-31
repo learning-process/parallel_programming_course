@@ -1,7 +1,6 @@
 build
 mpich
-cmake-build-release*
-cmake-build-debug*
+cmake-build-*
 .idea/
 .vscode/
 scripts/variants*.csv

@@ -2,9 +2,9 @@
 
 #include <gtest/gtest.h>
 
+#include <iomanip>
 #include <stdexcept>
 #include <utility>
-#include <iomanip>
 
 void ppc::core::Task::set_data(TaskDataPtr taskData_) {
   taskData_->state_of_testing = TaskData::StateOfTesting::FUNC;
@@ -37,7 +37,9 @@ bool ppc::core::Task::post_processing() {
 }
 
 void ppc::core::Task::internal_order_test(const std::string& str) {
-  if (!functions_order.empty() && str == functions_order.back() && str == "run") return;
+  if (!functions_order.empty() && str == functions_order.back() && str == "run") {
+    return;
+  }
 
   functions_order.push_back(str);
 
