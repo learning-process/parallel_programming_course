@@ -47,10 +47,54 @@ jobs:
     - name: Run func tests (MPI)
       run: |
         source scripts/run_mpi.sh
-    - name: Run func tests (threads)
-      run: |
-        export OMP_NUM_THREADS=4
-        source scripts/run_threads.sh
+    - name: Run func tests (threads, num_threads=1)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 1
+    - name: Run func tests (threads, num_threads=2)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 2
+    - name: Run func tests (threads, num_threads=3)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 3
+    - name: Run func tests (threads, num_threads=4)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 4
+    - name: Run func tests (threads, num_threads=5)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 5
+    - name: Run func tests (threads, num_threads=6)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 6
+    - name: Run func tests (threads, num_threads=7)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 7
+    - name: Run func tests (threads, num_threads=8)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 8
+    - name: Run func tests (threads, num_threads=11)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 11
+    - name: Run func tests (threads, num_threads=13)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 13
+    - name: Run func tests (threads, num_threads=15)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 15
+    - name: Run func tests (threads, num_threads=16)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 16
   ubuntu-clang-build:
     runs-on: ubuntu-latest
     steps:
@@ -91,10 +135,54 @@ jobs:
     - name: Run tests (MPI)
       run: |
         source scripts/run_mpi.sh
-    - name: Run tests (threads)
-      run: |
-        export OMP_NUM_THREADS=4
-        source scripts/run_threads.sh
+    - name: Run tests (threads, num_threads=1)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 1
+    - name: Run tests (threads, num_threads=2)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 2
+    - name: Run tests (threads, num_threads=3)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 3
+    - name: Run tests (threads, num_threads=4)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 4
+    - name: Run tests (threads, num_threads=5)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 5
+    - name: Run tests (threads, num_threads=6)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 6
+    - name: Run tests (threads, num_threads=7)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 7
+    - name: Run tests (threads, num_threads=8)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 8
+    - name: Run tests (threads, num_threads=11)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 11
+    - name: Run tests (threads, num_threads=13)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 13
+    - name: Run tests (threads, num_threads=15)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 15
+    - name: Run tests (threads, num_threads=16)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 16
   ubuntu-clang-sanitizer-build:
     runs-on: ubuntu-latest
     steps:
@@ -136,11 +224,66 @@ jobs:
       run: |
         export ASAN_RUN=1
         source scripts/run_mpi.sh
-    - name: Run tests (threads)
-      run: |
-        export OMP_NUM_THREADS=4
-        export ASAN_RUN=1
-        source scripts/run_threads.sh
+    - name: Run tests (threads, num_threads=1)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 1
+        ASAN_RUN: 1
+    - name: Run tests (threads, num_threads=2)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 2
+        ASAN_RUN: 1
+    - name: Run tests (threads, num_threads=3)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 3
+        ASAN_RUN: 1
+    - name: Run tests (threads, num_threads=4)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 4
+        ASAN_RUN: 1
+    - name: Run tests (threads, num_threads=5)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 5
+        ASAN_RUN: 1
+    - name: Run tests (threads, num_threads=6)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 6
+        ASAN_RUN: 1
+    - name: Run tests (threads, num_threads=7)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 7
+        ASAN_RUN: 1
+    - name: Run tests (threads, num_threads=8)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 8
+        ASAN_RUN: 1
+    - name: Run tests (threads, num_threads=11)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 11
+        ASAN_RUN: 1
+    - name: Run tests (threads, num_threads=13)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 13
+        ASAN_RUN: 1
+    - name: Run tests (threads, num_threads=15)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 15
+        ASAN_RUN: 1
+    - name: Run tests (threads, num_threads=16)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 16
+        ASAN_RUN: 1
   macos-clang-build:
     runs-on: macOS-latest
     steps:
@@ -173,10 +316,54 @@ jobs:
     - name: Run tests (MPI)
       run: |
         source scripts/run_mpi.sh
-    - name: Run tests (threads)
-      run: |
-        export OMP_NUM_THREADS=4
-        source scripts/run_threads.sh
+    - name: Run tests (threads, num_threads=1)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 1
+    - name: Run tests (threads, num_threads=2)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 2
+    - name: Run tests (threads, num_threads=3)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 3
+    - name: Run tests (threads, num_threads=4)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 4
+    - name: Run tests (threads, num_threads=5)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 5
+    - name: Run tests (threads, num_threads=6)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 6
+    - name: Run tests (threads, num_threads=7)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 7
+    - name: Run tests (threads, num_threads=8)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 8
+    - name: Run tests (threads, num_threads=11)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 11
+    - name: Run tests (threads, num_threads=13)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 13
+    - name: Run tests (threads, num_threads=15)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 15
+    - name: Run tests (threads, num_threads=16)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 16
   windows-msvc-build:
     runs-on: windows-latest
     defaults:
@@ -211,11 +398,54 @@ jobs:
       shell: bash
       run: |
         cmake --build build --config Release --parallel
-    - name: Run tests
-      run: |
-        scripts/run.bat
+    - name: Run tests (threads, num_threads=1)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 1
+    - name: Run tests (threads, num_threads=2)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 2
+    - name: Run tests (threads, num_threads=3)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 3
+    - name: Run tests (threads, num_threads=4)
+      run: scripts/run.bat
       env:
         OMP_NUM_THREADS: 4
+    - name: Run tests (threads, num_threads=5)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 5
+    - name: Run tests (threads, num_threads=6)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 6
+    - name: Run tests (threads, num_threads=7)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 7
+    - name: Run tests (threads, num_threads=8)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 8
+    - name: Run tests (threads, num_threads=11)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 11
+    - name: Run tests (threads, num_threads=13)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 13
+    - name: Run tests (threads, num_threads=15)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 15
+    - name: Run tests (threads, num_threads=16)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 16
   windows-clang-build:
     runs-on: windows-latest
     defaults:
@@ -242,12 +472,66 @@ jobs:
       env:
         CC: clang-cl
         CXX: clang-cl
-    - name: Run tests
-      run: |
-        scripts/run.bat
+    - name: Run tests (threads, num_threads=1)
+      run: scripts/run.bat
       env:
+        OMP_NUM_THREADS: 1
         CLANG_BUILD: 1
+    - name: Run tests (threads, num_threads=2)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 2
+        CLANG_BUILD: 1
+    - name: Run tests (threads, num_threads=3)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 3
+        CLANG_BUILD: 1
+    - name: Run tests (threads, num_threads=4)
+      run: scripts/run.bat
+      env:
         OMP_NUM_THREADS: 4
+        CLANG_BUILD: 1
+    - name: Run tests (threads, num_threads=5)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 5
+        CLANG_BUILD: 1
+    - name: Run tests (threads, num_threads=6)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 6
+        CLANG_BUILD: 1
+    - name: Run tests (threads, num_threads=7)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 7
+        CLANG_BUILD: 1
+    - name: Run tests (threads, num_threads=8)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 8
+        CLANG_BUILD: 1
+    - name: Run tests (threads, num_threads=11)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 11
+        CLANG_BUILD: 1
+    - name: Run tests (threads, num_threads=13)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 13
+        CLANG_BUILD: 1
+    - name: Run tests (threads, num_threads=15)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 15
+        CLANG_BUILD: 1
+    - name: Run tests (threads, num_threads=16)
+      run: scripts/run.bat
+      env:
+        OMP_NUM_THREADS: 16
+        CLANG_BUILD: 1
   ubuntu-gcc-build-codecov:
     runs-on: ubuntu-latest
     steps:
@@ -277,10 +561,54 @@ jobs:
     - name: Run tests (MPI)
       run: |
         source scripts/run_mpi.sh
-    - name: Run tests (threads)
-      run: |
-        export OMP_NUM_THREADS=4
-        source scripts/run_threads.sh
+    - name: Run tests (threads, num_threads=1)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 1
+    - name: Run tests (threads, num_threads=2)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 2
+    - name: Run tests (threads, num_threads=3)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 3
+    - name: Run tests (threads, num_threads=4)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 4
+    - name: Run tests (threads, num_threads=5)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 5
+    - name: Run tests (threads, num_threads=6)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 6
+    - name: Run tests (threads, num_threads=7)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 7
+    - name: Run tests (threads, num_threads=8)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 8
+    - name: Run tests (threads, num_threads=11)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 11
+    - name: Run tests (threads, num_threads=13)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 13
+    - name: Run tests (threads, num_threads=15)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 15
+    - name: Run tests (threads, num_threads=16)
+      run: source scripts/run_threads.sh
+      env:
+        OMP_NUM_THREADS: 16
     - name: Generate gcovr Coverage Data
       run: |
         cd build
