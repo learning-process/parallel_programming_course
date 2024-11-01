@@ -11,19 +11,19 @@ TEST(task_tests, check_int32_t) {
   std::vector<int32_t> out(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::task::TestTask<int32_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::test::task::TestTask<int32_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   ASSERT_EQ(static_cast<size_t>(out[0]), in.size());
 }
 
@@ -33,16 +33,16 @@ TEST(task_tests, check_validate_func) {
   std::vector<int32_t> out(2, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::task::TestTask<int32_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, false);
+  ppc::test::task::TestTask<int32_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, false);
 }
 
 TEST(task_tests, check_double) {
@@ -51,19 +51,19 @@ TEST(task_tests, check_double) {
   std::vector<double> out(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::task::TestTask<double> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::test::task::TestTask<double> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], static_cast<double>(in.size()), 1e-6);
 }
 
@@ -73,19 +73,19 @@ TEST(task_tests, check_uint8_t) {
   std::vector<uint8_t> out(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::task::TestTask<uint8_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::test::task::TestTask<uint8_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   ASSERT_EQ(static_cast<size_t>(out[0]), in.size());
 }
 
@@ -95,19 +95,19 @@ TEST(task_tests, check_int64_t) {
   std::vector<int64_t> out(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::task::TestTask<int64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::test::task::TestTask<int64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   ASSERT_EQ(static_cast<size_t>(out[0]), in.size());
 }
 
@@ -117,19 +117,19 @@ TEST(task_tests, check_float) {
   std::vector<float> out(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::task::TestTask<float> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::test::task::TestTask<float> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], in.size(), 1e-3);
 }
 
@@ -139,18 +139,18 @@ TEST(task_tests, check_wrong_order) {
   std::vector<float> out(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::test::task::TestTask<float> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  ASSERT_ANY_THROW(testTask.post_processing());
+  ppc::test::task::TestTask<float> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  ASSERT_ANY_THROW(test_task.post_processing());
 }
 
 int main(int argc, char **argv) {
