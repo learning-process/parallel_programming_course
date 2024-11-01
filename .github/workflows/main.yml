@@ -45,9 +45,21 @@ jobs:
       env:
         CC: gcc-13
         CXX: g++-13
-    - name: Run func tests (MPI)
+    - name: Run func tests (MPI, num_proc=2)
       run: |
         source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 2
+    - name: Run func tests (MPI, num_proc=3)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 3
+    - name: Run func tests (MPI, num_proc=4)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 4
     - name: Run func tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -133,9 +145,21 @@ jobs:
       env:
         CC: clang-18
         CXX: clang++-18
-    - name: Run tests (MPI)
+    - name: Run func tests (MPI, num_proc=2)
       run: |
         source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 2
+    - name: Run func tests (MPI, num_proc=3)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 3
+    - name: Run func tests (MPI, num_proc=4)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 4
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -225,6 +249,8 @@ jobs:
       run: |
         export ASAN_RUN=1
         source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 2
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -314,9 +340,21 @@ jobs:
     - name: Ninja build
       run: |
         cmake --build build
-    - name: Run tests (MPI)
+    - name: Run func tests (MPI, num_proc=2)
       run: |
         source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 2
+    - name: Run func tests (MPI, num_proc=3)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 3
+    - name: Run func tests (MPI, num_proc=4)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 4
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -562,6 +600,8 @@ jobs:
     - name: Run tests (MPI)
       run: |
         source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 2
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
