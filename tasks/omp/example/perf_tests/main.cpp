@@ -32,8 +32,8 @@ TEST(openmp_example_perf_test, test_pipeline_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
-  perfAnalyzer->pipeline_run(perfAttr, perfResults);
+  ppc::core::Perf perfAnalyzer(testTaskOMP);
+  perfAnalyzer.pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(count + 1, out[0]);
 }
@@ -64,8 +64,8 @@ TEST(openmp_example_perf_test, test_task_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
-  perfAnalyzer->task_run(perfAttr, perfResults);
+  ppc::core::Perf perfAnalyzer(testTaskOMP);
+  perfAnalyzer.task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(count + 1, out[0]);
 }

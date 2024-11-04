@@ -38,8 +38,8 @@ TEST(mpi_example_perf_test, test_pipeline_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testMpiTaskParallel);
-  perfAnalyzer->pipeline_run(perfAttr, perfResults);
+  ppc::core::Perf perfAnalyzer(testMpiTaskParallel);
+  perfAnalyzer.pipeline_run(perfAttr, perfResults);
   if (world.rank() == 0) {
     ppc::core::Perf::print_perf_statistic(perfResults);
     ASSERT_EQ(count_size_vector, global_sum[0]);
@@ -78,8 +78,8 @@ TEST(mpi_example_perf_test, test_task_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testMpiTaskParallel);
-  perfAnalyzer->task_run(perfAttr, perfResults);
+  ppc::core::Perf perfAnalyzer(testMpiTaskParallel);
+  perfAnalyzer.task_run(perfAttr, perfResults);
   if (world.rank() == 0) {
     ppc::core::Perf::print_perf_statistic(perfResults);
     ASSERT_EQ(count_size_vector, global_sum[0]);
