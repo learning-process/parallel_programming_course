@@ -13,16 +13,16 @@ namespace ppc {
 namespace reference {
 
 template <class InType, class OutType>
-class AverageOfVectorElements : public ppc::core::Task {
+class AverageOfVectorElements : public ppc::core::Task<InType, OutType> {
  public:
-  explicit AverageOfVectorElements(ppc::core::TaskDataPtr taskData_) : Task(taskData_) {}
+  explicit AverageOfVectorElements(typename AverageOfVectorElements::TaskData taskData_)
+      : AverageOfVectorElements::Task(taskData_) {}
+
+ protected:
   bool pre_processing_impl() override {
     // Init vectors
-    input_ = std::vector<InType>(taskData->inputs_count[0]);
-    auto tmp_ptr = reinterpret_cast<InType*>(taskData->inputs[0]);
-    for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
-      input_[i] = tmp_ptr[i];
-    }
+    const auto& src = this->taskData.input;
+    input_.assign(src.begin(), src.end());
     // Init value for output
     average = 0.0;
     return true;
@@ -30,17 +30,17 @@ class AverageOfVectorElements : public ppc::core::Task {
 
   bool validation_impl() override {
     // Check count elements of output
-    return taskData->outputs_count[0] == 1;
+    return this->taskData.output.size() == 1;
   }
 
   bool run_impl() override {
     average = static_cast<OutType>(std::accumulate(input_.begin(), input_.end(), 0.0));
-    average /= static_cast<OutType>(taskData->inputs_count[0]);
+    average /= static_cast<OutType>(input_.size());
     return true;
   }
 
   bool post_processing_impl() override {
-    reinterpret_cast<OutType*>(taskData->outputs[0])[0] = average;
+    this->taskData.output[0] = average;
     return true;
   }
 
