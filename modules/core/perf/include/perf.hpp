@@ -8,45 +8,43 @@
 
 #include "core/task/include/task.hpp"
 
-namespace ppc {
-namespace core {
+namespace ppc::core {
 
 struct PerfAttr {
   // count of task's running
-  uint64_t num_running;
+  size_t num_running;
   std::function<double(void)> current_timer = [&] { return 0.0; };
 };
 
 struct PerfResults {
   // measurement of task's time (in seconds)
   double time_sec = 0.0;
-  enum TypeOfRunning { PIPELINE, TASK_RUN, NONE } type_of_running = NONE;
+  enum class RunType : std::uint8_t { Pipeline, TaskRun, None } run_type = RunType::None;
+
   constexpr const static double MAX_TIME = 10.0;
 };
 
 class Perf {
  public:
   // Init performance analysis with initialized task and initialized data
-  explicit Perf(std::shared_ptr<Task> task_);
+  explicit Perf(BaseTask& task_);
   // Set task with initialized task and initialized data for performance
   // analysis c
-  void set_task(std::shared_ptr<Task> task_);
+  void set_task(BaseTask& task_);
   // Check performance of full task's pipeline:  pre_processing() ->
   // validation() -> run() -> post_processing()
-  void pipeline_run(const std::shared_ptr<PerfAttr>& perfAttr,
-                    const std::shared_ptr<ppc::core::PerfResults>& perfResults);
+  void pipeline_run(PerfAttr& perfAttr, ppc::core::PerfResults& perfResults);
   // Check performance of task's run() function
-  void task_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::shared_ptr<ppc::core::PerfResults>& perfResults);
+  void task_run(PerfAttr& perfAttr, ppc::core::PerfResults& perfResults);
   // Pint results for automation checkers
-  static void print_perf_statistic(const std::shared_ptr<PerfResults>& perfResults);
+  static void print_perf_statistic(const PerfResults& perfResults);
 
  private:
-  std::shared_ptr<Task> task;
-  static void common_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::function<void()>& pipeline,
-                         const std::shared_ptr<ppc::core::PerfResults>& perfResults);
+  BaseTask* task{nullptr};
+  static void common_run(PerfAttr& perfAttr, const std::function<void()>& pipeline,
+                         ppc::core::PerfResults& perfResults);
 };
 
-}  // namespace core
-}  // namespace ppc
+}  // namespace ppc::core
 
 #endif  // MODULES_CORE_INCLUDE_PERF_HPP_
