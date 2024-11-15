@@ -4,9 +4,12 @@
 #include <gtest/gtest.h>
 
 #include <memory>
+#include <thread>
 #include <vector>
 
 #include "core/task/include/task.hpp"
+
+using namespace std::chrono_literals;
 
 namespace ppc::test::task {
 
@@ -35,6 +38,17 @@ class TestTask : public ppc::core::Task {
  private:
   T *input_{};
   T *output_{};
+};
+
+template <class T>
+class FakeSlowTask : public TestTask<T> {
+ public:
+  explicit FakeSlowTask(ppc::core::TaskDataPtr perfTaskData_) : TestTask<T>(perfTaskData_) {}
+
+  bool run_impl() override {
+    std::this_thread::sleep_for(5000ms);
+    return TestTask<T>::run_impl();
+  }
 };
 
 }  // namespace ppc::test::task
