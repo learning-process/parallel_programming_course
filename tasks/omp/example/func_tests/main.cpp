@@ -66,11 +66,9 @@ TEST(Parallel_Operations_OpenMP, Test_Diff) {
   std::vector<int> par_res(1, 0);
 
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
+  auto taskDataPar = std::make_shared<ppc::core::TaskData>(*taskDataSeq);
+  taskDataPar->outputs.clear();
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "-");
@@ -104,11 +102,9 @@ TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
   std::vector<int> par_res(1, 0);
 
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
+  auto taskDataPar = std::make_shared<ppc::core::TaskData>(*taskDataSeq);
+  taskDataPar->outputs.clear();
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "-");
@@ -142,11 +138,9 @@ TEST(Parallel_Operations_OpenMP, Test_Mult) {
   std::vector<int> par_res(1, 0);
 
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
+  auto taskDataPar = std::make_shared<ppc::core::TaskData>(*taskDataSeq);
+  taskDataPar->outputs.clear();
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "*");
@@ -180,11 +174,9 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
   std::vector<int> par_res(1, 0);
 
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
+  auto taskDataPar = std::make_shared<ppc::core::TaskData>(*taskDataSeq);
+  taskDataPar->outputs.clear();
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "*");
