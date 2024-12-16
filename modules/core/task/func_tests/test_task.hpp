@@ -5,35 +5,35 @@
 
 #include <memory>
 #include <vector>
+#include <numeric>
 
 #include "core/task/include/task.hpp"
 
 namespace ppc::test::task {
 
 template <class T>
-class TestTask : public ppc::core::Task {
+class TestTask : public ppc::core::Task<T, T> {
  public:
-  explicit TestTask(ppc::core::TaskDataPtr taskData_) : Task(taskData_) {}
+  explicit TestTask(TestTask::TaskData taskData_) : TestTask::Task(taskData_) {}
   bool pre_processing_impl() override {
-    input_ = reinterpret_cast<T *>(taskData->inputs[0]);
-    output_ = reinterpret_cast<T *>(taskData->outputs[0]);
-    output_[0] = 0;
+    input_ = this->taskData.input;
+    output_ = this->taskData.output.data();
+    *output_ = 0;
     return true;
   }
 
-  bool validation_impl() override { return taskData->outputs_count[0] == 1; }
+ protected:
+  bool validation_impl() override { return this->taskData.output.size() == 1; }
 
   bool run_impl() override {
-    for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
-      output_[0] += input_[i];
-    }
+    *output_ = std::accumulate(input_.begin(), input_.end(), T{});
     return true;
   }
 
   bool post_processing_impl() override { return true; }
 
  private:
-  T *input_{};
+  std::span<T> input_{};
   T *output_{};
 };
 
