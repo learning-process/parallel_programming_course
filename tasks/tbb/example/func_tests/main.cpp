@@ -193,8 +193,3 @@ TEST(Parallel_Operations_TBB, Test_Mult_2) {
   testTbbTaskParallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
