@@ -14,16 +14,16 @@ namespace ppc {
 namespace reference {
 
 template <class InOutType, class IndexType>
-class MaxOfVectorElements : public ppc::core::Task {
+class MaxOfVectorElements : public ppc::core::Task<InOutType, std::pair<IndexType, InOutType>> {
  public:
-  explicit MaxOfVectorElements(ppc::core::TaskDataPtr taskData_) : Task(taskData_) {}
+  explicit MaxOfVectorElements(typename MaxOfVectorElements::TaskData taskData_)
+      : MaxOfVectorElements::Task(taskData_) {}
+
+ protected:
   bool pre_processing_impl() override {
     // Init vectors
-    input_ = std::vector<InOutType>(taskData->inputs_count[0]);
-    auto tmp_ptr = reinterpret_cast<InOutType*>(taskData->inputs[0]);
-    for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
-      input_[i] = tmp_ptr[i];
-    }
+    const auto& src = this->taskData.input;
+    input_.assign(src.begin(), src.end());
     // Init value for output
     max = 0.0;
     max_index = 0;
@@ -31,13 +31,8 @@ class MaxOfVectorElements : public ppc::core::Task {
   }
 
   bool validation_impl() override {
-    bool isCountValuesCorrect;
-    bool isCountIndexesCorrect;
     // Check count elements of output
-    isCountValuesCorrect = taskData->outputs_count[0] == 1;
-    isCountIndexesCorrect = taskData->outputs_count[1] == 1;
-
-    return isCountValuesCorrect && isCountIndexesCorrect;
+    return this->taskData.output.size() == 1;
   }
 
   bool run_impl() override {
@@ -48,8 +43,7 @@ class MaxOfVectorElements : public ppc::core::Task {
   }
 
   bool post_processing_impl() override {
-    reinterpret_cast<InOutType*>(taskData->outputs[0])[0] = max;
-    reinterpret_cast<IndexType*>(taskData->outputs[1])[0] = max_index;
+    this->taskData.output[0] = std::make_pair(max_index, max);
     return true;
   }
 

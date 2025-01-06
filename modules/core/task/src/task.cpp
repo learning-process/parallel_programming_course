@@ -2,57 +2,53 @@
 
 #include <gtest/gtest.h>
 
+#include <array>
 #include <stdexcept>
-#include <utility>
+#include <format>
 
-void ppc::core::Task::set_data(TaskDataPtr taskData_) {
-  taskData_->state_of_testing = TaskData::StateOfTesting::FUNC;
-  functions_order.clear();
-  taskData = std::move(taskData_);
-}
+constexpr auto right_functions_order = std::array{"validate", "pre_process", "run", "post_process"};
 
-ppc::core::TaskDataPtr ppc::core::Task::get_data() const { return taskData; }
-
-ppc::core::Task::Task(TaskDataPtr taskData_) { set_data(std::move(taskData_)); }
-
-bool ppc::core::Task::validation() {
+bool ppc::core::BaseTask::validate() {
   internal_order_test();
   return validation_impl();
 }
 
-bool ppc::core::Task::pre_processing() {
+bool ppc::core::BaseTask::pre_process() {
   internal_order_test();
   return pre_processing_impl();
 }
 
-bool ppc::core::Task::run() {
+bool ppc::core::BaseTask::run() {
   internal_order_test();
   return run_impl();
 }
 
-bool ppc::core::Task::post_processing() {
+bool ppc::core::BaseTask::post_process() {
   internal_order_test();
   return post_processing_impl();
 }
 
-void ppc::core::Task::internal_order_test(const std::string& str) {
-  if (!functions_order.empty() && str == functions_order.back() && str == "run") return;
+void ppc::core::BaseTask::internal_order_test(const std::string& str) {
+  if (!functions_order.empty() && str == "run" && str == functions_order.back()) return;
 
   functions_order.push_back(str);
 
   for (size_t i = 0; i < functions_order.size(); i++) {
     if (functions_order[i] != right_functions_order[i % right_functions_order.size()]) {
-      throw std::invalid_argument("ORDER OF FUCTIONS IS NOT RIGHT: \n" + std::string("Serial number: ") +
-                                  std::to_string(i + 1) + "\n" + std::string("Yours function: ") + functions_order[i] +
-                                  "\n" + std::string("Expected function: ") + right_functions_order[i]);
+      throw std::invalid_argument(
+          std::format("ORDER OF FUNCTIONS IS NOT RIGHT: \n"
+                      "Serial number: {}\n"
+                      "Yours function: {}\n"
+                      "Expected function: {}",
+                      i + 1, functions_order[i], right_functions_order[i]));
     }
   }
 
-  if (str == "pre_processing" && taskData->state_of_testing == TaskData::StateOfTesting::FUNC) {
+  if (str == "pre_process" && testing_mode == TestingMode::Func) {
     tmp_time_point = std::chrono::high_resolution_clock::now();
   }
 
-  if (str == "post_processing" && taskData->state_of_testing == TaskData::StateOfTesting::FUNC) {
+  if (str == "post_process" && testing_mode == TestingMode::Func) {
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - tmp_time_point).count();
     auto current_time = static_cast<double>(duration) * 1e-9;
@@ -62,5 +58,3 @@ void ppc::core::Task::internal_order_test(const std::string& str) {
     }
   }
 }
-
-ppc::core::Task::~Task() { functions_order.clear(); }
