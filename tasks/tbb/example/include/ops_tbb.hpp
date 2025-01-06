@@ -8,8 +8,6 @@
 
 namespace nesterov_a_test_task_tbb {
 
-std::vector<int> getRandomVector(int sz);
-
 class TestTBBTaskSequential : public ppc::core::Task {
  public:
   explicit TestTBBTaskSequential(ppc::core::TaskDataPtr taskData_, std::string ops_)

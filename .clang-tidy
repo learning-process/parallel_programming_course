@@ -29,7 +29,6 @@ Checks: >
   bugprone-unused-raii,
   bugprone-unused-return-value,
   clang-diagnostic-*,
-  cppcoreguidelines-avoid-goto,
   llvm-include-order,
   llvm-namespace-comment,
   misc-confusable-identifiers,

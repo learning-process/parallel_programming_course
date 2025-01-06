@@ -12,12 +12,12 @@ fi
 
 if [[ -z "$ASAN_RUN" ]]; then
   if [[ $OSTYPE == "linux-gnu" ]]; then
-    mpirun --oversubscribe -np 4 ./build/bin/sample_mpi
-    mpirun --oversubscribe -np 4 ./build/bin/sample_mpi_boost
-    mpirun --oversubscribe -np 4 ./build/bin/mpi_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+    mpirun --oversubscribe -np $PROC_COUNT ./build/bin/sample_mpi
+    mpirun --oversubscribe -np $PROC_COUNT ./build/bin/sample_mpi_boost
+    mpirun --oversubscribe -np $PROC_COUNT ./build/bin/mpi_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
   elif [[ $OSTYPE == "darwin"* ]]; then
-    mpirun -np 2 ./build/bin/sample_mpi
-    mpirun -np 2 ./build/bin/sample_mpi_boost
-    mpirun -np 2 ./build/bin/mpi_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
+    mpirun -np $PROC_COUNT ./build/bin/sample_mpi
+    mpirun -np $PROC_COUNT ./build/bin/sample_mpi_boost
+    mpirun -np $PROC_COUNT ./build/bin/mpi_func_tests --gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating
   fi
 fi

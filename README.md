@@ -106,7 +106,6 @@ Navigate to a source code folder.
   e.g.
   namespace nesterov_a_test_task_seq {
   
-  std::vector<int> getRandomVector(int sz);
   class TestTaskSequential : public ppc::core::Task {
   ...
   };

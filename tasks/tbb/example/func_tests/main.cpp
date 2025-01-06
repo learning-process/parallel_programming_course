@@ -1,11 +1,24 @@
 #include <gtest/gtest.h>
 
+#include <random>
 #include <vector>
 
 #include "tbb/example/include/ops_tbb.hpp"
 
+namespace {
+std::vector<int> GetRandomVector(int sz) {
+  std::random_device dev;
+  std::mt19937 gen(dev());
+  std::vector<int> vec(sz);
+  for (int i = 0; i < sz; i++) {
+    vec[i] = gen() % 100 - 50;
+  }
+  return vec;
+}
+}  // namespace
+
 TEST(Parallel_Operations_TBB, Test_Sum) {
-  std::vector<int> vec = nesterov_a_test_task_tbb::getRandomVector(100);
+  std::vector<int> vec = GetRandomVector(100);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -43,7 +56,7 @@ TEST(Parallel_Operations_TBB, Test_Sum) {
 }
 
 TEST(Parallel_Operations_TBB, Test_Diff) {
-  std::vector<int> vec = nesterov_a_test_task_tbb::getRandomVector(100);
+  std::vector<int> vec = GetRandomVector(100);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -81,7 +94,7 @@ TEST(Parallel_Operations_TBB, Test_Diff) {
 }
 
 TEST(Parallel_Operations_TBB, Test_Diff_2) {
-  std::vector<int> vec = nesterov_a_test_task_tbb::getRandomVector(50);
+  std::vector<int> vec = GetRandomVector(50);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -119,7 +132,7 @@ TEST(Parallel_Operations_TBB, Test_Diff_2) {
 }
 
 TEST(Parallel_Operations_TBB, Test_Mult) {
-  std::vector<int> vec = nesterov_a_test_task_tbb::getRandomVector(10);
+  std::vector<int> vec = GetRandomVector(10);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -157,7 +170,7 @@ TEST(Parallel_Operations_TBB, Test_Mult) {
 }
 
 TEST(Parallel_Operations_TBB, Test_Mult_2) {
-  std::vector<int> vec = nesterov_a_test_task_tbb::getRandomVector(5);
+  std::vector<int> vec = GetRandomVector(5);
   // Create data
   std::vector<int> ref_res(1, 0);
 
@@ -192,9 +205,4 @@ TEST(Parallel_Operations_TBB, Test_Mult_2) {
   testTbbTaskParallel.run();
   testTbbTaskParallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
-}
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }

@@ -1,11 +1,14 @@
 build
+out
 mpich
 cmake-build-*
 .idea/
+.vs/
 .vscode/
 scripts/variants*.csv
 scripts/variants*.xlsx
 *venv*
 sln/
+CMakeSettings.json
 .DS_Store
 .cache

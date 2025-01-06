@@ -1,0 +1,13 @@
+'task:mpi':
+  - "tasks/mpi/**"
+'task:omp':
+  - "tasks/omp/**"
+'task:seq':
+  - "tasks/seq/**"
+'task:stl':
+  - "tasks/stl/**"
+'task:tbb':
+  - "tasks/tbb/**"
+ci:
+  - ".github/**"
+  - "appveyor.yml"

@@ -4,7 +4,12 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '0 12 * * *'
+    - cron: '0 0,6,12,18 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 
 jobs:
   ubuntu-gcc-build:
@@ -44,9 +49,21 @@ jobs:
       env:
         CC: gcc-13
         CXX: g++-13
-    - name: Run func tests (MPI)
+    - name: Run func tests (MPI, num_proc=2)
       run: |
         source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 2
+    - name: Run func tests (MPI, num_proc=3)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 3
+    - name: Run func tests (MPI, num_proc=4)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 4
     - name: Run func tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -111,7 +128,7 @@ jobs:
         sudo apt-get install valgrind
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
-        sudo ./llvm.sh 18 all
+        sudo ./llvm.sh 19 all
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -124,17 +141,29 @@ jobs:
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
-        CC: clang-18
-        CXX: clang++-18
+        CC: clang-19
+        CXX: clang++-19
     - name: Ninja build
       run: |
         cmake --build build
       env:
-        CC: clang-18
-        CXX: clang++-18
-    - name: Run tests (MPI)
+        CC: clang-19
+        CXX: clang++-19
+    - name: Run func tests (MPI, num_proc=2)
       run: |
         source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 2
+    - name: Run func tests (MPI, num_proc=3)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 3
+    - name: Run func tests (MPI, num_proc=4)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 4
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -198,7 +227,7 @@ jobs:
         sudo apt-get install python3-pip
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
-        sudo ./llvm.sh 18 all
+        sudo ./llvm.sh 19 all
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -212,18 +241,20 @@ jobs:
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
       env:
-        CC: clang-18
-        CXX: clang++-18
+        CC: clang-19
+        CXX: clang++-19
     - name: Ninja build
       run: |
         cmake --build build
       env:
-        CC: clang-18
-        CXX: clang++-18
+        CC: clang-19
+        CXX: clang++-19
     - name: Run tests (MPI)
       run: |
         export ASAN_RUN=1
         source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 2
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -313,9 +344,21 @@ jobs:
     - name: Ninja build
       run: |
         cmake --build build
-    - name: Run tests (MPI)
+    - name: Run func tests (MPI, num_proc=2)
       run: |
         source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 2
+    - name: Run func tests (MPI, num_proc=3)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 3
+    - name: Run func tests (MPI, num_proc=4)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 4
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -561,6 +604,8 @@ jobs:
     - name: Run tests (MPI)
       run: |
         source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 2
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
