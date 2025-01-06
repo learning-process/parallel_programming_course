@@ -3,23 +3,10 @@
 #include <future>
 #include <iostream>
 #include <numeric>
-#include <random>
 #include <string>
 #include <thread>
 #include <utility>
 #include <vector>
-
-using namespace std::chrono_literals;
-
-std::vector<int> nesterov_a_test_task_stl::getRandomVector(int sz) {
-  std::random_device dev;
-  std::mt19937 gen(dev());
-  std::vector<int> vec(sz);
-  for (int i = 0; i < sz; i++) {
-    vec[i] = static_cast<int>(gen()) % 100;
-  }
-  return vec;
-}
 
 bool nesterov_a_test_task_stl::TestSTLTaskSequential::pre_processing_impl() {
   // Init vectors

@@ -14,8 +14,6 @@
 
 namespace nesterov_a_test_task_mpi {
 
-std::vector<int> getRandomVector(int sz);
-
 class TestMPITaskSequential : public ppc::core::Task {
  public:
   explicit TestMPITaskSequential(ppc::core::TaskDataPtr taskData_, std::string ops_)

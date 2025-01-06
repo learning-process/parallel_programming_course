@@ -8,8 +8,6 @@
 
 namespace nesterov_a_test_task_stl {
 
-std::vector<int> getRandomVector(int sz);
-
 class TestSTLTaskSequential : public ppc::core::Task {
  public:
   explicit TestSTLTaskSequential(ppc::core::TaskDataPtr taskData_, std::string ops_)
