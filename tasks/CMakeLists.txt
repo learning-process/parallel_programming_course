@@ -70,11 +70,11 @@ foreach(TASK_TYPE ${LIST_OF_TASKS})
     set_target_properties(${exec_func_lib} PROPERTIES LINKER_LANGUAGE CXX)
 
     if (USE_FUNC_TESTS)
-      add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
+      add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES} "${PATH_TO_TASK}/runner.cpp")
       list(APPEND LIST_OF_EXEC_TESTS ${exec_func_tests})
     endif (USE_FUNC_TESTS)
     if (USE_PERF_TESTS)
-      add_executable(${exec_perf_tests} ${PERF_TESTS_SOURCE_FILES})
+      add_executable(${exec_perf_tests} ${PERF_TESTS_SOURCE_FILES} "${PATH_TO_TASK}/runner.cpp")
       list(APPEND LIST_OF_EXEC_TESTS ${exec_perf_tests})
     endif (USE_PERF_TESTS)
 

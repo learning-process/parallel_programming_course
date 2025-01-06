@@ -212,8 +212,3 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff_2) {
   TestSTLTaskParallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
