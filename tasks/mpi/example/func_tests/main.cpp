@@ -46,11 +46,9 @@ TEST(Parallel_Operations_MPI, Test_Sum) {
     std::vector<int32_t> reference_sum(1, 0);
 
     // Create TaskData
-    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataSeq->inputs_count.emplace_back(global_vec.size());
+    auto taskDataSeq = std::make_shared<ppc::core::TaskData>(*taskDataPar);
+    taskDataSeq->outputs.clear();
     taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_sum.data()));
-    taskDataSeq->outputs_count.emplace_back(reference_sum.size());
 
     // Create Task
     nesterov_a_test_task_mpi::TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "+");
@@ -90,11 +88,9 @@ TEST(Parallel_Operations_MPI, Test_Diff) {
     std::vector<int32_t> reference_diff(1, 0);
 
     // Create TaskData
-    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataSeq->inputs_count.emplace_back(global_vec.size());
+    auto taskDataSeq = std::make_shared<ppc::core::TaskData>(*taskDataPar);
+    taskDataSeq->outputs.clear();
     taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
-    taskDataSeq->outputs_count.emplace_back(reference_diff.size());
 
     // Create Task
     nesterov_a_test_task_mpi::TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "-");
@@ -134,11 +130,9 @@ TEST(Parallel_Operations_MPI, Test_Diff_2) {
     std::vector<int32_t> reference_diff(1, 0);
 
     // Create TaskData
-    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataSeq->inputs_count.emplace_back(global_vec.size());
+    auto taskDataSeq = std::make_shared<ppc::core::TaskData>(*taskDataPar);
+    taskDataSeq->outputs.clear();
     taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
-    taskDataSeq->outputs_count.emplace_back(reference_diff.size());
 
     // Create Task
     nesterov_a_test_task_mpi::TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "-");
@@ -178,11 +172,9 @@ TEST(Parallel_Operations_MPI, Test_Max) {
     std::vector<int32_t> reference_max(1, 0);
 
     // Create TaskData
-    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataSeq->inputs_count.emplace_back(global_vec.size());
+    auto taskDataSeq = std::make_shared<ppc::core::TaskData>(*taskDataPar);
+    taskDataSeq->outputs.clear();
     taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));
-    taskDataSeq->outputs_count.emplace_back(reference_max.size());
 
     // Create Task
     nesterov_a_test_task_mpi::TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "max");
@@ -222,11 +214,9 @@ TEST(Parallel_Operations_MPI, Test_Max_2) {
     std::vector<int32_t> reference_max(1, 0);
 
     // Create TaskData
-    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataSeq->inputs_count.emplace_back(global_vec.size());
+    auto taskDataSeq = std::make_shared<ppc::core::TaskData>(*taskDataPar);
+    taskDataSeq->outputs.clear();
     taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));
-    taskDataSeq->outputs_count.emplace_back(reference_max.size());
 
     // Create Task
     nesterov_a_test_task_mpi::TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "max");
