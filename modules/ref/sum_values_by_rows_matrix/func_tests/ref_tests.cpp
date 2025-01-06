@@ -12,21 +12,21 @@ TEST(sum_values_by_rows_matrix, check_int32_t) {
   std::vector<int32_t> out(37, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
-  taskData->inputs_count.emplace_back(in_index.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
+  task_data->inputs_count.emplace_back(in_index.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::SumValuesByRowsMatrix<int32_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::SumValuesByRowsMatrix<int32_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   for (size_t i = 0; i < in_index[0]; i++) {
     ASSERT_EQ(static_cast<uint64_t>(out[0]), 2 * in_index[0]);
   }
@@ -39,18 +39,18 @@ TEST(sum_values_by_rows_matrix, check_validate_func1) {
   std::vector<int32_t> out(39, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
-  taskData->inputs_count.emplace_back(in_index.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
+  task_data->inputs_count.emplace_back(in_index.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::SumValuesByRowsMatrix<int32_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, false);
+  ppc::reference::SumValuesByRowsMatrix<int32_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, false);
 }
 
 TEST(sum_values_by_rows_matrix, check_validate_func2) {
@@ -60,18 +60,18 @@ TEST(sum_values_by_rows_matrix, check_validate_func2) {
   std::vector<int32_t> out(37, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
-  taskData->inputs_count.emplace_back(in_index.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
+  task_data->inputs_count.emplace_back(in_index.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::SumValuesByRowsMatrix<int32_t, uint64_t> testTask(taskData);
-  auto isValid = testTask.validation();
-  ASSERT_EQ(isValid, false);
+  ppc::reference::SumValuesByRowsMatrix<int32_t, uint64_t> test_task(task_data);
+  auto is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, false);
 }
 
 TEST(sum_values_by_rows_matrix, check_double) {
@@ -81,21 +81,21 @@ TEST(sum_values_by_rows_matrix, check_double) {
   std::vector<double> out(37, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
-  taskData->inputs_count.emplace_back(in_index.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
+  task_data->inputs_count.emplace_back(in_index.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::SumValuesByRowsMatrix<double, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::SumValuesByRowsMatrix<double, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   for (size_t i = 0; i < in_index[0]; i++) {
     EXPECT_NEAR(out[i], 1.0, 1e-6);
   }
@@ -111,21 +111,21 @@ TEST(sum_values_by_rows_matrix, check_int8_t) {
   }
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
-  taskData->inputs_count.emplace_back(in_index.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
+  task_data->inputs_count.emplace_back(in_index.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::SumValuesByRowsMatrix<int8_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::SumValuesByRowsMatrix<int8_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   for (size_t i = 0; i < in_index[0]; i++) {
     ASSERT_EQ(out[0], 0);
   }
@@ -141,21 +141,21 @@ TEST(sum_values_by_rows_matrix, check_int64_t) {
   }
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
-  taskData->inputs_count.emplace_back(in_index.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
+  task_data->inputs_count.emplace_back(in_index.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::SumValuesByRowsMatrix<int64_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::SumValuesByRowsMatrix<int64_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   for (size_t i = 0; i < in_index[0]; i++) {
     ASSERT_EQ(out[0], static_cast<int64_t>(in_index[1] * (in_index[1] + 1)) / 2);
   }
@@ -165,29 +165,29 @@ TEST(sum_values_by_rows_matrix, check_float) {
   // Create data
   std::vector<float> in(1406);
   std::vector<uint64_t> in_index = {37, 38};
-  std::vector<float> out(37, 0.f);
+  std::vector<float> out(37, 0.F);
   for (size_t i = 0; i < in.size(); ++i) {
     in[i] = static_cast<float>((i % 38) + 1);
     in[i] *= in[i];
   }
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
-  taskData->inputs_count.emplace_back(in_index.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in_index.data()));
+  task_data->inputs_count.emplace_back(in_index.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::SumValuesByRowsMatrix<float, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::SumValuesByRowsMatrix<float, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   for (size_t i = 0; i < in_index[0]; i++) {
-    EXPECT_NEAR(out[i], in_index[1] * (in_index[1] + 1) * (2 * in_index[1] + 1) / 6.f, 1e-6);
+    EXPECT_NEAR(out[i], in_index[1] * (in_index[1] + 1) * (2 * in_index[1] + 1) / 6.F, 1e-6);
   }
 }

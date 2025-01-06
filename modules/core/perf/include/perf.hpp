@@ -27,23 +27,23 @@ struct PerfResults {
 class Perf {
  public:
   // Init performance analysis with initialized task and initialized data
-  explicit Perf(std::shared_ptr<Task> task_);
+  explicit Perf(const std::shared_ptr<Task> &task);
   // Set task with initialized task and initialized data for performance
   // analysis c
-  void set_task(std::shared_ptr<Task> task_);
+  void SetTask(const std::shared_ptr<Task> &task);
   // Check performance of full task's pipeline:  pre_processing() ->
   // validation() -> run() -> post_processing()
-  void pipeline_run(const std::shared_ptr<PerfAttr>& perfAttr,
-                    const std::shared_ptr<ppc::core::PerfResults>& perfResults);
+  void PipelineRun(const std::shared_ptr<PerfAttr>& perf_attr,
+                    const std::shared_ptr<ppc::core::PerfResults>& perf_results);
   // Check performance of task's run() function
-  void task_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::shared_ptr<ppc::core::PerfResults>& perfResults);
+  void TaskRun(const std::shared_ptr<PerfAttr>& perf_attr, const std::shared_ptr<ppc::core::PerfResults>& perf_results);
   // Pint results for automation checkers
-  static void print_perf_statistic(const std::shared_ptr<PerfResults>& perfResults);
+  static void PrintPerfStatistic(const std::shared_ptr<PerfResults>& perf_results);
 
  private:
   std::shared_ptr<Task> task;
-  static void common_run(const std::shared_ptr<PerfAttr>& perfAttr, const std::function<void()>& pipeline,
-                         const std::shared_ptr<ppc::core::PerfResults>& perfResults);
+  static void CommonRun(const std::shared_ptr<PerfAttr>& perf_attr, const std::function<void()>& pipeline,
+                         const std::shared_ptr<ppc::core::PerfResults>& perf_results);
 };
 
 }  // namespace core

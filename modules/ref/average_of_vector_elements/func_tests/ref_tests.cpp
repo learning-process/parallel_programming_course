@@ -11,19 +11,19 @@ TEST(average_of_vector_elements, check_int32_t) {
   std::vector<double> out(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::AverageOfVectorElements<int32_t, double> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::AverageOfVectorElements<int32_t, double> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], 1.0, 1e-5);
 }
 
@@ -33,16 +33,16 @@ TEST(average_of_vector_elements, check_validate_func) {
   std::vector<double> out(2, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::AverageOfVectorElements<int32_t, double> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, false);
+  ppc::reference::AverageOfVectorElements<int32_t, double> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, false);
 }
 
 TEST(average_of_vector_elements, check_double) {
@@ -51,19 +51,19 @@ TEST(average_of_vector_elements, check_double) {
   std::vector<double> out(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::AverageOfVectorElements<double, double> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::AverageOfVectorElements<double, double> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], 1.123, 1e-5);
 }
 
@@ -73,19 +73,19 @@ TEST(average_of_vector_elements, check_uint8_t) {
   std::vector<double> out(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::AverageOfVectorElements<uint8_t, double> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::AverageOfVectorElements<uint8_t, double> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], 2.0, 1e-5);
 }
 
@@ -95,40 +95,40 @@ TEST(average_of_vector_elements, check_int64_t) {
   std::vector<double> out(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::AverageOfVectorElements<int64_t, double> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::AverageOfVectorElements<int64_t, double> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], 3.0, 1e-5);
 }
 
 TEST(average_of_vector_elements, check_float) {
   // Create data
-  std::vector<float> in(1, 1.5f);
+  std::vector<float> in(1, 1.5F);
   std::vector<double> out(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
-  ppc::reference::AverageOfVectorElements<float, double> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::AverageOfVectorElements<float, double> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], 1.5, 1e-5);
 }

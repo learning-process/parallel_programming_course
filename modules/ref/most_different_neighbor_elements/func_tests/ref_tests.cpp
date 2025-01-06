@@ -18,25 +18,25 @@ TEST(most_different_neighbor_elements, check_int32_t) {
   in[235] = 4000;
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<int32_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  EXPECT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::MostDifferentNeighborElements<int32_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  EXPECT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_EQ(out[0], 0);
   EXPECT_EQ(out[1], 4000);
-  EXPECT_EQ(out_index[0], 234ull);
-  EXPECT_EQ(out_index[1], 235ull);
+  EXPECT_EQ(out_index[0], 234ULL);
+  EXPECT_EQ(out_index[1], 235ULL);
 }
 
 TEST(most_different_neighbor_elements, check_validate_func) {
@@ -46,18 +46,18 @@ TEST(most_different_neighbor_elements, check_validate_func) {
   std::vector<uint64_t> out_index(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<int32_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  EXPECT_EQ(isValid, false);
+  ppc::reference::MostDifferentNeighborElements<int32_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  EXPECT_EQ(is_valid, false);
 }
 
 TEST(most_different_neighbor_elements, check_double) {
@@ -72,25 +72,25 @@ TEST(most_different_neighbor_elements, check_double) {
   in[190] = 9000.9;
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<double, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  EXPECT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::MostDifferentNeighborElements<double, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  EXPECT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], -1000.1, 1e-6);
   EXPECT_NEAR(out[1], 9000.9, 1e-6);
-  EXPECT_EQ(out_index[0], 189ull);
-  EXPECT_EQ(out_index[1], 190ull);
+  EXPECT_EQ(out_index[0], 189ULL);
+  EXPECT_EQ(out_index[1], 190ULL);
 }
 
 TEST(most_different_neighbor_elements, check_int8_t) {
@@ -109,25 +109,25 @@ TEST(most_different_neighbor_elements, check_int8_t) {
   in[6] = -56;
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<int8_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  EXPECT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::MostDifferentNeighborElements<int8_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  EXPECT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_EQ(out[0], 56);
   EXPECT_EQ(out[1], -56);
-  EXPECT_EQ(out_index[0], 5ull);
-  EXPECT_EQ(out_index[1], 6ull);
+  EXPECT_EQ(out_index[0], 5ULL);
+  EXPECT_EQ(out_index[1], 6ULL);
 }
 
 TEST(most_different_neighbor_elements, check_int64_t) {
@@ -150,56 +150,56 @@ TEST(most_different_neighbor_elements, check_int64_t) {
   in[21] = 1119;
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<int64_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  EXPECT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::MostDifferentNeighborElements<int64_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  EXPECT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_EQ(out[0], -1000);
   EXPECT_EQ(out[1], 1119);
-  EXPECT_EQ(out_index[0], 20ull);
-  EXPECT_EQ(out_index[1], 21ull);
+  EXPECT_EQ(out_index[0], 20ULL);
+  EXPECT_EQ(out_index[1], 21ULL);
 }
 
 TEST(most_different_neighbor_elements, check_float) {
   // Create data
-  std::vector<float> in(20, 1.f);
-  std::vector<float> out(2, 0.f);
+  std::vector<float> in(20, 1.F);
+  std::vector<float> out(2, 0.F);
   std::vector<uint64_t> out_index(2, 0);
   for (size_t i = 0; i < in.size(); i++) {
-    in[i] += (i + 1.f) * 2.5f;
+    in[i] += (i + 1.F) * 2.5F;
   }
-  in[0] = 110.001f;
-  in[1] = -990.0025f;
+  in[0] = 110.001F;
+  in[1] = -990.0025F;
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MostDifferentNeighborElements<float, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  EXPECT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
-  EXPECT_NEAR(out[0], 110.001f, 1e-4f);
-  EXPECT_NEAR(out[1], -990.0025f, 1e-4f);
-  EXPECT_EQ(out_index[0], 0ull);
-  EXPECT_EQ(out_index[1], 1ull);
+  ppc::reference::MostDifferentNeighborElements<float, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  EXPECT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
+  EXPECT_NEAR(out[0], 110.001F, 1e-4F);
+  EXPECT_NEAR(out[1], -990.0025F, 1e-4F);
+  EXPECT_EQ(out_index[0], 0ULL);
+  EXPECT_EQ(out_index[1], 1ULL);
 }

@@ -39,9 +39,9 @@ bool nesterov_a_test_task_stl::TestSTLTaskSequential::post_processing_impl() {
   return true;
 }
 
-std::mutex my_mutex;
+static std::mutex my_mutex;
 
-void atomOps(std::vector<int> vec, const std::string &ops, std::promise<int> &&pr) {
+static void AtomOps(std::vector<int> vec, const std::string &ops, std::promise<int> &&pr) {
   auto sz = vec.size();
   int reduction_elem = 0;
   if (ops == "+") {
@@ -86,7 +86,7 @@ bool nesterov_a_test_task_stl::TestSTLTaskParallel::run_impl() {
   for (unsigned i = 0; i < nthreads; i++) {
     futures[i] = promises[i].get_future();
     std::vector<int> tmp_vec(input_.begin() + i * delta, input_.begin() + (i + 1) * delta);
-    threads[i] = std::thread(atomOps, tmp_vec, ops, std::move(promises[i]));
+    threads[i] = std::thread(AtomOps, tmp_vec, ops, std::move(promises[i]));
     threads[i].join();
     res += futures[i].get();
   }

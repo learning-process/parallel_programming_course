@@ -63,23 +63,23 @@ bool nesterov_a_test_task_omp::TestOMPTaskParallel::run_impl() {
   auto temp_res = res;
   if (ops == "+") {
 #pragma omp parallel for reduction(+ : temp_res)
-    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
-      temp_res += input_[i];
+    for (int i : input_) {
+      temp_res += i;
     }
   } else if (ops == "-") {
 #pragma omp parallel for reduction(- : temp_res)
-    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
-      temp_res -= input_[i];
+    for (int i : input_) {
+      temp_res -= i;
     }
   } else if (ops == "*") {
 #pragma omp parallel for reduction(* : temp_res)
-    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
-      temp_res *= input_[i];
+    for (int i : input_) {
+      temp_res *= i;
     }
   }
   res = temp_res;
   double finish = omp_get_wtime();
-  std::cout << "How measure time in OpenMP: " << finish - start << std::endl;
+  std::cout << "How measure time in OpenMP: " << finish - start << '\n';
   return true;
 }
 

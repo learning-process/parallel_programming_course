@@ -16,9 +16,9 @@ int main(int argc, char** argv) {
   MPI_Get_processor_name(processor_name, &len_chars);
 
   MPI_Barrier(MPI_COMM_WORLD);
-  std::cout << "Processor = " << processor_name << std::endl;
-  std::cout << "Rank = " << world_rank << std::endl;
-  std::cout << "Number of processors = " << world_size << std::endl;
+  std::cout << "Processor = " << processor_name << '\n';
+  std::cout << "Rank = " << world_rank << '\n';
+  std::cout << "Number of processors = " << world_size << '\n';
 
   MPI_Finalize();
   return 0;

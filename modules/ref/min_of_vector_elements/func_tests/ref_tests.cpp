@@ -13,23 +13,23 @@ TEST(min_of_vector_elements, check_int32_t) {
   in[328] = -10;
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MinOfVectorElements<int32_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::MinOfVectorElements<int32_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   ASSERT_EQ(out[0], -10);
-  ASSERT_EQ(out_index[0], 328ull);
+  ASSERT_EQ(out_index[0], 328ULL);
 }
 
 TEST(min_of_vector_elements, check_validate_func_1) {
@@ -39,18 +39,18 @@ TEST(min_of_vector_elements, check_validate_func_1) {
   std::vector<uint64_t> out_index(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MinOfVectorElements<int32_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, false);
+  ppc::reference::MinOfVectorElements<int32_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, false);
 }
 
 TEST(min_of_vector_elements, check_validate_func_2) {
@@ -60,18 +60,18 @@ TEST(min_of_vector_elements, check_validate_func_2) {
   std::vector<uint64_t> out_index(2, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MinOfVectorElements<int32_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, false);
+  ppc::reference::MinOfVectorElements<int32_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, false);
 }
 
 TEST(min_of_vector_elements, check_double) {
@@ -82,23 +82,23 @@ TEST(min_of_vector_elements, check_double) {
   in[2] = -1.0001;
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MinOfVectorElements<double, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::MinOfVectorElements<double, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], -1.0001, 1e-6);
-  ASSERT_EQ(out_index[0], 2ull);
+  ASSERT_EQ(out_index[0], 2ULL);
 }
 
 TEST(min_of_vector_elements, check_uint8_t) {
@@ -108,23 +108,23 @@ TEST(min_of_vector_elements, check_uint8_t) {
   std::vector<uint64_t> out_index(1, 0);
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MinOfVectorElements<int8_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::MinOfVectorElements<int8_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], 1, 1e-6);
-  ASSERT_EQ(out_index[0], 0ull);
+  ASSERT_EQ(out_index[0], 0ULL);
 }
 
 TEST(min_of_vector_elements, check_int64_t) {
@@ -135,48 +135,48 @@ TEST(min_of_vector_elements, check_int64_t) {
   in[345] = -256;
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MinOfVectorElements<int64_t, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::MinOfVectorElements<int64_t, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], -256, 1e-6);
-  ASSERT_EQ(out_index[0], 345ull);
+  ASSERT_EQ(out_index[0], 345ULL);
 }
 
 TEST(min_of_vector_elements, check_float) {
   // Create data
-  std::vector<float> in(1, 1.f);
-  std::vector<float> out(1, 0.f);
+  std::vector<float> in(1, 1.F);
+  std::vector<float> out(1, 0.F);
   std::vector<uint64_t> out_index(1, 0);
-  in[0] = -1.01f;
+  in[0] = -1.01F;
 
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
-  taskData->outputs_count.emplace_back(out_index.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
-  ppc::reference::MinOfVectorElements<float, uint64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
-  EXPECT_NEAR(out[0], -1.01f, 1e-6f);
-  ASSERT_EQ(out_index[0], 0ull);
+  ppc::reference::MinOfVectorElements<float, uint64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
+  EXPECT_NEAR(out[0], -1.01F, 1e-6F);
+  ASSERT_EQ(out_index[0], 0ULL);
 }

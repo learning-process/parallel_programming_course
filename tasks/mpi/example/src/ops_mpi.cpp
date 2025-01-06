@@ -30,7 +30,7 @@ bool nesterov_a_test_task_mpi::TestMPITaskSequential::run_impl() {
   } else if (ops == "-") {
     res = -std::accumulate(input_.begin(), input_.end(), 0);
   } else if (ops == "max") {
-    res = *std::max_element(input_.begin(), input_.end());
+    res = *std::ranges::max_element(input_);
   }
   return true;
 }
@@ -55,7 +55,7 @@ bool nesterov_a_test_task_mpi::TestMPITaskParallel::pre_processing_impl() {
       input_[i] = tmp_ptr[i];
     }
     for (int proc = 1; proc < world.size(); proc++) {
-      world.send(proc, 0, input_.data() + proc * delta, delta);
+      world.send(proc, 0, input_.data() + (proc * delta), delta);
     }
   }
   local_input_ = std::vector<int>(delta);
@@ -84,7 +84,7 @@ bool nesterov_a_test_task_mpi::TestMPITaskParallel::run_impl() {
   } else if (ops == "-") {
     local_res = -std::accumulate(local_input_.begin(), local_input_.end(), 0);
   } else if (ops == "max") {
-    local_res = *std::max_element(local_input_.begin(), local_input_.end());
+    local_res = *std::ranges::max_element(local_input_);
   }
 
   if (ops == "+" || ops == "-") {
