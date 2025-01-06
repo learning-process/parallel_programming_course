@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <utility>
 
-void ppc::core::Task::set_data(TaskDataPtr task_data) {
+void ppc::core::Task::SetData(TaskDataPtr task_data) {
   task_data->state_of_testing = TaskData::StateOfTesting::FUNC;
   functions_order.clear();
   taskData = std::move(task_data);
@@ -13,7 +13,7 @@ void ppc::core::Task::set_data(TaskDataPtr task_data) {
 
 ppc::core::TaskDataPtr ppc::core::Task::get_data() const { return taskData; }
 
-ppc::core::Task::Task(TaskDataPtr task_data) { set_data(std::move(task_data)); }
+ppc::core::Task::Task(TaskDataPtr task_data) { SetData(std::move(task_data)); }
 
 bool ppc::core::Task::validation() {
   internal_order_test();

@@ -27,7 +27,7 @@ class Task {
   explicit Task(TaskDataPtr task_data);
 
   // set input and output data
-  void set_data(TaskDataPtr task_data);
+  void SetData(TaskDataPtr task_data);
 
   // validation of data and validation of task attributes before running
   virtual bool validation();

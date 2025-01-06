@@ -7,18 +7,18 @@
 #include <sstream>
 #include <utility>
 
-ppc::core::Perf::Perf(const std::shared_ptr<Task> &task) { set_task(task); }
+ppc::core::Perf::Perf(const std::shared_ptr<Task> &task) { SetTask(task); }
 
-void ppc::core::Perf::set_task(const std::shared_ptr<Task> &task) {
+void ppc::core::Perf::SetTask(const std::shared_ptr<Task> &task) {
   task->get_data()->state_of_testing = TaskData::StateOfTesting::PERF;
   this->task = task;
 }
 
-void ppc::core::Perf::pipeline_run(const std::shared_ptr<PerfAttr>& perf_attr,
+void ppc::core::Perf::PipelineRun(const std::shared_ptr<PerfAttr>& perf_attr,
                                    const std::shared_ptr<ppc::core::PerfResults>& perf_results) {
   perf_results->type_of_running = PerfResults::TypeOfRunning::PIPELINE;
 
-  common_run(
+  CommonRun(
       perf_attr,
       [&]() {
         task->validation();
@@ -29,13 +29,13 @@ void ppc::core::Perf::pipeline_run(const std::shared_ptr<PerfAttr>& perf_attr,
       perf_results);
 }
 
-void ppc::core::Perf::task_run(const std::shared_ptr<PerfAttr>& perf_attr,
+void ppc::core::Perf::TaskRun(const std::shared_ptr<PerfAttr>& perf_attr,
                                const std::shared_ptr<ppc::core::PerfResults>& perf_results) {
   perf_results->type_of_running = PerfResults::TypeOfRunning::TASK_RUN;
 
   task->validation();
   task->pre_processing();
-  common_run(perf_attr, [&]() { task->run(); }, perf_results);
+  CommonRun(perf_attr, [&]() { task->run(); }, perf_results);
   task->post_processing();
 
   task->validation();
@@ -44,7 +44,7 @@ void ppc::core::Perf::task_run(const std::shared_ptr<PerfAttr>& perf_attr,
   task->post_processing();
 }
 
-void ppc::core::Perf::common_run(const std::shared_ptr<PerfAttr>& perf_attr, const std::function<void()>& pipeline,
+void ppc::core::Perf::CommonRun(const std::shared_ptr<PerfAttr>& perf_attr, const std::function<void()>& pipeline,
                                  const std::shared_ptr<ppc::core::PerfResults>& perf_results) {
   auto begin = perf_attr->current_timer();
   for (uint64_t i = 0; i < perf_attr->num_running; i++) {
@@ -54,7 +54,7 @@ void ppc::core::Perf::common_run(const std::shared_ptr<PerfAttr>& perf_attr, con
   perf_results->time_sec = end - begin;
 }
 
-void ppc::core::Perf::print_perf_statistic(const std::shared_ptr<PerfResults>& perf_results) {
+void ppc::core::Perf::PrintPerfStatistic(const std::shared_ptr<PerfResults>& perf_results) {
   std::string relative_path(::testing::UnitTest::GetInstance()->current_test_info()->file());
   std::string ppc_regex_template("parallel_programming_course");
   std::string perf_regex_template("perf_tests");
