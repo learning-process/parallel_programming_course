@@ -4,22 +4,9 @@
 
 #include <iostream>
 #include <numeric>
-#include <random>
 #include <string>
 #include <thread>
 #include <vector>
-
-using namespace std::chrono_literals;
-
-std::vector<int> nesterov_a_test_task_omp::getRandomVector(int sz) {
-  std::random_device dev;
-  std::mt19937 gen(dev());
-  std::vector<int> vec(sz);
-  for (int i = 0; i < sz; i++) {
-    vec[i] = gen() % 100 + 1;
-  }
-  return vec;
-}
 
 bool nesterov_a_test_task_omp::TestOMPTaskSequential::pre_processing_impl() {
   // Init vectors

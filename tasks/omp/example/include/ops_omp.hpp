@@ -7,8 +7,6 @@
 
 namespace nesterov_a_test_task_omp {
 
-std::vector<int> getRandomVector(int sz);
-
 class TestOMPTaskSequential : public ppc::core::Task {
  public:
   explicit TestOMPTaskSequential(ppc::core::TaskDataPtr taskData_, std::string ops_)

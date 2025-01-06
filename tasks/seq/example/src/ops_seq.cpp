@@ -2,8 +2,6 @@
 
 #include <thread>
 
-using namespace std::chrono_literals;
-
 bool nesterov_a_test_task_seq::TestTaskSequential::pre_processing_impl() {
   // Init value for input and output
   input_ = reinterpret_cast<int*>(taskData->inputs[0])[0];
