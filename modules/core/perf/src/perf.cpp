@@ -66,7 +66,7 @@ void ppc::core::Perf::print_perf_statistic(const std::shared_ptr<PerfResults>& p
     type_test_name = "task_run";
   } else if (perfResults->type_of_running == PerfResults::TypeOfRunning::PIPELINE) {
     type_test_name = "pipeline";
-  } else if (perfResults->type_of_running == PerfResults::TypeOfRunning::NONE) {
+  } else {
     type_test_name = "none";
   }
 
