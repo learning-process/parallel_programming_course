@@ -4,7 +4,7 @@ on:
   - pull_request_target
 
 jobs:
-  auto-label:
+  label-pull-requests:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -15,7 +15,8 @@ jobs:
         with:
           fetch-depth: 0
       - name: Apply labels based on changed files
-        uses: actions/labeler@v5
+        uses: actions/labeler@v4
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           configuration-path: ".github/labeler.yml"
+          dot: true
