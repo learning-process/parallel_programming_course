@@ -21,15 +21,16 @@ jobs:
       id: review
       with:
         build_dir: build
-        apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-16-dev,valgrind
+        apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-18-dev,valgrind
         cmake_command: cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         config_file: .clang-tidy
         exclude: 3rdparty
         split_workflow: true
+        clang_tidy_version: "18"
         lgtm_comment_body: ""
       env:
-        CC: clang-16
-        CXX: clang++-16
+        CC: clang-18
+        CXX: clang++-18
     - if: steps.review.outputs.total_comments > 0
       run: exit 1
   clang-tidy-for-gcc-build:
@@ -46,11 +47,12 @@ jobs:
       id: review
       with:
         build_dir: build
-        apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-16-dev,valgrind
+        apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-18-dev,valgrind
         cmake_command: cmake -S . -B build -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         config_file: .clang-tidy
         exclude: 3rdparty
         split_workflow: true
+        clang_tidy_version: "18"
         lgtm_comment_body: ""
     - if: steps.review.outputs.total_comments > 0
       run: |
