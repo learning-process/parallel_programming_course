@@ -5,15 +5,15 @@
 #include <stdexcept>
 #include <utility>
 
-void ppc::core::Task::set_data(TaskDataPtr taskData_) {
-  taskData_->state_of_testing = TaskData::StateOfTesting::FUNC;
+void ppc::core::Task::set_data(TaskDataPtr task_data) {
+  task_data->state_of_testing = TaskData::StateOfTesting::FUNC;
   functions_order.clear();
-  taskData = std::move(taskData_);
+  taskData = std::move(task_data);
 }
 
 ppc::core::TaskDataPtr ppc::core::Task::get_data() const { return taskData; }
 
-ppc::core::Task::Task(TaskDataPtr taskData_) { set_data(std::move(taskData_)); }
+ppc::core::Task::Task(TaskDataPtr task_data) { set_data(std::move(task_data)); }
 
 bool ppc::core::Task::validation() {
   internal_order_test();
@@ -36,7 +36,8 @@ bool ppc::core::Task::post_processing() {
 }
 
 void ppc::core::Task::internal_order_test(const std::string& str) {
-  if (!functions_order.empty() && str == functions_order.back() && str == "run") return;
+  if (!functions_order.empty() && str == functions_order.back() && str == "run") { return;
+}
 
   functions_order.push_back(str);
 
@@ -57,7 +58,7 @@ void ppc::core::Task::internal_order_test(const std::string& str) {
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - tmp_time_point).count();
     auto current_time = static_cast<double>(duration) * 1e-9;
     if (current_time > max_test_time) {
-      std::cerr << "Current test work more than " << max_test_time << " secs: " << current_time << std::endl;
+      std::cerr << "Current test work more than " << max_test_time << " secs: " << current_time << '\n';
       EXPECT_TRUE(current_time < max_test_time);
     }
   }

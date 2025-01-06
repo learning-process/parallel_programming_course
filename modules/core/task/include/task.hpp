@@ -24,10 +24,10 @@ using TaskDataPtr = std::shared_ptr<ppc::core::TaskData>;
 // Task class
 class Task {
  public:
-  explicit Task(TaskDataPtr taskData_);
+  explicit Task(TaskDataPtr task_data);
 
   // set input and output data
-  void set_data(TaskDataPtr taskData_);
+  void set_data(TaskDataPtr task_data);
 
   // validation of data and validation of task attributes before running
   virtual bool validation();

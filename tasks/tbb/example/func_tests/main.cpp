@@ -23,35 +23,35 @@ TEST(Parallel_Operations_TBB, Test_Sum) {
   std::vector<int> ref_res(1, 0);
 
   // Create TaskData
-  auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
+  task_data_seq->inputs_count.emplace_back(vec.size());
+  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
+  task_data_seq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  nesterov_a_test_task_tbb::TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "+");
-  ASSERT_EQ(testTbbTaskSequential.validation(), true);
-  testTbbTaskSequential.pre_processing();
-  testTbbTaskSequential.run();
-  testTbbTaskSequential.post_processing();
+  nesterov_a_test_task_tbb::TestTBBTaskSequential test_tbb_task_sequential(task_data_seq, "+");
+  ASSERT_EQ(test_tbb_task_sequential.validation(), true);
+  test_tbb_task_sequential.pre_processing();
+  test_tbb_task_sequential.run();
+  test_tbb_task_sequential.post_processing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
+  task_data_par->inputs_count.emplace_back(vec.size());
+  task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
+  task_data_par->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  nesterov_a_test_task_tbb::TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "+");
-  ASSERT_EQ(testTbbTaskParallel.validation(), true);
-  testTbbTaskParallel.pre_processing();
-  testTbbTaskParallel.run();
-  testTbbTaskParallel.post_processing();
+  nesterov_a_test_task_tbb::TestTBBTaskParallel test_tbb_task_parallel(task_data_par, "+");
+  ASSERT_EQ(test_tbb_task_parallel.validation(), true);
+  test_tbb_task_parallel.pre_processing();
+  test_tbb_task_parallel.run();
+  test_tbb_task_parallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -61,35 +61,35 @@ TEST(Parallel_Operations_TBB, Test_Diff) {
   std::vector<int> ref_res(1, 0);
 
   // Create TaskData
-  auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
+  task_data_seq->inputs_count.emplace_back(vec.size());
+  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
+  task_data_seq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  nesterov_a_test_task_tbb::TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "-");
-  ASSERT_EQ(testTbbTaskSequential.validation(), true);
-  testTbbTaskSequential.pre_processing();
-  testTbbTaskSequential.run();
-  testTbbTaskSequential.post_processing();
+  nesterov_a_test_task_tbb::TestTBBTaskSequential test_tbb_task_sequential(task_data_seq, "-");
+  ASSERT_EQ(test_tbb_task_sequential.validation(), true);
+  test_tbb_task_sequential.pre_processing();
+  test_tbb_task_sequential.run();
+  test_tbb_task_sequential.post_processing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
+  task_data_par->inputs_count.emplace_back(vec.size());
+  task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
+  task_data_par->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  nesterov_a_test_task_tbb::TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(testTbbTaskParallel.validation(), true);
-  testTbbTaskParallel.pre_processing();
-  testTbbTaskParallel.run();
-  testTbbTaskParallel.post_processing();
+  nesterov_a_test_task_tbb::TestTBBTaskParallel test_tbb_task_parallel(task_data_par, "-");
+  ASSERT_EQ(test_tbb_task_parallel.validation(), true);
+  test_tbb_task_parallel.pre_processing();
+  test_tbb_task_parallel.run();
+  test_tbb_task_parallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -99,35 +99,35 @@ TEST(Parallel_Operations_TBB, Test_Diff_2) {
   std::vector<int> ref_res(1, 0);
 
   // Create TaskData
-  auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
+  task_data_seq->inputs_count.emplace_back(vec.size());
+  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
+  task_data_seq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  nesterov_a_test_task_tbb::TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "-");
-  ASSERT_EQ(testTbbTaskSequential.validation(), true);
-  testTbbTaskSequential.pre_processing();
-  testTbbTaskSequential.run();
-  testTbbTaskSequential.post_processing();
+  nesterov_a_test_task_tbb::TestTBBTaskSequential test_tbb_task_sequential(task_data_seq, "-");
+  ASSERT_EQ(test_tbb_task_sequential.validation(), true);
+  test_tbb_task_sequential.pre_processing();
+  test_tbb_task_sequential.run();
+  test_tbb_task_sequential.post_processing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
+  task_data_par->inputs_count.emplace_back(vec.size());
+  task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
+  task_data_par->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  nesterov_a_test_task_tbb::TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(testTbbTaskParallel.validation(), true);
-  testTbbTaskParallel.pre_processing();
-  testTbbTaskParallel.run();
-  testTbbTaskParallel.post_processing();
+  nesterov_a_test_task_tbb::TestTBBTaskParallel test_tbb_task_parallel(task_data_par, "-");
+  ASSERT_EQ(test_tbb_task_parallel.validation(), true);
+  test_tbb_task_parallel.pre_processing();
+  test_tbb_task_parallel.run();
+  test_tbb_task_parallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -137,35 +137,35 @@ TEST(Parallel_Operations_TBB, Test_Mult) {
   std::vector<int> ref_res(1, 0);
 
   // Create TaskData
-  auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
+  task_data_seq->inputs_count.emplace_back(vec.size());
+  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
+  task_data_seq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  nesterov_a_test_task_tbb::TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "*");
-  ASSERT_EQ(testTbbTaskSequential.validation(), true);
-  testTbbTaskSequential.pre_processing();
-  testTbbTaskSequential.run();
-  testTbbTaskSequential.post_processing();
+  nesterov_a_test_task_tbb::TestTBBTaskSequential test_tbb_task_sequential(task_data_seq, "*");
+  ASSERT_EQ(test_tbb_task_sequential.validation(), true);
+  test_tbb_task_sequential.pre_processing();
+  test_tbb_task_sequential.run();
+  test_tbb_task_sequential.post_processing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
+  task_data_par->inputs_count.emplace_back(vec.size());
+  task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
+  task_data_par->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  nesterov_a_test_task_tbb::TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "*");
-  ASSERT_EQ(testTbbTaskParallel.validation(), true);
-  testTbbTaskParallel.pre_processing();
-  testTbbTaskParallel.run();
-  testTbbTaskParallel.post_processing();
+  nesterov_a_test_task_tbb::TestTBBTaskParallel test_tbb_task_parallel(task_data_par, "*");
+  ASSERT_EQ(test_tbb_task_parallel.validation(), true);
+  test_tbb_task_parallel.pre_processing();
+  test_tbb_task_parallel.run();
+  test_tbb_task_parallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -175,34 +175,34 @@ TEST(Parallel_Operations_TBB, Test_Mult_2) {
   std::vector<int> ref_res(1, 0);
 
   // Create TaskData
-  auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
+  task_data_seq->inputs_count.emplace_back(vec.size());
+  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
+  task_data_seq->outputs_count.emplace_back(ref_res.size());
 
   // Create Task
-  nesterov_a_test_task_tbb::TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "*");
-  ASSERT_EQ(testTbbTaskSequential.validation(), true);
-  testTbbTaskSequential.pre_processing();
-  testTbbTaskSequential.run();
-  testTbbTaskSequential.post_processing();
+  nesterov_a_test_task_tbb::TestTBBTaskSequential test_tbb_task_sequential(task_data_seq, "*");
+  ASSERT_EQ(test_tbb_task_sequential.validation(), true);
+  test_tbb_task_sequential.pre_processing();
+  test_tbb_task_sequential.run();
+  test_tbb_task_sequential.post_processing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
+  task_data_par->inputs_count.emplace_back(vec.size());
+  task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
+  task_data_par->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  nesterov_a_test_task_tbb::TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "*");
-  ASSERT_EQ(testTbbTaskParallel.validation(), true);
-  testTbbTaskParallel.pre_processing();
-  testTbbTaskParallel.run();
-  testTbbTaskParallel.post_processing();
+  nesterov_a_test_task_tbb::TestTBBTaskParallel test_tbb_task_parallel(task_data_par, "*");
+  ASSERT_EQ(test_tbb_task_parallel.validation(), true);
+  test_tbb_task_parallel.pre_processing();
+  test_tbb_task_parallel.run();
+  test_tbb_task_parallel.post_processing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }

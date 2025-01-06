@@ -10,18 +10,18 @@ TEST(sum_of_vector_elements, check_int32_t) {
   std::vector<int32_t> in(1256, 1);
   std::vector<int32_t> out(1, 0);
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
   // Create Task
-  ppc::reference::SumOfVectorElements<int32_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::SumOfVectorElements<int32_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   ASSERT_EQ(static_cast<uint64_t>(out[0]), in.size());
 }
 
@@ -30,15 +30,15 @@ TEST(sum_of_vector_elements, check_validate_func) {
   std::vector<int32_t> in(125, 1);
   std::vector<int32_t> out(2, 0);
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
   // Create Task
-  ppc::reference::SumOfVectorElements<int32_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, false);
+  ppc::reference::SumOfVectorElements<int32_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, false);
 }
 
 TEST(sum_of_vector_elements, check_double) {
@@ -46,18 +46,18 @@ TEST(sum_of_vector_elements, check_double) {
   std::vector<double> in(25680, 1);
   std::vector<double> out(1, 0);
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
   // Create Task
-  ppc::reference::SumOfVectorElements<double> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::SumOfVectorElements<double> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   EXPECT_NEAR(out[0], in.size(), 1e-6);
 }
 
@@ -66,18 +66,18 @@ TEST(sum_of_vector_elements, check_uint8_t) {
   std::vector<uint8_t> in(255, 1);
   std::vector<uint8_t> out(1, 0);
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
   // Create Task
-  ppc::reference::SumOfVectorElements<uint8_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::SumOfVectorElements<uint8_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   ASSERT_EQ(static_cast<uint64_t>(out[0]), in.size());
 }
 
@@ -86,37 +86,37 @@ TEST(sum_of_vector_elements, check_int64_t) {
   std::vector<int64_t> in(75836, 1);
   std::vector<int64_t> out(1, 0);
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
   // Create Task
-  ppc::reference::SumOfVectorElements<int64_t> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
+  ppc::reference::SumOfVectorElements<int64_t> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
   ASSERT_EQ(static_cast<uint64_t>(out[0]), in.size());
 }
 
 TEST(sum_of_vector_elements, check_float) {
   // Create data
-  std::vector<float> in(1, 1.f);
-  std::vector<float> out(1, 0.f);
+  std::vector<float> in(1, 1.F);
+  std::vector<float> out(1, 0.F);
   // Create TaskData
-  auto taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskData->inputs_count.emplace_back(in.size());
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
-  taskData->outputs_count.emplace_back(out.size());
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
   // Create Task
-  ppc::reference::SumOfVectorElements<float> testTask(taskData);
-  bool isValid = testTask.validation();
-  ASSERT_EQ(isValid, true);
-  testTask.pre_processing();
-  testTask.run();
-  testTask.post_processing();
-  EXPECT_NEAR(out[0], static_cast<float>(in.size()), 1e-3f);
+  ppc::reference::SumOfVectorElements<float> test_task(task_data);
+  bool is_valid = test_task.validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.pre_processing();
+  test_task.run();
+  test_task.post_processing();
+  EXPECT_NEAR(out[0], static_cast<float>(in.size()), 1e-3F);
 }

@@ -24,40 +24,40 @@ TEST(Parallel_Operations_MPI, Test_Sum) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_sum(1, 0);
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
     const int count_size_vector = 120;
     global_vec = GetRandomVector(count_size_vector);
-    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataPar->inputs_count.emplace_back(global_vec.size());
-    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_sum.data()));
-    taskDataPar->outputs_count.emplace_back(global_sum.size());
+    task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    task_data_par->inputs_count.emplace_back(global_vec.size());
+    task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_sum.data()));
+    task_data_par->outputs_count.emplace_back(global_sum.size());
   }
 
-  nesterov_a_test_task_mpi::TestMPITaskParallel testMpiTaskParallel(taskDataPar, "+");
-  ASSERT_EQ(testMpiTaskParallel.validation(), true);
-  testMpiTaskParallel.pre_processing();
-  testMpiTaskParallel.run();
-  testMpiTaskParallel.post_processing();
+  nesterov_a_test_task_mpi::TestMPITaskParallel test_mpi_task_parallel(task_data_par, "+");
+  ASSERT_EQ(test_mpi_task_parallel.validation(), true);
+  test_mpi_task_parallel.pre_processing();
+  test_mpi_task_parallel.run();
+  test_mpi_task_parallel.post_processing();
 
   if (world.rank() == 0) {
     // Create data
     std::vector<int32_t> reference_sum(1, 0);
 
     // Create TaskData
-    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataSeq->inputs_count.emplace_back(global_vec.size());
-    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_sum.data()));
-    taskDataSeq->outputs_count.emplace_back(reference_sum.size());
+    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+    task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    task_data_seq->inputs_count.emplace_back(global_vec.size());
+    task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_sum.data()));
+    task_data_seq->outputs_count.emplace_back(reference_sum.size());
 
     // Create Task
-    nesterov_a_test_task_mpi::TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "+");
-    ASSERT_EQ(testMpiTaskSequential.validation(), true);
-    testMpiTaskSequential.pre_processing();
-    testMpiTaskSequential.run();
-    testMpiTaskSequential.post_processing();
+    nesterov_a_test_task_mpi::TestMPITaskSequential test_mpi_task_sequential(task_data_seq, "+");
+    ASSERT_EQ(test_mpi_task_sequential.validation(), true);
+    test_mpi_task_sequential.pre_processing();
+    test_mpi_task_sequential.run();
+    test_mpi_task_sequential.post_processing();
 
     ASSERT_EQ(reference_sum[0], global_sum[0]);
   }
@@ -68,40 +68,40 @@ TEST(Parallel_Operations_MPI, Test_Diff) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_diff(1, 0);
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
     const int count_size_vector = 240;
     global_vec = GetRandomVector(count_size_vector);
-    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataPar->inputs_count.emplace_back(global_vec.size());
-    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_diff.data()));
-    taskDataPar->outputs_count.emplace_back(global_diff.size());
+    task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    task_data_par->inputs_count.emplace_back(global_vec.size());
+    task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_diff.data()));
+    task_data_par->outputs_count.emplace_back(global_diff.size());
   }
 
-  nesterov_a_test_task_mpi::TestMPITaskParallel testMpiTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(testMpiTaskParallel.validation(), true);
-  testMpiTaskParallel.pre_processing();
-  testMpiTaskParallel.run();
-  testMpiTaskParallel.post_processing();
+  nesterov_a_test_task_mpi::TestMPITaskParallel test_mpi_task_parallel(task_data_par, "-");
+  ASSERT_EQ(test_mpi_task_parallel.validation(), true);
+  test_mpi_task_parallel.pre_processing();
+  test_mpi_task_parallel.run();
+  test_mpi_task_parallel.post_processing();
 
   if (world.rank() == 0) {
     // Create data
     std::vector<int32_t> reference_diff(1, 0);
 
     // Create TaskData
-    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataSeq->inputs_count.emplace_back(global_vec.size());
-    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
-    taskDataSeq->outputs_count.emplace_back(reference_diff.size());
+    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+    task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    task_data_seq->inputs_count.emplace_back(global_vec.size());
+    task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
+    task_data_seq->outputs_count.emplace_back(reference_diff.size());
 
     // Create Task
-    nesterov_a_test_task_mpi::TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "-");
-    ASSERT_EQ(testMpiTaskSequential.validation(), true);
-    testMpiTaskSequential.pre_processing();
-    testMpiTaskSequential.run();
-    testMpiTaskSequential.post_processing();
+    nesterov_a_test_task_mpi::TestMPITaskSequential test_mpi_task_sequential(task_data_seq, "-");
+    ASSERT_EQ(test_mpi_task_sequential.validation(), true);
+    test_mpi_task_sequential.pre_processing();
+    test_mpi_task_sequential.run();
+    test_mpi_task_sequential.post_processing();
 
     ASSERT_EQ(reference_diff[0], global_diff[0]);
   }
@@ -112,40 +112,40 @@ TEST(Parallel_Operations_MPI, Test_Diff_2) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_diff(1, 0);
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
     const int count_size_vector = 120;
     global_vec = GetRandomVector(count_size_vector);
-    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataPar->inputs_count.emplace_back(global_vec.size());
-    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_diff.data()));
-    taskDataPar->outputs_count.emplace_back(global_diff.size());
+    task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    task_data_par->inputs_count.emplace_back(global_vec.size());
+    task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_diff.data()));
+    task_data_par->outputs_count.emplace_back(global_diff.size());
   }
 
-  nesterov_a_test_task_mpi::TestMPITaskParallel testMpiTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(testMpiTaskParallel.validation(), true);
-  testMpiTaskParallel.pre_processing();
-  testMpiTaskParallel.run();
-  testMpiTaskParallel.post_processing();
+  nesterov_a_test_task_mpi::TestMPITaskParallel test_mpi_task_parallel(task_data_par, "-");
+  ASSERT_EQ(test_mpi_task_parallel.validation(), true);
+  test_mpi_task_parallel.pre_processing();
+  test_mpi_task_parallel.run();
+  test_mpi_task_parallel.post_processing();
 
   if (world.rank() == 0) {
     // Create data
     std::vector<int32_t> reference_diff(1, 0);
 
     // Create TaskData
-    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataSeq->inputs_count.emplace_back(global_vec.size());
-    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
-    taskDataSeq->outputs_count.emplace_back(reference_diff.size());
+    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+    task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    task_data_seq->inputs_count.emplace_back(global_vec.size());
+    task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
+    task_data_seq->outputs_count.emplace_back(reference_diff.size());
 
     // Create Task
-    nesterov_a_test_task_mpi::TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "-");
-    ASSERT_EQ(testMpiTaskSequential.validation(), true);
-    testMpiTaskSequential.pre_processing();
-    testMpiTaskSequential.run();
-    testMpiTaskSequential.post_processing();
+    nesterov_a_test_task_mpi::TestMPITaskSequential test_mpi_task_sequential(task_data_seq, "-");
+    ASSERT_EQ(test_mpi_task_sequential.validation(), true);
+    test_mpi_task_sequential.pre_processing();
+    test_mpi_task_sequential.run();
+    test_mpi_task_sequential.post_processing();
 
     ASSERT_EQ(reference_diff[0], global_diff[0]);
   }
@@ -156,40 +156,40 @@ TEST(Parallel_Operations_MPI, Test_Max) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_max(1, 0);
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
     const int count_size_vector = 240;
     global_vec = GetRandomVector(count_size_vector);
-    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataPar->inputs_count.emplace_back(global_vec.size());
-    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_max.data()));
-    taskDataPar->outputs_count.emplace_back(global_max.size());
+    task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    task_data_par->inputs_count.emplace_back(global_vec.size());
+    task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_max.data()));
+    task_data_par->outputs_count.emplace_back(global_max.size());
   }
 
-  nesterov_a_test_task_mpi::TestMPITaskParallel testMpiTaskParallel(taskDataPar, "max");
-  ASSERT_EQ(testMpiTaskParallel.validation(), true);
-  testMpiTaskParallel.pre_processing();
-  testMpiTaskParallel.run();
-  testMpiTaskParallel.post_processing();
+  nesterov_a_test_task_mpi::TestMPITaskParallel test_mpi_task_parallel(task_data_par, "max");
+  ASSERT_EQ(test_mpi_task_parallel.validation(), true);
+  test_mpi_task_parallel.pre_processing();
+  test_mpi_task_parallel.run();
+  test_mpi_task_parallel.post_processing();
 
   if (world.rank() == 0) {
     // Create data
     std::vector<int32_t> reference_max(1, 0);
 
     // Create TaskData
-    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataSeq->inputs_count.emplace_back(global_vec.size());
-    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));
-    taskDataSeq->outputs_count.emplace_back(reference_max.size());
+    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+    task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    task_data_seq->inputs_count.emplace_back(global_vec.size());
+    task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));
+    task_data_seq->outputs_count.emplace_back(reference_max.size());
 
     // Create Task
-    nesterov_a_test_task_mpi::TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "max");
-    ASSERT_EQ(testMpiTaskSequential.validation(), true);
-    testMpiTaskSequential.pre_processing();
-    testMpiTaskSequential.run();
-    testMpiTaskSequential.post_processing();
+    nesterov_a_test_task_mpi::TestMPITaskSequential test_mpi_task_sequential(task_data_seq, "max");
+    ASSERT_EQ(test_mpi_task_sequential.validation(), true);
+    test_mpi_task_sequential.pre_processing();
+    test_mpi_task_sequential.run();
+    test_mpi_task_sequential.post_processing();
 
     ASSERT_EQ(reference_max[0], global_max[0]);
   }
@@ -200,40 +200,40 @@ TEST(Parallel_Operations_MPI, Test_Max_2) {
   std::vector<int> global_vec;
   std::vector<int32_t> global_max(1, 0);
   // Create TaskData
-  auto taskDataPar = std::make_shared<ppc::core::TaskData>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
     const int count_size_vector = 120;
     global_vec = GetRandomVector(count_size_vector);
-    taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataPar->inputs_count.emplace_back(global_vec.size());
-    taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_max.data()));
-    taskDataPar->outputs_count.emplace_back(global_max.size());
+    task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    task_data_par->inputs_count.emplace_back(global_vec.size());
+    task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t*>(global_max.data()));
+    task_data_par->outputs_count.emplace_back(global_max.size());
   }
 
-  nesterov_a_test_task_mpi::TestMPITaskParallel testMpiTaskParallel(taskDataPar, "max");
-  ASSERT_EQ(testMpiTaskParallel.validation(), true);
-  testMpiTaskParallel.pre_processing();
-  testMpiTaskParallel.run();
-  testMpiTaskParallel.post_processing();
+  nesterov_a_test_task_mpi::TestMPITaskParallel test_mpi_task_parallel(task_data_par, "max");
+  ASSERT_EQ(test_mpi_task_parallel.validation(), true);
+  test_mpi_task_parallel.pre_processing();
+  test_mpi_task_parallel.run();
+  test_mpi_task_parallel.post_processing();
 
   if (world.rank() == 0) {
     // Create data
     std::vector<int32_t> reference_max(1, 0);
 
     // Create TaskData
-    auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
-    taskDataSeq->inputs_count.emplace_back(global_vec.size());
-    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));
-    taskDataSeq->outputs_count.emplace_back(reference_max.size());
+    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+    task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
+    task_data_seq->inputs_count.emplace_back(global_vec.size());
+    task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));
+    task_data_seq->outputs_count.emplace_back(reference_max.size());
 
     // Create Task
-    nesterov_a_test_task_mpi::TestMPITaskSequential testMpiTaskSequential(taskDataSeq, "max");
-    ASSERT_EQ(testMpiTaskSequential.validation(), true);
-    testMpiTaskSequential.pre_processing();
-    testMpiTaskSequential.run();
-    testMpiTaskSequential.post_processing();
+    nesterov_a_test_task_mpi::TestMPITaskSequential test_mpi_task_sequential(task_data_seq, "max");
+    ASSERT_EQ(test_mpi_task_sequential.validation(), true);
+    test_mpi_task_sequential.pre_processing();
+    test_mpi_task_sequential.run();
+    test_mpi_task_sequential.post_processing();
 
     ASSERT_EQ(reference_max[0], global_max[0]);
   }
