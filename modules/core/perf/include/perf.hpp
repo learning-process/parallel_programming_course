@@ -27,10 +27,10 @@ struct PerfResults {
 class Perf {
  public:
   // Init performance analysis with initialized task and initialized data
-  explicit Perf(const std::shared_ptr<Task>& task);
+  explicit Perf(const std::shared_ptr<Task>& task_ptr);
   // Set task with initialized task and initialized data for performance
   // analysis c
-  void SetTask(const std::shared_ptr<Task>& task);
+  void SetTask(const std::shared_ptr<Task>& task_ptr);
   // Check performance of full task's pipeline:  pre_processing() ->
   // validation() -> run() -> post_processing()
   void PipelineRun(const std::shared_ptr<PerfAttr>& perf_attr,
