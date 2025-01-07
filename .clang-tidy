@@ -20,6 +20,7 @@ Checks: >
   -misc-unused-parameters,
   -misc-use-anonymous-namespace,
   -modernize-avoid-c-arrays,
+  -modernize-loop-convert,
   -modernize-use-nodiscard,
   -modernize-use-trailing-return-type,
   -readability-function-cognitive-complexity,

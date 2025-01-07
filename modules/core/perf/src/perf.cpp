@@ -7,15 +7,15 @@
 #include <sstream>
 #include <utility>
 
-ppc::core::Perf::Perf(const std::shared_ptr<Task> &task) { SetTask(task); }
+ppc::core::Perf::Perf(const std::shared_ptr<Task>& task_ptr) { SetTask(task_ptr); }
 
-void ppc::core::Perf::SetTask(const std::shared_ptr<Task> &task) {
-  task->get_data()->state_of_testing = TaskData::StateOfTesting::PERF;
-  this->task = task;
+void ppc::core::Perf::SetTask(const std::shared_ptr<Task>& task_ptr) {
+  task_ptr->get_data()->state_of_testing = TaskData::StateOfTesting::PERF;
+  this->task = task_ptr;
 }
 
 void ppc::core::Perf::PipelineRun(const std::shared_ptr<PerfAttr>& perf_attr,
-                                   const std::shared_ptr<ppc::core::PerfResults>& perf_results) {
+                                  const std::shared_ptr<ppc::core::PerfResults>& perf_results) {
   perf_results->type_of_running = PerfResults::TypeOfRunning::PIPELINE;
 
   CommonRun(
@@ -30,7 +30,7 @@ void ppc::core::Perf::PipelineRun(const std::shared_ptr<PerfAttr>& perf_attr,
 }
 
 void ppc::core::Perf::TaskRun(const std::shared_ptr<PerfAttr>& perf_attr,
-                               const std::shared_ptr<ppc::core::PerfResults>& perf_results) {
+                              const std::shared_ptr<ppc::core::PerfResults>& perf_results) {
   perf_results->type_of_running = PerfResults::TypeOfRunning::TASK_RUN;
 
   task->validation();
@@ -45,7 +45,7 @@ void ppc::core::Perf::TaskRun(const std::shared_ptr<PerfAttr>& perf_attr,
 }
 
 void ppc::core::Perf::CommonRun(const std::shared_ptr<PerfAttr>& perf_attr, const std::function<void()>& pipeline,
-                                 const std::shared_ptr<ppc::core::PerfResults>& perf_results) {
+                                const std::shared_ptr<ppc::core::PerfResults>& perf_results) {
   auto begin = perf_attr->current_timer();
   for (uint64_t i = 0; i < perf_attr->num_running; i++) {
     pipeline();

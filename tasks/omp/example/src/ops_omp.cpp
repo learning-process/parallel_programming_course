@@ -63,18 +63,18 @@ bool nesterov_a_test_task_omp::TestOMPTaskParallel::run_impl() {
   auto temp_res = res;
   if (ops == "+") {
 #pragma omp parallel for reduction(+ : temp_res)
-    for (int i : input_) {
-      temp_res += i;
+    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
+      temp_res += input_[i];
     }
   } else if (ops == "-") {
 #pragma omp parallel for reduction(- : temp_res)
-    for (int i : input_) {
-      temp_res -= i;
+    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
+      temp_res -= input_[i];
     }
   } else if (ops == "*") {
 #pragma omp parallel for reduction(* : temp_res)
-    for (int i : input_) {
-      temp_res *= i;
+    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
+      temp_res *= input_[i];
     }
   }
   res = temp_res;
