@@ -39,9 +39,10 @@ bool nesterov_a_test_task_stl::TestSTLTaskSequential::post_processing_impl() {
   return true;
 }
 
-static std::mutex my_mutex;
+namespace {
+std::mutex my_mutex;
 
-static void AtomOps(std::vector<int> vec, const std::string &ops, std::promise<int> &&pr) {
+void AtomOps(std::vector<int> vec, const std::string &ops, std::promise<int> &&pr) {
   auto sz = vec.size();
   int reduction_elem = 0;
   if (ops == "+") {
@@ -57,6 +58,7 @@ static void AtomOps(std::vector<int> vec, const std::string &ops, std::promise<i
   }
   pr.set_value(reduction_elem);
 }
+}  // namespace
 
 bool nesterov_a_test_task_stl::TestSTLTaskParallel::pre_processing_impl() {
   // Init vectors
