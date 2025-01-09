@@ -3,7 +3,9 @@
 #include <thread>
 #include <vector>
 
-static void Task(const std::string& msg) { std::cout << "thread number: " + msg << '\n'; }
+namespace {
+void Task(const std::string& msg) { std::cout << "thread number: " + msg << '\n'; }
+}  // namespace
 
 int main() {
   const auto num_max_threads = std::thread::hardware_concurrency();

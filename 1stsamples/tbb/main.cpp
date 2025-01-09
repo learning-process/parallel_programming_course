@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-static int FibFunc(int n) {
+namespace {
+int FibFunc(int n) {
   if (n < 2) {
     return n;
   }
@@ -14,5 +15,6 @@ static int FibFunc(int n) {
   g.wait();
   return x + y;
 }
+}  // namespace
 
 int main() { return FibFunc(10) - 55; }

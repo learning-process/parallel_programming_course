@@ -18,7 +18,6 @@ Checks: >
   -misc-no-recursion,
   -misc-non-private-member-variables-in-classes,
   -misc-unused-parameters,
-  -misc-use-anonymous-namespace,
   -modernize-avoid-c-arrays,
   -modernize-loop-convert,
   -modernize-use-nodiscard,
