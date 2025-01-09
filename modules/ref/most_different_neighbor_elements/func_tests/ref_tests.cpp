@@ -138,11 +138,9 @@ TEST(most_different_neighbor_elements, check_int64_t) {
   for (size_t i = 0; i < in.size(); i++) {
     if (i % 3 == 0) {
       in[i] = 10;
-    }
-    if (i % 3 == 1) {
+    } else if (i % 3 == 1) {
       in[i] = 30;
-    }
-    if (i % 3 == 2) {
+    } else {  // (i % 3 == 2)
       in[i] = 70;
     }
   }
