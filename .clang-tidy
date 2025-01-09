@@ -23,7 +23,6 @@ Checks: >
   -modernize-loop-convert,
   -modernize-use-nodiscard,
   -modernize-use-trailing-return-type,
-  -readability-function-cognitive-complexity,
   -readability-identifier-length,
   -readability-magic-numbers,
   -readability-named-parameter
@@ -79,3 +78,5 @@ CheckOptions:
     value:           lower_case
   - key:             readability-identifier-naming.IgnoreMainLikeFunctions
     value:           1
+  - key:             readability-function-cognitive-complexity.Threshold
+    value:           25  # default: 25
