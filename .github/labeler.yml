@@ -11,3 +11,17 @@
 ci:
   - ".github/**"
   - "appveyor.yml"
+core:
+  - "modules/core/**"
+samples:
+  - "1stsamples/**"
+  - "modules/ref/**"
+3rdparty:
+  - "3rdparty/**"
+infrastructure:
+  - "*"
+  - "!*/**"
+  - "scripts/**"
+  - "**/CMakeLists.txt"
+docs:
+  - "docs/**"
