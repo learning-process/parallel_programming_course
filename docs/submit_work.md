@@ -1,6 +1,6 @@
 ## How to submit your work
 
-* There are `mpi`, `omp`, `seq`, `stl`, `tbb` folders in `tasks` directory. Move to a folder of your task. Make a directory named `<last name>_<first letter of name>_<short task name>`. Example: `seq/nesterov_a_vector_sum`. Please name all tasks same name directory. If `seq` task named `seq/nesterov_a_vector_sum` then  `omp` task need to be named `omp/nesterov_a_vector_sum`.
+* There are `mpi`, `omp`, `seq`, `stl`, `tbb` folders in `tasks` directory. Move to a folder of your task. Make a directory named `<last name>_<first letter of name>_<short task name>`. Example: `seq/nesterov_a_vector_sum`. Please name all tasks **same** name directory. If `seq` task named `seq/nesterov_a_vector_sum` then  `omp` task need to be named `omp/nesterov_a_vector_sum`.
 * Go into the newly created folder and begin you work on the task. There must be only 4 directory with files:
     - `func_tests` - google tests directory with files for the functional tests of task.
     - `include`    - a header files directory with function prototypes.
@@ -23,7 +23,7 @@
   }  // namespace nesterov_a_test_task_seq
   ```
 * Name your group of tests and current test in the following way:
-    * for functional tests:
+    * for functional tests (for maximum coverage):
   ```
   TEST(<last name>_<first letter of name>_<short task name>_<technology>, <any_name_of_test_case>) {
   ...
@@ -33,7 +33,7 @@
   ...
   }
   ```
-    * for performance tests:
+    * for performance tests (only 2 tests - `pipeline/task` - no more no less):
   ```
   TEST(<last name>_<first letter of name>_<short task name>_<technology>, <type_of_performance_validation>) {
   ...
