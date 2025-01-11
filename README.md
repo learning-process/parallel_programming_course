@@ -17,7 +17,7 @@
 2. Carefully check if the program can hang.
 
 ### Steps to create a task:
-1. [Download all submodules](docs/download.md)
-2. [Set up your environment](docs/environment.md)
-3. [Build the project with `CMake`](docs/build.md)
-4. [How to submit your current work](docs/submit_work.md)
+1. [Download all submodules](docs/download.rst)
+2. [Set up your environment](docs/environment.rst)
+3. [Build the project with `CMake`](docs/build.rst)
+4. [How to submit your current work](docs/submit_work.rst)
