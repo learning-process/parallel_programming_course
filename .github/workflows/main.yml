@@ -12,7 +12,27 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 
 jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: DoozyX/clang-format-lint-action@v0.18.2
+      with:
+        source: '.'
+  python-lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup environment
+      run: |
+        python3 -m pip install flake8
+    - name: Run linter
+      run: |
+        python3 -m flake8 .
   ubuntu-gcc-build:
+    needs:
+      - clang-format
+      - python-lint
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -113,6 +133,9 @@ jobs:
       env:
         OMP_NUM_THREADS: 16
   ubuntu-clang-build:
+    needs:
+      - clang-format
+      - python-lint
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -213,6 +236,8 @@ jobs:
       env:
         OMP_NUM_THREADS: 16
   ubuntu-clang-sanitizer-build:
+    needs:
+      - ubuntu-clang-build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -316,6 +341,9 @@ jobs:
         OMP_NUM_THREADS: 16
         ASAN_RUN: 1
   macos-clang-build:
+    needs:
+      - clang-format
+      - python-lint
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v4
@@ -408,6 +436,9 @@ jobs:
       env:
         OMP_NUM_THREADS: 16
   windows-msvc-build:
+    needs:
+      - clang-format
+      - python-lint
     runs-on: windows-latest
     defaults:
       run:
@@ -490,6 +521,9 @@ jobs:
       env:
         OMP_NUM_THREADS: 16
   windows-clang-build:
+    needs:
+      - clang-format
+      - python-lint
     runs-on: windows-latest
     defaults:
       run:
@@ -576,6 +610,8 @@ jobs:
         OMP_NUM_THREADS: 16
         CLANG_BUILD: 1
   ubuntu-gcc-build-codecov:
+    needs:
+      - ubuntu-gcc-build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -675,3 +711,61 @@ jobs:
       with:
         name: cov-report
         path: 'cov-report'
+  ubuntu-gcc-build-perf-stats:
+    needs:
+      - macos-clang-build
+      - ubuntu-clang-sanitizer-build
+      - ubuntu-gcc-build-codecov
+      - windows-clang-build
+      - windows-msvc-build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Setup environment
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install gcc-12 g++-12
+        sudo apt-get install ninja-build
+        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+        sudo apt-get install libomp-dev
+        sudo apt-get install valgrind
+        python3 -m pip install xlsxwriter
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ github.job }}
+          create-symlink: true
+    - name: CMake configure
+      run: >
+        cmake -S . -B build
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE
+      env:
+        CC: gcc-12
+        CXX: g++-12
+    - name: Ninja build
+      run: |
+        cmake --build build
+      env:
+        CC: gcc-12
+        CXX: g++-12
+    - name: Run perf count checker
+      run: |
+        source scripts/run_perf_count_checker.sh
+    - name: Run perf tests
+      run: |
+        source scripts/generate_perf_results.sh
+    - name: Archive results
+      uses: montudor/action-zip@v1
+      with:
+        args: zip -qq -r perf-stat.zip build/perf_stat_dir
+    - name: Upload results
+      uses: actions/upload-artifact@v4.3.0
+      with:
+        name: perf-stat
+        path: perf-stat.zip

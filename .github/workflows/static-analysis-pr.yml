@@ -34,6 +34,8 @@ jobs:
     - if: steps.review.outputs.total_comments > 0
       run: exit 1
   clang-tidy-for-gcc-build:
+    needs:
+      - clang-tidy
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
