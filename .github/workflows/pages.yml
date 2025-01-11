@@ -1,0 +1,35 @@
+name: Build
+
+on: [push, pull_request]
+
+permissions:
+  id-token: write
+  contents: read
+  pages: write
+
+jobs:
+  deploy-sphinx-to-github-pages:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.13'
+    - name: Install dependencies
+      working-directory: ./docs
+      run: |
+        python3 -m pip install -r requirements.txt
+    - name: Build documentation
+      working-directory: ./docs
+      run: |
+        make html
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./docs/_build/html
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
