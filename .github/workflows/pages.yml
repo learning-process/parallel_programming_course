@@ -1,4 +1,4 @@
-name: Build
+name: Pages build
 
 on: [push, pull_request]
 
