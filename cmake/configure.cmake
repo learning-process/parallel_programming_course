@@ -39,6 +39,8 @@ if( MSVC )
     set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} /W4 /wd4267 /wd4244 /wd4100 /WX" )
 endif( MSVC )
 
+add_compile_definitions(PPC_PATH_TO_PROJECT="${CMAKE_CURRENT_SOURCE_DIR}")
+
 MACRO(SUBDIRLIST result curdir)
   FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
   SET(dirlist "")
