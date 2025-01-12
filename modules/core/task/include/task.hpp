@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <filesystem>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -68,6 +69,11 @@ class Task {
   const double max_test_time = 1.0;
   std::chrono::high_resolution_clock::time_point tmp_time_point;
 };
+
+inline std::filesystem::path GetAbsolutePath(const std::string &relative_path) {
+  std::filesystem::path path = std::string(PPC_PATH_TO_PROJECT) + "/tasks/" + relative_path;
+  return path;
+}
 
 }  // namespace ppc::core
 
