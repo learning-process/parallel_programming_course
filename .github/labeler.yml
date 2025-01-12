@@ -1,3 +1,5 @@
+'task:all':
+  - "tasks/all/**"
 'task:mpi':
   - "tasks/mpi/**"
 'task:omp':
