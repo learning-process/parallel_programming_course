@@ -1,17 +1,13 @@
-.. Parallel Programming Course documentation master file, created by
-   sphinx-quickstart on Sat Jan 11 23:09:04 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Parallel Programming Course documentation
 =========================================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+Below is the table of contents for the Parallel Programming Course documentation. Follow the links to learn more about each topic.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: User Guide:
 
+   user_guide/build
+   user_guide/download
+   user_guide/environment
+   user_guide/submit_work

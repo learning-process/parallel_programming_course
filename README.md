@@ -2,6 +2,7 @@
 [![codecov](https://codecov.io/gh/learning-process/parallel_programming_course/graph/badge.svg?token=qCOtqeFyIz)](https://codecov.io/gh/learning-process/parallel_programming_course)
 
 # Parallel Programming Course
+Welcome to the Parallel Programming Course! For more detailed documentation and resources, please visit [documentation page](https://learning-process.github.io/parallel_programming_course/).
 
 ### Parallel programming technologies:
   The following parallel programming technologies are considered in practice:
@@ -14,9 +15,3 @@
 1. You are not supposed to trigger CI jobs by frequent updates of your pull request. First you should test you work locally with all the scripts (code style).
     * Respect others time and don't slow down the job queue
 2. Carefully check if the program can hang.
-
-### Steps to create a task:
-1. [Download all submodules](docs/download.rst)
-2. [Set up your environment](docs/environment.rst)
-3. [Build the project with `CMake`](docs/build.rst)
-4. [How to submit your current work](docs/submit_work.rst)
