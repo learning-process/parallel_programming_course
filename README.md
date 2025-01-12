@@ -1,5 +1,4 @@
 [![Build application](https://github.com/learning-process/parallel_programming_course/actions/workflows/main.yml/badge.svg)](https://github.com/learning-process/parallel_programming_course/actions/workflows/main.yml)
-[![Collect performance statistic](https://github.com/learning-process/parallel_programming_course/actions/workflows/perf-statistic.yml/badge.svg)](https://github.com/learning-process/parallel_programming_course/actions/workflows/perf-statistic.yml)
 [![codecov](https://codecov.io/gh/learning-process/parallel_programming_course/graph/badge.svg?token=qCOtqeFyIz)](https://codecov.io/gh/learning-process/parallel_programming_course)
 
 # Parallel Programming Course
