@@ -870,6 +870,27 @@ jobs:
       run: source scripts/run_threads.sh
       env:
         OMP_NUM_THREADS: 4
+    - name: Generate gcovr Coverage Data
+      run: |
+        cd build
+        gcovr -r ../ --xml --output ../coverage.xml
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: db9388ce-cf24-4840-b282-8e0070d8666f
+        files: coverage.xml
+    - name: Generate lcov Coverage Data
+      run: |
+        cd build
+        lcov --capture --directory . --output-file ../coverage.info
+        lcov --remove ../coverage.info '*/3rdparty/*' '/usr/*' '*/perf_tests/*' '*/func_tests/*' --output-file ../coverage.info
+        cd ..
+        genhtml coverage.info --output-directory cov-report
+    - name: Upload coverage report artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: cov-report
+        path: 'cov-report'
   ubuntu-gcc-build-perf-stats:
     needs:
       - macos-clang-build
