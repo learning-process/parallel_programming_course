@@ -11,7 +11,7 @@ args = parser.parse_args()
 logs_path = os.path.abspath(args.input)
 xlsx_path = os.path.abspath(args.output)
 
-list_of_type_of_tasks = ["mpi", "omp", "seq", "stl", "tbb"]
+list_of_type_of_tasks = ["all", "mpi", "omp", "seq", "stl", "tbb"]
 
 result_tables = {"pipeline": {}, "task_run": {}}
 set_of_task_name = []

@@ -2,8 +2,10 @@
 
 if [[ -z "$ASAN_RUN" ]]; then
   if [[ $OSTYPE == "linux-gnu" ]]; then
+    mpirun --oversubscribe -np 4 ./build/bin/all_perf_tests
     mpirun --oversubscribe -np 4 ./build/bin/mpi_perf_tests
   elif [[ $OSTYPE == "darwin"* ]]; then
+    mpirun -np 2 ./build/bin/all_perf_tests
     mpirun -np 2 ./build/bin/mpi_perf_tests
   fi
 fi
