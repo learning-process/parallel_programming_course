@@ -1,6 +1,9 @@
-name: Build
+name: Pages
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
 
 permissions:
   id-token: write
@@ -10,7 +13,6 @@ permissions:
 jobs:
   deploy-sphinx-to-github-pages:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
