@@ -100,6 +100,45 @@ jobs:
       run: source scripts/run_threads.sh
       env:
         OMP_NUM_THREADS: 4
+  ubuntu-gcc-build-extended:
+    needs:
+      - ubuntu-gcc-build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Setup environment
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install gcc-13 g++-13
+        sudo apt-get install ninja-build
+        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+        sudo apt-get install libomp-dev
+        sudo apt-get install valgrind
+        python3 -m pip install xlsxwriter
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ github.job }}
+          create-symlink: true
+    - name: CMake configure
+      run: >
+        cmake -S . -B build
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE
+      env:
+        CC: gcc-13
+        CXX: g++-13
+    - name: Ninja build
+      run: |
+        cmake --build build
+      env:
+        CC: gcc-13
+        CXX: g++-13
     - name: Run func tests (threads, num_threads=5)
       run: source scripts/run_threads.sh
       env:
@@ -203,6 +242,45 @@ jobs:
       run: source scripts/run_threads.sh
       env:
         OMP_NUM_THREADS: 4
+  ubuntu-clang-build-extended:
+    needs:
+      - ubuntu-clang-build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Setup environment
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install ninja-build
+        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+        sudo apt-get install python3-pip
+        sudo apt-get install valgrind
+        wget https://apt.llvm.org/llvm.sh
+        chmod u+x llvm.sh
+        sudo ./llvm.sh 19 all
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ github.job }}
+          create-symlink: true
+    - name: CMake configure
+      run: >
+        cmake -S . -B build 
+        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE
+      env:
+        CC: clang-19
+        CXX: clang++-19
+    - name: Ninja build
+      run: |
+        cmake --build build
+      env:
+        CC: clang-19
+        CXX: clang++-19
     - name: Run tests (threads, num_threads=5)
       run: source scripts/run_threads.sh
       env:
@@ -300,6 +378,45 @@ jobs:
       env:
         OMP_NUM_THREADS: 4
         ASAN_RUN: 1
+  ubuntu-clang-sanitizer-build-extended:
+    needs:
+      - ubuntu-clang-sanitizer-build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Setup environment
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install ninja-build
+        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+        sudo apt-get install python3-pip
+        wget https://apt.llvm.org/llvm.sh
+        chmod u+x llvm.sh
+        sudo ./llvm.sh 19 all
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ github.job }}
+          create-symlink: true
+    - name: CMake configure
+      run: >
+        cmake -S . -B build
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
+      env:
+        CC: clang-19
+        CXX: clang++-19
+    - name: Ninja build
+      run: |
+        cmake --build build
+      env:
+        CC: clang-19
+        CXX: clang++-19
     - name: Run tests (threads, num_threads=5)
       run: source scripts/run_threads.sh
       env:
@@ -403,6 +520,37 @@ jobs:
       run: source scripts/run_threads.sh
       env:
         OMP_NUM_THREADS: 4
+  macos-clang-build-extended:
+    needs:
+      - macos-clang-build
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Setup environment
+      run: |
+        brew update-reset
+        brew install ninja mpich llvm
+        brew install libomp
+        brew link libomp --overwrite --force
+        brew install openssl
+        brew link openssl --overwrite --force
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ github.job }}
+          create-symlink: true
+    - name: CMake configure
+      run: >
+        cmake -S . -B build
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
+        -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+    - name: Ninja build
+      run: |
+        cmake --build build
     - name: Run tests (threads, num_threads=5)
       run: source scripts/run_threads.sh
       env:
@@ -488,6 +636,42 @@ jobs:
       run: scripts/run.bat
       env:
         OMP_NUM_THREADS: 4
+  windows-msvc-build-extended:
+    needs:
+      - windows-msvc-build
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+    - name: Setup MPI
+      uses: mpi4py/setup-mpi@v1
+      with:
+        mpi: msmpi
+    - name: Download dependencies
+      run: |
+        choco install openssl --execution-timeout 6000
+    - name: Setup ccache
+      uses: Chocobo1/setup-ccache-action@v1
+      with:
+        windows_compile_environment: msvc
+    - name: CMake configure
+      shell: bash
+      run: >
+        cmake -S . -B build
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE
+    - name: MSBuild
+      shell: bash
+      run: |
+        cmake --build build --config Release --parallel
     - name: Run tests (threads, num_threads=5)
       run: scripts/run.bat
       env:
@@ -569,6 +753,34 @@ jobs:
       env:
         OMP_NUM_THREADS: 4
         CLANG_BUILD: 1
+  windows-clang-build-extended:
+    needs:
+      - windows-clang-build
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.3.1
+    - name: CMake configure
+      run: >
+        cmake -S . -B build -A x64 -T ClangCL
+        -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D CMAKE_BUILD_TYPE=RELEASE
+      env:
+        CC: clang-cl
+        CXX: clang-cl
+    - name: Ninja build
+      run: |
+        cmake --build build --config Release --parallel -v
+      env:
+        CC: clang-cl
+        CXX: clang-cl
     - name: Run tests (threads, num_threads=5)
       run: scripts/run.bat
       env:
@@ -658,59 +870,6 @@ jobs:
       run: source scripts/run_threads.sh
       env:
         OMP_NUM_THREADS: 4
-    - name: Run tests (threads, num_threads=5)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 5
-    - name: Run tests (threads, num_threads=6)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 6
-    - name: Run tests (threads, num_threads=7)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 7
-    - name: Run tests (threads, num_threads=8)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 8
-    - name: Run tests (threads, num_threads=11)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 11
-    - name: Run tests (threads, num_threads=13)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 13
-    - name: Run tests (threads, num_threads=15)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 15
-    - name: Run tests (threads, num_threads=16)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 16
-    - name: Generate gcovr Coverage Data
-      run: |
-        cd build
-        gcovr -r ../ --xml --output ../coverage.xml
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4.0.1
-      with:
-        token: db9388ce-cf24-4840-b282-8e0070d8666f
-        files: coverage.xml
-    - name: Generate lcov Coverage Data
-      run: |
-        cd build
-        lcov --capture --directory . --output-file ../coverage.info
-        lcov --remove ../coverage.info '*/3rdparty/*' '/usr/*' '*/perf_tests/*' '*/func_tests/*' --output-file ../coverage.info
-        cd ..
-        genhtml coverage.info --output-directory cov-report
-    - name: Upload coverage report artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: cov-report
-        path: 'cov-report'
   ubuntu-gcc-build-perf-stats:
     needs:
       - macos-clang-build
