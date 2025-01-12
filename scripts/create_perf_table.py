@@ -72,6 +72,15 @@ for table_name in result_tables:
     right_border = workbook.add_format({'right': 2})
     for task_name in list(set(set_of_task_name)):
         for type_of_task in list_of_type_of_tasks:
+            if task_name not in result_tables[table_name].keys():
+                print(f"Warning! Task '{task_name}' is not found in results")
+                worksheet.write(it_j, it_i, "Error!")
+                it_i += 1
+                worksheet.write(it_j, it_i, "Error!")
+                it_i += 1
+                worksheet.write(it_j, it_i, "Error!")
+                it_i += 1
+                continue
             par_time = result_tables[table_name][task_name][type_of_task]
             seq_time = result_tables[table_name][task_name]["seq"]
             speed_up = seq_time / par_time
