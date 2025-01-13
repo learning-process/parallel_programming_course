@@ -5,10 +5,10 @@
 #include <stdexcept>
 #include <utility>
 
-void ppc::core::Task::SetData(TaskDataPtr task_data) {
-  task_data->state_of_testing = TaskData::StateOfTesting::kFunc;
+void ppc::core::Task::SetData(TaskDataPtr task_data_ptr) {
+  task_data_ptr->state_of_testing = TaskData::StateOfTesting::kFunc;
   functions_order_.clear();
-  this->task_data = std::move(task_data);
+  this->task_data = std::move(task_data_ptr);
 }
 
 ppc::core::TaskDataPtr ppc::core::Task::GetData() const { return task_data; }
