@@ -16,7 +16,7 @@ struct TaskData {
   std::vector<std::uint32_t> inputs_count;
   std::vector<uint8_t *> outputs;
   std::vector<std::uint32_t> outputs_count;
-  enum StateOfTesting { kFunc, kPerf } state_of_testing;
+  enum StateOfTesting : uint8_t { kFunc, kPerf } state_of_testing;
 };
 
 using TaskDataPtr = std::shared_ptr<ppc::core::TaskData>;
