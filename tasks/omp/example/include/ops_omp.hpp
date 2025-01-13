@@ -9,32 +9,32 @@ namespace nesterov_a_test_task_omp {
 
 class TestOMPTaskSequential : public ppc::core::Task {
  public:
-  explicit TestOMPTaskSequential(ppc::core::TaskDataPtr taskData_, std::string ops_)
-      : Task(std::move(taskData_)), ops(std::move(ops_)) {}
-  bool pre_processing_impl() override;
-  bool validation_impl() override;
-  bool run_impl() override;
-  bool post_processing_impl() override;
+  explicit TestOMPTaskSequential(ppc::core::TaskDataPtr task_data, std::string ops)
+      : Task(std::move(task_data)), ops_(std::move(ops)) {}
+  bool PreProcessingImpl() override;
+  bool ValidationImpl() override;
+  bool RunImpl() override;
+  bool PostProcessingImpl() override;
 
  private:
   std::vector<int> input_;
-  int res{};
-  std::string ops;
+  int res_{};
+  std::string ops_;
 };
 
 class TestOMPTaskParallel : public ppc::core::Task {
  public:
-  explicit TestOMPTaskParallel(ppc::core::TaskDataPtr taskData_, std::string ops_)
-      : Task(std::move(taskData_)), ops(std::move(ops_)) {}
-  bool pre_processing_impl() override;
-  bool validation_impl() override;
-  bool run_impl() override;
-  bool post_processing_impl() override;
+  explicit TestOMPTaskParallel(ppc::core::TaskDataPtr task_data, std::string ops)
+      : Task(std::move(task_data)), ops_(std::move(ops)) {}
+  bool PreProcessingImpl() override;
+  bool ValidationImpl() override;
+  bool RunImpl() override;
+  bool PostProcessingImpl() override;
 
  private:
   std::vector<int> input_;
-  int res{};
-  std::string ops;
+  int res_{};
+  std::string ops_;
 };
 
 }  // namespace nesterov_a_test_task_omp

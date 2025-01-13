@@ -10,7 +10,7 @@ TEST(perf_tests, check_perf_pipeline) {
   std::vector<uint32_t> in(2000, 1);
   std::vector<uint32_t> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -33,7 +33,7 @@ TEST(perf_tests, check_perf_pipeline) {
 
   // Get perf statistic
   ppc::core::Perf::PrintPerfStatistic(perf_results);
-  ASSERT_LE(perf_results->time_sec, ppc::core::PerfResults::MAX_TIME);
+  ASSERT_LE(perf_results->time_sec, ppc::core::PerfResults::kMaxTime);
   EXPECT_EQ(out[0], in.size());
 }
 
@@ -42,7 +42,7 @@ TEST(perf_tests, check_perf_pipeline_float) {
   std::vector<float> in(2000, 1);
   std::vector<float> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -65,7 +65,7 @@ TEST(perf_tests, check_perf_pipeline_float) {
 
   // Get perf statistic
   ppc::core::Perf::PrintPerfStatistic(perf_results);
-  ASSERT_LE(perf_results->time_sec, ppc::core::PerfResults::MAX_TIME);
+  ASSERT_LE(perf_results->time_sec, ppc::core::PerfResults::kMaxTime);
   EXPECT_EQ(out[0], in.size());
 }
 
@@ -74,7 +74,7 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
   std::vector<uint8_t> in(128, 1);
   std::vector<uint8_t> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -102,7 +102,7 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
 
   // Get perf statistic
   ASSERT_ANY_THROW(ppc::core::Perf::PrintPerfStatistic(perf_results));
-  ASSERT_GE(perf_results->time_sec, ppc::core::PerfResults::MAX_TIME);
+  ASSERT_GE(perf_results->time_sec, ppc::core::PerfResults::kMaxTime);
   EXPECT_EQ(out[0], in.size());
 }
 
@@ -111,7 +111,7 @@ TEST(perf_tests, check_perf_task) {
   std::vector<uint32_t> in(2000, 1);
   std::vector<uint32_t> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -133,9 +133,9 @@ TEST(perf_tests, check_perf_task) {
   perf_analyzer.TaskRun(perf_attr, perf_results);
 
   // Get perf statistic
-  perf_results->type_of_running = ppc::core::PerfResults::NONE;
+  perf_results->type_of_running = ppc::core::PerfResults::kNone;
   ppc::core::Perf::PrintPerfStatistic(perf_results);
-  ASSERT_LE(perf_results->time_sec, ppc::core::PerfResults::MAX_TIME);
+  ASSERT_LE(perf_results->time_sec, ppc::core::PerfResults::kMaxTime);
   EXPECT_EQ(out[0], in.size());
 }
 
@@ -144,7 +144,7 @@ TEST(perf_tests, check_perf_task_float) {
   std::vector<float> in(2000, 1);
   std::vector<float> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -166,8 +166,8 @@ TEST(perf_tests, check_perf_task_float) {
   perf_analyzer.TaskRun(perf_attr, perf_results);
 
   // Get perf statistic
-  perf_results->type_of_running = ppc::core::PerfResults::PIPELINE;
+  perf_results->type_of_running = ppc::core::PerfResults::kPipeline;
   ppc::core::Perf::PrintPerfStatistic(perf_results);
-  ASSERT_LE(perf_results->time_sec, ppc::core::PerfResults::MAX_TIME);
+  ASSERT_LE(perf_results->time_sec, ppc::core::PerfResults::kMaxTime);
   EXPECT_EQ(out[0], in.size());
 }

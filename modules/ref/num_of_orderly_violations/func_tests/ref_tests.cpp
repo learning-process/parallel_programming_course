@@ -16,7 +16,7 @@ TEST(num_of_orderly_violations, check_int32_t) {
     }
   }
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -25,11 +25,11 @@ TEST(num_of_orderly_violations, check_int32_t) {
 
   // Create Task
   ppc::reference::NumOfOrderlyViolations<int32_t, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, true);
-  test_task.pre_processing();
-  test_task.run();
-  test_task.post_processing();
+  test_task.PreProcessing();
+  test_task.Run();
+  test_task.PostProcessing();
   ASSERT_EQ(out[0], (in.size() / 2) - 1);
 }
 
@@ -37,7 +37,7 @@ TEST(num_of_orderly_violations, check_validate_func) {
   // Create data
   std::vector<int32_t> in(125, 1);
   std::vector<int32_t> out(2, 0);
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -45,7 +45,7 @@ TEST(num_of_orderly_violations, check_validate_func) {
   task_data->outputs_count.emplace_back(out.size());
   // Create Task
   ppc::reference::NumOfOrderlyViolations<int32_t, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, false);
 }
 
@@ -57,7 +57,7 @@ TEST(num_of_orderly_violations, check_double) {
   in[200] = -1;
   in[456] = -1;
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -66,11 +66,11 @@ TEST(num_of_orderly_violations, check_double) {
 
   // Create Task
   ppc::reference::NumOfOrderlyViolations<double, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, true);
-  test_task.pre_processing();
-  test_task.run();
-  test_task.post_processing();
+  test_task.PreProcessing();
+  test_task.Run();
+  test_task.PostProcessing();
   ASSERT_EQ(out[0], 3ULL);
 }
 
@@ -79,7 +79,7 @@ TEST(num_of_orderly_violations, check_int8_t) {
   std::vector<int8_t> in(255, -1);
   std::vector<uint64_t> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -88,11 +88,11 @@ TEST(num_of_orderly_violations, check_int8_t) {
 
   // Create Task
   ppc::reference::NumOfOrderlyViolations<int8_t, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, true);
-  test_task.pre_processing();
-  test_task.run();
-  test_task.post_processing();
+  test_task.PreProcessing();
+  test_task.Run();
+  test_task.PostProcessing();
   ASSERT_EQ(out[0], 0ULL);
 }
 
@@ -104,7 +104,7 @@ TEST(num_of_orderly_violations, check_int64_t) {
     in[i] *= -1;
   }
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -113,11 +113,11 @@ TEST(num_of_orderly_violations, check_int64_t) {
 
   // Create Task
   ppc::reference::NumOfOrderlyViolations<int64_t, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, true);
-  test_task.pre_processing();
-  test_task.run();
-  test_task.post_processing();
+  test_task.PreProcessing();
+  test_task.Run();
+  test_task.PostProcessing();
   ASSERT_EQ(out[0], 1ULL);
 }
 
@@ -127,7 +127,7 @@ TEST(num_of_orderly_violations, check_float) {
   std::vector<uint64_t> out(1, 0);
   in[1] = -1.0001F;
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -136,10 +136,10 @@ TEST(num_of_orderly_violations, check_float) {
 
   // Create Task
   ppc::reference::NumOfOrderlyViolations<float, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, true);
-  test_task.pre_processing();
-  test_task.run();
-  test_task.post_processing();
+  test_task.PreProcessing();
+  test_task.Run();
+  test_task.PostProcessing();
   ASSERT_EQ(out[0], 1ULL);
 }
