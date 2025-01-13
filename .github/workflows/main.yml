@@ -893,11 +893,13 @@ jobs:
         path: 'cov-report'
   ubuntu-gcc-build-perf-stats:
     needs:
-      - macos-clang-build
-      - ubuntu-clang-sanitizer-build
+      - macos-clang-build-extended
       - ubuntu-gcc-build-codecov
-      - windows-clang-build
-      - windows-msvc-build
+      - ubuntu-gcc-build-extended
+      - ubuntu-clang-build-extended
+      - ubuntu-clang-sanitizer-build-extended
+      - windows-clang-build-extended
+      - windows-msvc-build-extended
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
