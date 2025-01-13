@@ -249,7 +249,7 @@ TEST(Parallel_Operations_MPI, Test_Max_2_File) {
 
   if (world.rank() == 0) {
     std::string line;
-    std::ifstream test_file(ppc::core::GetAbsolutePath("mpi/example/data/test.txt"));
+    std::ifstream test_file(ppc::core::GetAbsolutePath("all/example/data/test_mpi.txt"));
     if (test_file.is_open()) {
       getline(test_file, line);
     }
