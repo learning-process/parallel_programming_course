@@ -23,7 +23,7 @@ TEST(Parallel_Operations_OpenMP, Test_Sum) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
@@ -32,15 +32,15 @@ TEST(Parallel_Operations_OpenMP, Test_Sum) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskSequential test_omp_task_sequential(task_data_seq, "+");
-  ASSERT_EQ(test_omp_task_sequential.validation(), true);
-  test_omp_task_sequential.pre_processing();
-  test_omp_task_sequential.run();
-  test_omp_task_sequential.post_processing();
+  ASSERT_EQ(test_omp_task_sequential.Validation(), true);
+  test_omp_task_sequential.PreProcessing();
+  test_omp_task_sequential.Run();
+  test_omp_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
@@ -49,10 +49,10 @@ TEST(Parallel_Operations_OpenMP, Test_Sum) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskParallel test_omp_task_parallel(task_data_par, "+");
-  ASSERT_EQ(test_omp_task_parallel.validation(), true);
-  test_omp_task_parallel.pre_processing();
-  test_omp_task_parallel.run();
-  test_omp_task_parallel.post_processing();
+  ASSERT_EQ(test_omp_task_parallel.Validation(), true);
+  test_omp_task_parallel.PreProcessing();
+  test_omp_task_parallel.Run();
+  test_omp_task_parallel.PostProcessing();
 
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
@@ -62,7 +62,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
@@ -71,15 +71,15 @@ TEST(Parallel_Operations_OpenMP, Test_Diff) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskSequential test_omp_task_sequential(task_data_seq, "-");
-  ASSERT_EQ(test_omp_task_sequential.validation(), true);
-  test_omp_task_sequential.pre_processing();
-  test_omp_task_sequential.run();
-  test_omp_task_sequential.post_processing();
+  ASSERT_EQ(test_omp_task_sequential.Validation(), true);
+  test_omp_task_sequential.PreProcessing();
+  test_omp_task_sequential.Run();
+  test_omp_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
@@ -88,10 +88,10 @@ TEST(Parallel_Operations_OpenMP, Test_Diff) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskParallel test_omp_task_parallel(task_data_par, "-");
-  ASSERT_EQ(test_omp_task_parallel.validation(), true);
-  test_omp_task_parallel.pre_processing();
-  test_omp_task_parallel.run();
-  test_omp_task_parallel.post_processing();
+  ASSERT_EQ(test_omp_task_parallel.Validation(), true);
+  test_omp_task_parallel.PreProcessing();
+  test_omp_task_parallel.Run();
+  test_omp_task_parallel.PostProcessing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -100,7 +100,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
@@ -109,15 +109,15 @@ TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskSequential test_omp_task_sequential(task_data_seq, "-");
-  ASSERT_EQ(test_omp_task_sequential.validation(), true);
-  test_omp_task_sequential.pre_processing();
-  test_omp_task_sequential.run();
-  test_omp_task_sequential.post_processing();
+  ASSERT_EQ(test_omp_task_sequential.Validation(), true);
+  test_omp_task_sequential.PreProcessing();
+  test_omp_task_sequential.Run();
+  test_omp_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
@@ -126,10 +126,10 @@ TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskParallel test_omp_task_parallel(task_data_par, "-");
-  ASSERT_EQ(test_omp_task_parallel.validation(), true);
-  test_omp_task_parallel.pre_processing();
-  test_omp_task_parallel.run();
-  test_omp_task_parallel.post_processing();
+  ASSERT_EQ(test_omp_task_parallel.Validation(), true);
+  test_omp_task_parallel.PreProcessing();
+  test_omp_task_parallel.Run();
+  test_omp_task_parallel.PostProcessing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -138,7 +138,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
@@ -147,15 +147,15 @@ TEST(Parallel_Operations_OpenMP, Test_Mult) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskSequential test_omp_task_sequential(task_data_seq, "*");
-  ASSERT_EQ(test_omp_task_sequential.validation(), true);
-  test_omp_task_sequential.pre_processing();
-  test_omp_task_sequential.run();
-  test_omp_task_sequential.post_processing();
+  ASSERT_EQ(test_omp_task_sequential.Validation(), true);
+  test_omp_task_sequential.PreProcessing();
+  test_omp_task_sequential.Run();
+  test_omp_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
@@ -164,10 +164,10 @@ TEST(Parallel_Operations_OpenMP, Test_Mult) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskParallel test_omp_task_parallel(task_data_par, "*");
-  ASSERT_EQ(test_omp_task_parallel.validation(), true);
-  test_omp_task_parallel.pre_processing();
-  test_omp_task_parallel.run();
-  test_omp_task_parallel.post_processing();
+  ASSERT_EQ(test_omp_task_parallel.Validation(), true);
+  test_omp_task_parallel.PreProcessing();
+  test_omp_task_parallel.Run();
+  test_omp_task_parallel.PostProcessing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -176,7 +176,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
@@ -185,15 +185,15 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskSequential test_omp_task_sequential(task_data_seq, "*");
-  ASSERT_EQ(test_omp_task_sequential.validation(), true);
-  test_omp_task_sequential.pre_processing();
-  test_omp_task_sequential.run();
-  test_omp_task_sequential.post_processing();
+  ASSERT_EQ(test_omp_task_sequential.Validation(), true);
+  test_omp_task_sequential.PreProcessing();
+  test_omp_task_sequential.Run();
+  test_omp_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
@@ -202,10 +202,10 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskParallel test_omp_task_parallel(task_data_par, "*");
-  ASSERT_EQ(test_omp_task_parallel.validation(), true);
-  test_omp_task_parallel.pre_processing();
-  test_omp_task_parallel.run();
-  test_omp_task_parallel.post_processing();
+  ASSERT_EQ(test_omp_task_parallel.Validation(), true);
+  test_omp_task_parallel.PreProcessing();
+  test_omp_task_parallel.Run();
+  test_omp_task_parallel.PostProcessing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -221,7 +221,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2_File) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
@@ -230,15 +230,15 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2_File) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskSequential test_omp_task_sequential(task_data_seq, "*");
-  ASSERT_EQ(test_omp_task_sequential.validation(), true);
-  test_omp_task_sequential.pre_processing();
-  test_omp_task_sequential.run();
-  test_omp_task_sequential.post_processing();
+  ASSERT_EQ(test_omp_task_sequential.Validation(), true);
+  test_omp_task_sequential.PreProcessing();
+  test_omp_task_sequential.Run();
+  test_omp_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
@@ -247,9 +247,9 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2_File) {
 
   // Create Task
   nesterov_a_test_task_omp::TestOMPTaskParallel test_omp_task_parallel(task_data_par, "*");
-  ASSERT_EQ(test_omp_task_parallel.validation(), true);
-  test_omp_task_parallel.pre_processing();
-  test_omp_task_parallel.run();
-  test_omp_task_parallel.post_processing();
+  ASSERT_EQ(test_omp_task_parallel.Validation(), true);
+  test_omp_task_parallel.PreProcessing();
+  test_omp_task_parallel.Run();
+  test_omp_task_parallel.PostProcessing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
