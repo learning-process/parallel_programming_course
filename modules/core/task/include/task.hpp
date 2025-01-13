@@ -11,7 +11,7 @@
 
 namespace ppc::core {
 
-struct task_data {
+struct TaskData {
   std::vector<uint8_t *> inputs;
   std::vector<std::uint32_t> inputs_count;
   std::vector<uint8_t *> outputs;
@@ -19,16 +19,16 @@ struct task_data {
   enum StateOfTesting { kFunc, kPerf } state_of_testing;
 };
 
-using task_dataPtr = std::shared_ptr<ppc::core::task_data>;
+using TaskDataPtr = std::shared_ptr<ppc::core::TaskData>;
 
 // Memory of inputs and outputs need to be initialized before create object of
 // Task class
 class Task {
  public:
-  explicit Task(task_dataPtr task_data);
+  explicit Task(TaskDataPtr task_data);
 
   // set input and output data
-  void SetData(task_dataPtr task_data);
+  void SetData(TaskDataPtr task_data);
 
   // validation of data and validation of task attributes before running
   virtual bool Validation();
@@ -43,13 +43,13 @@ class Task {
   virtual bool PostProcessing();
 
   // get input and output data
-  [[nodiscard]] task_dataPtr GetData() const;
+  [[nodiscard]] TaskDataPtr GetData() const;
 
   virtual ~Task();
 
  protected:
   void InternalOrderTest(const std::string &str = __builtin_FUNCTION());
-  task_dataPtr task_data;
+  TaskDataPtr task_data;
 
   // implementation of "validation" function
   virtual bool ValidationImpl() = 0;

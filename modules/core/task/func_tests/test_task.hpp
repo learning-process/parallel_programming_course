@@ -13,7 +13,7 @@ namespace ppc::test::task {
 template <class T>
 class TestTask : public ppc::core::Task {
  public:
-  explicit TestTask(ppc::core::task_dataPtr task_data) : Task(task_data) {}
+  explicit TestTask(ppc::core::TaskDataPtr task_data) : Task(task_data) {}
   bool PreProcessingImpl() override {
     input_ = reinterpret_cast<T *>(task_data->inputs[0]);
     output_ = reinterpret_cast<T *>(task_data->outputs[0]);

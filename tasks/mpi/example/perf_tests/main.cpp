@@ -7,13 +7,13 @@
 #include "mpi/example/include/ops_mpi.hpp"
 
 TEST(mpi_example_perf_test, test_pipeline_run) {
-  boost::mpi::communicator world_;
+  boost::mpi::communicator world;
   std::vector<int> global_vec;
   std::vector<int32_t> global_sum(1, 0);
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
   int count_size_vector;
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     count_size_vector = 120;
     global_vec = std::vector<int>(count_size_vector, 1);
     task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
@@ -40,20 +40,20 @@ TEST(mpi_example_perf_test, test_pipeline_run) {
   // Create Perf analyzer
   auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_mpi_task_parallel);
   perf_analyzer->PipelineRun(perf_attr, perf_results);
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     ppc::core::Perf::PrintPerfStatistic(perf_results);
     ASSERT_EQ(count_size_vector, global_sum[0]);
   }
 }
 
 TEST(mpi_example_perf_test, test_task_run) {
-  boost::mpi::communicator world_;
+  boost::mpi::communicator world;
   std::vector<int> global_vec;
   std::vector<int32_t> global_sum(1, 0);
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
   int count_size_vector;
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     count_size_vector = 120;
     global_vec = std::vector<int>(count_size_vector, 1);
     task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
@@ -80,7 +80,7 @@ TEST(mpi_example_perf_test, test_task_run) {
   // Create Perf analyzer
   auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_mpi_task_parallel);
   perf_analyzer->TaskRun(perf_attr, perf_results);
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     ppc::core::Perf::PrintPerfStatistic(perf_results);
     ASSERT_EQ(count_size_vector, global_sum[0]);
   }

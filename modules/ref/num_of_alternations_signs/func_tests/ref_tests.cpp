@@ -17,7 +17,7 @@ TEST(num_of_alternations_signs, check_int32_t) {
   }
 
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -38,7 +38,7 @@ TEST(num_of_alternations_signs, check_validate_func) {
   std::vector<int32_t> in(125, 1);
   std::vector<int32_t> out(2, 0);
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -58,7 +58,7 @@ TEST(num_of_alternations_signs, check_double) {
   in[456] = -1;
 
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -80,7 +80,7 @@ TEST(num_of_alternations_signs, check_int8_t) {
   std::vector<uint64_t> out(1, 0);
 
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -105,7 +105,7 @@ TEST(num_of_alternations_signs, check_int64_t) {
   }
 
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -128,7 +128,7 @@ TEST(num_of_alternations_signs, check_float) {
   in[1] = -1.0001F;
 
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));

@@ -10,7 +10,7 @@ TEST(sum_of_vector_elements, check_int32_t) {
   std::vector<int32_t> in(1256, 1);
   std::vector<int32_t> out(1, 0);
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -30,7 +30,7 @@ TEST(sum_of_vector_elements, check_validate_func) {
   std::vector<int32_t> in(125, 1);
   std::vector<int32_t> out(2, 0);
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -46,7 +46,7 @@ TEST(sum_of_vector_elements, check_double) {
   std::vector<double> in(25680, 1);
   std::vector<double> out(1, 0);
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -66,7 +66,7 @@ TEST(sum_of_vector_elements, check_uint8_t) {
   std::vector<uint8_t> in(255, 1);
   std::vector<uint8_t> out(1, 0);
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -86,7 +86,7 @@ TEST(sum_of_vector_elements, check_int64_t) {
   std::vector<int64_t> in(75836, 1);
   std::vector<int64_t> out(1, 0);
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
@@ -106,7 +106,7 @@ TEST(sum_of_vector_elements, check_float) {
   std::vector<float> in(1, 1.F);
   std::vector<float> out(1, 0.F);
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));

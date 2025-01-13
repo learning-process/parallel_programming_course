@@ -11,7 +11,7 @@ TEST(perf_tests, check_perf_pipeline) {
   std::vector<uint32_t> out(1, 0);
 
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
@@ -43,7 +43,7 @@ TEST(perf_tests, check_perf_pipeline_float) {
   std::vector<float> out(1, 0);
 
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
@@ -75,7 +75,7 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
   std::vector<uint8_t> out(1, 0);
 
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
@@ -112,7 +112,7 @@ TEST(perf_tests, check_perf_task) {
   std::vector<uint32_t> out(1, 0);
 
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
@@ -145,7 +145,7 @@ TEST(perf_tests, check_perf_task_float) {
   std::vector<float> out(1, 0);
 
   // Create task_data
-  auto task_data = std::make_shared<ppc::core::task_data>();
+  auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
   task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));

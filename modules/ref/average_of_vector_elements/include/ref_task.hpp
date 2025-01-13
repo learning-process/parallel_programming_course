@@ -15,7 +15,7 @@ namespace ppc::reference {
 template <class InType, class OutType>
 class AverageOfVectorElements : public ppc::core::Task {
  public:
-  explicit AverageOfVectorElements(ppc::core::task_dataPtr task_data) : Task(task_data) {}
+  explicit AverageOfVectorElements(ppc::core::TaskDataPtr task_data) : Task(task_data) {}
   bool PreProcessingImpl() override {
     // Init vectors
     input_ = std::vector<InType>(task_data->inputs_count[0]);

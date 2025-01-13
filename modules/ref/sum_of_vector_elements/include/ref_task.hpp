@@ -13,7 +13,7 @@ namespace ppc::reference {
 template <class InOutType>
 class SumOfVectorElements : public ppc::core::Task {
  public:
-  explicit SumOfVectorElements(ppc::core::task_dataPtr task_data) : Task(task_data) {}
+  explicit SumOfVectorElements(ppc::core::TaskDataPtr task_data) : Task(task_data) {}
   bool PreProcessingImpl() override {
     // Init vectors
     input_ = std::vector<InOutType>(task_data->inputs_count[0]);

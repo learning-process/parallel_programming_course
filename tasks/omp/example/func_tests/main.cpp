@@ -24,7 +24,7 @@ TEST(Parallel_Operations_OpenMP, Test_Sum) {
   std::vector<int> ref_res(1, 0);
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::task_data>();
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -41,7 +41,7 @@ TEST(Parallel_Operations_OpenMP, Test_Sum) {
   std::vector<int> par_res(1, 0);
 
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
@@ -63,7 +63,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff) {
   std::vector<int> ref_res(1, 0);
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::task_data>();
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -80,7 +80,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff) {
   std::vector<int> par_res(1, 0);
 
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
@@ -101,7 +101,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
   std::vector<int> ref_res(1, 0);
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::task_data>();
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -118,7 +118,7 @@ TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
   std::vector<int> par_res(1, 0);
 
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
@@ -139,7 +139,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult) {
   std::vector<int> ref_res(1, 0);
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::task_data>();
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -156,7 +156,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult) {
   std::vector<int> par_res(1, 0);
 
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
@@ -177,7 +177,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
   std::vector<int> ref_res(1, 0);
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::task_data>();
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -194,7 +194,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
   std::vector<int> par_res(1, 0);
 
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
@@ -222,7 +222,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2_File) {
   std::vector<int> ref_res(1, 0);
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::task_data>();
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -239,7 +239,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2_File) {
   std::vector<int> par_res(1, 0);
 
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));

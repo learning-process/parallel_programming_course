@@ -21,13 +21,13 @@ std::vector<int> GetRandomVector(int sz) {
 }  // namespace
 
 TEST(Parallel_Operations_MPI, Test_Sum) {
-  boost::mpi::communicator world_;
+  boost::mpi::communicator world;
   std::vector<int> global_vec;
   std::vector<int32_t> global_sum(1, 0);
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     const int count_size_vector = 120;
     global_vec = GetRandomVector(count_size_vector);
     task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
@@ -42,12 +42,12 @@ TEST(Parallel_Operations_MPI, Test_Sum) {
   test_mpi_task_parallel.Run();
   test_mpi_task_parallel.PostProcessing();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     // Create data
     std::vector<int32_t> reference_sum(1, 0);
 
     // Create task_data
-    auto task_data_seq = std::make_shared<ppc::core::task_data>();
+    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
     task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     task_data_seq->inputs_count.emplace_back(global_vec.size());
     task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_sum.data()));
@@ -65,13 +65,13 @@ TEST(Parallel_Operations_MPI, Test_Sum) {
 }
 
 TEST(Parallel_Operations_MPI, Test_Diff) {
-  boost::mpi::communicator world_;
+  boost::mpi::communicator world;
   std::vector<int> global_vec;
   std::vector<int32_t> global_diff(1, 0);
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     const int count_size_vector = 240;
     global_vec = GetRandomVector(count_size_vector);
     task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
@@ -86,12 +86,12 @@ TEST(Parallel_Operations_MPI, Test_Diff) {
   test_mpi_task_parallel.Run();
   test_mpi_task_parallel.PostProcessing();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     // Create data
     std::vector<int32_t> reference_diff(1, 0);
 
     // Create task_data
-    auto task_data_seq = std::make_shared<ppc::core::task_data>();
+    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
     task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     task_data_seq->inputs_count.emplace_back(global_vec.size());
     task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
@@ -109,13 +109,13 @@ TEST(Parallel_Operations_MPI, Test_Diff) {
 }
 
 TEST(Parallel_Operations_MPI, Test_Diff_2) {
-  boost::mpi::communicator world_;
+  boost::mpi::communicator world;
   std::vector<int> global_vec;
   std::vector<int32_t> global_diff(1, 0);
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     const int count_size_vector = 120;
     global_vec = GetRandomVector(count_size_vector);
     task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
@@ -130,12 +130,12 @@ TEST(Parallel_Operations_MPI, Test_Diff_2) {
   test_mpi_task_parallel.Run();
   test_mpi_task_parallel.PostProcessing();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     // Create data
     std::vector<int32_t> reference_diff(1, 0);
 
     // Create task_data
-    auto task_data_seq = std::make_shared<ppc::core::task_data>();
+    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
     task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     task_data_seq->inputs_count.emplace_back(global_vec.size());
     task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_diff.data()));
@@ -153,13 +153,13 @@ TEST(Parallel_Operations_MPI, Test_Diff_2) {
 }
 
 TEST(Parallel_Operations_MPI, Test_Max) {
-  boost::mpi::communicator world_;
+  boost::mpi::communicator world;
   std::vector<int> global_vec;
   std::vector<int32_t> global_max(1, 0);
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     const int count_size_vector = 240;
     global_vec = GetRandomVector(count_size_vector);
     task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
@@ -174,12 +174,12 @@ TEST(Parallel_Operations_MPI, Test_Max) {
   test_mpi_task_parallel.Run();
   test_mpi_task_parallel.PostProcessing();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     // Create data
     std::vector<int32_t> reference_max(1, 0);
 
     // Create task_data
-    auto task_data_seq = std::make_shared<ppc::core::task_data>();
+    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
     task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     task_data_seq->inputs_count.emplace_back(global_vec.size());
     task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));
@@ -197,13 +197,13 @@ TEST(Parallel_Operations_MPI, Test_Max) {
 }
 
 TEST(Parallel_Operations_MPI, Test_Max_2) {
-  boost::mpi::communicator world_;
+  boost::mpi::communicator world;
   std::vector<int> global_vec;
   std::vector<int32_t> global_max(1, 0);
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     const int count_size_vector = 120;
     global_vec = GetRandomVector(count_size_vector);
     task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
@@ -218,12 +218,12 @@ TEST(Parallel_Operations_MPI, Test_Max_2) {
   test_mpi_task_parallel.Run();
   test_mpi_task_parallel.PostProcessing();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     // Create data
     std::vector<int32_t> reference_max(1, 0);
 
     // Create task_data
-    auto task_data_seq = std::make_shared<ppc::core::task_data>();
+    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
     task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     task_data_seq->inputs_count.emplace_back(global_vec.size());
     task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));
@@ -241,13 +241,13 @@ TEST(Parallel_Operations_MPI, Test_Max_2) {
 }
 
 TEST(Parallel_Operations_MPI, Test_Max_2_File) {
-  boost::mpi::communicator world_;
+  boost::mpi::communicator world;
   std::vector<int> global_vec;
   std::vector<int32_t> global_max(1, 0);
   // Create task_data
-  auto task_data_par = std::make_shared<ppc::core::task_data>();
+  auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     std::string line;
     std::ifstream test_file(ppc::core::GetAbsolutePath("mpi/example/data/test.txt"));
     if (test_file.is_open()) {
@@ -269,12 +269,12 @@ TEST(Parallel_Operations_MPI, Test_Max_2_File) {
   test_mpi_task_parallel.Run();
   test_mpi_task_parallel.PostProcessing();
 
-  if (world_.rank() == 0) {
+  if (world.rank() == 0) {
     // Create data
     std::vector<int32_t> reference_max(1, 0);
 
     // Create task_data
-    auto task_data_seq = std::make_shared<ppc::core::task_data>();
+    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
     task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     task_data_seq->inputs_count.emplace_back(global_vec.size());
     task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(reference_max.data()));

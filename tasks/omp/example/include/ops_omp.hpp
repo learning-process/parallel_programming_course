@@ -9,8 +9,8 @@ namespace nesterov_a_test_task_omp {
 
 class TestOMPTaskSequential : public ppc::core::Task {
  public:
-  explicit TestOMPTaskSequential(ppc::core::task_dataPtr task_data, std::string ops_)
-      : Task(std::move(task_data)), ops_(std::move(ops_)) {}
+  explicit TestOMPTaskSequential(ppc::core::TaskDataPtr task_data, std::string ops)
+      : Task(std::move(task_data)), ops_(std::move(ops)) {}
   bool PreProcessingImpl() override;
   bool ValidationImpl() override;
   bool RunImpl() override;
@@ -24,8 +24,8 @@ class TestOMPTaskSequential : public ppc::core::Task {
 
 class TestOMPTaskParallel : public ppc::core::Task {
  public:
-  explicit TestOMPTaskParallel(ppc::core::task_dataPtr task_data, std::string ops_)
-      : Task(std::move(task_data)), ops_(std::move(ops_)) {}
+  explicit TestOMPTaskParallel(ppc::core::TaskDataPtr task_data, std::string ops)
+      : Task(std::move(task_data)), ops_(std::move(ops)) {}
   bool PreProcessingImpl() override;
   bool ValidationImpl() override;
   bool RunImpl() override;

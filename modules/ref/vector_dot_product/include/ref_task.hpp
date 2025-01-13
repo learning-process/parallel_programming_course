@@ -15,7 +15,7 @@ namespace ppc::reference {
 template <class InOutType>
 class VectorDotProduct : public ppc::core::Task {
  public:
-  explicit VectorDotProduct(ppc::core::task_dataPtr task_data) : Task(task_data) {}
+  explicit VectorDotProduct(ppc::core::TaskDataPtr task_data) : Task(task_data) {}
   bool PreProcessingImpl() override {
     // Init vectors
     input_ = std::vector<std::vector<InOutType> >(2);

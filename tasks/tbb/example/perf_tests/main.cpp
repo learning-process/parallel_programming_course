@@ -14,7 +14,7 @@ TEST(tbb_example_perf_test, test_pipeline_run) {
   std::vector<int> out(1, 0);
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::task_data>();
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data_seq->inputs_count.emplace_back(in.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
@@ -47,7 +47,7 @@ TEST(tbb_example_perf_test, test_task_run) {
   std::vector<int> out(1, 0);
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::task_data>();
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data_seq->inputs_count.emplace_back(in.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));

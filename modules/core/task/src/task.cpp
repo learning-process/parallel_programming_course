@@ -5,15 +5,15 @@
 #include <stdexcept>
 #include <utility>
 
-void ppc::core::Task::SetData(task_dataPtr task_data) {
-  task_data->state_of_testing = task_data::StateOfTesting::kFunc;
+void ppc::core::Task::SetData(TaskDataPtr task_data) {
+  task_data->state_of_testing = TaskData::StateOfTesting::kFunc;
   functions_order_.clear();
   this->task_data = std::move(task_data);
 }
 
-ppc::core::task_dataPtr ppc::core::Task::GetData() const { return task_data; }
+ppc::core::TaskDataPtr ppc::core::Task::GetData() const { return task_data; }
 
-ppc::core::Task::Task(task_dataPtr task_data) { SetData(std::move(task_data)); }
+ppc::core::Task::Task(TaskDataPtr task_data) { SetData(std::move(task_data)); }
 
 bool ppc::core::Task::Validation() {
   InternalOrderTest();
@@ -50,11 +50,11 @@ void ppc::core::Task::InternalOrderTest(const std::string& str) {
     }
   }
 
-  if (str == "PreProcessing" && task_data->state_of_testing == task_data::StateOfTesting::kFunc) {
+  if (str == "PreProcessing" && task_data->state_of_testing == TaskData::StateOfTesting::kFunc) {
     tmp_time_point_ = std::chrono::high_resolution_clock::now();
   }
 
-  if (str == "post_processing" && task_data->state_of_testing == task_data::StateOfTesting::kFunc) {
+  if (str == "post_processing" && task_data->state_of_testing == TaskData::StateOfTesting::kFunc) {
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - tmp_time_point_).count();
     auto current_time = static_cast<double>(duration) * 1e-9;

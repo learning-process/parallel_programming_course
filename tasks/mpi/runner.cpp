@@ -54,16 +54,16 @@ class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
 
 int main(int argc, char** argv) {
   boost::mpi::environment env(argc, argv);
-  boost::mpi::communicator world_;
+  boost::mpi::communicator world;
 
   ::testing::InitGoogleTest(&argc, argv);
 
   auto& listeners = ::testing::UnitTest::GetInstance()->listeners();
-  if (world_.rank() != 0 && (argc < 2 || argv[1] != std::string("--print-workers"))) {
+  if (world.rank() != 0 && (argc < 2 || argv[1] != std::string("--print-workers"))) {
     auto* listener = listeners.Release(listeners.default_result_printer());
-    listeners.Append(new WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener), world_));
+    listeners.Append(new WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener), world));
   }
-  listeners.Append(new UnreadMessagesDetector(world_));
+  listeners.Append(new UnreadMessagesDetector(world));
 
   return RUN_ALL_TESTS();
 }

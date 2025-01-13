@@ -10,8 +10,8 @@ namespace nesterov_a_test_task_stl {
 
 class TestSTLTaskSequential : public ppc::core::Task {
  public:
-  explicit TestSTLTaskSequential(ppc::core::task_dataPtr task_data, std::string ops_)
-      : Task(std::move(task_data)), ops_(std::move(ops_)) {}
+  explicit TestSTLTaskSequential(ppc::core::TaskDataPtr task_data, std::string ops)
+      : Task(std::move(task_data)), ops_(std::move(ops)) {}
   bool PreProcessingImpl() override;
   bool ValidationImpl() override;
   bool RunImpl() override;
@@ -25,8 +25,8 @@ class TestSTLTaskSequential : public ppc::core::Task {
 
 class TestSTLTaskParallel : public ppc::core::Task {
  public:
-  explicit TestSTLTaskParallel(ppc::core::task_dataPtr task_data, std::string ops_)
-      : Task(std::move(task_data)), ops_(std::move(ops_)) {}
+  explicit TestSTLTaskParallel(ppc::core::TaskDataPtr task_data, std::string ops)
+      : Task(std::move(task_data)), ops_(std::move(ops)) {}
   bool PreProcessingImpl() override;
   bool ValidationImpl() override;
   bool RunImpl() override;

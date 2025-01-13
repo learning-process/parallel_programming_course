@@ -10,8 +10,8 @@ namespace nesterov_a_test_task_tbb {
 
 class TestTBBTaskSequential : public ppc::core::Task {
  public:
-  explicit TestTBBTaskSequential(ppc::core::task_dataPtr task_data, std::string ops_)
-      : Task(std::move(task_data)), ops_(std::move(ops_)) {}
+  explicit TestTBBTaskSequential(ppc::core::TaskDataPtr task_data, std::string ops)
+      : Task(std::move(task_data)), ops_(std::move(ops)) {}
   bool PreProcessingImpl() override;
   bool ValidationImpl() override;
   bool RunImpl() override;
@@ -25,8 +25,8 @@ class TestTBBTaskSequential : public ppc::core::Task {
 
 class TestTBBTaskParallel : public ppc::core::Task {
  public:
-  explicit TestTBBTaskParallel(ppc::core::task_dataPtr task_data, std::string ops_)
-      : Task(std::move(task_data)), ops_(std::move(ops_)) {}
+  explicit TestTBBTaskParallel(ppc::core::TaskDataPtr task_data, std::string ops)
+      : Task(std::move(task_data)), ops_(std::move(ops)) {}
   bool PreProcessingImpl() override;
   bool ValidationImpl() override;
   bool RunImpl() override;

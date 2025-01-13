@@ -9,7 +9,7 @@ namespace nesterov_a_test_task_seq {
 
 class TestTaskSequential : public ppc::core::Task {
  public:
-  explicit TestTaskSequential(ppc::core::task_dataPtr task_data) : Task(std::move(task_data)) {}
+  explicit TestTaskSequential(ppc::core::TaskDataPtr task_data) : Task(std::move(task_data)) {}
   bool PreProcessingImpl() override;
   bool ValidationImpl() override;
   bool RunImpl() override;

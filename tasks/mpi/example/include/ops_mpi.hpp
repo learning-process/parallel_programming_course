@@ -16,8 +16,8 @@ namespace nesterov_a_test_task_mpi {
 
 class TestMPITaskSequential : public ppc::core::Task {
  public:
-  explicit TestMPITaskSequential(ppc::core::task_dataPtr task_data, std::string ops_)
-      : Task(std::move(task_data)), ops_(std::move(ops_)) {}
+  explicit TestMPITaskSequential(ppc::core::TaskDataPtr task_data, std::string ops)
+      : Task(std::move(task_data)), ops_(std::move(ops)) {}
   bool PreProcessingImpl() override;
   bool ValidationImpl() override;
   bool RunImpl() override;
@@ -31,8 +31,8 @@ class TestMPITaskSequential : public ppc::core::Task {
 
 class TestMPITaskParallel : public ppc::core::Task {
  public:
-  explicit TestMPITaskParallel(ppc::core::task_dataPtr task_data, std::string ops_)
-      : Task(std::move(task_data)), ops_(std::move(ops_)) {}
+  explicit TestMPITaskParallel(ppc::core::TaskDataPtr task_data, std::string ops)
+      : Task(std::move(task_data)), ops_(std::move(ops)) {}
   bool PreProcessingImpl() override;
   bool ValidationImpl() override;
   bool RunImpl() override;

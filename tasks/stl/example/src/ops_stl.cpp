@@ -42,15 +42,15 @@ bool nesterov_a_test_task_stl::TestSTLTaskSequential::PostProcessingImpl() {
 namespace {
 std::mutex my_mutex;
 
-void AtomOps(std::vector<int> vec, const std::string &ops_, std::promise<int> &&pr) {
+void AtomOps(std::vector<int> vec, const std::string &ops, std::promise<int> &&pr) {
   auto sz = vec.size();
   int reduction_elem = 0;
-  if (ops_ == "+") {
+  if (ops == "+") {
     for (size_t i = 0; i < sz; i++) {
       std::lock_guard<std::mutex> my_lock(my_mutex);
       reduction_elem += vec[i];
     }
-  } else if (ops_ == "-") {
+  } else if (ops == "-") {
     for (size_t i = 0; i < sz; i++) {
       std::lock_guard<std::mutex> my_lock(my_mutex);
       reduction_elem -= vec[i];

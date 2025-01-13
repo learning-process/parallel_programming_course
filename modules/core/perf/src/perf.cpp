@@ -10,7 +10,7 @@
 ppc::core::Perf::Perf(const std::shared_ptr<Task>& task_ptr) { SetTask(task_ptr); }
 
 void ppc::core::Perf::SetTask(const std::shared_ptr<Task>& task_ptr) {
-  task_ptr->GetData()->state_of_testing = task_data::StateOfTesting::kPerf;
+  task_ptr->GetData()->state_of_testing = TaskData::StateOfTesting::kPerf;
   this->task_ = task_ptr;
 }
 
