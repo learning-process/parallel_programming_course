@@ -9,7 +9,6 @@
 
 #include "core/task/include/task.hpp"
 
-
 namespace ppc::reference {
 
 template <class InOutType>
@@ -52,7 +51,6 @@ class VectorDotProduct : public ppc::core::Task {
   InOutType dor_product_;
 };
 
-} // namespace ppc::reference
-
+}  // namespace ppc::reference
 
 #endif  // MODULES_REFERENCE_VECTOR_DOT_PRODUCT_REF_TASK_HPP_

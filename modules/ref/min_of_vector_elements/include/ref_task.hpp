@@ -10,7 +10,6 @@
 
 #include "core/task/include/task.hpp"
 
-
 namespace ppc::reference {
 
 template <class InOutType, class IndexType>
@@ -59,7 +58,6 @@ class MinOfVectorElements : public ppc::core::Task {
   IndexType min_index_;
 };
 
-} // namespace ppc::reference
-
+}  // namespace ppc::reference
 
 #endif  // MODULES_REFERENCE_MIN_OF_VECTOR_ELEMENTS_REF_TASK_HPP_

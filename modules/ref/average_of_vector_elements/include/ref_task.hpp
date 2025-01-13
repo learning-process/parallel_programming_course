@@ -9,7 +9,6 @@
 
 #include "core/task/include/task.hpp"
 
-
 namespace ppc::reference {
 
 template <class InType, class OutType>
@@ -49,7 +48,6 @@ class AverageOfVectorElements : public ppc::core::Task {
   OutType average_;
 };
 
-} // namespace ppc::reference
-
+}  // namespace ppc::reference
 
 #endif  // MODULES_REFERENCE_AVERAGE_OF_VECTOR_ELEMENTS_REF_TASK_HPP_

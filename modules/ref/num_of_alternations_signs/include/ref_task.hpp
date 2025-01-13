@@ -11,7 +11,6 @@
 
 #include "core/task/include/task.hpp"
 
-
 namespace ppc::reference {
 
 template <class InOutType, class CountType>
@@ -57,7 +56,6 @@ class NumOfAlternationsSigns : public ppc::core::Task {
   CountType num_;
 };
 
-} // namespace ppc::reference
-
+}  // namespace ppc::reference
 
 #endif  // MODULES_REFERENCE_NUM_OF_ALTERNATIONS_SIGNS_REF_TASK_HPP_

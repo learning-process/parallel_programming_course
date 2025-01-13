@@ -9,7 +9,6 @@
 
 #include "core/task/include/task.hpp"
 
-
 namespace ppc::reference {
 
 template <class InOutType, class IndexType>
@@ -57,7 +56,6 @@ class SumValuesByRowsMatrix : public ppc::core::Task {
   std::vector<InOutType> sum_;
 };
 
-} // namespace ppc::reference
-
+}  // namespace ppc::reference
 
 #endif  // MODULES_REFERENCE_SUM_VALUES_BY_ROWS_MATRIX_REF_TASK_HPP_

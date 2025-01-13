@@ -10,7 +10,6 @@
 
 #include "core/task/include/task.hpp"
 
-
 namespace ppc::reference {
 
 template <class InOutType, class IndexType>
@@ -59,7 +58,6 @@ class MaxOfVectorElements : public ppc::core::Task {
   IndexType max_index_;
 };
 
-} // namespace ppc::reference
-
+}  // namespace ppc::reference
 
 #endif  // MODULES_REFERENCE_MAX_OF_VECTOR_ELEMENTS_REF_TASK_HPP_

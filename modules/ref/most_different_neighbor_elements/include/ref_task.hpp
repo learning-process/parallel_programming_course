@@ -11,7 +11,6 @@
 
 #include "core/task/include/task.hpp"
 
-
 namespace ppc::reference {
 
 template <class InOutType, class IndexType>
@@ -68,7 +67,6 @@ class MostDifferentNeighborElements : public ppc::core::Task {
   IndexType l_elem_index_, r_elem_index_;
 };
 
-} // namespace ppc::reference
-
+}  // namespace ppc::reference
 
 #endif  // MODULES_REFERENCE_MOST_DIFFERENT_NEIGHBOR_ELEMENTS_REF_TASK_HPP_

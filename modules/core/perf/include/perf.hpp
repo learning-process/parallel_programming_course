@@ -8,7 +8,6 @@
 
 #include "core/task/include/task.hpp"
 
-
 namespace ppc::core {
 
 struct PerfAttr {
@@ -46,7 +45,6 @@ class Perf {
                         const std::shared_ptr<ppc::core::PerfResults>& perf_results);
 };
 
-} // namespace ppc::core
-
+}  // namespace ppc::core
 
 #endif  // MODULES_CORE_INCLUDE_PERF_HPP_
