@@ -883,7 +883,7 @@ jobs:
       run: |
         cd build
         lcov --capture --directory . --output-file ../coverage.info
-        lcov --remove ../coverage.info '*/3rdparty/*' '/usr/*' '*/perf_tests/*' '*/func_tests/*' --output-file ../coverage.info
+        lcov --remove ../coverage.info '*/3rdparty/*' '/usr/*' '*/perf_tests/*' '*/func_tests/*' '*/all/runner.cpp' '*/mpi/runner.cpp' '*/omp/runner.cpp' '*/seq/runner.cpp' '*/stl/runner.cpp' '*/tbb/runner.cpp' --output-file ../coverage.info
         cd ..
         genhtml coverage.info --output-directory cov-report
     - name: Upload coverage report artifact
