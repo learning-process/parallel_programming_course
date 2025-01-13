@@ -12,7 +12,7 @@ TEST(Sequential, Test_Sum_10) {
   std::vector<int> in(1, count);
   std::vector<int> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data_seq->inputs_count.emplace_back(in.size());
@@ -21,10 +21,10 @@ TEST(Sequential, Test_Sum_10) {
 
   // Create Task
   nesterov_a_test_task_seq::TestTaskSequential test_task_sequential(task_data_seq);
-  ASSERT_EQ(test_task_sequential.validation(), true);
-  test_task_sequential.pre_processing();
-  test_task_sequential.run();
-  test_task_sequential.post_processing();
+  ASSERT_EQ(test_task_sequential.Validation(), true);
+  test_task_sequential.PreProcessing();
+  test_task_sequential.Run();
+  test_task_sequential.PostProcessing();
   ASSERT_EQ(count, out[0]);
 }
 
@@ -35,7 +35,7 @@ TEST(Sequential, Test_Sum_20) {
   std::vector<int> in(1, count);
   std::vector<int> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data_seq->inputs_count.emplace_back(in.size());
@@ -44,10 +44,10 @@ TEST(Sequential, Test_Sum_20) {
 
   // Create Task
   nesterov_a_test_task_seq::TestTaskSequential test_task_sequential(task_data_seq);
-  ASSERT_EQ(test_task_sequential.validation(), true);
-  test_task_sequential.pre_processing();
-  test_task_sequential.run();
-  test_task_sequential.post_processing();
+  ASSERT_EQ(test_task_sequential.Validation(), true);
+  test_task_sequential.PreProcessing();
+  test_task_sequential.Run();
+  test_task_sequential.PostProcessing();
   ASSERT_EQ(count, out[0]);
 }
 
@@ -58,7 +58,7 @@ TEST(Sequential, Test_Sum_50) {
   std::vector<int> in(1, count);
   std::vector<int> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data_seq->inputs_count.emplace_back(in.size());
@@ -67,10 +67,10 @@ TEST(Sequential, Test_Sum_50) {
 
   // Create Task
   nesterov_a_test_task_seq::TestTaskSequential test_task_sequential(task_data_seq);
-  ASSERT_EQ(test_task_sequential.validation(), true);
-  test_task_sequential.pre_processing();
-  test_task_sequential.run();
-  test_task_sequential.post_processing();
+  ASSERT_EQ(test_task_sequential.Validation(), true);
+  test_task_sequential.PreProcessing();
+  test_task_sequential.Run();
+  test_task_sequential.PostProcessing();
   ASSERT_EQ(count, out[0]);
 }
 
@@ -81,7 +81,7 @@ TEST(Sequential, Test_Sum_70) {
   std::vector<int> in(1, count);
   std::vector<int> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data_seq->inputs_count.emplace_back(in.size());
@@ -90,10 +90,10 @@ TEST(Sequential, Test_Sum_70) {
 
   // Create Task
   nesterov_a_test_task_seq::TestTaskSequential test_task_sequential(task_data_seq);
-  ASSERT_EQ(test_task_sequential.validation(), true);
-  test_task_sequential.pre_processing();
-  test_task_sequential.run();
-  test_task_sequential.post_processing();
+  ASSERT_EQ(test_task_sequential.Validation(), true);
+  test_task_sequential.PreProcessing();
+  test_task_sequential.Run();
+  test_task_sequential.PostProcessing();
   ASSERT_EQ(count, out[0]);
 }
 
@@ -104,7 +104,7 @@ TEST(Sequential, Test_Sum_100) {
   std::vector<int> in(1, count);
   std::vector<int> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data_seq->inputs_count.emplace_back(in.size());
@@ -113,10 +113,10 @@ TEST(Sequential, Test_Sum_100) {
 
   // Create Task
   nesterov_a_test_task_seq::TestTaskSequential test_task_sequential(task_data_seq);
-  ASSERT_EQ(test_task_sequential.validation(), true);
-  test_task_sequential.pre_processing();
-  test_task_sequential.run();
-  test_task_sequential.post_processing();
+  ASSERT_EQ(test_task_sequential.Validation(), true);
+  test_task_sequential.PreProcessing();
+  test_task_sequential.Run();
+  test_task_sequential.PostProcessing();
   ASSERT_EQ(count, out[0]);
 }
 
@@ -134,7 +134,7 @@ TEST(Sequential, Test_Sum_100_From_File) {
   std::vector<int> in(1, count);
   std::vector<int> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data_seq->inputs_count.emplace_back(in.size());
@@ -143,9 +143,9 @@ TEST(Sequential, Test_Sum_100_From_File) {
 
   // Create Task
   nesterov_a_test_task_seq::TestTaskSequential test_task_sequential(task_data_seq);
-  ASSERT_EQ(test_task_sequential.validation(), true);
-  test_task_sequential.pre_processing();
-  test_task_sequential.run();
-  test_task_sequential.post_processing();
+  ASSERT_EQ(test_task_sequential.Validation(), true);
+  test_task_sequential.PreProcessing();
+  test_task_sequential.Run();
+  test_task_sequential.PostProcessing();
   ASSERT_EQ(count, out[0]);
 }
