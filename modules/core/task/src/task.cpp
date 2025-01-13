@@ -36,7 +36,7 @@ bool ppc::core::Task::PostProcessing() {
 }
 
 void ppc::core::Task::InternalOrderTest(const std::string& str) {
-  if (!functions_order_.empty() && str == functions_order_.back() && str == "run") {
+  if (!functions_order_.empty() && str == functions_order_.back() && str == "Run") {
     return;
   }
 
