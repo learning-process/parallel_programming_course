@@ -11,63 +11,63 @@
 
 namespace ppc::core {
 
-struct TaskData {
+struct task_data {
   std::vector<uint8_t *> inputs;
   std::vector<std::uint32_t> inputs_count;
   std::vector<uint8_t *> outputs;
   std::vector<std::uint32_t> outputs_count;
-  enum StateOfTesting { FUNC, PERF } state_of_testing;
+  enum StateOfTesting { kFunc, kPerf } state_of_testing;
 };
 
-using TaskDataPtr = std::shared_ptr<ppc::core::TaskData>;
+using task_dataPtr = std::shared_ptr<ppc::core::task_data>;
 
 // Memory of inputs and outputs need to be initialized before create object of
 // Task class
 class Task {
  public:
-  explicit Task(TaskDataPtr task_data);
+  explicit Task(task_dataPtr task_data);
 
   // set input and output data
-  void SetData(TaskDataPtr task_data);
+  void SetData(task_dataPtr task_data);
 
   // validation of data and validation of task attributes before running
-  virtual bool validation();
+  virtual bool Validation();
 
   // pre-processing of input data
-  virtual bool pre_processing();
+  virtual bool PreProcessing();
 
   // realization of current task
-  virtual bool run();
+  virtual bool Run();
 
   // post-processing of output data
-  virtual bool post_processing();
+  virtual bool PostProcessing();
 
   // get input and output data
-  [[nodiscard]] TaskDataPtr get_data() const;
+  [[nodiscard]] task_dataPtr GetData() const;
 
   virtual ~Task();
 
  protected:
-  void internal_order_test(const std::string &str = __builtin_FUNCTION());
-  TaskDataPtr taskData;
+  void InternalOrderTest(const std::string &str = __builtin_FUNCTION());
+  task_dataPtr task_data;
 
   // implementation of "validation" function
-  virtual bool validation_impl() = 0;
+  virtual bool ValidationImpl() = 0;
 
-  // implementation of "pre_processing" function
-  virtual bool pre_processing_impl() = 0;
+  // implementation of "PreProcessing" function
+  virtual bool PreProcessingImpl() = 0;
 
   // implementation of "run" function
-  virtual bool run_impl() = 0;
+  virtual bool RunImpl() = 0;
 
   // implementation of "post_processing" function
-  virtual bool post_processing_impl() = 0;
+  virtual bool PostProcessingImpl() = 0;
 
  private:
-  std::vector<std::string> functions_order;
-  std::vector<std::string> right_functions_order = {"validation", "pre_processing", "run", "post_processing"};
-  const double max_test_time = 1.0;
-  std::chrono::high_resolution_clock::time_point tmp_time_point;
+  std::vector<std::string> functions_order_;
+  std::vector<std::string> right_functions_order_ = {"validation", "PreProcessing", "run", "post_processing"};
+  const double max_test_time_ = 1.0;
+  std::chrono::high_resolution_clock::time_point tmp_time_point_;
 };
 
 inline std::filesystem::path GetAbsolutePath(const std::string &relative_path) {

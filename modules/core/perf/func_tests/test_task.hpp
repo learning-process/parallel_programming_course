@@ -16,25 +16,25 @@ namespace ppc::test::perf {
 template <class T>
 class TestTask : public ppc::core::Task {
  public:
-  explicit TestTask(ppc::core::TaskDataPtr taskData_) : Task(taskData_) {}
+  explicit TestTask(ppc::core::task_dataPtr task_data) : Task(task_data) {}
 
-  bool pre_processing_impl() override {
-    input_ = reinterpret_cast<T *>(taskData->inputs[0]);
-    output_ = reinterpret_cast<T *>(taskData->outputs[0]);
+  bool PreProcessingImpl() override {
+    input_ = reinterpret_cast<T *>(task_data->inputs[0]);
+    output_ = reinterpret_cast<T *>(task_data->outputs[0]);
     output_[0] = 0;
     return true;
   }
 
-  bool validation_impl() override { return taskData->outputs_count[0] == 1; }
+  bool ValidationImpl() override { return task_data->outputs_count[0] == 1; }
 
-  bool run_impl() override {
-    for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
+  bool RunImpl() override {
+    for (unsigned i = 0; i < task_data->inputs_count[0]; i++) {
       output_[0] += input_[i];
     }
     return true;
   }
 
-  bool post_processing_impl() override { return true; }
+  bool PostProcessingImpl() override { return true; }
 
  private:
   T *input_{};
@@ -44,11 +44,11 @@ class TestTask : public ppc::core::Task {
 template <class T>
 class FakePerfTask : public TestTask<T> {
  public:
-  explicit FakePerfTask(ppc::core::TaskDataPtr perfTaskData_) : TestTask<T>(perfTaskData_) {}
+  explicit FakePerfTask(ppc::core::task_dataPtr perf_task_data) : TestTask<T>(perf_task_data) {}
 
-  bool run_impl() override {
+  bool RunImpl() override {
     std::this_thread::sleep_for(20000ms);
-    return TestTask<T>::run_impl();
+    return TestTask<T>::RunImpl();
   }
 };
 

@@ -25,8 +25,8 @@ TEST(Parallel_Operations_STL_Threads, Test_Sum) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_seq = std::make_shared<ppc::core::task_data>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -34,16 +34,16 @@ TEST(Parallel_Operations_STL_Threads, Test_Sum) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskSequential test_stl_task_sequential(task_data_seq, "+");
-  ASSERT_EQ(test_stl_task_sequential.validation(), true);
-  test_stl_task_sequential.pre_processing();
-  test_stl_task_sequential.run();
-  test_stl_task_sequential.post_processing();
+  ASSERT_EQ(test_stl_task_sequential.Validation(), true);
+  test_stl_task_sequential.PreProcessing();
+  test_stl_task_sequential.Run();
+  test_stl_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
-  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_par = std::make_shared<ppc::core::task_data>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
@@ -51,10 +51,10 @@ TEST(Parallel_Operations_STL_Threads, Test_Sum) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskParallel test_stl_task_parallel(task_data_par, "+");
-  ASSERT_EQ(test_stl_task_parallel.validation(), true);
-  test_stl_task_parallel.pre_processing();
-  test_stl_task_parallel.run();
-  test_stl_task_parallel.post_processing();
+  ASSERT_EQ(test_stl_task_parallel.Validation(), true);
+  test_stl_task_parallel.PreProcessing();
+  test_stl_task_parallel.Run();
+  test_stl_task_parallel.PostProcessing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -64,8 +64,8 @@ TEST(Parallel_Operations_STL_Threads, Test_Sum_2) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_seq = std::make_shared<ppc::core::task_data>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -73,16 +73,16 @@ TEST(Parallel_Operations_STL_Threads, Test_Sum_2) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskSequential test_stl_task_sequential(task_data_seq, "+");
-  ASSERT_EQ(test_stl_task_sequential.validation(), true);
-  test_stl_task_sequential.pre_processing();
-  test_stl_task_sequential.run();
-  test_stl_task_sequential.post_processing();
+  ASSERT_EQ(test_stl_task_sequential.Validation(), true);
+  test_stl_task_sequential.PreProcessing();
+  test_stl_task_sequential.Run();
+  test_stl_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
-  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_par = std::make_shared<ppc::core::task_data>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
@@ -90,10 +90,10 @@ TEST(Parallel_Operations_STL_Threads, Test_Sum_2) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskParallel test_stl_task_parallel(task_data_par, "+");
-  ASSERT_EQ(test_stl_task_parallel.validation(), true);
-  test_stl_task_parallel.pre_processing();
-  test_stl_task_parallel.run();
-  test_stl_task_parallel.post_processing();
+  ASSERT_EQ(test_stl_task_parallel.Validation(), true);
+  test_stl_task_parallel.PreProcessing();
+  test_stl_task_parallel.Run();
+  test_stl_task_parallel.PostProcessing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -103,8 +103,8 @@ TEST(Parallel_Operations_STL_Threads, Test_Sum_3) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_seq = std::make_shared<ppc::core::task_data>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -112,16 +112,16 @@ TEST(Parallel_Operations_STL_Threads, Test_Sum_3) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskSequential test_stl_task_sequential(task_data_seq, "+");
-  ASSERT_EQ(test_stl_task_sequential.validation(), true);
-  test_stl_task_sequential.pre_processing();
-  test_stl_task_sequential.run();
-  test_stl_task_sequential.post_processing();
+  ASSERT_EQ(test_stl_task_sequential.Validation(), true);
+  test_stl_task_sequential.PreProcessing();
+  test_stl_task_sequential.Run();
+  test_stl_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
-  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_par = std::make_shared<ppc::core::task_data>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
@@ -129,10 +129,10 @@ TEST(Parallel_Operations_STL_Threads, Test_Sum_3) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskParallel test_stl_task_parallel(task_data_par, "+");
-  ASSERT_EQ(test_stl_task_parallel.validation(), true);
-  test_stl_task_parallel.pre_processing();
-  test_stl_task_parallel.run();
-  test_stl_task_parallel.post_processing();
+  ASSERT_EQ(test_stl_task_parallel.Validation(), true);
+  test_stl_task_parallel.PreProcessing();
+  test_stl_task_parallel.Run();
+  test_stl_task_parallel.PostProcessing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -142,8 +142,8 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_seq = std::make_shared<ppc::core::task_data>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -151,16 +151,16 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskSequential test_stl_task_sequential(task_data_seq, "-");
-  ASSERT_EQ(test_stl_task_sequential.validation(), true);
-  test_stl_task_sequential.pre_processing();
-  test_stl_task_sequential.run();
-  test_stl_task_sequential.post_processing();
+  ASSERT_EQ(test_stl_task_sequential.Validation(), true);
+  test_stl_task_sequential.PreProcessing();
+  test_stl_task_sequential.Run();
+  test_stl_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
-  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_par = std::make_shared<ppc::core::task_data>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
@@ -168,10 +168,10 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskParallel test_stl_task_parallel(task_data_par, "-");
-  ASSERT_EQ(test_stl_task_parallel.validation(), true);
-  test_stl_task_parallel.pre_processing();
-  test_stl_task_parallel.run();
-  test_stl_task_parallel.post_processing();
+  ASSERT_EQ(test_stl_task_parallel.Validation(), true);
+  test_stl_task_parallel.PreProcessing();
+  test_stl_task_parallel.Run();
+  test_stl_task_parallel.PostProcessing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -181,8 +181,8 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff_2) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_seq = std::make_shared<ppc::core::task_data>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -190,16 +190,16 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff_2) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskSequential test_stl_task_sequential(task_data_seq, "-");
-  ASSERT_EQ(test_stl_task_sequential.validation(), true);
-  test_stl_task_sequential.pre_processing();
-  test_stl_task_sequential.run();
-  test_stl_task_sequential.post_processing();
+  ASSERT_EQ(test_stl_task_sequential.Validation(), true);
+  test_stl_task_sequential.PreProcessing();
+  test_stl_task_sequential.Run();
+  test_stl_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
-  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_par = std::make_shared<ppc::core::task_data>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
@@ -207,10 +207,10 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff_2) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskParallel test_stl_task_parallel(task_data_par, "-");
-  ASSERT_EQ(test_stl_task_parallel.validation(), true);
-  test_stl_task_parallel.pre_processing();
-  test_stl_task_parallel.run();
-  test_stl_task_parallel.post_processing();
+  ASSERT_EQ(test_stl_task_parallel.Validation(), true);
+  test_stl_task_parallel.PreProcessing();
+  test_stl_task_parallel.Run();
+  test_stl_task_parallel.PostProcessing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }
 
@@ -227,8 +227,8 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff_2_File) {
   // Create data
   std::vector<int> ref_res(1, 0);
 
-  // Create TaskData
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_seq = std::make_shared<ppc::core::task_data>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_seq->inputs_count.emplace_back(vec.size());
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
@@ -236,16 +236,16 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff_2_File) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskSequential test_stl_task_sequential(task_data_seq, "-");
-  ASSERT_EQ(test_stl_task_sequential.validation(), true);
-  test_stl_task_sequential.pre_processing();
-  test_stl_task_sequential.run();
-  test_stl_task_sequential.post_processing();
+  ASSERT_EQ(test_stl_task_sequential.Validation(), true);
+  test_stl_task_sequential.PreProcessing();
+  test_stl_task_sequential.Run();
+  test_stl_task_sequential.PostProcessing();
 
   // Create data
   std::vector<int> par_res(1, 0);
 
-  // Create TaskData
-  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_par = std::make_shared<ppc::core::task_data>();
   task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   task_data_par->inputs_count.emplace_back(vec.size());
   task_data_par->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
@@ -253,9 +253,9 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff_2_File) {
 
   // Create Task
   nesterov_a_test_task_stl::TestSTLTaskParallel test_stl_task_parallel(task_data_par, "-");
-  ASSERT_EQ(test_stl_task_parallel.validation(), true);
-  test_stl_task_parallel.pre_processing();
-  test_stl_task_parallel.run();
-  test_stl_task_parallel.post_processing();
+  ASSERT_EQ(test_stl_task_parallel.Validation(), true);
+  test_stl_task_parallel.PreProcessing();
+  test_stl_task_parallel.Run();
+  test_stl_task_parallel.PostProcessing();
   ASSERT_EQ(ref_res[0], par_res[0]);
 }

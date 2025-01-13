@@ -7,13 +7,13 @@
 #include "mpi/example/include/ops_mpi.hpp"
 
 TEST(mpi_example_perf_test, test_pipeline_run) {
-  boost::mpi::communicator world;
+  boost::mpi::communicator world_;
   std::vector<int> global_vec;
   std::vector<int32_t> global_sum(1, 0);
-  // Create TaskData
-  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_par = std::make_shared<ppc::core::task_data>();
   int count_size_vector;
-  if (world.rank() == 0) {
+  if (world_.rank() == 0) {
     count_size_vector = 120;
     global_vec = std::vector<int>(count_size_vector, 1);
     task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
@@ -23,10 +23,10 @@ TEST(mpi_example_perf_test, test_pipeline_run) {
   }
 
   auto test_mpi_task_parallel = std::make_shared<nesterov_a_test_task_mpi::TestMPITaskParallel>(task_data_par, "+");
-  ASSERT_EQ(test_mpi_task_parallel->validation(), true);
-  test_mpi_task_parallel->pre_processing();
-  test_mpi_task_parallel->run();
-  test_mpi_task_parallel->post_processing();
+  ASSERT_EQ(test_mpi_task_parallel->Validation(), true);
+  test_mpi_task_parallel->PreProcessing();
+  test_mpi_task_parallel->Run();
+  test_mpi_task_parallel->PostProcessing();
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
@@ -40,20 +40,20 @@ TEST(mpi_example_perf_test, test_pipeline_run) {
   // Create Perf analyzer
   auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_mpi_task_parallel);
   perf_analyzer->PipelineRun(perf_attr, perf_results);
-  if (world.rank() == 0) {
+  if (world_.rank() == 0) {
     ppc::core::Perf::PrintPerfStatistic(perf_results);
     ASSERT_EQ(count_size_vector, global_sum[0]);
   }
 }
 
 TEST(mpi_example_perf_test, test_task_run) {
-  boost::mpi::communicator world;
+  boost::mpi::communicator world_;
   std::vector<int> global_vec;
   std::vector<int32_t> global_sum(1, 0);
-  // Create TaskData
-  auto task_data_par = std::make_shared<ppc::core::TaskData>();
+  // Create task_data
+  auto task_data_par = std::make_shared<ppc::core::task_data>();
   int count_size_vector;
-  if (world.rank() == 0) {
+  if (world_.rank() == 0) {
     count_size_vector = 120;
     global_vec = std::vector<int>(count_size_vector, 1);
     task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
@@ -63,10 +63,10 @@ TEST(mpi_example_perf_test, test_task_run) {
   }
 
   auto test_mpi_task_parallel = std::make_shared<nesterov_a_test_task_mpi::TestMPITaskParallel>(task_data_par, "+");
-  ASSERT_EQ(test_mpi_task_parallel->validation(), true);
-  test_mpi_task_parallel->pre_processing();
-  test_mpi_task_parallel->run();
-  test_mpi_task_parallel->post_processing();
+  ASSERT_EQ(test_mpi_task_parallel->Validation(), true);
+  test_mpi_task_parallel->PreProcessing();
+  test_mpi_task_parallel->Run();
+  test_mpi_task_parallel->PostProcessing();
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
@@ -80,7 +80,7 @@ TEST(mpi_example_perf_test, test_task_run) {
   // Create Perf analyzer
   auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_mpi_task_parallel);
   perf_analyzer->TaskRun(perf_attr, perf_results);
-  if (world.rank() == 0) {
+  if (world_.rank() == 0) {
     ppc::core::Perf::PrintPerfStatistic(perf_results);
     ASSERT_EQ(count_size_vector, global_sum[0]);
   }
