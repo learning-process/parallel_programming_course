@@ -326,7 +326,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install ninja-build
-        sudo apt-get install mpich
+        sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install python3-pip
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
@@ -355,7 +355,7 @@ jobs:
     - name: Run tests (MPI)
       run: |
         export ASAN_RUN=1
-        source scripts/run_mpi.sh
+        source scripts/run_mpi.sh "--oversubscribe"
       env:
         PROC_COUNT: 2
     - name: Run tests (threads, num_threads=1)
@@ -391,7 +391,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install ninja-build
-        sudo apt-get install mpich
+        sudo apt-get install mpich libmpich* mpi* openmpi-bin
         sudo apt-get install python3-pip
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
