@@ -5,64 +5,64 @@
 #include <stdexcept>
 #include <utility>
 
-void ppc::core::Task::SetData(TaskDataPtr task_data) {
-  task_data->state_of_testing = TaskData::StateOfTesting::FUNC;
-  functions_order.clear();
-  taskData = std::move(task_data);
+void ppc::core::Task::SetData(TaskDataPtr task_data_ptr) {
+  task_data_ptr->state_of_testing = TaskData::StateOfTesting::kFunc;
+  functions_order_.clear();
+  this->task_data = std::move(task_data_ptr);
 }
 
-ppc::core::TaskDataPtr ppc::core::Task::get_data() const { return taskData; }
+ppc::core::TaskDataPtr ppc::core::Task::GetData() const { return task_data; }
 
 ppc::core::Task::Task(TaskDataPtr task_data) { SetData(std::move(task_data)); }
 
-bool ppc::core::Task::validation() {
-  internal_order_test();
-  return validation_impl();
+bool ppc::core::Task::Validation() {
+  InternalOrderTest();
+  return ValidationImpl();
 }
 
-bool ppc::core::Task::pre_processing() {
-  internal_order_test();
-  return pre_processing_impl();
+bool ppc::core::Task::PreProcessing() {
+  InternalOrderTest();
+  return PreProcessingImpl();
 }
 
-bool ppc::core::Task::run() {
-  internal_order_test();
-  return run_impl();
+bool ppc::core::Task::Run() {
+  InternalOrderTest();
+  return RunImpl();
 }
 
-bool ppc::core::Task::post_processing() {
-  internal_order_test();
-  return post_processing_impl();
+bool ppc::core::Task::PostProcessing() {
+  InternalOrderTest();
+  return PostProcessingImpl();
 }
 
-void ppc::core::Task::internal_order_test(const std::string& str) {
-  if (!functions_order.empty() && str == functions_order.back() && str == "run") {
+void ppc::core::Task::InternalOrderTest(const std::string& str) {
+  if (!functions_order_.empty() && str == functions_order_.back() && str == "Run") {
     return;
   }
 
-  functions_order.push_back(str);
+  functions_order_.push_back(str);
 
-  for (size_t i = 0; i < functions_order.size(); i++) {
-    if (functions_order[i] != right_functions_order[i % right_functions_order.size()]) {
+  for (size_t i = 0; i < functions_order_.size(); i++) {
+    if (functions_order_[i] != right_functions_order_[i % right_functions_order_.size()]) {
       throw std::invalid_argument("ORDER OF FUCTIONS IS NOT RIGHT: \n" + std::string("Serial number: ") +
-                                  std::to_string(i + 1) + "\n" + std::string("Yours function: ") + functions_order[i] +
-                                  "\n" + std::string("Expected function: ") + right_functions_order[i]);
+                                  std::to_string(i + 1) + "\n" + std::string("Yours function: ") + functions_order_[i] +
+                                  "\n" + std::string("Expected function: ") + right_functions_order_[i]);
     }
   }
 
-  if (str == "pre_processing" && taskData->state_of_testing == TaskData::StateOfTesting::FUNC) {
-    tmp_time_point = std::chrono::high_resolution_clock::now();
+  if (str == "PreProcessing" && task_data->state_of_testing == TaskData::StateOfTesting::kFunc) {
+    tmp_time_point_ = std::chrono::high_resolution_clock::now();
   }
 
-  if (str == "post_processing" && taskData->state_of_testing == TaskData::StateOfTesting::FUNC) {
+  if (str == "post_processing" && task_data->state_of_testing == TaskData::StateOfTesting::kFunc) {
     auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - tmp_time_point).count();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - tmp_time_point_).count();
     auto current_time = static_cast<double>(duration) * 1e-9;
-    if (current_time > max_test_time) {
-      std::cerr << "Current test work more than " << max_test_time << " secs: " << current_time << '\n';
-      EXPECT_TRUE(current_time < max_test_time);
+    if (current_time > max_test_time_) {
+      std::cerr << "Current test work more than " << max_test_time_ << " secs: " << current_time << '\n';
+      EXPECT_TRUE(current_time < max_test_time_);
     }
   }
 }
 
-ppc::core::Task::~Task() { functions_order.clear(); }
+ppc::core::Task::~Task() { functions_order_.clear(); }

@@ -122,7 +122,7 @@ TEST(Sequential, Test_Sum_100) {
 
 TEST(Sequential, Test_Sum_100_From_File) {
   std::string line;
-  std::ifstream test_file(ppc::core::GetAbsolutePath("seq/example/data/test.txt"));
+  std::ifstream test_file(ppc::core::GetAbsolutePath("all/example/data/test_seq.txt"));
   if (test_file.is_open()) {
     getline(test_file, line);
   }

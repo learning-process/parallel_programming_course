@@ -211,7 +211,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
 
 TEST(Parallel_Operations_OpenMP, Test_Mult_2_File) {
   std::string line;
-  std::ifstream test_file(ppc::core::GetAbsolutePath("omp/example/data/test.txt"));
+  std::ifstream test_file(ppc::core::GetAbsolutePath("all/example/data/test_omp.txt"));
   if (test_file.is_open()) {
     getline(test_file, line);
   }

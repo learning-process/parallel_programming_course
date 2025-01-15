@@ -12,7 +12,7 @@ TEST(max_of_vector_elements, check_int32_t) {
   std::vector<uint64_t> out_index(1, 0);
   in[328] = 10;
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -23,11 +23,11 @@ TEST(max_of_vector_elements, check_int32_t) {
 
   // Create Task
   ppc::reference::MaxOfVectorElements<int32_t, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, true);
-  test_task.pre_processing();
-  test_task.run();
-  test_task.post_processing();
+  test_task.PreProcessing();
+  test_task.Run();
+  test_task.PostProcessing();
   ASSERT_EQ(out[0], 10);
   ASSERT_EQ(out_index[0], 328ULL);
 }
@@ -38,7 +38,7 @@ TEST(max_of_vector_elements, check_validate_func_1) {
   std::vector<int32_t> out(2, 0);
   std::vector<uint64_t> out_index(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -49,7 +49,7 @@ TEST(max_of_vector_elements, check_validate_func_1) {
 
   // Create Task
   ppc::reference::MaxOfVectorElements<int32_t, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, false);
 }
 
@@ -59,7 +59,7 @@ TEST(max_of_vector_elements, check_validate_func_2) {
   std::vector<int32_t> out(1, 0);
   std::vector<uint64_t> out_index(2, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -70,7 +70,7 @@ TEST(max_of_vector_elements, check_validate_func_2) {
 
   // Create Task
   ppc::reference::MaxOfVectorElements<int32_t, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, false);
 }
 
@@ -81,7 +81,7 @@ TEST(max_of_vector_elements, check_double) {
   std::vector<uint64_t> out_index(1, 0);
   in[2] = 1.0001;
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -92,11 +92,11 @@ TEST(max_of_vector_elements, check_double) {
 
   // Create Task
   ppc::reference::MaxOfVectorElements<double, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, true);
-  test_task.pre_processing();
-  test_task.run();
-  test_task.post_processing();
+  test_task.PreProcessing();
+  test_task.Run();
+  test_task.PostProcessing();
   EXPECT_NEAR(out[0], 1.0001, 1e-6);
   ASSERT_EQ(out_index[0], 2ULL);
 }
@@ -107,7 +107,7 @@ TEST(max_of_vector_elements, check_uint8_t) {
   std::vector<uint8_t> out(1, 0);
   std::vector<uint64_t> out_index(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -118,11 +118,11 @@ TEST(max_of_vector_elements, check_uint8_t) {
 
   // Create Task
   ppc::reference::MaxOfVectorElements<uint8_t, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, true);
-  test_task.pre_processing();
-  test_task.run();
-  test_task.post_processing();
+  test_task.PreProcessing();
+  test_task.Run();
+  test_task.PostProcessing();
   EXPECT_EQ(out[0], 1);
   ASSERT_EQ(out_index[0], 0ULL);
 }
@@ -134,7 +134,7 @@ TEST(max_of_vector_elements, check_int64_t) {
   std::vector<uint64_t> out_index(1, 0);
   in[345] = 256;
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -145,11 +145,11 @@ TEST(max_of_vector_elements, check_int64_t) {
 
   // Create Task
   ppc::reference::MaxOfVectorElements<int64_t, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, true);
-  test_task.pre_processing();
-  test_task.run();
-  test_task.post_processing();
+  test_task.PreProcessing();
+  test_task.Run();
+  test_task.PostProcessing();
   EXPECT_EQ(out[0], 256LL);
   ASSERT_EQ(out_index[0], 345ULL);
 }
@@ -161,7 +161,7 @@ TEST(max_of_vector_elements, check_float) {
   std::vector<uint64_t> out_index(1, 0);
   in[0] = 1.01F;
 
-  // Create TaskData
+  // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
   task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
@@ -172,11 +172,11 @@ TEST(max_of_vector_elements, check_float) {
 
   // Create Task
   ppc::reference::MaxOfVectorElements<float, uint64_t> test_task(task_data);
-  bool is_valid = test_task.validation();
+  bool is_valid = test_task.Validation();
   ASSERT_EQ(is_valid, true);
-  test_task.pre_processing();
-  test_task.run();
-  test_task.post_processing();
+  test_task.PreProcessing();
+  test_task.Run();
+  test_task.PostProcessing();
   EXPECT_NEAR(out[0], 1.01F, 1e-6F);
   ASSERT_EQ(out_index[0], 0ULL);
 }

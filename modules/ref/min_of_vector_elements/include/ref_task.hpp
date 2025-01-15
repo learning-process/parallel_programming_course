@@ -10,56 +10,54 @@
 
 #include "core/task/include/task.hpp"
 
-namespace ppc {
-namespace reference {
+namespace ppc::reference {
 
 template <class InOutType, class IndexType>
 class MinOfVectorElements : public ppc::core::Task {
  public:
-  explicit MinOfVectorElements(ppc::core::TaskDataPtr taskData_) : Task(taskData_) {}
-  bool pre_processing_impl() override {
+  explicit MinOfVectorElements(ppc::core::TaskDataPtr task_data) : Task(task_data) {}
+  bool PreProcessingImpl() override {
     // Init vectors
-    input_ = std::vector<InOutType>(taskData->inputs_count[0]);
-    auto tmp_ptr = reinterpret_cast<InOutType*>(taskData->inputs[0]);
-    for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
+    input_ = std::vector<InOutType>(task_data->inputs_count[0]);
+    auto tmp_ptr = reinterpret_cast<InOutType*>(task_data->inputs[0]);
+    for (unsigned i = 0; i < task_data->inputs_count[0]; i++) {
       input_[i] = tmp_ptr[i];
     }
     // Init value for output
-    min = 0.0;
-    min_index = 0;
+    min_ = 0.0;
+    min_index_ = 0;
     return true;
   }
 
-  bool validation_impl() override {
-    bool isCountValuesCorrect;
-    bool isCountIndexesCorrect;
+  bool ValidationImpl() override {
+    bool is_count_values_correct;
+    bool is_count_indexes_correct;
     // Check count elements of output
-    isCountValuesCorrect = taskData->outputs_count[0] == 1;
-    isCountIndexesCorrect = taskData->outputs_count[1] == 1;
+    is_count_values_correct = task_data->outputs_count[0] == 1;
+    is_count_indexes_correct = task_data->outputs_count[1] == 1;
 
-    return isCountValuesCorrect && isCountIndexesCorrect;
+    return is_count_values_correct && is_count_indexes_correct;
   }
 
-  bool run_impl() override {
+  bool RunImpl() override {
     auto result = std::min_element(input_.begin(), input_.end());
-    min = static_cast<InOutType>(*result);
-    min_index = static_cast<IndexType>(std::distance(input_.begin(), result));
+    min_ = static_cast<InOutType>(*result);
+    min_index_ = static_cast<IndexType>(std::distance(input_.begin(), result));
     return true;
   }
 
-  bool post_processing_impl() override {
-    reinterpret_cast<InOutType*>(taskData->outputs[0])[0] = min;
-    reinterpret_cast<IndexType*>(taskData->outputs[1])[0] = min_index;
+  bool PostProcessingImpl() override {
+    reinterpret_cast<InOutType*>(task_data->outputs[0])[0] = min_;
+    reinterpret_cast<IndexType*>(task_data->outputs[1])[0] = min_index_;
     return true;
   }
 
  private:
   std::vector<InOutType> input_;
-  InOutType min;
-  IndexType min_index;
+  InOutType min_;
+  IndexType min_index_;
 };
 
-}  // namespace reference
-}  // namespace ppc
+}  // namespace ppc::reference
 
 #endif  // MODULES_REFERENCE_MIN_OF_VECTOR_ELEMENTS_REF_TASK_HPP_
