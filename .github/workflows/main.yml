@@ -609,7 +609,7 @@ jobs:
     - name: CMake configure
       shell: bash
       run: >
-        cmake -S . -B build -GNinja -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
+        cmake -S . -B build -GNinja -A x64 -T CL
         "-D CMAKE_MAKE_PROGRAM=C:\ProgramData\chocolatey\lib\ninja\tools\ninja.exe"
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
