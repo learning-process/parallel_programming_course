@@ -601,18 +601,17 @@ jobs:
       with:
         mpi: msmpi
     - name: Download dependencies
-      shell: pwsh
       run: |
-        Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
         choco install openssl --execution-timeout 6000
         choco install ninja --execution-timeout 6000
-        refreshenv
     - name: Setup ccache
       uses: Chocobo1/setup-ccache-action@v1
       with:
         windows_compile_environment: msvc
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
     - name: CMake configure
-      shell: pwsh
+      shell: bash
       run: >
         cmake -S . -B build -G Ninja
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -620,7 +619,7 @@ jobs:
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
     - name: MSBuild
-      shell: pwsh
+      shell: bash
       run: |
         cmake --build build --config Release --parallel
     - name: Run tests (threads, num_threads=1)
