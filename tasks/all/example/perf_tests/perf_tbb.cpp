@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <oneapi/tbb.h>
 
+#include <boost/mpi/communicator.hpp>
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
@@ -35,6 +36,9 @@ TEST(all_example_perf_test, test_task_run) {
   // Create Perf analyzer
   auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_tbb);
   perf_analyzer->TaskRun(perf_attr, perf_results);
-  ppc::core::Perf::PrintPerfStatistic(perf_results);
-  ASSERT_EQ(count + 1, out[0]);
+  boost::mpi::communicator world;
+  if (world.rank() == 0) {
+    ppc::core::Perf::PrintPerfStatistic(perf_results);
+    ASSERT_EQ(count + 1, out[0]);
+  }
 }
