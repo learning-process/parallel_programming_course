@@ -326,7 +326,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install ninja-build
-        sudo apt-get install mpich
+        sudo apt-get install openmpi
         sudo apt-get install python3-pip
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
@@ -391,7 +391,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install ninja-build
-        sudo apt-get install mpich
+        sudo apt-get install openmpi
         sudo apt-get install python3-pip
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
