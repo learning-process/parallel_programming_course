@@ -584,9 +584,6 @@ jobs:
       env:
         OMP_NUM_THREADS: 16
   windows-msvc-build:
-    needs:
-      - clang-format
-      - python-lint
     runs-on: windows-latest
     defaults:
       run:
@@ -604,6 +601,8 @@ jobs:
     - name: Download dependencies
       run: |
         choco install openssl --execution-timeout 6000
+        choco install ninja --execution-timeout 6000
+        refreshenv
     - name: Setup ccache
       uses: Chocobo1/setup-ccache-action@v1
       with:
@@ -611,7 +610,7 @@ jobs:
     - name: CMake configure
       shell: bash
       run: >
-        cmake -S . -B build
+        cmake -S . -B build -GNinja
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
