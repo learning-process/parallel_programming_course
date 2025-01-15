@@ -603,6 +603,7 @@ jobs:
     - name: Download dependencies
       shell: pwsh
       run: |
+        Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
         choco install openssl --execution-timeout 6000
         choco install ninja --execution-timeout 6000
         refreshenv
