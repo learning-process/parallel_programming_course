@@ -603,7 +603,6 @@ jobs:
     - name: Download dependencies
       run: |
         choco install openssl --execution-timeout 6000
-        choco install ninja --execution-timeout 6000
     - name: Setup ccache
       uses: Chocobo1/setup-ccache-action@v1
       with:
