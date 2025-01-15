@@ -641,8 +641,6 @@ jobs:
       env:
         OMP_NUM_THREADS: 4
   windows-msvc-build-extended:
-    needs:
-      - windows-msvc-build
     runs-on: windows-latest
     defaults:
       run:
@@ -652,7 +650,9 @@ jobs:
       with:
         submodules: recursive
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 'latest'
     - name: Setup MPI
       uses: mpi4py/setup-mpi@v1
       with:
@@ -664,10 +664,15 @@ jobs:
       uses: Chocobo1/setup-ccache-action@v1
       with:
         windows_compile_environment: msvc
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Setup MSVC for Ninja again
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       shell: bash
       run: >
-        cmake -S . -B build
+        cmake -S . -B build -G Ninja
+        -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl 
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
@@ -709,9 +714,6 @@ jobs:
       env:
         OMP_NUM_THREADS: 16
   windows-clang-build:
-    needs:
-      - clang-format
-      - python-lint
     runs-on: windows-latest
     defaults:
       run:
@@ -721,10 +723,16 @@ jobs:
       with:
         submodules: recursive
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.3.1
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 'latest'
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Setup MSVC for Ninja again
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       run: >
-        cmake -S . -B build -A x64 -T ClangCL
+        cmake -S . -B build -A x64 -T ClangCL -GNinja
         -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
@@ -758,8 +766,6 @@ jobs:
         OMP_NUM_THREADS: 4
         CLANG_BUILD: 1
   windows-clang-build-extended:
-    needs:
-      - windows-clang-build
     runs-on: windows-latest
     defaults:
       run:
@@ -769,10 +775,16 @@ jobs:
       with:
         submodules: recursive
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.3.1
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 'latest'
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Setup MSVC for Ninja again
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       run: >
-        cmake -S . -B build -A x64 -T ClangCL
+        cmake -S . -B build -A x64 -T ClangCL -GNinja
         -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
