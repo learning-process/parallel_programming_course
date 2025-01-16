@@ -919,7 +919,6 @@ jobs:
     needs:
       - macos-clang-build-extended
       - ubuntu-gcc-build-codecov
-      - ubuntu-gcc-build-extended
       - ubuntu-clang-build-extended
       - ubuntu-clang-sanitizer-build-extended
       - windows-clang-build-extended
