@@ -43,7 +43,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install gcc-13 g++-13
-        sudo apt-get install ninja-build
+        sudo apt-get install ninja-build mold
         sudo apt-get install mpich
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
@@ -56,7 +56,7 @@ jobs:
     - name: CMake configure
       run: >
         cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -DENABLE_MOLD=ON
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
@@ -122,7 +122,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install gcc-13 g++-13
-        sudo apt-get install ninja-build
+        sudo apt-get install ninja-build mold
         sudo apt-get install mpich
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
@@ -135,7 +135,7 @@ jobs:
     - name: CMake configure
       run: >
         cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -DENABLE_MOLD=ON
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
@@ -887,7 +887,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install gcc g++
-        sudo apt-get install ninja-build
+        sudo apt-get install ninja-build mold
         sudo apt-get install mpich
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
@@ -896,7 +896,7 @@ jobs:
       run: >
         cmake -S . -B build
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -DENABLE_MOLD=ON
         -D CMAKE_BUILD_TYPE=RELEASE
         -D CMAKE_VERBOSE_MAKEFILE=ON
         -D USE_COVERAGE=ON
@@ -962,7 +962,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install gcc-12 g++-12
-        sudo apt-get install ninja-build
+        sudo apt-get install ninja-build mold
         sudo apt-get install mpich
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
@@ -975,7 +975,7 @@ jobs:
     - name: CMake configure
       run: >
         cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -DENABLE_MOLD=ON
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE

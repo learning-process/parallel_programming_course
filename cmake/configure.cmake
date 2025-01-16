@@ -49,6 +49,13 @@ endif( MSVC )
 
 add_compile_definitions(PPC_PATH_TO_PROJECT="${CMAKE_CURRENT_SOURCE_DIR}")
 
+option(ENABLE_MOLD OFF)
+if (ENABLE_MOLD)
+    set(CMAKE_LINKER mold)
+    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=mold ${CMAKE_EXE_LINKER_FLAGS}")
+    set(CMAKE_SHARED_LINKER_FLAGS "-fuse-ld=mold ${CMAKE_SHARED_LINKER_FLAGS}")
+endif()
+
 MACRO(SUBDIRLIST result curdir)
   FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
   SET(dirlist "")

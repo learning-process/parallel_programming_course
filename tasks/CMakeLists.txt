@@ -141,8 +141,7 @@ foreach(TASK_TYPE ${LIST_OF_TASKS})
       target_include_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_opencv/install/include/opencv4")
       target_link_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_opencv/install/lib")
       if(NOT MSVC)
-          target_link_libraries(${EXEC_FUNC} PUBLIC
-                  opencv_core opencv_highgui opencv_imgcodecs opencv_imgproc opencv_videoio)
+          target_link_libraries(${EXEC_FUNC} PUBLIC opencv_core opencv_highgui opencv_imgcodecs opencv_imgproc opencv_videoio)
       endif()
 
       add_dependencies(${EXEC_FUNC} ppc_googletest)
