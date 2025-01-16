@@ -20,8 +20,11 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin" )
 
 set( CMAKE_CXX_STANDARD 20 )
 
-string(FIND "${CMAKE_CXX_COMPILER_ID}" "Clang" CLANG_SUBSTR)
-if( UNIX OR (CLANG_SUBSTR GREATER -1) )
+# For AppleClnag
+string(FIND "${CMAKE_C_COMPILER_ID}"   "Clang" CLANG_SUBSTR_C)
+string(FIND "${CMAKE_CXX_COMPILER_ID}" "Clang" CLANG_SUBSTR_CXX)
+
+if( UNIX OR (CLANG_SUBSTR_C GREATER -1) OR (CLANG_SUBSTR_CXX GREATER -1) )
     set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS}     \
         -Wall -Wextra                        \
         -Wno-unused-parameter                \
@@ -38,7 +41,7 @@ if( UNIX OR (CLANG_SUBSTR GREATER -1) )
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
     endif(USE_COVERAGE)
-endif( UNIX OR (CLANG_SUBSTR GREATER -1) )
+endif()
 
 if( MSVC )
     set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS}")
