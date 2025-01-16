@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <boost/mpi/communicator.hpp>
-#include <boost/mpi/environment.hpp>
-#include <fstream>
+#include <opencv2/opencv.hpp>
 #include <random>
 #include <vector>
 
@@ -248,14 +247,10 @@ TEST(Parallel_Operations_MPI, Test_Max_2_File) {
   auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
-    std::string line;
-    std::ifstream test_file(ppc::core::GetAbsolutePath("all/example/data/test_mpi.txt"));
-    if (test_file.is_open()) {
-      getline(test_file, line);
-    }
-    test_file.close();
+    cv::Mat img = cv::imread(ppc::core::GetAbsolutePath("all/example/data/pic_mpi.jpg"));
+    EXPECT_EQ(img.rows, img.cols);
+    const int count_size_vector = img.rows + img.cols;
 
-    const int count_size_vector = std::stoi(line);
     global_vec = GetRandomVector(count_size_vector);
     task_data_par->inputs.emplace_back(reinterpret_cast<uint8_t*>(global_vec.data()));
     task_data_par->inputs_count.emplace_back(global_vec.size());

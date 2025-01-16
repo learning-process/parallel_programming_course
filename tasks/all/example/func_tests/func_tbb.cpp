@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <fstream>
+#include <opencv2/opencv.hpp>
 #include <random>
 #include <vector>
 
@@ -209,14 +209,11 @@ TEST(Parallel_Operations_TBB, Test_Mult_2) {
 }
 
 TEST(Parallel_Operations_TBB, Test_Mult_2_File) {
-  std::string line;
-  std::ifstream test_file(ppc::core::GetAbsolutePath("all/example/data/test_tbb.txt"));
-  if (test_file.is_open()) {
-    getline(test_file, line);
-  }
-  test_file.close();
+  cv::Mat img = cv::imread(ppc::core::GetAbsolutePath("all/example/data/pic_tbb.jpg"));
+  EXPECT_EQ(static_cast<int>(sqrt(img.rows / 2) * sqrt(img.rows / 2)), img.cols);
+  const int count_size_vector = img.rows + img.cols;
 
-  std::vector<int> vec = GetRandomVector(std::stoi(line));
+  std::vector<int> vec = GetRandomVector(count_size_vector);
   // Create data
   std::vector<int> ref_res(1, 0);
 
