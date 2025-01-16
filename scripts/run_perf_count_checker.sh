@@ -40,6 +40,7 @@ run_check() {
   fi
 }
 
+run_check "all"
 run_check "mpi"
 run_check "omp"
 run_check "seq"

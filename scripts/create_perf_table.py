@@ -11,7 +11,7 @@ args = parser.parse_args()
 logs_path = os.path.abspath(args.input)
 xlsx_path = os.path.abspath(args.output)
 
-list_of_type_of_tasks = ["mpi", "omp", "seq", "stl", "tbb"]
+list_of_type_of_tasks = ["all", "mpi", "omp", "seq", "stl", "tbb"]
 
 result_tables = {"pipeline": {}, "task_run": {}}
 set_of_task_name = []
@@ -83,7 +83,10 @@ for table_name in result_tables:
                 continue
             par_time = result_tables[table_name][task_name][type_of_task]
             seq_time = result_tables[table_name][task_name]["seq"]
-            speed_up = seq_time / par_time
+            if par_time == 0:
+                speed_up = -1
+            else:
+                speed_up = seq_time / par_time
             efficiency = speed_up / cpu_num
             worksheet.write(it_j, it_i, par_time)
             it_i += 1
