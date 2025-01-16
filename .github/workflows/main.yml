@@ -766,7 +766,7 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       run: >
-        cmake -S . -B build -GNinja -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
+        cmake -S . -B build -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
         -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
@@ -820,7 +820,7 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       run: >
-        cmake -S . -B build -GNinja -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
+        cmake -S . -B build -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
         -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
