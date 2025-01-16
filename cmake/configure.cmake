@@ -24,18 +24,27 @@ set( CMAKE_CXX_STANDARD 20 )
 string(FIND "${CMAKE_C_COMPILER_ID}"   "Clang" CLANG_SUBSTR_C)
 string(FIND "${CMAKE_CXX_COMPILER_ID}" "Clang" CLANG_SUBSTR_CXX)
 
+if((CLANG_SUBSTR_C GREATER -1) OR (CLANG_SUBSTR_CXX GREATER -1) )
+    set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS}     \
+        -Wno-unused-command-line-argument    \
+        -Wno-pre-c++17-compat                \
+        -Wno-c++98-compat")
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} \
+        -Wno-unused-command-line-argument    \
+        -Wno-pre-c++17-compat                \
+        -Wno-c++98-compat")
+endif()
+
 if( UNIX OR (CLANG_SUBSTR_C GREATER -1) OR (CLANG_SUBSTR_CXX GREATER -1) )
     set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS}     \
         -Wall -Wextra                        \
         -Wno-unused-parameter                \
         -Wno-cast-function-type              \
-        -Wno-unused-command-line-argument    \
         -Wsign-compare  -Werror")
     set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} \
         -Wall -Wextra                        \
         -Wno-unused-parameter                \
         -Wno-cast-function-type              \
-        -Wno-unused-command-line-argument    \
         -Wsign-compare -Werror")
     if (USE_COVERAGE)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
