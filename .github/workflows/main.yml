@@ -847,7 +847,7 @@ jobs:
         CLANG_BUILD: 1
   ubuntu-gcc-build-codecov:
     needs:
-      - ubuntu-gcc-build
+      - ubuntu-gcc-build-extended
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
