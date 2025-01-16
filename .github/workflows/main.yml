@@ -719,6 +719,9 @@ jobs:
       env:
         OMP_NUM_THREADS: 16
   windows-clang-build:
+    needs:
+      - clang-format
+      - python-lint
     runs-on: windows-latest
     defaults:
       run:
@@ -772,6 +775,8 @@ jobs:
         OMP_NUM_THREADS: 4
         CLANG_BUILD: 1
   windows-clang-build-extended:
+    needs:
+      - windows-clang-build
     runs-on: windows-latest
     defaults:
       run:
