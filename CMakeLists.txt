@@ -23,7 +23,7 @@ endif( USE_MPI )
 
 ############################### OpenMP ##############################
 option(USE_OMP OFF)
-if( USE_OMP OR USE_SEQ )
+if( USE_OMP )
     find_package( OpenMP )
     if( OpenMP_FOUND )
         include_directories( ${OpenMP_C_INCLUDE_DIRS} ${OpenMP_CXX_INCLUDE_DIRS} )
@@ -43,7 +43,7 @@ if( USE_OMP OR USE_SEQ )
             message(FATAL_ERROR "OpenMP NOT FOUND")
         endif()
     endif( OpenMP_FOUND )
-endif( USE_OMP OR USE_SEQ )
+endif( USE_OMP )
 
 ############################ std::thread ############################
 option(USE_STL OFF)

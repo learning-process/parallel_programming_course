@@ -596,7 +596,9 @@ jobs:
       with:
         submodules: recursive
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 'latest'
     - name: Setup MPI
       uses: mpi4py/setup-mpi@v1
       with:
@@ -608,10 +610,14 @@ jobs:
       uses: Chocobo1/setup-ccache-action@v1
       with:
         windows_compile_environment: msvc
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Setup MSVC for Ninja again
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       shell: bash
       run: >
-        cmake -S . -B build
+        cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl 
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
@@ -648,7 +654,9 @@ jobs:
       with:
         submodules: recursive
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 'latest'
     - name: Setup MPI
       uses: mpi4py/setup-mpi@v1
       with:
@@ -660,10 +668,14 @@ jobs:
       uses: Chocobo1/setup-ccache-action@v1
       with:
         windows_compile_environment: msvc
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Setup MSVC for Ninja again
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       shell: bash
       run: >
-        cmake -S . -B build
+        cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl 
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
@@ -717,10 +729,16 @@ jobs:
       with:
         submodules: recursive
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.3.1
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 'latest'
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Setup MSVC for Ninja again
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       run: >
-        cmake -S . -B build -A x64 -T ClangCL
+        cmake -S . -B build -GNinja -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
         -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
@@ -765,10 +783,16 @@ jobs:
       with:
         submodules: recursive
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.3.1
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 'latest'
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Setup MSVC for Ninja again
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       run: >
-        cmake -S . -B build -A x64 -T ClangCL
+        cmake -S . -B build -GNinja -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
         -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
@@ -823,7 +847,9 @@ jobs:
         CLANG_BUILD: 1
   ubuntu-gcc-build-codecov:
     needs:
-      - ubuntu-gcc-build
+      - ubuntu-gcc-build-extended
+      - ubuntu-clang-build-extended
+      - macos-clang-build-extended
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -893,10 +919,7 @@ jobs:
         path: 'cov-report'
   ubuntu-gcc-build-perf-stats:
     needs:
-      - macos-clang-build-extended
       - ubuntu-gcc-build-codecov
-      - ubuntu-gcc-build-extended
-      - ubuntu-clang-build-extended
       - ubuntu-clang-sanitizer-build-extended
       - windows-clang-build-extended
       - windows-msvc-build-extended
