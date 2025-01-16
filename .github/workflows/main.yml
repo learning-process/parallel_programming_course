@@ -848,6 +848,8 @@ jobs:
   ubuntu-gcc-build-codecov:
     needs:
       - ubuntu-gcc-build-extended
+      - ubuntu-clang-build-extended
+      - macos-clang-build-extended
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -917,9 +919,7 @@ jobs:
         path: 'cov-report'
   ubuntu-gcc-build-perf-stats:
     needs:
-      - macos-clang-build-extended
       - ubuntu-gcc-build-codecov
-      - ubuntu-clang-build-extended
       - ubuntu-clang-sanitizer-build-extended
       - windows-clang-build-extended
       - windows-msvc-build-extended
