@@ -44,7 +44,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install gcc-13 g++-13
         sudo apt-get install ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+        sudo apt-get install mpich
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
         python3 -m pip install xlsxwriter
@@ -69,21 +69,30 @@ jobs:
       env:
         CC: gcc-13
         CXX: g++-13
+    - name: Run func tests (MPI, num_proc=1)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 1
+        OMP_NUM_THREADS: 3
     - name: Run func tests (MPI, num_proc=2)
       run: |
         source scripts/run_mpi.sh
       env:
         PROC_COUNT: 2
+        OMP_NUM_THREADS: 2
     - name: Run func tests (MPI, num_proc=3)
       run: |
         source scripts/run_mpi.sh
       env:
         PROC_COUNT: 3
+        OMP_NUM_THREADS: 1
     - name: Run func tests (MPI, num_proc=4)
       run: |
         source scripts/run_mpi.sh
       env:
         PROC_COUNT: 4
+        OMP_NUM_THREADS: 1
     - name: Run func tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -114,7 +123,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install gcc-13 g++-13
         sudo apt-get install ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+        sudo apt-get install mpich
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
         python3 -m pip install xlsxwriter
@@ -185,7 +194,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+        sudo apt-get install mpich
         sudo apt-get install python3-pip
         sudo apt-get install valgrind
         wget https://apt.llvm.org/llvm.sh
@@ -211,21 +220,30 @@ jobs:
       env:
         CC: clang-19
         CXX: clang++-19
+    - name: Run func tests (MPI, num_proc=1)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 1
+        OMP_NUM_THREADS: 3
     - name: Run func tests (MPI, num_proc=2)
       run: |
         source scripts/run_mpi.sh
       env:
         PROC_COUNT: 2
+        OMP_NUM_THREADS: 2
     - name: Run func tests (MPI, num_proc=3)
       run: |
         source scripts/run_mpi.sh
       env:
         PROC_COUNT: 3
+        OMP_NUM_THREADS: 1
     - name: Run func tests (MPI, num_proc=4)
       run: |
         source scripts/run_mpi.sh
       env:
         PROC_COUNT: 4
+        OMP_NUM_THREADS: 1
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -255,7 +273,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+        sudo apt-get install mpich
         sudo apt-get install python3-pip
         sudo apt-get install valgrind
         wget https://apt.llvm.org/llvm.sh
@@ -355,9 +373,10 @@ jobs:
     - name: Run tests (MPI)
       run: |
         export ASAN_RUN=1
-        source scripts/run_mpi.sh
+        source scripts/run_mpi.sh "--oversubscribe"
       env:
         PROC_COUNT: 2
+        OMP_NUM_THREADS: 2
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -489,21 +508,30 @@ jobs:
     - name: Ninja build
       run: |
         cmake --build build
+    - name: Run func tests (MPI, num_proc=1)
+      run: |
+        source scripts/run_mpi.sh
+      env:
+        PROC_COUNT: 1
+        OMP_NUM_THREADS: 3
     - name: Run func tests (MPI, num_proc=2)
       run: |
         source scripts/run_mpi.sh
       env:
         PROC_COUNT: 2
+        OMP_NUM_THREADS: 2
     - name: Run func tests (MPI, num_proc=3)
       run: |
         source scripts/run_mpi.sh
       env:
         PROC_COUNT: 3
+        OMP_NUM_THREADS: 1
     - name: Run func tests (MPI, num_proc=4)
       run: |
         source scripts/run_mpi.sh
       env:
         PROC_COUNT: 4
+        OMP_NUM_THREADS: 1
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -596,7 +624,9 @@ jobs:
       with:
         submodules: recursive
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 'latest'
     - name: Setup MPI
       uses: mpi4py/setup-mpi@v1
       with:
@@ -608,10 +638,14 @@ jobs:
       uses: Chocobo1/setup-ccache-action@v1
       with:
         windows_compile_environment: msvc
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Setup MSVC for Ninja again
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       shell: bash
       run: >
-        cmake -S . -B build
+        cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl 
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
@@ -648,7 +682,9 @@ jobs:
       with:
         submodules: recursive
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 'latest'
     - name: Setup MPI
       uses: mpi4py/setup-mpi@v1
       with:
@@ -660,10 +696,14 @@ jobs:
       uses: Chocobo1/setup-ccache-action@v1
       with:
         windows_compile_environment: msvc
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Setup MSVC for Ninja again
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       shell: bash
       run: >
-        cmake -S . -B build
+        cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl 
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
@@ -717,10 +757,16 @@ jobs:
       with:
         submodules: recursive
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.3.1
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 'latest'
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Setup MSVC for Ninja again
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       run: >
-        cmake -S . -B build -A x64 -T ClangCL
+        cmake -S . -B build -GNinja -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
         -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
@@ -765,10 +811,16 @@ jobs:
       with:
         submodules: recursive
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.3.1
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 'latest'
+    - name: Setup ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Setup MSVC for Ninja again
+      uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
       run: >
-        cmake -S . -B build -A x64 -T ClangCL
+        cmake -S . -B build -GNinja -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
         -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
@@ -823,7 +875,9 @@ jobs:
         CLANG_BUILD: 1
   ubuntu-gcc-build-codecov:
     needs:
-      - ubuntu-gcc-build
+      - ubuntu-gcc-build-extended
+      - ubuntu-clang-build-extended
+      - macos-clang-build-extended
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -834,7 +888,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install gcc g++
         sudo apt-get install ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+        sudo apt-get install mpich
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
         sudo apt-get install gcovr lcov
@@ -854,6 +908,7 @@ jobs:
         source scripts/run_mpi.sh
       env:
         PROC_COUNT: 2
+        OMP_NUM_THREADS: 2
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
@@ -883,7 +938,7 @@ jobs:
       run: |
         cd build
         lcov --capture --directory . --output-file ../coverage.info
-        lcov --remove ../coverage.info '*/3rdparty/*' '/usr/*' '*/perf_tests/*' '*/func_tests/*' --output-file ../coverage.info
+        lcov --remove ../coverage.info '*/3rdparty/*' '/usr/*' '*/perf_tests/*' '*/func_tests/*' '*/all/runner.cpp' '*/mpi/runner.cpp' '*/omp/runner.cpp' '*/seq/runner.cpp' '*/stl/runner.cpp' '*/tbb/runner.cpp' --output-file ../coverage.info
         cd ..
         genhtml coverage.info --output-directory cov-report
     - name: Upload coverage report artifact
@@ -893,11 +948,10 @@ jobs:
         path: 'cov-report'
   ubuntu-gcc-build-perf-stats:
     needs:
-      - macos-clang-build
-      - ubuntu-clang-sanitizer-build
       - ubuntu-gcc-build-codecov
-      - windows-clang-build
-      - windows-msvc-build
+      - ubuntu-clang-sanitizer-build-extended
+      - windows-clang-build-extended
+      - windows-msvc-build-extended
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -909,7 +963,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install gcc-12 g++-12
         sudo apt-get install ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-bin
+        sudo apt-get install mpich
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
         python3 -m pip install xlsxwriter

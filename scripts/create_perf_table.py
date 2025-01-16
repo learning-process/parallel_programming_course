@@ -83,7 +83,10 @@ for table_name in result_tables:
                 continue
             par_time = result_tables[table_name][task_name][type_of_task]
             seq_time = result_tables[table_name][task_name]["seq"]
-            speed_up = seq_time / par_time
+            if par_time == 0:
+                speed_up = -1
+            else:
+                speed_up = seq_time / par_time
             efficiency = speed_up / cpu_num
             worksheet.write(it_j, it_i, par_time)
             it_i += 1

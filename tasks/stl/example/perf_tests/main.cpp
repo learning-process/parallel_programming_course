@@ -12,7 +12,7 @@ TEST(stl_example_perf_test, test_pipeline_run) {
   std::vector<int> in(1, count);
   std::vector<int> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data_seq->inputs_count.emplace_back(in.size());
@@ -49,7 +49,7 @@ TEST(stl_example_perf_test, test_task_run) {
   std::vector<int> in(1, count);
   std::vector<int> out(1, 0);
 
-  // Create TaskData
+  // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data_seq->inputs_count.emplace_back(in.size());

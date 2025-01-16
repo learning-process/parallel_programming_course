@@ -8,6 +8,6 @@ ExternalProject_Add(ppc_googletest
         INSTALL_DIR       "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/install"
         CONFIGURE_COMMAND "${CMAKE_COMMAND}" -S "${CMAKE_SOURCE_DIR}/3rdparty/googletest/" -B "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build/"
         -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -G${CMAKE_GENERATOR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -Dgtest_force_shared_crt=ON
-        BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build" --config ${CMAKE_BUILD_TYPE}
+        -Dgtest_force_shared_crt=ON -DCMAKE_CXX_FLAGS="-w" -DCMAKE_C_FLAGS="-w"
+        BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build" --config ${CMAKE_BUILD_TYPE} --parallel
         INSTALL_COMMAND   "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/install")
