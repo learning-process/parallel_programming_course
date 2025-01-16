@@ -4,6 +4,7 @@ project(parallel_programming_course)
 message( STATUS "Parallel Programming Course" )
 
 include(cmake/configure.cmake)
+include(cmake/opencv.cmake)
 include(cmake/gtest.cmake)
 
 option(ENABLE_ADDRESS_SANITIZER OFF)

@@ -137,6 +137,9 @@ foreach(TASK_TYPE ${LIST_OF_TASKS})
           endif()
       endif ()
 
+      add_dependencies(${EXEC_FUNC} ppc_opencv)
+      target_link_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_opencv/install/lib")
+
       add_dependencies(${EXEC_FUNC} ppc_googletest)
       target_link_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_googletest/install/lib")
       target_link_libraries(${EXEC_FUNC} PUBLIC gtest gtest_main)
