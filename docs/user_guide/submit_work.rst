@@ -1,12 +1,13 @@
 How to submit your work
 ========================
 
-- There are ``mpi``, ``omp``, ``seq``, ``stl``, ``tbb`` folders in the ``tasks`` directory. Move to a folder of your task. Create a directory named ``<last name>_<first letter of name>_<short task name>``. 
+- There are ``all``, ``mpi``, ``omp``, ``seq``, ``stl``, ``tbb`` folders in the ``tasks`` directory. Move to a folder of your task. Create a directory named ``<last name>_<first letter of name>_<short task name>``.
 
   Example: ``seq/nesterov_a_vector_sum``. Please name all tasks **with the same** name directory. If the ``seq`` task is named ``seq/nesterov_a_vector_sum``, then the ``omp`` task must be named ``omp/nesterov_a_vector_sum``.
 
 - Navigate into the newly created folder and begin your work on the task. The folder must contain only 4 directories with files:
   
+  - ``data``       - Directory with own data files for functional testing of the task.
   - ``func_tests`` - Directory with Google tests for functional testing of the task.
   - ``include``    - Directory for header files with function prototypes.
   - ``perf_tests`` - Directory with Google tests for performance testing. The number of tests must be 2: ``run_task`` and ``run_pipeline``.
@@ -14,7 +15,7 @@ How to submit your work
 
 - There must be 10 executable files for running:
   
-  - ``<mpi, omp, seq, stl, tbb>_<func, perf>_tests``. For example, ``omp_perf_tests`` - an executable file for performance tests of OpenMP practice tasks.
+  - ``<all, mpi, omp, seq, stl, tbb>_<func, perf>_tests``. For example, ``omp_perf_tests`` - an executable file for performance tests of OpenMP practice tasks.
 
 - All prototypes and classes in the ``include`` directory must be namespace-escaped. Name your namespace as follows:
   

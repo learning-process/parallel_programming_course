@@ -1,6 +1,12 @@
 ignore:
   - "**/perf_tests/**"
   - "**/func_tests/**"
+  - "**/all/runner.cpp"
+  - "**/mpi/runner.cpp"
+  - "**/omp/runner.cpp"
+  - "**/seq/runner.cpp"
+  - "**/stl/runner.cpp"
+  - "**/tbb/runner.cpp"
 coverage:
   status:
     project:
