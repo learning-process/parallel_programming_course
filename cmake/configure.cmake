@@ -1,12 +1,3 @@
-option(ENABLE_MOLD OFF)
-if (ENABLE_MOLD)
-    set(CMAKE_LINKER mold)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=mold")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=mold")
-    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=mold ${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS "-fuse-ld=mold ${CMAKE_SHARED_LINKER_FLAGS}")
-endif()
-
 if(MSVC)
     option(gtest_force_shared_crt "" TRUE)
 endif(MSVC)

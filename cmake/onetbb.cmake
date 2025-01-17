@@ -4,7 +4,7 @@ if( USE_TBB )
     include_directories(${CMAKE_SOURCE_DIR}/3rdparty/onetbb/include)
 
     include(ExternalProject)
-    if(MSVC)
+    if(WIN32)
         ExternalProject_Add(ppc_onetbb
                 SOURCE_DIR        "${CMAKE_SOURCE_DIR}/3rdparty/onetbb"
                 PREFIX            "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb"
@@ -16,7 +16,7 @@ if( USE_TBB )
                 BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --config ${CMAKE_BUILD_TYPE} --parallel
                 INSTALL_COMMAND   "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install"
                 TEST_COMMAND      "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install/bin" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-    else(MSVC)
+    else()
         ExternalProject_Add(ppc_onetbb
                 SOURCE_DIR        "${CMAKE_SOURCE_DIR}/3rdparty/onetbb"
                 PREFIX            "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb"
@@ -27,5 +27,5 @@ if( USE_TBB )
                 -G${CMAKE_GENERATOR} -DTBB_TEST=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                 BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --config ${CMAKE_BUILD_TYPE} --parallel
                 INSTALL_COMMAND   "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install")
-    endif(MSVC)
+    endif()
 endif( USE_TBB )

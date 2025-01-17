@@ -23,7 +23,6 @@ include(cmake/onetbb.cmake)
 message( STATUS "PPC step: Setup external projects" )
 include(cmake/opencv.cmake)
 include(cmake/gtest.cmake)
-include(cmake/boost.cmake)
 
 ############################## Headers ##############################
 
