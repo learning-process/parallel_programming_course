@@ -1,6 +1,5 @@
 import csv
 import numpy as np
-import sklearn.utils as skl_utils
 from xlsxwriter.workbook import Workbook
 
 NUM_TASKS = 3
@@ -17,7 +16,8 @@ for i in range(NUM_TASKS):
     for j in range(int(NUM_STUDENTS / NUM_VARIANTS) + 1):
         list_of_variants.append(np.arange(NUM_VARIANTS) + 1)
     for variant in list_of_variants:
-        shuffled_list_of_variants.append(skl_utils.shuffle(variant))
+        np.random.shuffle(variant)
+        shuffled_list_of_variants.append(variant)
     result_variants = np.concatenate(shuffled_list_of_variants)
     list_of_tasks.append(result_variants[:NUM_STUDENTS])
     str_of_print += '%d,'
