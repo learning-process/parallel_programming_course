@@ -53,6 +53,7 @@ jobs:
       with:
           key: ${{ github.job }}
           create-symlink: true
+          max-size: 1G
     - name: CMake configure
       run: >
         cmake -S . -B build
@@ -132,6 +133,7 @@ jobs:
       with:
           key: ${{ github.job }}
           create-symlink: true
+          max-size: 1G
     - name: CMake configure
       run: >
         cmake -S . -B build
@@ -205,6 +207,7 @@ jobs:
       with:
           key: ${{ github.job }}
           create-symlink: true
+          max-size: 1G
     - name: CMake configure
       run: >
         cmake -S . -B build 
@@ -284,6 +287,7 @@ jobs:
       with:
           key: ${{ github.job }}
           create-symlink: true
+          max-size: 1G
     - name: CMake configure
       run: >
         cmake -S . -B build 
@@ -354,6 +358,7 @@ jobs:
       with:
           key: ${{ github.job }}
           create-symlink: true
+          max-size: 1G
     - name: CMake configure
       run: >
         cmake -S . -B build
@@ -420,6 +425,7 @@ jobs:
       with:
           key: ${{ github.job }}
           create-symlink: true
+          max-size: 1G
     - name: CMake configure
       run: >
         cmake -S . -B build
@@ -498,6 +504,7 @@ jobs:
       with:
           key: ${{ github.job }}
           create-symlink: true
+          max-size: 1G
     - name: CMake configure
       run: >
         cmake -S . -B build
@@ -569,6 +576,7 @@ jobs:
       with:
           key: ${{ github.job }}
           create-symlink: true
+          max-size: 1G
     - name: CMake configure
       run: >
         cmake -S . -B build
@@ -897,6 +905,7 @@ jobs:
       with:
           key: ${{ github.job }}
           create-symlink: true
+          max-size: 1G
     - name: CMake configure
       run: >
         cmake -S . -B build
@@ -984,6 +993,7 @@ jobs:
       with:
           key: ${{ github.job }}
           create-symlink: true
+          max-size: 1G
     - name: CMake configure
       run: >
         cmake -S . -B build
