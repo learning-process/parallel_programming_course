@@ -1,3 +1,4 @@
+option(ENABLE_ADDRESS_SANITIZER OFF)
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   if (ENABLE_ADDRESS_SANITIZER)
     add_compile_options(-fsanitize=address)

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <fstream>
+#include <opencv2/opencv.hpp>
 #include <random>
 #include <thread>
 #include <vector>
@@ -215,14 +215,11 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff_2) {
 }
 
 TEST(Parallel_Operations_STL_Threads, Test_Diff_2_File) {
-  std::string line;
-  std::ifstream test_file(ppc::core::GetAbsolutePath("all/example/data/test_stl.txt"));
-  if (test_file.is_open()) {
-    getline(test_file, line);
-  }
-  test_file.close();
+  cv::Mat img = cv::imread(ppc::core::GetAbsolutePath("all/example/data/pic_stl.jpg"));
+  EXPECT_EQ(static_cast<int>(sqrt(img.cols / 2) * sqrt(img.cols / 2)), img.rows);
+  const int count_size_vector = static_cast<int>(sqrt(sqrt(img.rows)));
 
-  auto nthreads = std::thread::hardware_concurrency() * std::stoi(line);
+  auto nthreads = std::thread::hardware_concurrency() * count_size_vector;
   std::vector<int> vec = GetRandomVector(static_cast<int>(nthreads));
   // Create data
   std::vector<int> ref_res(1, 0);

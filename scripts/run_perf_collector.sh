@@ -1,4 +1,5 @@
 #!/bin/bash
+source build/ppc_opencv/install/bin/setup_vars_opencv4.sh
 
 if [[ -z "$ASAN_RUN" ]]; then
   if [[ $OSTYPE == "linux-gnu" ]]; then

@@ -16,7 +16,6 @@ ci:
 core:
   - "modules/core/**"
 samples:
-  - "1stsamples/**"
   - "modules/ref/**"
 3rdparty:
   - "3rdparty/**"

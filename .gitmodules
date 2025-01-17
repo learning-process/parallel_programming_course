@@ -7,3 +7,6 @@
 [submodule "3rdparty/onetbb"]
 	path = 3rdparty/onetbb
 	url = https://github.com/uxlfoundation/oneTBB
+[submodule "3rdparty/opencv"]
+	path = 3rdparty/opencv
+	url = https://github.com/opencv/opencv
