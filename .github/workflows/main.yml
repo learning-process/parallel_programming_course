@@ -56,16 +56,17 @@ jobs:
     - name: CMake configure
       run: >
         cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -DENABLE_MOLD=ON
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -D ENABLE_MOLD=ON
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: gcc-13
         CXX: g++-13
-    - name: Ninja build
+    - name: Build project
       run: |
-        cmake --build build
+        cmake --build build --parallel
+        source build/ppc_opencv/install/bin/setup_vars_opencv4.sh
       env:
         CC: gcc-13
         CXX: g++-13
@@ -135,16 +136,17 @@ jobs:
     - name: CMake configure
       run: >
         cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -DENABLE_MOLD=ON
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -D ENABLE_MOLD=ON
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: gcc-13
         CXX: g++-13
-    - name: Ninja build
+    - name: Build project
       run: |
-        cmake --build build
+        cmake --build build --parallel
+        source build/ppc_opencv/install/bin/setup_vars_opencv4.sh
       env:
         CC: gcc-13
         CXX: g++-13
@@ -214,9 +216,9 @@ jobs:
       env:
         CC: clang-19
         CXX: clang++-19
-    - name: Ninja build
+    - name: Build project
       run: |
-        cmake --build build
+        cmake --build build --parallel
       env:
         CC: clang-19
         CXX: clang++-19
@@ -293,9 +295,9 @@ jobs:
       env:
         CC: clang-19
         CXX: clang++-19
-    - name: Ninja build
+    - name: Build project
       run: |
-        cmake --build build
+        cmake --build build --parallel
       env:
         CC: clang-19
         CXX: clang++-19
@@ -364,9 +366,9 @@ jobs:
       env:
         CC: clang-19
         CXX: clang++-19
-    - name: Ninja build
+    - name: Build project
       run: |
-        cmake --build build
+        cmake --build build --parallel
       env:
         CC: clang-19
         CXX: clang++-19
@@ -430,9 +432,9 @@ jobs:
       env:
         CC: clang-19
         CXX: clang++-19
-    - name: Ninja build
+    - name: Build project
       run: |
-        cmake --build build
+        cmake --build build --parallel
       env:
         CC: clang-19
         CXX: clang++-19
@@ -505,9 +507,9 @@ jobs:
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
         -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-    - name: Ninja build
+    - name: Build project
       run: |
-        cmake --build build
+        cmake --build build --parallel
     - name: Run func tests (MPI, num_proc=1)
       run: |
         source scripts/run_mpi.sh
@@ -576,9 +578,9 @@ jobs:
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
         -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-    - name: Ninja build
+    - name: Build project
       run: |
-        cmake --build build
+        cmake --build build --parallel
     - name: Run tests (threads, num_threads=5)
       run: source scripts/run_threads.sh
       env:
@@ -650,7 +652,7 @@ jobs:
         -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
-    - name: MSBuild
+    - name: Build project
       shell: bash
       run: |
         cmake --build build --config Release --parallel
@@ -708,7 +710,7 @@ jobs:
         -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
-    - name: MSBuild
+    - name: Build project
       shell: bash
       run: |
         cmake --build build --config Release --parallel
@@ -773,7 +775,7 @@ jobs:
       env:
         CC: clang-cl
         CXX: clang-cl
-    - name: Ninja build
+    - name: Build project
       run: |
         cmake --build build --config Release --parallel -v
       env:
@@ -827,7 +829,7 @@ jobs:
       env:
         CC: clang-cl
         CXX: clang-cl
-    - name: Ninja build
+    - name: Build project
       run: |
         cmake --build build --config Release --parallel -v
       env:
@@ -896,13 +898,14 @@ jobs:
       run: >
         cmake -S . -B build
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -DENABLE_MOLD=ON
+        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D ENABLE_MOLD=ON
         -D CMAKE_BUILD_TYPE=RELEASE
         -D CMAKE_VERBOSE_MAKEFILE=ON
         -D USE_COVERAGE=ON
-    - name: Ninja build
+    - name: Build project
       run: |
         cmake --build build --parallel
+        source build/ppc_opencv/install/bin/setup_vars_opencv4.sh
     - name: Run tests (MPI)
       run: |
         source scripts/run_mpi.sh
@@ -975,16 +978,17 @@ jobs:
     - name: CMake configure
       run: >
         cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -DENABLE_MOLD=ON
+        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -D ENABLE_MOLD=ON
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: gcc-12
         CXX: g++-12
-    - name: Ninja build
+    - name: Build project
       run: |
-        cmake --build build
+        cmake --build build --parallel
+        source build/ppc_opencv/install/bin/setup_vars_opencv4.sh
       env:
         CC: gcc-12
         CXX: g++-12
