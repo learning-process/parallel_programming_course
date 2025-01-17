@@ -42,7 +42,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install gcc-13 g++-13
+        sudo apt-get install gcc-14 g++-14
         sudo apt-get install ninja-build
         sudo apt-get install mpich
         sudo apt-get install libomp-dev
@@ -61,14 +61,14 @@ jobs:
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
-        CC: gcc-13
-        CXX: g++-13
+        CC: gcc-14
+        CXX: g++-14
     - name: Build project
       run: |
         cmake --build build --parallel
       env:
-        CC: gcc-13
-        CXX: g++-13
+        CC: gcc-14
+        CXX: g++-14
     - name: Run func tests (MPI, num_proc=1)
       run: |
         source scripts/run_mpi.sh
@@ -121,7 +121,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install gcc-13 g++-13
+        sudo apt-get install gcc-14 g++-14
         sudo apt-get install ninja-build
         sudo apt-get install mpich
         sudo apt-get install libomp-dev
@@ -140,14 +140,14 @@ jobs:
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
-        CC: gcc-13
-        CXX: g++-13
+        CC: gcc-14
+        CXX: g++-14
     - name: Build project
       run: |
         cmake --build build --parallel
       env:
-        CC: gcc-13
-        CXX: g++-13
+        CC: gcc-14
+        CXX: g++-14
     - name: Run func tests (threads, num_threads=5)
       run: source scripts/run_threads.sh
       env:
@@ -886,7 +886,7 @@ jobs:
     - name: Setup environment
       run: |
         sudo apt-get update
-        sudo apt-get install gcc g++
+        sudo apt-get install gcc-14 g++-14
         sudo apt-get install ninja-build
         sudo apt-get install mpich
         sudo apt-get install libomp-dev
@@ -973,7 +973,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install gcc-12 g++-12
+        sudo apt-get install gcc-14 g++-14
         sudo apt-get install ninja-build
         sudo apt-get install mpich
         sudo apt-get install libomp-dev
@@ -992,14 +992,14 @@ jobs:
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
         -D CMAKE_BUILD_TYPE=RELEASE
       env:
-        CC: gcc-12
-        CXX: g++-12
+        CC: gcc-14
+        CXX: g++-14
     - name: Build project
       run: |
         cmake --build build --parallel
       env:
-        CC: gcc-12
-        CXX: g++-12
+        CC: gcc-14
+        CXX: g++-14
     - name: Run perf count checker
       run: |
         source scripts/run_perf_count_checker.sh
