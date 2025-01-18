@@ -1,4 +1,4 @@
-#include "mpi/example/include/ops_mpi.hpp"
+#include "all/example/include/ops_mpi.hpp"
 
 #include <algorithm>
 #include <functional>

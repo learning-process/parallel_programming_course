@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "tbb/example/include/ops_tbb.hpp"
+#include "all/example/include/ops_tbb.hpp"
 
 TEST(all_example_perf_test, test_task_run) {
   const int count = 100;

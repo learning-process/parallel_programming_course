@@ -4,7 +4,7 @@
 #include <random>
 #include <vector>
 
-#include "omp/example/include/ops_omp.hpp"
+#include "all/example/include/ops_omp.hpp"
 
 namespace {
 std::vector<int> GetRandomVector(int sz) {

@@ -5,7 +5,7 @@
 #include <thread>
 #include <vector>
 
-#include "stl/example/include/ops_stl.hpp"
+#include "all/example/include/ops_stl.hpp"
 
 namespace {
 std::vector<int> GetRandomVector(int sz) {

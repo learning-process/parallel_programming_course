@@ -3,7 +3,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
-#include "seq/example/include/ops_seq.hpp"
+#include "all/example/include/ops_seq.hpp"
 
 TEST(Sequential, Test_Sum_10) {
   const int count = 10;
