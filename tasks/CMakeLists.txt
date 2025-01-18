@@ -59,6 +59,10 @@ foreach(TASK_TYPE ${LIST_OF_TASKS})
       file(GLOB SRC_RES "${PATH_PREFIX}/src/*")
       list(APPEND SRC_RES ${TMP_SRC_RES})
 
+      if ("${subd}" MATCHES "_disabled$")
+        message(WARNING "   -- SKIPPED func and perf tests for ${PATH_TO_TASK}/${subd}")
+        continue()
+      endif()
       file(GLOB_RECURSE TMP_FUNC_TESTS_SOURCE_FILES "${PATH_PREFIX}/func_tests/*")
       list(APPEND FUNC_TESTS_SOURCE_FILES ${TMP_FUNC_TESTS_SOURCE_FILES})
 
