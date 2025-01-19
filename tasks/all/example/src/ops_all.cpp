@@ -43,14 +43,7 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
 #pragma omp critical
       { MatMul(input_, rc_size_, output_); }
     }
-  } else if (world_.rank() == 1) {
-    const int num_threads = ppc::util::GetPPCNumThreads();
-    std::vector<std::thread> threads(num_threads);
-    for (int i = 0; i < num_threads; i++) {
-      threads[i] = std::thread(MatMul, std::cref(input_), rc_size_, std::ref(output_));
-      threads[i].join();
-    }
-  } else if (world_.rank() == 2) {
+  } else {
     oneapi::tbb::task_arena arena(1);
     arena.execute([&] {
       tbb::task_group tg;
@@ -59,9 +52,15 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
       }
       tg.wait();
     });
-  } else {
-    MatMul(input_, rc_size_, output_);
   }
+
+  const int num_threads = ppc::util::GetPPCNumThreads();
+  std::vector<std::thread> threads(num_threads);
+  for (int i = 0; i < num_threads; i++) {
+    threads[i] = std::thread(MatMul, std::cref(input_), rc_size_, std::ref(output_));
+    threads[i].join();
+  }
+
   world_.barrier();
   return true;
 }

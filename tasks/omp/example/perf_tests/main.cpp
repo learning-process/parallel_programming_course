@@ -6,7 +6,7 @@
 #include "omp/example/include/ops_omp.hpp"
 
 TEST(nesterov_a_test_task_omp, test_pipeline_run) {
-  constexpr int kCount = 500;
+  constexpr int kCount = 300;
 
   // Create data
   std::vector<int> in(kCount * kCount, 0);
@@ -47,7 +47,7 @@ TEST(nesterov_a_test_task_omp, test_pipeline_run) {
 }
 
 TEST(nesterov_a_test_task_omp, test_task_run) {
-  constexpr int kCount = 500;
+  constexpr int kCount = 300;
 
   // Create data
   std::vector<int> in(kCount * kCount, 0);

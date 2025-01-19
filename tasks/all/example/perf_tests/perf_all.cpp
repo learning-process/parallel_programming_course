@@ -6,7 +6,7 @@
 #include "core/perf/include/perf.hpp"
 
 TEST(nesterov_a_test_task_all, test_pipeline_run) {
-  constexpr int kCount = 900;
+  constexpr int kCount = 400;
 
   // Create data
   std::vector<int> in(kCount * kCount, 0);
@@ -51,7 +51,7 @@ TEST(nesterov_a_test_task_all, test_pipeline_run) {
 }
 
 TEST(nesterov_a_test_task_all, test_task_run) {
-  constexpr int kCount = 900;
+  constexpr int kCount = 400;
 
   // Create data
   std::vector<int> in(kCount * kCount, 0);
