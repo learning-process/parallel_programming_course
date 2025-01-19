@@ -4,7 +4,7 @@ REQUIRED_TESTS_COUNT=2
 
 get_ref_tests_number() {
   # shellcheck disable=SC2155
-  local dir_number=$(find "$1" -maxdepth 1 -type d | wc -l)
+  local dir_number=$(find "$1" -maxdepth 1 -type d ! -name "*_disabled" | wc -l)
   # shellcheck disable=SC2004
   local task_number=$(($dir_number-1))
   # shellcheck disable=SC2004
