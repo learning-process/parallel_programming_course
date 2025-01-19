@@ -1,7 +1,5 @@
-#ifndef TASKS_EXAMPLES_TEST_STD_OPS_STD_H_
-#define TASKS_EXAMPLES_TEST_STD_OPS_STD_H_
+#pragma once
 
-#include <string>
 #include <vector>
 
 #include "core/task/include/task.hpp"
@@ -22,5 +20,3 @@ class TestTaskSTL : public ppc::core::Task {
 };
 
 }  // namespace nesterov_a_test_task_stl
-
-#endif  // TASKS_EXAMPLES_TEST_STD_OPS_STD_H_

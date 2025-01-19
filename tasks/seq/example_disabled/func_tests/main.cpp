@@ -3,17 +3,18 @@
 #include <fstream>
 #include <vector>
 
+#include "core/util/util.hpp"
 #include "seq/example/include/ops_seq.hpp"
 
 TEST(nesterov_a_test_task_seq, test_matmul_50) {
-  const size_t count = 50;
+  constexpr size_t kCount = 50;
 
   // Create data
-  std::vector<int> in(count * count, 0);
-  std::vector<int> out(count * count, 0);
+  std::vector<int> in(kCount * kCount, 0);
+  std::vector<int> out(kCount * kCount, 0);
 
-  for (size_t i = 0; i < count; i++) {
-    in[(i * count) + i] = 1;
+  for (size_t i = 0; i < kCount; i++) {
+    in[(i * kCount) + i] = 1;
   }
 
   // Create task_data
@@ -34,7 +35,7 @@ TEST(nesterov_a_test_task_seq, test_matmul_50) {
 
 TEST(nesterov_a_test_task_seq, test_matmul_100_from_file) {
   std::string line;
-  std::ifstream test_file(ppc::core::GetAbsolutePath("seq/example/data/test.txt"));
+  std::ifstream test_file(ppc::util::GetAbsolutePath("seq/example/data/test.txt"));
   if (test_file.is_open()) {
     getline(test_file, line);
   }

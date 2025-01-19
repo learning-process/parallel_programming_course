@@ -1,12 +1,14 @@
 #pragma once
 
-#include <chrono>
+#ifdef _WIN32
 #include <cstdint>
-#include <filesystem>
 #include <iostream>
 #include <memory>
-#include <string>
 #include <vector>
+#endif
+
+#include <filesystem>
+#include <string>
 
 namespace ppc::util {
 

@@ -1,20 +1,19 @@
 #include <gtest/gtest.h>
 
-#include <boost/mpi/timer.hpp>
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
 #include "mpi/example/include/ops_mpi.hpp"
 
 TEST(nesterov_a_test_task_mpi, test_pipeline_run) {
-  const int count = 500;
+  constexpr int kCount = 500;
 
   // Create data
-  std::vector<int> in(count * count, 0);
-  std::vector<int> out(count * count, 0);
+  std::vector<int> in(kCount * kCount, 0);
+  std::vector<int> out(kCount * kCount, 0);
 
-  for (size_t i = 0; i < count; i++) {
-    in[(i * count) + i] = 1;
+  for (size_t i = 0; i < kCount; i++) {
+    in[(i * kCount) + i] = 1;
   }
 
   // Create task_data
@@ -52,14 +51,14 @@ TEST(nesterov_a_test_task_mpi, test_pipeline_run) {
 }
 
 TEST(nesterov_a_test_task_mpi, test_task_run) {
-  const int count = 500;
+  constexpr int kCount = 500;
 
   // Create data
-  std::vector<int> in(count * count, 0);
-  std::vector<int> out(count * count, 0);
+  std::vector<int> in(kCount * kCount, 0);
+  std::vector<int> out(kCount * kCount, 0);
 
-  for (size_t i = 0; i < count; i++) {
-    in[(i * count) + i] = 1;
+  for (size_t i = 0; i < kCount; i++) {
+    in[(i * kCount) + i] = 1;
   }
 
   // Create task_data

@@ -5,7 +5,6 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-#include <utility>
 
 ppc::core::Perf::Perf(const std::shared_ptr<Task>& task_ptr) { SetTask(task_ptr); }
 
@@ -15,7 +14,7 @@ void ppc::core::Perf::SetTask(const std::shared_ptr<Task>& task_ptr) {
 }
 
 void ppc::core::Perf::PipelineRun(const std::shared_ptr<PerfAttr>& perf_attr,
-                                  const std::shared_ptr<ppc::core::PerfResults>& perf_results) {
+                                  const std::shared_ptr<ppc::core::PerfResults>& perf_results) const {
   perf_results->type_of_running = PerfResults::TypeOfRunning::kPipeline;
 
   CommonRun(
@@ -30,7 +29,7 @@ void ppc::core::Perf::PipelineRun(const std::shared_ptr<PerfAttr>& perf_attr,
 }
 
 void ppc::core::Perf::TaskRun(const std::shared_ptr<PerfAttr>& perf_attr,
-                              const std::shared_ptr<ppc::core::PerfResults>& perf_results) {
+                              const std::shared_ptr<ppc::core::PerfResults>& perf_results) const {
   perf_results->type_of_running = PerfResults::TypeOfRunning::kTaskRun;
 
   task_->Validation();

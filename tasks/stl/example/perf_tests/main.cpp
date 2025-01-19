@@ -6,14 +6,14 @@
 #include "stl/example/include/ops_stl.hpp"
 
 TEST(nesterov_a_test_task_stl, test_pipeline_run) {
-  const int count = 1000;
+  constexpr int kCount = 1000;
 
   // Create data
-  std::vector<int> in(count * count, 0);
-  std::vector<int> out(count * count, 0);
+  std::vector<int> in(kCount * kCount, 0);
+  std::vector<int> out(kCount * kCount, 0);
 
-  for (size_t i = 0; i < count; i++) {
-    in[(i * count) + i] = 1;
+  for (size_t i = 0; i < kCount; i++) {
+    in[(i * kCount) + i] = 1;
   }
 
   // Create task_data
@@ -47,14 +47,14 @@ TEST(nesterov_a_test_task_stl, test_pipeline_run) {
 }
 
 TEST(nesterov_a_test_task_stl, test_task_run) {
-  const int count = 1000;
+  constexpr int kCount = 1000;
 
   // Create data
-  std::vector<int> in(count * count, 0);
-  std::vector<int> out(count * count, 0);
+  std::vector<int> in(kCount * kCount, 0);
+  std::vector<int> out(kCount * kCount, 0);
 
-  for (size_t i = 0; i < count; i++) {
-    in[(i * count) + i] = 1;
+  for (size_t i = 0; i < kCount; i++) {
+    in[(i * kCount) + i] = 1;
   }
 
   // Create task_data

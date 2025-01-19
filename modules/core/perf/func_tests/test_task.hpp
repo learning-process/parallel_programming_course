@@ -1,7 +1,4 @@
-#ifndef MODULES_CORE_TESTS_TEST_TASK_HPP_
-#define MODULES_CORE_TESTS_TEST_TASK_HPP_
-
-#include <gtest/gtest.h>
+#pragma once
 
 #include <memory>
 #include <thread>
@@ -16,7 +13,7 @@ namespace ppc::test::perf {
 template <class T>
 class TestTask : public ppc::core::Task {
  public:
-  explicit TestTask(ppc::core::TaskDataPtr task_data) : Task(task_data) {}
+  explicit TestTask(const ppc::core::TaskDataPtr &task_data) : Task(task_data) {}
 
   bool PreProcessingImpl() override {
     input_ = reinterpret_cast<T *>(task_data->inputs[0]);
@@ -53,5 +50,3 @@ class FakePerfTask : public TestTask<T> {
 };
 
 }  // namespace ppc::test::perf
-
-#endif  // MODULES_CORE_TESTS_TEST_TASK_HPP_

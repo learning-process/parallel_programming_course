@@ -1,7 +1,5 @@
-#ifndef TASKS_EXAMPLES_TEST_TBB_OPS_TBB_H_
-#define TASKS_EXAMPLES_TEST_TBB_OPS_TBB_H_
+#pragma once
 
-#include <string>
 #include <vector>
 
 #include "core/task/include/task.hpp"
@@ -22,5 +20,3 @@ class TestTaskTBB : public ppc::core::Task {
 };
 
 }  // namespace nesterov_a_test_task_tbb
-
-#endif  // TASKS_EXAMPLES_TEST_TBB_OPS_TBB_H_

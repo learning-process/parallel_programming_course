@@ -9,16 +9,8 @@ namespace {
 void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
   for (int i = 0; i < rc_size; ++i) {
     for (int j = 0; j < rc_size; ++j) {
+      out_vec[(i * rc_size) + j] = 0;
       for (int k = 0; k < rc_size; ++k) {
-        out_vec[(i * rc_size) + j] += in_vec[(i * rc_size) + k] * in_vec[(k * rc_size) + j];
-      }
-    }
-  }
-}
-void MatMulElse(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
-  for (int k = 0; k < rc_size; ++k) {
-    for (int j = 0; j < rc_size; ++j) {
-      for (int i = 0; i < rc_size; ++i) {
         out_vec[(i * rc_size) + j] += in_vec[(i * rc_size) + k] * in_vec[(k * rc_size) + j];
       }
     }
@@ -46,8 +38,11 @@ bool nesterov_a_test_task_all::TestTaskALL::ValidationImpl() {
 
 bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
   if (world_.rank() == 0) {
-#pragma omp parallel
-    { MatMul(input_, rc_size_, output_); }
+#pragma omp parallel default(none)
+    {
+#pragma omp critical
+      { MatMul(input_, rc_size_, output_); }
+    }
   } else if (world_.rank() == 1) {
     const int num_threads = ppc::util::GetPPCNumThreads();
     std::vector<std::thread> threads(num_threads);
@@ -56,10 +51,16 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
       threads[i].join();
     }
   } else if (world_.rank() == 2) {
-    oneapi::tbb::task_arena arena;
-    arena.execute([&] { MatMul(input_, rc_size_, output_); });
+    oneapi::tbb::task_arena arena(1);
+    arena.execute([&] {
+      tbb::task_group tg;
+      for (int i = 0; i < ppc::util::GetPPCNumThreads(); ++i) {
+        tg.run([&] { MatMul(input_, rc_size_, output_); });
+      }
+      tg.wait();
+    });
   } else {
-    MatMulElse(input_, rc_size_, output_);
+    MatMul(input_, rc_size_, output_);
   }
   world_.barrier();
   return true;

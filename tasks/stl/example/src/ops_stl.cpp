@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include <future>
-#include <string>
 #include <thread>
 #include <vector>
 
@@ -12,6 +11,7 @@ namespace {
 void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
   for (int i = 0; i < rc_size; ++i) {
     for (int j = 0; j < rc_size; ++j) {
+      out_vec[(i * rc_size) + j] = 0;
       for (int k = 0; k < rc_size; ++k) {
         out_vec[(i * rc_size) + j] += in_vec[(i * rc_size) + k] * in_vec[(k * rc_size) + j];
       }

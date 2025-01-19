@@ -3,7 +3,21 @@
 #include <tbb/tbb.h>
 
 #include <cmath>
+#include <core/util/util.hpp>
 #include <vector>
+
+namespace {
+void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
+  for (int i = 0; i < rc_size; ++i) {
+    for (int j = 0; j < rc_size; ++j) {
+      out_vec[(i * rc_size) + j] = 0;
+      for (int k = 0; k < rc_size; ++k) {
+        out_vec[(i * rc_size) + j] += in_vec[(i * rc_size) + k] * in_vec[(k * rc_size) + j];
+      }
+    }
+  }
+}
+}  // namespace
 
 bool nesterov_a_test_task_tbb::TestTaskTBB::PreProcessingImpl() {
   // Init value for input and output
@@ -24,16 +38,13 @@ bool nesterov_a_test_task_tbb::TestTaskTBB::ValidationImpl() {
 }
 
 bool nesterov_a_test_task_tbb::TestTaskTBB::RunImpl() {
-  oneapi::tbb::task_arena arena;
+  oneapi::tbb::task_arena arena(1);
   arena.execute([&] {
-    // Multiply matrices
-    for (int i = 0; i < rc_size_; ++i) {
-      for (int j = 0; j < rc_size_; ++j) {
-        for (int k = 0; k < rc_size_; ++k) {
-          output_[(i * rc_size_) + j] += input_[(i * rc_size_) + k] * input_[(k * rc_size_) + j];
-        }
-      }
+    tbb::task_group tg;
+    for (int thr = 0; thr < ppc::util::GetPPCNumThreads(); ++thr) {
+      tg.run([&] { MatMul(input_, rc_size_, output_); });
     }
+    tg.wait();
   });
   return true;
 }
