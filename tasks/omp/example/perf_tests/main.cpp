@@ -18,14 +18,14 @@ TEST(nesterov_a_test_task_omp, test_pipeline_run) {
   }
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
-  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  task_data_seq->inputs_count.emplace_back(in.size());
-  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  task_data_seq->outputs_count.emplace_back(out.size());
+  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
+  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data_omp->inputs_count.emplace_back(in.size());
+  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data_omp->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto test_task_sequential = std::make_shared<nesterov_a_test_task_omp::TestTaskOpenMP>(task_data_seq);
+  auto test_task_omp = std::make_shared<nesterov_a_test_task_omp::TestTaskOpenMP>(task_data_omp);
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
@@ -41,7 +41,7 @@ TEST(nesterov_a_test_task_omp, test_pipeline_run) {
   auto perf_results = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_sequential);
+  auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_omp);
   perf_analyzer->PipelineRun(perf_attr, perf_results);
   ppc::core::Perf::PrintPerfStatistic(perf_results);
   ASSERT_EQ(in, out);
@@ -59,14 +59,14 @@ TEST(nesterov_a_test_task_omp, test_task_run) {
   }
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
-  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  task_data_seq->inputs_count.emplace_back(in.size());
-  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  task_data_seq->outputs_count.emplace_back(out.size());
+  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
+  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data_omp->inputs_count.emplace_back(in.size());
+  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data_omp->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto test_task_sequential = std::make_shared<nesterov_a_test_task_omp::TestTaskOpenMP>(task_data_seq);
+  auto test_task_omp = std::make_shared<nesterov_a_test_task_omp::TestTaskOpenMP>(task_data_omp);
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
@@ -82,7 +82,7 @@ TEST(nesterov_a_test_task_omp, test_task_run) {
   auto perf_results = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_sequential);
+  auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_omp);
   perf_analyzer->TaskRun(perf_attr, perf_results);
   ppc::core::Perf::PrintPerfStatistic(perf_results);
   ASSERT_EQ(in, out);

@@ -17,24 +17,24 @@ TEST(nesterov_a_test_task_omp, test_matmul_50) {
   }
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
-  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  task_data_seq->inputs_count.emplace_back(in.size());
-  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  task_data_seq->outputs_count.emplace_back(out.size());
+  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
+  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data_omp->inputs_count.emplace_back(in.size());
+  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data_omp->outputs_count.emplace_back(out.size());
 
   // Create Task
-  nesterov_a_test_task_omp::TestTaskOpenMP test_task_sequential(task_data_seq);
-  ASSERT_EQ(test_task_sequential.Validation(), true);
-  test_task_sequential.PreProcessing();
-  test_task_sequential.Run();
-  test_task_sequential.PostProcessing();
+  nesterov_a_test_task_omp::TestTaskOpenMP test_task_omp(task_data_omp);
+  ASSERT_EQ(test_task_omp.Validation(), true);
+  test_task_omp.PreProcessing();
+  test_task_omp.Run();
+  test_task_omp.PostProcessing();
   EXPECT_EQ(in, out);
 }
 
 TEST(nesterov_a_test_task_omp, test_matmul_100_from_file) {
   std::string line;
-  std::ifstream test_file(ppc::core::GetAbsolutePath("seq/example/data/test.txt"));
+  std::ifstream test_file(ppc::core::GetAbsolutePath("omp/example/data/test.txt"));
   if (test_file.is_open()) {
     getline(test_file, line);
   }
@@ -51,17 +51,17 @@ TEST(nesterov_a_test_task_omp, test_matmul_100_from_file) {
   }
 
   // Create task_data
-  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
-  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  task_data_seq->inputs_count.emplace_back(in.size());
-  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  task_data_seq->outputs_count.emplace_back(out.size());
+  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
+  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data_omp->inputs_count.emplace_back(in.size());
+  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data_omp->outputs_count.emplace_back(out.size());
 
   // Create Task
-  nesterov_a_test_task_omp::TestTaskOpenMP test_task_sequential(task_data_seq);
-  ASSERT_EQ(test_task_sequential.Validation(), true);
-  test_task_sequential.PreProcessing();
-  test_task_sequential.Run();
-  test_task_sequential.PostProcessing();
+  nesterov_a_test_task_omp::TestTaskOpenMP test_task_omp(task_data_omp);
+  ASSERT_EQ(test_task_omp.Validation(), true);
+  test_task_omp.PreProcessing();
+  test_task_omp.Run();
+  test_task_omp.PostProcessing();
   EXPECT_EQ(in, out);
 }
