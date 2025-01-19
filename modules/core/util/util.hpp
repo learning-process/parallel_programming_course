@@ -24,7 +24,7 @@ inline int GetPPCNumThreads() {
     omp_env[0] = '\0';
   }
 #else
-  const char* omp_env = std::getenv("OMP_NUM_THREADS");
+  const char *omp_env = std::getenv("OMP_NUM_THREADS");
 #endif
   int num_threads = (omp_env != nullptr) ? std::atoi(omp_env) : 1;
   return num_threads;

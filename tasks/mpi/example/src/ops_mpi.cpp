@@ -1,6 +1,6 @@
 #include "mpi/example/include/ops_mpi.hpp"
 
-#include <algorithm>
+#include <cmath>
 #include <vector>
 
 bool nesterov_a_test_task_mpi::TestTaskMPI::PreProcessingImpl() {
@@ -12,7 +12,7 @@ bool nesterov_a_test_task_mpi::TestTaskMPI::PreProcessingImpl() {
   unsigned int output_size = task_data->outputs_count[0];
   output_ = std::vector<int>(output_size, 0);
 
-  rc_size_ = static_cast<int>(sqrt(input_size));
+  rc_size_ = static_cast<int>(std::sqrt(input_size));
   return true;
 }
 

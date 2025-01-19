@@ -9,12 +9,12 @@
 
 TEST(nesterov_a_test_task_stl, test_matmul_50) {
   const size_t count = 50;
-  
+
   // Create data
   std::vector<int> in(count * count, 0);
   std::vector<int> out(count * count, 0);
 
-  for(size_t i = 0; i < count; i++) {
+  for (size_t i = 0; i < count; i++) {
     in[(i * count) + i] = 1;
   }
 
@@ -48,7 +48,7 @@ TEST(nesterov_a_test_task_stl, test_matmul_100_from_file) {
   std::vector<int> in(count * count, 0);
   std::vector<int> out(count * count, 0);
 
-  for(size_t i = 0; i < count; i++) {
+  for (size_t i = 0; i < count; i++) {
     in[(i * count) + i] = 1;
   }
 

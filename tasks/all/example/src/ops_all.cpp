@@ -1,5 +1,6 @@
 #include "all/example/include/ops_all.hpp"
 
+#include <cmath>
 #include <thread>
 
 #include "core/util/util.hpp"
@@ -30,11 +31,11 @@ bool nesterov_a_test_task_all::TestTaskALL::PreProcessingImpl() {
   unsigned int input_size = task_data->inputs_count[0];
   auto *in_ptr = reinterpret_cast<int *>(task_data->inputs[0]);
   input_ = std::vector<int>(in_ptr, in_ptr + input_size);
-  
+
   unsigned int output_size = task_data->outputs_count[0];
   output_ = std::vector<int>(output_size, 0);
 
-  rc_size_ = static_cast<int>(sqrt(input_size));
+  rc_size_ = static_cast<int>(std::sqrt(input_size));
   return true;
 }
 
@@ -46,9 +47,7 @@ bool nesterov_a_test_task_all::TestTaskALL::ValidationImpl() {
 bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
   if (world_.rank() == 0) {
 #pragma omp parallel
-    {
-      MatMul(input_, rc_size_, output_);
-    }
+    { MatMul(input_, rc_size_, output_); }
   } else if (world_.rank() == 1) {
     const int num_threads = ppc::util::GetPPCNumThreads();
     std::vector<std::thread> threads(num_threads);
@@ -58,9 +57,7 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
     }
   } else if (world_.rank() == 2) {
     oneapi::tbb::task_arena arena;
-    arena.execute([&] {
-      MatMul(input_, rc_size_, output_);
-    });
+    arena.execute([&] { MatMul(input_, rc_size_, output_); });
   } else {
     MatMulElse(input_, rc_size_, output_);
   }

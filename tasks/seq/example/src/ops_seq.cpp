@@ -1,17 +1,18 @@
 #include "seq/example/include/ops_seq.hpp"
 
+#include <cmath>
 #include <thread>
 
 bool nesterov_a_test_task_seq::TestTaskSequential::PreProcessingImpl() {
   // Init value for input and output
   unsigned int input_size = task_data->inputs_count[0];
-  auto *in_ptr = reinterpret_cast<int*>(task_data->inputs[0]);
+  auto *in_ptr = reinterpret_cast<int *>(task_data->inputs[0]);
   input_ = std::vector<int>(in_ptr, in_ptr + input_size);
 
   unsigned int output_size = task_data->outputs_count[0];
   output_ = std::vector<int>(output_size, 0);
 
-  rc_size_ = static_cast<int>(sqrt(input_size));
+  rc_size_ = static_cast<int>(std::sqrt(input_size));
   return true;
 }
 

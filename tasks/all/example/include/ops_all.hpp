@@ -1,13 +1,13 @@
 #pragma once
 
+#include <tbb/tbb.h>
+
+#include <boost/mpi/collectives.hpp>
+#include <boost/mpi/communicator.hpp>
 #include <string>
 #include <vector>
 
 #include "core/task/include/task.hpp"
-
-#include <boost/mpi/collectives.hpp>
-#include <boost/mpi/communicator.hpp>
-#include <tbb/tbb.h>
 
 namespace nesterov_a_test_task_all {
 
@@ -25,4 +25,4 @@ class TestTaskALL : public ppc::core::Task {
   boost::mpi::communicator world_;
 };
 
-} // namespace nesterov_a_test_task_all
+}  // namespace nesterov_a_test_task_all
