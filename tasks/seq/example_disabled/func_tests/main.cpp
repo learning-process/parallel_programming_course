@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include <opencv2/opencv.hpp>
+#include <fstream>
 #include <vector>
 
-#include "all/example/include/ops_seq.hpp"
+#include "seq/example/include/ops_seq.hpp"
 
 TEST(Sequential, Test_Sum_10) {
   const int count = 10;
@@ -121,9 +121,14 @@ TEST(Sequential, Test_Sum_100) {
 }
 
 TEST(Sequential, Test_Sum_100_From_File) {
-  cv::Mat img = cv::imread(ppc::core::GetAbsolutePath("all/example/data/pic_seq.jpg"));
-  EXPECT_EQ(img.rows, img.cols);
-  const int count = img.rows + img.cols;
+  std::string line;
+  std::ifstream test_file(ppc::core::GetAbsolutePath("seq/example/data/test.txt"));
+  if (test_file.is_open()) {
+    getline(test_file, line);
+  }
+  test_file.close();
+
+  const int count = std::stoi(line);
 
   // Create data
   std::vector<int> in(1, count);

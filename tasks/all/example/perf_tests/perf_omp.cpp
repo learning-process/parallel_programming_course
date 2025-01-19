@@ -4,8 +4,8 @@
 #include <boost/mpi/communicator.hpp>
 #include <vector>
 
+#include "all/example/include/ops_omp.hpp"
 #include "core/perf/include/perf.hpp"
-#include "omp/example/include/ops_omp.hpp"
 
 TEST(all_example_perf_test, test_pipeline_run) {
   const int count = 100;

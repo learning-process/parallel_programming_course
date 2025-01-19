@@ -1,4 +1,4 @@
-#include "all/example/include/ops_seq.hpp"
+#include "seq/example/include/ops_seq.hpp"
 
 #include <thread>
 

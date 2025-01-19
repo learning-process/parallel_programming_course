@@ -4,7 +4,7 @@
 #include <random>
 #include <vector>
 
-#include "tbb/example/include/ops_tbb.hpp"
+#include "all/example/include/ops_tbb.hpp"
 
 namespace {
 std::vector<int> GetRandomVector(int sz) {

@@ -1,4 +1,4 @@
-#include "tbb/example/include/ops_tbb.hpp"
+#include "all/example/include/ops_tbb.hpp"
 
 #include <tbb/tbb.h>
 

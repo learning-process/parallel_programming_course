@@ -5,7 +5,7 @@
 #include <random>
 #include <vector>
 
-#include "mpi/example/include/ops_mpi.hpp"
+#include "all/example/include/ops_mpi.hpp"
 
 namespace {
 std::vector<int> GetRandomVector(int sz) {

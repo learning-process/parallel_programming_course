@@ -1,4 +1,4 @@
-#include "omp/example/include/ops_omp.hpp"
+#include "all/example/include/ops_omp.hpp"
 
 #include <omp.h>
 
