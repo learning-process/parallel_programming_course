@@ -24,5 +24,6 @@ infrastructure:
   - "!*/**"
   - "scripts/**"
   - "**/CMakeLists.txt"
+  - "cmake/**"
 docs:
   - "docs/**"
