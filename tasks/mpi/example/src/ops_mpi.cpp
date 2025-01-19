@@ -41,6 +41,7 @@ bool nesterov_a_test_task_mpi::TestTaskMPI::RunImpl() {
       }
     }
   }
+  world_.barrier();
   return true;
 }
 
