@@ -383,31 +383,41 @@ jobs:
         CXX: clang++-19
     - name: Run tests (MPI)
       run: |
-        export ASAN_RUN=1
         source scripts/run_mpi.sh "--oversubscribe"
       env:
         PROC_COUNT: 2
         OMP_NUM_THREADS: 2
+        ASAN_RUN: 1
+        ASAN_OPTIONS: abort_on_error=1
+        UBSAN_OPTIONS: halt_on_error=1
     - name: Run tests (threads, num_threads=1)
       run: source scripts/run_threads.sh
       env:
         OMP_NUM_THREADS: 1
         ASAN_RUN: 1
+        ASAN_OPTIONS: abort_on_error=1
+        UBSAN_OPTIONS: halt_on_error=1
     - name: Run tests (threads, num_threads=2)
       run: source scripts/run_threads.sh
       env:
         OMP_NUM_THREADS: 2
         ASAN_RUN: 1
+        ASAN_OPTIONS: abort_on_error=1
+        UBSAN_OPTIONS: halt_on_error=1
     - name: Run tests (threads, num_threads=3)
       run: source scripts/run_threads.sh
       env:
         OMP_NUM_THREADS: 3
         ASAN_RUN: 1
+        ASAN_OPTIONS: abort_on_error=1
+        UBSAN_OPTIONS: halt_on_error=1
     - name: Run tests (threads, num_threads=4)
       run: source scripts/run_threads.sh
       env:
         OMP_NUM_THREADS: 4
         ASAN_RUN: 1
+        ASAN_OPTIONS: abort_on_error=1
+        UBSAN_OPTIONS: halt_on_error=1
   ubuntu-clang-sanitizer-build-extended:
     needs:
       - ubuntu-clang-sanitizer-build
