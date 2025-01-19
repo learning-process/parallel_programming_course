@@ -2,93 +2,45 @@
 
 #include <tbb/tbb.h>
 
-#include <functional>
-#include <numeric>
-#include <random>
 #include <string>
-#include <thread>
 #include <vector>
 
-bool nesterov_a_test_task_tbb::TestTBBTaskSequential::PreProcessingImpl() {
-  // Init vectors
-  input_ = std::vector<int>(task_data->inputs_count[0]);
-  auto* tmp_ptr = reinterpret_cast<int*>(task_data->inputs[0]);
-  for (unsigned i = 0; i < task_data->inputs_count[0]; i++) {
-    input_[i] = tmp_ptr[i];
+bool nesterov_a_test_task_tbb::TestTaskTBB::PreProcessingImpl() {
+  // Init value for input and output
+  unsigned int input_size = task_data->inputs_count[0];
+  auto *in_ptr = reinterpret_cast<int*>(task_data->inputs[0]);
+  input_ = std::vector<int>(in_ptr, in_ptr + input_size);
+  
+  unsigned int output_size = task_data->outputs_count[0];
+  output_ = std::vector<int>(output_size, 0);
+
+  rc_size_ = static_cast<int>(sqrt(input_size));
+  return true;
+}
+
+bool nesterov_a_test_task_tbb::TestTaskTBB::ValidationImpl() {
+  // Check equality of counts elements
+  return task_data->inputs_count[0] == task_data->outputs_count[0];
+}
+
+bool nesterov_a_test_task_tbb::TestTaskTBB::RunImpl() {
+  oneapi::tbb::task_arena arena;
+  arena.execute([&] {
+      // Multiply matrices
+      for (int i = 0; i < rc_size_; ++i) {
+        for (int j = 0; j < rc_size_; ++j) {
+          for (int k = 0; k < rc_size_; ++k) {
+            output_[(i * rc_size_) + j] += input_[(i * rc_size_) + k] * input_[(k * rc_size_) + j];
+          }
+        }
+      }
+  });
+  return true;
+}
+
+bool nesterov_a_test_task_tbb::TestTaskTBB::PostProcessingImpl() {
+  for (size_t i = 0; i < output_.size(); i++) {
+    reinterpret_cast<int *>(task_data->outputs[0])[i] = output_[i];
   }
-  // Init value for output
-  res_ = 1;
-  return true;
-}
-
-bool nesterov_a_test_task_tbb::TestTBBTaskSequential::ValidationImpl() {
-  // Check count elements of output
-  return task_data->outputs_count[0] == 1;
-}
-
-bool nesterov_a_test_task_tbb::TestTBBTaskSequential::RunImpl() {
-  if (ops_ == "+") {
-    res_ = std::accumulate(input_.begin(), input_.end(), 1);
-  } else if (ops_ == "-") {
-    res_ -= std::accumulate(input_.begin(), input_.end(), 0);
-  } else if (ops_ == "*") {
-    res_ = std::accumulate(input_.begin(), input_.end(), 1, std::multiplies<>());
-  }
-  return true;
-}
-
-bool nesterov_a_test_task_tbb::TestTBBTaskSequential::PostProcessingImpl() {
-  reinterpret_cast<int*>(task_data->outputs[0])[0] = res_;
-  return true;
-}
-
-bool nesterov_a_test_task_tbb::TestTBBTaskParallel::PreProcessingImpl() {
-  // Init vectors
-  input_ = std::vector<int>(task_data->inputs_count[0]);
-  auto* tmp_ptr = reinterpret_cast<int*>(task_data->inputs[0]);
-  for (unsigned i = 0; i < task_data->inputs_count[0]; i++) {
-    input_[i] = tmp_ptr[i];
-  }
-  // Init value for output
-  res_ = 1;
-  return true;
-}
-
-bool nesterov_a_test_task_tbb::TestTBBTaskParallel::ValidationImpl() {
-  // Check count elements of output
-  return task_data->outputs_count[0] == 1;
-}
-
-bool nesterov_a_test_task_tbb::TestTBBTaskParallel::RunImpl() {
-  if (ops_ == "+") {
-    res_ += oneapi::tbb::parallel_reduce(
-        oneapi::tbb::blocked_range<std::vector<int>::iterator>(input_.begin(), input_.end()), 0,
-        [](tbb::blocked_range<std::vector<int>::iterator> r, int running_total) {
-          running_total += std::accumulate(r.begin(), r.end(), 0);
-          return running_total;
-        },
-        std::plus<>());
-  } else if (ops_ == "-") {
-    res_ -= oneapi::tbb::parallel_reduce(
-        oneapi::tbb::blocked_range<std::vector<int>::iterator>(input_.begin(), input_.end()), 0,
-        [](tbb::blocked_range<std::vector<int>::iterator> r, int running_total) {
-          running_total += std::accumulate(r.begin(), r.end(), 0);
-          return running_total;
-        },
-        std::plus<>());
-  } else if (ops_ == "*") {
-    res_ *= oneapi::tbb::parallel_reduce(
-        oneapi::tbb::blocked_range<std::vector<int>::iterator>(input_.begin(), input_.end()), 1,
-        [](tbb::blocked_range<std::vector<int>::iterator> r, int running_total) {
-          running_total *= std::accumulate(r.begin(), r.end(), 1, std::multiplies<>());
-          return running_total;
-        },
-        std::multiplies<>());
-  }
-  return true;
-}
-
-bool nesterov_a_test_task_tbb::TestTBBTaskParallel::PostProcessingImpl() {
-  reinterpret_cast<int*>(task_data->outputs[0])[0] = res_;
   return true;
 }
