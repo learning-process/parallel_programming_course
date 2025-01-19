@@ -2,88 +2,45 @@
 
 #include <omp.h>
 
-#include <iostream>
-#include <numeric>
 #include <string>
-#include <thread>
 #include <vector>
 
-bool nesterov_a_test_task_omp::TestOMPTaskSequential::PreProcessingImpl() {
-  // Init vectors
-  input_ = std::vector<int>(task_data->inputs_count[0]);
-  auto* tmp_ptr = reinterpret_cast<int*>(task_data->inputs[0]);
-  for (unsigned i = 0; i < task_data->inputs_count[0]; i++) {
-    input_[i] = tmp_ptr[i];
-  }
-  // Init value for output
-  res_ = 1;
+bool nesterov_a_test_task_omp::TestTaskOpenMP::PreProcessingImpl() {
+  // Init value for input and output
+  unsigned int input_size = task_data->inputs_count[0];
+  auto *in_ptr = reinterpret_cast<int*>(task_data->inputs[0]);
+  input_ = std::vector<int>(in_ptr, in_ptr + input_size);
+  
+  unsigned int output_size = task_data->outputs_count[0];
+  output_ = std::vector<int>(output_size, 0);
+  
+  rc_size_ = static_cast<int>(sqrt(input_size));
   return true;
 }
 
-bool nesterov_a_test_task_omp::TestOMPTaskSequential::ValidationImpl() {
-  // Check count elements of output
-  return task_data->outputs_count[0] == 1;
+bool nesterov_a_test_task_omp::TestTaskOpenMP::ValidationImpl() {
+  // Check equality of counts elements
+  return task_data->inputs_count[0] == task_data->outputs_count[0];
 }
 
-bool nesterov_a_test_task_omp::TestOMPTaskSequential::RunImpl() {
-  if (ops_ == "+") {
-    res_ = std::accumulate(input_.begin(), input_.end(), 1);
-  } else if (ops_ == "-") {
-    res_ -= std::accumulate(input_.begin(), input_.end(), 0);
-  } else if (ops_ == "*") {
-    res_ = std::accumulate(input_.begin(), input_.end(), 1, std::multiplies<>());
-  }
-  return true;
-}
-
-bool nesterov_a_test_task_omp::TestOMPTaskSequential::PostProcessingImpl() {
-  reinterpret_cast<int*>(task_data->outputs[0])[0] = res_;
-  return true;
-}
-
-bool nesterov_a_test_task_omp::TestOMPTaskParallel::PreProcessingImpl() {
-  // Init vectors
-  input_ = std::vector<int>(task_data->inputs_count[0]);
-  auto* tmp_ptr = reinterpret_cast<int*>(task_data->inputs[0]);
-  for (unsigned i = 0; i < task_data->inputs_count[0]; i++) {
-    input_[i] = tmp_ptr[i];
-  }
-  // Init value for output
-  res_ = 1;
-  return true;
-}
-
-bool nesterov_a_test_task_omp::TestOMPTaskParallel::ValidationImpl() {
-  // Check count elements of output
-  return task_data->outputs_count[0] == 1;
-}
-
-bool nesterov_a_test_task_omp::TestOMPTaskParallel::RunImpl() {
-  double start = omp_get_wtime();
-  auto temp_res = res_;
-  if (ops_ == "+") {
-#pragma omp parallel for reduction(+ : temp_res)
-    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
-      temp_res += input_[i];
-    }
-  } else if (ops_ == "-") {
-#pragma omp parallel for reduction(- : temp_res)
-    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
-      temp_res -= input_[i];
-    }
-  } else if (ops_ == "*") {
-#pragma omp parallel for reduction(* : temp_res)
-    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
-      temp_res *= input_[i];
+bool nesterov_a_test_task_omp::TestTaskOpenMP::RunImpl() {
+#pragma omp parallel
+{
+  // Multiply matrices
+  for (int i = 0; i < rc_size_; ++i) {
+    for (int j = 0; j < rc_size_; ++j) {
+      for (int k = 0; k < rc_size_; ++k) {
+        output_[(i * rc_size_) + j] += input_[(i * rc_size_) + k] * input_[(k * rc_size_) + j];
+      }
     }
   }
-  res_ = temp_res;
-  double finish = omp_get_wtime();
-  std::cout << "How measure time in OpenMP: " << finish - start << '\n';
+}
   return true;
 }
 
-bool nesterov_a_test_task_omp::TestOMPTaskParallel::PostProcessingImpl() {
-  reinterpret_cast<int*>(task_data->outputs[0])[0] = res_;
+bool nesterov_a_test_task_omp::TestTaskOpenMP::PostProcessingImpl() {
+  for (size_t i = 0; i < output_.size(); i++) {
+    reinterpret_cast<int *>(task_data->outputs[0])[i] = output_[i];
+  }
   return true;
 }

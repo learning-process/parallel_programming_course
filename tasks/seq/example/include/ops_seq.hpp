@@ -17,7 +17,7 @@ class TestTaskSequential : public ppc::core::Task {
 
  private:
   std::vector<int> input_, output_;
-  int rc_size{};
+  int rc_size_{};
 };
 
 }  // namespace nesterov_a_test_task_seq

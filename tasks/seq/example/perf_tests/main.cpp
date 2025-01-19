@@ -5,7 +5,7 @@
 #include "core/perf/include/perf.hpp"
 #include "seq/example/include/ops_seq.hpp"
 
-TEST(sequential_example_perf_test, test_pipeline_run) {
+TEST(nesterov_a_test_task_seq, test_pipeline_run) {
   const int count = 500;
 
   // Create data
@@ -46,7 +46,7 @@ TEST(sequential_example_perf_test, test_pipeline_run) {
   ASSERT_EQ(in, out);
 }
 
-TEST(sequential_example_perf_test, test_task_run) {
+TEST(nesterov_a_test_task_seq, test_task_run) {
   const int count = 500;
 
   // Create data
