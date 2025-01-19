@@ -5,12 +5,16 @@
 #include "core/perf/include/perf.hpp"
 #include "stl/example/include/ops_stl.hpp"
 
-TEST(stl_example_perf_test, test_pipeline_run) {
-  const int count = 100;
-
+TEST(nesterov_a_test_task_stl, test_pipeline_run) {
+  const int count = 1000;
+  
   // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::vector<int> in(count * count, 0);
+  std::vector<int> out(count * count, 0);
+
+  for(size_t i = 0; i < count; i++) {
+    in[(i * count) + i] = 1;
+  }
 
   // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
@@ -20,7 +24,7 @@ TEST(stl_example_perf_test, test_pipeline_run) {
   task_data_seq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto test_task_stl = std::make_shared<nesterov_a_test_task_stl::TestSTLTaskSequential>(task_data_seq, "+");
+  auto test_task_sequential = std::make_shared<nesterov_a_test_task_stl::TestTaskSTL>(task_data_seq);
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
@@ -36,18 +40,22 @@ TEST(stl_example_perf_test, test_pipeline_run) {
   auto perf_results = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_stl);
+  auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_sequential);
   perf_analyzer->PipelineRun(perf_attr, perf_results);
   ppc::core::Perf::PrintPerfStatistic(perf_results);
-  ASSERT_EQ(count, out[0]);
+  ASSERT_EQ(in, out);
 }
 
-TEST(stl_example_perf_test, test_task_run) {
-  const int count = 100;
+TEST(nesterov_a_test_task_stl, test_task_run) {
+  const int count = 1000;
 
   // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::vector<int> in(count * count, 0);
+  std::vector<int> out(count * count, 0);
+
+  for(size_t i = 0; i < count; i++) {
+    in[(i * count) + i] = 1;
+  }
 
   // Create task_data
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
@@ -57,7 +65,7 @@ TEST(stl_example_perf_test, test_task_run) {
   task_data_seq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto test_task_stl = std::make_shared<nesterov_a_test_task_stl::TestSTLTaskSequential>(task_data_seq, "+");
+  auto test_task_sequential = std::make_shared<nesterov_a_test_task_stl::TestTaskSTL>(task_data_seq);
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
@@ -73,8 +81,8 @@ TEST(stl_example_perf_test, test_task_run) {
   auto perf_results = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_stl);
+  auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_sequential);
   perf_analyzer->TaskRun(perf_attr, perf_results);
   ppc::core::Perf::PrintPerfStatistic(perf_results);
-  ASSERT_EQ(count, out[0]);
+  ASSERT_EQ(in, out);
 }

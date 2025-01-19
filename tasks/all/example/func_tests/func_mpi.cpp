@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "all/example/include/ops_mpi.hpp"
+#include "core/util/util.hpp"
 
 namespace {
 std::vector<int> GetRandomVector(int sz) {
@@ -247,7 +248,7 @@ TEST(Parallel_Operations_MPI, Test_Max_2_File) {
   auto task_data_par = std::make_shared<ppc::core::TaskData>();
 
   if (world.rank() == 0) {
-    cv::Mat img = cv::imread(ppc::core::GetAbsolutePath("all/example/data/pic_mpi.jpg"));
+    cv::Mat img = cv::imread(ppc::util::GetAbsolutePath("all/example/data/pic_mpi.jpg"));
     EXPECT_EQ(img.rows, img.cols);
     const int count_size_vector = img.rows + img.cols;
 

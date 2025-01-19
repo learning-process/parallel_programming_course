@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "all/example/include/ops_omp.hpp"
+#include "core/util/util.hpp"
 
 namespace {
 std::vector<int> GetRandomVector(int sz) {
@@ -210,7 +211,7 @@ TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
 }
 
 TEST(Parallel_Operations_OpenMP, Test_Mult_2_File) {
-  cv::Mat img = cv::imread(ppc::core::GetAbsolutePath("all/example/data/pic_omp.jpg"));
+  cv::Mat img = cv::imread(ppc::util::GetAbsolutePath("all/example/data/pic_omp.jpg"));
   EXPECT_EQ(static_cast<int>(sqrt(img.rows) * sqrt(img.rows)), img.cols);
   const int count_size_vector = img.rows + img.cols;
   std::vector<int> vec = GetRandomVector(count_size_vector);

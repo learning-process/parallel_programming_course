@@ -4,6 +4,7 @@
 #include <random>
 #include <vector>
 
+#include "core/util/util.hpp"
 #include "tbb/example/include/ops_tbb.hpp"
 
 namespace {
@@ -210,7 +211,7 @@ TEST(Parallel_Operations_TBB, Test_Mult_2) {
 
 TEST(Parallel_Operations_TBB, Test_Mult_2_File) {
   std::string line;
-  std::ifstream test_file(ppc::core::GetAbsolutePath("tbb/example/data/test.txt"));
+  std::ifstream test_file(ppc::util::GetAbsolutePath("tbb/example/data/test.txt"));
   if (test_file.is_open()) {
     getline(test_file, line);
   }

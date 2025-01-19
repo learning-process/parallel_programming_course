@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "all/example/include/ops_tbb.hpp"
+#include "core/util/util.hpp"
 
 namespace {
 std::vector<int> GetRandomVector(int sz) {
@@ -209,7 +210,7 @@ TEST(Parallel_Operations_TBB, Test_Mult_2) {
 }
 
 TEST(Parallel_Operations_TBB, Test_Mult_2_File) {
-  cv::Mat img = cv::imread(ppc::core::GetAbsolutePath("all/example/data/pic_tbb.jpg"));
+  cv::Mat img = cv::imread(ppc::util::GetAbsolutePath("all/example/data/pic_tbb.jpg"));
   EXPECT_EQ(static_cast<int>(sqrt(img.rows / 2) * sqrt(img.rows / 2)), img.cols);
   const int count_size_vector = img.rows + img.cols;
 

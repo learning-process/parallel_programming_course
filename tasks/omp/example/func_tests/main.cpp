@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 
+#include "core/util/util.hpp"
 #include "omp/example/include/ops_omp.hpp"
 
 TEST(nesterov_a_test_task_omp, test_matmul_50) {
@@ -34,7 +35,7 @@ TEST(nesterov_a_test_task_omp, test_matmul_50) {
 
 TEST(nesterov_a_test_task_omp, test_matmul_100_from_file) {
   std::string line;
-  std::ifstream test_file(ppc::core::GetAbsolutePath("omp/example/data/test.txt"));
+  std::ifstream test_file(ppc::util::GetAbsolutePath("omp/example/data/test.txt"));
   if (test_file.is_open()) {
     getline(test_file, line);
   }

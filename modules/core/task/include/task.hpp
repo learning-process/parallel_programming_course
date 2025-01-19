@@ -1,5 +1,4 @@
-#ifndef MODULES_CORE_INCLUDE_TASK_HPP_
-#define MODULES_CORE_INCLUDE_TASK_HPP_
+#pragma once
 
 #include <chrono>
 #include <cstdint>
@@ -70,11 +69,4 @@ class Task {
   std::chrono::high_resolution_clock::time_point tmp_time_point_;
 };
 
-inline std::string GetAbsolutePath(const std::string &relative_path) {
-  const std::filesystem::path path = std::string(PPC_PATH_TO_PROJECT) + "/tasks/" + relative_path;
-  return path.string();
-}
-
 }  // namespace ppc::core
-
-#endif  // MODULES_CORE_INCLUDE_TASK_HPP_

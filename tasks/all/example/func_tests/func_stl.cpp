@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "all/example/include/ops_stl.hpp"
+#include "core/util/util.hpp"
 
 namespace {
 std::vector<int> GetRandomVector(int sz) {
@@ -215,7 +216,7 @@ TEST(Parallel_Operations_STL_Threads, Test_Diff_2) {
 }
 
 TEST(Parallel_Operations_STL_Threads, Test_Diff_2_File) {
-  cv::Mat img = cv::imread(ppc::core::GetAbsolutePath("all/example/data/pic_stl.jpg"));
+  cv::Mat img = cv::imread(ppc::util::GetAbsolutePath("all/example/data/pic_stl.jpg"));
   EXPECT_EQ(static_cast<int>(sqrt(img.cols / 2) * sqrt(img.cols / 2)), img.rows);
   const int count_size_vector = static_cast<int>(sqrt(sqrt(img.rows)));
 
