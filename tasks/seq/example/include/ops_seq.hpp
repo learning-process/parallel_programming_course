@@ -16,7 +16,8 @@ class TestTaskSequential : public ppc::core::Task {
   bool PostProcessingImpl() override;
 
  private:
-  int input_{}, res_{};
+  std::vector<int> input_, output_;
+  int rc_size{};
 };
 
 }  // namespace nesterov_a_test_task_seq
