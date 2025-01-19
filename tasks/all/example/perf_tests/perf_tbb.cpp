@@ -4,8 +4,8 @@
 #include <boost/mpi/communicator.hpp>
 #include <vector>
 
-#include "core/perf/include/perf.hpp"
 #include "all/example/include/ops_tbb.hpp"
+#include "core/perf/include/perf.hpp"
 
 TEST(all_example_perf_test, test_task_run) {
   const int count = 100;
