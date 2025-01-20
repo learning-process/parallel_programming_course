@@ -1,0 +1,133 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Learning Process
+# This file is distributed under the same license as the Parallel
+# Programming Course package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Parallel Programming Course \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-20 23:19+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../user_guide/submit_work.rst:2
+msgid "How to submit your work"
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:4
+msgid ""
+"There are ``all``, ``mpi``, ``omp``, ``seq``, ``stl``, ``tbb`` folders in"
+" the ``tasks`` directory. Move to a folder of your task. Create a "
+"directory named ``<last name>_<first letter of name>_<short task name>``."
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:6
+msgid ""
+"Example: ``seq/nesterov_a_vector_sum``. Please name all tasks **with the "
+"same** name directory. If the ``seq`` task is named "
+"``seq/nesterov_a_vector_sum``, then the ``omp`` task must be named "
+"``omp/nesterov_a_vector_sum``."
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:8
+msgid ""
+"Navigate into the newly created folder and begin your work on the task. "
+"The folder must contain only 4 directories with files:"
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:10
+msgid ""
+"``data``       - Directory with own data files for functional testing of "
+"the task."
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:11
+msgid ""
+"``func_tests`` - Directory with Google tests for functional testing of "
+"the task."
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:12
+msgid "``include``    - Directory for header files with function prototypes."
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:13
+msgid ""
+"``perf_tests`` - Directory with Google tests for performance testing. The"
+" number of tests must be 2: ``run_task`` and ``run_pipeline``."
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:14
+msgid ""
+"``src``        - Directory with source files containing the function "
+"implementations."
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:16
+msgid "There must be 10 executable files for running:"
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:18
+msgid ""
+"``<all, mpi, omp, seq, stl, tbb>_<func, perf>_tests``. For example, "
+"``omp_perf_tests`` - an executable file for performance tests of OpenMP "
+"practice tasks."
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:20
+msgid ""
+"All prototypes and classes in the ``include`` directory must be "
+"namespace-escaped. Name your namespace as follows:"
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:36
+msgid "Name your group of tests and individual test cases as follows:"
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:38
+msgid "For functional tests (for maximum coverage):"
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:50
+msgid ""
+"For performance tests (only 2 tests - ``pipeline`` and ``task`` - no more"
+" no less):"
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:65
+msgid "Name your pull request as follows:"
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:67
+msgid "For tasks:"
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:74
+msgid "Provide the full task definition in the pull request's description."
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:76
+msgid "Example pull request can be found in the repository's pull requests."
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:78
+msgid ""
+"Work on your forked repository. Keep your work on a separate branch (not "
+"on ``master``)!!! Name your branch the same as your task's folder. To "
+"create a branch, run:"
+msgstr ""
+
+#: ../../user_guide/submit_work.rst:84
+msgid "**Failing to follow the rules will result in a red project build.**"
+msgstr ""
+
