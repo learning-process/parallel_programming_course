@@ -1,2 +1,2 @@
-numpy==2.2.1
+numpy==2.2.2
 XlsxWriter==3.2.0
