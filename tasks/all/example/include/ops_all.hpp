@@ -1,20 +1,18 @@
 #pragma once
 
-#include <gtest/gtest.h>
+#include <oneapi/tbb.h>
 
 #include <boost/mpi/collectives.hpp>
 #include <boost/mpi/communicator.hpp>
-#include <memory>
-#include <utility>
 #include <vector>
 
 #include "core/task/include/task.hpp"
 
-namespace nesterov_a_test_task_mpi {
+namespace nesterov_a_test_task_all {
 
-class TestTaskMPI : public ppc::core::Task {
+class TestTaskALL : public ppc::core::Task {
  public:
-  explicit TestTaskMPI(ppc::core::TaskDataPtr task_data) : Task(std::move(task_data)) {}
+  explicit TestTaskALL(ppc::core::TaskDataPtr task_data) : Task(std::move(task_data)) {}
   bool PreProcessingImpl() override;
   bool ValidationImpl() override;
   bool RunImpl() override;
@@ -26,4 +24,4 @@ class TestTaskMPI : public ppc::core::Task {
   boost::mpi::communicator world_;
 };
 
-}  // namespace nesterov_a_test_task_mpi
+}  // namespace nesterov_a_test_task_all

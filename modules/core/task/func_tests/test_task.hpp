@@ -1,9 +1,5 @@
-#ifndef MODULES_CORE_TESTS_TEST_TASK_HPP_
-#define MODULES_CORE_TESTS_TEST_TASK_HPP_
+#pragma once
 
-#include <gtest/gtest.h>
-
-#include <memory>
 #include <vector>
 
 #include "core/task/include/task.hpp"
@@ -13,7 +9,7 @@ namespace ppc::test::task {
 template <class T>
 class TestTask : public ppc::core::Task {
  public:
-  explicit TestTask(ppc::core::TaskDataPtr task_data) : Task(task_data) {}
+  explicit TestTask(const ppc::core::TaskDataPtr &task_data) : Task(task_data) {}
   bool PreProcessingImpl() override {
     input_ = reinterpret_cast<T *>(task_data->inputs[0]);
     output_ = reinterpret_cast<T *>(task_data->outputs[0]);
@@ -38,5 +34,3 @@ class TestTask : public ppc::core::Task {
 };
 
 }  // namespace ppc::test::task
-
-#endif  // MODULES_CORE_TESTS_TEST_TASK_HPP_

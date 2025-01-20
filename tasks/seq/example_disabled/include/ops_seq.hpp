@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <vector>
 
 #include "core/task/include/task.hpp"
@@ -16,7 +15,8 @@ class TestTaskSequential : public ppc::core::Task {
   bool PostProcessingImpl() override;
 
  private:
-  int input_{}, res_{};
+  std::vector<int> input_, output_;
+  int rc_size_{};
 };
 
 }  // namespace nesterov_a_test_task_seq

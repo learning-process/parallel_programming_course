@@ -1,10 +1,9 @@
-#include "tbb/example/include/ops_tbb.hpp"
-
-#include <tbb/tbb.h>
+#include "all/example/include/ops_all.hpp"
 
 #include <cmath>
-#include <core/util/util.hpp>
-#include <vector>
+#include <thread>
+
+#include "core/util/util.hpp"
 
 namespace {
 void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
@@ -19,7 +18,7 @@ void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_v
 }
 }  // namespace
 
-bool nesterov_a_test_task_tbb::TestTaskTBB::PreProcessingImpl() {
+bool nesterov_a_test_task_all::TestTaskALL::PreProcessingImpl() {
   // Init value for input and output
   unsigned int input_size = task_data->inputs_count[0];
   auto *in_ptr = reinterpret_cast<int *>(task_data->inputs[0]);
@@ -32,24 +31,41 @@ bool nesterov_a_test_task_tbb::TestTaskTBB::PreProcessingImpl() {
   return true;
 }
 
-bool nesterov_a_test_task_tbb::TestTaskTBB::ValidationImpl() {
+bool nesterov_a_test_task_all::TestTaskALL::ValidationImpl() {
   // Check equality of counts elements
   return task_data->inputs_count[0] == task_data->outputs_count[0];
 }
 
-bool nesterov_a_test_task_tbb::TestTaskTBB::RunImpl() {
-  oneapi::tbb::task_arena arena(1);
-  arena.execute([&] {
-    tbb::task_group tg;
-    for (int thr = 0; thr < ppc::util::GetPPCNumThreads(); ++thr) {
-      tg.run([&] { MatMul(input_, rc_size_, output_); });
+bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
+  if (world_.rank() == 0) {
+#pragma omp parallel default(none)
+    {
+#pragma omp critical
+      { MatMul(input_, rc_size_, output_); }
     }
-    tg.wait();
-  });
+  } else {
+    oneapi::tbb::task_arena arena(1);
+    arena.execute([&] {
+      tbb::task_group tg;
+      for (int i = 0; i < ppc::util::GetPPCNumThreads(); ++i) {
+        tg.run([&] { MatMul(input_, rc_size_, output_); });
+      }
+      tg.wait();
+    });
+  }
+
+  const int num_threads = ppc::util::GetPPCNumThreads();
+  std::vector<std::thread> threads(num_threads);
+  for (int i = 0; i < num_threads; i++) {
+    threads[i] = std::thread(MatMul, std::cref(input_), rc_size_, std::ref(output_));
+    threads[i].join();
+  }
+
+  world_.barrier();
   return true;
 }
 
-bool nesterov_a_test_task_tbb::TestTaskTBB::PostProcessingImpl() {
+bool nesterov_a_test_task_all::TestTaskALL::PostProcessingImpl() {
   for (size_t i = 0; i < output_.size(); i++) {
     reinterpret_cast<int *>(task_data->outputs[0])[i] = output_[i];
   }
