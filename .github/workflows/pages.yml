@@ -24,6 +24,12 @@ jobs:
       working-directory: ./docs
       run: |
         python3 -m pip install -r requirements.txt
+    - name: Build i18n
+      working-directory: ./docs
+      run: |
+        make gettext
+        sphinx-build -b gettext . _build/gettext
+        sphinx-intl update -p _build/gettext -l en -l ru
     - name: Build documentation
       working-directory: ./docs
       run: |

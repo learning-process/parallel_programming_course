@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Learning Process
+# This file is distributed under the same license as the Parallel
+# Programming Course package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Parallel Programming Course \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-20 23:19+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../user_guide/environment.rst:2
+msgid "Set Up Your Environment"
+msgstr ""
+
+#: ../../user_guide/environment.rst:5
+msgid "Code Style Analysis"
+msgstr ""
+
+#: ../../user_guide/environment.rst:6
+msgid ""
+"Please follow the `Google C++ Style Guide "
+"<https://google.github.io/styleguide/cppguide.html>`_."
+msgstr ""
+
+#: ../../user_guide/environment.rst:8
+msgid ""
+"Code style is checked using the `clang-format "
+"<https://clang.llvm.org/docs/ClangFormat.html>`_ tool."
+msgstr ""
+
+#: ../../user_guide/environment.rst:11
+msgid "Parallel Programming Technologies"
+msgstr ""
+
+#: ../../user_guide/environment.rst:14
+msgid "``MPI``"
+msgstr ""
+
+#: ../../user_guide/environment.rst:15
+msgid "**Windows (MSVC)**:"
+msgstr ""
+
+#: ../../user_guide/environment.rst:17
+msgid ""
+"`Installers link <https://www.microsoft.com/en-"
+"us/download/details.aspx?id=105289>`_. You have to install "
+"``msmpisdk.msi`` and ``msmpisetup.exe``."
+msgstr ""
+
+#: ../../user_guide/environment.rst:19 ../../user_guide/environment.rst:35
+msgid "**Linux (gcc and clang)**:"
+msgstr ""
+
+#: ../../user_guide/environment.rst:25
+msgid "**MacOS (apple clang)**:"
+msgstr ""
+
+#: ../../user_guide/environment.rst:32
+msgid "``OpenMP``"
+msgstr ""
+
+#: ../../user_guide/environment.rst:33
+msgid ""
+"``OpenMP`` is included in ``gcc`` and ``msvc``, but some components "
+"should be installed additionally:"
+msgstr ""
+
+#: ../../user_guide/environment.rst:41
+msgid "**MacOS (llvm)**:"
+msgstr ""
+
+#: ../../user_guide/environment.rst:49
+msgid "``TBB``"
+msgstr ""
+
+#: ../../user_guide/environment.rst:50
+msgid ""
+"**Windows (MSVC)**, **Linux (gcc and clang)**, **MacOS (apple clang)**: "
+"Build as 3rdparty in the current project."
+msgstr ""
+
+#: ../../user_guide/environment.rst:54
+msgid "``std::thread``"
+msgstr ""
+
+#: ../../user_guide/environment.rst:55
+msgid "``std::thread`` is included in STL libraries."
+msgstr ""
+

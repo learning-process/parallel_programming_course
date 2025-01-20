@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/learning-process/parallel_programming_course/graph/badge.svg?token=qCOtqeFyIz)](https://codecov.io/gh/learning-process/parallel_programming_course)
 
 # Parallel Programming Course
-Welcome to the Parallel Programming Course! For more detailed documentation and resources, please visit [documentation page](https://learning-process.github.io/parallel_programming_course/).
+Welcome to the Parallel Programming Course! For more detailed documentation and resources, please visit documentation pages: [en](https://learning-process.github.io/parallel_programming_course/en/), [ru](https://learning-process.github.io/parallel_programming_course/ru/).
 
 ### Parallel programming technologies:
   The following parallel programming technologies are considered in practice:
