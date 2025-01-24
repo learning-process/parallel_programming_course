@@ -974,9 +974,8 @@ jobs:
               --xml --output ../coverage.xml \
               --html=../cov-report/index.html --html-details
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4.0.1
+      uses: codecov/codecov-action@v5.3.0
       with:
-        token: db9388ce-cf24-4840-b282-8e0070d8666f
         files: coverage.xml
     - name: Upload coverage report artifact
       uses: actions/upload-artifact@v4
