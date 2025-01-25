@@ -18,6 +18,7 @@ def parse_gha_yml(file_path):
         gha_data = yaml.safe_load(file)
     return gha_data
 
+
 def build_jobs_graph(gha_data):
     jobs = gha_data.get("jobs", {})
     dot = graphviz.Digraph()
@@ -32,8 +33,10 @@ def build_jobs_graph(gha_data):
 
     return dot
 
+
 def save_graph(dot, filename, file_format):
     dot.render(filename, format=file_format, cleanup=True)
+
 
 if __name__ == "__main__":
     gha_file_path = os.path.join(".github", "workflows", "main.yml")
