@@ -42,3 +42,12 @@ target_link_libraries(${exec_func_tests} PUBLIC ${exec_func_lib})
 
 enable_testing()
 add_test(NAME ${exec_func_tests} COMMAND ${exec_func_tests})
+
+# Installation rules
+install(TARGETS ${exec_func_lib}
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin)
+
+install(TARGETS ${exec_func_tests}
+        RUNTIME DESTINATION bin)

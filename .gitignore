@@ -12,3 +12,4 @@ sln/
 CMakeSettings.json
 .DS_Store
 .cache
+install
