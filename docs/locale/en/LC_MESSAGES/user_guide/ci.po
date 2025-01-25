@@ -1,0 +1,46 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Learning Process
+# This file is distributed under the same license as the Parallel
+# Programming Course package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Parallel Programming Course \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-25 16:54+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../user_guide/ci.rst:2
+msgid "Continuous Integration (CI)"
+msgstr ""
+
+#: ../../user_guide/ci.rst:4
+msgid ""
+"Students need to pass all the checks in the CI pipeline before their work"
+" can be considered for submission. This includes successful code "
+"checkout, build ans testing stages. Each integration is verified by an "
+"automated build and automated tests."
+msgstr ""
+
+#: ../../user_guide/ci.rst:9
+msgid "CI Pipeline"
+msgstr ""
+
+#: ../../user_guide/ci.rst:11
+msgid "The CI pipeline for this project is illustrated in the following diagram:"
+msgstr ""
+
+#: ../../user_guide/ci.rst:13
+msgid "CI Pipeline Diagram"
+msgstr ""
+
