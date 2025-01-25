@@ -663,7 +663,7 @@ jobs:
       with:
         windows_compile_environment: msvc
     - name: Setup ninja
-      uses: seanmiddleditch/gha-setup-ninja@master
+      uses: seanmiddleditch/gha-setup-ninja@v5
     - name: Setup MSVC for Ninja again
       uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
@@ -721,7 +721,7 @@ jobs:
       with:
         windows_compile_environment: msvc
     - name: Setup ninja
-      uses: seanmiddleditch/gha-setup-ninja@master
+      uses: seanmiddleditch/gha-setup-ninja@v5
     - name: Setup MSVC for Ninja again
       uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
@@ -785,7 +785,7 @@ jobs:
       with:
         vs-version: 'latest'
     - name: Setup ninja
-      uses: seanmiddleditch/gha-setup-ninja@master
+      uses: seanmiddleditch/gha-setup-ninja@v5
     - name: Setup MSVC for Ninja again
       uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
@@ -839,7 +839,7 @@ jobs:
       with:
         vs-version: 'latest'
     - name: Setup ninja
-      uses: seanmiddleditch/gha-setup-ninja@master
+      uses: seanmiddleditch/gha-setup-ninja@v5
     - name: Setup MSVC for Ninja again
       uses: ilammy/msvc-dev-cmd@v1
     - name: CMake configure
