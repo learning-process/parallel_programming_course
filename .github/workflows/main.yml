@@ -52,7 +52,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-          key: ${{ github.job }}
+          key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
     - name: CMake configure
@@ -230,7 +230,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-          key: ${{ github.job }}
+          key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
     - name: CMake configure
@@ -310,7 +310,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-          key: ${{ github.job }}
+          key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
     - name: CMake configure
@@ -381,7 +381,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-          key: ${{ github.job }}
+          key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
     - name: CMake configure
@@ -458,7 +458,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-          key: ${{ github.job }}
+          key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
     - name: CMake configure
@@ -537,7 +537,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-          key: ${{ github.job }}
+          key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
     - name: CMake configure
@@ -609,7 +609,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-          key: ${{ github.job }}
+          key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
     - name: CMake configure
@@ -938,7 +938,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-          key: ${{ github.job }}
+          key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
     - name: CMake configure
@@ -1025,7 +1025,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-          key: ${{ github.job }}
+          key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
     - name: CMake configure
