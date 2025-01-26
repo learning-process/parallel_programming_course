@@ -169,7 +169,13 @@ foreach(TASK_TYPE ${LIST_OF_TASKS})
       target_link_libraries(${EXEC_FUNC} PUBLIC gtest gtest_main)
       enable_testing()
       add_test(NAME ${EXEC_FUNC} COMMAND ${EXEC_FUNC})
+
+      # Install the executable
+      install(TARGETS ${EXEC_FUNC} RUNTIME DESTINATION bin)
     endforeach ()
+
+    # Install the library
+    install(TARGETS ${exec_func_lib} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 
     set(LIST_OF_EXEC_TESTS "")
     set(LIB_SOURCE_FILES "")

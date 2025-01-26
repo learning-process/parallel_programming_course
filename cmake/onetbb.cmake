@@ -28,4 +28,6 @@ if( USE_TBB )
                 BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --config ${CMAKE_BUILD_TYPE} --parallel
                 INSTALL_COMMAND   "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install")
     endif()
+    install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install/"
+            DESTINATION "${CMAKE_INSTALL_PREFIX}")
 endif( USE_TBB )

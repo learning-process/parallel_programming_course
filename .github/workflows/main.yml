@@ -61,7 +61,7 @@ jobs:
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE
+        -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
       env:
         CC: gcc-14
         CXX: g++-14
@@ -76,6 +76,41 @@ jobs:
       env:
         CC: gcc-14
         CXX: g++-14
+    - name: Install project
+      run: |
+        cmake --build build --target install
+    - name: Archive installed package
+      run: |
+        tar -czvf ubuntu-gcc-install.tar.gz -C install .
+    - name: Upload installed package
+      uses: actions/upload-artifact@v4
+      with:
+        name: ubuntu-gcc-install
+        path: ubuntu-gcc-install.tar.gz
+  ubuntu-gcc-test:
+    needs:
+      - ubuntu-gcc-build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup environment
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install gcc-14 g++-14
+        sudo apt-get install ninja-build
+        sudo apt-get install mpich
+        sudo apt-get install libomp-dev
+        sudo apt-get install valgrind
+        python3 -m pip install -r requirements.txt
+    - name: Download installed package
+      uses: actions/download-artifact@v4
+      with:
+        name: ubuntu-gcc-install
+    - name: Extract installed package
+      run: |
+        mkdir -p install
+        tar -xzvf ubuntu-gcc-install.tar.gz -C install
     - name: Run func tests (MPI, num_proc=1)
       run: |
         source scripts/run_mpi.sh
@@ -116,14 +151,12 @@ jobs:
       run: source scripts/run_threads.sh
       env:
         OMP_NUM_THREADS: 4
-  ubuntu-gcc-build-extended:
+  ubuntu-gcc-test-extended:
     needs:
-      - ubuntu-gcc-build
+      - ubuntu-gcc-test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - name: Setup environment
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -134,28 +167,14 @@ jobs:
         sudo apt-get install libomp-dev
         sudo apt-get install valgrind
         python3 -m pip install -r requirements.txt
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+    - name: Download installed package
+      uses: actions/download-artifact@v4
       with:
-          key: ${{ github.job }}
-          create-symlink: true
-          max-size: 1G
-    - name: CMake configure
-      run: >
-        cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE
-      env:
-        CC: gcc-14
-        CXX: g++-14
-    - name: Build project
+        name: ubuntu-gcc-install
+    - name: Extract installed package
       run: |
-        cmake --build build --parallel
-      env:
-        CC: gcc-14
-        CXX: g++-14
+        mkdir -p install
+        tar -xzvf ubuntu-gcc-install.tar.gz -C install
     - name: Run func tests (threads, num_threads=5)
       run: source scripts/run_threads.sh
       env:
@@ -899,7 +918,7 @@ jobs:
         CLANG_BUILD: 1
   ubuntu-gcc-build-codecov:
     needs:
-      - ubuntu-gcc-build-extended
+      - ubuntu-gcc-test-extended
       - ubuntu-clang-build-extended
       - macos-clang-build-extended
     runs-on: ubuntu-latest

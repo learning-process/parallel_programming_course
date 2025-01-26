@@ -28,3 +28,5 @@ else()
             BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_opencv/build" --config ${CMAKE_BUILD_TYPE} --parallel
             INSTALL_COMMAND   "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_opencv/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_opencv/install")
 endif()
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/ppc_opencv/install/"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}")
