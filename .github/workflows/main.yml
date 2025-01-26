@@ -113,9 +113,6 @@ jobs:
       run: |
         mkdir -p install
         tar -xzvf ubuntu-gcc-install.tar.gz -C install
-    - run: ls -la .
-    - run: ls -la ./install
-    - run: ls -la ./install/bin
     - name: Run func tests (MPI, num_proc=1)
       run: |
         source scripts/run_mpi.sh
@@ -245,7 +242,7 @@ jobs:
         cmake -S . -B build 
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+        -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: clang-19
         CXX: clang++-19
@@ -325,7 +322,7 @@ jobs:
         cmake -S . -B build 
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+        -D CMAKE_BUILD_TYPE=RELEASE
       env:
         CC: clang-19
         CXX: clang++-19
@@ -397,7 +394,7 @@ jobs:
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON -DCMAKE_INSTALL_PREFIX=install
+        -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
       env:
         CC: clang-19
         CXX: clang++-19
@@ -474,7 +471,7 @@ jobs:
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON -DCMAKE_INSTALL_PREFIX=install
+        -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
       env:
         CC: clang-19
         CXX: clang++-19
@@ -553,7 +550,7 @@ jobs:
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
-        -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -DCMAKE_INSTALL_PREFIX=install
+        -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
     - name: Build project
       run: |
         cmake --build build --parallel
@@ -625,7 +622,7 @@ jobs:
         -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
         -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
         -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
-        -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -DCMAKE_INSTALL_PREFIX=install
+        -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
     - name: Build project
       run: |
         cmake --build build --parallel
