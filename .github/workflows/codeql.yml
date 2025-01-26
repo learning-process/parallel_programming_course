@@ -1,8 +1,6 @@
 name: "CodeQL"
 
 on:
-  push: # REMOVE
-  pull_request: # REMOVE
   schedule:
     - cron: '0 0 * * *'
 
