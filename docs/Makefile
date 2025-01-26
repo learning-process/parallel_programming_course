@@ -14,11 +14,13 @@ SPHINXOPTS    += -W --keep-going -n
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)/en" $(SPHINXOPTS) $(O)
 
-.PHONY: help Makefile
+.PHONY: help update Makefile
+
+update:
+	@$(SPHINXINTL) update -p _build/gettext -l en -l ru
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
-	@$(SPHINXINTL) update -p _build/gettext -l en -l ru
 	@$(SPHINXBUILD) -b html -D language=en "$(SOURCEDIR)" "$(BUILDDIR)/en" $(SPHINXOPTS) $(O)
 	@$(SPHINXBUILD) -b html -D language=ru "$(SOURCEDIR)" "$(BUILDDIR)/ru" $(SPHINXOPTS) $(O)
