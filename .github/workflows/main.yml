@@ -43,11 +43,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install gcc-14 g++-14
-        sudo apt-get install ninja-build
-        sudo apt-get install mpich
-        sudo apt-get install libomp-dev
-        sudo apt-get install valgrind
+        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
         python3 -m pip install -r requirements.txt
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
@@ -97,11 +93,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install gcc-14 g++-14
-        sudo apt-get install ninja-build
-        sudo apt-get install mpich
-        sudo apt-get install libomp-dev
-        sudo apt-get install valgrind
+        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
         python3 -m pip install -r requirements.txt
     - name: Download installed package
       uses: actions/download-artifact@v4
@@ -161,11 +153,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install gcc-14 g++-14
-        sudo apt-get install ninja-build
-        sudo apt-get install mpich
-        sudo apt-get install libomp-dev
-        sudo apt-get install valgrind
+        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
         python3 -m pip install -r requirements.txt
     - name: Download installed package
       uses: actions/download-artifact@v4
@@ -220,10 +208,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install ninja-build
-        sudo apt-get install mpich
-        sudo apt-get install python3-pip
-        sudo apt-get install valgrind
+        sudo apt-get -y install ninja-build mpich python3-pip valgrind
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh 19 all
@@ -300,10 +285,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install ninja-build
-        sudo apt-get install mpich
-        sudo apt-get install python3-pip
-        sudo apt-get install valgrind
+        sudo apt-get install -y ninja-build mpich python3-pip valgrind
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh 19 all
@@ -372,9 +354,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-bin
-        sudo apt-get install python3-pip
+        sudo apt-get install -y ninja-build mpich libmpich* mpi* openmpi-bin python3-pip
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh 19 all
@@ -449,9 +429,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install ninja-build
-        sudo apt-get install mpich libmpich* mpi* openmpi-bin
-        sudo apt-get install python3-pip
+        sudo apt-get install -y ninja-build mpich libmpich* mpi* openmpi-bin python3-pip
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh 19 all
@@ -929,12 +907,7 @@ jobs:
     - name: Setup environment
       run: |
         sudo apt-get update
-        sudo apt-get install gcc-14 g++-14
-        sudo apt-get install ninja-build
-        sudo apt-get install mpich
-        sudo apt-get install libomp-dev
-        sudo apt-get install valgrind
-        sudo apt-get install gcovr
+        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind gcovr
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -1016,11 +989,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install gcc-14 g++-14
-        sudo apt-get install ninja-build
-        sudo apt-get install mpich
-        sudo apt-get install libomp-dev
-        sudo apt-get install valgrind
+        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
         python3 -m pip install -r requirements.txt
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
