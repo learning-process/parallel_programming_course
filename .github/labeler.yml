@@ -25,5 +25,7 @@ infrastructure:
   - "scripts/**"
   - "**/CMakeLists.txt"
   - "cmake/**"
+  - "!README.md"
 docs:
   - "docs/**"
+  - "README.md"
