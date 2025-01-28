@@ -86,7 +86,7 @@ TEST(nesterov_a_test_task_all, test_task_run) {
 
   // Create Perf analyzer
   auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_all);
-  perf_analyzer->PipelineRun(perf_attr, perf_results);
+  perf_analyzer->TaskRun(perf_attr, perf_results);
   // Create Perf analyzer
   boost::mpi::communicator world;
   if (world.rank() == 0) {
