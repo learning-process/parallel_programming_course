@@ -14,14 +14,14 @@ concurrency:
 
 jobs:
   clang-format:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - uses: DoozyX/clang-format-lint-action@v0.18.2
       with:
         source: '.'
   python-lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - name: Setup environment
@@ -34,7 +34,7 @@ jobs:
     needs:
       - clang-format
       - python-lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
       with:
@@ -86,7 +86,7 @@ jobs:
   ubuntu-gcc-test:
     needs:
       - ubuntu-gcc-build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - name: Setup environment
@@ -146,7 +146,7 @@ jobs:
   ubuntu-gcc-test-extended:
     needs:
       - ubuntu-gcc-test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - name: Setup environment
@@ -199,7 +199,7 @@ jobs:
     needs:
       - clang-format
       - python-lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
       with:
@@ -247,7 +247,7 @@ jobs:
   ubuntu-clang-test:
     needs:
       - ubuntu-clang-build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - name: Setup environment
@@ -309,7 +309,7 @@ jobs:
   ubuntu-clang-test-extended:
     needs:
       - ubuntu-clang-test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - name: Setup environment
@@ -363,7 +363,7 @@ jobs:
   ubuntu-clang-sanitizer-build:
     needs:
       - ubuntu-clang-build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
       with:
@@ -413,7 +413,7 @@ jobs:
   ubuntu-clang-sanitizer-test:
     needs:
       - ubuntu-clang-sanitizer-build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - name: Setup environment
@@ -472,7 +472,7 @@ jobs:
   ubuntu-clang-sanitizer-test-extended:
     needs:
       - ubuntu-clang-sanitizer-test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - name: Setup environment
@@ -959,7 +959,7 @@ jobs:
       - ubuntu-gcc-test-extended
       - ubuntu-clang-test-extended
       - macos-clang-test-extended
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
       with:
@@ -1040,7 +1040,7 @@ jobs:
       - ubuntu-clang-sanitizer-test-extended
       - windows-clang-build-extended
       - windows-msvc-build-extended
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
       with:
