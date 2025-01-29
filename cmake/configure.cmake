@@ -24,10 +24,41 @@ if( UNIX )
     set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS}     \
         -Wall -Wextra                        \
         -Wno-unused-parameter                \
+        -Wpedantic                           \
+        -Wshadow                             \
+        -Wpointer-arith                      \
+        -Wstrict-overflow=5                  \
+        -Wcast-align                         \
+        -Wwrite-strings                      \
+        -Wswitch-enum                        \
+        -Wredundant-decls                    \
+        -Wformat=2                           \
+        -Winit-self                          \
+        -Wstrict-aliasing=2                  \
+        -Wnull-dereference                   \
+        -Wold-style-definition               \
+        -Wmissing-prototypes                 \
+        -Wmissing-declarations               \
+        -Wnoc11-extensions                   \
         -Wno-cast-function-type              \
         -Wsign-compare  -Werror")
     set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} \
         -Wall -Wextra                        \
+        -Wpedantic                           \
+        -Wshadow                             \
+        -Wpointer-arith                      \
+        -Wstrict-overflow=5                  \
+        -Wcast-align                         \
+        -Wwrite-strings                      \
+        -Wswitch-enum                        \
+        -Wredundant-decls                    \
+        -Wformat=2                           \
+        -Winit-self                          \
+        -Wstrict-aliasing=2                  \
+        -Wnull-dereference                   \
+        -Wold-style-definition               \
+        -Wmissing-prototypes                 \
+        -Wmissing-declarations               \
         -Wno-unused-parameter                \
         -Wno-cast-function-type              \
         -Wsign-compare -Werror")
