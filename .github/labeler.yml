@@ -20,12 +20,17 @@ samples:
 3rdparty:
   - "3rdparty/**"
 infrastructure:
-  - "*"
-  - "!*/**"
   - "scripts/**"
   - "**/CMakeLists.txt"
   - "cmake/**"
-  - "!README.md"
+  - ".clang-format"
+  - ".clang-tidy"
+  - ".gitignore"
+  - ".gitmodules"
+  - "codecov.yml"
+  - "setup.cfg"
+python:
+  - "**/requirements.txt"
 docs:
   - "docs/**"
   - "README.md"
