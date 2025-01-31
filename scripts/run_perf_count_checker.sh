@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if [[ -f build/ppc_opencv/install/bin/setup_vars_opencv4.sh ]]; then
+  INSTALL_BIN_DIR="build/bin"
+  source build/ppc_opencv/install/bin/setup_vars_opencv4.sh
+else
+  INSTALL_BIN_DIR="install/bin"
+  source $INSTALL_BIN_DIR/setup_vars_opencv4.sh
+fi
+
 REQUIRED_TESTS_COUNT=2
 
 get_ref_tests_number() {
@@ -31,7 +39,7 @@ run_check() {
   # shellcheck disable=SC2004
   local ref_num="$(get_ref_tests_number "tasks/$1" $(($REQUIRED_TESTS_COUNT+1)))"
   # shellcheck disable=SC2155
-  local curr_num="$(get_current_tests_number "./build/bin/$1_perf_tests")"
+  local curr_num="$(get_current_tests_number "$INSTALL_BIN_DIR/$1_perf_tests")"
 
   if [[ ref_num -ne curr_num ]]; then
     # shellcheck disable=SC2005

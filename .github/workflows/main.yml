@@ -1043,36 +1043,20 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - name: Setup environment
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
         python3 -m pip install -r requirements.txt
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+    - name: Download installed package
+      uses: actions/download-artifact@v4
       with:
-          key: ${{ runner.os }}-gcc
-          create-symlink: true
-          max-size: 1G
-    - name: CMake configure
-      run: >
-        cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE
-      env:
-        CC: gcc-14
-        CXX: g++-14
-    - name: Build project
+        name: ubuntu-gcc-install
+    - name: Extract installed package
       run: |
-        cmake --build build --parallel
-      env:
-        CC: gcc-14
-        CXX: g++-14
+        mkdir -p install
+        tar -xzvf ubuntu-gcc-install.tar.gz -C install
     - name: Run perf count checker
       run: |
         source scripts/run_perf_count_checker.sh
