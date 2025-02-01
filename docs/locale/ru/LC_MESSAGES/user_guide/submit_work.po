@@ -23,7 +23,7 @@ msgstr ""
 
 #: ../../user_guide/submit_work.rst:2
 msgid "How to submit your work"
-msgstr ""
+msgstr "Как создать, открыть и отправить на проверку Вашу работу"
 
 #: ../../user_guide/submit_work.rst:4
 msgid ""
@@ -31,6 +31,9 @@ msgid ""
 " the ``tasks`` directory. Move to a folder of your task. Create a "
 "directory named ``<last name>_<first letter of name>_<short task name>``."
 msgstr ""
+"Существуют следующие типы ``all``, ``mpi``, ``omp``, ``seq``, ``stl``, ``tbb`` поддиректорий (типов задач) в"
+" ``tasks`` директории. Ваша директория будет размещаться в директории согласно типу Вашей задачи. Создайте "
+"поддиректорию и назовите ее латинскими буквами следующим образом - ``<фамилия>_<первая буква имени>_<краткое название задачи>``."
 
 #: ../../user_guide/submit_work.rst:6
 msgid ""
@@ -39,44 +42,55 @@ msgid ""
 "``seq/nesterov_a_vector_sum``, then the ``omp`` task must be named "
 "``omp/nesterov_a_vector_sum``."
 msgstr ""
+"Пример: ``seq/nesterov_a_vector_sum``. Пожалуйста называйте все задачи **одинаково**, если у вас одна задача и несколько технологий. "
+"Если Ваша задача ``seq`` то задача будет размещена следующим образом - "
+"``seq/nesterov_a_vector_sum``, если ``omp`` то так "
+"``omp/nesterov_a_vector_sum``."
 
 #: ../../user_guide/submit_work.rst:8
 msgid ""
 "Navigate into the newly created folder and begin your work on the task. "
 "The folder must contain only 4 directories with files:"
 msgstr ""
+"Перейдите в созданную Вами, директорию и начните работу. "
+"Директория должна содержать 4 обязательных поддиректории с файлами и 1 опциональную:"
 
 #: ../../user_guide/submit_work.rst:10
 msgid ""
 "``data``       - Directory with own data files for functional testing of "
 "the task."
 msgstr ""
+"``data`` - Опциональная директория с тестовыми файлами для экспериментов и тестов"
 
 #: ../../user_guide/submit_work.rst:11
 msgid ""
 "``func_tests`` - Directory with Google tests for functional testing of "
 "the task."
 msgstr ""
+"``func_tests`` - Директория с Google тестами для функционального тестирования."
 
 #: ../../user_guide/submit_work.rst:12
 msgid "``include``    - Directory for header files with function prototypes."
-msgstr ""
+msgstr "``include``    - Директория с header файлами, в которых содержатся чаще всего прототипы ваших функций и классов."
 
 #: ../../user_guide/submit_work.rst:13
 msgid ""
 "``perf_tests`` - Directory with Google tests for performance testing. The"
 " number of tests must be 2: ``run_task`` and ``run_pipeline``."
 msgstr ""
+"``perf_tests`` - Директория с Google тестами для тестов на производительность. "
+"Должно быть всего 2 теста: ``run_task`` и ``run_pipeline``."
 
 #: ../../user_guide/submit_work.rst:14
 msgid ""
 "``src``        - Directory with source files containing the function "
 "implementations."
 msgstr ""
+"``src`` - Директория с исходными кодами, содержащая основную реализацию задач."
 
 #: ../../user_guide/submit_work.rst:16
 msgid "There must be 10 executable files for running:"
-msgstr ""
+msgstr "При максимальной конфигурации должно быть 12 исполняемых файлов для запуска:"
 
 #: ../../user_guide/submit_work.rst:18
 msgid ""
@@ -84,42 +98,46 @@ msgid ""
 "``omp_perf_tests`` - an executable file for performance tests of OpenMP "
 "practice tasks."
 msgstr ""
+"``<all, mpi, omp, seq, stl, tbb>_<func, perf>_tests``. К примеру, "
+"``omp_perf_tests`` - исполняемый файл запуска тестов на производительность, задач, связанных с технологией OpenMP."
 
 #: ../../user_guide/submit_work.rst:20
 msgid ""
 "All prototypes and classes in the ``include`` directory must be "
 "namespace-escaped. Name your namespace as follows:"
 msgstr ""
+"Все Ваши прототипы и классы в ``include`` директории должны быть экранированы с помощью namespace. "
+"Имя namespace должно соотвествовать следующему примеру:"
 
 #: ../../user_guide/submit_work.rst:36
 msgid "Name your group of tests and individual test cases as follows:"
-msgstr ""
+msgstr "Имя вашей группы тестов и одного ндивидуального тест кейса должно именоваться так:"
 
 #: ../../user_guide/submit_work.rst:38
 msgid "For functional tests (for maximum coverage):"
-msgstr ""
+msgstr "Для функциональных тестов (для максимального покрытия):"
 
 #: ../../user_guide/submit_work.rst:50
 msgid ""
 "For performance tests (only 2 tests - ``pipeline`` and ``task`` - no more"
 " no less):"
-msgstr ""
+msgstr "Для тестов на производительность (только 2 теста - ``pipeline`` and ``task`` -  ни больше, ни меньше):"
 
 #: ../../user_guide/submit_work.rst:65
 msgid "Name your pull request as follows:"
-msgstr ""
+msgstr "Имя вашего pull request должно называться следующим образом:"
 
 #: ../../user_guide/submit_work.rst:67
 msgid "For tasks:"
-msgstr ""
+msgstr "Для задач:"
 
 #: ../../user_guide/submit_work.rst:74
 msgid "Provide the full task definition in the pull request's description."
-msgstr ""
+msgstr "Приведите полную формулировку задачи в описании pull request."
 
 #: ../../user_guide/submit_work.rst:76
 msgid "Example pull request can be found in the repository's pull requests."
-msgstr ""
+msgstr "Пример pull request может быть найден в основном репозитории в разделе pull requests."
 
 #: ../../user_guide/submit_work.rst:78
 msgid ""
@@ -127,8 +145,10 @@ msgid ""
 "on ``master``)!!! Name your branch the same as your task's folder. To "
 "create a branch, run:"
 msgstr ""
+"Работайте в своем собственном fork-репозитории. Каждую задачу нужно делать на новой ветке (не "
+"на ``master`` ветке)!!! Имя ветки такое же как и имя директории Вашей задачи. "
+"Для создания ветки воспользуйтесь следующей командой:"
 
 #: ../../user_guide/submit_work.rst:84
 msgid "**Failing to follow the rules will result in a red project build.**"
-msgstr ""
-
+msgstr "**Несоблюдение правил приведет к падению сборки проекта.**"

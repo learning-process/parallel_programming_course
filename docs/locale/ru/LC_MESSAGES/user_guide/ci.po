@@ -23,7 +23,7 @@ msgstr ""
 
 #: ../../user_guide/ci.rst:2
 msgid "Continuous Integration (CI)"
-msgstr ""
+msgstr "Непрерывная интеграция"
 
 #: ../../user_guide/ci.rst:4
 msgid ""
@@ -32,16 +32,18 @@ msgid ""
 "checkout, build ans testing stages. Each integration is verified by an "
 "automated build and automated tests."
 msgstr ""
+"Студенты должны пройти все проверки в конвейере CI, прежде чем"
+" начнется проверка работы студентами и преподавателями. Это включает в себя успешную проверку кода, "
+" а также стадии построения и тестирования. Каждая интеграция проверяется автоматизированной сборкой и автоматизированными тестами."
 
 #: ../../user_guide/ci.rst:9
 msgid "CI Pipeline"
-msgstr ""
+msgstr "CI конвейер"
 
 #: ../../user_guide/ci.rst:11
 msgid "The CI pipeline for this project is illustrated in the following diagram:"
-msgstr ""
+msgstr "CI конвейер для данного проекта выражается с помощью наглядной схемы:"
 
 #: ../../user_guide/ci.rst:13
 msgid "CI Pipeline Diagram"
-msgstr ""
-
+msgstr "Схема CI конвейера"
