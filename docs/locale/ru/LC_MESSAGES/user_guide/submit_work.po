@@ -52,7 +52,7 @@ msgid ""
 "Navigate into the newly created folder and begin your work on the task. "
 "The folder must contain only 4 directories with files:"
 msgstr ""
-"Перейдите в, созданную Вами, директорию и начните работу. "
+"Перейдите в созданную Вами, директорию и начните работу. "
 "Директория должна содержать 4 обязательных поддиректории с файлами и 1 опциональную:"
 
 #: ../../user_guide/submit_work.rst:10
