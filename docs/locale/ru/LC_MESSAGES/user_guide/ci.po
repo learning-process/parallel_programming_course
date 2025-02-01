@@ -23,7 +23,7 @@ msgstr ""
 
 #: ../../user_guide/ci.rst:2
 msgid "Continuous Integration (CI)"
-msgstr "Continuous Integration (CI)"
+msgstr "Непрерывная интеграция"
 
 #: ../../user_guide/ci.rst:4
 msgid ""
