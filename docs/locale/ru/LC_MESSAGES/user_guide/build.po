@@ -78,7 +78,7 @@ msgstr ""
 
 #: ../../user_guide/build.rst:24
 msgid "*A corresponding flag can be omitted if it's not needed.*"
-msgstr "*Ряд CMake флагов может быть выключено, если они не требуются для выполнения работы.*"
+msgstr "*Ряд CMake флагов может быть выключен, если они не требуются для выполнения работы.*"
 
 #: ../../user_guide/build.rst:26
 msgid "**Build the project**:"
