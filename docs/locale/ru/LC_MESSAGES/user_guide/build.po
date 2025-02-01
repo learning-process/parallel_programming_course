@@ -31,7 +31,7 @@ msgstr "Перейдите в корень директории проекта"
 
 #: ../../user_guide/build.rst:6
 msgid "**Configure the build**: ``Makefile``, ``.sln``, etc."
-msgstr "**Конфигурация проекта**: ``Makefile``, ``.sln``, и т. д."
+msgstr "**Конфигурация проекта**: ``Makefile``, ``.sln``, и т.д."
 
 #: ../../user_guide/build.rst:13
 msgid "*Help on CMake keys:*"
