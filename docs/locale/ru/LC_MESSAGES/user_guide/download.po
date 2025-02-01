@@ -24,4 +24,3 @@ msgstr ""
 #: ../../user_guide/download.rst:2
 msgid "Download all submodules"
 msgstr "Скачивание всех внешних библиотек"
-

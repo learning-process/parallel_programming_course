@@ -110,4 +110,3 @@ msgstr "``std::thread``"
 #: ../../user_guide/environment.rst:55
 msgid "``std::thread`` is included in STL libraries."
 msgstr "``std::thread`` включена в состав STL библиотек."
-

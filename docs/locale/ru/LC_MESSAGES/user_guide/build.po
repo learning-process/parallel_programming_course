@@ -91,4 +91,3 @@ msgstr "**Проверка задач**:"
 #: ../../user_guide/build.rst:34
 msgid "Run ``<project's folder>/build/bin``"
 msgstr "Запустите ``<project's folder>/build/bin``"
-
