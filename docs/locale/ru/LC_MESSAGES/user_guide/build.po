@@ -23,69 +23,72 @@ msgstr ""
 
 #: ../../user_guide/build.rst:2
 msgid "Build the Project with ``CMake``"
-msgstr ""
+msgstr "Построение проекта с помощью фреймворка ``CMake``"
 
 #: ../../user_guide/build.rst:4
 msgid "Navigate to a source code folder."
-msgstr ""
+msgstr "Перейдите в корень директории проекта"
 
 #: ../../user_guide/build.rst:6
 msgid "**Configure the build**: ``Makefile``, ``.sln``, etc."
-msgstr ""
+msgstr "**Конфигурация проекта**: ``Makefile``, ``.sln``, и т. д."
 
 #: ../../user_guide/build.rst:13
 msgid "*Help on CMake keys:*"
-msgstr ""
+msgstr "*Важные CMake ключи для конфигурации проекта:*"
 
 #: ../../user_guide/build.rst:15
 msgid ""
 "``-D USE_SEQ=ON`` enable ``Sequential`` labs (based on OpenMP's "
 "CMakeLists.txt)."
 msgstr ""
+"``-D USE_SEQ=ON`` включает ``последовательные`` лабораторные работы."
 
 #: ../../user_guide/build.rst:16
 msgid "``-D USE_MPI=ON`` enable ``MPI`` labs."
-msgstr ""
+msgstr "``-D USE_MPI=ON`` включает ``MPI`` лабораторные работы."
 
 #: ../../user_guide/build.rst:17
 msgid "``-D USE_OMP=ON`` enable ``OpenMP`` labs."
-msgstr ""
+msgstr "``-D USE_OMP=ON`` включает ``OpenMP`` лабораторные работы."
 
 #: ../../user_guide/build.rst:18
 msgid "``-D USE_TBB=ON`` enable ``TBB`` labs."
-msgstr ""
+msgstr "``-D USE_TBB=ON`` включает ``TBB`` лабораторные работы."
 
 #: ../../user_guide/build.rst:19
 msgid "``-D USE_STL=ON`` enable ``std::thread`` labs."
-msgstr ""
+msgstr "``-D USE_STL=ON`` включает ``std::thread`` лабораторные работы."
 
 #: ../../user_guide/build.rst:20
 msgid "``-D USE_FUNC_TESTS=ON`` enable functional tests."
-msgstr ""
+msgstr "``-D USE_FUNC_TESTS=ON`` включает функциональные тесты."
 
 #: ../../user_guide/build.rst:21
 msgid "``-D USE_PERF_TESTS=ON`` enable performance tests."
-msgstr ""
+msgstr "``-D USE_PERF_TESTS=ON`` включает тесты на производительность."
 
 #: ../../user_guide/build.rst:22
 msgid ""
 "``-D CMAKE_BUILD_TYPE=Release`` required parameter for stable work of "
 "repo."
 msgstr ""
+"``-D CMAKE_BUILD_TYPE=Release`` требуемый CMake параметр для стабильной работы "
+"репозитория."
 
 #: ../../user_guide/build.rst:24
 msgid "*A corresponding flag can be omitted if it's not needed.*"
-msgstr ""
+msgstr "*Ряд CMake флагов может быть выключено, если они не требуются для выполнения работы.*"
 
 #: ../../user_guide/build.rst:26
 msgid "**Build the project**:"
-msgstr ""
+msgstr "**Построение проекта**:"
 
 #: ../../user_guide/build.rst:32
 msgid "**Check the task**:"
-msgstr ""
+msgstr "**Проверка задач**:"
 
 #: ../../user_guide/build.rst:34
 msgid "Run ``<project's folder>/build/bin``"
-msgstr ""
+msgstr "Запустите ``<project's folder>/build/bin``"
 

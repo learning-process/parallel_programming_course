@@ -23,35 +23,39 @@ msgstr ""
 
 #: ../../user_guide/environment.rst:2
 msgid "Set Up Your Environment"
-msgstr ""
+msgstr "Настройка окружения"
 
 #: ../../user_guide/environment.rst:5
 msgid "Code Style Analysis"
-msgstr ""
+msgstr "Анализ стиля кодирования"
 
 #: ../../user_guide/environment.rst:6
 msgid ""
 "Please follow the `Google C++ Style Guide "
 "<https://google.github.io/styleguide/cppguide.html>`_."
 msgstr ""
+"Пожалуйста пройдите по ссылке для изучения стиля кодирования - `Google C++ Style Guide "
+"<https://google.github.io/styleguide/cppguide.html>`_."
 
 #: ../../user_guide/environment.rst:8
 msgid ""
 "Code style is checked using the `clang-format "
 "<https://clang.llvm.org/docs/ClangFormat.html>`_ tool."
 msgstr ""
+"Стиль кодирования проверяется с помощью `clang-format "
+"<https://clang.llvm.org/docs/ClangFormat.html>`_ инструмента."
 
 #: ../../user_guide/environment.rst:11
 msgid "Parallel Programming Technologies"
-msgstr ""
+msgstr "Технологии параллельного программирования"
 
 #: ../../user_guide/environment.rst:14
 msgid "``MPI``"
-msgstr ""
+msgstr "``MPI``"
 
 #: ../../user_guide/environment.rst:15
 msgid "**Windows (MSVC)**:"
-msgstr ""
+msgstr "**Windows (MSVC)**:"
 
 #: ../../user_guide/environment.rst:17
 msgid ""
@@ -59,44 +63,51 @@ msgid ""
 "us/download/details.aspx?id=105289>`_. You have to install "
 "``msmpisdk.msi`` and ``msmpisetup.exe``."
 msgstr ""
+"`Ссылка на установку <https://www.microsoft.com/en-"
+"us/download/details.aspx?id=105289>`_. Вы должны установить 2 файла - "
+"``msmpisdk.msi`` и ``msmpisetup.exe``."
 
 #: ../../user_guide/environment.rst:19 ../../user_guide/environment.rst:35
 msgid "**Linux (gcc and clang)**:"
-msgstr ""
+msgstr "**Linux (gcc and clang)**:"
 
 #: ../../user_guide/environment.rst:25
 msgid "**MacOS (apple clang)**:"
-msgstr ""
+msgstr "**MacOS (apple clang)**:"
 
 #: ../../user_guide/environment.rst:32
 msgid "``OpenMP``"
-msgstr ""
+msgstr "``OpenMP``"
 
 #: ../../user_guide/environment.rst:33
 msgid ""
 "``OpenMP`` is included in ``gcc`` and ``msvc``, but some components "
 "should be installed additionally:"
 msgstr ""
+"``OpenMP`` в большинстве случаев включен в компиляторы ``gcc`` и ``msvc``, но ряд компонент все равно "
+"должны быть установлены дополнительно:"
 
 #: ../../user_guide/environment.rst:41
 msgid "**MacOS (llvm)**:"
-msgstr ""
+msgstr "**MacOS (llvm)**:"
 
 #: ../../user_guide/environment.rst:49
 msgid "``TBB``"
-msgstr ""
+msgstr "``TBB``"
 
 #: ../../user_guide/environment.rst:50
 msgid ""
 "**Windows (MSVC)**, **Linux (gcc and clang)**, **MacOS (apple clang)**: "
 "Build as 3rdparty in the current project."
 msgstr ""
+"**Windows (MSVC)**, **Linux (gcc and clang)**, **MacOS (apple clang)**: "
+"Данная библиотека строится как внешняя в составе текущего проекта и не требует дополнительных операций."
 
 #: ../../user_guide/environment.rst:54
 msgid "``std::thread``"
-msgstr ""
+msgstr "``std::thread``"
 
 #: ../../user_guide/environment.rst:55
 msgid "``std::thread`` is included in STL libraries."
-msgstr ""
+msgstr "``std::thread`` включена в состав STL библиотек."
 

@@ -23,15 +23,16 @@ msgstr ""
 
 #: ../../index.rst:6
 msgid "User Guide:"
-msgstr ""
+msgstr "Инструкция по выполнению работы"
 
 #: ../../index.rst:2
 msgid "Parallel Programming Course documentation"
-msgstr ""
+msgstr "Документация по курсу «Параллельное программирование»"
 
 #: ../../index.rst:4
 msgid ""
 "Below is the table of contents for the Parallel Programming Course "
 "documentation. Follow the links to learn more about each topic."
 msgstr ""
-
+"Ниже приведено оглавление документации по курсу «Параллельное программирование». "
+"Вы можете перейти по ссылкам, чтобы узнать больше о каждой теме."
