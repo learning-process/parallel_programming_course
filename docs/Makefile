@@ -16,6 +16,9 @@ help:
 
 .PHONY: help update Makefile
 
+gettext:
+	@$(SPHINXBUILD) -b gettext "$(SOURCEDIR)" _build/gettext $(SPHINXOPTS)
+
 update:
 	@$(SPHINXINTL) update -p _build/gettext -l en -l ru
 

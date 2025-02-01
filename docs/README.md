@@ -22,8 +22,10 @@ pip install -r requirements.txt
 make html
 ```
 
-5. Update the locale files:
+5. Update the documentation:
 ```bash
+make gettext
+# update documentation
 make update
 ```
 
