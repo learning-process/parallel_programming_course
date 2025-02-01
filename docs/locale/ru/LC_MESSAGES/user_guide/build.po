@@ -23,7 +23,7 @@ msgstr ""
 
 #: ../../user_guide/build.rst:2
 msgid "Build the Project with ``CMake``"
-msgstr "Построение проекта с помощью фреймворка ``CMake``"
+msgstr "Построение проекта с помощью системы сборки ``CMake``"
 
 #: ../../user_guide/build.rst:4
 msgid "Navigate to a source code folder."
