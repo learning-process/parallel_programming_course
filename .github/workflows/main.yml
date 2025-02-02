@@ -43,7 +43,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
+        sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
         python3 -m pip install -r requirements.txt
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
@@ -93,7 +93,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
+        sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
         python3 -m pip install -r requirements.txt
     - name: Download installed package
       uses: actions/download-artifact@v4
@@ -153,7 +153,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
+        sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
         python3 -m pip install -r requirements.txt
     - name: Download installed package
       uses: actions/download-artifact@v4
@@ -208,7 +208,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get -y install ninja-build mpich python3-pip valgrind
+        sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh 19 all
@@ -254,7 +254,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install -y ninja-build mpich python3-pip valgrind
+        sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh 19 all
@@ -316,7 +316,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install -y ninja-build mpich python3-pip valgrind
+        sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh 19 all
@@ -372,7 +372,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install -y ninja-build mpich libmpich* mpi* openmpi-bin python3-pip
+        sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev mpi* openmpi-bin python3-pip
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh 19 all
@@ -420,7 +420,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install -y ninja-build mpich python3-pip valgrind
+        sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh 19 all
@@ -479,7 +479,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install -y ninja-build mpich python3-pip valgrind
+        sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
         wget https://apt.llvm.org/llvm.sh
         chmod u+x llvm.sh
         sudo ./llvm.sh 19 all
@@ -967,7 +967,7 @@ jobs:
     - name: Setup environment
       run: |
         sudo apt-get update
-        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind gcovr
+        sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind gcovr
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -1047,7 +1047,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
+        sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
         python3 -m pip install -r requirements.txt
     - name: Download installed package
       uses: actions/download-artifact@v4
