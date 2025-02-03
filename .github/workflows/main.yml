@@ -10,688 +10,689 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/master' && github.event_name != 'merge_group' && !startsWith(github.ref, 'refs/heads/gh-readonly-queue') }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' && github.event_name != 'merge_group' && !startsWith(github.ref, 'refs/heads/gh-readonly-queue') }}  # yamllint disable-line
 
 jobs:
   clang-format:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-    - uses: DoozyX/clang-format-lint-action@v0.18.2
-      with:
-        source: '.'
+      - uses: actions/checkout@v4
+      - uses: DoozyX/clang-format-lint-action@v0.18.2
+        with:
+          source: '.'
   python-lint:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup environment
-      run: |
-        python3 -m pip install flake8
-    - name: Run linter
-      run: |
-        python3 -m flake8 .
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          python3 -m pip install flake8
+      - name: Run linter
+        run: |
+          python3 -m flake8 .
   ubuntu-gcc-build:
     needs:
       - clang-format
       - python-lint
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
-        python3 -m pip install -r requirements.txt
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup environment
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
+          python3 -m pip install -r requirements.txt
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
           key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
-    - name: CMake configure
-      run: >
-        cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
-      env:
-        CC: gcc-14
-        CXX: g++-14
-    - name: Archive revert list
-      uses: actions/upload-artifact@v4.3.0
-      with:
-        name: revert-list
-        path: build/revert-list.txt
-    - name: Build project
-      run: |
-        cmake --build build --parallel
-      env:
-        CC: gcc-14
-        CXX: g++-14
-    - name: Install project
-      run: |
-        cmake --build build --target install
-    - name: Archive installed package
-      run: |
-        tar -czvf ubuntu-gcc-install.tar.gz -C install .
-    - name: Upload installed package
-      uses: actions/upload-artifact@v4
-      with:
-        name: ubuntu-gcc-install
-        path: ubuntu-gcc-install.tar.gz
+      - name: CMake configure
+        run: >
+          cmake -S . -B build
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+        env:
+          CC: gcc-14
+          CXX: g++-14
+      - name: Archive revert list
+        uses: actions/upload-artifact@v4
+        with:
+          name: revert-list
+          path: build/revert-list.txt
+      - name: Build project
+        run: |
+          cmake --build build --parallel
+        env:
+          CC: gcc-14
+          CXX: g++-14
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: |
+          tar -czvf ubuntu-gcc-install.tar.gz -C install .
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-gcc-install
+          path: ubuntu-gcc-install.tar.gz
   ubuntu-gcc-test:
     needs:
       - ubuntu-gcc-build
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
-        python3 -m pip install -r requirements.txt
-    - name: Download installed package
-      uses: actions/download-artifact@v4
-      with:
-        name: ubuntu-gcc-install
-    - name: Extract installed package
-      run: |
-        mkdir -p install
-        tar -xzvf ubuntu-gcc-install.tar.gz -C install
-    - name: Run func tests (MPI, num_proc=1)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 1
-        OMP_NUM_THREADS: 3
-    - name: Run func tests (MPI, num_proc=2)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 2
-        OMP_NUM_THREADS: 2
-    - name: Run func tests (MPI, num_proc=3)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 3
-        OMP_NUM_THREADS: 1
-    - name: Run func tests (MPI, num_proc=4)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 4
-        OMP_NUM_THREADS: 1
-    - name: Run func tests (threads, num_threads=1)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 1
-    - name: Run func tests (threads, num_threads=2)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 2
-    - name: Run func tests (threads, num_threads=3)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 3
-    - name: Run func tests (threads, num_threads=4)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 4
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
+          python3 -m pip install -r requirements.txt
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-gcc-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf ubuntu-gcc-install.tar.gz -C install
+      - name: Run func tests (MPI, num_proc=1)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 1
+          OMP_NUM_THREADS: 3
+      - name: Run func tests (MPI, num_proc=2)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 2
+          OMP_NUM_THREADS: 2
+      - name: Run func tests (MPI, num_proc=3)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 3
+          OMP_NUM_THREADS: 1
+      - name: Run func tests (MPI, num_proc=4)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 4
+          OMP_NUM_THREADS: 1
+      - name: Run func tests (threads, num_threads=1)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 1
+      - name: Run func tests (threads, num_threads=2)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 2
+      - name: Run func tests (threads, num_threads=3)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 3
+      - name: Run func tests (threads, num_threads=4)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 4
   ubuntu-gcc-test-extended:
     needs:
       - ubuntu-gcc-test
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
-        python3 -m pip install -r requirements.txt
-    - name: Download installed package
-      uses: actions/download-artifact@v4
-      with:
-        name: ubuntu-gcc-install
-    - name: Extract installed package
-      run: |
-        mkdir -p install
-        tar -xzvf ubuntu-gcc-install.tar.gz -C install
-    - name: Run func tests (threads, num_threads=5)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 5
-    - name: Run func tests (threads, num_threads=6)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 6
-    - name: Run func tests (threads, num_threads=7)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 7
-    - name: Run func tests (threads, num_threads=8)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 8
-    - name: Run func tests (threads, num_threads=11)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 11
-    - name: Run func tests (threads, num_threads=13)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 13
-    - name: Run func tests (threads, num_threads=15)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 15
-    - name: Run func tests (threads, num_threads=16)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 16
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
+          python3 -m pip install -r requirements.txt
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-gcc-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf ubuntu-gcc-install.tar.gz -C install
+      - name: Run func tests (threads, num_threads=5)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 5
+      - name: Run func tests (threads, num_threads=6)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 6
+      - name: Run func tests (threads, num_threads=7)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 7
+      - name: Run func tests (threads, num_threads=8)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 8
+      - name: Run func tests (threads, num_threads=11)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 11
+      - name: Run func tests (threads, num_threads=13)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 13
+      - name: Run func tests (threads, num_threads=15)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 15
+      - name: Run func tests (threads, num_threads=16)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 16
   ubuntu-clang-build:
     needs:
       - clang-format
       - python-lint
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get -y install ninja-build mpich python3-pip valgrind
-        wget https://apt.llvm.org/llvm.sh
-        chmod u+x llvm.sh
-        sudo ./llvm.sh 19 all
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup environment
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 19 all
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
           key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
-    - name: CMake configure
-      run: >
-        cmake -S . -B build 
-        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
-      env:
-        CC: clang-19
-        CXX: clang++-19
-    - name: Build project
-      run: |
-        cmake --build build --parallel
-      env:
-        CC: clang-19
-        CXX: clang++-19
-    - name: Install project
-      run: |
-        cmake --build build --target install
-    - name: Archive installed package
-      run: |
-        tar -czvf ubuntu-clang-install.tar.gz -C install .
-    - name: Upload installed package
-      uses: actions/upload-artifact@v4
-      with:
-        name: ubuntu-clang-install
-        path: ubuntu-clang-install.tar.gz
+      - name: CMake configure
+        run: >
+          cmake -S . -B build
+          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+        env:
+          CC: clang-19
+          CXX: clang++-19
+      - name: Build project
+        run: |
+          cmake --build build --parallel
+        env:
+          CC: clang-19
+          CXX: clang++-19
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: |
+          tar -czvf ubuntu-clang-install.tar.gz -C install .
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-clang-install
+          path: ubuntu-clang-install.tar.gz
   ubuntu-clang-test:
     needs:
       - ubuntu-clang-build
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install -y ninja-build mpich python3-pip valgrind
-        wget https://apt.llvm.org/llvm.sh
-        chmod u+x llvm.sh
-        sudo ./llvm.sh 19 all
-    - name: Download installed package
-      uses: actions/download-artifact@v4
-      with:
-        name: ubuntu-clang-install
-    - name: Extract installed package
-      run: |
-        mkdir -p install
-        tar -xzvf ubuntu-clang-install.tar.gz -C install
-    - name: Run func tests (MPI, num_proc=1)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 1
-        OMP_NUM_THREADS: 3
-    - name: Run func tests (MPI, num_proc=2)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 2
-        OMP_NUM_THREADS: 2
-    - name: Run func tests (MPI, num_proc=3)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 3
-        OMP_NUM_THREADS: 1
-    - name: Run func tests (MPI, num_proc=4)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 4
-        OMP_NUM_THREADS: 1
-    - name: Run tests (threads, num_threads=1)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 1
-    - name: Run tests (threads, num_threads=2)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 2
-    - name: Run tests (threads, num_threads=3)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 3
-    - name: Run tests (threads, num_threads=4)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 4
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 19 all
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-clang-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf ubuntu-clang-install.tar.gz -C install
+      - name: Run func tests (MPI, num_proc=1)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 1
+          OMP_NUM_THREADS: 3
+      - name: Run func tests (MPI, num_proc=2)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 2
+          OMP_NUM_THREADS: 2
+      - name: Run func tests (MPI, num_proc=3)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 3
+          OMP_NUM_THREADS: 1
+      - name: Run func tests (MPI, num_proc=4)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 4
+          OMP_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=1)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=2)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 2
+      - name: Run tests (threads, num_threads=3)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 3
+      - name: Run tests (threads, num_threads=4)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 4
   ubuntu-clang-test-extended:
     needs:
       - ubuntu-clang-test
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install -y ninja-build mpich python3-pip valgrind
-        wget https://apt.llvm.org/llvm.sh
-        chmod u+x llvm.sh
-        sudo ./llvm.sh 19 all
-    - name: Download installed package
-      uses: actions/download-artifact@v4
-      with:
-        name: ubuntu-clang-install
-    - name: Extract installed package
-      run: |
-        mkdir -p install
-        tar -xzvf ubuntu-clang-install.tar.gz -C install
-    - name: Run tests (threads, num_threads=5)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 5
-    - name: Run tests (threads, num_threads=6)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 6
-    - name: Run tests (threads, num_threads=7)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 7
-    - name: Run tests (threads, num_threads=8)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 8
-    - name: Run tests (threads, num_threads=11)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 11
-    - name: Run tests (threads, num_threads=13)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 13
-    - name: Run tests (threads, num_threads=15)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 15
-    - name: Run tests (threads, num_threads=16)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 16
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 19 all
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-clang-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf ubuntu-clang-install.tar.gz -C install
+      - name: Run tests (threads, num_threads=5)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 5
+      - name: Run tests (threads, num_threads=6)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 6
+      - name: Run tests (threads, num_threads=7)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 7
+      - name: Run tests (threads, num_threads=8)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 8
+      - name: Run tests (threads, num_threads=11)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 11
+      - name: Run tests (threads, num_threads=13)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 13
+      - name: Run tests (threads, num_threads=15)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 15
+      - name: Run tests (threads, num_threads=16)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 16
   ubuntu-clang-sanitizer-build:
     needs:
       - ubuntu-clang-build
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install -y ninja-build mpich libmpich* mpi* openmpi-bin python3-pip
-        wget https://apt.llvm.org/llvm.sh
-        chmod u+x llvm.sh
-        sudo ./llvm.sh 19 all
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup environment
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev mpi* openmpi-bin python3-pip
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 19 all
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
           key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
-    - name: CMake configure
-      run: >
-        cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
-        -DCMAKE_INSTALL_PREFIX=install
-      env:
-        CC: clang-19
-        CXX: clang++-19
-    - name: Build project
-      run: |
-        cmake --build build --parallel
-      env:
-        CC: clang-19
-        CXX: clang++-19
-    - name: Install project
-      run: |
-        cmake --build build --target install
-    - name: Archive installed package
-      run: |
-        tar -czvf ubuntu-clang-sanitizer-install.tar.gz -C install .
-    - name: Upload installed package
-      uses: actions/upload-artifact@v4
-      with:
-        name: ubuntu-clang-sanitizer-install
-        path: ubuntu-clang-sanitizer-install.tar.gz
+      - name: CMake configure
+        run: >
+          cmake -S . -B build
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
+          -DCMAKE_INSTALL_PREFIX=install
+        env:
+          CC: clang-19
+          CXX: clang++-19
+      - name: Build project
+        run: |
+          cmake --build build --parallel
+        env:
+          CC: clang-19
+          CXX: clang++-19
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: |
+          tar -czvf ubuntu-clang-sanitizer-install.tar.gz -C install .
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-clang-sanitizer-install
+          path: ubuntu-clang-sanitizer-install.tar.gz
   ubuntu-clang-sanitizer-test:
     needs:
       - ubuntu-clang-sanitizer-build
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install -y ninja-build mpich python3-pip valgrind
-        wget https://apt.llvm.org/llvm.sh
-        chmod u+x llvm.sh
-        sudo ./llvm.sh 19 all
-    - name: Download installed package
-      uses: actions/download-artifact@v4
-      with:
-        name: ubuntu-clang-sanitizer-install
-    - name: Extract installed package
-      run: |
-        mkdir -p install
-        tar -xzvf ubuntu-clang-sanitizer-install.tar.gz -C install
-    - name: Run tests (MPI)
-      run: |
-        source scripts/run_mpi.sh "--oversubscribe"
-      env:
-        PROC_COUNT: 2
-        OMP_NUM_THREADS: 2
-        ASAN_RUN: 1
-        ASAN_OPTIONS: abort_on_error=1
-        UBSAN_OPTIONS: halt_on_error=1
-    - name: Run tests (threads, num_threads=1)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 1
-        ASAN_RUN: 1
-        ASAN_OPTIONS: abort_on_error=1
-        UBSAN_OPTIONS: halt_on_error=1
-    - name: Run tests (threads, num_threads=2)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 2
-        ASAN_RUN: 1
-        ASAN_OPTIONS: abort_on_error=1
-        UBSAN_OPTIONS: halt_on_error=1
-    - name: Run tests (threads, num_threads=3)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 3
-        ASAN_RUN: 1
-        ASAN_OPTIONS: abort_on_error=1
-        UBSAN_OPTIONS: halt_on_error=1
-    - name: Run tests (threads, num_threads=4)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 4
-        ASAN_RUN: 1
-        ASAN_OPTIONS: abort_on_error=1
-        UBSAN_OPTIONS: halt_on_error=1
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 19 all
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-clang-sanitizer-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf ubuntu-clang-sanitizer-install.tar.gz -C install
+      - name: Run tests (MPI)
+        run: |
+          source scripts/run_mpi.sh "--oversubscribe"
+        env:
+          PROC_COUNT: 2
+          OMP_NUM_THREADS: 2
+          ASAN_RUN: 1
+          ASAN_OPTIONS: abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1
+      - name: Run tests (threads, num_threads=1)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 1
+          ASAN_RUN: 1
+          ASAN_OPTIONS: abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1
+      - name: Run tests (threads, num_threads=2)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 2
+          ASAN_RUN: 1
+          ASAN_OPTIONS: abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1
+      - name: Run tests (threads, num_threads=3)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 3
+          ASAN_RUN: 1
+          ASAN_OPTIONS: abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1
+      - name: Run tests (threads, num_threads=4)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 4
+          ASAN_RUN: 1
+          ASAN_OPTIONS: abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1
   ubuntu-clang-sanitizer-test-extended:
     needs:
       - ubuntu-clang-sanitizer-test
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install -y ninja-build mpich python3-pip valgrind
-        wget https://apt.llvm.org/llvm.sh
-        chmod u+x llvm.sh
-        sudo ./llvm.sh 19 all
-    - name: Download installed package
-      uses: actions/download-artifact@v4
-      with:
-        name: ubuntu-clang-sanitizer-install
-    - name: Extract installed package
-      run: |
-        mkdir -p install
-        tar -xzvf ubuntu-clang-sanitizer-install.tar.gz -C install
-    - name: Run tests (threads, num_threads=5)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 5
-        ASAN_RUN: 1
-    - name: Run tests (threads, num_threads=6)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 6
-        ASAN_RUN: 1
-    - name: Run tests (threads, num_threads=7)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 7
-        ASAN_RUN: 1
-    - name: Run tests (threads, num_threads=8)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 8
-        ASAN_RUN: 1
-    - name: Run tests (threads, num_threads=11)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 11
-        ASAN_RUN: 1
-    - name: Run tests (threads, num_threads=13)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 13
-        ASAN_RUN: 1
-    - name: Run tests (threads, num_threads=15)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 15
-        ASAN_RUN: 1
-    - name: Run tests (threads, num_threads=16)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 16
-        ASAN_RUN: 1
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 19 all
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-clang-sanitizer-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf ubuntu-clang-sanitizer-install.tar.gz -C install
+      - name: Run tests (threads, num_threads=5)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 5
+          ASAN_RUN: 1
+      - name: Run tests (threads, num_threads=6)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 6
+          ASAN_RUN: 1
+      - name: Run tests (threads, num_threads=7)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 7
+          ASAN_RUN: 1
+      - name: Run tests (threads, num_threads=8)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 8
+          ASAN_RUN: 1
+      - name: Run tests (threads, num_threads=11)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 11
+          ASAN_RUN: 1
+      - name: Run tests (threads, num_threads=13)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 13
+          ASAN_RUN: 1
+      - name: Run tests (threads, num_threads=15)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 15
+          ASAN_RUN: 1
+      - name: Run tests (threads, num_threads=16)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 16
+          ASAN_RUN: 1
   macos-clang-build:
     needs:
       - clang-format
       - python-lint
     runs-on: macOS-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    - name: Setup environment
-      run: |
-        brew update-reset
-        brew install ninja mpich llvm
-        brew install libomp
-        brew link libomp --overwrite --force
-        brew install openssl
-        brew link openssl --overwrite --force
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup environment
+        run: |
+          brew update-reset
+          brew install ninja mpich llvm
+          brew install libomp
+          brew link libomp --overwrite --force
+          brew install openssl
+          brew link openssl --overwrite --force
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
           key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
-    - name: CMake configure
-      run: >
-        cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include" -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
-        -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -DCMAKE_INSTALL_PREFIX=install
-    - name: Build project
-      run: |
-        cmake --build build --parallel
-    - name: Install project
-      run: |
-        cmake --build build --target install
-    - name: Archive installed package
-      run: |
-        tar -czvf macos-clang-sanitizer-install.tar.gz -C install .
-    - name: Upload installed package
-      uses: actions/upload-artifact@v4
-      with:
-        name: macos-clang-sanitizer-install
-        path: macos-clang-sanitizer-install.tar.gz
+      - name: CMake configure
+        run: >
+          cmake -S . -B build
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+          -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
+          -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
+          -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -DCMAKE_INSTALL_PREFIX=install
+      - name: Build project
+        run: |
+          cmake --build build --parallel
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: |
+          tar -czvf macos-clang-sanitizer-install.tar.gz -C install .
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-clang-sanitizer-install
+          path: macos-clang-sanitizer-install.tar.gz
   macos-clang-test:
     needs:
       - macos-clang-build
     runs-on: macOS-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup environment
-      run: |
-        brew update-reset
-        brew install ninja mpich llvm
-        brew install libomp
-        brew link libomp --overwrite --force
-        brew install openssl
-        brew link openssl --overwrite --force
-    - name: Download installed package
-      uses: actions/download-artifact@v4
-      with:
-        name: macos-clang-sanitizer-install
-    - name: Extract installed package
-      run: |
-        mkdir -p install
-        tar -xzvf macos-clang-sanitizer-install.tar.gz -C install
-    - name: Run func tests (MPI, num_proc=1)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 1
-        OMP_NUM_THREADS: 3
-    - name: Run func tests (MPI, num_proc=2)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 2
-        OMP_NUM_THREADS: 2
-    - name: Run func tests (MPI, num_proc=3)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 3
-        OMP_NUM_THREADS: 1
-    - name: Run func tests (MPI, num_proc=4)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 4
-        OMP_NUM_THREADS: 1
-    - name: Run tests (threads, num_threads=1)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 1
-    - name: Run tests (threads, num_threads=2)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 2
-    - name: Run tests (threads, num_threads=3)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 3
-    - name: Run tests (threads, num_threads=4)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 4
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          brew update-reset
+          brew install ninja mpich llvm
+          brew install libomp
+          brew link libomp --overwrite --force
+          brew install openssl
+          brew link openssl --overwrite --force
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-clang-sanitizer-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf macos-clang-sanitizer-install.tar.gz -C install
+      - name: Run func tests (MPI, num_proc=1)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 1
+          OMP_NUM_THREADS: 3
+      - name: Run func tests (MPI, num_proc=2)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 2
+          OMP_NUM_THREADS: 2
+      - name: Run func tests (MPI, num_proc=3)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 3
+          OMP_NUM_THREADS: 1
+      - name: Run func tests (MPI, num_proc=4)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 4
+          OMP_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=1)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=2)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 2
+      - name: Run tests (threads, num_threads=3)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 3
+      - name: Run tests (threads, num_threads=4)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 4
   macos-clang-test-extended:
     needs:
       - macos-clang-test
     runs-on: macOS-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup environment
-      run: |
-        brew update-reset
-        brew install ninja mpich llvm
-        brew install libomp
-        brew link libomp --overwrite --force
-        brew install openssl
-        brew link openssl --overwrite --force
-    - name: Download installed package
-      uses: actions/download-artifact@v4
-      with:
-        name: macos-clang-sanitizer-install
-    - name: Extract installed package
-      run: |
-        mkdir -p install
-        tar -xzvf macos-clang-sanitizer-install.tar.gz -C install
-    - name: Run tests (threads, num_threads=5)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 5
-    - name: Run tests (threads, num_threads=6)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 6
-    - name: Run tests (threads, num_threads=7)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 7
-    - name: Run tests (threads, num_threads=8)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 8
-    - name: Run tests (threads, num_threads=11)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 11
-    - name: Run tests (threads, num_threads=13)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 13
-    - name: Run tests (threads, num_threads=15)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 15
-    - name: Run tests (threads, num_threads=16)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 16
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          brew update-reset
+          brew install ninja mpich llvm
+          brew install libomp
+          brew link libomp --overwrite --force
+          brew install openssl
+          brew link openssl --overwrite --force
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-clang-sanitizer-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf macos-clang-sanitizer-install.tar.gz -C install
+      - name: Run tests (threads, num_threads=5)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 5
+      - name: Run tests (threads, num_threads=6)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 6
+      - name: Run tests (threads, num_threads=7)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 7
+      - name: Run tests (threads, num_threads=8)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 8
+      - name: Run tests (threads, num_threads=11)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 11
+      - name: Run tests (threads, num_threads=13)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 13
+      - name: Run tests (threads, num_threads=15)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 15
+      - name: Run tests (threads, num_threads=16)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 16
   windows-msvc-build:
     needs:
       - clang-format
@@ -701,56 +702,56 @@ jobs:
       run:
         shell: bash
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
-      with:
-        vs-version: 'latest'
-    - name: Setup MPI
-      uses: mpi4py/setup-mpi@v1
-      with:
-        mpi: msmpi
-    - name: Download dependencies
-      run: |
-        choco install openssl --execution-timeout 6000
-    - name: Setup ccache
-      uses: Chocobo1/setup-ccache-action@v1
-      with:
-        windows_compile_environment: msvc
-    - name: Setup ninja
-      uses: seanmiddleditch/gha-setup-ninja@v5
-    - name: Setup MSVC for Ninja again
-      uses: ilammy/msvc-dev-cmd@v1
-    - name: CMake configure
-      shell: bash
-      run: >
-        cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl 
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE
-    - name: Build project
-      shell: bash
-      run: |
-        cmake --build build --config Release --parallel
-    - name: Run tests (threads, num_threads=1)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 1
-    - name: Run tests (threads, num_threads=2)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 2
-    - name: Run tests (threads, num_threads=3)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 3
-    - name: Run tests (threads, num_threads=4)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 4
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download dependencies
+        run: |
+          choco install openssl --execution-timeout 6000
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
+        with:
+          windows_compile_environment: msvc
+      - name: Setup ninja
+        uses: seanmiddleditch/gha-setup-ninja@v6
+      - name: Setup MSVC for Ninja again
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: CMake configure
+        shell: bash
+        run: >
+          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -D CMAKE_BUILD_TYPE=RELEASE
+      - name: Build project
+        shell: bash
+        run: |
+          cmake --build build --config Release --parallel
+      - name: Run tests (threads, num_threads=1)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=2)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 2
+      - name: Run tests (threads, num_threads=3)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 3
+      - name: Run tests (threads, num_threads=4)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 4
   windows-msvc-build-extended:
     needs:
       - windows-msvc-build
@@ -759,72 +760,72 @@ jobs:
       run:
         shell: bash
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
-      with:
-        vs-version: 'latest'
-    - name: Setup MPI
-      uses: mpi4py/setup-mpi@v1
-      with:
-        mpi: msmpi
-    - name: Download dependencies
-      run: |
-        choco install openssl --execution-timeout 6000
-    - name: Setup ccache
-      uses: Chocobo1/setup-ccache-action@v1
-      with:
-        windows_compile_environment: msvc
-    - name: Setup ninja
-      uses: seanmiddleditch/gha-setup-ninja@v5
-    - name: Setup MSVC for Ninja again
-      uses: ilammy/msvc-dev-cmd@v1
-    - name: CMake configure
-      shell: bash
-      run: >
-        cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl 
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE
-    - name: Build project
-      shell: bash
-      run: |
-        cmake --build build --config Release --parallel
-    - name: Run tests (threads, num_threads=5)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 5
-    - name: Run tests (threads, num_threads=6)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 6
-    - name: Run tests (threads, num_threads=7)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 7
-    - name: Run tests (threads, num_threads=8)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 8
-    - name: Run tests (threads, num_threads=11)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 11
-    - name: Run tests (threads, num_threads=13)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 13
-    - name: Run tests (threads, num_threads=15)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 15
-    - name: Run tests (threads, num_threads=16)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 16
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download dependencies
+        run: |
+          choco install openssl --execution-timeout 6000
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
+        with:
+          windows_compile_environment: msvc
+      - name: Setup ninja
+        uses: seanmiddleditch/gha-setup-ninja@v6
+      - name: Setup MSVC for Ninja again
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: CMake configure
+        shell: bash
+        run: >
+          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -D CMAKE_BUILD_TYPE=RELEASE
+      - name: Build project
+        shell: bash
+        run: |
+          cmake --build build --config Release --parallel
+      - name: Run tests (threads, num_threads=5)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 5
+      - name: Run tests (threads, num_threads=6)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 6
+      - name: Run tests (threads, num_threads=7)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 7
+      - name: Run tests (threads, num_threads=8)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 8
+      - name: Run tests (threads, num_threads=11)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 11
+      - name: Run tests (threads, num_threads=13)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 13
+      - name: Run tests (threads, num_threads=15)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 15
+      - name: Run tests (threads, num_threads=16)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 16
   windows-clang-build:
     needs:
       - clang-format
@@ -834,52 +835,52 @@ jobs:
       run:
         shell: bash
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
-      with:
-        vs-version: 'latest'
-    - name: Setup ninja
-      uses: seanmiddleditch/gha-setup-ninja@v5
-    - name: Setup MSVC for Ninja again
-      uses: ilammy/msvc-dev-cmd@v1
-    - name: CMake configure
-      run: >
-        cmake -S . -B build -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
-        -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE
-      env:
-        CC: clang-cl
-        CXX: clang-cl
-    - name: Build project
-      run: |
-        cmake --build build --config Release --parallel -v
-      env:
-        CC: clang-cl
-        CXX: clang-cl
-    - name: Run tests (threads, num_threads=1)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 1
-        CLANG_BUILD: 1
-    - name: Run tests (threads, num_threads=2)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 2
-        CLANG_BUILD: 1
-    - name: Run tests (threads, num_threads=3)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 3
-        CLANG_BUILD: 1
-    - name: Run tests (threads, num_threads=4)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 4
-        CLANG_BUILD: 1
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup ninja
+        uses: seanmiddleditch/gha-setup-ninja@v6
+      - name: Setup MSVC for Ninja again
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: CMake configure
+        run: >
+          cmake -S . -B build -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
+          -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
+          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -D CMAKE_BUILD_TYPE=RELEASE
+        env:
+          CC: clang-cl
+          CXX: clang-cl
+      - name: Build project
+        run: |
+          cmake --build build --config Release --parallel -v
+        env:
+          CC: clang-cl
+          CXX: clang-cl
+      - name: Run tests (threads, num_threads=1)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 1
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=2)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 2
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=3)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 3
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=4)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 4
+          CLANG_BUILD: 1
   windows-clang-build-extended:
     needs:
       - windows-clang-build
@@ -888,72 +889,72 @@ jobs:
       run:
         shell: bash
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
-      with:
-        vs-version: 'latest'
-    - name: Setup ninja
-      uses: seanmiddleditch/gha-setup-ninja@v5
-    - name: Setup MSVC for Ninja again
-      uses: ilammy/msvc-dev-cmd@v1
-    - name: CMake configure
-      run: >
-        cmake -S . -B build -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
-        -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE
-      env:
-        CC: clang-cl
-        CXX: clang-cl
-    - name: Build project
-      run: |
-        cmake --build build --config Release --parallel -v
-      env:
-        CC: clang-cl
-        CXX: clang-cl
-    - name: Run tests (threads, num_threads=5)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 5
-        CLANG_BUILD: 1
-    - name: Run tests (threads, num_threads=6)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 6
-        CLANG_BUILD: 1
-    - name: Run tests (threads, num_threads=7)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 7
-        CLANG_BUILD: 1
-    - name: Run tests (threads, num_threads=8)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 8
-        CLANG_BUILD: 1
-    - name: Run tests (threads, num_threads=11)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 11
-        CLANG_BUILD: 1
-    - name: Run tests (threads, num_threads=13)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 13
-        CLANG_BUILD: 1
-    - name: Run tests (threads, num_threads=15)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 15
-        CLANG_BUILD: 1
-    - name: Run tests (threads, num_threads=16)
-      run: scripts/run.bat
-      env:
-        OMP_NUM_THREADS: 16
-        CLANG_BUILD: 1
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup ninja
+        uses: seanmiddleditch/gha-setup-ninja@v6
+      - name: Setup MSVC for Ninja again
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: CMake configure
+        run: >
+          cmake -S . -B build -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
+          -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
+          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -D CMAKE_BUILD_TYPE=RELEASE
+        env:
+          CC: clang-cl
+          CXX: clang-cl
+      - name: Build project
+        run: |
+          cmake --build build --config Release --parallel -v
+        env:
+          CC: clang-cl
+          CXX: clang-cl
+      - name: Run tests (threads, num_threads=5)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 5
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=6)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 6
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=7)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 7
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=8)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 8
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=11)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 11
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=13)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 13
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=15)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 15
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=16)
+        run: scripts/run.bat
+        env:
+          OMP_NUM_THREADS: 16
+          CLANG_BUILD: 1
   ubuntu-gcc-build-codecov:
     needs:
       - ubuntu-gcc-test-extended
@@ -961,79 +962,80 @@ jobs:
       - macos-clang-test-extended
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    - name: Setup environment
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind gcovr
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y \
+            gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind gcovr
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
           key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
-    - name: CMake configure
-      run: >
-        cmake -S . -B build
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-        -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-        -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-        -D CMAKE_BUILD_TYPE=RELEASE
-        -D CMAKE_VERBOSE_MAKEFILE=ON
-        -D USE_COVERAGE=ON
-    - name: Build project
-      run: |
-        cmake --build build --parallel
-    - name: Run tests (MPI)
-      run: |
-        source scripts/run_mpi.sh
-      env:
-        PROC_COUNT: 2
-        OMP_NUM_THREADS: 2
-    - name: Run tests (threads, num_threads=1)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 1
-    - name: Run tests (threads, num_threads=2)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 2
-    - name: Run tests (threads, num_threads=3)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 3
-    - name: Run tests (threads, num_threads=4)
-      run: source scripts/run_threads.sh
-      env:
-        OMP_NUM_THREADS: 4
-    - name: Generate gcovr Coverage Data
-      run: |
-        mkdir cov-report
-        cd build
-        gcovr -r ../ \
-              --exclude '.*3rdparty/.*' \
-              --exclude '/usr/.*' \
-              --exclude '.*/perf_tests/.*' \
-              --exclude '.*/func_tests/.*' \
-              --exclude '.*/all/runner.cpp' \
-              --exclude '.*/mpi/runner.cpp' \
-              --exclude '.*/omp/runner.cpp' \
-              --exclude '.*/seq/runner.cpp' \
-              --exclude '.*/stl/runner.cpp' \
-              --exclude '.*/tbb/runner.cpp' \
-              --xml --output ../coverage.xml \
-              --html=../cov-report/index.html --html-details
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v5.3.0
-      with:
-        files: coverage.xml
-    - name: Upload coverage report artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: cov-report
-        path: 'cov-report'
+      - name: CMake configure
+        run: >
+          cmake -S . -B build
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
+          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -D CMAKE_BUILD_TYPE=RELEASE
+          -D CMAKE_VERBOSE_MAKEFILE=ON
+          -D USE_COVERAGE=ON
+      - name: Build project
+        run: |
+          cmake --build build --parallel
+      - name: Run tests (MPI)
+        run: |
+          source scripts/run_mpi.sh
+        env:
+          PROC_COUNT: 2
+          OMP_NUM_THREADS: 2
+      - name: Run tests (threads, num_threads=1)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=2)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 2
+      - name: Run tests (threads, num_threads=3)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 3
+      - name: Run tests (threads, num_threads=4)
+        run: source scripts/run_threads.sh
+        env:
+          OMP_NUM_THREADS: 4
+      - name: Generate gcovr Coverage Data
+        run: |
+          mkdir cov-report
+          cd build
+          gcovr -r ../ \
+                --exclude '.*3rdparty/.*' \
+                --exclude '/usr/.*' \
+                --exclude '.*/perf_tests/.*' \
+                --exclude '.*/func_tests/.*' \
+                --exclude '.*/all/runner.cpp' \
+                --exclude '.*/mpi/runner.cpp' \
+                --exclude '.*/omp/runner.cpp' \
+                --exclude '.*/seq/runner.cpp' \
+                --exclude '.*/stl/runner.cpp' \
+                --exclude '.*/tbb/runner.cpp' \
+                --xml --output ../coverage.xml \
+                --html=../cov-report/index.html --html-details
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5.3.1
+        with:
+          files: coverage.xml
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cov-report
+          path: 'cov-report'
   ubuntu-gcc-build-perf-stats:
     needs:
       - ubuntu-gcc-build-codecov
@@ -1042,33 +1044,33 @@ jobs:
       - windows-msvc-build-extended
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup environment
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
-        python3 -m pip install -r requirements.txt
-    - name: Download installed package
-      uses: actions/download-artifact@v4
-      with:
-        name: ubuntu-gcc-install
-    - name: Extract installed package
-      run: |
-        mkdir -p install
-        tar -xzvf ubuntu-gcc-install.tar.gz -C install
-    - name: Run perf count checker
-      run: |
-        source scripts/run_perf_count_checker.sh
-    - name: Run perf tests
-      run: |
-        source scripts/generate_perf_results.sh
-    - name: Archive results
-      uses: montudor/action-zip@v1
-      with:
-        args: zip -qq -r perf-stat.zip build/perf_stat_dir
-    - name: Upload results
-      uses: actions/upload-artifact@v4.3.0
-      with:
-        name: perf-stat
-        path: perf-stat.zip
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
+          python3 -m pip install -r requirements.txt
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-gcc-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf ubuntu-gcc-install.tar.gz -C install
+      - name: Run perf count checker
+        run: |
+          source scripts/run_perf_count_checker.sh
+      - name: Run perf tests
+        run: |
+          source scripts/generate_perf_results.sh
+      - name: Archive results
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r perf-stat.zip build/perf_stat_dir
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-stat
+          path: perf-stat.zip

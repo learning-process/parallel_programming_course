@@ -34,3 +34,5 @@ python:
 docs:
   - "docs/**"
   - "README.md"
+scoreboard:
+  - "scoreboard/**"

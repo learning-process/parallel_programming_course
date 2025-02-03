@@ -15,30 +15,30 @@ jobs:
   deploy-sphinx-to-github-pages:
     runs-on: ubuntu-24.04
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.13'
-    - name: Install dependencies
-      working-directory: ./docs
-      run: |
-        python3 -m pip install -r requirements.txt
-    - name: Build i18n
-      working-directory: ./docs
-      run: |
-        make gettext
-        sphinx-build -b gettext . _build/gettext
-        sphinx-intl update -p _build/gettext -l en -l ru
-    - name: Build documentation
-      working-directory: ./docs
-      run: |
-        make html
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./docs/_build/html
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        working-directory: ./docs
+        run: |
+          python3 -m pip install -r requirements.txt
+      - name: Build i18n
+        working-directory: ./docs
+        run: |
+          make gettext
+          sphinx-build -b gettext . _build/gettext
+          sphinx-intl update -p _build/gettext -l en -l ru
+      - name: Build documentation
+        working-directory: ./docs
+        run: |
+          make html
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs/_build/html
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
