@@ -1,0 +1,180 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Learning Process
+# This file is distributed under the same license as the Parallel
+# Programming Course package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Parallel Programming Course \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-04 00:05+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../common_information/report.rst:2
+msgid "Report"
+msgstr ""
+
+#: ../../common_information/report.rst:4
+msgid "Report’s points"
+msgstr ""
+
+#: ../../common_information/report.rst:7 ../../common_information/report.rst:15
+msgid "Presence and Completeness"
+msgstr ""
+
+#: ../../common_information/report.rst:7 ../../common_information/report.rst:31
+msgid "Text Quality"
+msgstr ""
+
+#: ../../common_information/report.rst:7 ../../common_information/report.rst:39
+msgid "Formatting Quality"
+msgstr ""
+
+#: ../../common_information/report.rst:7
+msgid "T otal"
+msgstr ""
+
+#: ../../common_information/report.rst:10
+msgid "5"
+msgstr ""
+
+#: ../../common_information/report.rst:10
+msgid "2.5"
+msgstr ""
+
+#: ../../common_information/report.rst:10
+msgid "10"
+msgstr ""
+
+#: ../../common_information/report.rst:13
+msgid "Requirements for Criteria"
+msgstr ""
+
+#: ../../common_information/report.rst:17
+msgid "Introduction (can be a short paragraph)"
+msgstr ""
+
+#: ../../common_information/report.rst:18
+msgid "Problem Statement (substantive)"
+msgstr ""
+
+#: ../../common_information/report.rst:19
+msgid "Algorithm Description"
+msgstr ""
+
+#: ../../common_information/report.rst:20
+msgid "Description of the Parallel Algorithm Scheme"
+msgstr ""
+
+#: ../../common_information/report.rst:21
+msgid ""
+"Description of the MPI, OpenMP, TBB, std::threads, all versions "
+"(depending on the semester) – part of the software implementation "
+"description"
+msgstr ""
+
+#: ../../common_information/report.rst:24
+msgid ""
+"Experimental Results (execution time and algorithm quality assessment), "
+"description of correctness verification"
+msgstr ""
+
+#: ../../common_information/report.rst:26
+msgid "Conclusions from the Results"
+msgstr ""
+
+#: ../../common_information/report.rst:27
+msgid "Conclusion"
+msgstr ""
+
+#: ../../common_information/report.rst:28
+msgid "References"
+msgstr ""
+
+#: ../../common_information/report.rst:29
+msgid "Appendix (include code, ensuring readability)"
+msgstr ""
+
+#: ../../common_information/report.rst:33
+msgid "Meaningfulness"
+msgstr ""
+
+#: ../../common_information/report.rst:34
+msgid "Coherence"
+msgstr ""
+
+#: ../../common_information/report.rst:35
+msgid "Clarity"
+msgstr ""
+
+#: ../../common_information/report.rst:36
+msgid "Quality of language (only the most obvious mistakes are considered)"
+msgstr ""
+
+#: ../../common_information/report.rst:41
+msgid "Requirements for Headings"
+msgstr ""
+
+#: ../../common_information/report.rst:42
+msgid "Requirements for Text Alignment"
+msgstr ""
+
+#: ../../common_information/report.rst:43
+msgid "Requirements for Paragraph Indentation"
+msgstr ""
+
+#: ../../common_information/report.rst:44
+msgid "Requirements for the Formatting of Figures, Graphs, and Tables"
+msgstr ""
+
+#: ../../common_information/report.rst:45
+msgid ""
+"The “Teacher” field must include the full name, position, and title of "
+"the lecturer"
+msgstr ""
+
+#: ../../common_information/report.rst:48
+msgid "Comments"
+msgstr ""
+
+#: ../../common_information/report.rst:50
+msgid "Failure to meet the requirements will result in a deduction of points."
+msgstr ""
+
+#: ../../common_information/report.rst:52
+msgid ""
+"The request will include points and comments regarding any requirement "
+"violations (if applicable)."
+msgstr ""
+
+#: ../../common_information/report.rst:54
+msgid ""
+"The report will be checked only once, and the grade will be assigned "
+"based on the submitted version according to the requirements."
+msgstr ""
+
+#: ../../common_information/report.rst:56
+msgid ""
+"The report is reviewed remotely; the entire review process takes place in"
+" the request. The report is NOT submitted in person."
+msgstr ""
+
+#: ../../common_information/report.rst:58
+msgid ""
+"If a student falls into the **blue zone** for the task, the report points"
+" will also be nullified at the end of the semester. The report will be "
+"finally accepted and merged into the master branch only after both the "
+"**in-person and remote** parts of the corresponding lab work are fully "
+"completed."
+msgstr ""
+

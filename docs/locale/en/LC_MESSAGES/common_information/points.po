@@ -1,0 +1,289 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Learning Process
+# This file is distributed under the same license as the Parallel
+# Programming Course package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Parallel Programming Course \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-04 00:05+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../common_information/points.rst:2
+msgid "Points"
+msgstr ""
+
+#: ../../common_information/points.rst:4
+msgid "For “processes” semester"
+msgstr ""
+
+#: ../../common_information/points.rst:6
+msgid "1st MPI task"
+msgstr ""
+
+#: ../../common_information/points.rst:9 ../../common_information/points.rst:17
+#: ../../common_information/points.rst:25
+#: ../../common_information/points.rst:37
+#: ../../common_information/points.rst:45
+#: ../../common_information/points.rst:53
+#: ../../common_information/points.rst:61
+#: ../../common_information/points.rst:70
+msgid "Solution"
+msgstr ""
+
+#: ../../common_information/points.rst:9 ../../common_information/points.rst:37
+msgid "Compilation"
+msgstr ""
+
+#: ../../common_information/points.rst:11
+#: ../../common_information/points.rst:19
+#: ../../common_information/points.rst:83
+#: ../../common_information/points.rst:93
+#: ../../common_information/points.rst:105
+msgid "5"
+msgstr ""
+
+#: ../../common_information/points.rst:14
+msgid "2nd MPI task"
+msgstr ""
+
+#: ../../common_information/points.rst:17
+#: ../../common_information/points.rst:25
+#: ../../common_information/points.rst:45
+#: ../../common_information/points.rst:53
+#: ../../common_information/points.rst:61
+#: ../../common_information/points.rst:70
+msgid "Performance"
+msgstr ""
+
+#: ../../common_information/points.rst:19
+msgid "15"
+msgstr ""
+
+#: ../../common_information/points.rst:22
+msgid "3rd MPI task"
+msgstr ""
+
+#: ../../common_information/points.rst:27
+msgid "20"
+msgstr ""
+
+#: ../../common_information/points.rst:27
+#: ../../common_information/points.rst:72
+#: ../../common_information/points.rst:83
+msgid "10"
+msgstr ""
+
+#: ../../common_information/points.rst:30
+msgid "**Total : 60 points**"
+msgstr ""
+
+#: ../../common_information/points.rst:32
+msgid "For “threading” semester"
+msgstr ""
+
+#: ../../common_information/points.rst:34
+msgid "Sequential version"
+msgstr ""
+
+#: ../../common_information/points.rst:39
+#: ../../common_information/points.rst:96
+#: ../../common_information/points.rst:109
+msgid "2"
+msgstr ""
+
+#: ../../common_information/points.rst:42
+msgid "OpenMP version"
+msgstr ""
+
+#: ../../common_information/points.rst:47
+#: ../../common_information/points.rst:55
+#: ../../common_information/points.rst:63
+msgid "6"
+msgstr ""
+
+#: ../../common_information/points.rst:47
+#: ../../common_information/points.rst:55
+#: ../../common_information/points.rst:95
+#: ../../common_information/points.rst:108
+msgid "3"
+msgstr ""
+
+#: ../../common_information/points.rst:50
+msgid "TBB version"
+msgstr ""
+
+#: ../../common_information/points.rst:58
+msgid "std::thread version"
+msgstr ""
+
+#: ../../common_information/points.rst:63
+#: ../../common_information/points.rst:72
+msgid "8"
+msgstr ""
+
+#: ../../common_information/points.rst:66
+msgid "“MPI + threads” version (The threading technology is chosen randomly)"
+msgstr ""
+
+#: ../../common_information/points.rst:75
+msgid "**Total : 54 points**"
+msgstr ""
+
+#: ../../common_information/points.rst:77
+msgid "Report"
+msgstr ""
+
+#: ../../common_information/points.rst:80
+msgid "Presence and Completeness"
+msgstr ""
+
+#: ../../common_information/points.rst:80
+msgid "Text Quality"
+msgstr ""
+
+#: ../../common_information/points.rst:80
+msgid "Formatting Quality"
+msgstr ""
+
+#: ../../common_information/points.rst:80
+msgid "T otal"
+msgstr ""
+
+#: ../../common_information/points.rst:83
+msgid "2.5"
+msgstr ""
+
+#: ../../common_information/points.rst:86
+msgid "Conversion of points into exam assessment or pass/fail"
+msgstr ""
+
+#: ../../common_information/points.rst:88
+msgid "For 5-point grading system"
+msgstr ""
+
+#: ../../common_information/points.rst:91
+#: ../../common_information/points.rst:102
+msgid "Points range"
+msgstr ""
+
+#: ../../common_information/points.rst:91
+#: ../../common_information/points.rst:102
+msgid "Exam Assessment"
+msgstr ""
+
+#: ../../common_information/points.rst:91
+#: ../../common_information/points.rst:102
+msgid "Student Pass"
+msgstr ""
+
+#: ../../common_information/points.rst:93
+msgid "[87, 100]"
+msgstr ""
+
+#: ../../common_information/points.rst:93
+#: ../../common_information/points.rst:94
+#: ../../common_information/points.rst:95
+#: ../../common_information/points.rst:104
+#: ../../common_information/points.rst:105
+#: ../../common_information/points.rst:106
+#: ../../common_information/points.rst:107
+#: ../../common_information/points.rst:108
+msgid "Passed"
+msgstr ""
+
+#: ../../common_information/points.rst:94
+msgid "[70, 87)"
+msgstr ""
+
+#: ../../common_information/points.rst:94
+#: ../../common_information/points.rst:107
+msgid "4"
+msgstr ""
+
+#: ../../common_information/points.rst:95
+#: ../../common_information/points.rst:108
+msgid "[50, 70)"
+msgstr ""
+
+#: ../../common_information/points.rst:96
+#: ../../common_information/points.rst:109
+msgid "< 50"
+msgstr ""
+
+#: ../../common_information/points.rst:96
+#: ../../common_information/points.rst:109
+msgid "Not Passed"
+msgstr ""
+
+#: ../../common_information/points.rst:99
+msgid "For 7-point grading system **(our current system)**"
+msgstr ""
+
+#: ../../common_information/points.rst:104
+msgid "[99, 100]"
+msgstr ""
+
+#: ../../common_information/points.rst:104
+msgid "5.5"
+msgstr ""
+
+#: ../../common_information/points.rst:105
+msgid "[92, 99)"
+msgstr ""
+
+#: ../../common_information/points.rst:106
+msgid "[82, 92)"
+msgstr ""
+
+#: ../../common_information/points.rst:106
+msgid "4.5"
+msgstr ""
+
+#: ../../common_information/points.rst:107
+msgid "[70, 82)"
+msgstr ""
+
+#: ../../common_information/points.rst:112
+msgid "Penalties:"
+msgstr ""
+
+#: ../../common_information/points.rst:114
+msgid "A deadline will be set for each version."
+msgstr ""
+
+#: ../../common_information/points.rst:115
+msgid ""
+"1 point will be deducted from the version’s score for each day of delay "
+"in submission."
+msgstr ""
+
+#: ../../common_information/points.rst:117
+msgid ""
+"The task is considered submitted when it is merged into the master/main "
+"branch."
+msgstr ""
+
+#: ../../common_information/points.rst:119
+msgid "The submission date is counted from the last working commit."
+msgstr ""
+
+#: ../../common_information/points.rst:121
+msgid "Comments:"
+msgstr ""
+
+#: ../../common_information/points.rst:123
+msgid "It is forbidden to write the report if all tasks are not completed."
+msgstr ""
+

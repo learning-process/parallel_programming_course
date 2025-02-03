@@ -1,0 +1,168 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Learning Process
+# This file is distributed under the same license as the Parallel
+# Programming Course package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Parallel Programming Course \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-04 00:05+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../common_information/introduction.rst:2
+msgid "Introduction"
+msgstr ""
+
+#: ../../common_information/introduction.rst:5
+msgid "Practice:"
+msgstr ""
+
+#: ../../common_information/introduction.rst:7
+msgid "We work online"
+msgstr ""
+
+#: ../../common_information/introduction.rst:9
+msgid "Use GitHub repository sysytem"
+msgstr ""
+
+#: ../../common_information/introduction.rst:10
+msgid "Use Pull Requests"
+msgstr ""
+
+#: ../../common_information/introduction.rst:11
+msgid "Merge into the master branch"
+msgstr ""
+
+#: ../../common_information/introduction.rst:12
+msgid "Test verification"
+msgstr ""
+
+#: ../../common_information/introduction.rst:14
+msgid "Task distribution is random for each person."
+msgstr ""
+
+#: ../../common_information/introduction.rst:15
+msgid ""
+"An example for each technology can be found in the directory: "
+"``tasks/<all/omp/tbb/seq/stl/mpi>/example``."
+msgstr ""
+
+#: ../../common_information/introduction.rst:17
+msgid ""
+"In each repository, the README.md contains a link to the build "
+"instructions (**read it in full!!!**)."
+msgstr ""
+
+#: ../../common_information/introduction.rst:19
+msgid ""
+"Additionally, each repository includes an example of a properly formatted"
+" PULL REQUEST."
+msgstr ""
+
+#: ../../common_information/introduction.rst:21
+msgid "All tasks are mandatory."
+msgstr ""
+
+#: ../../common_information/introduction.rst:22
+msgid ""
+"A task that has been merged into the master branch continues to be "
+"reviewed. If a task fails in the master, it is disabled, and a record of "
+"this is added to the score table. All disabled tasks will result in a "
+"zero score for those tasks at the end of the semester."
+msgstr ""
+
+#: ../../common_information/introduction.rst:26
+msgid "All resources for using the repository will be provided here:"
+msgstr ""
+
+#: ../../common_information/introduction.rst:28
+msgid "`GIT-1 <https://proglib.io/p/git-for-half-an-hour>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:29
+#, python-format
+msgid ""
+"`GIT-2 <https://medium.com/nuances-of-"
+"programming/%D0%B7%D0%BD%D0%B0%D0%BA%D0%BE%D0%BC%D1%81%D1%82%D0%B2%D0%BE-%D1%81-git-%D0%B8-github-%D1%80%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE-%D0%B4%D0%BB%D1%8F-%D0%BD%D0%B0%D1%87%D0%B8%D0%BD%D0%B0%D1%8E%D1%89%D0%B8%D1%85-54ea2567d76c>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:30
+msgid "`GIT-3 <https://tproger.ru/translations/git-quick-start/>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:31
+msgid "`GIT CONFILCTS <https://githowto.com/ru/resolving_conflicts>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:32
+msgid "`GTEST-1 <https://habr.com/ru/post/119090/>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:33
+msgid ""
+"`GTEST-2 "
+"<https://github.com/google/googletest/blob/master/googletest/docs/primer.md>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:34
+msgid "`GITHUB ACTIONS <https://docs.github.com/ru/actions>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:35
+msgid "`MPI <https://parallel.ru/vvv/mpi.html#p1>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:36
+msgid "`LaTeX-1 <https://www.mccme.ru/free-books/llang/newllang.pdf>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:37
+msgid ""
+"`LaTeX-2 "
+"<http://www.docs.is.ed.ac.uk/skills/documents/3722/3722-2014.pdf>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:38
+msgid "`OpenMP <https://parallel.ru/tech/tech_dev/openmp.html>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:39
+msgid "`TBB-1 <http://www.unn.ru/pages/e-library/aids/2007/12.pdf>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:40
+msgid ""
+"`TBB-2 "
+"<https://software.intel.com/content/www/ru/ru/develop/articles/tbb_async_io.html>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:41
+msgid "`std::thread-1 <https://eax.me/cpp-multithreading/>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:42
+msgid "`std::thread-2 <http://www.quizful.net/post/multithreading-cpp11>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:43
+msgid "`std::thread-3 <http://ikt.muctr.ru/images/info/2Lecture_3.pdf>`__"
+msgstr ""
+
+#: ../../common_information/introduction.rst:45
+msgid ""
+"\\* *All instructions, repositories, and tables may be updated during the"
+" learning process for better usability. Be prepared for changes and check"
+" them periodically!!!*"
+msgstr ""
+

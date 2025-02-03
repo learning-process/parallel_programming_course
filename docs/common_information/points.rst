@@ -1,0 +1,123 @@
+Points
+======
+
+- For “processes” semester
+
+  - 1st MPI task
+
+    ======== ===========
+    Solution Compilation
+    ======== ===========
+    5        5
+    ======== ===========
+
+  - 2nd MPI task
+
+    ======== ===========
+    Solution Performance
+    ======== ===========
+    15       5
+    ======== ===========
+
+  - 3rd MPI task
+
+    ======== ===========
+    Solution Performance
+    ======== ===========
+    20       10
+    ======== ===========
+
+  - **Total : 60 points**
+
+- For “threading” semester
+
+  - Sequential version
+
+    ======== ===========
+    Solution Compilation
+    ======== ===========
+    2        2
+    ======== ===========
+
+  - OpenMP version
+
+    ======== ===========
+    Solution Performance
+    ======== ===========
+    6        3
+    ======== ===========
+
+  - TBB version
+
+    ======== ===========
+    Solution Performance
+    ======== ===========
+    6        3
+    ======== ===========
+
+  - std::thread version
+
+    ======== ===========
+    Solution Performance
+    ======== ===========
+    8        6
+    ======== ===========
+
+  - “MPI + threads” version (The threading technology is chosen
+    randomly)
+
+    ======== ===========
+    Solution Performance
+    ======== ===========
+    10       8
+    ======== ===========
+
+  - **Total : 54 points**
+
+- Report
+
+  +---------------------------+-------------+--------------------+------+
+  | Presence and Completeness | Text        | Formatting Quality | T    |
+  |                           | Quality     |                    | otal |
+  +===========================+=============+====================+======+
+  | 5                         | 2.5         | 2.5                | 10   |
+  +---------------------------+-------------+--------------------+------+
+
+- Conversion of points into exam assessment or pass/fail
+
+  - For 5-point grading system
+
+    ============ =============== ============
+    Points range Exam Assessment Student Pass
+    ============ =============== ============
+    [87, 100]    5               Passed
+    [70, 87)     4               Passed
+    [50, 70)     3               Passed
+    < 50         2               Not Passed
+    ============ =============== ============
+
+  - For 7-point grading system **(our current system)**
+
+    ============ =============== ============
+    Points range Exam Assessment Student Pass
+    ============ =============== ============
+    [99, 100]    5.5             Passed
+    [92, 99)     5               Passed
+    [82, 92)     4.5             Passed
+    [70, 82)     4               Passed
+    [50, 70)     3               Passed
+    < 50         2               Not Passed
+    ============ =============== ============
+
+- Penalties:
+
+  - A deadline will be set for each version.
+  - 1 point will be deducted from the version’s score for each day of
+    delay in submission.
+  - The task is considered submitted when it is merged into the
+    master/main branch.
+  - The submission date is counted from the last working commit.
+
+- Comments:
+
+  - It is forbidden to write the report if all tasks are not completed.
