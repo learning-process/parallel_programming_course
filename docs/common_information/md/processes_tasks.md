@@ -2,35 +2,35 @@
 
 ## First task
 
-| Variant Number | Task |
-|----------------|------|
-| 1              | Sum of vector elements |
-| 2              | Calculating the average value of vector elements |
-| 3              | Maximum value of vector elements |
-| 4              | Minimum value of vector elements |
+| Variant Number | Task                                                                            |
+|----------------|---------------------------------------------------------------------------------|
+| 1              | Sum of vector elements                                                          |
+| 2              | Calculating the average value of vector elements                                |
+| 3              | Maximum value of vector elements                                                |
+| 4              | Minimum value of vector elements                                                |
 | 5              | Finding the number of sign alternations between adjacent elements of the vector |
-| 6              | Finding the number of order violations between adjacent elements of the vector |
-| 7              | Finding the most similar adjacent elements of the vector |
-| 8              | Finding the most different adjacent elements of the vector |
-| 9              | Scalar product of vectors |
-| 10             | Sum of matrix elements |
-| 11             | Sum of values by rows in the matrix |
-| 12             | Sum of values by columns in the matrix |
-| 13             | Maximum value of matrix elements |
-| 14             | Minimum value of matrix elements |
-| 15             | Finding maximum values by rows in the matrix |
-| 16             | Finding maximum values by columns in the matrix |
-| 17             | Finding minimum values by rows in the matrix |
-| 18             | Finding minimum values by columns in the matrix |
-| 19             | Integration – rectangle method |
-| 20             | Integration – trapezoidal method |
-| 21             | Integration – Monte Carlo method |
-| 22             | Counting the number of alphabetical characters in a string |
-| 23             | Counting the frequency of a character in a string |
-| 24             | Counting the number of words in a string |
-| 25             | Counting the number of sentences in a string |
-| 26             | Checking lexicographical order of two strings |
-| 27             | Counting the number of differing characters between two strings |
+| 6              | Finding the number of order violations between adjacent elements of the vector  |
+| 7              | Finding the most similar adjacent elements of the vector                        |
+| 8              | Finding the most different adjacent elements of the vector                      |
+| 9              | Scalar product of vectors                                                       |
+| 10             | Sum of matrix elements                                                          |
+| 11             | Sum of values by rows in the matrix                                             |
+| 12             | Sum of values by columns in the matrix                                          |
+| 13             | Maximum value of matrix elements                                                |
+| 14             | Minimum value of matrix elements                                                |
+| 15             | Finding maximum values by rows in the matrix                                    |
+| 16             | Finding maximum values by columns in the matrix                                 |
+| 17             | Finding minimum values by rows in the matrix                                    |
+| 18             | Finding minimum values by columns in the matrix                                 |
+| 19             | Integration – rectangle method                                                  |
+| 20             | Integration – trapezoidal method                                                |
+| 21             | Integration – Monte Carlo method                                                |
+| 22             | Counting the number of alphabetical characters in a string                      |
+| 23             | Counting the frequency of a character in a string                               |
+| 24             | Counting the number of words in a string                                        |
+| 25             | Counting the number of sentences in a string                                    |
+| 26             | Checking lexicographical order of two strings                                   |
+| 27             | Counting the number of differing characters between two strings                 |
 
 
 ## Second task
