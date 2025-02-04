@@ -1,12 +1,8 @@
 #ifndef MODULES_REFERENCE_NEAREST_NEIGHBOR_ELEMENTS_REF_TASK_HPP_
 #define MODULES_REFERENCE_NEAREST_NEIGHBOR_ELEMENTS_REF_TASK_HPP_
 
-#include <gtest/gtest.h>
-
 #include <algorithm>
-#include <functional>
 #include <memory>
-#include <numeric>
 #include <vector>
 
 #include "core/task/include/task.hpp"

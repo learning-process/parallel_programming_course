@@ -1,8 +1,13 @@
 #include <gtest/gtest.h>
 
+#include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <memory>
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
+#include "core/task/include/task.hpp"
 #include "omp/example/include/ops_omp.hpp"
 
 TEST(nesterov_a_test_task_omp, test_pipeline_run) {

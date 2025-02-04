@@ -1,11 +1,8 @@
 #ifndef MODULES_REFERENCE_MIN_OF_VECTOR_ELEMENTS_REF_TASK_HPP_
 #define MODULES_REFERENCE_MIN_OF_VECTOR_ELEMENTS_REF_TASK_HPP_
 
-#include <gtest/gtest.h>
-
 #include <algorithm>
 #include <memory>
-#include <numeric>
 #include <vector>
 
 #include "core/task/include/task.hpp"

@@ -1,6 +1,7 @@
 #include "omp/example/include/ops_omp.hpp"
 
 #include <cmath>
+#include <cstddef>
 #include <vector>
 
 bool nesterov_a_test_task_omp::TestTaskOpenMP::PreProcessingImpl() {

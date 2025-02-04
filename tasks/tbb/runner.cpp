@@ -2,6 +2,7 @@
 #include <tbb/global_control.h>
 
 #include "core/util/util.hpp"
+#include "oneapi/tbb/global_control.h"
 
 int main(int argc, char** argv) {
   // Limit the number of threads in TBB

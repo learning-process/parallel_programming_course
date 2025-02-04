@@ -2,7 +2,11 @@
 
 #include <boost/mpi/communicator.hpp>
 #include <boost/mpi/environment.hpp>
+#include <cstdio>
+#include <cstdlib>
 #include <memory>
+#include <string>
+#include <utility>
 
 class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {
  public:
