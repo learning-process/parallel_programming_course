@@ -1,8 +1,8 @@
 #ifndef MODULES_REFERENCE_VECTOR_DOT_PRODUCT_REF_TASK_HPP_
 #define MODULES_REFERENCE_VECTOR_DOT_PRODUCT_REF_TASK_HPP_
 
-#include <gtest/gtest.h>
 
+#include <cstddef>
 #include <memory>
 #include <numeric>
 #include <vector>

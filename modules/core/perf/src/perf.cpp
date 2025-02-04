@@ -2,9 +2,15 @@
 
 #include <gtest/gtest.h>
 
+#include "core/task/include/task.hpp"
+#include <cstdint>
+#include <functional>
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <sstream>
+#include <stdexcept>
+#include <string>
 
 ppc::core::Perf::Perf(const std::shared_ptr<Task>& task_ptr) { SetTask(task_ptr); }
 

@@ -2,8 +2,11 @@
 
 #include <tbb/tbb.h>
 
+#include "oneapi/tbb/task_arena.h"
+#include "oneapi/tbb/task_group.h"
 #include <cmath>
 #include <core/util/util.hpp>
+#include <cstddef>
 #include <vector>
 
 namespace {

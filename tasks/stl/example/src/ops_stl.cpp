@@ -1,7 +1,8 @@
 #include "stl/example/include/ops_stl.hpp"
 
 #include <cmath>
-#include <future>
+#include <cstddef>
+#include <functional>
 #include <thread>
 #include <vector>
 

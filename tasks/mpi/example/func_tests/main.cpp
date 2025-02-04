@@ -1,8 +1,13 @@
 #include <gtest/gtest.h>
 
+#include <cstddef>
+#include <cstdint>
 #include <fstream>
+#include <memory>
+#include <string>
 #include <vector>
 
+#include "core/task/include/task.hpp"
 #include "core/util/util.hpp"
 #include "mpi/example/include/ops_mpi.hpp"
 
