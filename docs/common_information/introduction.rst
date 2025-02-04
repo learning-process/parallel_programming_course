@@ -22,7 +22,7 @@ Practice:
 - A task that has been merged into the master branch continues to be
   reviewed. If a task fails in the master, it is disabled, and a record
   of this is added to the score table. All disabled tasks will result in
-  a zero score for those tasks at the end of the semester.
+  a zero points result for those tasks at the end of the semester.
 - All resources for using the repository will be provided here:
 
   - `Git for half an hour: A Beginner’s Guide <https://proglib.io/p/git-for-half-an-hour>`__
