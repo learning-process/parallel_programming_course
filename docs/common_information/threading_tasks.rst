@@ -66,7 +66,7 @@ Threading tasks
 +--------+-------------------------------------------------------------+
 | 22     | Convex hull construction – Graham’s scan.                   |
 +--------+-------------------------------------------------------------+
-| 23     | Convex hull construction – Jarvis’s march.                  |
+| 23     | Convex hull construction – Jarvis march.                    |
 +--------+-------------------------------------------------------------+
 | 24     | Linear image filtering (horizontal partition). Gaussian     |
 |        | kernel 3x3.                                                 |
