@@ -14,8 +14,8 @@ Practice:
 - Task distribution is random for each person.
 - An example for each technology can be found in the directory:
   ``tasks/<all/omp/tbb/seq/stl/mpi>/example``.
-- In each repository, the README.md contains a link to the build
-  instructions (**read it in full!!!**).
+- In each repository, the README.md contains a link to the course
+  documentation (**read it fully!!!**).
 - Additionally, each repository includes an example of a properly
   formatted PULL REQUEST.
 - Submission of all tasks is mandatory to pass the course.
