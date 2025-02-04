@@ -18,7 +18,7 @@ Practice:
   instructions (**read it in full!!!**).
 - Additionally, each repository includes an example of a properly
   formatted PULL REQUEST.
-- All tasks are mandatory.
+- Submission of all tasks is mandatory to pass the course.
 - A task that has been merged into the master branch continues to be
   reviewed. If a task fails in the master, it is disabled, and a record
   of this is added to the score table. All disabled tasks will result in
