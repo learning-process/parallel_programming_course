@@ -20,7 +20,7 @@ Practice:
   formatted PULL REQUEST.
 - Submission of all tasks is mandatory to pass the course.
 - A task that has been merged into the master branch continues to be
-  reviewed. If a task fails in the master, it is disabled, and a record
+  monitored. If a task fails in the master, it is disabled, and a record
   of this is added to the score table. All disabled tasks will result in
   a zero points result for those tasks at the end of the semester.
 - All resources for using the repository will be provided here:
