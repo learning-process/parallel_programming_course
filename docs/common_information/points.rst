@@ -116,7 +116,7 @@ Points
     delay in submission.
   - The task is considered submitted when it is merged into the
     master/main branch.
-  - The submission date is counted from the last working commit.
+  - The submission time is defined as the timestamp of the last commit that successfully passes the CI pipeline.
 
 - Comments:
 
