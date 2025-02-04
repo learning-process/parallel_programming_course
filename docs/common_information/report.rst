@@ -53,7 +53,7 @@ Report
     requirement violations (if applicable).
   - The report will be checked only once, and the grade will be assigned
     based on the submitted version according to the requirements.
-  - The report is reviewed remotely; the entire review process takes
+  - The report is reviewed online; the entire review process takes
     place in the request. The report is NOT submitted in person.
   - If a student falls into the **blue zone** for the task, the report
     points will also be nullified at the end of the semester. The report
