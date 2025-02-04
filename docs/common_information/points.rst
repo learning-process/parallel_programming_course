@@ -77,7 +77,7 @@ Points
 - Report
 
   +---------------------------+-------------+--------------------+------+
-  | Presence and Completeness | Text        | Formatting Quality | T    |
+  | Completeness | Text        | Formatting Quality | T    |
   |                           | Quality     |                    | otal |
   +===========================+=============+====================+======+
   | 5                         | 2.5         | 2.5                | 10   |
