@@ -13,7 +13,7 @@ Threading tasks
 |        | scheme, Fox’s algorithm.                                    |
 +--------+-------------------------------------------------------------+
 | 3      | Dense matrix multiplication. Elements of type double.       |
-|        | Strassen’s algorithm.                                       |
+|        | Strassen algorithm.                                         |
 +--------+-------------------------------------------------------------+
 | 4      | Sparse matrix multiplication. Elements of type double.      |
 |        | Matrix storage format – row format (CRS).                   |
