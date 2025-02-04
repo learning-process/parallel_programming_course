@@ -6,7 +6,7 @@ Practice:
 
 - We work online
 
-  - Use GitHub repository sysytem
+  - Use GitHub repository
   - Use Pull Requests
   - Merge into the master branch
   - Test verification
