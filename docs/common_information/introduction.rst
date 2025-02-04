@@ -1,8 +1,8 @@
 Introduction
 ============
 
-Practice:
-~~~~~~~~~
+Practice
+~~~~~~~~
 
 - We work online
 
@@ -12,17 +12,12 @@ Practice:
   - Test verification
 
 - Task distribution is random for each student.
-- An example for each technology can be found in the corresponding directory:
-  ``tasks/<all/omp/tbb/seq/stl/mpi>/example``.
-- In each repository, the README.md contains a link to the course
-  documentation (**read it fully!!!**).
-- Additionally, each repository includes an example of a properly
-  formatted PULL REQUEST.
+- An example for each technology can be found in the corresponding directory: ``tasks/<all/omp/tbb/seq/stl/mpi>/example``.
+- In each repository, the README.md contains a link to the course documentation (**read it fully!!!**).
+- Additionally, each repository includes an example of a properly formatted PULL REQUEST.
 - Submission of all tasks is mandatory to pass the course.
-- A task that has been merged into the master branch continues to be
-  monitored. If a task fails in the master, it is disabled, and a record
-  of this is added to the score table. All disabled tasks will result in
-  a zero points result for those tasks at the end of the semester.
+- A task that has been merged into the master branch continues to be monitored.
+  If a task fails in the master, it is disabled, and a record of this is added to the score table. All disabled tasks will result in a zero points result for those tasks at the end of the semester.
 - All resources for using the repository will be provided here:
 
   - `Git for half an hour: A Beginner’s Guide <https://proglib.io/p/git-for-half-an-hour>`__
@@ -41,6 +36,4 @@ Practice:
   - `Multithreading: New Features of the C++11 Standard <https://web.archive.org/web/20200608173050/http://www.quizful.net/post/multithreading-cpp11>`__
   - `Introduction to Parallel Computing <http://ikt.muctr.ru/images/info/2Lecture_3.pdf>`__
 
-\* *All instructions, repositories, and tables may be updated during the
-learning process for better usability. Be prepared for changes, check and update
-them periodically!!!*
+\* *All instructions, repositories, and tables may be updated during the learning process for better usability. Be prepared for changes, check and update them periodically!!!*

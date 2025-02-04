@@ -1,7 +1,7 @@
 Points
 ======
 
-- For “processes” semester
+- For “process parallelism” semester
 
   - 1st MPI task
 
@@ -29,7 +29,7 @@ Points
 
   - **Total : 60 points**
 
-- For “threading” semester
+- For “thread parallelism” semester
 
   - Sequential version
 
@@ -76,12 +76,11 @@ Points
 
 - Report
 
-  +---------------------------+-------------+--------------------+------+
-  | Completeness | Text        | Formatting Quality | T    |
-  |                           | Quality     |                    | otal |
-  +===========================+=============+====================+======+
-  | 5                         | 2.5         | 2.5                | 10   |
-  +---------------------------+-------------+--------------------+------+
+  +--------------+--------------+--------------------+-------+
+  | Completeness | Text Quality | Formatting Quality | Total |
+  +=============================+====================+=======+
+  | 5            | 2.5          | 2.5                | 10    |
+  +--------------+--------------+--------------------+-------+
 
 - Conversion of points into exam assessment or pass/fail
 
@@ -112,10 +111,8 @@ Points
 - Penalties:
 
   - A deadline will be set for each version.
-  - 1 point is deducted from the version’s score for each day of
-    delay in submission.
-  - The task is considered submitted when it is merged into the
-    master/main branch.
+  - 1 point is deducted from the version’s score for each day of delay in submission.
+  - The task is considered submitted when it is merged into the master/main branch.
   - The submission time is defined as the timestamp of the last commit that successfully passes the CI pipeline.
 
 - Comments:

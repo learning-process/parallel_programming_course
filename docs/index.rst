@@ -15,10 +15,10 @@ Below is the table of contents for the Parallel Programming Course documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Common Information:
+   :caption: Course Details:
 
-   common_information/introduction.rst
-   common_information/points.rst
-   common_information/processes_tasks.rst
-   common_information/report.rst
-   common_information/threading_tasks.rst
+   common_information/introduction
+   common_information/points
+   common_information/processes_tasks
+   common_information/report
+   common_information/threading_tasks
