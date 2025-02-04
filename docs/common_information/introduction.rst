@@ -42,5 +42,5 @@ Practice:
   - `Introduction to Parallel Computing <http://ikt.muctr.ru/images/info/2Lecture_3.pdf>`__
 
 \* *All instructions, repositories, and tables may be updated during the
-learning process for better usability. Be prepared for changes and check
+learning process for better usability. Be prepared for changes, check and update
 them periodically!!!*
