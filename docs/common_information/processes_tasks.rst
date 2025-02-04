@@ -355,7 +355,7 @@ Comments for tasks 2 and 3:
   Comments relevant for:
 
   =================== ===================
-  Varinats for task 2 Varinats for task 3
+  Variants for task 2 Variants for task 3
   =================== ===================
   1 - 5               x
   =================== ===================
