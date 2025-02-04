@@ -112,7 +112,7 @@ Points
 - Penalties:
 
   - A deadline will be set for each version.
-  - 1 point will be deducted from the version’s score for each day of
+  - 1 point is deducted from the version’s score for each day of
     delay in submission.
   - The task is considered submitted when it is merged into the
     master/main branch.
