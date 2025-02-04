@@ -1,7 +1,7 @@
 Report
 ======
 
-- Report’s points
+- Report points
 
   +---------------------------+-------------+--------------------+------+
   | Presence and Completeness | Text        | Formatting Quality | T    |
