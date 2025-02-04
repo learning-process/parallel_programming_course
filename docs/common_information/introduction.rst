@@ -11,7 +11,7 @@ Practice:
   - Merge into the master branch
   - Test verification
 
-- Task distribution is random for each person.
+- Task distribution is random for each student.
 - An example for each technology can be found in the corresponding directory:
   ``tasks/<all/omp/tbb/seq/stl/mpi>/example``.
 - In each repository, the README.md contains a link to the course
