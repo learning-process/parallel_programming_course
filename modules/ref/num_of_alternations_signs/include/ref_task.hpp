@@ -1,7 +1,6 @@
 #ifndef MODULES_REFERENCE_NUM_OF_ALTERNATIONS_SIGNS_REF_TASK_HPP_
 #define MODULES_REFERENCE_NUM_OF_ALTERNATIONS_SIGNS_REF_TASK_HPP_
 
-
 #include <algorithm>
 #include <functional>
 #include <memory>

@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include <tbb/global_control.h>
 
-#include "oneapi/tbb/global_control.h"
 #include <boost/mpi/communicator.hpp>
 #include <boost/mpi/environment.hpp>
 #include <cstdio>
@@ -9,6 +8,8 @@
 #include <memory>
 #include <string>
 #include <utility>
+
+#include "oneapi/tbb/global_control.h"
 
 class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {
  public:

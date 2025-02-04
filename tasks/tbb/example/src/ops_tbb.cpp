@@ -2,12 +2,13 @@
 
 #include <tbb/tbb.h>
 
-#include "oneapi/tbb/task_arena.h"
-#include "oneapi/tbb/task_group.h"
 #include <cmath>
 #include <core/util/util.hpp>
 #include <cstddef>
 #include <vector>
+
+#include "oneapi/tbb/task_arena.h"
+#include "oneapi/tbb/task_group.h"
 
 namespace {
 void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {

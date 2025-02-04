@@ -1,7 +1,6 @@
 #ifndef MODULES_REFERENCE_MOST_DIFFERENT_NEIGHBOR_ELEMENTS_REF_TASK_HPP_
 #define MODULES_REFERENCE_MOST_DIFFERENT_NEIGHBOR_ELEMENTS_REF_TASK_HPP_
 
-
 #include <algorithm>
 #include <memory>
 #include <vector>

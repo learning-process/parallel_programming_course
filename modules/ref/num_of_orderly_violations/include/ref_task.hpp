@@ -1,7 +1,6 @@
 #ifndef MODULES_REFERENCE_NUM_OF_ORDERLY_VIOLATIONS_REF_TASK_HPP_
 #define MODULES_REFERENCE_NUM_OF_ORDERLY_VIOLATIONS_REF_TASK_HPP_
 
-
 #include <algorithm>
 #include <memory>
 #include <vector>

@@ -1,7 +1,6 @@
 #ifndef MODULES_REFERENCE_AVERAGE_OF_VECTOR_ELEMENTS_REF_TASK_HPP_
 #define MODULES_REFERENCE_AVERAGE_OF_VECTOR_ELEMENTS_REF_TASK_HPP_
 
-
 #include <memory>
 #include <numeric>
 #include <vector>
