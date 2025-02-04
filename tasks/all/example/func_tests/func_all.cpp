@@ -3,13 +3,12 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <opencv2/opencv.hpp>
 #include <vector>
 
 #include "all/example/include/ops_all.hpp"
 #include "core/task/include/task.hpp"
 #include "core/util/util.hpp"
-#include "opencv2/core/mat.hpp"
-#include "opencv2/imgcodecs.hpp"
 
 TEST(nesterov_a_test_task_all, test_matmul_50) {
   constexpr size_t kCount = 50;

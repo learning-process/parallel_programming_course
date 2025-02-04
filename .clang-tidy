@@ -27,6 +27,7 @@ Checks: >
   -readability-named-parameter
 
 WarningsAsErrors: "*"
+HeaderFilterRegex: '^(?!.*opencv2).*'
 
 CheckOptions:
   - key:             readability-identifier-naming.ClassCase
