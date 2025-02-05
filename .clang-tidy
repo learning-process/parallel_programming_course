@@ -12,7 +12,6 @@ Checks: >
   -bugprone-exception-escape,
   -bugprone-implicit-widening-of-multiplication-result,
   -bugprone-narrowing-conversions,
-  -clang-analyzer-optin.cplusplus.UninitializedObject,
   -misc-const-correctness,
   -misc-header-include-cycle,
   -misc-no-recursion,
@@ -27,7 +26,6 @@ Checks: >
   -readability-named-parameter
 
 WarningsAsErrors: "*"
-HeaderFilterRegex: '^(?!.*opencv2).*'
 
 CheckOptions:
   - key:             readability-identifier-naming.ClassCase
@@ -80,3 +78,5 @@ CheckOptions:
     value:           1
   - key:             readability-function-cognitive-complexity.Threshold
     value:           25  # default: 25
+  - key: misc-include-cleaner.IgnoreHeaders
+    value: '(opencv2/.*|__chrono/.*)'
