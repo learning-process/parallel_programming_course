@@ -12,3 +12,13 @@ Below is the table of contents for the Parallel Programming Course documentation
    user_guide/environment
    user_guide/submit_work
    user_guide/ci
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Course Details:
+
+   common_information/introduction
+   common_information/points
+   common_information/processes_tasks
+   common_information/report
+   common_information/threading_tasks
