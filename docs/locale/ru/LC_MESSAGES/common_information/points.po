@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-04 00:05+0100\n"
+"POT-Creation-Date: 2025-02-05 13:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -26,7 +26,7 @@ msgid "Points"
 msgstr ""
 
 #: ../../common_information/points.rst:4
-msgid "For “processes” semester"
+msgid "For “process parallelism” semester"
 msgstr ""
 
 #: ../../common_information/points.rst:6
@@ -49,9 +49,8 @@ msgstr ""
 
 #: ../../common_information/points.rst:11
 #: ../../common_information/points.rst:19
-#: ../../common_information/points.rst:83
-#: ../../common_information/points.rst:93
-#: ../../common_information/points.rst:105
+#: ../../common_information/points.rst:92
+#: ../../common_information/points.rst:104
 msgid "5"
 msgstr ""
 
@@ -82,7 +81,7 @@ msgstr ""
 
 #: ../../common_information/points.rst:27
 #: ../../common_information/points.rst:72
-#: ../../common_information/points.rst:83
+#: ../../common_information/points.rst:82
 msgid "10"
 msgstr ""
 
@@ -91,7 +90,7 @@ msgid "**Total : 60 points**"
 msgstr ""
 
 #: ../../common_information/points.rst:32
-msgid "For “threading” semester"
+msgid "For “thread parallelism” semester"
 msgstr ""
 
 #: ../../common_information/points.rst:34
@@ -99,8 +98,8 @@ msgid "Sequential version"
 msgstr ""
 
 #: ../../common_information/points.rst:39
-#: ../../common_information/points.rst:96
-#: ../../common_information/points.rst:109
+#: ../../common_information/points.rst:95
+#: ../../common_information/points.rst:108
 msgid "2"
 msgstr ""
 
@@ -116,8 +115,8 @@ msgstr ""
 
 #: ../../common_information/points.rst:47
 #: ../../common_information/points.rst:55
-#: ../../common_information/points.rst:95
-#: ../../common_information/points.rst:108
+#: ../../common_information/points.rst:94
+#: ../../common_information/points.rst:107
 msgid "3"
 msgstr ""
 
@@ -147,11 +146,7 @@ msgid "Report"
 msgstr ""
 
 #: ../../common_information/points.rst:80
-msgid "Presence and Completeness"
-msgstr ""
-
-#: ../../common_information/points.rst:80
-msgid "Text Quality"
+msgid "Completeness | Text Quality"
 msgstr ""
 
 #: ../../common_information/points.rst:80
@@ -159,132 +154,138 @@ msgid "Formatting Quality"
 msgstr ""
 
 #: ../../common_information/points.rst:80
-msgid "T otal"
+msgid "Total"
 msgstr ""
 
-#: ../../common_information/points.rst:83
+#: ../../common_information/points.rst:82
+msgid "5            | 2.5"
+msgstr ""
+
+#: ../../common_information/points.rst:82
 msgid "2.5"
 msgstr ""
 
-#: ../../common_information/points.rst:86
+#: ../../common_information/points.rst:85
 msgid "Conversion of points into exam assessment or pass/fail"
 msgstr ""
 
-#: ../../common_information/points.rst:88
+#: ../../common_information/points.rst:87
 msgid "For 5-point grading system"
 msgstr ""
 
-#: ../../common_information/points.rst:91
-#: ../../common_information/points.rst:102
+#: ../../common_information/points.rst:90
+#: ../../common_information/points.rst:101
 msgid "Points range"
 msgstr ""
 
-#: ../../common_information/points.rst:91
-#: ../../common_information/points.rst:102
+#: ../../common_information/points.rst:90
+#: ../../common_information/points.rst:101
 msgid "Exam Assessment"
 msgstr ""
 
-#: ../../common_information/points.rst:91
-#: ../../common_information/points.rst:102
+#: ../../common_information/points.rst:90
+#: ../../common_information/points.rst:101
 msgid "Student Pass"
 msgstr ""
 
-#: ../../common_information/points.rst:93
+#: ../../common_information/points.rst:92
 msgid "[87, 100]"
 msgstr ""
 
+#: ../../common_information/points.rst:92
 #: ../../common_information/points.rst:93
 #: ../../common_information/points.rst:94
-#: ../../common_information/points.rst:95
+#: ../../common_information/points.rst:103
 #: ../../common_information/points.rst:104
 #: ../../common_information/points.rst:105
 #: ../../common_information/points.rst:106
 #: ../../common_information/points.rst:107
-#: ../../common_information/points.rst:108
 msgid "Passed"
 msgstr ""
 
-#: ../../common_information/points.rst:94
+#: ../../common_information/points.rst:93
 msgid "[70, 87)"
+msgstr ""
+
+#: ../../common_information/points.rst:93
+#: ../../common_information/points.rst:106
+msgid "4"
 msgstr ""
 
 #: ../../common_information/points.rst:94
 #: ../../common_information/points.rst:107
-msgid "4"
+msgid "[50, 70)"
 msgstr ""
 
 #: ../../common_information/points.rst:95
 #: ../../common_information/points.rst:108
-msgid "[50, 70)"
-msgstr ""
-
-#: ../../common_information/points.rst:96
-#: ../../common_information/points.rst:109
 msgid "< 50"
 msgstr ""
 
-#: ../../common_information/points.rst:96
-#: ../../common_information/points.rst:109
+#: ../../common_information/points.rst:95
+#: ../../common_information/points.rst:108
 msgid "Not Passed"
 msgstr ""
 
-#: ../../common_information/points.rst:99
+#: ../../common_information/points.rst:98
 msgid "For 7-point grading system **(our current system)**"
 msgstr ""
 
-#: ../../common_information/points.rst:104
+#: ../../common_information/points.rst:103
 msgid "[99, 100]"
 msgstr ""
 
-#: ../../common_information/points.rst:104
+#: ../../common_information/points.rst:103
 msgid "5.5"
 msgstr ""
 
-#: ../../common_information/points.rst:105
+#: ../../common_information/points.rst:104
 msgid "[92, 99)"
 msgstr ""
 
-#: ../../common_information/points.rst:106
+#: ../../common_information/points.rst:105
 msgid "[82, 92)"
 msgstr ""
 
-#: ../../common_information/points.rst:106
+#: ../../common_information/points.rst:105
 msgid "4.5"
 msgstr ""
 
-#: ../../common_information/points.rst:107
+#: ../../common_information/points.rst:106
 msgid "[70, 82)"
 msgstr ""
 
-#: ../../common_information/points.rst:112
+#: ../../common_information/points.rst:111
 msgid "Penalties:"
 msgstr ""
 
-#: ../../common_information/points.rst:114
+#: ../../common_information/points.rst:113
 msgid "A deadline will be set for each version."
 msgstr ""
 
-#: ../../common_information/points.rst:115
+#: ../../common_information/points.rst:114
 msgid ""
-"1 point will be deducted from the version’s score for each day of delay "
-"in submission."
+"1 point is deducted from the version’s score for each day of delay in "
+"submission."
 msgstr ""
 
-#: ../../common_information/points.rst:117
+#: ../../common_information/points.rst:115
 msgid ""
 "The task is considered submitted when it is merged into the master/main "
 "branch."
 msgstr ""
 
-#: ../../common_information/points.rst:119
-msgid "The submission date is counted from the last working commit."
+#: ../../common_information/points.rst:116
+msgid ""
+"The submission time is defined as the timestamp of the last commit that "
+"successfully passes the CI pipeline."
 msgstr ""
 
-#: ../../common_information/points.rst:121
+#: ../../common_information/points.rst:118
 msgid "Comments:"
 msgstr ""
 
-#: ../../common_information/points.rst:123
+#: ../../common_information/points.rst:120
 msgid "It is forbidden to write the report if all tasks are not completed."
 msgstr ""
 

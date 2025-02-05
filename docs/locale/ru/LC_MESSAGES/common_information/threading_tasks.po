@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-04 00:05+0100\n"
+"POT-Creation-Date: 2025-02-05 13:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -22,278 +22,278 @@ msgstr ""
 "Generated-By: Babel 2.17.0\n"
 
 #: ../../common_information/threading_tasks.rst:2
-msgid "Threading tasks"
+msgid "Thread parallelism tasks"
 msgstr ""
 
 #: ../../common_information/threading_tasks.rst:5
-msgid "V ariant Number"
+msgid "Variant Number"
 msgstr ""
 
 #: ../../common_information/threading_tasks.rst:5
 msgid "Tasks"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:9
+#: ../../common_information/threading_tasks.rst:7
 msgid "1"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:9
+#: ../../common_information/threading_tasks.rst:7
 msgid ""
 "Dense matrix multiplication. Elements of type double. Block scheme, "
-"Cannon’s algorithm."
+"Cannon's algorithm."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:12
+#: ../../common_information/threading_tasks.rst:9
 msgid "2"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:12
+#: ../../common_information/threading_tasks.rst:9
 msgid ""
-"Dense matrix multiplication. Elements of type double. Block scheme, Fox’s"
+"Dense matrix multiplication. Elements of type double. Block scheme, Fox's"
 " algorithm."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:15
+#: ../../common_information/threading_tasks.rst:11
 msgid "3"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:15
+#: ../../common_information/threading_tasks.rst:11
 msgid ""
-"Dense matrix multiplication. Elements of type double. Strassen’s "
+"Dense matrix multiplication. Elements of type double. Strassen's "
 "algorithm."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:18
+#: ../../common_information/threading_tasks.rst:13
 msgid "4"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:18
+#: ../../common_information/threading_tasks.rst:13
 msgid ""
 "Sparse matrix multiplication. Elements of type double. Matrix storage "
-"format – row format (CRS)."
+"format – row format (Compressed Row Storage)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:21
+#: ../../common_information/threading_tasks.rst:15
 msgid "5"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:21
+#: ../../common_information/threading_tasks.rst:15
 msgid ""
 "Sparse matrix multiplication. Elements of type double. Matrix storage "
-"format – column format (CCS)."
+"format – column format (Compressed Column Storage)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:24
+#: ../../common_information/threading_tasks.rst:17
 msgid "6"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:24
+#: ../../common_information/threading_tasks.rst:17
 msgid ""
 "Sparse matrix multiplication. Complex type elements. Matrix storage "
-"format – row format (CRS)."
+"format – row format (Compressed Row Storage)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:27
+#: ../../common_information/threading_tasks.rst:19
 msgid "7"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:27
+#: ../../common_information/threading_tasks.rst:19
 msgid ""
 "Sparse matrix multiplication. Complex type elements. Matrix storage "
-"format – column format (CCS)."
+"format – column format (Compressed Column Storage)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:30
+#: ../../common_information/threading_tasks.rst:21
 msgid "8"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:30
+#: ../../common_information/threading_tasks.rst:21
 msgid "Solving systems of linear equations using the conjugate gradient method."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:33
+#: ../../common_information/threading_tasks.rst:23
 msgid "9"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:33
+#: ../../common_information/threading_tasks.rst:23
 msgid ""
 "Computing multidimensional integrals using a multistep scheme (rectangle "
 "method)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:36
+#: ../../common_information/threading_tasks.rst:25
 msgid "10"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:36
+#: ../../common_information/threading_tasks.rst:25
 msgid ""
 "Computing multidimensional integrals using a multistep scheme "
 "(trapezoidal method)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:39
+#: ../../common_information/threading_tasks.rst:27
 msgid "11"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:39
+#: ../../common_information/threading_tasks.rst:27
 msgid ""
-"Computing multidimensional integrals using a multistep scheme (Simpson’s "
+"Computing multidimensional integrals using a multistep scheme (Simpson's "
 "method)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:42
+#: ../../common_information/threading_tasks.rst:29
 msgid "12"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:42
+#: ../../common_information/threading_tasks.rst:29
 msgid "Computing multidimensional integrals using the Monte Carlo method."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:45
+#: ../../common_information/threading_tasks.rst:31
 msgid "13"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:45
+#: ../../common_information/threading_tasks.rst:31
 msgid "Quick sort with simple merging."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:47
+#: ../../common_information/threading_tasks.rst:33
 msgid "14"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:47
-msgid "Quick sort with odd-even merging (Batcher’s method)."
+#: ../../common_information/threading_tasks.rst:33
+msgid "Quick sort with odd-even merging (Batcher's method)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:49
+#: ../../common_information/threading_tasks.rst:35
 msgid "15"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:49
+#: ../../common_information/threading_tasks.rst:35
 msgid "Shell sort with simple merging."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:51
+#: ../../common_information/threading_tasks.rst:37
 msgid "16"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:51
-msgid "Shell sort with odd-even merging (Batcher’s method)."
+#: ../../common_information/threading_tasks.rst:37
+msgid "Shell sort with odd-even merging (Batcher's method)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:53
+#: ../../common_information/threading_tasks.rst:39
 msgid "17"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:53
+#: ../../common_information/threading_tasks.rst:39
 msgid "Radix sort for integers with simple merging."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:55
+#: ../../common_information/threading_tasks.rst:41
 msgid "18"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:55
-msgid "Radix sort for integers with odd-even merging (Batcher’s method)."
+#: ../../common_information/threading_tasks.rst:41
+msgid "Radix sort for integers with odd-even merging (Batcher's method)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:58
+#: ../../common_information/threading_tasks.rst:43
 msgid "19"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:58
+#: ../../common_information/threading_tasks.rst:43
 msgid "Radix sort for floating-point numbers (type double) with simple merging."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:61
+#: ../../common_information/threading_tasks.rst:45
 msgid "20"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:61
+#: ../../common_information/threading_tasks.rst:45
 msgid ""
 "Radix sort for floating-point numbers (type double) with odd-even merging"
-" (Batcher’s method)."
+" (Batcher's method)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:64
+#: ../../common_information/threading_tasks.rst:47
 msgid "21"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:64
-msgid "Shortest path search from one vertex (Dijkstra’s algorithm)."
+#: ../../common_information/threading_tasks.rst:47
+msgid "Shortest path search from one vertex (Dijkstra's algorithm)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:67
+#: ../../common_information/threading_tasks.rst:49
 msgid "22"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:67
-msgid "Convex hull construction – Graham’s scan."
+#: ../../common_information/threading_tasks.rst:49
+msgid "Convex hull construction – Graham's scan."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:69
+#: ../../common_information/threading_tasks.rst:51
 msgid "23"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:69
-msgid "Convex hull construction – Jarvis’s march."
+#: ../../common_information/threading_tasks.rst:51
+msgid "Convex hull construction – Jarvis's march."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:71
+#: ../../common_information/threading_tasks.rst:53
 msgid "24"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:71
+#: ../../common_information/threading_tasks.rst:53
 msgid "Linear image filtering (horizontal partition). Gaussian kernel 3x3."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:74
+#: ../../common_information/threading_tasks.rst:55
 msgid "25"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:74
+#: ../../common_information/threading_tasks.rst:55
 msgid "Linear image filtering (vertical partition). Gaussian kernel 3x3."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:77
+#: ../../common_information/threading_tasks.rst:57
 msgid "26"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:77
+#: ../../common_information/threading_tasks.rst:57
 msgid "Linear image filtering (block partition). Gaussian kernel 3x3."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:80
+#: ../../common_information/threading_tasks.rst:59
 msgid "27"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:80
+#: ../../common_information/threading_tasks.rst:59
 msgid "Edge detection in an image using the Sobel operator."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:82
+#: ../../common_information/threading_tasks.rst:61
 msgid "28"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:82
+#: ../../common_information/threading_tasks.rst:61
 msgid "Contrast enhancement of grayscale image using linear histogram stretching."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:85
+#: ../../common_information/threading_tasks.rst:63
 msgid "29"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:85
+#: ../../common_information/threading_tasks.rst:63
 msgid ""
 "Labeling components on a binary image (black areas correspond to objects,"
 " white to background)."
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:88
+#: ../../common_information/threading_tasks.rst:65
 msgid "30"
 msgstr ""
 
-#: ../../common_information/threading_tasks.rst:88
+#: ../../common_information/threading_tasks.rst:65
 msgid "Convex hull construction for components of a binary image."
 msgstr ""
 

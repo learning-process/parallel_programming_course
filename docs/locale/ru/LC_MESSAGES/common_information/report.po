@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-04 00:05+0100\n"
+"POT-Creation-Date: 2025-02-05 13:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -26,156 +26,159 @@ msgid "Report"
 msgstr ""
 
 #: ../../common_information/report.rst:4
-msgid "Report’s points"
+msgid "Report points"
 msgstr ""
 
-#: ../../common_information/report.rst:7 ../../common_information/report.rst:15
-msgid "Presence and Completeness"
+#: ../../common_information/report.rst:7
+msgid "Completeness"
 msgstr ""
 
-#: ../../common_information/report.rst:7 ../../common_information/report.rst:31
+#: ../../common_information/report.rst:7 ../../common_information/report.rst:27
 msgid "Text Quality"
 msgstr ""
 
-#: ../../common_information/report.rst:7 ../../common_information/report.rst:39
+#: ../../common_information/report.rst:7 ../../common_information/report.rst:34
 msgid "Formatting Quality"
 msgstr ""
 
 #: ../../common_information/report.rst:7
-msgid "T otal"
+msgid "Total"
 msgstr ""
 
-#: ../../common_information/report.rst:10
+#: ../../common_information/report.rst:9
 msgid "5"
 msgstr ""
 
-#: ../../common_information/report.rst:10
+#: ../../common_information/report.rst:9
 msgid "2.5"
 msgstr ""
 
-#: ../../common_information/report.rst:10
+#: ../../common_information/report.rst:9
 msgid "10"
 msgstr ""
 
-#: ../../common_information/report.rst:13
+#: ../../common_information/report.rst:12
 msgid "Requirements for Criteria"
 msgstr ""
 
-#: ../../common_information/report.rst:17
+#: ../../common_information/report.rst:14
+msgid "Presence and Completeness"
+msgstr ""
+
+#: ../../common_information/report.rst:16
 msgid "Introduction (can be a short paragraph)"
 msgstr ""
 
-#: ../../common_information/report.rst:18
-msgid "Problem Statement (substantive)"
+#: ../../common_information/report.rst:17
+msgid "Problem Statement (descriptive)"
 msgstr ""
 
-#: ../../common_information/report.rst:19
+#: ../../common_information/report.rst:18
 msgid "Algorithm Description"
 msgstr ""
 
-#: ../../common_information/report.rst:20
+#: ../../common_information/report.rst:19
 msgid "Description of the Parallel Algorithm Scheme"
 msgstr ""
 
-#: ../../common_information/report.rst:21
+#: ../../common_information/report.rst:20
 msgid ""
 "Description of the MPI, OpenMP, TBB, std::threads, all versions "
 "(depending on the semester) – part of the software implementation "
 "description"
 msgstr ""
 
-#: ../../common_information/report.rst:24
+#: ../../common_information/report.rst:21
 msgid ""
 "Experimental Results (execution time and algorithm quality assessment), "
 "description of correctness verification"
 msgstr ""
 
-#: ../../common_information/report.rst:26
+#: ../../common_information/report.rst:22
 msgid "Conclusions from the Results"
 msgstr ""
 
-#: ../../common_information/report.rst:27
+#: ../../common_information/report.rst:23
 msgid "Conclusion"
 msgstr ""
 
-#: ../../common_information/report.rst:28
+#: ../../common_information/report.rst:24
 msgid "References"
 msgstr ""
 
-#: ../../common_information/report.rst:29
+#: ../../common_information/report.rst:25
 msgid "Appendix (include code, ensuring readability)"
 msgstr ""
 
-#: ../../common_information/report.rst:33
+#: ../../common_information/report.rst:29
 msgid "Meaningfulness"
 msgstr ""
 
-#: ../../common_information/report.rst:34
+#: ../../common_information/report.rst:30
 msgid "Coherence"
 msgstr ""
 
-#: ../../common_information/report.rst:35
+#: ../../common_information/report.rst:31
 msgid "Clarity"
 msgstr ""
 
-#: ../../common_information/report.rst:36
+#: ../../common_information/report.rst:32
 msgid "Quality of language (only the most obvious mistakes are considered)"
 msgstr ""
 
-#: ../../common_information/report.rst:41
+#: ../../common_information/report.rst:36
 msgid "Requirements for Headings"
 msgstr ""
 
-#: ../../common_information/report.rst:42
+#: ../../common_information/report.rst:37
 msgid "Requirements for Text Alignment"
 msgstr ""
 
-#: ../../common_information/report.rst:43
+#: ../../common_information/report.rst:38
 msgid "Requirements for Paragraph Indentation"
 msgstr ""
 
-#: ../../common_information/report.rst:44
+#: ../../common_information/report.rst:39
 msgid "Requirements for the Formatting of Figures, Graphs, and Tables"
 msgstr ""
 
-#: ../../common_information/report.rst:45
+#: ../../common_information/report.rst:40
 msgid ""
 "The “Teacher” field must include the full name, position, and title of "
 "the lecturer"
 msgstr ""
 
-#: ../../common_information/report.rst:48
+#: ../../common_information/report.rst:42
 msgid "Comments"
 msgstr ""
 
-#: ../../common_information/report.rst:50
+#: ../../common_information/report.rst:44
 msgid "Failure to meet the requirements will result in a deduction of points."
 msgstr ""
 
-#: ../../common_information/report.rst:52
+#: ../../common_information/report.rst:45
 msgid ""
 "The request will include points and comments regarding any requirement "
 "violations (if applicable)."
 msgstr ""
 
-#: ../../common_information/report.rst:54
+#: ../../common_information/report.rst:46
 msgid ""
 "The report will be checked only once, and the grade will be assigned "
 "based on the submitted version according to the requirements."
 msgstr ""
 
-#: ../../common_information/report.rst:56
+#: ../../common_information/report.rst:47
 msgid ""
-"The report is reviewed remotely; the entire review process takes place in"
-" the request. The report is NOT submitted in person."
+"The report is reviewed online; the entire review process takes place in "
+"the request."
 msgstr ""
 
-#: ../../common_information/report.rst:58
+#: ../../common_information/report.rst:48
 msgid ""
 "If a student falls into the **blue zone** for the task, the report points"
 " will also be nullified at the end of the semester. The report will be "
 "finally accepted and merged into the master branch only after both the "
-"**in-person and remote** parts of the corresponding lab work are fully "
-"completed."
+"**online** parts of the corresponding lab work are fully completed."
 msgstr ""
 

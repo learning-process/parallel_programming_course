@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-04 00:05+0100\n"
+"POT-Creation-Date: 2025-02-05 13:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -25,7 +25,7 @@ msgid "User Guide:"
 msgstr ""
 
 #: ../../index.rst:16
-msgid "Common Information:"
+msgid "Course Details:"
 msgstr ""
 
 #: ../../index.rst:2
@@ -37,4 +37,7 @@ msgid ""
 "Below is the table of contents for the Parallel Programming Course "
 "documentation. Follow the links to learn more about each topic."
 msgstr ""
+
+#~ msgid "Common Information:"
+#~ msgstr ""
 
