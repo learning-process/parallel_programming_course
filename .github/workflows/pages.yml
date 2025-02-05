@@ -2,15 +2,7 @@ name: Pages
 
 on:
   push:
-    paths:
-      - "docs/**"
-      - "scoreboard/**"
-      - ".github/workflows/pages.yml"
   pull_request:
-    paths:
-      - "docs/**"
-      - "scoreboard/**"
-      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
