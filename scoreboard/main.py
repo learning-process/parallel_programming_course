@@ -11,11 +11,15 @@ for task_type in task_types:
     task_type_dir = tasks_dir / task_type
     if task_type_dir.exists() and task_type_dir.is_dir():
         for task_name in (d.name for d in task_type_dir.iterdir() if d.is_dir()):
-            directories[task_name][task_type] = True
+            if task_name.endswith("_disabled"):
+                task_name = task_name[:-len("_disabled")]
+                directories[task_name][task_type] = "disabled"
+            else:
+                directories[task_name][task_type] = "done"
 
 print(directories)
 
-columns = ''.join(['<th>' + task_type + '</th>' for task_type in task_types])
+columns = ''.join(['<th colspan=4 style="text-align: center;">' + task_type + '</th>' for task_type in task_types])
 html_content = f"""
 <!DOCTYPE html>
 <html>
@@ -25,20 +29,36 @@ html_content = f"""
 </head>
 <body>
     <h1>Scoreboard</h1>
+    <p>S - Solution, P - Performance, O - Overdue, C - Cheating</p>
     <table>
         <tr>
-            <th>Tasks</th>
+            <th colspan=4>Tasks</th>
             {columns}
+            <th>Total</th>
+        </tr>
+        <tr>
+            <th colspan=4></th>
+            {''.join(['<th>S</th><th>P</th><th>O</th><th>C</th>' for _ in range(len(task_types))])}
+            <th></th>
         </tr>
 """
 
 for dir in directories:
-    html_content += f"<tr><td>{dir}</td>"
+    html_content += f"<tr><td colspan=4>{dir}</td>"
+    total_count = 0
     for task_type in task_types:
-        if directories[dir].get(task_type):
-            html_content += "<td>✔</td>"
+        if directories[dir].get(task_type) == "done":
+            html_content += '<td style="text-align: center;">1</td>'
+            total_count += 1
+        elif directories[dir].get(task_type) == "disabled":
+            html_content += '<td style="text-align: center;background-color: lightblue;">1</td>'
+            total_count += 1
         else:
-            html_content += "<td>✘</td>"
+            html_content += "<td>0</td>"
+        html_content += '<td style="text-align: center;">0</td>'
+        html_content += '<td style="text-align: center;">0</td>'
+        html_content += '<td style="text-align: center;">0</td>'
+    html_content += f'<td style="text-align: center;">{total_count}</td>'
     html_content += "</tr>"
 
 html_content += """

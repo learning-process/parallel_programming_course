@@ -1,7 +1,8 @@
 #include "seq/example/include/ops_seq.hpp"
 
 #include <cmath>
-#include <thread>
+#include <cstddef>
+#include <vector>
 
 bool nesterov_a_test_task_seq::TestTaskSequential::PreProcessingImpl() {
   // Init value for input and output

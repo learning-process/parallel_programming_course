@@ -1,9 +1,14 @@
 #include "all/example/include/ops_all.hpp"
 
 #include <cmath>
+#include <cstddef>
+#include <functional>
 #include <thread>
+#include <vector>
 
 #include "core/util/util.hpp"
+#include "oneapi/tbb/task_arena.h"
+#include "oneapi/tbb/task_group.h"
 
 namespace {
 void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {

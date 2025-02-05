@@ -1,9 +1,13 @@
 #include <gtest/gtest.h>
 
+#include <cstddef>
+#include <cstdint>
 #include <fstream>
-#include <thread>
+#include <memory>
+#include <string>
 #include <vector>
 
+#include "core/task/include/task.hpp"
 #include "core/util/util.hpp"
 #include "stl/example/include/ops_stl.hpp"
 

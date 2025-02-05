@@ -1,8 +1,13 @@
 #include <gtest/gtest.h>
 
+#include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <memory>
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
+#include "core/task/include/task.hpp"
 #include "stl/example/include/ops_stl.hpp"
 
 TEST(nesterov_a_test_task_stl, test_pipeline_run) {

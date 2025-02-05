@@ -1,8 +1,14 @@
 #include <gtest/gtest.h>
 
+#include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <memory>
 #include <vector>
 
+#include "boost/mpi/communicator.hpp"
 #include "core/perf/include/perf.hpp"
+#include "core/task/include/task.hpp"
 #include "mpi/example/include/ops_mpi.hpp"
 
 TEST(nesterov_a_test_task_mpi, test_pipeline_run) {

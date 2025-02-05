@@ -1,9 +1,13 @@
 #include <gtest/gtest.h>
 
+#include <cstddef>
+#include <cstdint>
+#include <memory>
 #include <opencv2/opencv.hpp>
 #include <vector>
 
 #include "all/example/include/ops_all.hpp"
+#include "core/task/include/task.hpp"
 #include "core/util/util.hpp"
 
 TEST(nesterov_a_test_task_all, test_matmul_50) {

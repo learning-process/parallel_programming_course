@@ -1,8 +1,7 @@
 #ifndef MODULES_REFERENCE_SUM_VALUES_BY_ROWS_MATRIX_REF_TASK_HPP_
 #define MODULES_REFERENCE_SUM_VALUES_BY_ROWS_MATRIX_REF_TASK_HPP_
 
-#include <gtest/gtest.h>
-
+#include <cstddef>
 #include <memory>
 #include <numeric>
 #include <vector>

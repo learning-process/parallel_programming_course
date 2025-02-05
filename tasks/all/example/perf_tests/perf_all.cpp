@@ -1,9 +1,15 @@
 #include <gtest/gtest.h>
 
+#include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <memory>
 #include <vector>
 
 #include "all/example/include/ops_all.hpp"
+#include "boost/mpi/communicator.hpp"
 #include "core/perf/include/perf.hpp"
+#include "core/task/include/task.hpp"
 
 TEST(nesterov_a_test_task_all, test_pipeline_run) {
   constexpr int kCount = 400;
