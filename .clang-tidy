@@ -19,7 +19,6 @@ Checks: >
   -misc-unused-parameters,
   -modernize-avoid-c-arrays,
   -modernize-loop-convert,
-  -modernize-use-nodiscard,
   -modernize-use-trailing-return-type,
   -readability-identifier-length,
   -readability-magic-numbers,
