@@ -1,6 +1,7 @@
 Checks: >
   bugprone-*,
   clang-diagnostic-*,
+  cppcoreguidelines-init-variables,
   llvm-include-order,
   llvm-namespace-comment,
   misc-*,

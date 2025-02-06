@@ -27,8 +27,8 @@ class MinOfVectorElements : public ppc::core::Task {
   }
 
   bool ValidationImpl() override {
-    bool is_count_values_correct;
-    bool is_count_indexes_correct;
+    bool is_count_values_correct = false;
+    bool is_count_indexes_correct = false;
     // Check count elements of output
     is_count_values_correct = task_data->outputs_count[0] == 1;
     is_count_indexes_correct = task_data->outputs_count[1] == 1;
