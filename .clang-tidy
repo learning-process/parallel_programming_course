@@ -12,7 +12,6 @@ Checks: >
   -bugprone-casting-through-void,
   -bugprone-exception-escape,
   -bugprone-implicit-widening-of-multiplication-result,
-  -bugprone-narrowing-conversions,
   -misc-const-correctness,
   -misc-header-include-cycle,
   -misc-no-recursion,
