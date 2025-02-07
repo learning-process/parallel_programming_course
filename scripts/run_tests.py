@@ -73,19 +73,27 @@ def get_common_gtest_settings(repeats_count):
     return command
 
 
-def run_threads():
-    print(123)
+def run_threads(install_bin_dir):
+    valgrind_running = "valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all"
+    if platform.system() == "Linux" and not os.environ.get("ASAN_RUN"):
+        run_exec_file(f"{valgrind_running} {Path(install_bin_dir) / 'seq_func_tests'} {get_common_gtest_settings(1)}")
+        run_exec_file(f"{valgrind_running} {Path(install_bin_dir) / 'stl_func_tests'} {get_common_gtest_settings(1)}")
+
+    run_exec_file(f"{Path(install_bin_dir) / 'omp_func_tests'} {get_common_gtest_settings(3)}")
+    run_exec_file(f"{Path(install_bin_dir) / 'seq_func_tests'} {get_common_gtest_settings(3)}")
+    run_exec_file(f"{Path(install_bin_dir) / 'stl_func_tests'} {get_common_gtest_settings(3)}")
+    run_exec_file(f"{Path(install_bin_dir) / 'tbb_func_tests'} {get_common_gtest_settings(3)}")
 
 
-def run_common(install_bin_dir):
+def run_core(install_bin_dir):
     valgrind_running = "valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all"
 
     if platform.system() == "Linux" and not os.environ.get("ASAN_RUN"):
         run_exec_file(f"{valgrind_running} {Path(install_bin_dir) / 'core_func_tests'} {get_common_gtest_settings(1)}")
         run_exec_file(f"{valgrind_running} {Path(install_bin_dir) / 'ref_func_tests'} {get_common_gtest_settings(1)}")
 
-    run_exec_file(f"{Path(install_bin_dir) / 'core_func_tests'} {get_common_gtest_settings(10)}")
-    run_exec_file(f"{Path(install_bin_dir) / 'ref_func_tests'}  {get_common_gtest_settings(10)}")
+    run_exec_file(f"{Path(install_bin_dir) / 'core_func_tests'} {get_common_gtest_settings(3)}")
+    run_exec_file(f"{Path(install_bin_dir) / 'ref_func_tests'}  {get_common_gtest_settings(3)}")
 
 
 def run_processes(install_bin_dir, additional_mpi_args):
@@ -102,9 +110,9 @@ def run_processes(install_bin_dir, additional_mpi_args):
 if __name__ == "__main__":
     args_dict = init_cmd_args()
     executable_path = setup_env()
-    run_common(executable_path)
+    run_core(executable_path)
     if args_dict["running_type"] == "threads":
-        run_threads()
+        run_threads(executable_path)
     elif args_dict["running_type"] == "processes":
         run_processes(executable_path, args_dict["additional_mpi_args"])
     else:
