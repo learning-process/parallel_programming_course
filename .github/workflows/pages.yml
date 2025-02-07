@@ -51,14 +51,17 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install -r requirements.txt
-      - name: Build scoreboard
+      - name: CMake configure
         run: |
-          python3 scoreboard/main.py
+          cmake -S . -B build -DUSE_SCOREBOARD=ON
+      - name: CMake build
+        run: |
+          cmake --build build --parallel
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: scoreboard
-          path: ./scoreboard/
+          path: ./build/scoreboard/html/
   deploy-pages:
     if: github.ref == 'refs/heads/master'
     needs:

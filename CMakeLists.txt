@@ -24,6 +24,12 @@ message( STATUS "PPC step: Setup external projects" )
 include(cmake/opencv.cmake)
 include(cmake/gtest.cmake)
 
+############################ Scoreboard #############################
+
+message( STATUS "PPC step: Setup scoreboard generator" )
+include(cmake/scoreboard.cmake)
+add_subdirectory(scoreboard)
+
 ############################## Headers ##############################
 
 message( STATUS "PPC step: Setup headers" )

@@ -714,8 +714,11 @@ jobs:
         with:
           mpi: msmpi
       - name: Download dependencies
-        run: |
-          choco install openssl --execution-timeout 6000
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: choco install openssl --execution-timeout 3600
       - name: Setup ccache
         uses: Chocobo1/setup-ccache-action@v1
         with:
@@ -772,8 +775,11 @@ jobs:
         with:
           mpi: msmpi
       - name: Download dependencies
-        run: |
-          choco install openssl --execution-timeout 6000
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: choco install openssl --execution-timeout 3600
       - name: Setup ccache
         uses: Chocobo1/setup-ccache-action@v1
         with:
