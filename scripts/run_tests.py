@@ -3,6 +3,7 @@ import subprocess
 import platform
 from pathlib import Path
 
+
 def init_cmd_args():
     import argparse
     parser = argparse.ArgumentParser()
@@ -22,10 +23,12 @@ def init_cmd_args():
     _args_dict = vars(args)
     return _args_dict
 
+
 def get_project_path():
     script_path = Path(__file__).resolve()  # Absolute path of the script
     script_dir = script_path.parent  # Directory containing the script
     return script_dir.parent
+
 
 def source_script(script_path):
     command = f"source {script_path} && env"
@@ -42,6 +45,7 @@ def source_script(script_path):
         print(f"Failed to source script: {script_path}")
         return {}
 
+
 def setup_env():
     ocv_script_path = "build/ppc_opencv/install/bin/setup_vars_opencv4.sh"
     if os.path.isfile(Path(get_project_path()) / ocv_script_path):
@@ -54,16 +58,24 @@ def setup_env():
     os.environ.update(env_vars)
     return _executable_path
 
+
 def run_exec_file(command):
     result = subprocess.run(command, shell=True, env=os.environ)
     if result.returncode != 0:
         raise Exception(f"Subprocess return {result.returncode}.")
 
+
 def get_common_gtest_settings():
-    return "--gtest_also_run_disabled_tests --gtest_repeat=10 --gtest_recreate_environments_when_repeating --gtest_color=0"
+    command = "--gtest_also_run_disabled_tests "
+    command += "--gtest_repeat=10 "
+    command += "--gtest_recreate_environments_when_repeating "
+    command += "--gtest_color=0 "
+    return command
+
 
 def run_threads():
     print(123)
+
 
 def run_common(install_bin_dir):
     valgrind_settings = "--error-exitcode=1 --leak-check=full --show-leak-kinds=all"
@@ -75,14 +87,17 @@ def run_common(install_bin_dir):
     run_exec_file(f"{Path(install_bin_dir) / 'core_func_tests'} {get_common_gtest_settings()}")
     run_exec_file(f"{Path(install_bin_dir) / 'ref_func_tests'}  {get_common_gtest_settings()}")
 
+
 def run_processes(install_bin_dir, additional_mpi_args):
     proc_count = os.environ.get("PROC_COUNT")
     if proc_count is None:
         raise EnvironmentError("Required environment variable 'PROC_COUNT' is not set.")
 
+    mpi_running = f"mpirun {additional_mpi_args} -np {proc_count}"
     if not os.environ.get("ASAN_RUN"):
-        run_exec_file(f"mpirun {additional_mpi_args} -np {proc_count} {Path(install_bin_dir) / 'all_func_tests'} {get_common_gtest_settings()}")
-        run_exec_file(f"mpirun {additional_mpi_args} -np {proc_count} {Path(install_bin_dir) / 'mpi_func_tests'} {get_common_gtest_settings()}")
+        run_exec_file(f"{mpi_running} {Path(install_bin_dir) / 'all_func_tests'} {get_common_gtest_settings()}")
+        run_exec_file(f"{mpi_running} {Path(install_bin_dir) / 'mpi_func_tests'} {get_common_gtest_settings()}")
+
 
 if __name__ == "__main__":
     args_dict = init_cmd_args()
