@@ -15,8 +15,8 @@ TEST(vector_dot_product, check_int32_t) {
   std::vector<int32_t> in2(count_data, 1);
   std::vector<int32_t> out(1, 0);
   for (size_t i = 0; i < count_data; i++) {
-    in1[i] = i + 1;
-    in2[i] = i + 1;
+    in1[i] = static_cast<int32_t>(i + 1);
+    in2[i] = static_cast<int32_t>(i + 1);
   }
 
   // Create task_data
@@ -140,8 +140,8 @@ TEST(vector_dot_product, check_int64_t) {
   std::vector<int64_t> in2(count_data, 1);
   std::vector<int64_t> out(1, 0);
   for (uint64_t i = 0; i < count_data; i++) {
-    in1[i] = i + 1;
-    in2[i] = (i + 1) * (i + 1);
+    in1[i] = static_cast<int64_t>(i + 1);
+    in2[i] = static_cast<int64_t>((i + 1) * (i + 1));
   }
 
   // Create task_data

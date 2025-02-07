@@ -140,7 +140,7 @@ TEST(sum_values_by_rows_matrix, check_int64_t) {
   std::vector<uint64_t> in_index = {37, 38};
   std::vector<int64_t> out(37, 0);
   for (size_t i = 0; i < in.size(); ++i) {
-    in[i] = (i % 38) + 1;
+    in[i] = static_cast<int64_t>((i % 38) + 1);
   }
 
   // Create task_data
