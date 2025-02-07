@@ -14,7 +14,8 @@ if(WIN32)
             -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF -DWITH_CUDA=OFF -DWITH_OPENCL=OFF -DBUILD_LIST="core,highgui,imgcodecs,imgproc,videoio,"
             BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_opencv/build" --config ${CMAKE_BUILD_TYPE} --parallel
             INSTALL_COMMAND   "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_opencv/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_opencv/install"
-            TEST_COMMAND      "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/ppc_opencv/build/bin" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+            TEST_COMMAND      "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/ppc_opencv/build/bin" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" &&
+                              "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/ppc_opencv/build/bin" "${CMAKE_CURRENT_BINARY_DIR}/ppc_opencv/install/bin")
 else()
     ExternalProject_Add(ppc_opencv
             SOURCE_DIR        "${CMAKE_SOURCE_DIR}/3rdparty/opencv"
