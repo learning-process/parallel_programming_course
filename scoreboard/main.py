@@ -1,5 +1,6 @@
 from pathlib import Path
 from collections import defaultdict
+import argparse
 
 task_types = ['all', 'mpi', 'omp', 'seq', 'stl', 'tbb']
 
@@ -67,7 +68,11 @@ html_content += """
 </html>
 """
 
-output_file = Path('scoreboard/index.html')
+parser = argparse.ArgumentParser(description='Generate HTML scoreboard.')
+parser.add_argument('-o', '--output', type=str, required=True, help='Output file path')
+args = parser.parse_args()
+
+output_file = Path(args.output) / "index.html"
 with open(output_file, 'w') as file:
     file.write(html_content)
 
