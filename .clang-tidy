@@ -6,6 +6,7 @@ Checks: >
   llvm-namespace-comment,
   misc-*,
   modernize-*,
+  mpi-*,
   performance-*,
   portability-*,
   readability-*,
