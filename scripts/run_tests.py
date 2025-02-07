@@ -31,8 +31,8 @@ def get_project_path():
 
 
 def source_script(script_path):
-    command = f"source {script_path} && env"
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)
+    command = f"bash -c 'source {script_path} && env'"
+    result = subprocess.run(command, stdout=subprocess.PIPE, shell=True, text=True)
     if result.returncode == 0:
         # Parse the output environment variables
         env_vars = {}
@@ -65,9 +65,9 @@ def run_exec_file(command):
         raise Exception(f"Subprocess return {result.returncode}.")
 
 
-def get_common_gtest_settings():
+def get_common_gtest_settings(repeats_count):
     command = "--gtest_also_run_disabled_tests "
-    command += "--gtest_repeat=10 "
+    command += f"--gtest_repeat={repeats_count} "
     command += "--gtest_recreate_environments_when_repeating "
     command += "--gtest_color=0 "
     return command
@@ -78,14 +78,14 @@ def run_threads():
 
 
 def run_common(install_bin_dir):
-    valgrind_settings = "--error-exitcode=1 --leak-check=full --show-leak-kinds=all"
+    valgrind_running = "valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all"
 
     if platform.system() == "Linux" and not os.environ.get("ASAN_RUN"):
-        run_exec_file(f"valgrind {valgrind_settings} {Path(install_bin_dir) / 'core_func_tests'}")
-        run_exec_file(f"valgrind {valgrind_settings} {Path(install_bin_dir) / 'ref_func_tests'}")
+        run_exec_file(f"{valgrind_running} {Path(install_bin_dir) / 'core_func_tests'} {get_common_gtest_settings(1)}")
+        run_exec_file(f"{valgrind_running} {Path(install_bin_dir) / 'ref_func_tests'} {get_common_gtest_settings(1)}")
 
-    run_exec_file(f"{Path(install_bin_dir) / 'core_func_tests'} {get_common_gtest_settings()}")
-    run_exec_file(f"{Path(install_bin_dir) / 'ref_func_tests'}  {get_common_gtest_settings()}")
+    run_exec_file(f"{Path(install_bin_dir) / 'core_func_tests'} {get_common_gtest_settings(10)}")
+    run_exec_file(f"{Path(install_bin_dir) / 'ref_func_tests'}  {get_common_gtest_settings(10)}")
 
 
 def run_processes(install_bin_dir, additional_mpi_args):
@@ -95,8 +95,8 @@ def run_processes(install_bin_dir, additional_mpi_args):
 
     mpi_running = f"mpirun {additional_mpi_args} -np {proc_count}"
     if not os.environ.get("ASAN_RUN"):
-        run_exec_file(f"{mpi_running} {Path(install_bin_dir) / 'all_func_tests'} {get_common_gtest_settings()}")
-        run_exec_file(f"{mpi_running} {Path(install_bin_dir) / 'mpi_func_tests'} {get_common_gtest_settings()}")
+        run_exec_file(f"{mpi_running} {Path(install_bin_dir) / 'all_func_tests'} {get_common_gtest_settings(10)}")
+        run_exec_file(f"{mpi_running} {Path(install_bin_dir) / 'mpi_func_tests'} {get_common_gtest_settings(10)}")
 
 
 if __name__ == "__main__":
