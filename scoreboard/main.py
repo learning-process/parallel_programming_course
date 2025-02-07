@@ -1,5 +1,6 @@
 from pathlib import Path
 from collections import defaultdict
+import argparse
 
 task_types = ['all', 'mpi', 'omp', 'seq', 'stl', 'tbb']
 
@@ -19,7 +20,7 @@ for task_type in task_types:
 
 print(directories)
 
-columns = ''.join(['<th colspan=4 style="text-align: center;">' + task_type + '</th>' for task_type in task_types])
+columns = ''.join(['<th colspan=5 style="text-align: center;">' + task_type + '</th>' for task_type in task_types])
 html_content = f"""
 <!DOCTYPE html>
 <html>
@@ -29,22 +30,30 @@ html_content = f"""
 </head>
 <body>
     <h1>Scoreboard</h1>
-    <p>S - Solution, P - Performance, O - Overdue, C - Cheating</p>
+    <p>
+        <b>(S)olution</b> - The correctness and completeness of the implemented solution.<br/>
+        <b>(A)cceleration</b> - The process of speeding up software to improve performance.
+        Speedup = T(seq) / T(parallel)<br/>
+        <b>(E)fficiency</b> - Optimizing software speed-up by improving CPU utilization and resource management.
+        Efficiency = Speedup / NumProcs * 100%<br/>
+        <b>(D)eadline</b> - The timeliness of the submission in relation to the given deadline.<br/>
+        <b>(P)lagiarism</b> - The originality of the work, ensuring no copied content from external sources.<br/>
+    </p>
     <table>
         <tr>
-            <th colspan=4>Tasks</th>
+            <th colspan=5>Tasks</th>
             {columns}
             <th>Total</th>
         </tr>
         <tr>
-            <th colspan=4></th>
-            {''.join(['<th>S</th><th>P</th><th>O</th><th>C</th>' for _ in range(len(task_types))])}
+            <th colspan=5></th>
+            {''.join(['<th>S</th><th>A</th><th>E</th><th>D</th><th>P</th>' for _ in range(len(task_types))])}
             <th></th>
         </tr>
 """
 
 for dir in directories:
-    html_content += f"<tr><td colspan=4>{dir}</td>"
+    html_content += f"<tr><td colspan=5>{dir}</td>"
     total_count = 0
     for task_type in task_types:
         if directories[dir].get(task_type) == "done":
@@ -54,7 +63,8 @@ for dir in directories:
             html_content += '<td style="text-align: center;background-color: lightblue;">1</td>'
             total_count += 1
         else:
-            html_content += "<td>0</td>"
+            html_content += '<td style="text-align: center;">0</td>'
+        html_content += '<td style="text-align: center;">0</td>'
         html_content += '<td style="text-align: center;">0</td>'
         html_content += '<td style="text-align: center;">0</td>'
         html_content += '<td style="text-align: center;">0</td>'
@@ -67,7 +77,11 @@ html_content += """
 </html>
 """
 
-output_file = Path('scoreboard/index.html')
+parser = argparse.ArgumentParser(description='Generate HTML scoreboard.')
+parser.add_argument('-o', '--output', type=str, required=True, help='Output file path')
+args = parser.parse_args()
+
+output_file = Path(args.output) / "index.html"
 with open(output_file, 'w') as file:
     file.write(html_content)
 

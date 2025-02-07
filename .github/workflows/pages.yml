@@ -2,11 +2,7 @@ name: Pages
 
 on:
   push:
-    paths:
-      - "docs/**"
   pull_request:
-    paths:
-      - "docs/**"
   workflow_dispatch:
 
 permissions:
@@ -15,7 +11,7 @@ permissions:
   pages: write
 
 jobs:
-  deploy-sphinx-to-github-pages:
+  build-sphinx:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
@@ -39,10 +35,54 @@ jobs:
         run: |
           make html
       - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sphinx-documentation
+          path: ./docs/_build/html
+  build-scoreboard:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: |
+          python3 -m pip install -r requirements.txt
+      - name: CMake configure
+        run: |
+          cmake -S . -B build -DUSE_SCOREBOARD=ON
+      - name: CMake build
+        run: |
+          cmake --build build --parallel
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scoreboard
+          path: ./build/scoreboard/html/
+  deploy-pages:
+    if: github.ref == 'refs/heads/master'
+    needs:
+      - build-sphinx
+      - build-scoreboard
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: sphinx-documentation
+          path: ./
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: scoreboard
+          path: ./scoreboard/
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./docs/_build/html
+          path: ./
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/master'
         id: deployment
         uses: actions/deploy-pages@v4

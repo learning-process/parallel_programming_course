@@ -14,7 +14,7 @@ TEST(nearest_neighbor_elements, check_int32_t) {
   std::vector<int32_t> out(2, 0);
   std::vector<uint64_t> out_index(2, 0);
   for (size_t i = 0; i < in.size(); i++) {
-    in[i] = 2 * i;
+    in[i] = static_cast<int32_t>(2 * i);
   }
   in[234] = 0;
   in[235] = 1;
@@ -68,7 +68,7 @@ TEST(nearest_neighbor_elements, check_double) {
   std::vector<double> out(2, 0);
   std::vector<uint64_t> out_index(2, 0);
   for (size_t i = 0; i < in.size(); i++) {
-    in[i] = 2 * i;
+    in[i] = static_cast<double>(2 * i);
   }
   in[189] = 0.1;
   in[190] = 0.9;
@@ -177,7 +177,7 @@ TEST(nearest_neighbor_elements, check_float) {
   std::vector<float> out(2, 0.F);
   std::vector<uint64_t> out_index(2, 0);
   for (size_t i = 0; i < in.size(); i++) {
-    in[i] += (i + 1.F) * 2.5F;
+    in[i] += static_cast<float>(i + 1) * 2.5F;
   }
   in[0] = 0.001F;
   in[1] = 0.0025F;
