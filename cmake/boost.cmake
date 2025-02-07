@@ -1,4 +1,9 @@
 # Build Core Boost components
+
+if(NOT USE_SEQ AND NOT USE_MPI AND NOT USE_OMP AND NOT USE_TBB AND NOT USE_STL)
+    return()
+endif()
+
 SUBDIRLIST(subdirs ${CMAKE_SOURCE_DIR}/3rdparty/boost/libs)
 foreach(subd ${subdirs})
         include_directories(${CMAKE_SOURCE_DIR}/3rdparty/boost/libs/${subd}/include)
