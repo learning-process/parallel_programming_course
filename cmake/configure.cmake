@@ -36,13 +36,15 @@ if( UNIX )
             -Wwrite-strings                  \
             -Wswitch-enum                    \
             -Wnull-dereference               \
-            -Wold-style-definition           \
             -Wswitch-enum                    \
             -Wformat=2                       \
-            -Wmissing-prototypes             \
             -Wmissing-declarations           \
             -Wno-c11-extensions")
     endif (NOT APPLE)
+    set(CMAKE_C_FLAGS
+        "${CMAKE_C_FLAGS}                    \
+        -Wold-style-definition               \
+        -Wmissing-prototypes")
     set (COMMON_LANGUAGE_RUNTIME "${COMMON_COMPILER_FLAGS} -Werror")
 
     set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} ${COMMON_COMPILER_FLAGS}")
