@@ -890,16 +890,57 @@ jobs:
           cmake -S . -B build -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
           -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
           -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-          -D CMAKE_BUILD_TYPE=RELEASE
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
           CC: clang-cl
           CXX: clang-cl
       - name: Build project
         run: |
-          cmake --build build --config Release --parallel -v
+          cmake --build build --config Release --parallel
         env:
           CC: clang-cl
           CXX: clang-cl
+      - name: Install project
+        run: |
+          cmake --install build
+      - name: Archive installed package
+        run: Compress-Archive -Path install -DestinationPath windows-clang-install.zip
+        shell: pwsh
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-clang-install
+          path: windows-clang-install.zip
+  windows-clang-test:
+    needs:
+      - windows-clang-build
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: choco install openssl --execution-timeout 3600
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-clang-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-clang-install.zip -DestinationPath . -Force
+        shell: pwsh
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -920,40 +961,36 @@ jobs:
         env:
           OMP_NUM_THREADS: 4
           CLANG_BUILD: 1
-  windows-clang-build-extended:
+  windows-clang-test-extended:
     needs:
-      - windows-clang-build
+      - windows-clang-test
     runs-on: windows-latest
     defaults:
       run:
         shell: bash
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
           vs-version: 'latest'
-      - name: Setup ninja
-        uses: seanmiddleditch/gha-setup-ninja@v6
-      - name: Setup MSVC for Ninja again
-        uses: ilammy/msvc-dev-cmd@v1
-      - name: CMake configure
-        run: >
-          cmake -S . -B build -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
-          -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
-          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-          -D CMAKE_BUILD_TYPE=RELEASE
-        env:
-          CC: clang-cl
-          CXX: clang-cl
-      - name: Build project
-        run: |
-          cmake --build build --config Release --parallel -v
-        env:
-          CC: clang-cl
-          CXX: clang-cl
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: choco install openssl --execution-timeout 3600
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-clang-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-clang-install.zip -DestinationPath . -Force
+        shell: pwsh
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -1078,8 +1115,8 @@ jobs:
     needs:
       - ubuntu-gcc-build-codecov
       - ubuntu-clang-sanitizer-test-extended
-      - windows-clang-build-extended
-      - windows-msvc-build-extended
+      - windows-clang-test-extended
+      - windows-msvc-test-extended
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
