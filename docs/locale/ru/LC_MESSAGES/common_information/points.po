@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-08 23:03+0100\n"
+"POT-Creation-Date: 2025-02-09 00:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -278,7 +278,9 @@ msgstr "Задание считается выполненным, когда о�
 msgid ""
 "The submission time is defined as the timestamp of the last commit that "
 "successfully passes the CI pipeline."
-msgstr "Фиксированное время сдачи работы определяется как время последнего коммита, который успешно прошел CI."
+msgstr ""
+"Фиксированное время сдачи работы определяется как время последнего "
+"коммита, который успешно прошел CI."
 
 #: ../../common_information/points.rst:118
 msgid "Comments:"
@@ -286,4 +288,13 @@ msgstr "Комментарии"
 
 #: ../../common_information/points.rst:120
 msgid "It is forbidden to write the report if all tasks are not completed."
-msgstr "Запрещено писать отчет, если не выполнены все задания, которые связаны с этим отчетом."
+msgstr ""
+"Запрещено писать отчет, если не выполнены все задания, которые связаны с "
+"этим отчетом."
+
+#: ../../common_information/points.rst:121
+msgid ""
+"Please keep in mind that one week before the end of the semester, the "
+"repository will be closed for final assessment."
+msgstr "Просьба иметь ввиду, что за неделю до конца семестра репозиторий будет закрыт для подведения окончательных итогов."
+

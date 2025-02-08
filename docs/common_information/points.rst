@@ -118,3 +118,4 @@ Points
 - Comments:
 
   - It is forbidden to write the report if all tasks are not completed.
+  - Please keep in mind that one week before the end of the semester, the repository will be closed for final assessment.

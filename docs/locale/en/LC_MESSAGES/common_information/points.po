@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-08 23:03+0100\n"
+"POT-Creation-Date: 2025-02-09 00:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -283,5 +283,11 @@ msgstr ""
 
 #: ../../common_information/points.rst:120
 msgid "It is forbidden to write the report if all tasks are not completed."
+msgstr ""
+
+#: ../../common_information/points.rst:121
+msgid ""
+"Please keep in mind that one week before the end of the semester, the "
+"repository will be closed for final assessment."
 msgstr ""
 
