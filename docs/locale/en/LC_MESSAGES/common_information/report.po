@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-05 13:29+0100\n"
+"POT-Creation-Date: 2025-02-08 23:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "Report points"
 msgstr ""
 
-#: ../../common_information/report.rst:7
+#: ../../common_information/report.rst:7 ../../common_information/report.rst:14
 msgid "Completeness"
 msgstr ""
 
@@ -58,10 +58,6 @@ msgstr ""
 
 #: ../../common_information/report.rst:12
 msgid "Requirements for Criteria"
-msgstr ""
-
-#: ../../common_information/report.rst:14
-msgid "Presence and Completeness"
 msgstr ""
 
 #: ../../common_information/report.rst:16
@@ -180,4 +176,7 @@ msgid ""
 "finally accepted and merged into the master branch only after both the "
 "**online** parts of the corresponding lab work are fully completed."
 msgstr ""
+
+#~ msgid "Presence and Completeness"
+#~ msgstr ""
 

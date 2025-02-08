@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-05 13:29+0100\n"
+"POT-Creation-Date: 2025-02-08 23:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -23,27 +23,27 @@ msgstr ""
 
 #: ../../common_information/report.rst:2
 msgid "Report"
-msgstr ""
+msgstr "Отчет"
 
 #: ../../common_information/report.rst:4
 msgid "Report points"
-msgstr ""
+msgstr "Баллы за отчет"
 
-#: ../../common_information/report.rst:7
+#: ../../common_information/report.rst:7 ../../common_information/report.rst:14
 msgid "Completeness"
-msgstr ""
+msgstr "Наличие всех требуемых пунктов"
 
 #: ../../common_information/report.rst:7 ../../common_information/report.rst:27
 msgid "Text Quality"
-msgstr ""
+msgstr "Качество текста"
 
 #: ../../common_information/report.rst:7 ../../common_information/report.rst:34
 msgid "Formatting Quality"
-msgstr ""
+msgstr "Качество оформления"
 
 #: ../../common_information/report.rst:7
 msgid "Total"
-msgstr ""
+msgstr "Итог"
 
 #: ../../common_information/report.rst:9
 msgid "5"
@@ -59,120 +59,116 @@ msgstr ""
 
 #: ../../common_information/report.rst:12
 msgid "Requirements for Criteria"
-msgstr ""
-
-#: ../../common_information/report.rst:14
-msgid "Presence and Completeness"
-msgstr ""
+msgstr "Требования к критериям"
 
 #: ../../common_information/report.rst:16
 msgid "Introduction (can be a short paragraph)"
-msgstr ""
+msgstr "Введение (допустимо на абзац)"
 
 #: ../../common_information/report.rst:17
 msgid "Problem Statement (descriptive)"
-msgstr ""
+msgstr "Постановка задачи (содержательная)"
 
 #: ../../common_information/report.rst:18
 msgid "Algorithm Description"
-msgstr ""
+msgstr "Описание алгоритма"
 
 #: ../../common_information/report.rst:19
 msgid "Description of the Parallel Algorithm Scheme"
-msgstr ""
+msgstr "Описание схемы параллельного алгоритма"
 
 #: ../../common_information/report.rst:20
 msgid ""
 "Description of the MPI, OpenMP, TBB, std::threads, all versions "
 "(depending on the semester) – part of the software implementation "
 "description"
-msgstr ""
+msgstr "Описание OpenMP-версии и TBB-версии или MPI-версии (смотря какой семестр) - пункт описания программной реализации"
 
 #: ../../common_information/report.rst:21
 msgid ""
 "Experimental Results (execution time and algorithm quality assessment), "
 "description of correctness verification"
-msgstr ""
+msgstr "Результаты экспериментов (по времени работы и оценке качества работы алогритма), описание подтверждения корректности"
 
 #: ../../common_information/report.rst:22
 msgid "Conclusions from the Results"
-msgstr ""
+msgstr "Выводы из результатов"
 
 #: ../../common_information/report.rst:23
 msgid "Conclusion"
-msgstr ""
+msgstr "Заключение"
 
 #: ../../common_information/report.rst:24
 msgid "References"
-msgstr ""
+msgstr "Список литературы"
 
 #: ../../common_information/report.rst:25
 msgid "Appendix (include code, ensuring readability)"
-msgstr ""
+msgstr "Приложение (вставить код, сохранить его читаемость)"
 
 #: ../../common_information/report.rst:29
 msgid "Meaningfulness"
-msgstr ""
+msgstr "Осмысленность"
 
 #: ../../common_information/report.rst:30
 msgid "Coherence"
-msgstr ""
+msgstr "Связность"
 
 #: ../../common_information/report.rst:31
 msgid "Clarity"
-msgstr ""
+msgstr "Понятность"
 
 #: ../../common_information/report.rst:32
 msgid "Quality of language (only the most obvious mistakes are considered)"
-msgstr ""
+msgstr "Качество языка (рассматриваются только самые очевидные ошибки)"
 
 #: ../../common_information/report.rst:36
 msgid "Requirements for Headings"
-msgstr ""
+msgstr "Требования к заголовкам"
 
 #: ../../common_information/report.rst:37
 msgid "Requirements for Text Alignment"
-msgstr ""
+msgstr "Требования к выравниванию текста"
 
 #: ../../common_information/report.rst:38
 msgid "Requirements for Paragraph Indentation"
-msgstr ""
+msgstr "Требования к абзацным отступам"
 
 #: ../../common_information/report.rst:39
 msgid "Requirements for the Formatting of Figures, Graphs, and Tables"
-msgstr ""
+msgstr "Требования к оформлению рисунков, графиков и таблиц"
 
 #: ../../common_information/report.rst:40
 msgid ""
 "The “Teacher” field must include the full name, position, and title of "
 "the lecturer"
-msgstr ""
+msgstr "В графе преподаватель должны стоять ФИО, должность и звание лектора"
 
 #: ../../common_information/report.rst:42
 msgid "Comments"
-msgstr ""
+msgstr "Комментарии"
 
 #: ../../common_information/report.rst:44
 msgid "Failure to meet the requirements will result in a deduction of points."
-msgstr ""
+msgstr "За невыполнение требований следует снижение баллов."
 
 #: ../../common_information/report.rst:45
 msgid ""
 "The request will include points and comments regarding any requirement "
 "violations (if applicable)."
-msgstr ""
+msgstr "В реквесте будут писаться баллы и комментарии по поводу нарушения требований (если таковые имеются)"
 
 #: ../../common_information/report.rst:46
 msgid ""
 "The report will be checked only once, and the grade will be assigned "
 "based on the submitted version according to the requirements."
-msgstr ""
+msgstr "Отчет будет проверяться один раз, по версии отчета будет выставлена оценка согласно требованиям"
 
 #: ../../common_information/report.rst:47
 msgid ""
 "The report is reviewed online; the entire review process takes place in "
 "the request."
-msgstr ""
+msgstr "Отчет проверяется заочно, вся проверка проходит в реквесте, очно отчет НЕ сдается."
 
 #: ../../common_information/report.rst:48
 msgid ""
@@ -180,5 +176,8 @@ msgid ""
 " will also be nullified at the end of the semester. The report will be "
 "finally accepted and merged into the master branch only after both the "
 "**online** parts of the corresponding lab work are fully completed."
-msgstr ""
-
+msgstr "Если студент попал в синюю зону по задаче, баллы за отчет также "
+"обнуляются в конце семестра. Отчет окончательно будет "
+"принят и попадет в мастер, когда будет полностью сдана "
+"очно и заочно лабораторная работа, "
+"по которой был сделан отчет."
