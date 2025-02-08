@@ -726,20 +726,40 @@ jobs:
         shell: bash
         run: |
           cmake --build build --config Release --parallel
+      - name: Run func tests (MPI, num_proc=1)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 1
+          OMP_NUM_THREADS: 3
+      - name: Run func tests (MPI, num_proc=2)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 2
+          OMP_NUM_THREADS: 2
+      - name: Run func tests (MPI, num_proc=3)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 3
+          OMP_NUM_THREADS: 1
+      - name: Run func tests (MPI, num_proc=4)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 4
+          OMP_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=1)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 4
   windows-msvc-build-extended:
@@ -788,35 +808,35 @@ jobs:
         run: |
           cmake --build build --config Release --parallel
       - name: Run tests (threads, num_threads=5)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=6)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 6
       - name: Run tests (threads, num_threads=7)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=8)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 8
       - name: Run tests (threads, num_threads=11)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
       - name: Run tests (threads, num_threads=15)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 15
       - name: Run tests (threads, num_threads=16)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 16
   windows-clang-build:

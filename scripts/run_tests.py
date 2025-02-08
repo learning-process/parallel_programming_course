@@ -28,8 +28,18 @@ class PPCRunner:
     def __init__(self):
         self.work_dir = None
         self.valgrind_cmd = "valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all"
-        self.ocv_script_name = "setup_vars_opencv4.sh"
-        self.ocv_script_path = "build/ppc_opencv/install/bin/" + self.ocv_script_name
+
+        if platform.system() == "Windows":
+            self.ocv_script_name = "setup_vars_opencv4.cmd"
+            self.ocv_script_path = "build/ppc_opencv/install/" + self.ocv_script_name
+        else:
+            self.ocv_script_name = "setup_vars_opencv4.sh"
+            self.ocv_script_path = "build/ppc_opencv/install/bin/" + self.ocv_script_name
+
+        if platform.system() == "Windows":
+            self.mpi_exec = "mpiexec"
+        else:
+            self.mpi_exec = "mpirun"
 
     @staticmethod
     def __get_project_path():
@@ -39,6 +49,8 @@ class PPCRunner:
 
     @staticmethod
     def __source_script(script_path):
+        if platform.system() == "Windows":
+            return
         command = f"bash -c 'source {script_path} && env'"
         result = subprocess.run(command, stdout=subprocess.PIPE, shell=True, text=True)
         if result.returncode == 0:
@@ -62,7 +74,8 @@ class PPCRunner:
             env_vars = self.__source_script(Path(_work_dir) / self.ocv_script_name)
 
         self.work_dir = Path(_work_dir)
-        os.environ.update(env_vars)
+        if not platform.system() == "Windows":
+            os.environ.update(env_vars)
 
     @staticmethod
     def __run_exec(command):
@@ -83,10 +96,13 @@ class PPCRunner:
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'seq_func_tests'} {self.__get_gtest_settings(1)}")
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'stl_func_tests'} {self.__get_gtest_settings(1)}")
 
-        self.__run_exec(f"{self.work_dir / 'omp_func_tests'} {self.__get_gtest_settings(3)}")
         self.__run_exec(f"{self.work_dir / 'seq_func_tests'} {self.__get_gtest_settings(3)}")
         self.__run_exec(f"{self.work_dir / 'stl_func_tests'} {self.__get_gtest_settings(3)}")
         self.__run_exec(f"{self.work_dir / 'tbb_func_tests'} {self.__get_gtest_settings(3)}")
+
+        if os.environ.get("CLANG_BUILD") == 1:
+            return
+        self.__run_exec(f"{self.work_dir / 'omp_func_tests'} {self.__get_gtest_settings(3)}")
 
     def run_core(self):
         if platform.system() == "Linux" and not os.environ.get("ASAN_RUN"):
@@ -97,11 +113,14 @@ class PPCRunner:
         self.__run_exec(f"{self.work_dir / 'ref_func_tests'}  {self.__get_gtest_settings(3)}")
 
     def run_processes(self, additional_mpi_args):
+        if os.environ.get("CLANG_BUILD") == 1:
+            return
+
         proc_count = os.environ.get("PROC_COUNT")
         if proc_count is None:
             raise EnvironmentError("Required environment variable 'PROC_COUNT' is not set.")
 
-        mpi_running = f"mpirun {additional_mpi_args} -np {proc_count}"
+        mpi_running = f"{self.mpi_exec} {additional_mpi_args} -np {proc_count}"
         if not os.environ.get("ASAN_RUN"):
             self.__run_exec(f"{mpi_running} {self.work_dir / 'all_func_tests'} {self.__get_gtest_settings(10)}")
             self.__run_exec(f"{mpi_running} {self.work_dir / 'mpi_func_tests'} {self.__get_gtest_settings(10)}")
@@ -109,12 +128,13 @@ class PPCRunner:
     def run_performance(self):
         if not os.environ.get("ASAN_RUN"):
             mpi_running = ""
-            if platform.system() == "Linux":
-                mpi_running = "mpirun -np 4"
+            if platform.system() == "Linux" and platform.system() == "Windows":
+                mpi_running = f"{self.mpi_exec} -np 4"
             elif platform.system() == "Darwin":
-                mpi_running = "mpirun -np 2"
+                mpi_running = f"{self.mpi_exec} -np 2"
             self.__run_exec(f"{mpi_running} {self.work_dir / 'all_perf_tests'} {self.__get_gtest_settings(1)}")
             self.__run_exec(f"{mpi_running} {self.work_dir / 'mpi_perf_tests'} {self.__get_gtest_settings(1)}")
+
         self.__run_exec(f"{self.work_dir / 'omp_perf_tests'} {self.__get_gtest_settings(1)}")
         self.__run_exec(f"{self.work_dir / 'seq_perf_tests'} {self.__get_gtest_settings(1)}")
         self.__run_exec(f"{self.work_dir / 'stl_perf_tests'} {self.__get_gtest_settings(1)}")
