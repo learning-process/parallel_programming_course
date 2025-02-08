@@ -721,11 +721,52 @@ jobs:
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
           -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-          -D CMAKE_BUILD_TYPE=RELEASE
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
       - name: Build project
         shell: bash
         run: |
           cmake --build build --config Release --parallel
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: Compress-Archive -Path install -DestinationPath windows-msvc-install.zip
+        shell: pwsh
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-msvc-install
+          path: windows-msvc-install.zip
+  windows-msvc-test:
+    needs:
+      - windows-msvc-build
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: choco install openssl --execution-timeout 3600
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-msvc-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-msvc-install.zip -DestinationPath . -Force
+        shell: pwsh
       - name: Run func tests (MPI, num_proc=1)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
@@ -762,17 +803,15 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 4
-  windows-msvc-build-extended:
+  windows-msvc-test-extended:
     needs:
-      - windows-msvc-build
+      - windows-msvc-test
     runs-on: windows-latest
     defaults:
       run:
         shell: bash
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
@@ -787,26 +826,13 @@ jobs:
           timeout_minutes: 60
           max_attempts: 3
           command: choco install openssl --execution-timeout 3600
-      - name: Setup ccache
-        uses: Chocobo1/setup-ccache-action@v1
+      - name: Download installed package
+        uses: actions/download-artifact@v4
         with:
-          windows_compile_environment: msvc
-      - name: Setup ninja
-        uses: seanmiddleditch/gha-setup-ninja@v6
-      - name: Setup MSVC for Ninja again
-        uses: ilammy/msvc-dev-cmd@v1
-      - name: CMake configure
-        shell: bash
-        run: >
-          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-          -D CMAKE_BUILD_TYPE=RELEASE
-      - name: Build project
-        shell: bash
-        run: |
-          cmake --build build --config Release --parallel
+          name: windows-msvc-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-msvc-install.zip -DestinationPath . -Force
+        shell: pwsh
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -875,22 +901,22 @@ jobs:
           CC: clang-cl
           CXX: clang-cl
       - name: Run tests (threads, num_threads=1)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 1
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=2)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 2
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=3)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 3
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=4)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 4
           CLANG_BUILD: 1
@@ -929,42 +955,42 @@ jobs:
           CC: clang-cl
           CXX: clang-cl
       - name: Run tests (threads, num_threads=5)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=6)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 6
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=7)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=8)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 8
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=11)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 11
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=13)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=15)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 15
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=16)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 16
           CLANG_BUILD: 1
