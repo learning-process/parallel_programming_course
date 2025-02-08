@@ -23,57 +23,57 @@ msgstr ""
 
 #: ../../common_information/introduction.rst:2
 msgid "Introduction"
-msgstr ""
+msgstr "Вводная информация"
 
 #: ../../common_information/introduction.rst:5
 msgid "Practice"
-msgstr ""
+msgstr "Практика"
 
 #: ../../common_information/introduction.rst:7
 msgid "We work online"
-msgstr ""
+msgstr "Работа происходит в режиме online"
 
 #: ../../common_information/introduction.rst:9
 msgid "Use GitHub repository"
-msgstr ""
+msgstr "Используется GitHub репозиторий"
 
 #: ../../common_information/introduction.rst:10
 msgid "Use Pull Requests"
-msgstr ""
+msgstr "Для задач задействуются Pull Request'ы"
 
 #: ../../common_information/introduction.rst:11
 msgid "Merge into the master branch"
-msgstr ""
+msgstr "Рабочая git-ветка курса - master"
 
 #: ../../common_information/introduction.rst:12
 msgid "Test verification"
-msgstr ""
+msgstr "Используются различные виды тестирования"
 
 #: ../../common_information/introduction.rst:14
 msgid "Task distribution is random for each student."
-msgstr ""
+msgstr "Распределение задач производится случайным образом для каждого человека"
 
 #: ../../common_information/introduction.rst:15
 msgid ""
 "An example for each technology can be found in the corresponding "
 "directory: ``tasks/<all/omp/tbb/seq/stl/mpi>/example``."
-msgstr ""
+msgstr "Пример для каждой технологии находится в директории: ``tasks/<all/omp/tbb/seq/stl/mpi>/example``."
 
 #: ../../common_information/introduction.rst:16
 msgid ""
 "In each repository, the README.md contains a link to the course "
 "documentation (**read it fully!!!**)."
-msgstr ""
+msgstr "В каждом из репозиториев в README.md находится документация курса (просьба читать полностью!!!)"
 
 #: ../../common_information/introduction.rst:17
 msgid ""
 "Additionally, each repository includes an example of a properly formatted"
 " PULL REQUEST."
-msgstr ""
+msgstr "Также в каждом репозитории представлен пример оформления PULL REQUEST'а"
 
 #: ../../common_information/introduction.rst:18
 msgid "Submission of all tasks is mandatory to pass the course."
-msgstr ""
+msgstr "Все задачи обязательны к выполнению"
 
 #: ../../common_information/introduction.rst:19
 msgid ""
@@ -81,17 +81,19 @@ msgid ""
 "monitored. If a task fails in the master, it is disabled, and a record of"
 " this is added to the score table. All disabled tasks will result in a "
 "zero points result for those tasks at the end of the semester."
-msgstr ""
+msgstr "Задача, которая оказывается в мастер-ветке, продолжает проверяться. "
+"Если задача упала (падение теста) в мастере, она отключается, и запись об этом добавляется в таблицу результатов. "
+"Все отключенные (не исправленные) задания в конце семестра приведут к обнулению баллов за их выподнение"
 
 #: ../../common_information/introduction.rst:21
 msgid "All resources for using the repository will be provided here:"
-msgstr ""
+msgstr "Все материалы по использованию репозитория будут представлены здесь:"
 
 #: ../../common_information/introduction.rst:23
 msgid ""
 "`Git for half an hour: A Beginner’s Guide <https://proglib.io/p/git-for-"
 "half-an-hour>`__"
-msgstr ""
+msgstr "`Git за полчаса: руководство для начинающих <https://proglib.io/p/git-for-half-an-hour>`__"
 
 #: ../../common_information/introduction.rst:24
 #, python-format
@@ -99,19 +101,25 @@ msgid ""
 "`Getting Started with Git and GitHub: A Beginner’s Guide "
 "<https://medium.com/nuances-of-"
 "programming/%D0%B7%D0%BD%D0%B0%D0%BA%D0%BE%D0%BC%D1%81%D1%82%D0%B2%D0%BE-%D1%81-git-%D0%B8-github-%D1%80%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE-%D0%B4%D0%BB%D1%8F-%D0%BD%D0%B0%D1%87%D0%B8%D0%BD%D0%B0%D1%8E%D1%89%D0%B8%D1%85-54ea2567d76c>`__"
-msgstr ""
+msgstr "`Знакомство с Git и GitHub: руководство для начинающих "
+"<https://medium.com/nuances-of-"
+"programming/%D0%B7%D0%BD%D0%B0%D0%BA%D0%BE%D0%BC%D1%81%D1%82%D0%B2%D0%BE-%D1%81-git-%D0%B8-github-%D1%80%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE-%D0%B4%D0%BB%D1%8F-%D0%BD%D0%B0%D1%87%D0%B8%D0%BD%D0%B0%D1%8E%D1%89%D0%B8%D1%85-54ea2567d76c>`__"
 
 #: ../../common_information/introduction.rst:25
 msgid ""
 "`Git: A Quick Start Guide to Using Core Operations with Explanations "
 "<https://tproger.ru/translations/git-quick-start/>`__"
 msgstr ""
+"`Git. Быстрый старт по использованию основных операций с объяснениями "
+"<https://tproger.ru/translations/git-quick-start/>`__"
 
 #: ../../common_information/introduction.rst:26
 msgid ""
 "`Conflicts resolving in Git "
 "<https://githowto.com/ru/resolving_conflicts>`__"
 msgstr ""
+"`Разрешение конфликтов в Git "
+"<https://githowto.com/ru/resolving_conflicts>`__"
 
 #: ../../common_information/introduction.rst:27
 msgid "`Google testing framework (gtest) <https://habr.com/ru/post/119090/>`__"
@@ -125,41 +133,51 @@ msgstr ""
 
 #: ../../common_information/introduction.rst:29
 msgid "`GitHub Actions documentation <https://docs.github.com/ru/actions>`__"
-msgstr ""
+msgstr "`GitHub Actions документация <https://docs.github.com/ru/actions>`__"
 
 #: ../../common_information/introduction.rst:30
 msgid ""
 "`Parallel Programming Technologies. Message Passing Interface (MPI) "
 "<https://parallel.ru/vvv/mpi.html#p1>`__"
 msgstr ""
+"`Технологии параллельного программирования. Message Passing Interface (MPI) "
+"<https://parallel.ru/vvv/mpi.html#p1>`__"
 
 #: ../../common_information/introduction.rst:31
 msgid ""
 "`Typing and Layout in the System LaTeX <https://www.mccme.ru/free-"
 "books/llang/newllang.pdf>`__"
 msgstr ""
+"`Набор и вёрстка в системе LaTeX <https://www.mccme.ru/free-"
+"books/llang/newllang.pdf>`__"
 
 #: ../../common_information/introduction.rst:32
 msgid ""
 "`LaTeX for the beginners "
 "<https://web.archive.org/web/20210420184700/http://www.docs.is.ed.ac.uk/skills/documents/3722/3722-2014.pdf>`__"
 msgstr ""
+"`LaTeX для начинающих "
+"<https://web.archive.org/web/20210420184700/http://www.docs.is.ed.ac.uk/skills/documents/3722/3722-2014.pdf>`__"
 
 #: ../../common_information/introduction.rst:33
 msgid "`What is OpenMP? <https://parallel.ru/tech/tech_dev/openmp.html>`__"
-msgstr ""
+msgstr "`Что такое OpenMP? <https://parallel.ru/tech/tech_dev/openmp.html>`__"
 
 #: ../../common_information/introduction.rst:34
 msgid ""
 "`TBB-1 "
 "<https://web.archive.org/web/20220406024622/http://www.unn.ru/pages/e-library/aids/2007/12.pdf>`__"
 msgstr ""
+"`Средства разработки параллельных программ для систем с общей памятью. Библиотека Intel Threading Building Blocks  "
+"<https://web.archive.org/web/20220406024622/http://www.unn.ru/pages/e-library/aids/2007/12.pdf>`__"
 
 #: ../../common_information/introduction.rst:35
 msgid ""
 "`Writing Multithreaded Applications in C++ <https://eax.me/cpp-"
 "multithreading/>`__"
 msgstr ""
+"`Написание многопоточных приложений на C++ <https://eax.me/cpp-"
+"multithreading/>`__"
 
 #: ../../common_information/introduction.rst:36
 msgid ""
@@ -167,12 +185,17 @@ msgid ""
 "<https://web.archive.org/web/20200608173050/http://www.quizful.net/post"
 "/multithreading-cpp11>`__"
 msgstr ""
+"`Многопоточность, новые возможности стандарта C++11 "
+"<https://web.archive.org/web/20200608173050/http://www.quizful.net/post"
+"/multithreading-cpp11>`__"
 
 #: ../../common_information/introduction.rst:37
 msgid ""
 "`Introduction to Parallel Computing "
 "<http://ikt.muctr.ru/images/info/2Lecture_3.pdf>`__"
 msgstr ""
+"`Введение в параллельные вычисления "
+"<http://ikt.muctr.ru/images/info/2Lecture_3.pdf>`__"
 
 #: ../../common_information/introduction.rst:39
 msgid ""
@@ -180,4 +203,5 @@ msgid ""
 " learning process for better usability. Be prepared for changes, check "
 "and update them periodically!!!*"
 msgstr ""
-
+"\\* *Все инструкции, репозитории и таблицы могут быть изменены в ходе учебного процесса "
+"для более удобного использования, будьте готовы к изменениям и периодически проверяйте это!!!!!!*"
