@@ -5,11 +5,11 @@ Points
 
   - 1st MPI task
 
-    ======== ===========
-    Solution Compilation
-    ======== ===========
-    5        5
-    ======== ===========
+    +----------+
+    | Solution |
+    +==========+
+    | 10       |
+    +----------+
 
   - 2nd MPI task
 
@@ -33,11 +33,11 @@ Points
 
   - Sequential version
 
-    ======== ===========
-    Solution Compilation
-    ======== ===========
-    2        2
-    ======== ===========
+    +----------+
+    | Solution |
+    +==========+
+    | 4        |
+    +----------+
 
   - OpenMP version
 
