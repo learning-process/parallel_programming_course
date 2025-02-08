@@ -11,7 +11,7 @@ def get_project_path():
 
 def run_script(_script_path):
     result = subprocess.run(
-        f"python3  {_script_path} --running-type=performance-list", shell=True, capture_output=True, text=True)
+        f"{sys.executable} {_script_path} --running-type=performance-list", shell=True, capture_output=True, text=True)
     if result.returncode != 0:
         raise Exception(f"Subprocess return {result.returncode}.")
 
