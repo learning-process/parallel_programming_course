@@ -297,4 +297,3 @@ msgid ""
 "Please keep in mind that one week before the end of the semester, the "
 "repository will be closed for final assessment."
 msgstr "Просьба иметь ввиду, что за неделю до конца семестра репозиторий будет закрыт для подведения окончательных итогов."
-
