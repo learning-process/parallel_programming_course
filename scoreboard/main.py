@@ -30,6 +30,7 @@ html_content = f"""
 </head>
 <body>
     <h1>Scoreboard</h1>
+    <h3 style="color: red;">Note:</b> This is experimental and results are for reference only!</h3>
     <p>
         <b>(S)olution</b> - The correctness and completeness of the implemented solution.<br/>
         <b>(A)cceleration</b> - The process of speeding up software to improve performance.
@@ -41,19 +42,21 @@ html_content = f"""
     </p>
     <table>
         <tr>
-            <th colspan=5>Tasks</th>
+            <th rowspan=2>Tasks</th>
             {columns}
-            <th>Total</th>
+            <th rowspan=2>Total</th>
         </tr>
         <tr>
-            <th colspan=5></th>
-            {''.join(['<th>S</th><th>A</th><th>E</th><th>D</th><th>P</th>' for _ in range(len(task_types))])}
-            <th></th>
+            {''.join([
+                f'<th style="text-align: center;">{letter}</th>'
+                for _ in range(len(task_types))
+                for letter in ('S', 'A', 'E', 'D', 'P')
+            ])}
         </tr>
 """
 
-for dir in directories:
-    html_content += f"<tr><td colspan=5>{dir}</td>"
+for dir in sorted(directories.keys()):
+    html_content += f"<tr><td>{dir}</td>"
     total_count = 0
     for task_type in task_types:
         if directories[dir].get(task_type) == "done":
