@@ -10,7 +10,7 @@ def init_cmd_args():
     parser.add_argument(
         "--running-type",
         required=True,
-        choices=["threads", "processes"],
+        choices=["threads", "processes", "performance"],
         help="Specify the execution mode. Choose 'threads' for multithreading or 'processes' for multiprocessing."
     )
     parser.add_argument(
@@ -31,7 +31,8 @@ class PPCRunner:
         self.ocv_script_name = "setup_vars_opencv4.sh"
         self.ocv_script_path = "build/ppc_opencv/install/bin/" + self.ocv_script_name
 
-    def __get_project_path(self):
+    @staticmethod
+    def __get_project_path():
         script_path = Path(__file__).resolve()  # Absolute path of the script
         script_dir = script_path.parent  # Directory containing the script
         return script_dir.parent
@@ -105,16 +106,35 @@ class PPCRunner:
             self.__run_exec(f"{mpi_running} {self.work_dir / 'all_func_tests'} {self.__get_gtest_settings(10)}")
             self.__run_exec(f"{mpi_running} {self.work_dir / 'mpi_func_tests'} {self.__get_gtest_settings(10)}")
 
+    def run_performance(self):
+        if not os.environ.get("ASAN_RUN"):
+            mpi_running = ""
+            if platform.system() == "Linux":
+                mpi_running = "mpirun -np 4"
+            elif platform.system() == "Darwin":
+                mpi_running = "mpirun -np 2"
+            self.__run_exec(f"{mpi_running} {self.work_dir / 'all_perf_tests'} {self.__get_gtest_settings(1)}")
+            self.__run_exec(f"{mpi_running} {self.work_dir / 'mpi_perf_tests'} {self.__get_gtest_settings(1)}")
+        self.__run_exec(f"{self.work_dir / 'omp_perf_tests'} {self.__get_gtest_settings(1)}")
+        self.__run_exec(f"{self.work_dir / 'seq_perf_tests'} {self.__get_gtest_settings(1)}")
+        self.__run_exec(f"{self.work_dir / 'stl_perf_tests'} {self.__get_gtest_settings(1)}")
+        self.__run_exec(f"{self.work_dir / 'tbb_perf_tests'} {self.__get_gtest_settings(1)}")
+
 
 if __name__ == "__main__":
     args_dict = init_cmd_args()
 
     ppc_runner = PPCRunner()
     ppc_runner.setup_env()
-    ppc_runner.run_core()
+
+    if args_dict["running_type"] in ["threads", "processes"]:
+        ppc_runner.run_core()
+
     if args_dict["running_type"] == "threads":
         ppc_runner.run_threads()
     elif args_dict["running_type"] == "processes":
         ppc_runner.run_processes(args_dict["additional_mpi_args"])
+    elif args_dict["running_type"] == "performance":
+        ppc_runner.run_performance()
     else:
         raise Exception("running-type is wrong!")
