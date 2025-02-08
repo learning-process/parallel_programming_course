@@ -31,10 +31,10 @@ class PPCRunner:
 
         if platform.system() == "Windows":
             self.ocv_script_name = "setup_vars_opencv4.cmd"
-            self.ocv_script_path = "build/ppc_opencv/install/" + self.ocv_script_name
+            self.ocv_script_path = Path("build/ppc_opencv/install/") / self.ocv_script_name
         else:
             self.ocv_script_name = "setup_vars_opencv4.sh"
-            self.ocv_script_path = "build/ppc_opencv/install/bin/" + self.ocv_script_name
+            self.ocv_script_path = Path("build/ppc_opencv/install/bin/") / self.ocv_script_name
 
         if platform.system() == "Windows":
             self.mpi_exec = "mpiexec"

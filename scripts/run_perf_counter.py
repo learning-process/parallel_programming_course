@@ -1,6 +1,21 @@
 import subprocess
 import re
+import sys
 from pathlib import Path
+
+
+def init_cmd_args():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--required-tests-number",
+        required=True,
+        type=int,
+        help="Specify the number of tests to run (must be an integer)."
+    )
+    args = parser.parse_args()
+    _args_dict = vars(args)
+    return _args_dict
 
 
 def get_project_path():
@@ -19,10 +34,13 @@ def run_script(_script_path):
 
 
 if __name__ == "__main__":
-    script_abs_path = Path(get_project_path()) / "scripts/run_tests.py"
-    tests_list = run_script(script_abs_path)
+    args_dict = init_cmd_args()
+    tests_list = run_script(Path(get_project_path()) / "scripts/run_tests.py")
+    tests_number = len(tests_list)
 
     pattern = r".*all\.|.*_mpi\.|.*_omp\.|.*_seq\.|.*_stl\.|.*_tbb\."
     test_matches = [test_name for test_name in tests_list if re.match(pattern, test_name)]
-    if len(tests_list) != 3 * len(test_matches):
-        raise Exception(f"Count of all test {len(tests_list)} != count of theoretical count test {len(test_matches)}.")
+    required_tests_number = (args_dict["required_tests_number"] + 1) * len(test_matches)
+
+    if tests_number != required_tests_number:
+        raise Exception(f"Count of all tests {tests_number} != count of required tests {required_tests_number}.")
