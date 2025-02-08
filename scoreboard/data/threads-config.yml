@@ -1,0 +1,28 @@
+scoreboard:
+  task:
+    mpi:
+      solution:
+        max: 10
+      visible: true
+    omp:
+      solution:
+        max: 9
+      visible: true
+    seq:
+      solution:
+        max: 4
+      visible: true
+    stl:
+      solution:
+        max: 14
+      visible: true
+    tbb:
+      solution:
+        max: 9
+      visible: true
+    all:
+      solution:
+        max: 18
+      visible: true
+  plagiarism:
+    coefficient: 0.5
