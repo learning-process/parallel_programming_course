@@ -10,7 +10,7 @@ def init_cmd_args():
     parser.add_argument(
         "--running-type",
         required=True,
-        choices=["threads", "processes", "performance"],
+        choices=["threads", "processes", "performance", "performance-list"],
         help="Specify the execution mode. Choose 'threads' for multithreading or 'processes' for multiprocessing."
     )
     parser.add_argument(
@@ -140,6 +140,10 @@ class PPCRunner:
         self.__run_exec(f"{self.work_dir / 'stl_perf_tests'} {self.__get_gtest_settings(1)}")
         self.__run_exec(f"{self.work_dir / 'tbb_perf_tests'} {self.__get_gtest_settings(1)}")
 
+    def run_performance_list(self):
+        for task_type in ["all", "mpi", "omp", "seq", "stl", "tbb"]:
+            self.__run_exec(f"{self.work_dir / f'{task_type}_perf_tests'} --gtest_list_tests")
+
 
 if __name__ == "__main__":
     args_dict = init_cmd_args()
@@ -156,5 +160,7 @@ if __name__ == "__main__":
         ppc_runner.run_processes(args_dict["additional_mpi_args"])
     elif args_dict["running_type"] == "performance":
         ppc_runner.run_performance()
+    elif args_dict["running_type"] == "performance-list":
+        ppc_runner.run_performance_list()
     else:
         raise Exception("running-type is wrong!")

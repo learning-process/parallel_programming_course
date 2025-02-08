@@ -1136,7 +1136,7 @@ jobs:
           tar -xzvf ubuntu-gcc-install.tar.gz -C install
       - name: Run perf count checker
         run: |
-          source scripts/run_perf_count_checker.sh
+          python3 scripts/run_perf_counter.py
       - name: Run perf tests
         run: |
           source scripts/generate_perf_results.sh
