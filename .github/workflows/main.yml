@@ -104,43 +104,39 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-gcc-install.tar.gz -C install
       - name: Run func tests (MPI, num_proc=1)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 1
           OMP_NUM_THREADS: 3
       - name: Run func tests (MPI, num_proc=2)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 2
           OMP_NUM_THREADS: 2
       - name: Run func tests (MPI, num_proc=3)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 3
           OMP_NUM_THREADS: 1
       - name: Run func tests (MPI, num_proc=4)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 4
           OMP_NUM_THREADS: 1
       - name: Run func tests (threads, num_threads=1)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 1
       - name: Run func tests (threads, num_threads=2)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 2
       - name: Run func tests (threads, num_threads=3)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 3
       - name: Run func tests (threads, num_threads=4)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 4
   ubuntu-gcc-test-extended:
@@ -164,35 +160,35 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-gcc-install.tar.gz -C install
       - name: Run func tests (threads, num_threads=5)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
       - name: Run func tests (threads, num_threads=6)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 6
       - name: Run func tests (threads, num_threads=7)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
       - name: Run func tests (threads, num_threads=8)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 8
       - name: Run func tests (threads, num_threads=11)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 11
       - name: Run func tests (threads, num_threads=13)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
       - name: Run func tests (threads, num_threads=15)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 15
       - name: Run func tests (threads, num_threads=16)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 16
   ubuntu-clang-build:
@@ -267,43 +263,39 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-clang-install.tar.gz -C install
       - name: Run func tests (MPI, num_proc=1)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 1
           OMP_NUM_THREADS: 3
       - name: Run func tests (MPI, num_proc=2)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 2
           OMP_NUM_THREADS: 2
       - name: Run func tests (MPI, num_proc=3)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 3
           OMP_NUM_THREADS: 1
       - name: Run func tests (MPI, num_proc=4)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 4
           OMP_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=1)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 4
   ubuntu-clang-test-extended:
@@ -329,35 +321,35 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-clang-install.tar.gz -C install
       - name: Run tests (threads, num_threads=5)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=6)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 6
       - name: Run tests (threads, num_threads=7)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=8)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 8
       - name: Run tests (threads, num_threads=11)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
       - name: Run tests (threads, num_threads=15)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 15
       - name: Run tests (threads, num_threads=16)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 16
   ubuntu-clang-sanitizer-build:
@@ -433,8 +425,7 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-clang-sanitizer-install.tar.gz -C install
       - name: Run tests (MPI)
-        run: |
-          source scripts/run_mpi.sh "--oversubscribe"
+        run: python3 scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
         env:
           PROC_COUNT: 2
           OMP_NUM_THREADS: 2
@@ -442,28 +433,28 @@ jobs:
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
       - name: Run tests (threads, num_threads=1)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 1
           ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
       - name: Run tests (threads, num_threads=2)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 2
           ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
       - name: Run tests (threads, num_threads=3)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 3
           ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
       - name: Run tests (threads, num_threads=4)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 4
           ASAN_RUN: 1
@@ -492,42 +483,42 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-clang-sanitizer-install.tar.gz -C install
       - name: Run tests (threads, num_threads=5)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
           ASAN_RUN: 1
       - name: Run tests (threads, num_threads=6)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 6
           ASAN_RUN: 1
       - name: Run tests (threads, num_threads=7)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
           ASAN_RUN: 1
       - name: Run tests (threads, num_threads=8)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 8
           ASAN_RUN: 1
       - name: Run tests (threads, num_threads=11)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 11
           ASAN_RUN: 1
       - name: Run tests (threads, num_threads=13)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
           ASAN_RUN: 1
       - name: Run tests (threads, num_threads=15)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 15
           ASAN_RUN: 1
       - name: Run tests (threads, num_threads=16)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 16
           ASAN_RUN: 1
@@ -600,43 +591,39 @@ jobs:
           mkdir -p install
           tar -xzvf macos-clang-sanitizer-install.tar.gz -C install
       - name: Run func tests (MPI, num_proc=1)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 1
           OMP_NUM_THREADS: 3
       - name: Run func tests (MPI, num_proc=2)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 2
           OMP_NUM_THREADS: 2
       - name: Run func tests (MPI, num_proc=3)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 3
           OMP_NUM_THREADS: 1
       - name: Run func tests (MPI, num_proc=4)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 4
           OMP_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=1)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 4
   macos-clang-test-extended:
@@ -662,35 +649,35 @@ jobs:
           mkdir -p install
           tar -xzvf macos-clang-sanitizer-install.tar.gz -C install
       - name: Run tests (threads, num_threads=5)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=6)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 6
       - name: Run tests (threads, num_threads=7)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=8)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 8
       - name: Run tests (threads, num_threads=11)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
       - name: Run tests (threads, num_threads=15)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 15
       - name: Run tests (threads, num_threads=16)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 16
   windows-msvc-build:
@@ -734,28 +721,23 @@ jobs:
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
           -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-          -D CMAKE_BUILD_TYPE=RELEASE
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
       - name: Build project
         shell: bash
         run: |
           cmake --build build --config Release --parallel
-      - name: Run tests (threads, num_threads=1)
-        run: scripts/run.bat
-        env:
-          OMP_NUM_THREADS: 1
-      - name: Run tests (threads, num_threads=2)
-        run: scripts/run.bat
-        env:
-          OMP_NUM_THREADS: 2
-      - name: Run tests (threads, num_threads=3)
-        run: scripts/run.bat
-        env:
-          OMP_NUM_THREADS: 3
-      - name: Run tests (threads, num_threads=4)
-        run: scripts/run.bat
-        env:
-          OMP_NUM_THREADS: 4
-  windows-msvc-build-extended:
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: Compress-Archive -Path install -DestinationPath windows-msvc-install.zip
+        shell: pwsh
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-msvc-install
+          path: windows-msvc-install.zip
+  windows-msvc-test:
     needs:
       - windows-msvc-build
     runs-on: windows-latest
@@ -764,8 +746,6 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
@@ -780,56 +760,109 @@ jobs:
           timeout_minutes: 60
           max_attempts: 3
           command: choco install openssl --execution-timeout 3600
-      - name: Setup ccache
-        uses: Chocobo1/setup-ccache-action@v1
+      - name: Download installed package
+        uses: actions/download-artifact@v4
         with:
-          windows_compile_environment: msvc
-      - name: Setup ninja
-        uses: seanmiddleditch/gha-setup-ninja@v6
-      - name: Setup MSVC for Ninja again
-        uses: ilammy/msvc-dev-cmd@v1
-      - name: CMake configure
+          name: windows-msvc-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-msvc-install.zip -DestinationPath . -Force
+        shell: pwsh
+      - name: Run func tests (MPI, num_proc=1)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 1
+          OMP_NUM_THREADS: 3
+      - name: Run func tests (MPI, num_proc=2)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 2
+          OMP_NUM_THREADS: 2
+      - name: Run func tests (MPI, num_proc=3)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 3
+          OMP_NUM_THREADS: 1
+      - name: Run func tests (MPI, num_proc=4)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 4
+          OMP_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=1)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=2)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 2
+      - name: Run tests (threads, num_threads=3)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 3
+      - name: Run tests (threads, num_threads=4)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 4
+  windows-msvc-test-extended:
+    needs:
+      - windows-msvc-test
+    runs-on: windows-latest
+    defaults:
+      run:
         shell: bash
-        run: >
-          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-          -D CMAKE_BUILD_TYPE=RELEASE
-      - name: Build project
-        shell: bash
-        run: |
-          cmake --build build --config Release --parallel
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: choco install openssl --execution-timeout 3600
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-msvc-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-msvc-install.zip -DestinationPath . -Force
+        shell: pwsh
       - name: Run tests (threads, num_threads=5)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=6)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 6
       - name: Run tests (threads, num_threads=7)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=8)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 8
       - name: Run tests (threads, num_threads=11)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
       - name: Run tests (threads, num_threads=15)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 15
       - name: Run tests (threads, num_threads=16)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 16
   windows-clang-build:
@@ -857,37 +890,28 @@ jobs:
           cmake -S . -B build -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
           -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
           -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-          -D CMAKE_BUILD_TYPE=RELEASE
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
           CC: clang-cl
           CXX: clang-cl
       - name: Build project
         run: |
-          cmake --build build --config Release --parallel -v
+          cmake --build build --config Release --parallel
         env:
           CC: clang-cl
           CXX: clang-cl
-      - name: Run tests (threads, num_threads=1)
-        run: scripts/run.bat
-        env:
-          OMP_NUM_THREADS: 1
-          CLANG_BUILD: 1
-      - name: Run tests (threads, num_threads=2)
-        run: scripts/run.bat
-        env:
-          OMP_NUM_THREADS: 2
-          CLANG_BUILD: 1
-      - name: Run tests (threads, num_threads=3)
-        run: scripts/run.bat
-        env:
-          OMP_NUM_THREADS: 3
-          CLANG_BUILD: 1
-      - name: Run tests (threads, num_threads=4)
-        run: scripts/run.bat
-        env:
-          OMP_NUM_THREADS: 4
-          CLANG_BUILD: 1
-  windows-clang-build-extended:
+      - name: Install project
+        run: |
+          cmake --install build
+      - name: Archive installed package
+        run: Compress-Archive -Path install -DestinationPath windows-clang-install.zip
+        shell: pwsh
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-clang-install
+          path: windows-clang-install.zip
+  windows-clang-test:
     needs:
       - windows-clang-build
     runs-on: windows-latest
@@ -896,68 +920,114 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
           vs-version: 'latest'
-      - name: Setup ninja
-        uses: seanmiddleditch/gha-setup-ninja@v6
-      - name: Setup MSVC for Ninja again
-        uses: ilammy/msvc-dev-cmd@v1
-      - name: CMake configure
-        run: >
-          cmake -S . -B build -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
-          -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
-          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-          -D CMAKE_BUILD_TYPE=RELEASE
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: choco install openssl --execution-timeout 3600
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-clang-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-clang-install.zip -DestinationPath . -Force
+        shell: pwsh
+      - name: Run tests (threads, num_threads=1)
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          CC: clang-cl
-          CXX: clang-cl
-      - name: Build project
-        run: |
-          cmake --build build --config Release --parallel -v
+          OMP_NUM_THREADS: 1
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=2)
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          CC: clang-cl
-          CXX: clang-cl
+          OMP_NUM_THREADS: 2
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=3)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 3
+          CLANG_BUILD: 1
+      - name: Run tests (threads, num_threads=4)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 4
+          CLANG_BUILD: 1
+  windows-clang-test-extended:
+    needs:
+      - windows-clang-test
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: choco install openssl --execution-timeout 3600
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-clang-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-clang-install.zip -DestinationPath . -Force
+        shell: pwsh
       - name: Run tests (threads, num_threads=5)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=6)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 6
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=7)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=8)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 8
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=11)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 11
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=13)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=15)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 15
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=16)
-        run: scripts/run.bat
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 16
           CLANG_BUILD: 1
@@ -995,25 +1065,24 @@ jobs:
         run: |
           cmake --build build --parallel
       - name: Run tests (MPI)
-        run: |
-          source scripts/run_mpi.sh
+        run: python3 scripts/run_tests.py --running-type="processes"
         env:
           PROC_COUNT: 2
           OMP_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=1)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
-        run: source scripts/run_threads.sh
+        run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 4
       - name: Generate gcovr Coverage Data
@@ -1046,8 +1115,8 @@ jobs:
     needs:
       - ubuntu-gcc-build-codecov
       - ubuntu-clang-sanitizer-test-extended
-      - windows-clang-build-extended
-      - windows-msvc-build-extended
+      - windows-clang-test-extended
+      - windows-msvc-test-extended
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -1067,7 +1136,7 @@ jobs:
           tar -xzvf ubuntu-gcc-install.tar.gz -C install
       - name: Run perf count checker
         run: |
-          source scripts/run_perf_count_checker.sh
+          python3 scripts/run_perf_counter.py --required-tests-number=2
       - name: Run perf tests
         run: |
           source scripts/generate_perf_results.sh
