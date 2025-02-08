@@ -128,7 +128,7 @@ class PPCRunner:
     def run_performance(self):
         if not os.environ.get("ASAN_RUN"):
             mpi_running = ""
-            if platform.system() == "Linux" and platform.system() == "Windows":
+            if platform.system() in ("Linux", "Windows"):
                 mpi_running = f"{self.mpi_exec} -np 4"
             elif platform.system() == "Darwin":
                 mpi_running = f"{self.mpi_exec} -np 2"
