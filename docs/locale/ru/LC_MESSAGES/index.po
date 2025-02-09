@@ -27,7 +27,7 @@ msgstr "Инструкция по выполнению работы"
 
 #: ../../index.rst:16
 msgid "Course Details:"
-msgstr ""
+msgstr "Детали курса"
 
 #: ../../index.rst:2
 msgid "Parallel Programming Course documentation"

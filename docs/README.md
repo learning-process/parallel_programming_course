@@ -17,30 +17,35 @@ python3 -m venv venv
 pip install -r requirements.txt
 ```
 
-4. Build the documentation:
+4. Configure the documentation build:
 ```bash
-make html
+cmake -S . -B build -DUSE_DOCS=ON
 ```
 
-5. Update the documentation:
+5. Build the documentation:
 ```bash
-make gettext
+cmake --build build -t docs_html
+```
+
+6. Update the documentation:
+```bash
+cmake --build build -t docs_gettext
 # update documentation
-make update
+cmake --build build -t docs_update
 ```
 
-6. Re-build the documentation:
+7. Re-build the documentation:
 ```bash
-make html
+cmake --build build -t docs_html
 ```
 
-7. Make local deployment of the changes:
+8. Make local deployment of the changes:
 ```bash
 cd _build/html
 python3 -m http.server 8080
 ```
 
-8. Open the documentation in your browser:
+9. Open the documentation in your browser:
 ```bash
 open http://localhost:8080/en
 open http://localhost:8080/ru

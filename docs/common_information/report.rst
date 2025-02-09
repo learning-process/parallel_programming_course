@@ -11,7 +11,7 @@ Report
 
 - Requirements for Criteria
 
-  - Presence and Completeness
+  - Completeness
 
     - Introduction (can be a short paragraph)
     - Problem Statement (descriptive)

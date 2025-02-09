@@ -21,24 +21,23 @@ jobs:
         with:
           python-version: '3.13'
       - name: Install dependencies
-        working-directory: ./docs
         run: |
-          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r docs/requirements.txt
+      - name: Configure project
+        run: >
+          cmake -S . -B build -D USE_DOCS=ON
       - name: Build i18n
-        working-directory: ./docs
         run: |
-          make gettext
-          sphinx-build -b gettext . _build/gettext
-          sphinx-intl update -p _build/gettext -l en -l ru
+          cmake --build build -t docs_gettext
+          cmake --build build -t docs_update
       - name: Build documentation
-        working-directory: ./docs
         run: |
-          make html
+          cmake --build build -t docs_html
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: sphinx-documentation
-          path: ./docs/_build/html
+          path: ./build/docs/_build/html
   build-scoreboard:
     runs-on: ubuntu-24.04
     steps:

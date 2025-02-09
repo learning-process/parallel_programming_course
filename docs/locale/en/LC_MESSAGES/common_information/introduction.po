@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-05 13:29+0100\n"
+"POT-Creation-Date: 2025-02-09 00:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -79,20 +79,23 @@ msgid ""
 "A task that has been merged into the master branch continues to be "
 "monitored. If a task fails in the master, it is disabled, and a record of"
 " this is added to the score table. All disabled tasks will result in a "
-"zero points result for those tasks at the end of the semester."
+"zero points result for those tasks at the end of the semester. It can be "
+"seen that your task is disabled due to the following reason: the "
+"directory of your task has been renamed from "
+"``seq/nesterov_a_vector_sum`` to ``seq/nesterov_a_vector_sum_disabled``"
 msgstr ""
 
-#: ../../common_information/introduction.rst:21
+#: ../../common_information/introduction.rst:24
 msgid "All resources for using the repository will be provided here:"
 msgstr ""
 
-#: ../../common_information/introduction.rst:23
+#: ../../common_information/introduction.rst:26
 msgid ""
 "`Git for half an hour: A Beginner’s Guide <https://proglib.io/p/git-for-"
 "half-an-hour>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:24
+#: ../../common_information/introduction.rst:27
 #, python-format
 msgid ""
 "`Getting Started with Git and GitHub: A Beginner’s Guide "
@@ -100,83 +103,82 @@ msgid ""
 "programming/%D0%B7%D0%BD%D0%B0%D0%BA%D0%BE%D0%BC%D1%81%D1%82%D0%B2%D0%BE-%D1%81-git-%D0%B8-github-%D1%80%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE-%D0%B4%D0%BB%D1%8F-%D0%BD%D0%B0%D1%87%D0%B8%D0%BD%D0%B0%D1%8E%D1%89%D0%B8%D1%85-54ea2567d76c>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:25
+#: ../../common_information/introduction.rst:28
 msgid ""
 "`Git: A Quick Start Guide to Using Core Operations with Explanations "
 "<https://tproger.ru/translations/git-quick-start/>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:26
+#: ../../common_information/introduction.rst:29
 msgid ""
 "`Conflicts resolving in Git "
 "<https://githowto.com/ru/resolving_conflicts>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:27
+#: ../../common_information/introduction.rst:30
 msgid "`Google testing framework (gtest) <https://habr.com/ru/post/119090/>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:28
+#: ../../common_information/introduction.rst:31
 msgid ""
 "`GoogleTest Primer "
 "<https://github.com/google/googletest/blob/main/docs/primer.md>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:29
+#: ../../common_information/introduction.rst:32
 msgid "`GitHub Actions documentation <https://docs.github.com/ru/actions>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:30
+#: ../../common_information/introduction.rst:33
 msgid ""
 "`Parallel Programming Technologies. Message Passing Interface (MPI) "
 "<https://parallel.ru/vvv/mpi.html#p1>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:31
+#: ../../common_information/introduction.rst:34
 msgid ""
 "`Typing and Layout in the System LaTeX <https://www.mccme.ru/free-"
 "books/llang/newllang.pdf>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:32
+#: ../../common_information/introduction.rst:35
 msgid ""
 "`LaTeX for the beginners "
 "<https://web.archive.org/web/20210420184700/http://www.docs.is.ed.ac.uk/skills/documents/3722/3722-2014.pdf>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:33
+#: ../../common_information/introduction.rst:36
 msgid "`What is OpenMP? <https://parallel.ru/tech/tech_dev/openmp.html>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:34
+#: ../../common_information/introduction.rst:37
 msgid ""
 "`TBB-1 "
 "<https://web.archive.org/web/20220406024622/http://www.unn.ru/pages/e-library/aids/2007/12.pdf>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:35
+#: ../../common_information/introduction.rst:38
 msgid ""
 "`Writing Multithreaded Applications in C++ <https://eax.me/cpp-"
 "multithreading/>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:36
+#: ../../common_information/introduction.rst:39
 msgid ""
 "`Multithreading: New Features of the C++11 Standard "
 "<https://web.archive.org/web/20200608173050/http://www.quizful.net/post"
 "/multithreading-cpp11>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:37
+#: ../../common_information/introduction.rst:40
 msgid ""
 "`Introduction to Parallel Computing "
 "<http://ikt.muctr.ru/images/info/2Lecture_3.pdf>`__"
 msgstr ""
 
-#: ../../common_information/introduction.rst:39
+#: ../../common_information/introduction.rst:42
 msgid ""
 "\\* *All instructions, repositories, and tables may be updated during the"
 " learning process for better usability. Be prepared for changes, check "
 "and update them periodically!!!*"
 msgstr ""
-
