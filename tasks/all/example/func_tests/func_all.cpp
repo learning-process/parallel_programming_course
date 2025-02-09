@@ -8,7 +8,7 @@
 
 #include "all/example/include/ops_all.hpp"
 #include "core/task/include/task.hpp"
-#include "core/util/util.hpp"
+#include "core/util/include/util.hpp"
 
 TEST(nesterov_a_test_task_all, test_matmul_50) {
   constexpr size_t kCount = 50;

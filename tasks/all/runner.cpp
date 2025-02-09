@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "core/util/util.hpp"
+#include "core/util/include/util.hpp"
 #include "oneapi/tbb/global_control.h"
 
 class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {

@@ -6,7 +6,7 @@
 #include <thread>
 #include <vector>
 
-#include "core/util/util.hpp"
+#include "core/util/include/util.hpp"
 #include "oneapi/tbb/task_arena.h"
 #include "oneapi/tbb/task_group.h"
 
