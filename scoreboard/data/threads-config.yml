@@ -2,9 +2,9 @@ scoreboard:
   task:
     mpi:
       solution:
-        max: 10
+        max: 0
       performance:
-        max: 10
+        max: 0
       visible: true
     omp:
       solution:
