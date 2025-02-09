@@ -16,7 +16,7 @@ scoreboard:
       solution:
         max: 2
       performance:
-        max: 2
+        max: 0
       visible: true
     stl:
       solution:
