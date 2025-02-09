@@ -3,26 +3,38 @@ scoreboard:
     mpi:
       solution:
         max: 10
+      performance:
+        max: 10
       visible: true
     omp:
       solution:
-        max: 9
+        max: 6
+      performance:
+        max: 3
       visible: true
     seq:
       solution:
-        max: 4
+        max: 2
+      performance:
+        max: 2
       visible: true
     stl:
       solution:
-        max: 14
+        max: 8
+      performance:
+        max: 6
       visible: true
     tbb:
       solution:
-        max: 9
+        max: 6
+      performance:
+        max: 3
       visible: true
     all:
       solution:
-        max: 18
+        max: 10
+      performance:
+        max: 8
       visible: true
   plagiarism:
     coefficient: 0.5
