@@ -368,7 +368,7 @@ msgstr ""
 
 #: ../../common_information/points.rst:143
 msgid "Penalties:"
-msgstr "Штрафные санкции"
+msgstr "Штрафные санкции:"
 
 #: ../../common_information/points.rst:145
 msgid "A deadline will be set for each version."
