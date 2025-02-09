@@ -1,13 +1,11 @@
 #include "core/task/include/task.hpp"
 
-#include <gtest/gtest.h>
-
-#include <chrono>
 #include <cstddef>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 #include <string>
-#include <utility>
 
 void ppc::core::Task::SetData(TaskDataPtr task_data_ptr) {
   task_data_ptr->state_of_testing = TaskData::StateOfTesting::kFunc;
@@ -58,13 +56,18 @@ void ppc::core::Task::InternalOrderTest(const std::string& str) {
     tmp_time_point_ = std::chrono::high_resolution_clock::now();
   }
 
-  if (str == "post_processing" && task_data->state_of_testing == TaskData::StateOfTesting::kFunc) {
+  if (str == "PostProcessing" && task_data->state_of_testing == TaskData::StateOfTesting::kFunc) {
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - tmp_time_point_).count();
     auto current_time = static_cast<double>(duration) * 1e-9;
-    if (current_time > max_test_time_) {
-      std::cerr << "Current test work more than " << max_test_time_ << " secs: " << current_time << '\n';
-      EXPECT_TRUE(current_time < max_test_time_);
+    if (current_time < max_test_time_) {
+      std::cout << "Test time:" << std::fixed << std::setprecision(10) << current_time;
+    } else {
+      std::stringstream err_msg;
+      err_msg << "\nTask execute time need to be: ";
+      err_msg << "time < " << max_test_time_ << " secs.\n";
+      err_msg << "Original time in secs: " << current_time << '\n';
+      throw std::runtime_error(err_msg.str().c_str());
     }
   }
 }
