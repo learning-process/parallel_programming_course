@@ -14,7 +14,7 @@ scoreboard:
       visible: true
     seq:
       solution:
-        max: 2
+        max: 4
       performance:
         max: 0
       visible: true
