@@ -1,6 +1,8 @@
-#include "core/util/include/util.hpp"
 #include <gtest/gtest.h>
+
 #include <thread>
+
+#include "core/util/include/util.hpp"
 
 TEST(util_tests, check_unset_env) {
 #ifndef _WIN32
