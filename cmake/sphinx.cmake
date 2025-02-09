@@ -1,0 +1,6 @@
+option(USE_DOCS OFF)
+if( USE_DOCS )
+    set(SPHINXBUILD "sphinx-build")
+    set(SPHINXINTL  "sphinx-intl")
+    set(SPHINXOPTS "-W" "--keep-going" "-n")
+endif( USE_DOCS )
