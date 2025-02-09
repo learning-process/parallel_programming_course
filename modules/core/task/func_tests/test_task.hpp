@@ -1,12 +1,10 @@
 #pragma once
 
-#include <memory>
+#include <chrono>
 #include <thread>
 #include <vector>
 
 #include "core/task/include/task.hpp"
-
-using namespace std::chrono_literals;
 
 namespace ppc::test::task {
 
@@ -43,7 +41,7 @@ class FakeSlowTask : public TestTask<T> {
   explicit FakeSlowTask(ppc::core::TaskDataPtr perf_task_data) : TestTask<T>(perf_task_data) {}
 
   bool RunImpl() override {
-    std::this_thread::sleep_for(5000ms);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
     return TestTask<T>::RunImpl();
   }
 };
