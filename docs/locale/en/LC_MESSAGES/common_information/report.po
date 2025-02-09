@@ -176,7 +176,3 @@ msgid ""
 "finally accepted and merged into the master branch only after both the "
 "**online** parts of the corresponding lab work are fully completed."
 msgstr ""
-
-#~ msgid "Presence and Completeness"
-#~ msgstr ""
-

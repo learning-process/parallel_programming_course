@@ -43,7 +43,7 @@ msgstr "Качество оформления"
 
 #: ../../common_information/report.rst:7
 msgid "Total"
-msgstr "Итог"
+msgstr "Всего"
 
 #: ../../common_information/report.rst:9
 msgid "5"

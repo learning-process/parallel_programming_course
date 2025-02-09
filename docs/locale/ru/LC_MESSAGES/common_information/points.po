@@ -84,7 +84,7 @@ msgstr ""
 
 #: ../../common_information/points.rst:30
 msgid "**Total : 60 points**"
-msgstr "**Итог : 60 баллов**"
+msgstr "**Всего : 60 баллов**"
 
 #: ../../common_information/points.rst:32
 msgid "For “thread parallelism” semester"
@@ -138,7 +138,7 @@ msgstr ""
 
 #: ../../common_information/points.rst:75
 msgid "**Total : 54 points**"
-msgstr "**Итог : 54 балла**"
+msgstr "**Всего : 54 балла**"
 
 #: ../../common_information/points.rst:77
 msgid "The rule for earning performance points."
