@@ -43,7 +43,7 @@ class FakePerfTask : public TestTask<T> {
   explicit FakePerfTask(ppc::core::TaskDataPtr perf_task_data) : TestTask<T>(perf_task_data) {}
 
   bool RunImpl() override {
-    std::this_thread::sleep_for(std::chrono::milliseconds(21000));
+    std::this_thread::sleep_for(std::chrono::seconds(11));
     return TestTask<T>::RunImpl();
   }
 };

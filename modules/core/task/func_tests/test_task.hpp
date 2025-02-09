@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+#include <thread>
 #include <vector>
 
 #include "core/task/include/task.hpp"
@@ -31,6 +33,17 @@ class TestTask : public ppc::core::Task {
  private:
   T *input_{};
   T *output_{};
+};
+
+template <class T>
+class FakeSlowTask : public TestTask<T> {
+ public:
+  explicit FakeSlowTask(ppc::core::TaskDataPtr perf_task_data) : TestTask<T>(perf_task_data) {}
+
+  bool RunImpl() override {
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    return TestTask<T>::RunImpl();
+  }
 };
 
 }  // namespace ppc::test::task

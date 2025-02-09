@@ -30,6 +30,28 @@ TEST(task_tests, check_int32_t) {
   ASSERT_EQ(static_cast<size_t>(out[0]), in.size());
 }
 
+TEST(task_tests, check_int32_t_slow) {
+  // Create data
+  std::vector<int32_t> in(20, 1);
+  std::vector<int32_t> out(1, 0);
+
+  // Create TaskData
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+
+  // Create Task
+  ppc::test::task::FakeSlowTask<int32_t> test_task(task_data);
+  bool is_valid = test_task.Validation();
+  ASSERT_EQ(is_valid, true);
+  test_task.PreProcessing();
+  test_task.Run();
+  ASSERT_ANY_THROW(test_task.PostProcessing());
+  ASSERT_EQ(static_cast<size_t>(out[0]), in.size());
+}
+
 TEST(task_tests, check_validate_func) {
   // Create data
   std::vector<int32_t> in(20, 1);
