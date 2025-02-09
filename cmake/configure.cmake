@@ -45,7 +45,7 @@ if( UNIX )
         "${CMAKE_C_FLAGS}                    \
         -Wold-style-definition               \
         -Wmissing-prototypes")
-    set (COMMON_LANGUAGE_RUNTIME "${COMMON_COMPILER_FLAGS} -Werror")
+    set (COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} -Werror")
 
     set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} ${COMMON_COMPILER_FLAGS}")
     set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${COMMON_COMPILER_FLAGS}")
