@@ -23,23 +23,23 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:2
 msgid "Processes parallelism tasks"
-msgstr ""
+msgstr "Задачи параллелизма на процессах"
 
 #: ../../common_information/processes_tasks.rst:5
 msgid "First task"
-msgstr ""
+msgstr "Первая задача"
 
 #: ../../common_information/processes_tasks.rst:8
 #: ../../common_information/processes_tasks.rst:69
 #: ../../common_information/processes_tasks.rst:122
 msgid "Variant Number"
-msgstr ""
+msgstr "Номер варианта"
 
 #: ../../common_information/processes_tasks.rst:8
 #: ../../common_information/processes_tasks.rst:69
 #: ../../common_information/processes_tasks.rst:122
 msgid "Task"
-msgstr ""
+msgstr "Задача"
 
 #: ../../common_information/processes_tasks.rst:10
 #: ../../common_information/processes_tasks.rst:71
@@ -49,7 +49,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:10
 msgid "Sum of vector elements"
-msgstr ""
+msgstr "Сумма элементов вектора"
 
 #: ../../common_information/processes_tasks.rst:12
 #: ../../common_information/processes_tasks.rst:73
@@ -59,7 +59,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:12
 msgid "Calculating the average value of vector elements"
-msgstr ""
+msgstr "Вычисление среднего значения элементов вектора"
 
 #: ../../common_information/processes_tasks.rst:14
 #: ../../common_information/processes_tasks.rst:75
@@ -69,7 +69,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:14
 msgid "Maximum value of vector elements"
-msgstr ""
+msgstr "Максимальное значение элементов вектора"
 
 #: ../../common_information/processes_tasks.rst:16
 #: ../../common_information/processes_tasks.rst:77
@@ -79,7 +79,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:16
 msgid "Minimum value of vector elements"
-msgstr ""
+msgstr "Минимальное значение элементов вектора"
 
 #: ../../common_information/processes_tasks.rst:18
 #: ../../common_information/processes_tasks.rst:79
@@ -91,7 +91,7 @@ msgstr ""
 msgid ""
 "Finding the number of sign alternations between adjacent elements of the "
 "vector"
-msgstr ""
+msgstr "Нахождение числа чередований знаков значений соседних элементов вектора"
 
 #: ../../common_information/processes_tasks.rst:20
 #: ../../common_information/processes_tasks.rst:81
@@ -104,7 +104,7 @@ msgstr ""
 msgid ""
 "Finding the number of order violations between adjacent elements of the "
 "vector"
-msgstr ""
+msgstr "Нахождение числа нарушений упорядоченности соседних элементов вектора"
 
 #: ../../common_information/processes_tasks.rst:22
 #: ../../common_information/processes_tasks.rst:83
@@ -114,7 +114,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:22
 msgid "Finding the most similar adjacent elements of the vector"
-msgstr ""
+msgstr "Нахождение наиболее близких соседних элементов вектора"
 
 #: ../../common_information/processes_tasks.rst:24
 #: ../../common_information/processes_tasks.rst:85
@@ -124,7 +124,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:24
 msgid "Finding the most different adjacent elements of the vector"
-msgstr ""
+msgstr "Нахождение наиболее отличающихся по значению соседних элементов вектора"
 
 #: ../../common_information/processes_tasks.rst:26
 #: ../../common_information/processes_tasks.rst:87
@@ -134,7 +134,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:26
 msgid "Scalar product of vectors"
-msgstr ""
+msgstr "Скалярное произведение векторов"
 
 #: ../../common_information/processes_tasks.rst:28
 #: ../../common_information/processes_tasks.rst:89
@@ -144,7 +144,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:28
 msgid "Sum of matrix elements"
-msgstr ""
+msgstr "Сумма элементов матрицы"
 
 #: ../../common_information/processes_tasks.rst:30
 #: ../../common_information/processes_tasks.rst:91
@@ -154,7 +154,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:30
 msgid "Sum of values by rows in the matrix"
-msgstr ""
+msgstr "Сумма значений по строкам матрицы"
 
 #: ../../common_information/processes_tasks.rst:32
 #: ../../common_information/processes_tasks.rst:93
@@ -164,7 +164,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:32
 msgid "Sum of values by columns in the matrix"
-msgstr ""
+msgstr "Сумма значений по столбцам матрицы"
 
 #: ../../common_information/processes_tasks.rst:34
 #: ../../common_information/processes_tasks.rst:95
@@ -174,7 +174,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:34
 msgid "Maximum value of matrix elements"
-msgstr ""
+msgstr "Максимальное значение элементов матрицы"
 
 #: ../../common_information/processes_tasks.rst:36
 #: ../../common_information/processes_tasks.rst:97
@@ -184,7 +184,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:36
 msgid "Minimum value of matrix elements"
-msgstr ""
+msgstr "Минимальное значение элементов матрицы"
 
 #: ../../common_information/processes_tasks.rst:38
 #: ../../common_information/processes_tasks.rst:99
@@ -194,7 +194,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:38
 msgid "Finding maximum values by rows in the matrix"
-msgstr ""
+msgstr "Нахождение максимальных значений по строкам матрицы"
 
 #: ../../common_information/processes_tasks.rst:40
 #: ../../common_information/processes_tasks.rst:101
@@ -204,7 +204,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:40
 msgid "Finding maximum values by columns in the matrix"
-msgstr ""
+msgstr "Нахождение максимальных значений по столбцам матрицы"
 
 #: ../../common_information/processes_tasks.rst:42
 #: ../../common_information/processes_tasks.rst:103
@@ -214,7 +214,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:42
 msgid "Finding minimum values by rows in the matrix"
-msgstr ""
+msgstr "Нахождение минимальных значений по строкам матрицы"
 
 #: ../../common_information/processes_tasks.rst:44
 #: ../../common_information/processes_tasks.rst:105
@@ -224,7 +224,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:44
 msgid "Finding minimum values by columns in the matrix"
-msgstr ""
+msgstr "Нахождение минимальных значений по столбцам матрицы"
 
 #: ../../common_information/processes_tasks.rst:46
 #: ../../common_information/processes_tasks.rst:107
@@ -234,7 +234,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:46
 msgid "Integration – rectangle method"
-msgstr ""
+msgstr "Интегрирование – метод прямоугольников"
 
 #: ../../common_information/processes_tasks.rst:48
 #: ../../common_information/processes_tasks.rst:109
@@ -244,7 +244,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:48
 msgid "Integration – trapezoidal method"
-msgstr ""
+msgstr "Интегрирование – метод трапеций"
 
 #: ../../common_information/processes_tasks.rst:50
 #: ../../common_information/processes_tasks.rst:111
@@ -255,7 +255,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:50
 msgid "Integration – Monte Carlo method"
-msgstr ""
+msgstr "Интегрирование – метод Монте-Карло"
 
 #: ../../common_information/processes_tasks.rst:52
 #: ../../common_information/processes_tasks.rst:113
@@ -265,7 +265,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:52
 msgid "Counting the number of alphabetical characters in a string"
-msgstr ""
+msgstr "Подсчет числа буквенных символов в строке"
 
 #: ../../common_information/processes_tasks.rst:54
 #: ../../common_information/processes_tasks.rst:115
@@ -275,7 +275,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:54
 msgid "Counting the frequency of a character in a string"
-msgstr ""
+msgstr "Подсчет частоты символа в строке"
 
 #: ../../common_information/processes_tasks.rst:56
 #: ../../common_information/processes_tasks.rst:173
@@ -284,7 +284,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:56
 msgid "Counting the number of words in a string"
-msgstr ""
+msgstr "Подсчет числа слов в строке"
 
 #: ../../common_information/processes_tasks.rst:58
 #: ../../common_information/processes_tasks.rst:175
@@ -293,7 +293,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:58
 msgid "Counting the number of sentences in a string"
-msgstr ""
+msgstr "Подсчет числа предложений в строке"
 
 #: ../../common_information/processes_tasks.rst:60
 #: ../../common_information/processes_tasks.rst:177
@@ -302,7 +302,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:60
 msgid "Checking lexicographical order of two strings"
-msgstr ""
+msgstr "Проверка лексикографической упорядоченности двух строк"
 
 #: ../../common_information/processes_tasks.rst:62
 #: ../../common_information/processes_tasks.rst:179
@@ -311,247 +311,247 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:62
 msgid "Counting the number of differing characters between two strings"
-msgstr ""
+msgstr "Подсчет числа несовпадающих символов двух строк"
 
 #: ../../common_information/processes_tasks.rst:66
 msgid "Second task"
-msgstr ""
+msgstr "Вторая задача"
 
 #: ../../common_information/processes_tasks.rst:71
 msgid "Broadcast (one to all transfer)"
-msgstr ""
+msgstr "Передача от одного всем (broadcast)"
 
 #: ../../common_information/processes_tasks.rst:73
 msgid "Reduce (all to one transfer)"
-msgstr ""
+msgstr "Передача от всех одному (reduce)"
 
 #: ../../common_information/processes_tasks.rst:75
 msgid "Allreduce (all to one and broadcast)"
-msgstr ""
+msgstr "Передача от всех одному и рассылка (allreduce)"
 
 #: ../../common_information/processes_tasks.rst:77
 msgid "Scatter (one to all transfer)"
-msgstr ""
+msgstr "Обобщенная передача от одного всем (scatter)"
 
 #: ../../common_information/processes_tasks.rst:79
 msgid "Gather (all to one transfer)"
-msgstr ""
+msgstr "Обобщенная передача от всех одному (gather)"
 
 #: ../../common_information/processes_tasks.rst:81
 msgid "Line"
-msgstr ""
+msgstr "Линейка"
 
 #: ../../common_information/processes_tasks.rst:83
 msgid "Ring"
-msgstr ""
+msgstr "Кольцо"
 
 #: ../../common_information/processes_tasks.rst:85
 msgid "Star"
-msgstr ""
+msgstr "Звезда"
 
 #: ../../common_information/processes_tasks.rst:87
 msgid "Torus Grid"
-msgstr ""
+msgstr "Решетка-тор"
 
 #: ../../common_information/processes_tasks.rst:89
 msgid "Hypercube"
-msgstr ""
+msgstr "Гиперкуб"
 
 #: ../../common_information/processes_tasks.rst:91
 msgid "Horizontal strip scheme - matrix-vector multiplication"
-msgstr ""
+msgstr "Ленточная горизонтальная схема - умножение матрицы на вектор"
 
 #: ../../common_information/processes_tasks.rst:93
 msgid "Vertical strip scheme - matrix-vector multiplication"
-msgstr ""
+msgstr "Ленточная вертикальная схема - умножение матрицы на вектор"
 
 #: ../../common_information/processes_tasks.rst:95
 msgid ""
 "Horizontal strip scheme – partitioning only matrix A - matrix-matrix "
 "multiplication"
-msgstr ""
+msgstr "Ленточная горизонтальная схема - разбиение только матрицы А - умножение матрицы на матрицу"
 
 #: ../../common_information/processes_tasks.rst:97
 msgid ""
 "Horizontal strip scheme A, vertical strip scheme B - matrix-matrix "
 "multiplication"
-msgstr ""
+msgstr "Ленточная горизонтальная схема А, вертикальное В - умножение матрицы на матрицу"
 
 #: ../../common_information/processes_tasks.rst:99
 msgid "Gaussian method – horizontal strip scheme"
-msgstr ""
+msgstr "Метод Гаусса – ленточная горизонтальная схема"
 
 #: ../../common_information/processes_tasks.rst:101
 msgid "Gaussian method – vertical strip scheme"
-msgstr ""
+msgstr "Метод Гаусса – ленточная вертикальная схема"
 
 #: ../../common_information/processes_tasks.rst:103
 msgid "Gauss-Jordan method"
-msgstr ""
+msgstr "Метод Гаусса-Жордана"
 
 #: ../../common_information/processes_tasks.rst:105
 msgid "Iterative methods (Jacobi)"
-msgstr ""
+msgstr "Итеративные методы (Якоби)"
 
 #: ../../common_information/processes_tasks.rst:107
 msgid "Iterative methods (Gauss-Seidel)"
-msgstr ""
+msgstr "Итеративные методы (Зейделя)"
 
 #: ../../common_information/processes_tasks.rst:109
 msgid "Iterative methods (Simple)"
-msgstr ""
+msgstr "Метод простой итерации"
 
 #: ../../common_information/processes_tasks.rst:111
 msgid "Bubble sort (odd-even transposition algorithm)"
-msgstr ""
+msgstr "Сортировка пузырьком (алгоритм чет-нечетной перестановки)"
 
 #: ../../common_information/processes_tasks.rst:113
 msgid "Image smoothing"
-msgstr ""
+msgstr "Сглаживание изображения"
 
 #: ../../common_information/processes_tasks.rst:115
 msgid "Contrast enhancement"
-msgstr ""
+msgstr "Повышение контраста"
 
 #: ../../common_information/processes_tasks.rst:119
 msgid "Third task"
-msgstr ""
+msgstr "Третья задача"
 
 #: ../../common_information/processes_tasks.rst:124
 msgid ""
 "Dense matrix multiplication. Elements of data type double. Block scheme, "
 "Cannon's algorithm."
-msgstr ""
+msgstr "Умножение плотных матриц. Элементы типа double. Блочная схема, алгоритм Кэннона."
 
 #: ../../common_information/processes_tasks.rst:126
 msgid ""
 "Dense matrix multiplication. Elements of data type double. Block scheme, "
 "Fox's algorithm."
-msgstr ""
+msgstr "Умножение плотных матриц. Элементы типа double. Блочная схема, алгоритм Фокса."
 
 #: ../../common_information/processes_tasks.rst:128
 msgid ""
 "Dense matrix multiplication. Elements of data type double. Strassen's "
 "algorithm."
-msgstr ""
+msgstr "Умножение плотных матриц. Элементы типа double. Алгоритм Штрассена."
 
 #: ../../common_information/processes_tasks.rst:130
 msgid ""
 "Sparse matrix multiplication. Elements of data type double. Matrix "
 "storage format – row format (CRS)."
-msgstr ""
+msgstr "Умножение разреженных матриц. Элементы типа double. Формат хранения матрицы – строковый (CRS)."
 
 #: ../../common_information/processes_tasks.rst:132
 msgid ""
 "Sparse matrix multiplication. Elements of data type double. Matrix "
 "storage format – column format (CCS)."
-msgstr ""
+msgstr "Умножение разреженных матриц. Элементы типа double. Формат хранения матрицы – столбцовый (CCS)."
 
 #: ../../common_information/processes_tasks.rst:134
 msgid "Solving systems of linear equations using the conjugate gradient method."
-msgstr ""
+msgstr "Решение систем линейных уравнений методом сопряженных градиентов."
 
 #: ../../common_information/processes_tasks.rst:136
 msgid ""
 "Computing multidimensional integrals using a multistep scheme (rectangle "
 "method)."
-msgstr ""
+msgstr "Вычисление многомерных интегралов с использованием многошаговой схемы (метод прямоугольников)."
 
 #: ../../common_information/processes_tasks.rst:138
 msgid ""
 "Computing multidimensional integrals using a multistep scheme "
 "(trapezoidal method)."
-msgstr ""
+msgstr "Вычисление многомерных интегралов с использованием многошаговой схемы (метод трапеций)."
 
 #: ../../common_information/processes_tasks.rst:140
 msgid ""
 "Computing multidimensional integrals using a multistep scheme (Simpson's "
 "method)."
-msgstr ""
+msgstr "Вычисление многомерных интегралов с использованием многошаговой схемы (метод Симпсона)."
 
 #: ../../common_information/processes_tasks.rst:142
 msgid "Computing multidimensional integrals using the Monte Carlo method."
-msgstr ""
+msgstr "Вычисление многомерных интегралов методом Монте-Карло."
 
 #: ../../common_information/processes_tasks.rst:144
 msgid ""
 "Global search algorithm (Strongin's) for one-dimensional optimization "
 "problems. Parallelization by characteristics."
-msgstr ""
+msgstr "Алгоритм глобального поиска (Стронгина) для одномерных задач оптимизации. Распараллеливание по характеристикам."
 
 #: ../../common_information/processes_tasks.rst:147
 msgid ""
 "Multistep scheme for solving two-dimensional global optimization "
 "problems. Parallelization by dividing the search area."
-msgstr ""
+msgstr "Многошаговая схема решения двумерных задач глобальной оптимизации. Распараллеливание путем разделения области поиска."
 
 #: ../../common_information/processes_tasks.rst:150
 msgid ""
 "Multistep scheme for solving two-dimensional global optimization "
 "problems. Parallelization by characteristics."
-msgstr ""
+msgstr "Многошаговая схема решения двумерных задач глобальной оптимизации. Распараллеливание по характеристикам."
 
 #: ../../common_information/processes_tasks.rst:153
 msgid "Quick sort with simple merging."
-msgstr ""
+msgstr "Быстрая сортировка с простым слиянием."
 
 #: ../../common_information/processes_tasks.rst:155
 msgid "Quick sort with odd-even merging (Batcher's method)."
-msgstr ""
+msgstr "Быстрая сортировка с четно-нечетным слиянием Бэтчера."
 
 #: ../../common_information/processes_tasks.rst:157
 msgid "Shell sort with simple merging."
-msgstr ""
+msgstr "Сортировка Шелла с простым слиянием."
 
 #: ../../common_information/processes_tasks.rst:159
 msgid "Shell sort with odd-even merging (Batcher's method)."
-msgstr ""
+msgstr "Сортировка Шелла с четно-нечетным слиянием Бэтчера."
 
 #: ../../common_information/processes_tasks.rst:161
 msgid "Radix sort for integers with simple merging."
-msgstr ""
+msgstr "Поразрядная сортировка для целых чисел с простым слиянием."
 
 #: ../../common_information/processes_tasks.rst:163
 msgid "Radix sort for integers with odd-even merging (Batcher's method)."
-msgstr ""
+msgstr "Поразрядная сортировка для целых чисел с четно-нечетным слиянием Бэтчера."
 
 #: ../../common_information/processes_tasks.rst:165
 msgid "Radix sort for floating-point numbers (type double) with simple merging."
-msgstr ""
+msgstr "Поразрядная сортировка для вещественных чисел (тип double) с простым слиянием."
 
 #: ../../common_information/processes_tasks.rst:167
 msgid ""
 "Radix sort for floating-point numbers (type double) with odd-even merging"
 " (Batcher's method)."
-msgstr ""
+msgstr "Поразрядная сортировка для вещественных чисел (тип double) с четно-нечетным слиянием Бэтчера."
 
 #: ../../common_information/processes_tasks.rst:169
 msgid ""
 "Shortest path search from one vertex (Dijkstra's algorithm). With CRS "
 "graphs."
-msgstr ""
+msgstr "Поиск кратчайших путей из одной вершины (алгоритм Дейкстры). С CRS формой хранения графа."
 
 #: ../../common_information/processes_tasks.rst:171
 msgid ""
 "Shortest path search from one vertex (Bellman-Ford algorithm). With CRS "
 "graphs."
-msgstr ""
+msgstr "Поиск кратчайших путей из одной вершины (алгоритм Беллмана-Форда). С CRS формой хранения графа."
 
 #: ../../common_information/processes_tasks.rst:173
 msgid "Convex hull construction – Graham's scan."
-msgstr ""
+msgstr "Построение выпуклой оболочки – проход Грэхема."
 
 #: ../../common_information/processes_tasks.rst:175
 msgid "Convex hull construction – Jarvis's march."
-msgstr ""
+msgstr "Построение выпуклой оболочки – проход Джарвиса."
 
 #: ../../common_information/processes_tasks.rst:177
 msgid "Linear image filtering (horizontal partition). Gaussian kernel 3x3."
-msgstr ""
+msgstr "Линейная фильтрация изображений (горизонтальное разбиение). Ядро Гаусса 3x3."
 
 #: ../../common_information/processes_tasks.rst:179
 msgid "Linear image filtering (vertical partition). Gaussian kernel 3x3."
-msgstr ""
+msgstr "Линейная фильтрация изображений (вертикальное разбиение). Ядро Гаусса 3x3."
 
 #: ../../common_information/processes_tasks.rst:181
 msgid "28"
@@ -559,7 +559,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:181
 msgid "Linear image filtering (block partition). Gaussian kernel 3x3."
-msgstr ""
+msgstr "Линейная фильтрация изображений (блочное разбиение). Ядро Гаусса 3x3."
 
 #: ../../common_information/processes_tasks.rst:183
 msgid "29"
@@ -567,7 +567,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:183
 msgid "Edge detection in an image using the Sobel operator."
-msgstr ""
+msgstr "Выделение ребер на изображении с использованием оператора Собеля."
 
 #: ../../common_information/processes_tasks.rst:185
 msgid "30"
@@ -575,7 +575,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:185
 msgid "Contrast enhancement of grayscale image using linear histogram stretching."
-msgstr ""
+msgstr "Повышение контраста полутонового изображения посредством линейной растяжки гистограммы"
 
 #: ../../common_information/processes_tasks.rst:187
 msgid "31"
@@ -585,7 +585,7 @@ msgstr ""
 msgid ""
 "Labeling components on a binary image (black areas correspond to objects,"
 " white to background)."
-msgstr ""
+msgstr "Маркировка компонент на бинарном изображении (черные области соответствуют объектам, белые – фону)."
 
 #: ../../common_information/processes_tasks.rst:189
 msgid "32"
@@ -593,11 +593,11 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:189
 msgid "Convex hull construction for components of a binary image."
-msgstr ""
+msgstr "Построение выпуклой оболочки для компонент бинарного изображения."
 
 #: ../../common_information/processes_tasks.rst:193
 msgid "Comments for tasks 2 and 3:"
-msgstr ""
+msgstr "Комментарии для 2-ой и 3-й задач:"
 
 #: ../../common_information/processes_tasks.rst:195
 msgid ""
@@ -608,7 +608,11 @@ msgid ""
 "transmission (broadcast, gather) for at least the following types: "
 "MPI_INT, MPI_FLOAT, MPI_DOUBLE. In all operations, the transmission "
 "should be carried out using the ‘tree’ of processes.”"
-msgstr ""
+msgstr "МЕТОДЫ ПЕРЕДАЧИ СООБЩЕНИЙ. Нужно реализовать указанные методы, используя только функции Send и Recv. "
+"Реализованная функция должна иметь тот же прототип, что и соответствующая функция MPI. "
+"Тестовая программа должна позволять выбрать номер процесса root и выполнять пересылку "
+"(рассылку, сбор) массива как минимум следующих типов: MPI_INT, MPI_FLOAT, MPI_DOUBLE. "
+"Во всех операциях передача должна выполняться с использованием \"дерева\" процессов."
 
 #: ../../common_information/processes_tasks.rst:203
 #: ../../common_information/processes_tasks.rst:217
@@ -618,15 +622,15 @@ msgstr ""
 #: ../../common_information/processes_tasks.rst:263
 #: ../../common_information/processes_tasks.rst:273
 msgid "Comments relevant for:"
-msgstr ""
+msgstr "Комментарии относятся к:"
 
 #: ../../common_information/processes_tasks.rst:206
 msgid "Variants for task 2"
-msgstr ""
+msgstr "Варинты для второй задачи"
 
 #: ../../common_information/processes_tasks.rst:206
 msgid "Variants for task 3"
-msgstr ""
+msgstr "Варинты для третьей задачи"
 
 #: ../../common_information/processes_tasks.rst:208
 #: ../../common_information/processes_tasks.rst:235
@@ -646,7 +650,10 @@ msgid ""
 "communicators and topologies, and ensure the ability to transfer data "
 "from any selected process to any other process. (Do not use "
 "MPI_Cart_Create and MPI_Graph_Create)”"
-msgstr ""
+msgstr "ТОПОЛОГИИ СЕТЕЙ ПЕРЕДАЧИ ДАННЫХ. Нужно реализовать указанную в задаче виртуальную топологию, используя возможности MPI "
+"по работе с коммуникаторами и топологиями и обеспечить возможность передачи данных "
+"от любого выбранного процесса любому другому процессу. "
+"(Не используя MPI_Cart_Create и MPI_Graph_Create)"
 
 #: ../../common_information/processes_tasks.rst:220
 #: ../../common_information/processes_tasks.rst:233
@@ -655,7 +662,7 @@ msgstr ""
 #: ../../common_information/processes_tasks.rst:266
 #: ../../common_information/processes_tasks.rst:276
 msgid "Varinats for task 2"
-msgstr ""
+msgstr "Варинты для второй задачи"
 
 #: ../../common_information/processes_tasks.rst:220
 #: ../../common_information/processes_tasks.rst:233
@@ -664,7 +671,7 @@ msgstr ""
 #: ../../common_information/processes_tasks.rst:266
 #: ../../common_information/processes_tasks.rst:276
 msgid "Varinats for task 3"
-msgstr ""
+msgstr "Варинты для третьей задачи"
 
 #: ../../common_information/processes_tasks.rst:222
 msgid "6 - 10"
@@ -675,7 +682,8 @@ msgid ""
 "MATRIX COMPUTATIONS “In the horizontal scheme, the matrix is divided "
 "among processes by rows. In the vertical scheme, it is divided by "
 "columns, and in this case, the vector is also divided among processes.”"
-msgstr ""
+msgstr "МАТРИЧНЫЕ ВЫЧИСЛЕНИЯ. В горизонтальной схеме матрица делится между процессами по строкам. "
+"В вертикальной - по столбцам, вектор в этом случае также делится между процессами."
 
 #: ../../common_information/processes_tasks.rst:235
 msgid "11 - 14"
@@ -686,7 +694,9 @@ msgid ""
 "COMPUTER GRAPHICS AND IMAGE PROCESSING “It is assumed that the image is "
 "given in color or grayscale, with the input data being a one-dimensional "
 "array. Loading a real image is not required, but is allowed.”"
-msgstr ""
+msgstr "МАШИННАЯ ГРАФИКА И ОБРАБОТКА ИЗОБРАЖЕНИЙ. Считается, что изображение задано в цветном виде или оттенках серого, "
+"входные данные - одномерный массив. "
+"Загружать реальное изображение не требуется, но и не возбраняется."
 
 #: ../../common_information/processes_tasks.rst:248
 msgid "26 - 27"
@@ -698,7 +708,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:251
 msgid "SOLUTION OF A SYSTEM OF LINEAR ALGEBRAIC EQUATIONS"
-msgstr ""
+msgstr "РЕШЕНИЕ СИСТЕМЫ ЛИНЕЙНЫХ АЛГЕБРАИЧЕСКИХ УРАВНЕНИЙ"
 
 #: ../../common_information/processes_tasks.rst:258
 msgid "15 - 20"
@@ -706,7 +716,7 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:261
 msgid "SORT ALGORITHMS"
-msgstr ""
+msgstr "АЛГОРИТМЫ СОРТИРОВКИ"
 
 #: ../../common_information/processes_tasks.rst:268
 msgid "14 - 21"
@@ -714,9 +724,8 @@ msgstr ""
 
 #: ../../common_information/processes_tasks.rst:271
 msgid "GRAPH PROCESSING ALGORITHMS"
-msgstr ""
+msgstr "АЛГОРИТМЫ НА ГРАФАХ"
 
 #: ../../common_information/processes_tasks.rst:278
 msgid "22 - 23"
 msgstr ""
-

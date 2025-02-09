@@ -5,11 +5,11 @@ Points
 
   - 1st MPI task
 
-    ======== ===========
-    Solution Compilation
-    ======== ===========
-    5        5
-    ======== ===========
+    +----------+
+    | Solution |
+    +==========+
+    | 10       |
+    +----------+
 
   - 2nd MPI task
 
@@ -33,11 +33,11 @@ Points
 
   - Sequential version
 
-    ======== ===========
-    Solution Compilation
-    ======== ===========
-    2        2
-    ======== ===========
+    +----------+
+    | Solution |
+    +==========+
+    | 4        |
+    +----------+
 
   - OpenMP version
 
@@ -73,6 +73,38 @@ Points
     ======== ===========
 
   - **Total : 54 points**
+
+- The rule for earning performance points.
+
+  The ratio of efficiency percentage to points percentage, where the maximum points is 100% and the minimum points is 0%.
+
+  If the score is not an integer, it is rounded up.
+
+    +----------------+-------------------+
+    | Efficiency (%) | Points percentage |
+    +================+===================+
+    | >= 50%         | 100%              |
+    +----------------+-------------------+
+    | [45, 50)       | 90%               |
+    +----------------+-------------------+
+    | [42, 45)       | 80%               |
+    +----------------+-------------------+
+    | [40, 42)       | 70%               |
+    +----------------+-------------------+
+    | [37, 40)       | 60%               |
+    +----------------+-------------------+
+    | [35, 37)       | 50%               |
+    +----------------+-------------------+
+    | [32, 35)       | 40%               |
+    +----------------+-------------------+
+    | [30, 32)       | 30%               |
+    +----------------+-------------------+
+    | [27, 30)       | 20%               |
+    +----------------+-------------------+
+    | [25, 27)       | 10%               |
+    +----------------+-------------------+
+    | < 25%          | 0%                |
+    +----------------+-------------------+
 
 - Report
 
@@ -118,3 +150,4 @@ Points
 - Comments:
 
   - It is forbidden to write the report if all tasks are not completed.
+  - Please keep in mind that one week before the end of the semester, the repository will be closed for final assessment.

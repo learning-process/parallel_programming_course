@@ -23,15 +23,15 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:2
 msgid "Thread parallelism tasks"
-msgstr ""
+msgstr "Задачи параллелизма на потоках"
 
 #: ../../common_information/threading_tasks.rst:5
 msgid "Variant Number"
-msgstr ""
+msgstr "Номер варианта"
 
 #: ../../common_information/threading_tasks.rst:5
 msgid "Tasks"
-msgstr ""
+msgstr "Задача"
 
 #: ../../common_information/threading_tasks.rst:7
 msgid "1"
@@ -41,7 +41,7 @@ msgstr ""
 msgid ""
 "Dense matrix multiplication. Elements of type double. Block scheme, "
 "Cannon's algorithm."
-msgstr ""
+msgstr "Умножение плотных матриц. Элементы типа double. Блочная схема, алгоритм Кэннона."
 
 #: ../../common_information/threading_tasks.rst:9
 msgid "2"
@@ -51,7 +51,7 @@ msgstr ""
 msgid ""
 "Dense matrix multiplication. Elements of type double. Block scheme, Fox's"
 " algorithm."
-msgstr ""
+msgstr "Умножение плотных матриц. Элементы типа double. Блочная схема, алгоритм Фокса."
 
 #: ../../common_information/threading_tasks.rst:11
 msgid "3"
@@ -61,7 +61,7 @@ msgstr ""
 msgid ""
 "Dense matrix multiplication. Elements of type double. Strassen's "
 "algorithm."
-msgstr ""
+msgstr "Умножение плотных матриц. Элементы типа double. Алгоритм Штрассена."
 
 #: ../../common_information/threading_tasks.rst:13
 msgid "4"
@@ -71,7 +71,7 @@ msgstr ""
 msgid ""
 "Sparse matrix multiplication. Elements of type double. Matrix storage "
 "format – row format (Compressed Row Storage)."
-msgstr ""
+msgstr "Умножение разреженных матриц. Элементы типа double. Формат хранения матрицы – строковый (CRS)."
 
 #: ../../common_information/threading_tasks.rst:15
 msgid "5"
@@ -81,7 +81,7 @@ msgstr ""
 msgid ""
 "Sparse matrix multiplication. Elements of type double. Matrix storage "
 "format – column format (Compressed Column Storage)."
-msgstr ""
+msgstr "Умножение разреженных матриц. Элементы типа double. Формат хранения матрицы – столбцовый (CCS)."
 
 #: ../../common_information/threading_tasks.rst:17
 msgid "6"
@@ -91,7 +91,7 @@ msgstr ""
 msgid ""
 "Sparse matrix multiplication. Complex type elements. Matrix storage "
 "format – row format (Compressed Row Storage)."
-msgstr ""
+msgstr "Умножение разреженных матриц. Элементы комплексного типа. Формат хранения матрицы – строковый (CRS)."
 
 #: ../../common_information/threading_tasks.rst:19
 msgid "7"
@@ -101,7 +101,7 @@ msgstr ""
 msgid ""
 "Sparse matrix multiplication. Complex type elements. Matrix storage "
 "format – column format (Compressed Column Storage)."
-msgstr ""
+msgstr "Умножение разреженных матриц. Элементы комплексного типа. Формат хранения матрицы – столбцовый (CCS)."
 
 #: ../../common_information/threading_tasks.rst:21
 msgid "8"
@@ -109,7 +109,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:21
 msgid "Solving systems of linear equations using the conjugate gradient method."
-msgstr ""
+msgstr "Решение систем линейных уравнений методом сопряженных градиентов."
 
 #: ../../common_information/threading_tasks.rst:23
 msgid "9"
@@ -119,7 +119,7 @@ msgstr ""
 msgid ""
 "Computing multidimensional integrals using a multistep scheme (rectangle "
 "method)."
-msgstr ""
+msgstr "Вычисление многомерных интегралов с использованием многошаговой схемы (метод прямоугольников)."
 
 #: ../../common_information/threading_tasks.rst:25
 msgid "10"
@@ -129,7 +129,7 @@ msgstr ""
 msgid ""
 "Computing multidimensional integrals using a multistep scheme "
 "(trapezoidal method)."
-msgstr ""
+msgstr "Вычисление многомерных интегралов с использованием многошаговой схемы (метод трапеций)."
 
 #: ../../common_information/threading_tasks.rst:27
 msgid "11"
@@ -139,7 +139,7 @@ msgstr ""
 msgid ""
 "Computing multidimensional integrals using a multistep scheme (Simpson's "
 "method)."
-msgstr ""
+msgstr "Вычисление многомерных интегралов с использованием многошаговой схемы (метод Симпсона)."
 
 #: ../../common_information/threading_tasks.rst:29
 msgid "12"
@@ -147,7 +147,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:29
 msgid "Computing multidimensional integrals using the Monte Carlo method."
-msgstr ""
+msgstr "Вычисление многомерных интегралов методом Монте-Карло."
 
 #: ../../common_information/threading_tasks.rst:31
 msgid "13"
@@ -155,7 +155,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:31
 msgid "Quick sort with simple merging."
-msgstr ""
+msgstr "Сортировка Хоара с простым слиянием."
 
 #: ../../common_information/threading_tasks.rst:33
 msgid "14"
@@ -163,7 +163,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:33
 msgid "Quick sort with odd-even merging (Batcher's method)."
-msgstr ""
+msgstr "Сортировка Хоара с четно-нечетным слиянием Бэтчера."
 
 #: ../../common_information/threading_tasks.rst:35
 msgid "15"
@@ -171,7 +171,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:35
 msgid "Shell sort with simple merging."
-msgstr ""
+msgstr "Сортировка Шелла с простым слиянием."
 
 #: ../../common_information/threading_tasks.rst:37
 msgid "16"
@@ -179,7 +179,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:37
 msgid "Shell sort with odd-even merging (Batcher's method)."
-msgstr ""
+msgstr "Сортировка Шелла с четно-нечетным слиянием Бэтчера."
 
 #: ../../common_information/threading_tasks.rst:39
 msgid "17"
@@ -187,7 +187,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:39
 msgid "Radix sort for integers with simple merging."
-msgstr ""
+msgstr "Поразрядная сортировка для целых чисел с простым слиянием."
 
 #: ../../common_information/threading_tasks.rst:41
 msgid "18"
@@ -195,7 +195,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:41
 msgid "Radix sort for integers with odd-even merging (Batcher's method)."
-msgstr ""
+msgstr "Поразрядная сортировка для целых чисел с четно-нечетным слиянием Бэтчера."
 
 #: ../../common_information/threading_tasks.rst:43
 msgid "19"
@@ -203,7 +203,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:43
 msgid "Radix sort for floating-point numbers (type double) with simple merging."
-msgstr ""
+msgstr "Поразрядная сортировка для вещественных чисел (тип double) с простым слиянием."
 
 #: ../../common_information/threading_tasks.rst:45
 msgid "20"
@@ -213,7 +213,7 @@ msgstr ""
 msgid ""
 "Radix sort for floating-point numbers (type double) with odd-even merging"
 " (Batcher's method)."
-msgstr ""
+msgstr "Поразрядная сортировка для вещественных чисел (тип double) с четно-нечетным слиянием Бэтчера."
 
 #: ../../common_information/threading_tasks.rst:47
 msgid "21"
@@ -221,7 +221,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:47
 msgid "Shortest path search from one vertex (Dijkstra's algorithm)."
-msgstr ""
+msgstr "Поиск кратчайших путей из одной вершины (алгоритм Дейкстры)."
 
 #: ../../common_information/threading_tasks.rst:49
 msgid "22"
@@ -229,7 +229,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:49
 msgid "Convex hull construction – Graham's scan."
-msgstr ""
+msgstr "Построение выпуклой оболочки – проход Грэхема."
 
 #: ../../common_information/threading_tasks.rst:51
 msgid "23"
@@ -237,7 +237,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:51
 msgid "Convex hull construction – Jarvis's march."
-msgstr ""
+msgstr "Построение выпуклой оболочки – проход Джарвиса."
 
 #: ../../common_information/threading_tasks.rst:53
 msgid "24"
@@ -245,7 +245,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:53
 msgid "Linear image filtering (horizontal partition). Gaussian kernel 3x3."
-msgstr ""
+msgstr "Линейная фильтрация изображений (горизонтальное разбиение). Ядро Гаусса 3x3."
 
 #: ../../common_information/threading_tasks.rst:55
 msgid "25"
@@ -253,7 +253,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:55
 msgid "Linear image filtering (vertical partition). Gaussian kernel 3x3."
-msgstr ""
+msgstr "Линейная фильтрация изображений (вертикальное разбиение). Ядро Гаусса 3x3."
 
 #: ../../common_information/threading_tasks.rst:57
 msgid "26"
@@ -261,7 +261,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:57
 msgid "Linear image filtering (block partition). Gaussian kernel 3x3."
-msgstr ""
+msgstr "Линейная фильтрация изображений (блочное разбиение). Ядро Гаусса 3x3."
 
 #: ../../common_information/threading_tasks.rst:59
 msgid "27"
@@ -269,7 +269,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:59
 msgid "Edge detection in an image using the Sobel operator."
-msgstr ""
+msgstr "Выделение ребер на изображении с использованием оператора Собеля."
 
 #: ../../common_information/threading_tasks.rst:61
 msgid "28"
@@ -277,7 +277,7 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:61
 msgid "Contrast enhancement of grayscale image using linear histogram stretching."
-msgstr ""
+msgstr "Повышение контраста полутонового изображения посредством линейной растяжки гистограммы."
 
 #: ../../common_information/threading_tasks.rst:63
 msgid "29"
@@ -287,7 +287,7 @@ msgstr ""
 msgid ""
 "Labeling components on a binary image (black areas correspond to objects,"
 " white to background)."
-msgstr ""
+msgstr "Маркировка компонент на бинарном изображении (черные области соответствуют объектам, белые – фону)."
 
 #: ../../common_information/threading_tasks.rst:65
 msgid "30"
@@ -295,5 +295,4 @@ msgstr ""
 
 #: ../../common_information/threading_tasks.rst:65
 msgid "Convex hull construction for components of a binary image."
-msgstr ""
-
+msgstr "Построение выпуклой оболочки для компонент бинарного изображения."
