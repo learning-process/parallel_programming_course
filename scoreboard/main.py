@@ -1,6 +1,7 @@
 from pathlib import Path
 from collections import defaultdict
 import argparse
+import yaml
 
 task_types = ['all', 'mpi', 'omp', 'seq', 'stl', 'tbb']
 
@@ -18,7 +19,15 @@ for task_type in task_types:
             else:
                 directories[task_name][task_type] = "done"
 
-print(directories)
+config_path = Path(__file__).parent / "data" / "threads-config.yml"
+assert config_path.exists(), f"Config file not found: {config_path}"
+with open(config_path, 'r') as file:
+    cfg = yaml.safe_load(file)
+assert cfg, "Configuration is empty"
+plagiarism_config_path = Path(__file__).parent / "data" / "plagiarism.yml"
+with open(plagiarism_config_path, 'r') as file:
+    plagiarism_cfg = yaml.safe_load(file)
+assert plagiarism_cfg, "Plagiarism configuration is empty"
 
 columns = ''.join(['<th colspan=5 style="text-align: center;">' + task_type + '</th>' for task_type in task_types])
 html_content = f"""
@@ -59,18 +68,30 @@ for dir in sorted(directories.keys()):
     html_content += f"<tr><td>{dir}</td>"
     total_count = 0
     for task_type in task_types:
+        max_sol_points = int(cfg["scoreboard"]["task"][task_type]["solution"]["max"])
+        task_count = 0
         if directories[dir].get(task_type) == "done":
-            html_content += '<td style="text-align: center;">1</td>'
-            total_count += 1
+            html_content += f'<td style="text-align: center;">{max_sol_points}</td>'
+            task_count += max_sol_points
         elif directories[dir].get(task_type) == "disabled":
-            html_content += '<td style="text-align: center;background-color: lightblue;">1</td>'
-            total_count += 1
+            html_content += f'<td style="text-align: center;background-color: lightblue;">{max_sol_points}</td>'
+            task_count += max_sol_points
         else:
             html_content += '<td style="text-align: center;">0</td>'
         html_content += '<td style="text-align: center;">0</td>'
         html_content += '<td style="text-align: center;">0</td>'
         html_content += '<td style="text-align: center;">0</td>'
-        html_content += '<td style="text-align: center;">0</td>'
+        is_cheated = \
+            dir in plagiarism_cfg["plagiarism"][task_type] or \
+            dir[:-len("_disabled")] in plagiarism_cfg["plagiarism"][task_type]
+        if is_cheated:
+            plag_coeff = float(cfg["scoreboard"]["plagiarism"]["coefficient"])
+            plagiarism_points = -plag_coeff * task_count
+            task_count += plagiarism_points
+            html_content += f'<td style="text-align: center; background-color: pink;">{plagiarism_points}</td>'
+        else:
+            html_content += '<td style="text-align: center;">0</td>'
+        total_count += task_count
     html_content += f'<td style="text-align: center;">{total_count}</td>'
     html_content += "</tr>"
 
