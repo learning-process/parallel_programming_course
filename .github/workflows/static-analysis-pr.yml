@@ -40,7 +40,9 @@ jobs:
           CC: clang-19
           CXX: clang++-19
       - if: steps.review.outputs.total_comments > 0
-        run: exit 1
+        run: |
+          echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
+          exit 1
   clang-tidy-for-gcc-build:
     needs:
       - clang-tidy
