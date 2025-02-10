@@ -21,7 +21,7 @@ jobs:
         id: review
         with:
           build_dir: build
-          apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-18-dev,valgrind
+          apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-18-dev,valgrind,libopencv-dev
           cmake_command: >
             cmake -S . -B build
             -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
