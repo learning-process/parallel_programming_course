@@ -2,11 +2,10 @@
 
 #include <cmath>
 #include <cstddef>
-#include <functional>
 #include <thread>
 #include <vector>
 
-#include "core/util/util.hpp"
+#include "core/util/include/util.hpp"
 
 namespace {
 void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {

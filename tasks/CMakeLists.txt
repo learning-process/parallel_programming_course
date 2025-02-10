@@ -90,7 +90,7 @@ foreach(TASK_TYPE ${LIST_OF_TASKS})
     endif (USE_PERF_TESTS)
 
     foreach (EXEC_FUNC ${LIST_OF_EXEC_TESTS})
-      target_link_libraries(${EXEC_FUNC} PUBLIC core_module_lib ${exec_func_lib})
+      target_link_libraries(${EXEC_FUNC} PUBLIC ${exec_func_lib} core_module_lib)
 
       if ("${MODULE_NAME}" STREQUAL "stl")
           target_link_libraries(${EXEC_FUNC} PUBLIC Threads::Threads)

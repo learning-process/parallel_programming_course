@@ -1,4 +1,4 @@
-#pragma once
+#include "core/util/include/util.hpp"
 
 #include <cstdlib>
 #ifdef _WIN32
@@ -11,14 +11,12 @@
 #include <filesystem>
 #include <string>
 
-namespace ppc::util {
-
-inline std::string GetAbsolutePath(const std::string &relative_path) {
+std::string ppc::util::GetAbsolutePath(const std::string &relative_path) {
   const std::filesystem::path path = std::string(PPC_PATH_TO_PROJECT) + "/tasks/" + relative_path;
   return path.string();
 }
 
-inline int GetPPCNumThreads() {
+int ppc::util::GetPPCNumThreads() {
 #ifdef _WIN32
   size_t len;
   char omp_env[100];
@@ -32,5 +30,3 @@ inline int GetPPCNumThreads() {
   int num_threads = (omp_env != nullptr) ? std::atoi(omp_env) : 1;
   return num_threads;
 }
-
-}  // namespace ppc::util

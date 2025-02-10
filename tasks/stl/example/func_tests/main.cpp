@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-#include "core/util/util.hpp"
+#include "core/util/include/util.hpp"
 #include "stl/example/include/ops_stl.hpp"
 
 TEST(nesterov_a_test_task_stl, test_matmul_50) {

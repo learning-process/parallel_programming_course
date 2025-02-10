@@ -6,7 +6,14 @@ if(NOT USE_SEQ AND NOT USE_MPI AND NOT USE_OMP AND NOT USE_TBB AND NOT USE_STL)
 endif()
 
 include(ExternalProject)
-include_directories(${CMAKE_SOURCE_DIR}/3rdparty/opencv/include)
+option(USE_SYSTEM_OPENCV OFF)
+if( USE_SYSTEM_OPENCV )
+    find_package(OpenCV REQUIRED)
+    include_directories(${OpenCV_INCLUDE_DIRS})
+else ()
+    include_directories(${CMAKE_SOURCE_DIR}/3rdparty/opencv/include)
+endif ()
+
 if(WIN32)
     ExternalProject_Add(ppc_opencv
             SOURCE_DIR        "${CMAKE_SOURCE_DIR}/3rdparty/opencv"
