@@ -17,7 +17,7 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           key: ${{ runner.os }}-clang
-      - uses: ZedThree/clang-tidy-review@v0.20.1
+      - uses: aobolensk/clang-tidy-review@v0.20.1-patch-clang-tidy-19
         id: review
         with:
           build_dir: build
@@ -52,7 +52,7 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           key: ${{ runner.os }}-gcc
-      - uses: ZedThree/clang-tidy-review@v0.20.1
+      - uses: aobolensk/clang-tidy-review@v0.20.1-patch-clang-tidy-19
         id: review
         with:
           build_dir: build
