@@ -30,6 +30,7 @@ jobs:
             -D USE_SEQ=ON -D USE_MPI=ON
             -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
             -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+            -D CMAKE_C_FLAGS="/usr/include/opencv4" -D CMAKE_CXX_FLAGS="/usr/include/opencv4"
           config_file: .clang-tidy
           exclude: 3rdparty
           split_workflow: true
@@ -65,6 +66,7 @@ jobs:
             -D USE_SEQ=ON -D USE_MPI=ON
             -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
             -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+            -D CMAKE_C_FLAGS="/usr/include/opencv4" -D CMAKE_CXX_FLAGS="/usr/include/opencv4"
           config_file: .clang-tidy
           exclude: 3rdparty
           split_workflow: true
