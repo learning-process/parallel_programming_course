@@ -21,7 +21,7 @@ jobs:
         id: review
         with:
           build_dir: build
-          apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-18-dev,valgrind
+          apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-19-dev,valgrind
           cmake_command: >
             cmake -S . -B build
             -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -33,11 +33,11 @@ jobs:
           config_file: .clang-tidy
           exclude: 3rdparty
           split_workflow: true
-          clang_tidy_version: "18"
+          clang_tidy_version: "19"
           lgtm_comment_body: ""
         env:
-          CC: clang-18
-          CXX: clang++-18
+          CC: clang-19
+          CXX: clang++-19
       - if: steps.review.outputs.total_comments > 0
         run: exit 1
   clang-tidy-for-gcc-build:
@@ -56,7 +56,7 @@ jobs:
         id: review
         with:
           build_dir: build
-          apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-18-dev,valgrind
+          apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-19-dev,valgrind
           cmake_command: >
             cmake -S . -B build
             -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -68,7 +68,7 @@ jobs:
           config_file: .clang-tidy
           exclude: 3rdparty
           split_workflow: true
-          clang_tidy_version: "18"
+          clang_tidy_version: "19"
           lgtm_comment_body: ""
       - if: steps.review.outputs.total_comments > 0
         run: |
