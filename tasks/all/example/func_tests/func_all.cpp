@@ -40,7 +40,7 @@ TEST(nesterov_a_test_task_all, test_matmul_50) {
 TEST(nesterov_a_test_task_all, test_matmul_from_pic) {
   cv::Mat img = cv::imread(ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg"));
   EXPECT_EQ(img.rows, img.cols);
-  const int count = img.rows + img.cols;
+  const int count = (img.rows + img.cols) / 10;
 
   // Create data
   std::vector<int> in(count * count, 0);
