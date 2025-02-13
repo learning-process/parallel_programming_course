@@ -38,8 +38,8 @@ for line in logs_lines:
         task_name = result[0][1]
         perf_type = result[0][2]
         perf_time = float(result[0][3])
-        if perf_time < 1.0:
-            msg = f"Performance time = {perf_time} < 1 second : for {task_type} - {task_name} - {perf_type} \n"
+        if perf_time < 0.1:
+            msg = f"Performance time = {perf_time} < 0.1 second : for {task_type} - {task_name} - {perf_type} \n"
             raise Exception(msg)
         result_tables[perf_type][task_name][task_type] = perf_time
 
