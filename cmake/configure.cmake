@@ -45,6 +45,11 @@ if( UNIX )
         "${CMAKE_C_FLAGS}                    \
         -Wold-style-definition               \
         -Wmissing-prototypes")
+
+    if (${ENABLE_ADDRESS_SANITIZER} OR ${ENABLE_UB_SANITIZER})
+        set (COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} -Wno-cast-align")
+    endif()
+
     set (COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} -Werror")
 
     set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} ${COMMON_COMPILER_FLAGS}")
