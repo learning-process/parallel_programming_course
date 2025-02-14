@@ -1,14 +1,14 @@
 #include "all/example/include/ops_all.hpp"
 
-#include <cmath>
-#include <cstddef>
-#include <functional>
-#include <thread>
-#include <vector>
-
 #include "core/util/include/util.hpp"
 #include "oneapi/tbb/task_arena.h"
 #include "oneapi/tbb/task_group.h"
+#include <cmath>
+#include <cstddef>
+#include <functional>
+#include <mpi.h>
+#include <thread>
+#include <vector>
 
 namespace {
 void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
@@ -42,7 +42,9 @@ bool nesterov_a_test_task_all::TestTaskALL::ValidationImpl() {
 }
 
 bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
-  if (world_.rank() == 0) {
+  int rank = -1;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  if (rank == 0) {
 #pragma omp parallel default(none)
     {
 #pragma omp critical
@@ -66,7 +68,7 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
     threads[i].join();
   }
 
-  world_.barrier();
+  MPI_Barrier(MPI_COMM_WORLD);
   return true;
 }
 
