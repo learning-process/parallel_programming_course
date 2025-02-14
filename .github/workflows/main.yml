@@ -368,16 +368,15 @@ jobs:
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
           sudo ./llvm.sh 19 all
-      - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2
-        with:
-          key: ${{ runner.os }}-clang
-          create-symlink: true
-          max-size: 1G
+#      - name: ccache
+#        uses: hendrikmuhs/ccache-action@v1.2
+#        with:
+#          key: ${{ runner.os }}-clang
+#          create-symlink: true
+#          max-size: 1G
       - name: CMake configure
         run: >
           cmake -S . -B build
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
           -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
