@@ -18,7 +18,11 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/arch" )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib" )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin" )
 
-set( CMAKE_CXX_STANDARD 20 )
+if ( MSVC AND (CMAKE_C_COMPILER_ID STREQUAL "Clang") AND (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    set( CMAKE_CXX_STANDARD 17 )
+else ()
+    set( CMAKE_CXX_STANDARD 20 )
+endif ()
 
 if( UNIX )
     set(COMMON_COMPILER_FLAGS
@@ -61,7 +65,7 @@ if( UNIX )
 endif()
 
 if( MSVC )
-    if (CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    if ((CMAKE_C_COMPILER_ID STREQUAL "Clang") AND (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
         set(COMMON_COMPILER_FLAGS
                 "-Wno-tautological-pointer-compare \
                  -Wno-ignored-attributes")
