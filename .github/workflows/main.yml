@@ -865,14 +865,23 @@ jobs:
         uses: microsoft/setup-msbuild@v2
         with:
           vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
+        with:
+          windows_compile_environment: msvc
       - name: Setup ninja
         uses: seanmiddleditch/gha-setup-ninja@v6
       - name: Setup MSVC for Ninja again
         uses: ilammy/msvc-dev-cmd@v1
       - name: CMake configure
         run: >
-          cmake -S . -B build -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
-          -D USE_SEQ=ON -D USE_MPI=OFF -D USE_OMP=OFF -D USE_TBB=ON -D USE_STL=ON
+          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
           -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
