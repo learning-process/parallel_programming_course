@@ -13,9 +13,7 @@ class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {
 
   void OnTestEnd(const ::testing::TestInfo& test_info) override {
     int rank = -1;
-    int size = -1;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
 
     MPI_Barrier(MPI_COMM_WORLD);
 

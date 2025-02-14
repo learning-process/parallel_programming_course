@@ -365,7 +365,7 @@ jobs:
         run: |
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip
+          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip lld
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
           sudo ./llvm.sh 19 all
@@ -382,7 +382,10 @@ jobs:
           -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
           -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
-          -DCMAKE_INSTALL_PREFIX=install
+          -D CMAKE_INSTALL_PREFIX=install
+          -D CMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld"
+          -D CMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld"
+          -D CMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld"
         env:
           CC: clang-19
           CXX: clang++-19
