@@ -364,7 +364,7 @@ jobs:
         run: |
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev mpi* openmpi-bin python3-pip
+          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev mpi* python3-pip
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
           sudo ./llvm.sh 19 all
