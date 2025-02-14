@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
+#include <mpi.h>
 
 #include <chrono>
 #include <cstddef>
 #include <cstdint>
 #include <memory>
-#include <mpi.h>
 #include <vector>
 
 #include "all/example/include/ops_all.hpp"

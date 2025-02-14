@@ -1,8 +1,9 @@
 #include "mpi/example/include/ops_mpi.hpp"
 
+#include <mpi.h>
+
 #include <cmath>
 #include <cstddef>
-#include <mpi.h>
 #include <vector>
 
 bool nesterov_a_test_task_mpi::TestTaskMPI::PreProcessingImpl() {

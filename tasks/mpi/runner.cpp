@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
+#include <mpi.h>
 
 #include <cstdio>
 #include <cstdlib>
 #include <memory>
-#include <mpi.h>
 #include <string>
 #include <utility>
 
