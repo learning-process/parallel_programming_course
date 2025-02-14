@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <mpi.h>
 
 #include <chrono>
 #include <cstddef>
@@ -6,7 +7,6 @@
 #include <memory>
 #include <vector>
 
-#include "boost/mpi/communicator.hpp"
 #include "core/perf/include/perf.hpp"
 #include "core/task/include/task.hpp"
 #include "mpi/example/include/ops_mpi.hpp"
@@ -48,8 +48,9 @@ TEST(nesterov_a_test_task_mpi, test_pipeline_run) {
   auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_mpi);
   perf_analyzer->PipelineRun(perf_attr, perf_results);
   // Create Perf analyzer
-  boost::mpi::communicator world;
-  if (world.rank() == 0) {
+  int rank = -1;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  if (rank == 0) {
     ppc::core::Perf::PrintPerfStatistic(perf_results);
   }
 
@@ -94,8 +95,9 @@ TEST(nesterov_a_test_task_mpi, test_task_run) {
   auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_mpi);
   perf_analyzer->TaskRun(perf_attr, perf_results);
   // Create Perf analyzer
-  boost::mpi::communicator world;
-  if (world.rank() == 0) {
+  int rank = -1;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  if (rank == 0) {
     ppc::core::Perf::PrintPerfStatistic(perf_results);
   }
 

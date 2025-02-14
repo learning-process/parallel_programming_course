@@ -1,5 +1,7 @@
 #include "mpi/example/include/ops_mpi.hpp"
 
+#include <mpi.h>
+
 #include <cmath>
 #include <cstddef>
 #include <vector>
@@ -23,7 +25,9 @@ bool nesterov_a_test_task_mpi::TestTaskMPI::ValidationImpl() {
 }
 
 bool nesterov_a_test_task_mpi::TestTaskMPI::RunImpl() {
-  if (world_.rank() == 0) {
+  int rank = -1;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  if (rank == 0) {
     // Multiply matrices
     for (int i = 0; i < rc_size_; ++i) {
       for (int j = 0; j < rc_size_; ++j) {
@@ -42,7 +46,7 @@ bool nesterov_a_test_task_mpi::TestTaskMPI::RunImpl() {
       }
     }
   }
-  world_.barrier();
+  MPI_Barrier(MPI_COMM_WORLD);
   return true;
 }
 

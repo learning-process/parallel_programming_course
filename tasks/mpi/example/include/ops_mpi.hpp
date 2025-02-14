@@ -1,7 +1,5 @@
 #pragma once
 
-#include <boost/mpi/collectives.hpp>
-#include <boost/mpi/communicator.hpp>
 #include <utility>
 #include <vector>
 
@@ -20,7 +18,6 @@ class TestTaskMPI : public ppc::core::Task {
  private:
   std::vector<int> input_, output_;
   int rc_size_{};
-  boost::mpi::communicator world_;
 };
 
 }  // namespace nesterov_a_test_task_mpi

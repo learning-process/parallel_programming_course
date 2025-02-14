@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
+#include <mpi.h>
 
-#include <boost/mpi/communicator.hpp>
-#include <boost/mpi/environment.hpp>
 #include <cstdio>
 #include <cstdlib>
 #include <memory>
@@ -10,28 +9,37 @@
 
 class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {
  public:
-  UnreadMessagesDetector(boost::mpi::communicator com) : com_(std::move(com)) {}
+  UnreadMessagesDetector() = default;
 
   void OnTestEnd(const ::testing::TestInfo& test_info) override {
-    com_.barrier();
-    if (const auto msg = com_.iprobe(boost::mpi::any_source, boost::mpi::any_tag)) {
+    int rank = -1;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    int flag = -1;
+    MPI_Status status;
+
+    MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &flag, &status);
+
+    if (flag != 0) {
       fprintf(
           stderr,
           "[  PROCESS %d  ] [  FAILED  ] %s.%s: MPI message queue has an unread message from process %d with tag %d\n",
-          com_.rank(), test_info.test_suite_name(), test_info.name(), msg->source(), msg->tag());
+          rank, "test_suite_name", "test_name", status.MPI_SOURCE, status.MPI_TAG);
+      MPI_Finalize();
       exit(2);
     }
-    com_.barrier();
+
+    MPI_Barrier(MPI_COMM_WORLD);
   }
 
  private:
-  boost::mpi::communicator com_;
 };
 
 class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
  public:
-  WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener> base, boost::mpi::communicator com)
-      : base_(std::move(base)), com_(std::move(com)) {}
+  explicit WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener> base) : base_(std::move(base)) {}
 
   void OnTestEnd(const ::testing::TestInfo& test_info) override {
     if (test_info.result()->Passed()) {
@@ -50,24 +58,30 @@ class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
   }
 
  private:
-  void PrintProcessRank() const { printf(" [  PROCESS %d  ] ", com_.rank()); }
+  static void PrintProcessRank() {
+    int rank = -1;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    printf(" [  PROCESS %d  ] ", rank);
+  }
 
   std::shared_ptr<::testing::TestEventListener> base_;
-  boost::mpi::communicator com_;
 };
 
 int main(int argc, char** argv) {
-  boost::mpi::environment env(argc, argv);
-  boost::mpi::communicator world;
+  MPI_Init(&argc, &argv);
 
   ::testing::InitGoogleTest(&argc, argv);
 
   auto& listeners = ::testing::UnitTest::GetInstance()->listeners();
-  if (world.rank() != 0 && (argc < 2 || argv[1] != std::string("--print-workers"))) {
+  int rank = -1;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  if (rank != 0 && (argc < 2 || argv[1] != std::string("--print-workers"))) {
     auto* listener = listeners.Release(listeners.default_result_printer());
-    listeners.Append(new WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener), world));
+    listeners.Append(new WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener)));
   }
-  listeners.Append(new UnreadMessagesDetector(world));
+  listeners.Append(new UnreadMessagesDetector());
+  auto status = RUN_ALL_TESTS();
 
-  return RUN_ALL_TESTS();
+  MPI_Finalize();
+  return status;
 }
