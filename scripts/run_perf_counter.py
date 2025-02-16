@@ -30,6 +30,8 @@ def run_script(_script_path):
     if result.returncode != 0:
         raise Exception(f"Subprocess return {result.returncode}.")
 
+    print(result.stdout)
+    print(result.stderr)
     return result.stdout.splitlines()
 
 
