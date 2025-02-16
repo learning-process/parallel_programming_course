@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cstddef>
+#include <functional>
 #include <thread>
 #include <vector>
 
