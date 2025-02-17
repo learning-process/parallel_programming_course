@@ -63,11 +63,11 @@ void ppc::core::Task::InternalOrderTest(const std::string& str) {
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - tmp_time_point_).count();
     auto current_time = static_cast<double>(duration) * 1e-9;
     std::stringstream err_msg;
-    if (current_time < max_test_time_) {
+    if (current_time < kMaxTestTime) {
       err_msg << "Test time:" << std::fixed << std::setprecision(10) << current_time;
     } else {
       err_msg << "\nTask execute time need to be: ";
-      err_msg << "time < " << max_test_time_ << " secs.\n";
+      err_msg << "time < " << kMaxTestTime << " secs.\n";
       err_msg << "Original time in secs: " << current_time << '\n';
       throw std::runtime_error(err_msg.str().c_str());
     }
