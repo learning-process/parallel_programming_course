@@ -11,6 +11,7 @@ Checks: >
   portability-*,
   readability-*,
   -bugprone-casting-through-void,
+  -bugprone-easily-swappable-parameters,
   -bugprone-exception-escape,
   -bugprone-implicit-widening-of-multiplication-result,
   -cppcoreguidelines-avoid-goto,
