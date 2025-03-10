@@ -71,15 +71,15 @@ for dir in sorted(directories.keys()):
         max_sol_points = int(cfg["scoreboard"]["task"][task_type]["solution"]["max"])
         task_count = 0
         if directories[dir].get(task_type) == "done":
-            html_content += f'<td style="text-align: center;">{max_sol_points}</td>'
+            html_content += f'<td style="text-align: center;background-color: lightgreen;">{max_sol_points}</td>'
             task_count += max_sol_points
         elif directories[dir].get(task_type) == "disabled":
             html_content += f'<td style="text-align: center;background-color: lightblue;">{max_sol_points}</td>'
             task_count += max_sol_points
         else:
             html_content += '<td style="text-align: center;">0</td>'
-        html_content += '<td style="text-align: center;">0</td>'
-        html_content += '<td style="text-align: center;">0</td>'
+        html_content += '<td style="text-align: center;background-color: lavender;">0</td>'
+        html_content += '<td style="text-align: center;background-color: lavender;">0</td>'
         html_content += '<td style="text-align: center;">0</td>'
         is_cheated = \
             dir in plagiarism_cfg["plagiarism"][task_type] or \
