@@ -67,6 +67,11 @@ jobs:
       - build-sphinx
       - build-scoreboard
     runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+    concurrency:
+      group: github-pages-deploy
+      cancel-in-progress: false
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
