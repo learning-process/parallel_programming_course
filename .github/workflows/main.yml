@@ -1020,6 +1020,9 @@ jobs:
       - name: Run perf count checker
         run: |
           python3 scripts/run_perf_counter.py --required-tests-number=2
+        env:
+          OMP_NUM_THREADS: 2
+          PROC_COUNT: 2
       - name: Run perf tests
         run: |
           bash -e scripts/generate_perf_results.sh
