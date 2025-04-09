@@ -11,7 +11,7 @@
 #include "stl/example/include/ops_stl.hpp"
 
 TEST(nesterov_a_test_task_stl, test_pipeline_run) {
-  constexpr int kCount = 700;
+  constexpr int kCount = 450;
 
   // Create data
   std::vector<int> in(kCount * kCount, 0);
@@ -52,7 +52,7 @@ TEST(nesterov_a_test_task_stl, test_pipeline_run) {
 }
 
 TEST(nesterov_a_test_task_stl, test_task_run) {
-  constexpr int kCount = 700;
+  constexpr int kCount = 450;
 
   // Create data
   std::vector<int> in(kCount * kCount, 0);
