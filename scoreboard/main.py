@@ -74,7 +74,7 @@ for dir in sorted(directories.keys()):
             html_content += f'<td style="text-align: center;background-color: lightgreen;">{max_sol_points}</td>'
             task_count += max_sol_points
         elif directories[dir].get(task_type) == "disabled":
-            html_content += f'<td style="text-align: center;background-color: lightblue;">{max_sol_points}</td>'
+            html_content += f'<td style="text-align: center;background-color: #6495ED;">{max_sol_points}</td>'
             task_count += max_sol_points
         else:
             html_content += '<td style="text-align: center;">0</td>'
