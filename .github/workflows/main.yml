@@ -1122,7 +1122,8 @@ jobs:
         run: |
           bash -e scripts/generate_perf_results.sh
         env:
-          OMP_NUM_THREADS: 4
+          OMP_NUM_THREADS: 2
+          PROC_COUNT: 2
       - name: Archive results
         uses: montudor/action-zip@v1
         with:
