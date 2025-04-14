@@ -27,25 +27,22 @@ bool nesterov_a_test_task_mpi::TestTaskMPI::ValidationImpl() {
 bool nesterov_a_test_task_mpi::TestTaskMPI::RunImpl() {
   int rank = -1;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  if (rank == 0) {
-    // Multiply matrices
+
+  auto multiply = [this](bool row_major) {
     for (int i = 0; i < rc_size_; ++i) {
       for (int j = 0; j < rc_size_; ++j) {
+        int sum = 0;
         for (int k = 0; k < rc_size_; ++k) {
-          output_[(i * rc_size_) + j] += input_[(i * rc_size_) + k] * input_[(k * rc_size_) + j];
+          int a = input_[(row_major ? i : k) * rc_size_ + (row_major ? k : i)];
+          int b = input_[(row_major ? k : j) * rc_size_ + (row_major ? j : k)];
+          sum += a * b;
         }
+        output_[(i * rc_size_) + j] += sum;
       }
     }
-  } else {
-    // Multiply matrices
-    for (int j = 0; j < rc_size_; ++j) {
-      for (int k = 0; k < rc_size_; ++k) {
-        for (int i = 0; i < rc_size_; ++i) {
-          output_[(i * rc_size_) + j] += input_[(i * rc_size_) + k] * input_[(k * rc_size_) + j];
-        }
-      }
-    }
-  }
+  };
+
+  multiply(rank == 0);
   MPI_Barrier(MPI_COMM_WORLD);
   return true;
 }
