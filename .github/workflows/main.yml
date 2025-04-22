@@ -41,7 +41,6 @@ jobs:
           submodules: recursive
       - name: Setup environment
         run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
           python3 -m pip install -r requirements.txt
@@ -91,7 +90,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment
         run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
           python3 -m pip install -r requirements.txt
@@ -147,7 +145,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment
         run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
           python3 -m pip install -r requirements.txt
@@ -202,7 +199,6 @@ jobs:
           submodules: recursive
       - name: Setup environment
         run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
           wget https://apt.llvm.org/llvm.sh
@@ -249,7 +245,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment
         run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
           wget https://apt.llvm.org/llvm.sh
@@ -307,7 +302,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment
         run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
           wget https://apt.llvm.org/llvm.sh
@@ -363,7 +357,6 @@ jobs:
           submodules: recursive
       - name: Setup environment
         run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y ninja-build python3-pip \
               openmpi-bin openmpi-common libopenmpi-dev
@@ -412,7 +405,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment
         run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
           wget https://apt.llvm.org/llvm.sh
@@ -470,7 +462,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment
         run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
           wget https://apt.llvm.org/llvm.sh
@@ -1103,7 +1094,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment
         run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
           python3 -m pip install -r requirements.txt
