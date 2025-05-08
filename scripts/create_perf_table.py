@@ -52,6 +52,7 @@ for table_name in result_tables:
     cpu_num = os.environ.get("PROC_COUNT")
     if cpu_num is None:
         raise EnvironmentError("Required environment variable 'PROC_COUNT' is not set.")
+    cpu_num = int(cpu_num)
     worksheet.write(0, 0, "cpu_num = " + str(cpu_num), right_bold_border)
 
     it = 1
