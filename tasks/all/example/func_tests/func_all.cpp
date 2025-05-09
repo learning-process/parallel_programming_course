@@ -38,9 +38,15 @@ TEST(nesterov_a_test_task_all, test_matmul_50) {
 }
 
 TEST(nesterov_a_test_task_all, test_matmul_from_pic) {
-  cv::Mat img = cv::imread(ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg"));
-  EXPECT_EQ(img.rows, img.cols);
-  const int count = (img.rows + img.cols) / 10;
+  int width = -1;
+  int height = -1;
+  int channels = -1;
+  std::vector<uint8_t> img;
+
+  EXPECT_TRUE(ppc::util::GetImageData(ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg"),
+                                      img, width, height, channels));
+  EXPECT_EQ(width, height);
+  const int count = (width + height) / 10;
 
   // Create data
   std::vector<int> in(count * count, 0);
