@@ -3,7 +3,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
-#include <opencv2/opencv.hpp>
 #include <vector>
 
 #include "all/example/include/ops_all.hpp"
