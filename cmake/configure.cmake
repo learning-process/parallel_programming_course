@@ -52,7 +52,7 @@ if( UNIX )
         -Wold-style-definition               \
         -Wmissing-prototypes")
 
-    if (${ENABLE_ADDRESS_SANITIZER} OR ${ENABLE_UB_SANITIZER})
+    if ("${ENABLE_ADDRESS_SANITIZER}" OR "${ENABLE_UB_SANITIZER}")
         set (COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} -Wno-cast-align")
     endif()
 

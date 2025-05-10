@@ -21,7 +21,6 @@ include(cmake/onetbb.cmake)
 ######################### External projects #########################
 
 message( STATUS "PPC step: Setup external projects" )
-include(cmake/opencv.cmake)
 include(cmake/gtest.cmake)
 
 ########################### Documentation ###########################
