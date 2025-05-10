@@ -42,8 +42,8 @@ TEST(nesterov_a_test_task_all, test_matmul_from_pic) {
   int channels = -1;
   std::vector<uint8_t> img;
 
-  EXPECT_TRUE(ppc::util::GetImageData(ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg"),
-                                      img, width, height, channels));
+  EXPECT_TRUE(ppc::util::GetImageData(ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg"), img, width, height,
+                                      channels));
   EXPECT_EQ(width, height);
   const int count = (width + height) / 10;
 

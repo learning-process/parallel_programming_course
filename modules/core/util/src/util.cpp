@@ -35,8 +35,8 @@ int ppc::util::GetPPCNumThreads() {
   return num_threads;
 }
 
-bool ppc::util::GetImageData(const std::string &abs_path,
-                             std::vector<uint8_t> &image, int &width, int &height, int &channels) {
+bool ppc::util::GetImageData(const std::string &abs_path, std::vector<uint8_t> &image, int &width, int &height,
+                             int &channels) {
   width = -1;
   height = -1;
   channels = -1;
