@@ -29,7 +29,7 @@ target_link_directories(${exec_func_tests} PUBLIC ${CMAKE_BINARY_DIR}/ppc_google
 target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
 
 add_library(stb_image INTERFACE)
-target_include_directories(stb_image INTERFACE ${CMAKE_SOURCE_DIR}/3rdparty/stb/stb_image.h)
+target_include_directories(stb_image INTERFACE ${CMAKE_SOURCE_DIR}/3rdparty/stb)
 target_link_libraries(${exec_func_tests} PUBLIC stb_image)
 
 target_link_libraries(${exec_func_tests} PUBLIC ${exec_func_lib})
