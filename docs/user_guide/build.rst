@@ -8,7 +8,7 @@ Navigate to a source code folder.
    .. code-block:: bash
 
       mkdir build && cd build
-      cmake -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=Release ..
+      cmake -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=Release ..
 
    *Help on CMake keys:*
 

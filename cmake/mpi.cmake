@@ -1,4 +1,4 @@
-option(USE_MPI OFF)
+option(USE_MPI ON)
 if( USE_MPI )
     find_package( MPI )
     if( MPI_FOUND )

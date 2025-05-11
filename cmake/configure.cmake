@@ -2,6 +2,8 @@ if(MSVC)
     option(gtest_force_shared_crt "" TRUE)
 endif(MSVC)
 
+option(USE_SEQ ON)
+
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_RUNTIME_C_FLAG TRUE)
 endif(APPLE)

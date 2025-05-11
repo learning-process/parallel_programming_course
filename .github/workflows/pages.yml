@@ -25,7 +25,8 @@ jobs:
           python3 -m pip install -r docs/requirements.txt
       - name: Configure project
         run: >
-          cmake -S . -B build -D USE_DOCS=ON
+          cmake -S . -B build -DUSE_DOCS=ON
+          -DUSE_MPI=OFF -DUSE_SEQ=OFF -DUSE_OMP=OFF -DUSE_TBB=OFF -DUSE_STL=OFF
       - name: Build i18n
         run: |
           cmake --build build -t docs_gettext
@@ -51,8 +52,9 @@ jobs:
         run: |
           python3 -m pip install -r requirements.txt
       - name: CMake configure
-        run: |
+        run: >
           cmake -S . -B build -DUSE_SCOREBOARD=ON
+          -DUSE_MPI=OFF -DUSE_SEQ=OFF -DUSE_OMP=OFF -DUSE_TBB=OFF -DUSE_STL=OFF
       - name: CMake build
         run: |
           cmake --build build --parallel

@@ -1,4 +1,4 @@
-option(USE_TBB OFF)
+option(USE_TBB ON)
 if( USE_TBB )
     # Build Core OneTBB components
     include_directories(${CMAKE_SOURCE_DIR}/3rdparty/onetbb/include)
