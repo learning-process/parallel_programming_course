@@ -203,7 +203,7 @@ jobs:
           sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
-          sudo ./llvm.sh 19 all
+          sudo ./llvm.sh 20 all
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -218,14 +218,14 @@ jobs:
           -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
-          CC: clang-19
-          CXX: clang++-19
+          CC: clang-20
+          CXX: clang++-20
       - name: Build project
         run: |
           cmake --build build --parallel
         env:
-          CC: clang-19
-          CXX: clang++-19
+          CC: clang-20
+          CXX: clang++-20
       - name: Install project
         run: |
           cmake --build build --target install
@@ -249,7 +249,7 @@ jobs:
           sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
-          sudo ./llvm.sh 19 all
+          sudo ./llvm.sh 20 all
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -306,7 +306,7 @@ jobs:
           sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
-          sudo ./llvm.sh 19 all
+          sudo ./llvm.sh 20 all
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -362,7 +362,7 @@ jobs:
               openmpi-bin openmpi-common libopenmpi-dev
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
-          sudo ./llvm.sh 19 all
+          sudo ./llvm.sh 20 all
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -378,14 +378,14 @@ jobs:
           -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
           -D CMAKE_INSTALL_PREFIX=install
         env:
-          CC: clang-19
-          CXX: clang++-19
+          CC: clang-20
+          CXX: clang++-20
       - name: Build project
         run: |
           cmake --build build --parallel
         env:
-          CC: clang-19
-          CXX: clang++-19
+          CC: clang-20
+          CXX: clang++-20
       - name: Install project
         run: |
           cmake --build build --target install
@@ -409,7 +409,7 @@ jobs:
           sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
-          sudo ./llvm.sh 19 all
+          sudo ./llvm.sh 20 all
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -466,7 +466,7 @@ jobs:
           sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
-          sudo ./llvm.sh 19 all
+          sudo ./llvm.sh 20 all
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
