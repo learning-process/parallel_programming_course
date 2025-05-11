@@ -16,7 +16,7 @@ class NumOfOrderlyViolations : public ppc::core::Task {
   bool PreProcessingImpl() override {
     // Init vectors
     input_ = std::vector<InOutType>(task_data->inputs_count[0]);
-    auto tmp_ptr = reinterpret_cast<InOutType*>(task_data->inputs[0]);
+    auto tmp_ptr = reinterpret_cast<InOutType *>(task_data->inputs[0]);
     for (unsigned i = 0; i < task_data->inputs_count[0]; i++) {
       input_[i] = tmp_ptr[i];
     }
@@ -44,7 +44,7 @@ class NumOfOrderlyViolations : public ppc::core::Task {
   }
 
   bool PostProcessingImpl() override {
-    reinterpret_cast<CountType*>(task_data->outputs[0])[0] = num_;
+    reinterpret_cast<CountType *>(task_data->outputs[0])[0] = num_;
     return true;
   }
 

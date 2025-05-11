@@ -16,11 +16,11 @@ TEST(min_of_vector_elements, check_int32_t) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_index.data()));
   task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
@@ -42,11 +42,11 @@ TEST(min_of_vector_elements, check_validate_func_1) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_index.data()));
   task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
@@ -63,11 +63,11 @@ TEST(min_of_vector_elements, check_validate_func_2) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_index.data()));
   task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
@@ -85,11 +85,11 @@ TEST(min_of_vector_elements, check_double) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_index.data()));
   task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
@@ -111,11 +111,11 @@ TEST(min_of_vector_elements, check_uint8_t) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_index.data()));
   task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
@@ -138,11 +138,11 @@ TEST(min_of_vector_elements, check_int64_t) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_index.data()));
   task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
@@ -165,11 +165,11 @@ TEST(min_of_vector_elements, check_float) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out_index.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_index.data()));
   task_data->outputs_count.emplace_back(out_index.size());
 
   // Create Task
