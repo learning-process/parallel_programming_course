@@ -2,16 +2,14 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <iostream>
 #include <memory>
 #include <vector>
 
 #include "all/example/include/ops_all.hpp"
 #include "core/task/include/task.hpp"
 #include "core/util/include/util.hpp"
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
 
+#include <stb_library.hpp>
 #include <string>
 
 TEST(nesterov_a_test_task_all, test_matmul_50) {
@@ -45,20 +43,11 @@ TEST(nesterov_a_test_task_all, test_matmul_from_pic) {
   int width = -1;
   int height = -1;
   int channels = -1;
-  std::vector<uint8_t> img;
   std::string abs_path = ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg");
-
-  auto get_image_data = [&]() -> bool {
-    unsigned char *data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
-    if (data == nullptr) {
-      std::cerr << "Failed to load image: " << stbi_failure_reason() << '\n';
-      return false;
-    }
-    img = std::vector<uint8_t>(data, data + (width * height * channels));
-    stbi_image_free(data);
-    return true;
-  };
-  EXPECT_TRUE(get_image_data());
+  unsigned char *data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
+  EXPECT_TRUE(data != nullptr) << "Failed to load image: " << stbi_failure_reason() << '\n';
+  std::vector<uint8_t> img = std::vector<uint8_t>(data, data + (width * height * channels));
+  stbi_image_free(data);
 
   EXPECT_EQ(width, height);
   const int count = (width + height) / 10;

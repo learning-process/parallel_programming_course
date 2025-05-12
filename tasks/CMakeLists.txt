@@ -132,8 +132,8 @@ foreach(TASK_TYPE ${LIST_OF_TASKS})
           endif()
       endif ()
 
-      target_include_directories(stb_image INTERFACE ${CMAKE_SOURCE_DIR}/3rdparty/stb)
-      target_link_libraries(${exec_func_tests} PUBLIC stb_image)
+      target_link_directories(stb_image INTERFACE ${CMAKE_SOURCE_DIR}/3rdparty/stb)
+      target_link_libraries(${EXEC_FUNC} PUBLIC stb_image)
 
       add_dependencies(${EXEC_FUNC} ppc_googletest)
       target_link_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_googletest/install/lib")

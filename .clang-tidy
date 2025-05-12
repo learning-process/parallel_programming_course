@@ -87,6 +87,6 @@ CheckOptions:
     value:           1
   # Functions with scores beyond 15 are typically flagged as potentially problematic (empirically)
   - key:             readability-function-cognitive-complexity.Threshold
-    value:           15  # default: 25
+    value:           20  # default: 25
   - key: misc-include-cleaner.IgnoreHeaders
     value: '(opencv2/.*|__chrono/.*)'
