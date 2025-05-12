@@ -16,7 +16,7 @@ class AverageOfVectorElements : public ppc::core::Task {
   bool PreProcessingImpl() override {
     // Init vectors
     input_ = std::vector<InType>(task_data->inputs_count[0]);
-    auto tmp_ptr = reinterpret_cast<InType*>(task_data->inputs[0]);
+    auto tmp_ptr = reinterpret_cast<InType *>(task_data->inputs[0]);
     for (unsigned i = 0; i < task_data->inputs_count[0]; i++) {
       input_[i] = tmp_ptr[i];
     }
@@ -37,7 +37,7 @@ class AverageOfVectorElements : public ppc::core::Task {
   }
 
   bool PostProcessingImpl() override {
-    reinterpret_cast<OutType*>(task_data->outputs[0])[0] = average_;
+    reinterpret_cast<OutType *>(task_data->outputs[0])[0] = average_;
     return true;
   }
 

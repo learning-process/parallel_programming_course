@@ -21,11 +21,11 @@ TEST(vector_dot_product, check_int32_t) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in1.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
   task_data->inputs_count.emplace_back(in1.size());
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in2.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
   task_data->inputs_count.emplace_back(in2.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
@@ -46,11 +46,11 @@ TEST(vector_dot_product, check_validate_func) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in1.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
   task_data->inputs_count.emplace_back(in1.size());
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in2.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
   task_data->inputs_count.emplace_back(in2.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
@@ -67,11 +67,11 @@ TEST(vector_dot_product, check_validate_func_2) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in1.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
   task_data->inputs_count.emplace_back(in1.size());
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in2.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
   task_data->inputs_count.emplace_back(in2.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
@@ -88,11 +88,11 @@ TEST(vector_dot_product, check_double) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in1.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
   task_data->inputs_count.emplace_back(in1.size());
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in2.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
   task_data->inputs_count.emplace_back(in2.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
@@ -116,11 +116,11 @@ TEST(vector_dot_product, check_int8_t) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in1.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
   task_data->inputs_count.emplace_back(in1.size());
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in2.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
   task_data->inputs_count.emplace_back(in2.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
@@ -146,11 +146,11 @@ TEST(vector_dot_product, check_int64_t) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in1.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
   task_data->inputs_count.emplace_back(in1.size());
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in2.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
   task_data->inputs_count.emplace_back(in2.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
@@ -171,11 +171,11 @@ TEST(vector_dot_product, check_float) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in1.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
   task_data->inputs_count.emplace_back(in1.size());
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in2.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
   task_data->inputs_count.emplace_back(in2.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task

@@ -16,10 +16,10 @@ class VectorDotProduct : public ppc::core::Task {
   explicit VectorDotProduct(ppc::core::TaskDataPtr task_data) : Task(task_data) {}
   bool PreProcessingImpl() override {
     // Init vectors
-    input_ = std::vector<std::vector<InOutType> >(2);
+    input_ = std::vector<std::vector<InOutType>>(2);
     for (size_t i = 0; i < input_.size(); i++) {
       input_[i] = std::vector<InOutType>(task_data->inputs_count[i]);
-      auto tmp_ptr = reinterpret_cast<InOutType*>(task_data->inputs[i]);
+      auto tmp_ptr = reinterpret_cast<InOutType *>(task_data->inputs[i]);
       for (unsigned j = 0; j < task_data->inputs_count[i]; j++) {
         input_[i][j] = tmp_ptr[j];
       }
@@ -41,12 +41,12 @@ class VectorDotProduct : public ppc::core::Task {
   }
 
   bool PostProcessingImpl() override {
-    reinterpret_cast<InOutType*>(task_data->outputs[0])[0] = dor_product_;
+    reinterpret_cast<InOutType *>(task_data->outputs[0])[0] = dor_product_;
     return true;
   }
 
  private:
-  std::vector<std::vector<InOutType> > input_;
+  std::vector<std::vector<InOutType>> input_;
   InOutType dor_product_;
 };
 
