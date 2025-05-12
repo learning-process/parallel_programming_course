@@ -4,3 +4,6 @@
 [submodule "3rdparty/onetbb"]
 	path = 3rdparty/onetbb
 	url = https://github.com/uxlfoundation/oneTBB
+[submodule "3rdparty/stb"]
+	path = 3rdparty/stb
+	url = https://github.com/nothings/stb
