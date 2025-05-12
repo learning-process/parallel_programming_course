@@ -2,16 +2,16 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <iostream>
 #include <memory>
 #include <vector>
 
 #include "all/example/include/ops_all.hpp"
 #include "core/task/include/task.hpp"
 #include "core/util/include/util.hpp"
-
-#include <iostream>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
+
 #include <string>
 
 TEST(nesterov_a_test_task_all, test_matmul_50) {

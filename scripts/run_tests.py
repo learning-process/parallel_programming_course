@@ -58,6 +58,9 @@ class PPCRunner:
             print(f"Failed to source script: {script_path}")
             return {}
 
+    def setup_env(self):
+        self.work_dir = Path(self.__get_project_path()) / "install/bin"
+
     @staticmethod
     def __run_exec(command):
         result = subprocess.run(command, shell=True, env=os.environ)
@@ -130,6 +133,7 @@ if __name__ == "__main__":
     args_dict = init_cmd_args()
 
     ppc_runner = PPCRunner()
+    ppc_runner.setup_env()
 
     if args_dict["running_type"] in ["threads", "processes"]:
         ppc_runner.run_core()

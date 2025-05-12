@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <iostream>
 #include <memory>
+#include <vector>
 #endif
 
 #include <filesystem>
