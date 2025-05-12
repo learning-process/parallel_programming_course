@@ -74,4 +74,10 @@ void ppc::core::Task::InternalOrderTest(const std::string& str) {
   }
 }
 
-ppc::core::Task::~Task() { functions_order_.clear(); }
+ppc::core::Task::~Task() {
+  if (functions_order_ != right_functions_order_) {
+    std::cerr << "ORDER OF FUCTIONS IS NOT RIGHT: Task functions order is invalid." << std::endl;
+    std::terminate();
+  }
+  functions_order_.clear();
+}
