@@ -9,6 +9,11 @@
 #include "core/task/include/task.hpp"
 #include "core/util/include/util.hpp"
 
+#include <iostream>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
+#include <string>
+
 TEST(nesterov_a_test_task_all, test_matmul_50) {
   constexpr size_t kCount = 50;
 
@@ -41,9 +46,20 @@ TEST(nesterov_a_test_task_all, test_matmul_from_pic) {
   int height = -1;
   int channels = -1;
   std::vector<uint8_t> img;
+  std::string abs_path = ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg");
 
-  EXPECT_TRUE(ppc::util::GetImageData(ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg"), img, width, height,
-                                      channels));
+  auto get_image_data = [&]() -> bool {
+    unsigned char *data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
+    if (data == nullptr) {
+      std::cerr << "Failed to load image: " << stbi_failure_reason() << '\n';
+      return false;
+    }
+    img = std::vector<uint8_t>(data, data + (width * height * channels));
+    stbi_image_free(data);
+    return true;
+  };
+  EXPECT_TRUE(get_image_data());
+
   EXPECT_EQ(width, height);
   const int count = (width + height) / 10;
 

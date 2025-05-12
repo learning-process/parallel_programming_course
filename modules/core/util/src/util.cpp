@@ -7,11 +7,7 @@
 #include <memory>
 #endif
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
-
 #include <filesystem>
-#include <iostream>
 #include <string>
 
 std::string ppc::util::GetAbsolutePath(const std::string &relative_path) {
@@ -33,19 +29,4 @@ int ppc::util::GetPPCNumThreads() {
   int num_threads = (omp_env != nullptr) ? std::atoi(omp_env) : 1;
 #endif
   return num_threads;
-}
-
-bool ppc::util::GetImageData(const std::string &abs_path, std::vector<uint8_t> &image, int &width, int &height,
-                             int &channels) {
-  width = -1;
-  height = -1;
-  channels = -1;
-  unsigned char *data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
-  if (data == nullptr) {
-    std::cerr << "Failed to load image: " << stbi_failure_reason() << '\n';
-    return false;
-  }
-  image = std::vector<uint8_t>(data, data + (width * height * channels));
-  stbi_image_free(data);
-  return true;
 }

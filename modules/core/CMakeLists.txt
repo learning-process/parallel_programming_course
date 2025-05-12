@@ -28,10 +28,6 @@ add_dependencies(${exec_func_tests} ppc_googletest)
 target_link_directories(${exec_func_tests} PUBLIC ${CMAKE_BINARY_DIR}/ppc_googletest/install/lib)
 target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
 
-add_library(stb_image INTERFACE)
-target_include_directories(stb_image INTERFACE ${CMAKE_SOURCE_DIR}/3rdparty/stb)
-target_link_libraries(${exec_func_tests} PUBLIC stb_image)
-
 target_link_libraries(${exec_func_tests} PUBLIC ${exec_func_lib})
 
 enable_testing()
