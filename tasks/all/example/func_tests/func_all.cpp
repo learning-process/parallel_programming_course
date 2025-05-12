@@ -3,14 +3,13 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <stb_library.hpp>
+#include <string>
 #include <vector>
 
 #include "all/example/include/ops_all.hpp"
 #include "core/task/include/task.hpp"
 #include "core/util/include/util.hpp"
-
-#include <stb_library.hpp>
-#include <string>
 
 TEST(nesterov_a_test_task_all, test_matmul_50) {
   constexpr size_t kCount = 50;
