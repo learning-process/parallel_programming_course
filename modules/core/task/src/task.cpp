@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <cstddef>
+#include <exception>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -76,7 +77,7 @@ void ppc::core::Task::InternalOrderTest(const std::string& str) {
 
 ppc::core::Task::~Task() {
   if (functions_order_ != right_functions_order_) {
-    std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT: Task functions order is invalid." << std::endl;
+    std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT: Task functions order is invalid\n";
     std::terminate();
   }
   functions_order_.clear();
