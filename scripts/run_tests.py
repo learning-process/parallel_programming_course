@@ -59,7 +59,10 @@ class PPCRunner:
             return {}
 
     def setup_env(self):
-        self.work_dir = Path(self.__get_project_path()) / "install" / "bin"
+        if (Path(self.__get_project_path()) / "install").exists():
+            self.work_dir = Path(self.__get_project_path()) / "install" / "bin"
+        else:
+            self.work_dir = Path(self.__get_project_path()) / "build" / "bin"
 
     @staticmethod
     def __run_exec(command):
