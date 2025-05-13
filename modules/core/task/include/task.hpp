@@ -25,27 +25,27 @@ class Task {
   explicit Task(TaskDataPtr task_data);
 
   // set input and output data
-  void SetData(TaskDataPtr task_data);
+  virtual void SetData(TaskDataPtr task_data) final;
 
   // validation of data and validation of task attributes before running
-  virtual bool Validation();
+  virtual bool Validation() final;
 
   // pre-processing of input data
-  virtual bool PreProcessing();
+  virtual bool PreProcessing() final;
 
   // realization of current task
-  virtual bool Run();
+  virtual bool Run() final;
 
   // post-processing of output data
-  virtual bool PostProcessing();
+  virtual bool PostProcessing() final;
 
   // get input and output data
-  [[nodiscard]] TaskDataPtr GetData() const;
+  [[nodiscard]] virtual TaskDataPtr GetData() const final;
 
   virtual ~Task();
 
  protected:
-  void InternalOrderTest(const std::string &str = __builtin_FUNCTION());
+  virtual void InternalOrderTest(const std::string &str = __builtin_FUNCTION()) final;
   TaskDataPtr task_data;
 
   // implementation of "validation" function
