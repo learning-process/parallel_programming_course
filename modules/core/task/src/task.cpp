@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <cstddef>
+#include <exception>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -48,8 +49,9 @@ void ppc::core::Task::InternalOrderTest(const std::string& str) {
 
   for (size_t i = 0; i < functions_order_.size(); i++) {
     if (functions_order_[i] != right_functions_order_[i % right_functions_order_.size()]) {
-      throw std::invalid_argument("ORDER OF FUCTIONS IS NOT RIGHT: \n" + std::string("Serial number: ") +
-                                  std::to_string(i + 1) + "\n" + std::string("Yours function: ") + functions_order_[i] +
+      functions_order_validation_ = false;
+      throw std::invalid_argument("ORDER OF FUNCTIONS IS NOT RIGHT: \n" + std::string("Serial number: ") +
+                                  std::to_string(i + 1) + "\n" + std::string("Your function: ") + functions_order_[i] +
                                   "\n" + std::string("Expected function: ") + right_functions_order_[i]);
     }
   }
@@ -74,4 +76,21 @@ void ppc::core::Task::InternalOrderTest(const std::string& str) {
   }
 }
 
-ppc::core::Task::~Task() { functions_order_.clear(); }
+ppc::core::Task::~Task() {
+  if (functions_order_.empty()) {
+    std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT: No task functions were executed\n";
+    std::terminate();
+  }
+  if (functions_order_validation_) {
+    for (size_t i = 0; i < functions_order_.size(); i++) {
+      if (functions_order_[i] != right_functions_order_[i % right_functions_order_.size()]) {
+        std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT: \n"
+                  << std::string("Serial number: ") << std::to_string(i + 1) << "\n"
+                  << std::string("Your function: ") << functions_order_[i] << "\n"
+                  << std::string("Expected function: ") << right_functions_order_[i] << "\n";
+        std::terminate();
+      }
+    }
+  }
+  functions_order_.clear();
+}
