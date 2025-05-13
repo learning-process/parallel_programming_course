@@ -183,6 +183,61 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 4
+  ubuntu-gcc-arm64-test:
+    needs:
+      - ubuntu-gcc-arm64-build
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
+          python3 -m pip install -r requirements.txt
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-gcc-arm64-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf ubuntu-gcc-arm64-install.tar.gz -C install
+      - name: Run func tests (MPI, num_proc=1)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 1
+          OMP_NUM_THREADS: 3
+      - name: Run func tests (MPI, num_proc=2)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 2
+          OMP_NUM_THREADS: 2
+      - name: Run func tests (MPI, num_proc=3)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 3
+          OMP_NUM_THREADS: 1
+      - name: Run func tests (MPI, num_proc=4)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 4
+          OMP_NUM_THREADS: 1
+      - name: Run func tests (threads, num_threads=1)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 1
+      - name: Run func tests (threads, num_threads=2)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 2
+      - name: Run func tests (threads, num_threads=3)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 3
+      - name: Run func tests (threads, num_threads=4)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 4
   ubuntu-gcc-test-extended:
     needs:
       - ubuntu-gcc-test
@@ -352,6 +407,63 @@ jobs:
         run: |
           mkdir -p install
           tar -xzvf ubuntu-clang-install.tar.gz -C install
+      - name: Run func tests (MPI, num_proc=1)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 1
+          OMP_NUM_THREADS: 3
+      - name: Run func tests (MPI, num_proc=2)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 2
+          OMP_NUM_THREADS: 2
+      - name: Run func tests (MPI, num_proc=3)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 3
+          OMP_NUM_THREADS: 1
+      - name: Run func tests (MPI, num_proc=4)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PROC_COUNT: 4
+          OMP_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=1)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=2)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 2
+      - name: Run tests (threads, num_threads=3)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 3
+      - name: Run tests (threads, num_threads=4)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          OMP_NUM_THREADS: 4
+  ubuntu-clang-arm64-test:
+    needs:
+      - ubuntu-clang-arm64-build
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 20 all
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-clang-arm64-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf ubuntu-clang-arm64-install.tar.gz -C install
       - name: Run func tests (MPI, num_proc=1)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
