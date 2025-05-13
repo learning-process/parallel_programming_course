@@ -84,7 +84,8 @@ jobs:
           path: ubuntu-gcc-install.tar.gz
   ubuntu-gcc-arm64-build:
     needs:
-      - ubuntu-gcc-build
+      - clang-format
+      - python-lint
     runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
@@ -391,7 +392,8 @@ jobs:
           path: ubuntu-clang-install.tar.gz
   ubuntu-clang-arm64-build:
     needs:
-      - ubuntu-clang-build
+      - clang-format
+      - python-lint
     runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
