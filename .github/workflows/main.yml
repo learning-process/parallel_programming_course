@@ -1318,7 +1318,9 @@ jobs:
   ubuntu-gcc-build-codecov:
     needs:
       - ubuntu-gcc-test-extended
+      - ubuntu-gcc-arm64-test-extended
       - ubuntu-clang-test-extended
+      - ubuntu-clang-arm64-test-extended
       - macos-clang-test-extended
     runs-on: ubuntu-24.04
     steps:
@@ -1398,9 +1400,7 @@ jobs:
   ubuntu-gcc-build-perf-stats:
     needs:
       - ubuntu-gcc-build-codecov
-      - ubuntu-gcc-arm64-test-extended
       - ubuntu-clang-sanitizer-test-extended
-      - ubuntu-clang-arm64-test-extended
       - windows-clang-test-extended
       - windows-msvc-test-extended
     runs-on: ubuntu-24.04
