@@ -65,14 +65,6 @@ if( UNIX )
 endif()
 
 if( MSVC )
-    if ((CMAKE_C_COMPILER_ID STREQUAL "Clang") AND (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
-        set(COMMON_COMPILER_FLAGS
-                "-Wno-tautological-pointer-compare \
-                 -Wno-ignored-attributes")
-        set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} ${COMMON_COMPILER_FLAGS}")
-        set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${COMMON_COMPILER_FLAGS}")
-    endif()
-    set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS}")
     set(COMMON_FLAGS "/W4 /wd4267 /wd4244")
     set(CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE} ${COMMON_FLAGS}" )
     set(CMAKE_C_FLAGS_DEBUG     "${CMAKE_C_FLAGS_DEBUG} ${COMMON_FLAGS}")
