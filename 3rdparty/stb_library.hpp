@@ -1,3 +1,5 @@
+#pragma once
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wcast-align"
 #define STB_IMAGE_IMPLEMENTATION
