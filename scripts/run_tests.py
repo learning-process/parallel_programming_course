@@ -60,7 +60,7 @@ class PPCRunner:
 
     def setup_env(self):
         if platform.system() == "Windows":
-            self.work_dir = Path(self.__get_project_path()) / "install/bin"
+            self.work_dir = Path(self.__get_project_path()) / "install" / "bin"
         else:
             self.work_dir = Path(self.__get_project_path()) / "build/bin"
 
