@@ -45,7 +45,7 @@ TEST(nesterov_a_test_task_all, test_matmul_from_pic) {
   std::string abs_path = ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg");
   unsigned char *data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
   EXPECT_TRUE(data != nullptr) << "Failed to load image: " << stbi_failure_reason() << '\n';
-  std::vector<uint8_t> img = std::vector<uint8_t>(data, data + (width * height * channels));
+  auto img = std::vector<uint8_t>(data, data + (width * height * channels));
   stbi_image_free(data);
 
   EXPECT_EQ(width, height);
