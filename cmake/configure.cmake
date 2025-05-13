@@ -25,6 +25,10 @@ else ()
 endif ()
 
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH ON)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
+set(CMAKE_SKIP_BUILD_RPATH OFF)
 
 if( UNIX )
     set(COMMON_COMPILER_FLAGS
@@ -52,7 +56,7 @@ if( UNIX )
         -Wold-style-definition               \
         -Wmissing-prototypes")
 
-    if (${ENABLE_ADDRESS_SANITIZER} OR ${ENABLE_UB_SANITIZER})
+    if ("${ENABLE_ADDRESS_SANITIZER}" OR "${ENABLE_UB_SANITIZER}")
         set (COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} -Wno-cast-align")
     endif()
 

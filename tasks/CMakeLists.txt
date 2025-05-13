@@ -38,6 +38,8 @@ endif ()
 
 add_compile_definitions(PATH_TO_PPC_PROJECT="${CMAKE_SOURCE_DIR}")
 
+add_library(stb_image INTERFACE)
+
 foreach(TASK_TYPE ${LIST_OF_TASKS})
     set(PATH_TO_TASK "${CMAKE_CURRENT_SOURCE_DIR}/${TASK_TYPE}")
     get_filename_component(MODULE_NAME ${PATH_TO_TASK} NAME)
@@ -130,27 +132,8 @@ foreach(TASK_TYPE ${LIST_OF_TASKS})
           endif()
       endif ()
 
-      add_dependencies(${EXEC_FUNC} ppc_opencv)
-      if(WIN32)
-          target_include_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_opencv/install/include")
-      else()
-          target_include_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_opencv/install/include/opencv4")
-      endif()
-
-
-      if(WIN32)
-          target_link_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_opencv/build/lib")
-          set(OCV_VERSION "4110")
-      else()
-          target_link_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_opencv/install/lib")
-      endif()
-
-      target_link_libraries(${EXEC_FUNC} PUBLIC
-              opencv_core${OCV_VERSION}
-              opencv_highgui${OCV_VERSION}
-              opencv_imgcodecs${OCV_VERSION}
-              opencv_imgproc${OCV_VERSION}
-              opencv_videoio${OCV_VERSION})
+      target_link_directories(stb_image INTERFACE ${CMAKE_SOURCE_DIR}/3rdparty/stb)
+      target_link_libraries(${EXEC_FUNC} PUBLIC stb_image)
 
       add_dependencies(${EXEC_FUNC} ppc_googletest)
       target_link_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_googletest/install/lib")

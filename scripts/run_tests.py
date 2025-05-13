@@ -30,13 +30,6 @@ class PPCRunner:
         self.valgrind_cmd = "valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all"
 
         if platform.system() == "Windows":
-            self.ocv_script_name = "setup_vars_opencv4.cmd"
-            self.ocv_script_path = Path("build/ppc_opencv/install/") / self.ocv_script_name
-        else:
-            self.ocv_script_name = "setup_vars_opencv4.sh"
-            self.ocv_script_path = Path("build/ppc_opencv/install/bin/") / self.ocv_script_name
-
-        if platform.system() == "Windows":
             self.mpi_exec = "mpiexec"
         else:
             self.mpi_exec = "mpirun"
@@ -66,16 +59,7 @@ class PPCRunner:
             return {}
 
     def setup_env(self):
-        if os.path.isfile(Path(self.__get_project_path()) / self.ocv_script_path):
-            _work_dir = Path(self.__get_project_path()) / "build/bin"
-            env_vars = self.__source_script(Path(self.__get_project_path()) / self.ocv_script_path)
-        else:
-            _work_dir = Path(self.__get_project_path()) / "install/bin"
-            env_vars = self.__source_script(Path(_work_dir) / self.ocv_script_name)
-
-        self.work_dir = Path(_work_dir)
-        if not platform.system() == "Windows":
-            os.environ.update(env_vars)
+        self.work_dir = Path(self.__get_project_path()) / "install" / "bin"
 
     @staticmethod
     def __run_exec(command):
