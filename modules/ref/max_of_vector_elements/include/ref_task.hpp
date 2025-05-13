@@ -16,7 +16,7 @@ class MaxOfVectorElements : public ppc::core::Task {
   bool PreProcessingImpl() override {
     // Init vectors
     input_ = std::vector<InOutType>(task_data->inputs_count[0]);
-    auto tmp_ptr = reinterpret_cast<InOutType*>(task_data->inputs[0]);
+    auto tmp_ptr = reinterpret_cast<InOutType *>(task_data->inputs[0]);
     for (unsigned i = 0; i < task_data->inputs_count[0]; i++) {
       input_[i] = tmp_ptr[i];
     }
@@ -44,8 +44,8 @@ class MaxOfVectorElements : public ppc::core::Task {
   }
 
   bool PostProcessingImpl() override {
-    reinterpret_cast<InOutType*>(task_data->outputs[0])[0] = max_;
-    reinterpret_cast<IndexType*>(task_data->outputs[1])[0] = max_index_;
+    reinterpret_cast<InOutType *>(task_data->outputs[0])[0] = max_;
+    reinterpret_cast<IndexType *>(task_data->outputs[1])[0] = max_index_;
     return true;
   }
 

@@ -17,12 +17,12 @@ class SumValuesByRowsMatrix : public ppc::core::Task {
   bool PreProcessingImpl() override {
     // Init vectors
     input_ = std::vector<InOutType>(task_data->inputs_count[0]);
-    auto tmp_ptr = reinterpret_cast<InOutType*>(task_data->inputs[0]);
+    auto tmp_ptr = reinterpret_cast<InOutType *>(task_data->inputs[0]);
     for (unsigned i = 0; i < task_data->inputs_count[0]; i++) {
       input_[i] = tmp_ptr[i];
     }
-    rows_ = reinterpret_cast<IndexType*>(task_data->inputs[1])[0];
-    cols_ = reinterpret_cast<IndexType*>(task_data->inputs[1])[1];
+    rows_ = reinterpret_cast<IndexType *>(task_data->inputs[1])[0];
+    cols_ = reinterpret_cast<IndexType *>(task_data->inputs[1])[1];
 
     // Init value for output
     sum_ = std::vector<InOutType>(cols_, 0.F);
@@ -32,7 +32,7 @@ class SumValuesByRowsMatrix : public ppc::core::Task {
   bool ValidationImpl() override {
     // Check count elements of output
     return static_cast<bool>(task_data->inputs_count[1] == 2 &&
-                             task_data->outputs_count[0] == reinterpret_cast<IndexType*>(task_data->inputs[1])[0]);
+                             task_data->outputs_count[0] == reinterpret_cast<IndexType *>(task_data->inputs[1])[0]);
   }
 
   bool RunImpl() override {
@@ -44,7 +44,7 @@ class SumValuesByRowsMatrix : public ppc::core::Task {
 
   bool PostProcessingImpl() override {
     for (IndexType i = 0; i < rows_; i++) {
-      reinterpret_cast<InOutType*>(task_data->outputs[0])[i] = sum_[i];
+      reinterpret_cast<InOutType *>(task_data->outputs[0])[i] = sum_[i];
     }
     return true;
   }

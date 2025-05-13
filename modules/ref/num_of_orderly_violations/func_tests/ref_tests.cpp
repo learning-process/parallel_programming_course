@@ -20,9 +20,9 @@ TEST(num_of_orderly_violations, check_int32_t) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
@@ -41,9 +41,9 @@ TEST(num_of_orderly_violations, check_validate_func) {
   std::vector<int32_t> out(2, 0);
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
   // Create Task
   ppc::reference::NumOfOrderlyViolations<int32_t, uint64_t> test_task(task_data);
@@ -61,9 +61,9 @@ TEST(num_of_orderly_violations, check_double) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
@@ -83,9 +83,9 @@ TEST(num_of_orderly_violations, check_int8_t) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
@@ -108,9 +108,9 @@ TEST(num_of_orderly_violations, check_int64_t) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
@@ -131,9 +131,9 @@ TEST(num_of_orderly_violations, check_float) {
 
   // Create task_data
   auto task_data = std::make_shared<ppc::core::TaskData>();
-  task_data->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   task_data->inputs_count.emplace_back(in.size());
-  task_data->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   task_data->outputs_count.emplace_back(out.size());
 
   // Create Task
