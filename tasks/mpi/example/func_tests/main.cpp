@@ -16,27 +16,19 @@ TEST(nesterov_a_test_task_mpi, test_matmul_50) {
 
   // Create data
   std::vector<int> in(kCount * kCount, 0);
-  std::vector<int> out(kCount * kCount, 0);
 
   for (size_t i = 0; i < kCount; i++) {
     in[(i * kCount) + i] = 1;
   }
 
-  // Create task_data
-  auto task_data_mpi = std::make_shared<ppc::core::TaskData>();
-  task_data_mpi->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  task_data_mpi->inputs_count.emplace_back(in.size());
-  task_data_mpi->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  task_data_mpi->outputs_count.emplace_back(out.size());
-
   // Create Task
-  nesterov_a_test_task_mpi::TestTaskMPI test_task_mpi(task_data_mpi);
+  nesterov_a_test_task_mpi::TestTaskMPI test_task_mpi(in);
   ASSERT_EQ(test_task_mpi.Validation(), true);
   test_task_mpi.PreProcessing();
   test_task_mpi.Run();
   test_task_mpi.PostProcessing();
 
-  EXPECT_EQ(in, out);
+  EXPECT_EQ(in, test_task_mpi.Get());
 }
 
 TEST(nesterov_a_test_task_mpi, test_matmul_100_from_file) {
@@ -51,25 +43,17 @@ TEST(nesterov_a_test_task_mpi, test_matmul_100_from_file) {
 
   // Create data
   std::vector<int> in(count * count, 0);
-  std::vector<int> out(count * count, 0);
 
   for (size_t i = 0; i < count; i++) {
     in[(i * count) + i] = 1;
   }
 
-  // Create task_data
-  auto task_data_mpi = std::make_shared<ppc::core::TaskData>();
-  task_data_mpi->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  task_data_mpi->inputs_count.emplace_back(in.size());
-  task_data_mpi->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  task_data_mpi->outputs_count.emplace_back(out.size());
-
   // Create Task
-  nesterov_a_test_task_mpi::TestTaskMPI test_task_mpi(task_data_mpi);
+  nesterov_a_test_task_mpi::TestTaskMPI test_task_mpi(in);
   ASSERT_EQ(test_task_mpi.Validation(), true);
   test_task_mpi.PreProcessing();
   test_task_mpi.Run();
   test_task_mpi.PostProcessing();
 
-  EXPECT_EQ(in, out);
+  EXPECT_EQ(in, test_task_mpi.Get());
 }

@@ -16,25 +16,16 @@ TEST(nesterov_a_test_task_mpi, test_pipeline_run) {
 
   // Create data
   std::vector<int> in(kCount * kCount, 0);
-  std::vector<int> out(kCount * kCount, 0);
 
   for (size_t i = 0; i < kCount; i++) {
     in[(i * kCount) + i] = 1;
   }
 
-  // Create task_data
-  auto task_data_mpi = std::make_shared<ppc::core::TaskData>();
-  task_data_mpi->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  task_data_mpi->inputs_count.emplace_back(in.size());
-  task_data_mpi->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  task_data_mpi->outputs_count.emplace_back(out.size());
-
   // Create Task
-  auto test_task_mpi = std::make_shared<nesterov_a_test_task_mpi::TestTaskMPI>(task_data_mpi);
+  auto test_task_mpi = std::make_shared<nesterov_a_test_task_mpi::TestTaskMPI>(in);
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
-  perf_attr->num_running = 10;
   const auto t0 = std::chrono::high_resolution_clock::now();
   perf_attr->current_timer = [&] {
     auto current_time_point = std::chrono::high_resolution_clock::now();
@@ -54,7 +45,7 @@ TEST(nesterov_a_test_task_mpi, test_pipeline_run) {
     ppc::core::Perf::PrintPerfStatistic(perf_results);
   }
 
-  ASSERT_EQ(in, out);
+  ASSERT_EQ(in, test_task_mpi->Get());
 }
 
 TEST(nesterov_a_test_task_mpi, test_task_run) {
@@ -62,25 +53,16 @@ TEST(nesterov_a_test_task_mpi, test_task_run) {
 
   // Create data
   std::vector<int> in(kCount * kCount, 0);
-  std::vector<int> out(kCount * kCount, 0);
 
   for (size_t i = 0; i < kCount; i++) {
     in[(i * kCount) + i] = 1;
   }
 
-  // Create task_data
-  auto task_data_mpi = std::make_shared<ppc::core::TaskData>();
-  task_data_mpi->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  task_data_mpi->inputs_count.emplace_back(in.size());
-  task_data_mpi->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  task_data_mpi->outputs_count.emplace_back(out.size());
-
   // Create Task
-  auto test_task_mpi = std::make_shared<nesterov_a_test_task_mpi::TestTaskMPI>(task_data_mpi);
+  auto test_task_mpi = std::make_shared<nesterov_a_test_task_mpi::TestTaskMPI>(in);
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
-  perf_attr->num_running = 10;
   const auto t0 = std::chrono::high_resolution_clock::now();
   perf_attr->current_timer = [&] {
     auto current_time_point = std::chrono::high_resolution_clock::now();
@@ -101,5 +83,5 @@ TEST(nesterov_a_test_task_mpi, test_task_run) {
     ppc::core::Perf::PrintPerfStatistic(perf_results);
   }
 
-  ASSERT_EQ(in, out);
+  ASSERT_EQ(in, test_task_mpi->Get());
 }

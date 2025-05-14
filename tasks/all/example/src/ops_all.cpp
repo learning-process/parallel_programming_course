@@ -25,16 +25,16 @@ void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_v
 }
 }  // namespace
 
+bool nesterov_a_test_task_all::TestTaskALL::ValidationImpl() {
+  auto sqrt_size = static_cast<int>(std::sqrt(input_.size()));
+  return sqrt_size * sqrt_size == static_cast<int>(input_.size());
+}
+
 bool nesterov_a_test_task_all::TestTaskALL::PreProcessingImpl() {
   // Init value for input and output
   rc_size_ = static_cast<int>(std::sqrt(input_.size()));
-  output_ = std::vector<int>(rc_size_, 0);
+  output_ = std::vector<int>(input_.size(), 0);
   return true;
-}
-
-bool nesterov_a_test_task_all::TestTaskALL::ValidationImpl() {
-  // Check equality of counts elements
-  return input_.size() == output_.size();
 }
 
 bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {

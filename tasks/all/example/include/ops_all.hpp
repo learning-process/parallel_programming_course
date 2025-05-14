@@ -10,8 +10,8 @@ namespace nesterov_a_test_task_all {
 class TestTaskALL : public ppc::core::Task {
  public:
   explicit TestTaskALL(const std::vector<int>& in) : input_(in) {}
-  bool PreProcessingImpl() override;
   bool ValidationImpl() override;
+  bool PreProcessingImpl() override;
   bool RunImpl() override;
   bool PostProcessingImpl() override;
   std::vector<int> Get() {
