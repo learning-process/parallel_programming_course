@@ -178,6 +178,24 @@ TEST(task_tests, check_wrong_order) {
   ASSERT_ANY_THROW(test_task.PostProcessing());
 }
 
+TEST(task_tests, terminates_on_wrong_order_no_calls) {
+  // Create data
+  std::vector<float> in(20, 1);
+  std::vector<float> out(1, 0);
+
+  // Create task_data
+  auto task_data = std::make_shared<ppc::core::TaskData>();
+  task_data->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  task_data->inputs_count.emplace_back(in.size());
+  task_data->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  task_data->outputs_count.emplace_back(out.size());
+  ASSERT_DEATH({
+    // Create Task
+    ppc::test::task::TestTask<float> test_task(task_data);
+    // dtor throws std::terminate
+  }, "ORDER OF FUNCTIONS IS NOT RIGHT");
+}
+
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
