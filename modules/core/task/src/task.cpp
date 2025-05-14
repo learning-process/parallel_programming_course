@@ -10,15 +10,9 @@
 #include <string>
 #include <utility>
 
-void ppc::core::Task::SetData(TaskDataPtr task_data_ptr) {
-  task_data_ptr->state_of_testing = TaskData::StateOfTesting::kFunc;
+ppc::core::Task::Task(StateOfTesting state_of_testing) : state_of_testing_(state_of_testing) {
   functions_order_.clear();
-  this->task_data = std::move(task_data_ptr);
 }
-
-ppc::core::TaskDataPtr ppc::core::Task::GetData() const { return task_data; }
-
-ppc::core::Task::Task(TaskDataPtr task_data) { SetData(std::move(task_data)); }
 
 bool ppc::core::Task::Validation() {
   InternalOrderTest();
@@ -56,11 +50,11 @@ void ppc::core::Task::InternalOrderTest(const std::string& str) {
     }
   }
 
-  if (str == "PreProcessing" && task_data->state_of_testing == TaskData::StateOfTesting::kFunc) {
+  if (str == "PreProcessing" && state_of_testing_ == StateOfTesting::kFunc) {
     tmp_time_point_ = std::chrono::high_resolution_clock::now();
   }
 
-  if (str == "PostProcessing" && task_data->state_of_testing == TaskData::StateOfTesting::kFunc) {
+  if (str == "PostProcessing" && state_of_testing_ == StateOfTesting::kFunc) {
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - tmp_time_point_).count();
     auto current_time = static_cast<double>(duration) * 1e-9;

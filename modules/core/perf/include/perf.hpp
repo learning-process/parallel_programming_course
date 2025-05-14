@@ -10,7 +10,7 @@ namespace ppc::core {
 
 struct PerfAttr {
   // count of task's running
-  uint64_t num_running;
+  uint64_t num_running = 10;
   std::function<double()> current_timer = [&] { return 0.0; };
 };
 
