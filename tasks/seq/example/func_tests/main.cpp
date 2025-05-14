@@ -22,9 +22,7 @@ class NesterovATestTaskSeq : public ::testing::TestWithParam<double> {
     base_count = std::stoi(line);
   }
 
-  [[nodiscard]] size_t GetCount() const {
-    return static_cast<size_t>(base_count * GetParam());
-  }
+  [[nodiscard]] size_t GetCount() const { return static_cast<size_t>(base_count * GetParam()); }
 
   int base_count = 0;
 };
@@ -45,7 +43,4 @@ TEST_P(NesterovATestTaskSeq, MatmulFromFile) {
   EXPECT_EQ(in, test_task_sequential.Get());
 }
 
-INSTANTIATE_TEST_SUITE_P(
-    FileMatrixTests,
-    NesterovATestTaskSeq,
-    ::testing::Values(0.5, 1.0));
+INSTANTIATE_TEST_SUITE_P(FileMatrixTests, NesterovATestTaskSeq, ::testing::Values(0.5, 1.0));

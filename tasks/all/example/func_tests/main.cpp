@@ -46,7 +46,4 @@ TEST_P(NesterovATestTaskAll, MatmulFromPic) {
   EXPECT_EQ(in, test_task_all.Get());
 }
 
-INSTANTIATE_TEST_SUITE_P(
-    PicMatrixTests,
-    NesterovATestTaskAll,
-    ::testing::Values(5, 10));
+INSTANTIATE_TEST_SUITE_P(PicMatrixTests, NesterovATestTaskAll, ::testing::Values(5, 10));
