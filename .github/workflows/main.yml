@@ -34,7 +34,10 @@ jobs:
     needs:
       - clang-format
       - python-lint
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -62,6 +65,7 @@ jobs:
           CXX: g++-14
       - name: Archive revert list
         uses: actions/upload-artifact@v4
+        if: ${{ matrix.os == 'ubuntu-24.04' }}
         with:
           name: revert-list
           path: build/revert-list.txt
@@ -76,63 +80,19 @@ jobs:
           cmake --build build --target install
       - name: Archive installed package
         run: |
-          tar -czvf ubuntu-gcc-install.tar.gz -C install .
+          tar -czvf ubuntu-gcc-install-${{ matrix.os }}.tar.gz -C install .
       - name: Upload installed package
         uses: actions/upload-artifact@v4
         with:
-          name: ubuntu-gcc-install
-          path: ubuntu-gcc-install.tar.gz
-  ubuntu-gcc-arm64-build:
-    needs:
-      - clang-format
-      - python-lint
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
-          python3 -m pip install -r requirements.txt
-      - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2
-        with:
-          key: ${{ runner.os }}-gcc-arm64
-          create-symlink: true
-          max-size: 1G
-      - name: CMake configure
-        run: >
-          cmake -S . -B build
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
-        env:
-          CC: gcc-14
-          CXX: g++-14
-      - name: Build project
-        run: |
-          cmake --build build --parallel
-        env:
-          CC: gcc-14
-          CXX: g++-14
-      - name: Install project
-        run: |
-          cmake --build build --target install
-      - name: Archive installed package
-        run: |
-          tar -czvf ubuntu-gcc-arm64-install.tar.gz -C install .
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
-        with:
-          name: ubuntu-gcc-arm64-install
-          path: ubuntu-gcc-arm64-install.tar.gz
+          name: ubuntu-gcc-install-${{ matrix.os }}
+          path: ubuntu-gcc-install-${{ matrix.os }}.tar.gz
   ubuntu-gcc-test:
     needs:
       - ubuntu-gcc-build
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
       - uses: actions/checkout@v4
       - name: Setup environment
@@ -143,66 +103,11 @@ jobs:
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu-gcc-install
+          name: ubuntu-gcc-install-${{ matrix.os }}
       - name: Extract installed package
         run: |
           mkdir -p install
-          tar -xzvf ubuntu-gcc-install.tar.gz -C install
-      - name: Run func tests (MPI, num_proc=1)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PROC_COUNT: 1
-          OMP_NUM_THREADS: 3
-      - name: Run func tests (MPI, num_proc=2)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PROC_COUNT: 2
-          OMP_NUM_THREADS: 2
-      - name: Run func tests (MPI, num_proc=3)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PROC_COUNT: 3
-          OMP_NUM_THREADS: 1
-      - name: Run func tests (MPI, num_proc=4)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PROC_COUNT: 4
-          OMP_NUM_THREADS: 1
-      - name: Run func tests (threads, num_threads=1)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 1
-      - name: Run func tests (threads, num_threads=2)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 2
-      - name: Run func tests (threads, num_threads=3)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 3
-      - name: Run func tests (threads, num_threads=4)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 4
-  ubuntu-gcc-arm64-test:
-    needs:
-      - ubuntu-gcc-arm64-build
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
-          python3 -m pip install -r requirements.txt
-      - name: Download installed package
-        uses: actions/download-artifact@v4
-        with:
-          name: ubuntu-gcc-arm64-install
-      - name: Extract installed package
-        run: |
-          mkdir -p install
-          tar -xzvf ubuntu-gcc-arm64-install.tar.gz -C install
+          tar -xzvf ubuntu-gcc-install-${{ matrix.os }}.tar.gz -C install
       - name: Run func tests (MPI, num_proc=1)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
@@ -242,7 +147,10 @@ jobs:
   ubuntu-gcc-test-extended:
     needs:
       - ubuntu-gcc-test
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
       - uses: actions/checkout@v4
       - name: Setup environment
@@ -253,62 +161,11 @@ jobs:
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu-gcc-install
+          name: ubuntu-gcc-install-${{ matrix.os }}
       - name: Extract installed package
         run: |
           mkdir -p install
-          tar -xzvf ubuntu-gcc-install.tar.gz -C install
-      - name: Run func tests (threads, num_threads=5)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 5
-      - name: Run func tests (threads, num_threads=6)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 6
-      - name: Run func tests (threads, num_threads=7)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 7
-      - name: Run func tests (threads, num_threads=8)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 8
-      - name: Run func tests (threads, num_threads=11)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 11
-      - name: Run func tests (threads, num_threads=13)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 13
-      - name: Run func tests (threads, num_threads=15)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 15
-      - name: Run func tests (threads, num_threads=16)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 16
-  ubuntu-gcc-arm64-test-extended:
-    needs:
-      - ubuntu-gcc-arm64-test
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
-          python3 -m pip install -r requirements.txt
-      - name: Download installed package
-        uses: actions/download-artifact@v4
-        with:
-          name: ubuntu-gcc-arm64-install
-      - name: Extract installed package
-        run: |
-          mkdir -p install
-          tar -xzvf ubuntu-gcc-arm64-install.tar.gz -C install
+          tar -xzvf ubuntu-gcc-install-${{ matrix.os }}.tar.gz -C install
       - name: Run func tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -345,7 +202,10 @@ jobs:
     needs:
       - clang-format
       - python-lint
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -384,65 +244,19 @@ jobs:
           cmake --build build --target install
       - name: Archive installed package
         run: |
-          tar -czvf ubuntu-clang-install.tar.gz -C install .
+          tar -czvf ubuntu-clang-install-${{ matrix.os }}.tar.gz -C install .
       - name: Upload installed package
         uses: actions/upload-artifact@v4
         with:
-          name: ubuntu-clang-install
-          path: ubuntu-clang-install.tar.gz
-  ubuntu-clang-arm64-build:
-    needs:
-      - clang-format
-      - python-lint
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
-          wget https://apt.llvm.org/llvm.sh
-          chmod u+x llvm.sh
-          sudo ./llvm.sh 20 all
-      - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2
-        with:
-          key: ${{ runner.os }}-clang-arm64
-          create-symlink: true
-          max-size: 1G
-      - name: CMake configure
-        run: >
-          cmake -S . -B build
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
-        env:
-          CC: clang-20
-          CXX: clang++-20
-      - name: Build project
-        run: |
-          cmake --build build --parallel
-        env:
-          CC: clang-20
-          CXX: clang++-20
-      - name: Install project
-        run: |
-          cmake --build build --target install
-      - name: Archive installed package
-        run: |
-          tar -czvf ubuntu-clang-arm64-install.tar.gz -C install .
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
-        with:
-          name: ubuntu-clang-arm64-install
-          path: ubuntu-clang-arm64-install.tar.gz
+          name: ubuntu-clang-install-${{ matrix.os }}
+          path: ubuntu-clang-install-${{ matrix.os }}.tar.gz
   ubuntu-clang-test:
     needs:
       - ubuntu-clang-build
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
       - uses: actions/checkout@v4
       - name: Setup environment
@@ -455,68 +269,11 @@ jobs:
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu-clang-install
+          name: ubuntu-clang-install-${{ matrix.os }}
       - name: Extract installed package
         run: |
           mkdir -p install
-          tar -xzvf ubuntu-clang-install.tar.gz -C install
-      - name: Run func tests (MPI, num_proc=1)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PROC_COUNT: 1
-          OMP_NUM_THREADS: 3
-      - name: Run func tests (MPI, num_proc=2)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PROC_COUNT: 2
-          OMP_NUM_THREADS: 2
-      - name: Run func tests (MPI, num_proc=3)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PROC_COUNT: 3
-          OMP_NUM_THREADS: 1
-      - name: Run func tests (MPI, num_proc=4)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PROC_COUNT: 4
-          OMP_NUM_THREADS: 1
-      - name: Run tests (threads, num_threads=1)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 1
-      - name: Run tests (threads, num_threads=2)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 2
-      - name: Run tests (threads, num_threads=3)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 3
-      - name: Run tests (threads, num_threads=4)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 4
-  ubuntu-clang-arm64-test:
-    needs:
-      - ubuntu-clang-arm64-build
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
-          wget https://apt.llvm.org/llvm.sh
-          chmod u+x llvm.sh
-          sudo ./llvm.sh 20 all
-      - name: Download installed package
-        uses: actions/download-artifact@v4
-        with:
-          name: ubuntu-clang-arm64-install
-      - name: Extract installed package
-        run: |
-          mkdir -p install
-          tar -xzvf ubuntu-clang-arm64-install.tar.gz -C install
+          tar -xzvf ubuntu-clang-install-${{ matrix.os }}.tar.gz -C install
       - name: Run func tests (MPI, num_proc=1)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
@@ -556,7 +313,10 @@ jobs:
   ubuntu-clang-test-extended:
     needs:
       - ubuntu-clang-test
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
       - uses: actions/checkout@v4
       - name: Setup environment
@@ -569,64 +329,11 @@ jobs:
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu-clang-install
+          name: ubuntu-clang-install-${{ matrix.os }}
       - name: Extract installed package
         run: |
           mkdir -p install
-          tar -xzvf ubuntu-clang-install.tar.gz -C install
-      - name: Run tests (threads, num_threads=5)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 5
-      - name: Run tests (threads, num_threads=6)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 6
-      - name: Run tests (threads, num_threads=7)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 7
-      - name: Run tests (threads, num_threads=8)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 8
-      - name: Run tests (threads, num_threads=11)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 11
-      - name: Run tests (threads, num_threads=13)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 13
-      - name: Run tests (threads, num_threads=15)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 15
-      - name: Run tests (threads, num_threads=16)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 16
-  ubuntu-clang-arm64-test-extended:
-    needs:
-      - ubuntu-clang-arm64-test
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
-          wget https://apt.llvm.org/llvm.sh
-          chmod u+x llvm.sh
-          sudo ./llvm.sh 20 all
-      - name: Download installed package
-        uses: actions/download-artifact@v4
-        with:
-          name: ubuntu-clang-arm64-install
-      - name: Extract installed package
-        run: |
-          mkdir -p install
-          tar -xzvf ubuntu-clang-arm64-install.tar.gz -C install
+          tar -xzvf ubuntu-clang-install-${{ matrix.os }}.tar.gz -C install
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -662,7 +369,10 @@ jobs:
   ubuntu-clang-sanitizer-build:
     needs:
       - ubuntu-clang-build
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -703,16 +413,19 @@ jobs:
           cmake --build build --target install
       - name: Archive installed package
         run: |
-          tar -czvf ubuntu-clang-sanitizer-install.tar.gz -C install .
+          tar -czvf ubuntu-clang-sanitizer-install-${{ matrix.os }}.tar.gz -C install .
       - name: Upload installed package
         uses: actions/upload-artifact@v4
         with:
-          name: ubuntu-clang-sanitizer-install
-          path: ubuntu-clang-sanitizer-install.tar.gz
+          name: ubuntu-clang-sanitizer-install-${{ matrix.os }}
+          path: ubuntu-clang-sanitizer-install-${{ matrix.os }}.tar.gz
   ubuntu-clang-sanitizer-test:
     needs:
       - ubuntu-clang-sanitizer-build
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
       - uses: actions/checkout@v4
       - name: Setup environment
@@ -725,11 +438,11 @@ jobs:
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu-clang-sanitizer-install
+          name: ubuntu-clang-sanitizer-install-${{ matrix.os }}
       - name: Extract installed package
         run: |
           mkdir -p install
-          tar -xzvf ubuntu-clang-sanitizer-install.tar.gz -C install
+          tar -xzvf ubuntu-clang-sanitizer-install-${{ matrix.os }}.tar.gz -C install
       - name: Run tests (MPI)
         run: python3 scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
         env:
@@ -769,7 +482,10 @@ jobs:
   ubuntu-clang-sanitizer-test-extended:
     needs:
       - ubuntu-clang-sanitizer-test
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
       - uses: actions/checkout@v4
       - name: Setup environment
@@ -782,11 +498,11 @@ jobs:
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu-clang-sanitizer-install
+          name: ubuntu-clang-sanitizer-install-${{ matrix.os }}
       - name: Extract installed package
         run: |
           mkdir -p install
-          tar -xzvf ubuntu-clang-sanitizer-install.tar.gz -C install
+          tar -xzvf ubuntu-clang-sanitizer-install-${{ matrix.os }}.tar.gz -C install
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -1398,9 +1114,9 @@ jobs:
   ubuntu-gcc-build-perf-stats:
     needs:
       - ubuntu-gcc-build-codecov
-      - ubuntu-gcc-arm64-test-extended
+      - ubuntu-gcc-test-extended
       - ubuntu-clang-sanitizer-test-extended
-      - ubuntu-clang-arm64-test-extended
+      - ubuntu-clang-test-extended
       - windows-clang-test-extended
       - windows-msvc-test-extended
     runs-on: ubuntu-24.04
@@ -1414,11 +1130,11 @@ jobs:
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu-gcc-install
+          name: ubuntu-gcc-install-ubuntu-24.04
       - name: Extract installed package
         run: |
           mkdir -p install
-          tar -xzvf ubuntu-gcc-install.tar.gz -C install
+          tar -xzvf ubuntu-gcc-install-ubuntu-24.04.tar.gz -C install
       - name: Run perf count checker
         run: |
           python3 scripts/run_perf_counter.py --required-tests-number=2
