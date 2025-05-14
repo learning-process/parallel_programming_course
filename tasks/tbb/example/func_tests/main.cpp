@@ -11,47 +11,42 @@
 #include "core/util/include/util.hpp"
 #include "tbb/example/include/ops_tbb.hpp"
 
-TEST(nesterov_a_test_task_tbb, test_matmul_50) {
-  constexpr size_t kCount = 50;
-
-  // Create data
-  std::vector<int> in(kCount * kCount, 0);
-
-  for (size_t i = 0; i < kCount; i++) {
-    in[(i * kCount) + i] = 1;
+class NesterovATestTaskTBB : public ::testing::TestWithParam<double> {
+ protected:
+  void SetUp() override {
+    std::ifstream test_file(ppc::util::GetAbsolutePath("tbb/example/data/test.txt"));
+    ASSERT_TRUE(test_file.is_open()) << "Failed to open input file";
+    std::string line;
+    std::getline(test_file, line);
+    test_file.close();
+    base_count = std::stoi(line);
   }
 
-  // Create Task
-  nesterov_a_test_task_tbb::TestTaskTBB test_task_tbb(in);
-  ASSERT_EQ(test_task_tbb.Validation(), true);
-  test_task_tbb.PreProcessing();
-  test_task_tbb.Run();
-  test_task_tbb.PostProcessing();
-  EXPECT_EQ(in, test_task_tbb.Get());
-}
-
-TEST(nesterov_a_test_task_tbb, test_matmul_100_from_file) {
-  std::string line;
-  std::ifstream test_file(ppc::util::GetAbsolutePath("tbb/example/data/test.txt"));
-  if (test_file.is_open()) {
-    getline(test_file, line);
+  [[nodiscard]] size_t GetCount() const {
+    return static_cast<size_t>(base_count * GetParam());
   }
-  test_file.close();
 
-  const size_t count = std::stoi(line);
+  int base_count = 0;
+};
 
-  // Create data
+TEST_P(NesterovATestTaskTBB, MatmulFromFile) {
+  const size_t count = GetCount();
+
   std::vector<int> in(count * count, 0);
-
-  for (size_t i = 0; i < count; i++) {
+  for (size_t i = 0; i < count; ++i) {
     in[(i * count) + i] = 1;
   }
 
-  // Create Task
   nesterov_a_test_task_tbb::TestTaskTBB test_task_tbb(in);
-  ASSERT_EQ(test_task_tbb.Validation(), true);
+  ASSERT_TRUE(test_task_tbb.Validation());
   test_task_tbb.PreProcessing();
   test_task_tbb.Run();
   test_task_tbb.PostProcessing();
+
   EXPECT_EQ(in, test_task_tbb.Get());
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    FileMatrixTestsTBB,
+    NesterovATestTaskTBB,
+    ::testing::Values(0.5, 1.0));
