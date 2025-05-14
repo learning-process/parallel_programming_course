@@ -29,9 +29,7 @@ class Task {
   virtual bool PostProcessing() final;
 
   // get state of testing
-  StateOfTesting& GetStateOfTesting() {
-    return state_of_testing_;
-  }
+  StateOfTesting &GetStateOfTesting() { return state_of_testing_; }
 
   virtual ~Task();
 

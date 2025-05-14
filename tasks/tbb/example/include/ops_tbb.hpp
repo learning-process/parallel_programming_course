@@ -14,9 +14,7 @@ class TestTaskTBB : public ppc::core::Task {
   bool PreProcessingImpl() override;
   bool RunImpl() override;
   bool PostProcessingImpl() override;
-  std::vector<int> Get() {
-    return output_;
-  }
+  std::vector<int> Get() { return output_; }
 
  private:
   std::vector<int> input_, output_;

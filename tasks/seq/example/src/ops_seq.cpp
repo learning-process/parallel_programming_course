@@ -27,6 +27,4 @@ bool nesterov_a_test_task_seq::TestTaskSequential::RunImpl() {
   return true;
 }
 
-bool nesterov_a_test_task_seq::TestTaskSequential::PostProcessingImpl() {
-  return true;
-}
+bool nesterov_a_test_task_seq::TestTaskSequential::PostProcessingImpl() { return true; }

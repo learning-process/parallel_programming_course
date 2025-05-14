@@ -34,6 +34,4 @@ bool nesterov_a_test_task_omp::TestTaskOpenMP::RunImpl() {
   return true;
 }
 
-bool nesterov_a_test_task_omp::TestTaskOpenMP::PostProcessingImpl() {
-  return true;
-}
+bool nesterov_a_test_task_omp::TestTaskOpenMP::PostProcessingImpl() { return true; }

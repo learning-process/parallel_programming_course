@@ -46,6 +46,4 @@ bool nesterov_a_test_task_tbb::TestTaskTBB::RunImpl() {
   return true;
 }
 
-bool nesterov_a_test_task_tbb::TestTaskTBB::PostProcessingImpl() {
-  return true;
-}
+bool nesterov_a_test_task_tbb::TestTaskTBB::PostProcessingImpl() { return true; }

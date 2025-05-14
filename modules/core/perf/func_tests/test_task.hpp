@@ -14,9 +14,7 @@ class TestTask : public ppc::core::Task {
  public:
   explicit TestTask(const std::vector<T>& in) : input_(in) {}
 
-  bool ValidationImpl() override {
-    return !input_.empty();
-  }
+  bool ValidationImpl() override { return !input_.empty(); }
 
   bool PreProcessingImpl() override {
     output_ = 0;
@@ -30,9 +28,7 @@ class TestTask : public ppc::core::Task {
     return true;
   }
 
-  bool PostProcessingImpl() override {
-    return true;
-  }
+  bool PostProcessingImpl() override { return true; }
 
   T Get() { return output_; }
 

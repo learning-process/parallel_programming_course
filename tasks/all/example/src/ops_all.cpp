@@ -68,6 +68,4 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
   return true;
 }
 
-bool nesterov_a_test_task_all::TestTaskALL::PostProcessingImpl() {
-  return true;
-}
+bool nesterov_a_test_task_all::TestTaskALL::PostProcessingImpl() { return true; }
