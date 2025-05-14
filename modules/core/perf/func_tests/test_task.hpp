@@ -12,7 +12,7 @@ namespace ppc::test::perf {
 template <class T>
 class TestTask : public ppc::core::Task {
  public:
-  explicit TestTask(const std::vector<T>& in) : ppc::core::Task(StateOfTesting::kFunc), input_(in) {}
+  explicit TestTask(const std::vector<T>& in) : input_(in) {}
 
   bool ValidationImpl() override {
     return !input_.empty();

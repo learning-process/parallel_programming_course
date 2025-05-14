@@ -27,20 +27,14 @@ void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_v
 
 bool nesterov_a_test_task_all::TestTaskALL::PreProcessingImpl() {
   // Init value for input and output
-  unsigned int input_size = task_data->inputs_count[0];
-  auto *in_ptr = reinterpret_cast<int *>(task_data->inputs[0]);
-  input_ = std::vector<int>(in_ptr, in_ptr + input_size);
-
-  unsigned int output_size = task_data->outputs_count[0];
-  output_ = std::vector<int>(output_size, 0);
-
-  rc_size_ = static_cast<int>(std::sqrt(input_size));
+  rc_size_ = static_cast<int>(std::sqrt(input_.size()));
+  output_ = std::vector<int>(rc_size_, 0);
   return true;
 }
 
 bool nesterov_a_test_task_all::TestTaskALL::ValidationImpl() {
   // Check equality of counts elements
-  return task_data->inputs_count[0] == task_data->outputs_count[0];
+  return input_.size() == output_.size();
 }
 
 bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
@@ -75,8 +69,5 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
 }
 
 bool nesterov_a_test_task_all::TestTaskALL::PostProcessingImpl() {
-  for (size_t i = 0; i < output_.size(); i++) {
-    reinterpret_cast<int *>(task_data->outputs[0])[i] = output_[i];
-  }
   return true;
 }

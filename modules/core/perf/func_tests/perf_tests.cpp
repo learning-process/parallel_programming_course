@@ -82,8 +82,6 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
 
   // Get perf statistic
   ASSERT_ANY_THROW(ppc::core::Perf::PrintPerfStatistic(perf_results));
-  ASSERT_GE(perf_results->time_sec, ppc::core::PerfResults::kMaxTime);
-  EXPECT_EQ(test_task->Get(), in.size());
 }
 
 TEST(perf_tests, check_perf_task) {

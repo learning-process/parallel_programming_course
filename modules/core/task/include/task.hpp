@@ -14,7 +14,7 @@ class Task {
  public:
   enum StateOfTesting : uint8_t { kFunc, kPerf };
 
-  explicit Task(StateOfTesting state_of_testing);
+  explicit Task(StateOfTesting state_of_testing = StateOfTesting::kFunc);
 
   // validation of data and validation of task attributes before running
   virtual bool Validation() final;
