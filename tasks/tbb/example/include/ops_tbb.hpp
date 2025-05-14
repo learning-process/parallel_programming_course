@@ -9,11 +9,14 @@ namespace nesterov_a_test_task_tbb {
 
 class TestTaskTBB : public ppc::core::Task {
  public:
-  explicit TestTaskTBB(ppc::core::TaskDataPtr task_data) : Task(std::move(task_data)) {}
-  bool PreProcessingImpl() override;
+  explicit TestTaskTBB(const std::vector<int>& in) : input_(in) {}
   bool ValidationImpl() override;
+  bool PreProcessingImpl() override;
   bool RunImpl() override;
   bool PostProcessingImpl() override;
+  std::vector<int> Get() {
+    return output_;
+  }
 
  private:
   std::vector<int> input_, output_;
