@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "core/task/include/task.hpp"
+#include "core/util/include/util.hpp"
 #include "omp/example/include/ops_omp.hpp"
 
 class NesterovTaskOMPTest : public ::testing::TestWithParam<ppc::core::PerfResults::TypeOfRunning> {
@@ -53,6 +53,6 @@ class NesterovTaskOMPTest : public ::testing::TestWithParam<ppc::core::PerfResul
 
 TEST_P(NesterovTaskOMPTest, RunModes) { RunTest(GetParam()); }
 
-INSTANTIATE_TEST_SUITE_P(NesterovOMPTests, NesterovTaskOMPTest,
-                         ::testing::Values(ppc::core::PerfResults::TypeOfRunning::kPipeline,
-                                           ppc::core::PerfResults::TypeOfRunning::kTaskRun));
+INSTANTIATE_TEST_SUITE_P_NOLINT(NesterovOMPTests, NesterovTaskOMPTest,
+                                ::testing::Values(ppc::core::PerfResults::TypeOfRunning::kPipeline,
+                                                  ppc::core::PerfResults::TypeOfRunning::kTaskRun));

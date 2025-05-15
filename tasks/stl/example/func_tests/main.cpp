@@ -44,4 +44,4 @@ TEST_P(NesterovATestTaskSTL, MatmulFromFile) {
   EXPECT_EQ(in, test_task_stl.Get());
 }
 
-INSTANTIATE_TEST_SUITE_P(FileMatrixTestsSTL, NesterovATestTaskSTL, ::testing::Values(0.5, 1.0));
+INSTANTIATE_TEST_SUITE_P_NOLINT(FileMatrixTestsSTL, NesterovATestTaskSTL, ::testing::Values(0.5, 1.0));

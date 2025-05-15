@@ -2,14 +2,12 @@
 #include <mpi.h>
 
 #include <chrono>
-#include <cstddef>
-#include <cstdint>
 #include <memory>
 #include <vector>
 
 #include "all/example/include/ops_all.hpp"
 #include "core/perf/include/perf.hpp"
-#include "core/task/include/task.hpp"
+#include "core/util/include/util.hpp"
 
 class NesterovAllRunTest : public ::testing::TestWithParam<ppc::core::PerfResults::TypeOfRunning> {
  protected:
@@ -55,6 +53,6 @@ class NesterovAllRunTest : public ::testing::TestWithParam<ppc::core::PerfResult
 
 TEST_P(NesterovAllRunTest, RunModes) { ExecuteTest(GetParam()); }
 
-INSTANTIATE_TEST_SUITE_P(RunModeTests, NesterovAllRunTest,
-                         ::testing::Values(ppc::core::PerfResults::TypeOfRunning::kPipeline,
-                                           ppc::core::PerfResults::TypeOfRunning::kTaskRun));
+INSTANTIATE_TEST_SUITE_P_NOLINT(RunModeTests, NesterovAllRunTest,
+                                ::testing::Values(ppc::core::PerfResults::TypeOfRunning::kPipeline,
+                                                  ppc::core::PerfResults::TypeOfRunning::kTaskRun));

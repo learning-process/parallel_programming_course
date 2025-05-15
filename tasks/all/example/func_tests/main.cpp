@@ -1,14 +1,11 @@
 #include <gtest/gtest.h>
 
-#include <cstddef>
 #include <cstdint>
-#include <memory>
 #include <stb_library.hpp>
 #include <string>
 #include <vector>
 
 #include "all/example/include/ops_all.hpp"
-#include "core/task/include/task.hpp"
 #include "core/util/include/util.hpp"
 
 class NesterovATestTaskAll : public ::testing::TestWithParam<int> {
@@ -46,4 +43,4 @@ TEST_P(NesterovATestTaskAll, MatmulFromPic) {
   EXPECT_EQ(in, test_task_all.Get());
 }
 
-INSTANTIATE_TEST_SUITE_P(PicMatrixTests, NesterovATestTaskAll, ::testing::Values(5, 10));
+INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovATestTaskAll, ::testing::Values(5, 10));

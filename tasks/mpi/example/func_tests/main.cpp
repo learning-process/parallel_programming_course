@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 
-#include "core/task/include/task.hpp"
 #include "core/util/include/util.hpp"
 #include "mpi/example/include/ops_mpi.hpp"
 
@@ -44,4 +43,4 @@ TEST_P(NesterovATestTaskMPI, MatmulFromFile) {
   EXPECT_EQ(in, test_task_mpi.Get());
 }
 
-INSTANTIATE_TEST_SUITE_P(FileMatrixTestsMPI, NesterovATestTaskMPI, ::testing::Values(0.5, 1.0));
+INSTANTIATE_TEST_SUITE_P_NOLINT(FileMatrixTestsMPI, NesterovATestTaskMPI, ::testing::Values(0.5, 1.0));
