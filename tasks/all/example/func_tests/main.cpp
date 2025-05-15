@@ -43,4 +43,32 @@ TEST_P(NesterovATestTaskAll, MatmulFromPic) {
   EXPECT_EQ(in, test_task_all.Get());
 }
 
+TEST_P(NesterovATestTaskAll, MatMulUtilFromPic) {
+  int divider = GetParam();
+  const int k_count = (width + height) / divider;
+
+  std::vector<int> in(k_count * k_count, 0);
+  for (int i = 0; i < k_count; i++) {
+    in[(i * k_count) + i] = 1;
+  }
+  std::vector<int> out(k_count * k_count, 0);
+  nesterov_a_test_task_all::MatMul(in, static_cast<int>(k_count), out);
+
+  EXPECT_EQ(in, out);
+}
+
+TEST_P(NesterovATestTaskAll, MatMulTBBUtilFromPic) {
+  int divider = GetParam();
+  const int k_count = (width + height) / divider;
+
+  std::vector<int> in(k_count * k_count, 0);
+  for (int i = 0; i < k_count; i++) {
+    in[(i * k_count) + i] = 1;
+  }
+  std::vector<int> out(k_count * k_count, 0);
+  nesterov_a_test_task_all::MatMulTBB(in, static_cast<int>(k_count), out);
+
+  EXPECT_EQ(in, out);
+}
+
 INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovATestTaskAll, ::testing::Values(5, 10));

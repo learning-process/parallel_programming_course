@@ -28,28 +28,28 @@ void nesterov_a_test_task_mpi::TestTaskMPI::MultiplyMatrixBasedOnRank() {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   if (rank == 0) {
-    MultiplyRowMajor();
+    MultiplyRowMajor(input_, output_, rc_size_);
   } else {
-    MultiplyColumnMajor();
+    MultiplyColumnMajor(input_, output_, rc_size_);
   }
   MPI_Barrier(MPI_COMM_WORLD);
 }
 
-void nesterov_a_test_task_mpi::TestTaskMPI::MultiplyRowMajor() {
-  for (int i = 0; i < rc_size_; ++i) {
-    for (int j = 0; j < rc_size_; ++j) {
-      for (int k = 0; k < rc_size_; ++k) {
-        output_[(i * rc_size_) + j] += input_[(i * rc_size_) + k] * input_[(k * rc_size_) + j];
+void nesterov_a_test_task_mpi::MultiplyRowMajor(const std::vector<int> &in, std::vector<int> &out, int rc_size) {
+  for (int i = 0; i < rc_size; ++i) {
+    for (int j = 0; j < rc_size; ++j) {
+      for (int k = 0; k < rc_size; ++k) {
+        out[(i * rc_size) + j] += in[(i * rc_size) + k] * in[(k * rc_size) + j];
       }
     }
   }
 }
 
-void nesterov_a_test_task_mpi::TestTaskMPI::MultiplyColumnMajor() {
-  for (int j = 0; j < rc_size_; ++j) {
-    for (int k = 0; k < rc_size_; ++k) {
-      for (int i = 0; i < rc_size_; ++i) {
-        output_[(i * rc_size_) + j] += input_[(i * rc_size_) + k] * input_[(k * rc_size_) + j];
+void nesterov_a_test_task_mpi::MultiplyColumnMajor(const std::vector<int> &in, std::vector<int> &out, int rc_size) {
+  for (int j = 0; j < rc_size; ++j) {
+    for (int k = 0; k < rc_size; ++k) {
+      for (int i = 0; i < rc_size; ++i) {
+        out[(i * rc_size) + j] += in[(i * rc_size) + k] * in[(k * rc_size) + j];
       }
     }
   }

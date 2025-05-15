@@ -43,4 +43,32 @@ TEST_P(NesterovATestTaskMPI, MatmulFromFile) {
   EXPECT_EQ(in, test_task_mpi.Get());
 }
 
+TEST_P(NesterovATestTaskMPI, MultiplyRowMajorUtilTestFromFile) {
+  const size_t count = GetCount();
+
+  std::vector<int> in(count * count, 0);
+  for (size_t i = 0; i < count; ++i) {
+    in[(i * count) + i] = 1;
+  }
+
+  std::vector<int> out(count * count, 0);
+  nesterov_a_test_task_mpi::MultiplyRowMajor(in, out, static_cast<int>(count));
+
+  EXPECT_EQ(in, out);
+}
+
+TEST_P(NesterovATestTaskMPI, MultiplyColumnMajorUtilTestFromFile) {
+  const size_t count = GetCount();
+
+  std::vector<int> in(count * count, 0);
+  for (size_t i = 0; i < count; ++i) {
+    in[(i * count) + i] = 1;
+  }
+
+  std::vector<int> out(count * count, 0);
+  nesterov_a_test_task_mpi::MultiplyColumnMajor(in, out, static_cast<int>(count));
+
+  EXPECT_EQ(in, out);
+}
+
 INSTANTIATE_TEST_SUITE_P_NOLINT(FileMatrixTestsMPI, NesterovATestTaskMPI, ::testing::Values(0.5, 1.0));
