@@ -9,8 +9,7 @@
 #include <vector>
 
 #include "core/util/include/util.hpp"
-#include "oneapi/tbb/task_arena.h"
-#include "oneapi/tbb/task_group.h"
+#include "oneapi/tbb/parallel_for.h"
 
 void nesterov_a_test_task_all::MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
   for (int i = 0; i < rc_size; ++i) {
@@ -24,14 +23,8 @@ void nesterov_a_test_task_all::MatMul(const std::vector<int> &in_vec, int rc_siz
 }
 
 void nesterov_a_test_task_all::MatMulTBB(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
-  oneapi::tbb::task_arena arena(1);
-  arena.execute([&] {
-    tbb::task_group tg;
-    for (int i = 0; i < ppc::util::GetPPCNumThreads(); ++i) {
-      tg.run([&] { MatMul(in_vec, rc_size, out_vec); });
-    }
-    tg.wait();
-  });
+  tbb::parallel_for(0, ppc::util::GetPPCNumThreads(), [&](int i) { MatMul(in_vec, rc_size - i, out_vec); });
+  MatMul(in_vec, rc_size, out_vec);
 }
 
 bool nesterov_a_test_task_all::TestTaskALL::ValidationImpl() {

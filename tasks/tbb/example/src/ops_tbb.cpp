@@ -7,8 +7,7 @@
 #include <cstddef>
 #include <vector>
 
-#include "oneapi/tbb/task_arena.h"
-#include "oneapi/tbb/task_group.h"
+#include "oneapi/tbb/parallel_for.h"
 
 namespace {
 void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
@@ -35,14 +34,8 @@ bool nesterov_a_test_task_tbb::TestTaskTBB::PreProcessingImpl() {
 }
 
 bool nesterov_a_test_task_tbb::TestTaskTBB::RunImpl() {
-  oneapi::tbb::task_arena arena(1);
-  arena.execute([&] {
-    tbb::task_group tg;
-    for (int thr = 0; thr < ppc::util::GetPPCNumThreads(); ++thr) {
-      tg.run([&] { MatMul(input_, rc_size_, output_); });
-    }
-    tg.wait();
-  });
+  tbb::parallel_for(0, ppc::util::GetPPCNumThreads(), [&](int i) { MatMul(input_, rc_size_ - i, output_); });
+  MatMul(input_, rc_size_, output_);
   return true;
 }
 
