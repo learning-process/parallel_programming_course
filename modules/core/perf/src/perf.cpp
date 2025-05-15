@@ -13,15 +13,12 @@
 
 #include "core/task/include/task.hpp"
 
-ppc::core::Perf::Perf(const std::shared_ptr<Task>& task_ptr) { SetTask(task_ptr); }
-
-void ppc::core::Perf::SetTask(const std::shared_ptr<Task>& task_ptr) {
+ppc::core::Perf::Perf(const std::shared_ptr<Task>& task_ptr) : task_(task_ptr) {
   task_ptr->GetStateOfTesting() = Task::StateOfTesting::kPerf;
-  this->task_ = task_ptr;
 }
 
-void ppc::core::Perf::PipelineRun(const PerfAttr& perf_attr, ppc::core::PerfResults& perf_results) const {
-  perf_results.type_of_running = PerfResults::TypeOfRunning::kPipeline;
+void ppc::core::Perf::PipelineRun(const PerfAttr& perf_attr) {
+  perf_results_.type_of_running = PerfResults::TypeOfRunning::kPipeline;
 
   CommonRun(
       perf_attr,
@@ -31,15 +28,15 @@ void ppc::core::Perf::PipelineRun(const PerfAttr& perf_attr, ppc::core::PerfResu
         task_->Run();
         task_->PostProcessing();
       },
-      perf_results);
+      perf_results_);
 }
 
-void ppc::core::Perf::TaskRun(const PerfAttr& perf_attr, ppc::core::PerfResults& perf_results) const {
-  perf_results.type_of_running = PerfResults::TypeOfRunning::kTaskRun;
+void ppc::core::Perf::TaskRun(const PerfAttr& perf_attr) {
+  perf_results_.type_of_running = PerfResults::TypeOfRunning::kTaskRun;
 
   task_->Validation();
   task_->PreProcessing();
-  CommonRun(perf_attr, [&]() { task_->Run(); }, perf_results);
+  CommonRun(perf_attr, [&]() { task_->Run(); }, perf_results_);
   task_->PostProcessing();
 
   task_->Validation();
@@ -58,20 +55,22 @@ void ppc::core::Perf::CommonRun(const PerfAttr& perf_attr, const std::function<v
   perf_results.time_sec = end - begin;
 }
 
-void ppc::core::Perf::PrintPerfStatistic(const PerfResults& perf_results) {
+void ppc::core::Perf::PrintPerfStatistic() const {
   std::string relative_path(::testing::UnitTest::GetInstance()->current_test_info()->file());
   std::string ppc_regex_template("parallel_programming_course");
   std::string perf_regex_template("perf_tests");
   std::string type_test_name;
 
-  auto time_secs = perf_results.time_sec;
+  auto time_secs = perf_results_.time_sec;
 
-  if (perf_results.type_of_running == PerfResults::TypeOfRunning::kTaskRun) {
+  if (perf_results_.type_of_running == PerfResults::TypeOfRunning::kTaskRun) {
     type_test_name = "task_run";
-  } else if (perf_results.type_of_running == PerfResults::TypeOfRunning::kPipeline) {
+  } else if (perf_results_.type_of_running == PerfResults::TypeOfRunning::kPipeline) {
     type_test_name = "pipeline";
   } else {
-    type_test_name = "none";
+    std::stringstream err_msg;
+    err_msg << '\n' << "The type of performance check for the task was not selected.\n";
+    throw std::runtime_error(err_msg.str().c_str());
   }
 
   auto first_found_position = relative_path.find(ppc_regex_template) + ppc_regex_template.length() + 1;
@@ -94,3 +93,5 @@ void ppc::core::Perf::PrintPerfStatistic(const PerfResults& perf_results) {
     throw std::runtime_error(err_msg.str().c_str());
   }
 }
+
+ppc::core::PerfResults ppc::core::Perf::GetPerfResults() { return perf_results_; }

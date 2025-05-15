@@ -23,6 +23,7 @@ class NesterovAllRunTest : public ::testing::TestWithParam<ppc::core::PerfResult
 
   void ExecuteTest(ppc::core::PerfResults::TypeOfRunning mode) {
     auto task = std::make_shared<nesterov_a_test_task_all::TestTaskALL>(input_data);
+    ppc::core::Perf perf(task);
 
     ppc::core::PerfAttr perf_attr;
     const auto t0 = std::chrono::high_resolution_clock::now();
@@ -32,19 +33,16 @@ class NesterovAllRunTest : public ::testing::TestWithParam<ppc::core::PerfResult
       return static_cast<double>(ns) * 1e-9;
     };
 
-    ppc::core::PerfResults perf_results;
-    ppc::core::Perf perf(task);
-
     if (mode == ppc::core::PerfResults::TypeOfRunning::kPipeline) {
-      perf.PipelineRun(perf_attr, perf_results);
+      perf.PipelineRun(perf_attr);
     } else {
-      perf.TaskRun(perf_attr, perf_results);
+      perf.TaskRun(perf_attr);
     }
 
     int rank = -1;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
-      ppc::core::Perf::PrintPerfStatistic(perf_results);
+      perf.PrintPerfStatistic();
     }
 
     ASSERT_EQ(input_data, task->Get());

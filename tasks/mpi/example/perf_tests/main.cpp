@@ -25,6 +25,9 @@ class NesterovATaskMPITest : public ::testing::TestWithParam<ppc::core::PerfResu
     // Create Task
     auto test_task_mpi = std::make_shared<nesterov_a_test_task_mpi::TestTaskMPI>(in);
 
+    // Create Perf analyzer
+    ppc::core::Perf perf_analyzer(test_task_mpi);
+
     // Create Perf attributes
     ppc::core::PerfAttr perf_attr;
     const auto t0 = std::chrono::high_resolution_clock::now();
@@ -34,22 +37,16 @@ class NesterovATaskMPITest : public ::testing::TestWithParam<ppc::core::PerfResu
       return static_cast<double>(duration) * 1e-9;
     };
 
-    // Create and init perf results
-    ppc::core::PerfResults perf_results;
-
-    // Create Perf analyzer
-    ppc::core::Perf perf_analyzer(test_task_mpi);
-
     if (mode == ppc::core::PerfResults::TypeOfRunning::kPipeline) {
-      perf_analyzer.PipelineRun(perf_attr, perf_results);
+      perf_analyzer.PipelineRun(perf_attr);
     } else {
-      perf_analyzer.TaskRun(perf_attr, perf_results);
+      perf_analyzer.TaskRun(perf_attr);
     }
 
     int rank = -1;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
-      ppc::core::Perf::PrintPerfStatistic(perf_results);
+      perf_analyzer.PrintPerfStatistic();
     }
 
     ASSERT_EQ(in, test_task_mpi->Get());

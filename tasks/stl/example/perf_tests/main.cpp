@@ -24,6 +24,9 @@ class NesterovTaskSTLTest : public ::testing::TestWithParam<ppc::core::PerfResul
     // Create Task
     auto test_task_stl = std::make_shared<nesterov_a_test_task_stl::TestTaskSTL>(in);
 
+    // Create Perf analyzer
+    ppc::core::Perf perf_analyzer(test_task_stl);
+
     // Create Perf attributes
     ppc::core::PerfAttr perf_attr;
     const auto t0 = std::chrono::high_resolution_clock::now();
@@ -33,19 +36,13 @@ class NesterovTaskSTLTest : public ::testing::TestWithParam<ppc::core::PerfResul
       return static_cast<double>(duration) * 1e-9;
     };
 
-    // Create and init perf results
-    ppc::core::PerfResults perf_results;
-
-    // Create Perf analyzer
-    ppc::core::Perf perf_analyzer(test_task_stl);
-
     if (mode == ppc::core::PerfResults::TypeOfRunning::kPipeline) {
-      perf_analyzer.PipelineRun(perf_attr, perf_results);
+      perf_analyzer.PipelineRun(perf_attr);
     } else {
-      perf_analyzer.TaskRun(perf_attr, perf_results);
+      perf_analyzer.TaskRun(perf_attr);
     }
 
-    ppc::core::Perf::PrintPerfStatistic(perf_results);
+    perf_analyzer.PrintPerfStatistic();
 
     ASSERT_EQ(in, test_task_stl->Get());
   }
