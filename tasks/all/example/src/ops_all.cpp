@@ -69,3 +69,5 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
 }
 
 bool nesterov_a_test_task_all::TestTaskALL::PostProcessingImpl() { return true; }
+
+std::vector<int> nesterov_a_test_task_all::TestTaskALL::Get() { return output_; }

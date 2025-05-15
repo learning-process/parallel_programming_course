@@ -28,3 +28,5 @@ bool nesterov_a_test_task_seq::TestTaskSequential::RunImpl() {
 }
 
 bool nesterov_a_test_task_seq::TestTaskSequential::PostProcessingImpl() { return true; }
+
+std::vector<int> nesterov_a_test_task_seq::TestTaskSequential::Get() { return output_; }

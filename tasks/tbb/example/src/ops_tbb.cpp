@@ -47,3 +47,5 @@ bool nesterov_a_test_task_tbb::TestTaskTBB::RunImpl() {
 }
 
 bool nesterov_a_test_task_tbb::TestTaskTBB::PostProcessingImpl() { return true; }
+
+std::vector<int> nesterov_a_test_task_tbb::TestTaskTBB::Get() { return output_; }

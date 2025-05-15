@@ -35,3 +35,5 @@ bool nesterov_a_test_task_omp::TestTaskOpenMP::RunImpl() {
 }
 
 bool nesterov_a_test_task_omp::TestTaskOpenMP::PostProcessingImpl() { return true; }
+
+std::vector<int> nesterov_a_test_task_omp::TestTaskOpenMP::Get() { return output_; }

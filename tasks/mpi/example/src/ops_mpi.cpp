@@ -56,3 +56,5 @@ void nesterov_a_test_task_mpi::TestTaskMPI::MultiplyColumnMajor() {
 }
 
 bool nesterov_a_test_task_mpi::TestTaskMPI::PostProcessingImpl() { return true; }
+
+std::vector<int> nesterov_a_test_task_mpi::TestTaskMPI::Get() { return output_; }

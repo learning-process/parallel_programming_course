@@ -43,3 +43,5 @@ bool nesterov_a_test_task_stl::TestTaskSTL::RunImpl() {
 }
 
 bool nesterov_a_test_task_stl::TestTaskSTL::PostProcessingImpl() { return true; }
+
+std::vector<int> nesterov_a_test_task_stl::TestTaskSTL::Get() { return output_; }
