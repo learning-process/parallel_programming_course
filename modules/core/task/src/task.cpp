@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cstddef>
+#include <cstdlib>
 #include <exception>
 #include <functional>
 #include <iomanip>
@@ -15,6 +16,12 @@
 using namespace std::chrono;
 
 ppc::core::Task::Task(StateOfTesting state_of_testing) : state_of_testing_(state_of_testing) {
+  auto custom_terminate = []() {
+    std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT! \n"
+                 "Expected - \"Validation\", \"PreProcessing\", \"Run\", \"PostProcessing\" \n";
+    std::exit(404);
+  };
+  std::set_terminate(custom_terminate);
   functions_order_.clear();
 }
 
@@ -86,13 +93,6 @@ bool ppc::core::Task::IsFullPipelineStage() {
 }
 
 ppc::core::Task::~Task() {
-  auto custom_terminate = []() {
-    std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT! \n"
-                 "Expected - \"Validation\", \"PreProcessing\", \"Run\", \"PostProcessing\" \n";
-    std::exit(404);
-  };
-  std::set_terminate(custom_terminate);
-
   if (!functions_order_.empty() || !was_worked_) {
     std::terminate();
   } else {
