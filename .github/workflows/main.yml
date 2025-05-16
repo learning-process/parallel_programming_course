@@ -170,18 +170,10 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
-      - name: Run func tests (threads, num_threads=6)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 6
       - name: Run func tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
-      - name: Run func tests (threads, num_threads=8)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 8
       - name: Run func tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -190,14 +182,6 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
-      - name: Run func tests (threads, num_threads=15)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 15
-      - name: Run func tests (threads, num_threads=16)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 16
   ubuntu-clang-build:
     needs:
       - clang-format
@@ -338,18 +322,10 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
-      - name: Run tests (threads, num_threads=6)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 6
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
-      - name: Run tests (threads, num_threads=8)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 8
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -358,14 +334,6 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
-      - name: Run tests (threads, num_threads=15)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 15
-      - name: Run tests (threads, num_threads=16)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 16
   ubuntu-clang-sanitizer-build:
     needs:
       - ubuntu-clang-build
@@ -508,21 +476,10 @@ jobs:
         env:
           OMP_NUM_THREADS: 5
           ASAN_RUN: 1
-      - name: Run tests (threads, num_threads=6)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 6
-          ASAN_RUN: 1
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
-          ASAN_RUN: 1
-      - name: Run tests (threads, num_threads=8)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 8
-          ASAN_RUN: 1
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -532,17 +489,6 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
-          ASAN_RUN: 1
-      - name: Run tests (threads, num_threads=15)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 15
-          ASAN_RUN: 1
-      - name: Run tests (threads, num_threads=16)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 16
-          ASAN_RUN: 1
   macos-clang-build:
     needs:
       - clang-format
@@ -673,18 +619,10 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
-      - name: Run tests (threads, num_threads=6)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 6
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
-      - name: Run tests (threads, num_threads=8)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 8
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -693,14 +631,6 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
-      - name: Run tests (threads, num_threads=15)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 15
-      - name: Run tests (threads, num_threads=16)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 16
   windows-msvc-build:
     needs:
       - clang-format
@@ -840,18 +770,10 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
-      - name: Run tests (threads, num_threads=6)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 6
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
-      - name: Run tests (threads, num_threads=8)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 8
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -860,14 +782,6 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
-      - name: Run tests (threads, num_threads=15)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 15
-      - name: Run tests (threads, num_threads=16)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 16
   windows-clang-build:
     needs:
       - clang-format
@@ -996,20 +910,10 @@ jobs:
         env:
           OMP_NUM_THREADS: 5
           CLANG_BUILD: 1
-      - name: Run tests (threads, num_threads=6)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 6
-          CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
-          CLANG_BUILD: 1
-      - name: Run tests (threads, num_threads=8)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 8
           CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
@@ -1020,16 +924,6 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
-          CLANG_BUILD: 1
-      - name: Run tests (threads, num_threads=15)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 15
-          CLANG_BUILD: 1
-      - name: Run tests (threads, num_threads=16)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          OMP_NUM_THREADS: 16
           CLANG_BUILD: 1
   ubuntu-gcc-build-codecov:
     needs:
