@@ -480,6 +480,7 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
+          ASAN_RUN: 1
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -489,6 +490,7 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
+          ASAN_RUN: 1
   macos-clang-build:
     needs:
       - clang-format
