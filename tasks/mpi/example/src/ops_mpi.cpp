@@ -6,22 +6,16 @@
 #include <cstddef>
 #include <vector>
 
-bool nesterov_a_test_task_mpi::TestTaskMPI::PreProcessingImpl() {
-  // Init value for input and output
-  unsigned int input_size = task_data->inputs_count[0];
-  auto *in_ptr = reinterpret_cast<int *>(task_data->inputs[0]);
-  input_ = std::vector<int>(in_ptr, in_ptr + input_size);
-
-  unsigned int output_size = task_data->outputs_count[0];
-  output_ = std::vector<int>(output_size, 0);
-
-  rc_size_ = static_cast<int>(std::sqrt(input_size));
-  return true;
+bool nesterov_a_test_task_mpi::TestTaskMPI::ValidationImpl() {
+  auto sqrt_size = static_cast<int>(std::sqrt(input_.size()));
+  return sqrt_size * sqrt_size == static_cast<int>(input_.size());
 }
 
-bool nesterov_a_test_task_mpi::TestTaskMPI::ValidationImpl() {
-  // Check equality of counts elements
-  return task_data->inputs_count[0] == task_data->outputs_count[0];
+bool nesterov_a_test_task_mpi::TestTaskMPI::PreProcessingImpl() {
+  // Init value for input and output
+  rc_size_ = static_cast<int>(std::sqrt(input_.size()));
+  output_ = std::vector<int>(input_.size(), 0);
+  return true;
 }
 
 bool nesterov_a_test_task_mpi::TestTaskMPI::RunImpl() {
@@ -34,36 +28,33 @@ void nesterov_a_test_task_mpi::TestTaskMPI::MultiplyMatrixBasedOnRank() {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   if (rank == 0) {
-    MultiplyRowMajor();
+    MultiplyRowMajor(input_, output_, rc_size_);
   } else {
-    MultiplyColumnMajor();
+    MultiplyColumnMajor(input_, output_, rc_size_);
   }
   MPI_Barrier(MPI_COMM_WORLD);
 }
 
-void nesterov_a_test_task_mpi::TestTaskMPI::MultiplyRowMajor() {
-  for (int i = 0; i < rc_size_; ++i) {
-    for (int j = 0; j < rc_size_; ++j) {
-      for (int k = 0; k < rc_size_; ++k) {
-        output_[(i * rc_size_) + j] += input_[(i * rc_size_) + k] * input_[(k * rc_size_) + j];
+void nesterov_a_test_task_mpi::MultiplyRowMajor(const std::vector<int> &in, std::vector<int> &out, int rc_size) {
+  for (int i = 0; i < rc_size; ++i) {
+    for (int j = 0; j < rc_size; ++j) {
+      for (int k = 0; k < rc_size; ++k) {
+        out[(i * rc_size) + j] += in[(i * rc_size) + k] * in[(k * rc_size) + j];
       }
     }
   }
 }
 
-void nesterov_a_test_task_mpi::TestTaskMPI::MultiplyColumnMajor() {
-  for (int j = 0; j < rc_size_; ++j) {
-    for (int k = 0; k < rc_size_; ++k) {
-      for (int i = 0; i < rc_size_; ++i) {
-        output_[(i * rc_size_) + j] += input_[(i * rc_size_) + k] * input_[(k * rc_size_) + j];
+void nesterov_a_test_task_mpi::MultiplyColumnMajor(const std::vector<int> &in, std::vector<int> &out, int rc_size) {
+  for (int j = 0; j < rc_size; ++j) {
+    for (int k = 0; k < rc_size; ++k) {
+      for (int i = 0; i < rc_size; ++i) {
+        out[(i * rc_size) + j] += in[(i * rc_size) + k] * in[(k * rc_size) + j];
       }
     }
   }
 }
 
-bool nesterov_a_test_task_mpi::TestTaskMPI::PostProcessingImpl() {
-  for (size_t i = 0; i < output_.size(); i++) {
-    reinterpret_cast<int *>(task_data->outputs[0])[i] = output_[i];
-  }
-  return true;
-}
+bool nesterov_a_test_task_mpi::TestTaskMPI::PostProcessingImpl() { return true; }
+
+std::vector<int> nesterov_a_test_task_mpi::TestTaskMPI::Get() { return output_; }

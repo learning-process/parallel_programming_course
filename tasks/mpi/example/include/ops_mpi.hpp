@@ -7,21 +7,23 @@
 
 namespace nesterov_a_test_task_mpi {
 
+void MultiplyRowMajor(const std::vector<int> &in, std::vector<int> &out, int rc_size);
+void MultiplyColumnMajor(const std::vector<int> &in, std::vector<int> &out, int rc_size);
+
 class TestTaskMPI : public ppc::core::Task {
  public:
-  explicit TestTaskMPI(ppc::core::TaskDataPtr task_data) : Task(std::move(task_data)) {}
-  bool PreProcessingImpl() override;
+  explicit TestTaskMPI(const std::vector<int> &in) : input_(in) {}
   bool ValidationImpl() override;
+  bool PreProcessingImpl() override;
   bool RunImpl() override;
   bool PostProcessingImpl() override;
+  std::vector<int> Get();
 
  private:
   std::vector<int> input_, output_;
   int rc_size_{};
 
   void MultiplyMatrixBasedOnRank();
-  void MultiplyRowMajor();
-  void MultiplyColumnMajor();
 };
 
 }  // namespace nesterov_a_test_task_mpi

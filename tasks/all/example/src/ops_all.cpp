@@ -9,11 +9,9 @@
 #include <vector>
 
 #include "core/util/include/util.hpp"
-#include "oneapi/tbb/task_arena.h"
-#include "oneapi/tbb/task_group.h"
+#include "oneapi/tbb/parallel_for.h"
 
-namespace {
-void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
+void nesterov_a_test_task_all::MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
   for (int i = 0; i < rc_size; ++i) {
     for (int j = 0; j < rc_size; ++j) {
       out_vec[(i * rc_size) + j] = 0;
@@ -23,24 +21,22 @@ void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_v
     }
   }
 }
-}  // namespace
 
-bool nesterov_a_test_task_all::TestTaskALL::PreProcessingImpl() {
-  // Init value for input and output
-  unsigned int input_size = task_data->inputs_count[0];
-  auto *in_ptr = reinterpret_cast<int *>(task_data->inputs[0]);
-  input_ = std::vector<int>(in_ptr, in_ptr + input_size);
-
-  unsigned int output_size = task_data->outputs_count[0];
-  output_ = std::vector<int>(output_size, 0);
-
-  rc_size_ = static_cast<int>(std::sqrt(input_size));
-  return true;
+void nesterov_a_test_task_all::MatMulTBB(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
+  tbb::parallel_for(0, ppc::util::GetPPCNumThreads(), [&](int i) { MatMul(in_vec, rc_size - i, out_vec); });
+  MatMul(in_vec, rc_size, out_vec);
 }
 
 bool nesterov_a_test_task_all::TestTaskALL::ValidationImpl() {
-  // Check equality of counts elements
-  return task_data->inputs_count[0] == task_data->outputs_count[0];
+  auto sqrt_size = static_cast<int>(std::sqrt(input_.size()));
+  return sqrt_size * sqrt_size == static_cast<int>(input_.size());
+}
+
+bool nesterov_a_test_task_all::TestTaskALL::PreProcessingImpl() {
+  // Init value for input and output
+  rc_size_ = static_cast<int>(std::sqrt(input_.size()));
+  output_ = std::vector<int>(input_.size(), 0);
+  return true;
 }
 
 bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
@@ -50,17 +46,10 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
 #pragma omp parallel default(none)
     {
 #pragma omp critical
-      { MatMul(input_, rc_size_, output_); }
+      MatMul(input_, rc_size_, output_);
     }
   } else {
-    oneapi::tbb::task_arena arena(1);
-    arena.execute([&] {
-      tbb::task_group tg;
-      for (int i = 0; i < ppc::util::GetPPCNumThreads(); ++i) {
-        tg.run([&] { MatMul(input_, rc_size_, output_); });
-      }
-      tg.wait();
-    });
+    MatMulTBB(input_, rc_size_, output_);
   }
 
   const int num_threads = ppc::util::GetPPCNumThreads();
@@ -74,9 +63,6 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
   return true;
 }
 
-bool nesterov_a_test_task_all::TestTaskALL::PostProcessingImpl() {
-  for (size_t i = 0; i < output_.size(); i++) {
-    reinterpret_cast<int *>(task_data->outputs[0])[i] = output_[i];
-  }
-  return true;
-}
+bool nesterov_a_test_task_all::TestTaskALL::PostProcessingImpl() { return true; }
+
+std::vector<int> nesterov_a_test_task_all::TestTaskALL::Get() { return output_; }

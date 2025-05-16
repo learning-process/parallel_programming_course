@@ -12,35 +12,35 @@ namespace ppc::test::perf {
 template <class T>
 class TestTask : public ppc::core::Task {
  public:
-  explicit TestTask(const ppc::core::TaskDataPtr &task_data) : Task(task_data) {}
+  explicit TestTask(const std::vector<T>& in) : input_(in) {}
+
+  bool ValidationImpl() override { return !input_.empty(); }
 
   bool PreProcessingImpl() override {
-    input_ = reinterpret_cast<T *>(task_data->inputs[0]);
-    output_ = reinterpret_cast<T *>(task_data->outputs[0]);
-    output_[0] = 0;
+    output_ = 0;
     return true;
   }
 
-  bool ValidationImpl() override { return task_data->outputs_count[0] == 1; }
-
   bool RunImpl() override {
-    for (unsigned i = 0; i < task_data->inputs_count[0]; i++) {
-      output_[0] += input_[i];
+    for (unsigned i = 0; i < input_.size(); i++) {
+      output_ += input_[i];
     }
     return true;
   }
 
   bool PostProcessingImpl() override { return true; }
 
+  T Get() { return output_; }
+
  private:
-  T *input_{};
-  T *output_{};
+  std::vector<T> input_{};
+  T output_;
 };
 
 template <class T>
 class FakePerfTask : public TestTask<T> {
  public:
-  explicit FakePerfTask(ppc::core::TaskDataPtr perf_task_data) : TestTask<T>(perf_task_data) {}
+  explicit FakePerfTask(const std::vector<T>& in) : TestTask<T>(in) {}
 
   bool RunImpl() override {
     std::this_thread::sleep_for(std::chrono::seconds(11));

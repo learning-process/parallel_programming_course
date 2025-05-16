@@ -10,7 +10,7 @@ namespace ppc::core {
 
 struct PerfAttr {
   // count of task's running
-  uint64_t num_running;
+  uint64_t num_running = 10;
   std::function<double()> current_timer = [&] { return 0.0; };
 };
 
@@ -25,21 +25,20 @@ class Perf {
  public:
   // Init performance analysis with initialized task and initialized data
   explicit Perf(const std::shared_ptr<Task>& task_ptr);
-  // Set task with initialized task and initialized data for performance
-  // analysis c
-  void SetTask(const std::shared_ptr<Task>& task_ptr);
   // Check performance of full task's pipeline:  PreProcessing() ->
   // Validation() -> Run() -> PostProcessing()
-  void PipelineRun(const std::shared_ptr<PerfAttr>& perf_attr, const std::shared_ptr<PerfResults>& perf_results) const;
+  void PipelineRun(const PerfAttr& perf_attr);
   // Check performance of task's Run() function
-  void TaskRun(const std::shared_ptr<PerfAttr>& perf_attr, const std::shared_ptr<PerfResults>& perf_results) const;
+  void TaskRun(const PerfAttr& perf_attr);
   // Pint results for automation checkers
-  static void PrintPerfStatistic(const std::shared_ptr<PerfResults>& perf_results);
+  void PrintPerfStatistic() const;
+  // Get performance result structure of the current task
+  PerfResults GetPerfResults();
 
  private:
+  PerfResults perf_results_;
   std::shared_ptr<Task> task_;
-  static void CommonRun(const std::shared_ptr<PerfAttr>& perf_attr, const std::function<void()>& pipeline,
-                        const std::shared_ptr<PerfResults>& perf_results);
+  static void CommonRun(const PerfAttr& perf_attr, const std::function<void()>& pipeline, PerfResults& perf_results);
 };
 
 }  // namespace ppc::core

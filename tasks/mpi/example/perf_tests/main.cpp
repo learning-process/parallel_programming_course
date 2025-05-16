@@ -8,98 +8,53 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "core/task/include/task.hpp"
+#include "core/util/include/util.hpp"
 #include "mpi/example/include/ops_mpi.hpp"
 
-TEST(nesterov_a_test_task_mpi, test_pipeline_run) {
-  constexpr int kCount = 500;
+class NesterovATaskMPITest : public ::testing::TestWithParam<ppc::core::PerfResults::TypeOfRunning> {
+ protected:
+  static void RunTest(ppc::core::PerfResults::TypeOfRunning mode) {
+    constexpr int kCount = 500;
 
-  // Create data
-  std::vector<int> in(kCount * kCount, 0);
-  std::vector<int> out(kCount * kCount, 0);
+    // Create data
+    std::vector<int> in(kCount * kCount, 0);
+    for (size_t i = 0; i < kCount; i++) {
+      in[(i * kCount) + i] = 1;
+    }
 
-  for (size_t i = 0; i < kCount; i++) {
-    in[(i * kCount) + i] = 1;
+    // Create Task
+    auto test_task_mpi = std::make_shared<nesterov_a_test_task_mpi::TestTaskMPI>(in);
+
+    // Create Perf analyzer
+    ppc::core::Perf perf_analyzer(test_task_mpi);
+
+    // Create Perf attributes
+    ppc::core::PerfAttr perf_attr;
+    const auto t0 = std::chrono::high_resolution_clock::now();
+    perf_attr.current_timer = [&] {
+      auto current_time_point = std::chrono::high_resolution_clock::now();
+      auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+      return static_cast<double>(duration) * 1e-9;
+    };
+
+    if (mode == ppc::core::PerfResults::TypeOfRunning::kPipeline) {
+      perf_analyzer.PipelineRun(perf_attr);
+    } else {
+      perf_analyzer.TaskRun(perf_attr);
+    }
+
+    int rank = -1;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if (rank == 0) {
+      perf_analyzer.PrintPerfStatistic();
+    }
+
+    ASSERT_EQ(in, test_task_mpi->Get());
   }
+};
 
-  // Create task_data
-  auto task_data_mpi = std::make_shared<ppc::core::TaskData>();
-  task_data_mpi->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  task_data_mpi->inputs_count.emplace_back(in.size());
-  task_data_mpi->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  task_data_mpi->outputs_count.emplace_back(out.size());
+TEST_P(NesterovATaskMPITest, RunModes) { RunTest(GetParam()); }
 
-  // Create Task
-  auto test_task_mpi = std::make_shared<nesterov_a_test_task_mpi::TestTaskMPI>(task_data_mpi);
-
-  // Create Perf attributes
-  auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
-  perf_attr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perf_attr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
-
-  // Create and init perf results
-  auto perf_results = std::make_shared<ppc::core::PerfResults>();
-
-  auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_mpi);
-  perf_analyzer->PipelineRun(perf_attr, perf_results);
-  // Create Perf analyzer
-  int rank = -1;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  if (rank == 0) {
-    ppc::core::Perf::PrintPerfStatistic(perf_results);
-  }
-
-  ASSERT_EQ(in, out);
-}
-
-TEST(nesterov_a_test_task_mpi, test_task_run) {
-  constexpr int kCount = 500;
-
-  // Create data
-  std::vector<int> in(kCount * kCount, 0);
-  std::vector<int> out(kCount * kCount, 0);
-
-  for (size_t i = 0; i < kCount; i++) {
-    in[(i * kCount) + i] = 1;
-  }
-
-  // Create task_data
-  auto task_data_mpi = std::make_shared<ppc::core::TaskData>();
-  task_data_mpi->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  task_data_mpi->inputs_count.emplace_back(in.size());
-  task_data_mpi->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  task_data_mpi->outputs_count.emplace_back(out.size());
-
-  // Create Task
-  auto test_task_mpi = std::make_shared<nesterov_a_test_task_mpi::TestTaskMPI>(task_data_mpi);
-
-  // Create Perf attributes
-  auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
-  perf_attr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perf_attr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
-
-  // Create and init perf results
-  auto perf_results = std::make_shared<ppc::core::PerfResults>();
-
-  // Create Perf analyzer
-  auto perf_analyzer = std::make_shared<ppc::core::Perf>(test_task_mpi);
-  perf_analyzer->TaskRun(perf_attr, perf_results);
-  // Create Perf analyzer
-  int rank = -1;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  if (rank == 0) {
-    ppc::core::Perf::PrintPerfStatistic(perf_results);
-  }
-
-  ASSERT_EQ(in, out);
-}
+INSTANTIATE_TEST_SUITE_P_NOLINT(NesterovATests, NesterovATaskMPITest,
+                                ::testing::Values(ppc::core::PerfResults::TypeOfRunning::kPipeline,
+                                                  ppc::core::PerfResults::TypeOfRunning::kTaskRun));

@@ -8,24 +8,13 @@
 
 namespace ppc::core {
 
-struct TaskData {
-  std::vector<uint8_t *> inputs;
-  std::vector<std::uint32_t> inputs_count;
-  std::vector<uint8_t *> outputs;
-  std::vector<std::uint32_t> outputs_count;
-  enum StateOfTesting : uint8_t { kFunc, kPerf } state_of_testing;
-};
-
-using TaskDataPtr = std::shared_ptr<ppc::core::TaskData>;
-
 // Memory of inputs and outputs need to be initialized before create object of
 // Task class
 class Task {
  public:
-  explicit Task(TaskDataPtr task_data);
+  enum StateOfTesting : uint8_t { kFunc, kPerf };
 
-  // set input and output data
-  virtual void SetData(TaskDataPtr task_data) final;
+  explicit Task(StateOfTesting state_of_testing = StateOfTesting::kFunc);
 
   // validation of data and validation of task attributes before running
   virtual bool Validation() final;
@@ -33,39 +22,43 @@ class Task {
   // pre-processing of input data
   virtual bool PreProcessing() final;
 
-  // realization of current task
+  // realization of the current task
   virtual bool Run() final;
 
   // post-processing of output data
   virtual bool PostProcessing() final;
 
-  // get input and output data
-  [[nodiscard]] virtual TaskDataPtr GetData() const final;
+  // get state of testing
+  StateOfTesting &GetStateOfTesting() { return state_of_testing_; }
 
   virtual ~Task();
 
  protected:
-  virtual void InternalOrderTest(const std::string &str = __builtin_FUNCTION()) final;
-  TaskDataPtr task_data;
+  virtual void InternalOrderTest(const std::string &str) final;
 
-  // implementation of "validation" function
+  virtual void InternalTimeTest(const std::string &str) final;
+
+  // implementation of "Validation" function
   virtual bool ValidationImpl() = 0;
 
   // implementation of "PreProcessing" function
   virtual bool PreProcessingImpl() = 0;
 
-  // implementation of "run" function
+  // implementation of "Run" function
   virtual bool RunImpl() = 0;
 
-  // implementation of "post_processing" function
+  // implementation of "PostProcessing" function
   virtual bool PostProcessingImpl() = 0;
 
  private:
+  StateOfTesting state_of_testing_;
   std::vector<std::string> functions_order_;
   std::vector<std::string> right_functions_order_ = {"Validation", "PreProcessing", "Run", "PostProcessing"};
   static constexpr double kMaxTestTime = 1.0;
   std::chrono::high_resolution_clock::time_point tmp_time_point_;
-  bool functions_order_validation_ = true;
+  bool was_worked_ = false;
+
+  bool IsFullPipelineStage();
 };
 
 }  // namespace ppc::core
