@@ -34,7 +34,8 @@ class Task {
   virtual ~Task();
 
  protected:
-  virtual void InternalOrderTest(const std::string &str = __builtin_FUNCTION()) final;
+  virtual void InternalOrderTest(const std::string &str) final;
+  virtual void InternalTimeTest(const std::string &str) final;
 
   // implementation of "Validation" function
   virtual bool ValidationImpl() = 0;
@@ -54,7 +55,9 @@ class Task {
   std::vector<std::string> right_functions_order_ = {"Validation", "PreProcessing", "Run", "PostProcessing"};
   static constexpr double kMaxTestTime = 1.0;
   std::chrono::high_resolution_clock::time_point tmp_time_point_;
-  bool functions_order_validation_ = true;
+  bool was_worked_ = false;
+
+  bool IsFullPipelineStage();
 };
 
 }  // namespace ppc::core

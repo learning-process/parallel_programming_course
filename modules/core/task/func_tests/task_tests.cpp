@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "core/task/func_tests/test_task.hpp"
+#include "core/util/include/util.hpp"
 
 TEST(task_tests, check_int32_t) {
   // Create data
@@ -50,6 +51,10 @@ TEST(task_tests, check_validate_func) {
 
   // Check Result
   ASSERT_EQ(is_valid, false);
+
+  test_task.PreProcessing();
+  test_task.Run();
+  test_task.PostProcessing();
 }
 
 TEST(task_tests, check_double) {
@@ -124,18 +129,30 @@ TEST(task_tests, check_float) {
   EXPECT_NEAR(test_task.Get(), in.size(), 1e-3);
 }
 
-TEST(task_tests, check_wrong_order) {
-  // Create data
-  std::vector<float> in(20, 1);
+DEATH_TEST(task_tests, check_wrong_order) {
+  auto destroy_function = [] {
+    // Create data
+    std::vector<float> in(20, 1);
 
-  // Create Task
-  ppc::test::task::TestTask<float> test_task(in);
-  bool is_valid = test_task.Validation();
-  ASSERT_EQ(is_valid, true);
+    // Create Task
+    ppc::test::task::TestTask<float> test_task(in);
+    bool is_valid = test_task.Validation();
+    ASSERT_EQ(is_valid, true);
+    test_task.PreProcessing();
+    test_task.PostProcessing();
+  };
+  EXPECT_DEATH_IF_SUPPORTED(destroy_function(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
+}
 
-  // Run Task
-  test_task.PreProcessing();
-  ASSERT_ANY_THROW(test_task.PostProcessing());
+DEATH_TEST(task_tests, check_empty_order) {
+  auto destroy_function = [] {
+    // Create data
+    std::vector<float> in(20, 1);
+
+    // Create Task
+    ppc::test::task::TestTask<float> test_task(in);
+  };
+  EXPECT_DEATH_IF_SUPPORTED(destroy_function(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
 }
 
 int main(int argc, char **argv) {
