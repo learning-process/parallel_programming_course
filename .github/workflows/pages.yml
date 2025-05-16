@@ -11,8 +11,26 @@ permissions:
   pages: write
 
 jobs:
+  build-doxygen-xml:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y doxygen
+      - name: Run Doxygen
+        run: doxygen Doxyfile
+      - name: Upload Doxygen documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: doxygen-documentation-xml
+          path: xml
   build-sphinx:
     runs-on: ubuntu-24.04
+    needs:
+      - build-doxygen-xml
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,9 +38,18 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+      - name: Install Doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y doxygen
       - name: Install dependencies
         run: |
           python3 -m pip install -r docs/requirements.txt
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: doxygen-documentation-xml
+          path: xml
       - name: Configure project
         run: >
           cmake -S . -B build -D USE_DOCS=ON

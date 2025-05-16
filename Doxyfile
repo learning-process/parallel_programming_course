@@ -1,0 +1,17 @@
+# Project identity
+PROJECT_NAME           = "Parallel Programming Course"
+PROJECT_BRIEF          = "Parallel Programming Course"
+
+# Input
+INPUT                  = modules/core/task/include \
+                         modules/core/task/src \
+                         modules/core/util/include \
+                         modules/core/util/src
+FILE_PATTERNS          = *.h *.c *.hpp *.cpp
+RECURSIVE              = YES
+
+# Build
+GENERATE_HTML          = NO
+GENERATE_LATEX         = NO
+GENERATE_XML           = YES
+XML_OUTPUT             = xml

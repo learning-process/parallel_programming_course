@@ -6,6 +6,8 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import os
+
 project = 'Parallel Programming Course'
 copyright = '2025, Learning Process'
 author = 'Learning Process'
@@ -13,7 +15,14 @@ author = 'Learning Process'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+    'breathe',
+]
+
+breathe_projects = {
+    "ParallelProgrammingCourse": os.path.join(os.path.dirname(__file__), "..", "xml"),
+}
+breathe_default_project = "ParallelProgrammingCourse"
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
