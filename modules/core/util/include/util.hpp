@@ -1,12 +1,14 @@
 #pragma once
 #include <string>
 
-// NOLINTNEXTLINE
+/* NOLINTBEGIN */
 #define INSTANTIATE_TEST_SUITE_P_NOLINT(prefix, test_case_name, generator) \
-  INSTANTIATE_TEST_SUITE_P(prefix, test_case_name, generator)  // NOLINT
+  INSTANTIATE_TEST_SUITE_P(prefix, test_case_name, generator)
+/* NOLINTEND */
 
-// NOLINTNEXTLINE
-#define DEATH_TEST(test_suite_name, test_name) TEST(test_suite_name, test_name)  // NOLINT
+/* NOLINTBEGIN */
+#define DEATH_TEST(test_suite_name, test_name) TEST(test_suite_name, test_name)
+/* NOLINTEND */
 
 namespace ppc::util {
 
