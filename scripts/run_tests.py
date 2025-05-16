@@ -85,9 +85,6 @@ class PPCRunner:
         self.__run_exec(f"{self.work_dir / 'seq_func_tests'} {self.__get_gtest_settings(3)}")
         self.__run_exec(f"{self.work_dir / 'stl_func_tests'} {self.__get_gtest_settings(3)}")
         self.__run_exec(f"{self.work_dir / 'tbb_func_tests'} {self.__get_gtest_settings(3)}")
-
-        if os.environ.get("CLANG_BUILD") == "1":
-            return
         self.__run_exec(f"{self.work_dir / 'omp_func_tests'} {self.__get_gtest_settings(3)}")
 
     def run_core(self):
@@ -97,9 +94,6 @@ class PPCRunner:
         self.__run_exec(f"{self.work_dir / 'core_func_tests'} {self.__get_gtest_settings(1)}")
 
     def run_processes(self, additional_mpi_args):
-        if os.environ.get("CLANG_BUILD") == "1":
-            return
-
         proc_count = os.environ.get("PROC_COUNT")
         if proc_count is None:
             raise EnvironmentError("Required environment variable 'PROC_COUNT' is not set.")
