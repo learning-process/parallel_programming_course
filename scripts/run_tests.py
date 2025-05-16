@@ -43,7 +43,7 @@ class PPCRunner:
     @staticmethod
     def __source_script(script_path):
         if platform.system() == "Windows":
-            return
+            return {}
         command = f"bash -c 'source {script_path} && env'"
         result = subprocess.run(command, stdout=subprocess.PIPE, shell=True, text=True)
         if result.returncode == 0:
@@ -72,8 +72,7 @@ class PPCRunner:
 
     @staticmethod
     def __get_gtest_settings(repeats_count):
-        command = "--gtest_also_run_disabled_tests "
-        command += f"--gtest_repeat={repeats_count} "
+        command = f"--gtest_repeat={repeats_count} "
         command += "--gtest_recreate_environments_when_repeating "
         command += "--gtest_color=0 "
         return command
