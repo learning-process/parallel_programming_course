@@ -15,7 +15,6 @@ include(cmake/sanitizers.cmake)
 message( STATUS "PPC step: Setup parallel programming technologies" )
 include(cmake/mpi.cmake)
 include(cmake/openmp.cmake)
-include(cmake/threads.cmake)
 include(cmake/onetbb.cmake)
 
 ######################### External projects #########################

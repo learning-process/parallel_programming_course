@@ -57,8 +57,7 @@ jobs:
         run: >
           cmake -S . -B build
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -G Ninja -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
           CC: gcc-14
@@ -211,8 +210,7 @@ jobs:
         run: >
           cmake -S . -B build
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -G Ninja -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
           CC: clang-20
@@ -363,8 +361,7 @@ jobs:
         run: >
           cmake -S . -B build
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -G Ninja -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
           -D CMAKE_INSTALL_PREFIX=install
         env:
@@ -518,8 +515,7 @@ jobs:
         run: >
           cmake -S . -B build
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-          -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
+          -G Ninja -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
           -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
           -D CMAKE_BUILD_TYPE=RELEASE -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -DCMAKE_INSTALL_PREFIX=install
@@ -666,7 +662,6 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
           -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
       - name: Build project
@@ -816,7 +811,6 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
           -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
@@ -944,7 +938,6 @@ jobs:
         run: >
           cmake -S . -B build
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
           -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -D CMAKE_BUILD_TYPE=RELEASE
           -D CMAKE_VERBOSE_MAKEFILE=ON

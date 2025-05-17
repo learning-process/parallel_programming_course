@@ -36,28 +36,6 @@ msgstr ""
 msgid "*Help on CMake keys:*"
 msgstr ""
 
-#: ../../user_guide/build.rst:15
-msgid ""
-"``-D USE_SEQ=ON`` enable ``Sequential`` labs (based on OpenMP's "
-"CMakeLists.txt)."
-msgstr ""
-
-#: ../../user_guide/build.rst:16
-msgid "``-D USE_MPI=ON`` enable ``MPI`` labs."
-msgstr ""
-
-#: ../../user_guide/build.rst:17
-msgid "``-D USE_OMP=ON`` enable ``OpenMP`` labs."
-msgstr ""
-
-#: ../../user_guide/build.rst:18
-msgid "``-D USE_TBB=ON`` enable ``TBB`` labs."
-msgstr ""
-
-#: ../../user_guide/build.rst:19
-msgid "``-D USE_STL=ON`` enable ``std::thread`` labs."
-msgstr ""
-
 #: ../../user_guide/build.rst:20
 msgid "``-D USE_FUNC_TESTS=ON`` enable functional tests."
 msgstr ""
