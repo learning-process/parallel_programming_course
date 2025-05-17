@@ -396,7 +396,8 @@ jobs:
       - name: Setup environment
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
+          sudo apt-get install --no-install-recommends -y ninja-build python3-pip valgrind \
+              openmpi-bin openmpi-common libopenmpi-dev
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
           sudo ./llvm.sh 20 all
@@ -456,7 +457,8 @@ jobs:
       - name: Setup environment
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
+          sudo apt-get install --no-install-recommends -y ninja-build python3-pip valgrind \
+              openmpi-bin openmpi-common libopenmpi-dev
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
           sudo ./llvm.sh 20 all
@@ -938,10 +940,8 @@ jobs:
         run: >
           cmake -S . -B build
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
-          -D CMAKE_BUILD_TYPE=RELEASE
-          -D CMAKE_VERBOSE_MAKEFILE=ON
-          -D USE_COVERAGE=ON
+          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=RELEASE
+          -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
       - name: Build project
         run: |
           cmake --build build --parallel

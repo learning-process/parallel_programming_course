@@ -3,13 +3,6 @@ cmake_minimum_required( VERSION 3.25 )
 message( STATUS "Parallel Programming Course (PPC)" )
 project(parallel_programming_course)
 
-############################ Configures #############################
-
-message( STATUS "PPC step: First configures" )
-include(cmake/configure.cmake)
-include(cmake/modes.cmake)
-include(cmake/sanitizers.cmake)
-
 ############################ Scoreboard #############################
 
 message( STATUS "PPC step: Setup scoreboard generator" )
@@ -25,6 +18,13 @@ add_subdirectory(docs)
 if( USE_SCOREBOARD OR USE_DOCS )
     return()
 endif()
+
+############################ Configures #############################
+
+message( STATUS "PPC step: First configures" )
+include(cmake/configure.cmake)
+include(cmake/modes.cmake)
+include(cmake/sanitizers.cmake)
 
 ################# Parallel programming technologies #################
 
