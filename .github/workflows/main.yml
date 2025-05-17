@@ -867,22 +867,18 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 1
-          CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 2
-          CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 3
-          CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 4
-          CLANG_BUILD: 1
   windows-clang-test-extended:
     needs:
       - windows-clang-test
@@ -911,22 +907,18 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 5
-          CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 7
-          CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 11
-          CLANG_BUILD: 1
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
           OMP_NUM_THREADS: 13
-          CLANG_BUILD: 1
   ubuntu-gcc-build-codecov:
     needs:
       - ubuntu-gcc-test-extended
