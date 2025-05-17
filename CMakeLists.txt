@@ -10,6 +10,22 @@ include(cmake/configure.cmake)
 include(cmake/modes.cmake)
 include(cmake/sanitizers.cmake)
 
+############################ Scoreboard #############################
+
+message( STATUS "PPC step: Setup scoreboard generator" )
+include(cmake/scoreboard.cmake)
+add_subdirectory(scoreboard)
+
+########################### Documentation ###########################
+
+message( STATUS "PPC step: Setup documentation generation" )
+include(cmake/sphinx.cmake)
+add_subdirectory(docs)
+
+if( USE_SCOREBOARD OR USE_DOCS )
+    return()
+endif()
+
 ################# Parallel programming technologies #################
 
 message( STATUS "PPC step: Setup parallel programming technologies" )
@@ -21,18 +37,6 @@ include(cmake/onetbb.cmake)
 
 message( STATUS "PPC step: Setup external projects" )
 include(cmake/gtest.cmake)
-
-########################### Documentation ###########################
-
-message( STATUS "PPC step: Setup documentation generation" )
-include(cmake/sphinx.cmake)
-add_subdirectory(docs)
-
-############################ Scoreboard #############################
-
-message( STATUS "PPC step: Setup scoreboard generator" )
-include(cmake/scoreboard.cmake)
-add_subdirectory(scoreboard)
 
 ############################## Headers ##############################
 

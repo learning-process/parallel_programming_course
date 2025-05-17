@@ -41,8 +41,7 @@ jobs:
         run: >
           cmake -S . -B build
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja -D USE_SEQ=ON -D USE_MPI=ON -D USE_OMP=ON -D USE_TBB=ON -D USE_STL=ON
-          -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+          -G Ninja -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
           -D CMAKE_BUILD_TYPE=RELEASE
         env:
           CC: gcc-14
