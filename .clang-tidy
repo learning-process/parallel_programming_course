@@ -14,7 +14,6 @@ Checks: >
   -bugprone-easily-swappable-parameters,
   -bugprone-exception-escape,
   -bugprone-implicit-widening-of-multiplication-result,
-  -cppcoreguidelines-avoid-goto,
   -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-non-private-member-variables-in-classes,
   -cppcoreguidelines-owning-memory,
@@ -24,15 +23,12 @@ Checks: >
   -cppcoreguidelines-special-member-functions,
   -misc-const-correctness,
   -misc-header-include-cycle,
-  -misc-no-recursion,
   -misc-non-private-member-variables-in-classes,
-  -misc-unused-parameters,
   -modernize-avoid-c-arrays,
   -modernize-loop-convert,
   -modernize-use-trailing-return-type,
   -readability-identifier-length,
-  -readability-magic-numbers,
-  -readability-named-parameter
+  -readability-magic-numbers
 
 WarningsAsErrors: "*"
 
