@@ -71,7 +71,7 @@ void ppc::core::Task::InternalTimeTest(const std::string &str) {
 
     std::stringstream err_msg;
     if (diff < kMaxTestTime) {
-      err_msg << "Test time:" << std::fixed << std::setprecision(10) << diff;
+      err_msg << "Test time:" << std::fixed << std::setprecision(10) << diff << '\n';
     } else {
       err_msg << "\nTask execute time need to be: ";
       err_msg << "time < " << kMaxTestTime << " secs.\n";
