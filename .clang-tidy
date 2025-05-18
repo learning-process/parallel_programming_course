@@ -27,7 +27,6 @@ Checks: >
   -modernize-avoid-c-arrays,
   -modernize-loop-convert,
   -modernize-use-trailing-return-type,
-  -readability-identifier-length,
   -readability-magic-numbers
 
 WarningsAsErrors: "*"
@@ -84,5 +83,9 @@ CheckOptions:
   # Functions with scores beyond 15 are typically flagged as potentially problematic (empirically)
   - key:             readability-function-cognitive-complexity.Threshold
     value:           20  # default: 25
+  - key:             readability-identifier-length.MinimumVariableNameLength
+    value:           1
+  - key:             readability-identifier-length.MinimumParameterNameLength
+    value:           1
   - key: misc-include-cleaner.IgnoreHeaders
     value: '(opencv2/.*|__chrono/.*)'
