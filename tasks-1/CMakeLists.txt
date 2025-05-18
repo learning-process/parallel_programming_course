@@ -17,7 +17,7 @@ endforeach()
 
 set(output_file "${CMAKE_BINARY_DIR}/revert-list.txt")
 file(WRITE ${output_file} "${CONTENT}")
-message(STATUS "revert list")
+message(STATUS "Revert list")
 foreach (dir_name ${list_of_reverts})
     message(STATUS "-- ${dir_name}")
     file(APPEND ${output_file} "${dir_name}\n")

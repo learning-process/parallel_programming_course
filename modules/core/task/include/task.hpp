@@ -31,6 +31,11 @@ class Task {
   // get state of testing
   StateOfTesting &GetStateOfTesting() { return state_of_testing_; }
 
+  template<typename Class, typename T>
+  static T Get(const Class& obj, T Class::* member) {
+    return obj.*member;
+  }
+
   virtual ~Task();
 
  protected:
