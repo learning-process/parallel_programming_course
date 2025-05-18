@@ -31,7 +31,7 @@ class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {
           "[  PROCESS %d  ] [  FAILED  ] %s.%s: MPI message queue has an unread message from process %d with tag %d\n",
           rank, "test_suite_name", "test_name", status.MPI_SOURCE, status.MPI_TAG);
       MPI_Finalize();
-      exit(2);
+      std::abort();
     }
 
     MPI_Barrier(MPI_COMM_WORLD);

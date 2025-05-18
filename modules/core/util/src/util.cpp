@@ -26,7 +26,7 @@ int ppc::util::GetPPCNumThreads() {
   }
   int num_threads = std::atoi(omp_env);
 #else
-  const char *omp_env = std::getenv("OMP_NUM_THREADS");
+  const char *omp_env = std::getenv("OMP_NUM_THREADS");  // NOLINT(concurrency-mt-unsafe)
   int num_threads = (omp_env != nullptr) ? std::atoi(omp_env) : 1;
 #endif
   return num_threads;
