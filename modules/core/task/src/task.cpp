@@ -19,7 +19,6 @@ ppc::core::Task::Task(StateOfTesting state_of_testing) : state_of_testing_(state
   auto custom_terminate = []() {
     std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT! \n"
                  "Expected - \"Validation\", \"PreProcessing\", \"Run\", \"PostProcessing\" \n";
-    std::abort();
   };
   std::set_terminate(custom_terminate);
   functions_order_.clear();
