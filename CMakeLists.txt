@@ -3,6 +3,22 @@ cmake_minimum_required( VERSION 3.25 )
 message( STATUS "Parallel Programming Course (PPC)" )
 project(parallel_programming_course)
 
+############################ Scoreboard #############################
+
+message( STATUS "PPC step: Setup scoreboard generator" )
+include(cmake/scoreboard.cmake)
+add_subdirectory(scoreboard)
+
+########################### Documentation ###########################
+
+message( STATUS "PPC step: Setup documentation generation" )
+include(cmake/sphinx.cmake)
+add_subdirectory(docs)
+
+if( USE_SCOREBOARD OR USE_DOCS )
+    return()
+endif()
+
 ############################ Configures #############################
 
 message( STATUS "PPC step: First configures" )
@@ -15,25 +31,12 @@ include(cmake/sanitizers.cmake)
 message( STATUS "PPC step: Setup parallel programming technologies" )
 include(cmake/mpi.cmake)
 include(cmake/openmp.cmake)
-include(cmake/threads.cmake)
 include(cmake/onetbb.cmake)
 
 ######################### External projects #########################
 
 message( STATUS "PPC step: Setup external projects" )
 include(cmake/gtest.cmake)
-
-########################### Documentation ###########################
-
-message( STATUS "PPC step: Setup documentation generation" )
-include(cmake/sphinx.cmake)
-add_subdirectory(docs)
-
-############################ Scoreboard #############################
-
-message( STATUS "PPC step: Setup scoreboard generator" )
-include(cmake/scoreboard.cmake)
-add_subdirectory(scoreboard)
 
 ############################## Headers ##############################
 
