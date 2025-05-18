@@ -12,7 +12,6 @@ Checks: >
   readability-*,
   -bugprone-casting-through-void,
   -bugprone-easily-swappable-parameters,
-  -bugprone-exception-escape,
   -bugprone-implicit-widening-of-multiplication-result,
   -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-non-private-member-variables-in-classes,
@@ -22,7 +21,6 @@ Checks: >
   -cppcoreguidelines-pro-type-vararg,
   -cppcoreguidelines-special-member-functions,
   -misc-const-correctness,
-  -misc-header-include-cycle,
   -misc-non-private-member-variables-in-classes,
   -modernize-avoid-c-arrays,
   -modernize-loop-convert,
@@ -88,4 +86,4 @@ CheckOptions:
   - key:             readability-identifier-length.MinimumParameterNameLength
     value:           1
   - key: misc-include-cleaner.IgnoreHeaders
-    value: '(opencv2/.*|__chrono/.*)'
+    value: '(__chrono/.*)'
