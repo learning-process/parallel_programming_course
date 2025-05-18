@@ -66,4 +66,17 @@ class Task {
   bool IsFullPipelineStage();
 };
 
+using TaskPtr = std::shared_ptr<ppc::core::Task>;
+
+template <typename TaskType, typename OutputType>
+std::shared_ptr<TaskType> task_getter(OutputType in) {
+  return std::make_shared<TaskType>(in);
+}
+
+template <typename TaskType, typename OutputType>
+OutputType data_getter(TaskPtr current_task) {
+  auto inheritance_task = std::dynamic_pointer_cast<TaskType>(current_task);
+  return ppc::core::Task::Get(*inheritance_task, &TaskType::output_);
+}
+
 }  // namespace ppc::core

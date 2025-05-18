@@ -6,17 +6,25 @@
 #include <vector>
 
 #include "example/all/include/ops_all.hpp"
+#include "example/mpi/include/ops_mpi.hpp"
+#include "example/omp/include/ops_omp.hpp"
+#include "example/seq/include/ops_seq.hpp"
+#include "example/stl/include/ops_stl.hpp"
+#include "example/tbb/include/ops_tbb.hpp"
+
 #include "core/perf/include/perf.hpp"
 #include "core/util/include/util.hpp"
 
-using TestParam = std::tuple<ppc::core::PerfResults::TypeOfRunning,
-                             std::function<std::shared_ptr<ppc::core::Task>(std::vector<int>)>,
-                             std::function<std::vector<int>(std::shared_ptr<ppc::core::Task>)>>;
+using OutputType = std::vector<int>;
 
-class NesterovAllRunTest : public ::testing::TestWithParam<TestParam> {
+using TestParam = std::tuple<ppc::core::PerfResults::TypeOfRunning,
+                             std::function<ppc::core::TaskPtr(OutputType)>,
+                             std::function<OutputType(ppc::core::TaskPtr)>>;
+
+class ExampleRunPerfTest : public ::testing::TestWithParam<TestParam> {
  protected:
   static constexpr int kCount = 400;
-  std::vector<int> input_data;
+  OutputType input_data;
 
   void SetUp() override {
     input_data.assign(kCount * kCount, 0);
@@ -26,8 +34,8 @@ class NesterovAllRunTest : public ::testing::TestWithParam<TestParam> {
   }
 
   void ExecuteTest(ppc::core::PerfResults::TypeOfRunning mode,
-                   std::function<std::shared_ptr<ppc::core::Task>(std::vector<int>)> task_getter,
-                   std::function<std::vector<int>(std::shared_ptr<ppc::core::Task>)> data_getter) {
+                   std::function<ppc::core::TaskPtr(OutputType)> task_getter,
+                   std::function<OutputType(ppc::core::TaskPtr)> data_getter) {
     auto task = task_getter(input_data);
     ppc::core::Perf perf(task);
 
@@ -54,33 +62,49 @@ class NesterovAllRunTest : public ::testing::TestWithParam<TestParam> {
   }
 };
 
-TEST_P(NesterovAllRunTest, RunModes) {
+TEST_P(ExampleRunPerfTest, RunModes) {
   ExecuteTest(std::get<0>(GetParam()), std::get<1>(GetParam()), std::get<2>(GetParam()));
 }
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(
     RunModeTests,
-    NesterovAllRunTest,
+    ExampleRunPerfTest,
     ::testing::Values(
-        std::make_tuple(
-            ppc::core::PerfResults::TypeOfRunning::kPipeline,
-            [](std::vector<int> in) -> std::shared_ptr<nesterov_a_test_task_all::TestTaskALL> {
-              return std::make_shared<nesterov_a_test_task_all::TestTaskALL>(in);
-            },
-            [](std::shared_ptr<ppc::core::Task> current_task) -> std::vector<int> {
-              auto inheritance_task = std::dynamic_pointer_cast<nesterov_a_test_task_all::TestTaskALL>(current_task);
-              return ppc::core::Task::Get(*inheritance_task, &nesterov_a_test_task_all::TestTaskALL::output_);
-            }
-            ),
-        std::make_tuple(
-            ppc::core::PerfResults::TypeOfRunning::kTaskRun,
-            [](std::vector<int> in) -> std::shared_ptr<nesterov_a_test_task_all::TestTaskALL> {
-              return std::make_shared<nesterov_a_test_task_all::TestTaskALL>(in);
-            },
-            [](std::shared_ptr<ppc::core::Task> current_task) -> std::vector<int> {
-              auto inheritance_task = std::dynamic_pointer_cast<nesterov_a_test_task_all::TestTaskALL>(current_task);
-              return ppc::core::Task::Get(*inheritance_task, &nesterov_a_test_task_all::TestTaskALL::output_);
-            }
-            )
-            )
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
+                        ppc::core::task_getter<nesterov_a_test_task_all::TestTaskALL, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_all::TestTaskALL, OutputType>),
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
+                        ppc::core::task_getter<nesterov_a_test_task_all::TestTaskALL, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_all::TestTaskALL, OutputType>),
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
+                        ppc::core::task_getter<nesterov_a_test_task_mpi::TestTaskMPI, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_mpi::TestTaskMPI, OutputType>),
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
+                        ppc::core::task_getter<nesterov_a_test_task_mpi::TestTaskMPI, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_mpi::TestTaskMPI, OutputType>),
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
+                        ppc::core::task_getter<nesterov_a_test_task_omp::TestTaskOpenMP, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_omp::TestTaskOpenMP, OutputType>),
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
+                        ppc::core::task_getter<nesterov_a_test_task_omp::TestTaskOpenMP, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_omp::TestTaskOpenMP, OutputType>),
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
+                        ppc::core::task_getter<nesterov_a_test_task_seq::TestTaskSequential, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_seq::TestTaskSequential, OutputType>),
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
+                        ppc::core::task_getter<nesterov_a_test_task_seq::TestTaskSequential, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_seq::TestTaskSequential, OutputType>),
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
+                        ppc::core::task_getter<nesterov_a_test_task_stl::TestTaskSTL, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_stl::TestTaskSTL, OutputType>),
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
+                        ppc::core::task_getter<nesterov_a_test_task_stl::TestTaskSTL, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_stl::TestTaskSTL, OutputType>),
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
+                        ppc::core::task_getter<nesterov_a_test_task_tbb::TestTaskTBB, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_tbb::TestTaskTBB, OutputType>),
+        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
+                        ppc::core::task_getter<nesterov_a_test_task_tbb::TestTaskTBB, OutputType>,
+                        ppc::core::data_getter<nesterov_a_test_task_tbb::TestTaskTBB, OutputType>)
+        )
 );

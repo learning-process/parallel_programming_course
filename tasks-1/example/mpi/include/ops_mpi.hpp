@@ -19,8 +19,8 @@ class TestTaskMPI : public ppc::core::Task {
   bool PostProcessingImpl() override;
   std::vector<int> Get();
 
- private:
   std::vector<int> input_, output_;
+ private:
   int rc_size_{};
 
   void MultiplyMatrixBasedOnRank();
