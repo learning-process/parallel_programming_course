@@ -43,10 +43,12 @@ include(cmake/gtest.cmake)
 message( STATUS "PPC step: Setup headers" )
 include_directories(3rdparty)
 include_directories(modules)
-include_directories(tasks)
+#include_directories(tasks)
+include_directories(tasks-1)
 
 ############################## Modules ##############################
 
 message( STATUS "PPC step: Setup modules" )
 add_subdirectory(modules)
-add_subdirectory(tasks)
+#add_subdirectory(tasks)
+add_subdirectory(tasks-1)
