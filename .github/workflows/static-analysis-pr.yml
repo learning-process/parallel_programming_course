@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Search for NOLINT
+      - name: Search for linter suppression markers
         run: |
           export BASE_REF=${{ github.event.pull_request.base.ref }}
           export CHANGED_FILES="$(git diff --name-only origin/$BASE_REF HEAD | grep '^tasks/')"
@@ -87,5 +87,9 @@ jobs:
               echo "::error::Found 'NOLINT' in $file."
               exit 1
             fi
+            if grep -En 'IWYU[[:space:]]+pragma' "$file"; then
+              echo "::error::Found 'IWYU pragma' in $file."
+              exit 1
+            fi
           done
-          echo "No 'NOLINT' markers found in changed files."
+          echo "No linter suppression markers found in changed files."
