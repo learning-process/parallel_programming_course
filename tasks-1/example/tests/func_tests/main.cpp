@@ -63,7 +63,7 @@ TEST_P(NesterovARunFuncTests, MatmulFromPic) {
 INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests,
                                 ::testing::Values(ADD_TASK(nesterov_a_test_task_all::TestTaskALL),
                                                   ADD_TASK(nesterov_a_test_task_mpi::TestTaskMPI),
-                                                  ADD_TASK(nesterov_a_test_task_omp::TestTaskOpenMP),
+                                                  ADD_TASK(nesterov_a_test_task_omp::TestTaskOMP),
                                                   ADD_TASK(nesterov_a_test_task_seq::TestTaskSequential),
                                                   ADD_TASK(nesterov_a_test_task_stl::TestTaskSTL),
                                                   ADD_TASK(nesterov_a_test_task_tbb::TestTaskTBB)));

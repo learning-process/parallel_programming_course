@@ -4,22 +4,22 @@
 #include <cstddef>
 #include <vector>
 
-nesterov_a_test_task_omp::TestTaskOpenMP::TestTaskOpenMP(const InType& in) {
+nesterov_a_test_task_omp::TestTaskOMP::TestTaskOMP(const InType& in) {
   GetInput() = in;
 }
 
-bool nesterov_a_test_task_omp::TestTaskOpenMP::ValidationImpl() {
+bool nesterov_a_test_task_omp::TestTaskOMP::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
   return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
 }
 
-bool nesterov_a_test_task_omp::TestTaskOpenMP::PreProcessingImpl() {
+bool nesterov_a_test_task_omp::TestTaskOMP::PreProcessingImpl() {
   rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
   GetOutput() = OutType(GetInput().size(), 0);
   return true;
 }
 
-bool nesterov_a_test_task_omp::TestTaskOpenMP::RunImpl() {
+bool nesterov_a_test_task_omp::TestTaskOMP::RunImpl() {
 #pragma omp parallel default(none)
   {
 #pragma omp critical
@@ -38,4 +38,4 @@ bool nesterov_a_test_task_omp::TestTaskOpenMP::RunImpl() {
   return true;
 }
 
-bool nesterov_a_test_task_omp::TestTaskOpenMP::PostProcessingImpl() { return true; }
+bool nesterov_a_test_task_omp::TestTaskOMP::PostProcessingImpl() { return true; }
