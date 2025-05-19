@@ -15,14 +15,57 @@
 #include "core/perf/include/perf.hpp"
 #include "core/util/include/util.hpp"
 
+template <typename OutputTypeParameter>
+using TestParam = std::tuple<ppc::core::PerfResults::TypeOfRunning,
+                             std::function<ppc::core::TaskPtr(OutputTypeParameter)>,
+                             std::function<OutputTypeParameter(ppc::core::TaskPtr)>>;
+
+template <typename OutputTypeParameter>
+class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<OutputTypeParameter>> {
+ protected:
+  virtual void setPerfAttributes(ppc::core::PerfAttr& perf_attrs) = 0;
+  virtual bool checkData(std::function<OutputTypeParameter(ppc::core::TaskPtr)> data_getter) = 0;
+  virtual OutputTypeParameter getInputData() = 0;
+  ppc::core::TaskPtr task;
+
+  void ExecuteTest(ppc::core::PerfResults::TypeOfRunning mode,
+                   std::function<ppc::core::TaskPtr(OutputTypeParameter)> task_getter,
+                   std::function<OutputTypeParameter(ppc::core::TaskPtr)> data_getter) {
+    task = task_getter(getInputData());
+    ppc::core::Perf perf(task);
+    ppc::core::PerfAttr perf_attr;
+    setPerfAttributes(perf_attr);
+
+    if (mode == ppc::core::PerfResults::TypeOfRunning::kPipeline) {
+      perf.PipelineRun(perf_attr);
+    } else if (mode == ppc::core::PerfResults::TypeOfRunning::kTaskRun) {
+      perf.TaskRun(perf_attr);
+    } else {
+      throw std::runtime_error("Performance mode is wrong");
+    }
+
+    int rank = -1;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if (rank == 0) {
+      perf.PrintPerfStatistic();
+    }
+
+    ASSERT_TRUE(checkData(data_getter));
+  }
+};
+
+#define ADD_MODES(TaskType, OutputTypeParam) \
+    std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline, \
+                    ppc::core::task_getter<TaskType, OutputTypeParam>, \
+                    ppc::core::data_getter<TaskType, OutputTypeParam>), \
+    std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun, \
+                    ppc::core::task_getter<TaskType, OutputTypeParam>, \
+                    ppc::core::data_getter<TaskType, OutputTypeParam>)
+
+
 using OutputType = std::vector<int>;
 
-using TestParam = std::tuple<ppc::core::PerfResults::TypeOfRunning,
-                             std::function<ppc::core::TaskPtr(OutputType)>,
-                             std::function<OutputType(ppc::core::TaskPtr)>>;
-
-class ExampleRunPerfTest : public ::testing::TestWithParam<TestParam> {
- protected:
+class ExampleRunPerfTest : public BaseRunPerfTests<OutputType> {
   static constexpr int kCount = 400;
   OutputType input_data;
 
@@ -33,32 +76,21 @@ class ExampleRunPerfTest : public ::testing::TestWithParam<TestParam> {
     }
   }
 
-  void ExecuteTest(ppc::core::PerfResults::TypeOfRunning mode,
-                   std::function<ppc::core::TaskPtr(OutputType)> task_getter,
-                   std::function<OutputType(ppc::core::TaskPtr)> data_getter) {
-    auto task = task_getter(input_data);
-    ppc::core::Perf perf(task);
-
-    ppc::core::PerfAttr perf_attr;
+  void setPerfAttributes(ppc::core::PerfAttr& perf_attrs) final {
     const auto t0 = std::chrono::high_resolution_clock::now();
-    perf_attr.current_timer = [&] {
+    perf_attrs.current_timer = [&] {
       auto now = std::chrono::high_resolution_clock::now();
       auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(now - t0).count();
       return static_cast<double>(ns) * 1e-9;
     };
+  }
 
-    if (mode == ppc::core::PerfResults::TypeOfRunning::kPipeline) {
-      perf.PipelineRun(perf_attr);
-    } else {
-      perf.TaskRun(perf_attr);
-    }
+  bool checkData(std::function<OutputType(ppc::core::TaskPtr)> data_getter) final {
+    return input_data == data_getter(task);
+  }
 
-    int rank = -1;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if (rank == 0) {
-      perf.PrintPerfStatistic();
-    }
-    ASSERT_EQ(input_data, data_getter(task));
+  OutputType getInputData() final {
+    return input_data;
   }
 };
 
@@ -70,41 +102,10 @@ INSTANTIATE_TEST_SUITE_P_NOLINT(
     RunModeTests,
     ExampleRunPerfTest,
     ::testing::Values(
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
-                        ppc::core::task_getter<nesterov_a_test_task_all::TestTaskALL, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_all::TestTaskALL, OutputType>),
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
-                        ppc::core::task_getter<nesterov_a_test_task_all::TestTaskALL, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_all::TestTaskALL, OutputType>),
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
-                        ppc::core::task_getter<nesterov_a_test_task_mpi::TestTaskMPI, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_mpi::TestTaskMPI, OutputType>),
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
-                        ppc::core::task_getter<nesterov_a_test_task_mpi::TestTaskMPI, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_mpi::TestTaskMPI, OutputType>),
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
-                        ppc::core::task_getter<nesterov_a_test_task_omp::TestTaskOpenMP, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_omp::TestTaskOpenMP, OutputType>),
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
-                        ppc::core::task_getter<nesterov_a_test_task_omp::TestTaskOpenMP, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_omp::TestTaskOpenMP, OutputType>),
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
-                        ppc::core::task_getter<nesterov_a_test_task_seq::TestTaskSequential, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_seq::TestTaskSequential, OutputType>),
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
-                        ppc::core::task_getter<nesterov_a_test_task_seq::TestTaskSequential, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_seq::TestTaskSequential, OutputType>),
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
-                        ppc::core::task_getter<nesterov_a_test_task_stl::TestTaskSTL, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_stl::TestTaskSTL, OutputType>),
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
-                        ppc::core::task_getter<nesterov_a_test_task_stl::TestTaskSTL, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_stl::TestTaskSTL, OutputType>),
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline,
-                        ppc::core::task_getter<nesterov_a_test_task_tbb::TestTaskTBB, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_tbb::TestTaskTBB, OutputType>),
-        std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,
-                        ppc::core::task_getter<nesterov_a_test_task_tbb::TestTaskTBB, OutputType>,
-                        ppc::core::data_getter<nesterov_a_test_task_tbb::TestTaskTBB, OutputType>)
-        )
+        ADD_MODES(nesterov_a_test_task_all::TestTaskALL,        OutputType),
+        ADD_MODES(nesterov_a_test_task_mpi::TestTaskMPI,        OutputType),
+        ADD_MODES(nesterov_a_test_task_omp::TestTaskOpenMP,     OutputType),
+        ADD_MODES(nesterov_a_test_task_seq::TestTaskSequential, OutputType),
+        ADD_MODES(nesterov_a_test_task_stl::TestTaskSTL,        OutputType),
+        ADD_MODES(nesterov_a_test_task_tbb::TestTaskTBB,        OutputType))
 );
