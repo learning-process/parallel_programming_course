@@ -10,16 +10,16 @@ namespace nesterov_a_test_task_mpi {
 void MultiplyRowMajor(const std::vector<int> &in, std::vector<int> &out, int rc_size);
 void MultiplyColumnMajor(const std::vector<int> &in, std::vector<int> &out, int rc_size);
 
-class TestTaskMPI : public ppc::core::Task {
+using InType = std::vector<int>;
+using OutType = std::vector<int>;
+
+class TestTaskMPI : public ppc::core::Task<InType, OutType> {
  public:
-  explicit TestTaskMPI(const std::vector<int> &in) : input_(in) {}
+  explicit TestTaskMPI(const InType &in);
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;
   bool PostProcessingImpl() override;
-  std::vector<int> Get();
-
-  std::vector<int> input_, output_;
  private:
   int rc_size_{};
 

@@ -21,14 +21,18 @@ void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_v
 }
 }  // namespace
 
+nesterov_a_test_task_stl::TestTaskSTL::TestTaskSTL(const InType& in) {
+  GetInput() = in;
+}
+
 bool nesterov_a_test_task_stl::TestTaskSTL::ValidationImpl() {
-  auto sqrt_size = static_cast<int>(std::sqrt(input_.size()));
-  return sqrt_size * sqrt_size == static_cast<int>(input_.size());
+  auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
+  return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
 }
 
 bool nesterov_a_test_task_stl::TestTaskSTL::PreProcessingImpl() {
-  rc_size_ = static_cast<int>(std::sqrt(input_.size()));
-  output_ = std::vector<int>(input_.size(), 0);
+  rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
+  GetOutput() = OutType(GetInput().size(), 0);
   return true;
 }
 
@@ -36,12 +40,10 @@ bool nesterov_a_test_task_stl::TestTaskSTL::RunImpl() {
   const int num_threads = ppc::util::GetPPCNumThreads();
   std::vector<std::thread> threads(num_threads);
   for (int i = 0; i < num_threads; i++) {
-    threads[i] = std::thread(MatMul, std::cref(input_), rc_size_, std::ref(output_));
+    threads[i] = std::thread(MatMul, std::cref(GetInput()), rc_size_, std::ref(GetOutput()));
     threads[i].join();
   }
   return true;
 }
 
 bool nesterov_a_test_task_stl::TestTaskSTL::PostProcessingImpl() { return true; }
-
-std::vector<int> nesterov_a_test_task_stl::TestTaskSTL::Get() { return output_; }

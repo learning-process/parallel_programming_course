@@ -17,7 +17,7 @@ std::string GetAbsolutePath(const std::string &relative_path);
 int GetPPCNumThreads();
 
 template <typename T>
-consteval std::string_view get_namespace() {
+consteval std::string_view GetNamespace() {
 #if defined(__clang__) || defined(__GNUC__)
   constexpr std::string_view func = __PRETTY_FUNCTION__;
   // example: "consteval std::string_view get_namespace() [with T = my_namespace::MyClass]"

@@ -7,15 +7,16 @@
 
 namespace nesterov_a_test_task_seq {
 
-class TestTaskSequential : public ppc::core::Task {
+using InType = std::vector<int>;
+using OutType = std::vector<int>;
+
+class TestTaskSequential : public ppc::core::Task<InType, OutType> {
  public:
-  explicit TestTaskSequential(const std::vector<int>& in) : input_(in) {}
+  explicit TestTaskSequential(const InType& in);
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;
   bool PostProcessingImpl() override;
-  std::vector<int> Get();
-  std::vector<int> input_, output_;
 
  private:
   int rc_size_{};

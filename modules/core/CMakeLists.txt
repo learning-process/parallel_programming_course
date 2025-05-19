@@ -27,6 +27,14 @@ add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
 add_dependencies(${exec_func_tests} ppc_googletest)
 target_link_directories(${exec_func_tests} PUBLIC ${CMAKE_BINARY_DIR}/ppc_googletest/install/lib)
 target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
+if( MPI_COMPILE_FLAGS )
+  set_target_properties(${exec_func_tests} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
+endif( MPI_COMPILE_FLAGS )
+
+if( MPI_LINK_FLAGS )
+  set_target_properties(${exec_func_tests} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}")
+endif( MPI_LINK_FLAGS )
+target_link_libraries(${exec_func_tests} PUBLIC ${MPI_LIBRARIES})
 
 target_link_libraries(${exec_func_tests} PUBLIC ${exec_func_lib})
 

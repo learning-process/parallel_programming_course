@@ -7,15 +7,16 @@
 
 namespace nesterov_a_test_task_stl {
 
-class TestTaskSTL : public ppc::core::Task {
+using InType = std::vector<int>;
+using OutType = std::vector<int>;
+
+class TestTaskSTL : public ppc::core::Task<InType, OutType> {
  public:
-  explicit TestTaskSTL(const std::vector<int>& in) : input_(in) {}
+  explicit TestTaskSTL(const InType& in);
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;
   bool PostProcessingImpl() override;
-  std::vector<int> Get();
-  std::vector<int> input_, output_;
 
  private:
   int rc_size_{};
