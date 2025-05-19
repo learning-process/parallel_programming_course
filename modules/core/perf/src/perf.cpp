@@ -55,14 +55,8 @@ void ppc::core::Perf::CommonRun(const PerfAttr& perf_attr, const std::function<v
   perf_results.time_sec = end - begin;
 }
 
-void ppc::core::Perf::PrintPerfStatistic() const {
-  std::string relative_path(::testing::UnitTest::GetInstance()->current_test_info()->file());
-  std::string ppc_regex_template("parallel_programming_course");
-  std::string perf_regex_template("perf_tests");
+void ppc::core::Perf::PrintPerfStatistic(std::string test_id) const {
   std::string type_test_name;
-
-  auto time_secs = perf_results_.time_sec;
-
   if (perf_results_.type_of_running == PerfResults::TypeOfRunning::kTaskRun) {
     type_test_name = "task_run";
   } else if (perf_results_.type_of_running == PerfResults::TypeOfRunning::kPipeline) {
@@ -73,23 +67,18 @@ void ppc::core::Perf::PrintPerfStatistic() const {
     throw std::runtime_error(err_msg.str().c_str());
   }
 
-  auto first_found_position = relative_path.find(ppc_regex_template) + ppc_regex_template.length() + 1;
-  relative_path.erase(0, first_found_position);
-
-  auto last_found_position = relative_path.find(perf_regex_template) - 1;
-  relative_path.erase(last_found_position, relative_path.length() - 1);
-
+  auto time_secs = perf_results_.time_sec;
   std::stringstream perf_res_str;
   if (time_secs < PerfResults::kMaxTime) {
     perf_res_str << std::fixed << std::setprecision(10) << time_secs;
-    std::cout << relative_path << ":" << type_test_name << ":" << perf_res_str.str() << '\n';
+    std::cout << test_id << ":" << type_test_name << ":" << perf_res_str.str() << '\n';
   } else {
     std::stringstream err_msg;
     err_msg << '\n' << "Task execute time need to be: ";
     err_msg << "time < " << PerfResults::kMaxTime << " secs." << '\n';
     err_msg << "Original time in secs: " << time_secs << '\n';
     perf_res_str << std::fixed << std::setprecision(10) << -1.0;
-    std::cout << relative_path << ":" << type_test_name << ":" << perf_res_str.str() << '\n';
+    std::cout << test_id << ":" << type_test_name << ":" << perf_res_str.str() << '\n';
     throw std::runtime_error(err_msg.str().c_str());
   }
 }

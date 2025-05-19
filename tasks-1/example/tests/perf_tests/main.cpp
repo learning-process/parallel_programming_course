@@ -18,7 +18,8 @@
 template <typename OutputTypeParameter>
 using TestParam = std::tuple<ppc::core::PerfResults::TypeOfRunning,
                              std::function<ppc::core::TaskPtr(OutputTypeParameter)>,
-                             std::function<OutputTypeParameter(ppc::core::TaskPtr)>>;
+                             std::function<OutputTypeParameter(ppc::core::TaskPtr)>,
+                             std::string>;
 
 template <typename OutputTypeParameter>
 class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<OutputTypeParameter>> {
@@ -30,7 +31,8 @@ class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<OutputTypePar
 
   void ExecuteTest(ppc::core::PerfResults::TypeOfRunning mode,
                    std::function<ppc::core::TaskPtr(OutputTypeParameter)> task_getter,
-                   std::function<OutputTypeParameter(ppc::core::TaskPtr)> data_getter) {
+                   std::function<OutputTypeParameter(ppc::core::TaskPtr)> data_getter,
+                   std::string test_name) {
     task = task_getter(getInputData());
     ppc::core::Perf perf(task);
     ppc::core::PerfAttr perf_attr;
@@ -41,13 +43,15 @@ class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<OutputTypePar
     } else if (mode == ppc::core::PerfResults::TypeOfRunning::kTaskRun) {
       perf.TaskRun(perf_attr);
     } else {
-      throw std::runtime_error("Performance mode is wrong");
+      std::stringstream err_msg;
+      err_msg << '\n' << "The type of performance check for the task was not selected.\n";
+      throw std::runtime_error(err_msg.str().c_str());
     }
 
     int rank = -1;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
-      perf.PrintPerfStatistic();
+      perf.PrintPerfStatistic(test_name);
     }
 
     ASSERT_TRUE(checkData(data_getter));
@@ -57,10 +61,12 @@ class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<OutputTypePar
 #define ADD_MODES(TaskType, OutputTypeParam) \
     std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline, \
                     ppc::core::task_getter<TaskType, OutputTypeParam>, \
-                    ppc::core::data_getter<TaskType, OutputTypeParam>), \
+                    ppc::core::data_getter<TaskType, OutputTypeParam>,\
+                    ppc::util::get_namespace<TaskType>()), \
     std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun, \
                     ppc::core::task_getter<TaskType, OutputTypeParam>, \
-                    ppc::core::data_getter<TaskType, OutputTypeParam>)
+                    ppc::core::data_getter<TaskType, OutputTypeParam>,\
+                    ppc::util::get_namespace<TaskType>())
 
 
 using OutputType = std::vector<int>;
@@ -95,7 +101,7 @@ class ExampleRunPerfTest : public BaseRunPerfTests<OutputType> {
 };
 
 TEST_P(ExampleRunPerfTest, RunModes) {
-  ExecuteTest(std::get<0>(GetParam()), std::get<1>(GetParam()), std::get<2>(GetParam()));
+  ExecuteTest(std::get<0>(GetParam()), std::get<1>(GetParam()), std::get<2>(GetParam()), std::get<3>(GetParam()));
 }
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(

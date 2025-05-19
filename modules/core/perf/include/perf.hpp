@@ -31,7 +31,7 @@ class Perf {
   // Check performance of task's Run() function
   void TaskRun(const PerfAttr& perf_attr);
   // Pint results for automation checkers
-  void PrintPerfStatistic() const;
+  void PrintPerfStatistic(std::string test_id) const;
   // Get performance result structure of the current task
   PerfResults GetPerfResults();
 
