@@ -25,7 +25,6 @@ jobs:
           cmake_command: >
             cmake -S . -B build
             -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-            -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
             -G Ninja -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           config_file: .clang-tidy
           exclude: 3rdparty
@@ -59,7 +58,7 @@ jobs:
           cmake_command: >
             cmake -S . -B build
             -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-            -G Ninja -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON
+            -G Ninja
             -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           config_file: .clang-tidy
           exclude: 3rdparty
