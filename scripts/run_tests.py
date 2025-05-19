@@ -40,24 +40,6 @@ class PPCRunner:
         script_dir = script_path.parent  # Directory containing the script
         return script_dir.parent
 
-    @staticmethod
-    def __source_script(script_path):
-        if platform.system() == "Windows":
-            return {}
-        command = f"bash -c 'source {script_path} && env'"
-        result = subprocess.run(command, stdout=subprocess.PIPE, shell=True, text=True)
-        if result.returncode == 0:
-            # Parse the output environment variables
-            env_vars = {}
-            for line in result.stdout.splitlines():
-                if '=' in line:
-                    key, value = line.split("=", 1)
-                    env_vars[key] = value
-            return env_vars
-        else:
-            print(f"Failed to source script: {script_path}")
-            return {}
-
     def setup_env(self):
         if (Path(self.__get_project_path()) / "install").exists():
             self.work_dir = Path(self.__get_project_path()) / "install" / "bin"
