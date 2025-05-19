@@ -1,7 +1,5 @@
 #pragma once
 
-#include "core/task/include/task.hpp"
-
 #include <algorithm>
 #include <chrono>
 #include <cstddef>
@@ -14,6 +12,8 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
+
+#include "core/task/include/task.hpp"
 
 using namespace std::chrono;
 
@@ -69,13 +69,9 @@ class Task {
   // get state of testing
   StateOfTesting &GetStateOfTesting() { return state_of_testing_; }
 
-  InType& GetInput() {
-    return input_;
-  }
+  InType &GetInput() { return input_; }
 
-  OutType& GetOutput() {
-    return output_;
-  }
+  OutType &GetOutput() { return output_; }
 
   virtual ~Task() {
     if (!functions_order_.empty() || !was_worked_) {

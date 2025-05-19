@@ -21,7 +21,7 @@ struct PerfResults {
   constexpr static double kMaxTime = 10.0;
 };
 
-template<typename InType, typename OutType>
+template <typename InType, typename OutType>
 class Perf {
  public:
   // Init performance analysis with initialized task and initialized data
@@ -86,7 +86,7 @@ class Perf {
     }
   }
   // Get performance result structure of the current task
-  PerfResults GetPerfResults()  { return perf_results_; }
+  PerfResults GetPerfResults() { return perf_results_; }
 
  private:
   PerfResults perf_results_;

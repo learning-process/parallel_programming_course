@@ -6,69 +6,64 @@
 #include <vector>
 
 #include "example/all/include/ops_all.hpp"
+#include "example/mpi/include/ops_mpi.hpp"
+#include "example/omp/include/ops_omp.hpp"
+#include "example/seq/include/ops_seq.hpp"
+#include "example/stl/include/ops_stl.hpp"
+#include "example/tbb/include/ops_tbb.hpp"
+
 #include "core/util/include/util.hpp"
 
-class NesterovATestTaskAll : public ::testing::TestWithParam<int> {
+using InType = std::vector<int>;
+using OutType = std::vector<int>;
+
+using TestParam = std::tuple<int, std::function<ppc::core::TaskPtr<InType, OutType>(InType)>>;
+
+class NesterovARunFuncTests: public ::testing::TestWithParam<TestParam> {
  protected:
   void SetUp() override {
-    width = height = channels = -1;
+    // Read image
     std::string abs_path = ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg");
     data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
     ASSERT_TRUE(data != nullptr) << "Failed to load image: " << stbi_failure_reason();
     img = std::vector<uint8_t>(data, data + (width * height * channels));
     stbi_image_free(data);
-
     ASSERT_EQ(width, height);
+
+    const int k_count = (width + height) / std::get<0>(GetParam());
+    std::vector<int> in(k_count * k_count, 0);
+    for (int i = 0; i < k_count; i++) {
+      in[(i * k_count) + i] = 1;
+    }
+    task = std::get<1>(GetParam())(in);
   }
 
+  void ExecuteTest() {
+    ASSERT_TRUE(task->Validation());
+    task->PreProcessing();
+    task->Run();
+    task->PostProcessing();
+    EXPECT_EQ(task->GetInput(), task->GetOutput());
+  }
+
+  ppc::core::TaskPtr<InType, OutType> task;
   int width = -1, height = -1, channels = -1;
   unsigned char* data = nullptr;
   std::vector<uint8_t> img;
 };
 
-TEST_P(NesterovATestTaskAll, MatmulFromPic) {
-  int divider = GetParam();
-  const int k_count = (width + height) / divider;
-
-  std::vector<int> in(k_count * k_count, 0);
-  for (int i = 0; i < k_count; i++) {
-    in[(i * k_count) + i] = 1;
-  }
-
-  nesterov_a_test_task_all::TestTaskALL test_task_all(in);
-  ASSERT_TRUE(test_task_all.Validation());
-  test_task_all.PreProcessing();
-  test_task_all.Run();
-  test_task_all.PostProcessing();
-  EXPECT_EQ(in, test_task_all.Get());
+TEST_P(NesterovARunFuncTests, MatmulFromPic) {
+  ExecuteTest();
 }
 
-TEST_P(NesterovATestTaskAll, MatMulUtilFromPic) {
-  int divider = GetParam();
-  const int k_count = (width + height) / divider;
+#define ADD_TASK(TASK) \
+    std::make_tuple(5,  ppc::core::task_getter<TASK, InType>), \
+    std::make_tuple(10, ppc::core::task_getter<TASK, InType>)
 
-  std::vector<int> in(k_count * k_count, 0);
-  for (int i = 0; i < k_count; i++) {
-    in[(i * k_count) + i] = 1;
-  }
-  std::vector<int> out(k_count * k_count, 0);
-  nesterov_a_test_task_all::MatMul(in, static_cast<int>(k_count), out);
-
-  EXPECT_EQ(in, out);
-}
-
-TEST_P(NesterovATestTaskAll, MatMulTBBUtilFromPic) {
-  int divider = GetParam();
-  const int k_count = (width + height) / divider;
-
-  std::vector<int> in(k_count * k_count, 0);
-  for (int i = 0; i < k_count; i++) {
-    in[(i * k_count) + i] = 1;
-  }
-  std::vector<int> out(k_count * k_count, 0);
-  nesterov_a_test_task_all::MatMulTBB(in, static_cast<int>(k_count), out);
-
-  EXPECT_EQ(in, out);
-}
-
-INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovATestTaskAll, ::testing::Values(5, 10));
+INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests,
+                                ::testing::Values(ADD_TASK(nesterov_a_test_task_all::TestTaskALL),
+                                                  ADD_TASK(nesterov_a_test_task_mpi::TestTaskMPI),
+                                                  ADD_TASK(nesterov_a_test_task_omp::TestTaskOpenMP),
+                                                  ADD_TASK(nesterov_a_test_task_seq::TestTaskSequential),
+                                                  ADD_TASK(nesterov_a_test_task_stl::TestTaskSTL),
+                                                  ADD_TASK(nesterov_a_test_task_tbb::TestTaskTBB)));

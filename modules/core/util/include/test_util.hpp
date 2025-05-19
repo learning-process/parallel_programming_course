@@ -1,15 +1,15 @@
 #pragma once
 
-#include "core/perf/include/perf.hpp"
 #include <gtest/gtest.h>
 #include <mpi.h>
+
+#include "core/perf/include/perf.hpp"
 
 namespace ppc::util {
 
 template <typename InType, typename OutType>
 using TestParam = std::tuple<ppc::core::PerfResults::TypeOfRunning,
-                             std::function<ppc::core::TaskPtr<InType, OutType>(InType)>,
-                             std::string>;
+                             std::function<ppc::core::TaskPtr<InType, OutType>(InType)>, std::string>;
 
 template <typename InType, typename OutType>
 class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<InType, OutType>> {
@@ -19,8 +19,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<InType, OutTy
   virtual InType GetTestInputData() = 0;
 
   void ExecuteTest(ppc::core::PerfResults::TypeOfRunning mode,
-                   std::function<ppc::core::TaskPtr<InType, OutType>(InType)> task_getter,
-                   std::string test_name) {
+                   std::function<ppc::core::TaskPtr<InType, OutType>(InType)> task_getter, std::string test_name) {
     task = task_getter(GetTestInputData());
     ppc::core::Perf perf(task);
     ppc::core::PerfAttr perf_attr;
@@ -49,13 +48,10 @@ class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<InType, OutTy
   ppc::core::TaskPtr<InType, OutType> task;
 };
 
-#define ADD_MODES(TaskType, InputTypeParam) \
-    std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline, \
-                    ppc::core::task_getter<TaskType, InputTypeParam>, \
-                    ppc::util::GetNamespace<TaskType>()), \
-    std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun, \
-                    ppc::core::task_getter<TaskType, InputTypeParam>, \
-                    ppc::util::GetNamespace<TaskType>())
-
+#define ADD_MODES(TaskType, InputTypeParam)                                                                           \
+  std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline, ppc::core::task_getter<TaskType, InputTypeParam>, \
+                  ppc::util::GetNamespace<TaskType>()),                                                               \
+      std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,                                                \
+                      ppc::core::task_getter<TaskType, InputTypeParam>, ppc::util::GetNamespace<TaskType>())
 
 }  // namespace ppc::util
