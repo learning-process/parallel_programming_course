@@ -86,7 +86,7 @@ class PPCRunner:
 
     def run_threads(self):
         if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
-            for task_type in ["seq", "stl"]:
+            for task_type in ["omp", "seq", "stl", "tbb"]:
                 self.__run_exec(
                     shlex.split(self.valgrind_cmd)
                     + [str(self.work_dir / 'ppc_func_tests')]
