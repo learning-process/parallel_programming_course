@@ -4,7 +4,10 @@ on: [pull_request]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/master' && github.event_name != 'merge_group' && !startsWith(github.ref, 'refs/heads/gh-readonly-queue') }}  # yamllint disable-line
+  cancel-in-progress: >-
+    ${{ github.ref != 'refs/heads/master' &&
+        github.event_name != 'merge_group' &&
+        !startsWith(github.ref, 'refs/heads/gh-readonly-queue') }}
 
 jobs:
   clang-tidy:
