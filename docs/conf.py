@@ -36,7 +36,12 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
 html_sidebars = {
-    "**": ["globaltoc.html", "sourcelink.html", "searchbox.html"]
+    "**": [
+        "globaltoc.html",
+        "sourcelink.html",
+        "searchbox.html",
+        "language_switcher.html",
+    ],
 }
 
 html_theme_options = {

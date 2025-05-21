@@ -22,30 +22,35 @@ pip install -r requirements.txt
 cmake -S . -B build -DUSE_DOCS=ON
 ```
 
-5. Build the documentation:
+5. Generate API documentation with Doxygen:
+```bash
+doxygen Doxyfile
+```
+
+6. Build the documentation:
 ```bash
 cmake --build build -t docs_html
 ```
 
-6. Update the documentation:
+7. Update the documentation:
 ```bash
 cmake --build build -t docs_gettext
 # update documentation
 cmake --build build -t docs_update
 ```
 
-7. Re-build the documentation:
+8. Re-build the documentation:
 ```bash
 cmake --build build -t docs_html
 ```
 
-8. Make local deployment of the changes:
+9. Make local deployment of the changes:
 ```bash
 cd _build/html
 python3 -m http.server 8080
 ```
 
-9. Open the documentation in your browser:
+10. Open the documentation in your browser:
 ```bash
 open http://localhost:8080/en
 open http://localhost:8080/ru

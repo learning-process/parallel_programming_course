@@ -7,9 +7,9 @@ Below is the table of contents for the Parallel Programming Course documentation
    :maxdepth: 2
    :caption: User Guide:
 
-   user_guide/build
-   user_guide/download
    user_guide/environment
+   user_guide/download
+   user_guide/build
    user_guide/submit_work
    user_guide/ci
    user_guide/api
