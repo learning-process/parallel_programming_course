@@ -56,10 +56,10 @@ INSTANTIATE_TEST_SUITE_P_NOLINT(
     RunModeTests,
     ExampleRunPerfTest,
     ::testing::Values(
-        ADD_MODES(nesterov_a_test_task_all::TestTaskALL,        InType),
-        ADD_MODES(nesterov_a_test_task_mpi::TestTaskMPI,        InType),
-        ADD_MODES(nesterov_a_test_task_omp::TestTaskOMP,        InType),
-        ADD_MODES(nesterov_a_test_task_seq::TestTaskSequential, InType),
-        ADD_MODES(nesterov_a_test_task_stl::TestTaskSTL,        InType),
-        ADD_MODES(nesterov_a_test_task_tbb::TestTaskTBB,        InType))
+        ADD_MODES(nesterov_a_test_task_all::TestTaskALL, InType),
+        ADD_MODES(nesterov_a_test_task_mpi::TestTaskMPI, InType),
+        ADD_MODES(nesterov_a_test_task_omp::TestTaskOMP, InType),
+        ADD_MODES(nesterov_a_test_task_seq::TestTaskSEQ, InType),
+        ADD_MODES(nesterov_a_test_task_stl::TestTaskSTL, InType),
+        ADD_MODES(nesterov_a_test_task_tbb::TestTaskTBB, InType))
 );

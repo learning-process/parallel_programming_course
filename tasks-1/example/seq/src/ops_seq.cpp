@@ -4,22 +4,22 @@
 #include <cstddef>
 #include <vector>
 
-nesterov_a_test_task_seq::TestTaskSequential::TestTaskSequential(const InType& in) {
+nesterov_a_test_task_seq::TestTaskSEQ::TestTaskSEQ(const InType& in) {
   GetInput() = in;
 }
 
-bool nesterov_a_test_task_seq::TestTaskSequential::ValidationImpl() {
+bool nesterov_a_test_task_seq::TestTaskSEQ::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
   return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
 }
 
-bool nesterov_a_test_task_seq::TestTaskSequential::PreProcessingImpl() {
+bool nesterov_a_test_task_seq::TestTaskSEQ::PreProcessingImpl() {
   rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
   GetOutput() = OutType(GetInput().size(), 0);
   return true;
 }
 
-bool nesterov_a_test_task_seq::TestTaskSequential::RunImpl() {
+bool nesterov_a_test_task_seq::TestTaskSEQ::RunImpl() {
   // Multiply matrices
   for (int i = 0; i < rc_size_; ++i) {
     for (int j = 0; j < rc_size_; ++j) {
@@ -31,4 +31,4 @@ bool nesterov_a_test_task_seq::TestTaskSequential::RunImpl() {
   return true;
 }
 
-bool nesterov_a_test_task_seq::TestTaskSequential::PostProcessingImpl() { return true; }
+bool nesterov_a_test_task_seq::TestTaskSEQ::PostProcessingImpl() { return true; }
