@@ -23,6 +23,7 @@ jobs:
       - uses: DoozyX/clang-format-lint-action@v0.20
         with:
           source: '.'
+          clangFormatVersion: 20
   python-lint:
     runs-on: ubuntu-24.04
     steps:
