@@ -87,11 +87,10 @@ class PPCRunner:
 
     def run_performance(self):
         if not os.environ.get("ASAN_RUN"):
-            mpi_running = ""
-            if platform.system() in ("Linux", "Windows"):
-                mpi_running = f"{self.mpi_exec} -np 4"
-            elif platform.system() == "Darwin":
-                mpi_running = f"{self.mpi_exec} -np 2"
+            proc_count = os.environ.get("PROC_COUNT")
+            if proc_count is None:
+                raise EnvironmentError("Required environment variable 'PROC_COUNT' is not set.")
+            mpi_running = f"{self.mpi_exec} -np {proc_count}"
             self.__run_exec(f"{mpi_running} {self.work_dir / 'all_perf_tests'} {self.__get_gtest_settings(1)}")
             self.__run_exec(f"{mpi_running} {self.work_dir / 'mpi_perf_tests'} {self.__get_gtest_settings(1)}")
 
