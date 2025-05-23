@@ -4,9 +4,7 @@
 #include <cstddef>
 #include <vector>
 
-nesterov_a_test_task_omp::TestTaskOMP::TestTaskOMP(const InType& in) {
-  GetInput() = in;
-}
+nesterov_a_test_task_omp::TestTaskOMP::TestTaskOMP(const InType& in) { GetInput() = in; }
 
 bool nesterov_a_test_task_omp::TestTaskOMP::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));

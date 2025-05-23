@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "core/util/include/util.hpp"
 #include "example/all/include/ops_all.hpp"
 #include "example/mpi/include/ops_mpi.hpp"
 #include "example/omp/include/ops_omp.hpp"
@@ -12,14 +13,12 @@
 #include "example/stl/include/ops_stl.hpp"
 #include "example/tbb/include/ops_tbb.hpp"
 
-#include "core/util/include/util.hpp"
-
 using InType = std::vector<int>;
 using OutType = std::vector<int>;
 
 using TestParam = std::tuple<int, std::function<ppc::core::TaskPtr<InType, OutType>(InType)>>;
 
-class NesterovARunFuncTests: public ::testing::TestWithParam<TestParam> {
+class NesterovARunFuncTests : public ::testing::TestWithParam<TestParam> {
  protected:
   void SetUp() override {
     // Read image
@@ -52,13 +51,10 @@ class NesterovARunFuncTests: public ::testing::TestWithParam<TestParam> {
   std::vector<uint8_t> img;
 };
 
-TEST_P(NesterovARunFuncTests, MatmulFromPic) {
-  ExecuteTest();
-}
+TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(); }
 
 #define ADD_TASK(TASK) \
-    std::make_tuple(5,  ppc::core::TaskGetter<TASK, InType>), \
-    std::make_tuple(10, ppc::core::TaskGetter<TASK, InType>)
+  std::make_tuple(5, ppc::core::TaskGetter<TASK, InType>), std::make_tuple(10, ppc::core::TaskGetter<TASK, InType>)
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests,
                                 ::testing::Values(ADD_TASK(nesterov_a_test_task_all::TestTaskALL),

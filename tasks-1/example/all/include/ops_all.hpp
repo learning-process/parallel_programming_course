@@ -20,6 +20,7 @@ class TestTaskALL : public ppc::core::Task<InType, OutType> {
   bool PreProcessingImpl() override;
   bool RunImpl() override;
   bool PostProcessingImpl() override;
+
  private:
   int rc_size_{};
 };

@@ -5,16 +5,15 @@
 #include <memory>
 #include <vector>
 
+#include "core/perf/include/perf.hpp"
+#include "core/util/include/test_util.hpp"
+#include "core/util/include/util.hpp"
 #include "example/all/include/ops_all.hpp"
 #include "example/mpi/include/ops_mpi.hpp"
 #include "example/omp/include/ops_omp.hpp"
 #include "example/seq/include/ops_seq.hpp"
 #include "example/stl/include/ops_stl.hpp"
 #include "example/tbb/include/ops_tbb.hpp"
-
-#include "core/perf/include/perf.hpp"
-#include "core/util/include/util.hpp"
-#include "core/util/include/test_util.hpp"
 
 using InType = std::vector<int>;
 using OutType = std::vector<int>;
@@ -39,27 +38,19 @@ class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
     };
   }
 
-  bool CheckTestOutputData(OutType& output_data) final {
-    return input_data == output_data;
-  }
+  bool CheckTestOutputData(OutType& output_data) final { return input_data == output_data; }
 
-  InType GetTestInputData() final {
-    return input_data;
-  }
+  InType GetTestInputData() final { return input_data; }
 };
 
 TEST_P(ExampleRunPerfTest, RunModes) {
   ExecuteTest(std::get<0>(GetParam()), std::get<1>(GetParam()), std::get<2>(GetParam()));
 }
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(
-    RunModeTests,
-    ExampleRunPerfTest,
-    ::testing::Values(
-        ADD_MODES(nesterov_a_test_task_all::TestTaskALL, InType),
-        ADD_MODES(nesterov_a_test_task_mpi::TestTaskMPI, InType),
-        ADD_MODES(nesterov_a_test_task_omp::TestTaskOMP, InType),
-        ADD_MODES(nesterov_a_test_task_seq::TestTaskSEQ, InType),
-        ADD_MODES(nesterov_a_test_task_stl::TestTaskSTL, InType),
-        ADD_MODES(nesterov_a_test_task_tbb::TestTaskTBB, InType))
-);
+INSTANTIATE_TEST_SUITE_P_NOLINT(RunModeTests, ExampleRunPerfTest,
+                                ::testing::Values(ADD_MODES(nesterov_a_test_task_all::TestTaskALL, InType),
+                                                  ADD_MODES(nesterov_a_test_task_mpi::TestTaskMPI, InType),
+                                                  ADD_MODES(nesterov_a_test_task_omp::TestTaskOMP, InType),
+                                                  ADD_MODES(nesterov_a_test_task_seq::TestTaskSEQ, InType),
+                                                  ADD_MODES(nesterov_a_test_task_stl::TestTaskSTL, InType),
+                                                  ADD_MODES(nesterov_a_test_task_tbb::TestTaskTBB, InType)));

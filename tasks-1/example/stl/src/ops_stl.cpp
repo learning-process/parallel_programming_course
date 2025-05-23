@@ -21,9 +21,7 @@ void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_v
 }
 }  // namespace
 
-nesterov_a_test_task_stl::TestTaskSTL::TestTaskSTL(const InType& in) {
-  GetInput() = in;
-}
+nesterov_a_test_task_stl::TestTaskSTL::TestTaskSTL(const InType &in) { GetInput() = in; }
 
 bool nesterov_a_test_task_stl::TestTaskSTL::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));

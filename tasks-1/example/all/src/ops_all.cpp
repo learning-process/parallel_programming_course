@@ -27,9 +27,7 @@ void nesterov_a_test_task_all::MatMulTBB(const InType &in_vec, int rc_size, OutT
   MatMul(in_vec, rc_size, out_vec);
 }
 
-nesterov_a_test_task_all::TestTaskALL::TestTaskALL(const InType &in) {
-  GetInput() = in;
-}
+nesterov_a_test_task_all::TestTaskALL::TestTaskALL(const InType &in) { GetInput() = in; }
 
 bool nesterov_a_test_task_all::TestTaskALL::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
