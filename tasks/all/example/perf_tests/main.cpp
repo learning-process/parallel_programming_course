@@ -2,6 +2,7 @@
 #include <mpi.h>
 
 #include <chrono>
+#include <cstddef>
 #include <memory>
 #include <vector>
 
@@ -11,12 +12,12 @@
 
 class NesterovAllRunTest : public ::testing::TestWithParam<ppc::core::PerfResults::TypeOfRunning> {
  protected:
-  static constexpr int kCount = 400;
+  static constexpr size_t kCount = 400;
   std::vector<int> input_data;
 
   void SetUp() override {
     input_data.assign(kCount * kCount, 0);
-    for (int i = 0; i < kCount; ++i) {
+    for (size_t i = 0; i < kCount; ++i) {
       input_data[(i * kCount) + i] = 1;
     }
   }
