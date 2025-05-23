@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <cstddef>
 #include <cstdint>
 #include <stb_library.hpp>
 #include <string>
@@ -15,7 +16,7 @@ class NesterovATestTaskAll : public ::testing::TestWithParam<int> {
     std::string abs_path = ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg");
     data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
     ASSERT_TRUE(data != nullptr) << "Failed to load image: " << stbi_failure_reason();
-    img = std::vector<uint8_t>(data, data + (width * height * channels));
+    img = std::vector<uint8_t>(data, data + (static_cast<size_t>(width) * height * channels));
     stbi_image_free(data);
 
     ASSERT_EQ(width, height);
@@ -28,10 +29,10 @@ class NesterovATestTaskAll : public ::testing::TestWithParam<int> {
 
 TEST_P(NesterovATestTaskAll, MatmulFromPic) {
   int divider = GetParam();
-  const int k_count = (width + height) / divider;
+  const size_t k_count = (width + height) / divider;
 
   std::vector<int> in(k_count * k_count, 0);
-  for (int i = 0; i < k_count; i++) {
+  for (size_t i = 0; i < k_count; i++) {
     in[(i * k_count) + i] = 1;
   }
 
@@ -45,10 +46,10 @@ TEST_P(NesterovATestTaskAll, MatmulFromPic) {
 
 TEST_P(NesterovATestTaskAll, MatMulUtilFromPic) {
   int divider = GetParam();
-  const int k_count = (width + height) / divider;
+  const size_t k_count = (width + height) / divider;
 
   std::vector<int> in(k_count * k_count, 0);
-  for (int i = 0; i < k_count; i++) {
+  for (size_t i = 0; i < k_count; i++) {
     in[(i * k_count) + i] = 1;
   }
   std::vector<int> out(k_count * k_count, 0);
@@ -59,10 +60,10 @@ TEST_P(NesterovATestTaskAll, MatMulUtilFromPic) {
 
 TEST_P(NesterovATestTaskAll, MatMulTBBUtilFromPic) {
   int divider = GetParam();
-  const int k_count = (width + height) / divider;
+  const size_t k_count = (width + height) / divider;
 
   std::vector<int> in(k_count * k_count, 0);
-  for (int i = 0; i < k_count; i++) {
+  for (size_t i = 0; i < k_count; i++) {
     in[(i * k_count) + i] = 1;
   }
   std::vector<int> out(k_count * k_count, 0);

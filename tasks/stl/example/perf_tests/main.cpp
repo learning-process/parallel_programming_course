@@ -13,7 +13,7 @@
 class NesterovTaskSTLTest : public ::testing::TestWithParam<ppc::core::PerfResults::TypeOfRunning> {
  protected:
   static void RunTest(ppc::core::PerfResults::TypeOfRunning mode) {
-    constexpr int kCount = 450;
+    constexpr size_t kCount = 450;
 
     // Create data
     std::vector<int> in(kCount * kCount, 0);
