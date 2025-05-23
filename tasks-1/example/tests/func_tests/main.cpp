@@ -57,8 +57,8 @@ TEST_P(NesterovARunFuncTests, MatmulFromPic) {
 }
 
 #define ADD_TASK(TASK) \
-    std::make_tuple(5,  ppc::core::task_getter<TASK, InType>), \
-    std::make_tuple(10, ppc::core::task_getter<TASK, InType>)
+    std::make_tuple(5,  ppc::core::TaskGetter<TASK, InType>), \
+    std::make_tuple(10, ppc::core::TaskGetter<TASK, InType>)
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests,
                                 ::testing::Values(ADD_TASK(nesterov_a_test_task_all::TestTaskALL),

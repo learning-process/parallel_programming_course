@@ -48,10 +48,10 @@ class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<InType, OutTy
   ppc::core::TaskPtr<InType, OutType> task;
 };
 
-#define ADD_MODES(TaskType, InputTypeParam)                                                                           \
-  std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline, ppc::core::task_getter<TaskType, InputTypeParam>, \
-                  ppc::util::GetNamespace<TaskType>()),                                                               \
-      std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,                                                \
-                      ppc::core::task_getter<TaskType, InputTypeParam>, ppc::util::GetNamespace<TaskType>())
+#define ADD_MODES(TaskType, InputTypeParam)                                                                          \
+  std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline, ppc::core::TaskGetter<TaskType, InputTypeParam>, \
+                  ppc::util::GetNamespace<TaskType>()),                                                              \
+      std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,                                               \
+                      ppc::core::TaskGetter<TaskType, InputTypeParam>, ppc::util::GetNamespace<TaskType>())
 
 }  // namespace ppc::util

@@ -26,7 +26,7 @@ class Task {
  public:
   enum StateOfTesting : uint8_t { kFunc, kPerf };
 
-  explicit Task(StateOfTesting state_of_testing = StateOfTesting::kFunc) {
+  explicit Task(StateOfTesting /*state_of_testing*/ = StateOfTesting::kFunc) {
     auto custom_terminate = []() {
       std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT! \n"
                    "Expected - \"Validation\", \"PreProcessing\", \"Run\", \"PostProcessing\" \n";
@@ -127,7 +127,7 @@ class Task {
  private:
   InType input_;
   OutType output_;
-  StateOfTesting state_of_testing_;
+  StateOfTesting state_of_testing_ = kFunc;
   std::vector<std::string> functions_order_;
   std::vector<std::string> right_functions_order_ = {"Validation", "PreProcessing", "Run", "PostProcessing"};
   static constexpr double kMaxTestTime = 1.0;
@@ -150,7 +150,7 @@ template <typename InType, typename OutType>
 using TaskPtr = std::shared_ptr<ppc::core::Task<InType, OutType>>;
 
 template <typename TaskType, typename InType>
-std::shared_ptr<TaskType> task_getter(InType in) {
+std::shared_ptr<TaskType> TaskGetter(InType in) {
   return std::make_shared<TaskType>(in);
 }
 
