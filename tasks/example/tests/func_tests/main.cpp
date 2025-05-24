@@ -22,7 +22,7 @@ class NesterovARunFuncTests : public ::testing::TestWithParam<TestParam> {
  protected:
   void SetUp() override {
     // Read image
-    std::string abs_path = ppc::util::GetAbsolutePath("all/example/data/pic_all.jpg");
+    std::string abs_path = ppc::util::GetAbsolutePath("example/tests/data/pic_all.jpg");
     data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
     ASSERT_TRUE(data != nullptr) << "Failed to load image: " << stbi_failure_reason();
     img = std::vector<uint8_t>(data, data + (width * height * channels));
