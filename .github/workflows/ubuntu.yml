@@ -301,6 +301,122 @@ jobs:
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
+  ubuntu-clang-thread-sanitizer-build:
+    needs:
+      - ubuntu-clang-build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y ninja-build python3-pip \
+              openmpi-bin openmpi-common libopenmpi-dev
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 20 all
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-clang
+          create-symlink: true
+          max-size: 1G
+      - name: CMake configure
+        run: >
+          cmake -S . -B build -G Ninja
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_THREAD_SANITIZER=ON
+          -D CMAKE_INSTALL_PREFIX=install
+        env:
+          CC: clang-20
+          CXX: clang++-20
+      - name: Build project
+        run: |
+          cmake --build build --parallel
+        env:
+          CC: clang-20
+          CXX: clang++-20
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: |
+          tar -czvf ubuntu-clang-thread-sanitizer-install-${{ matrix.os }}.tar.gz -C install .
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-clang-thread-sanitizer-install-${{ matrix.os }}
+          path: ubuntu-clang-thread-sanitizer-install-${{ matrix.os }}.tar.gz
+  ubuntu-clang-thread-sanitizer-test:
+    needs:
+      - ubuntu-clang-thread-sanitizer-build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y ninja-build python3-pip valgrind \
+              openmpi-bin openmpi-common libopenmpi-dev
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 20 all
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-clang-thread-sanitizer-install-${{ matrix.os }}
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf ubuntu-clang-thread-sanitizer-install-${{ matrix.os }}.tar.gz -C install
+      - name: Run tests (MPI)
+        run: python3 scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
+        env:
+          PPC_NUM_PROC: 2
+          PPC_NUM_THREADS: 2
+          PPC_ASAN_RUN: 1
+          ASAN_OPTIONS: abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1
+      - name: Run tests (threads, num_threads=1)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_PROC: 1
+          PPC_NUM_THREADS: 1
+          PPC_ASAN_RUN: 1
+          ASAN_OPTIONS: abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1
+      - name: Run tests (threads, num_threads=2)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_PROC: 1
+          PPC_NUM_THREADS: 2
+          PPC_ASAN_RUN: 1
+          ASAN_OPTIONS: abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1
+      - name: Run tests (threads, num_threads=3)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_PROC: 1
+          PPC_NUM_THREADS: 3
+          PPC_ASAN_RUN: 1
+          ASAN_OPTIONS: abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1
+      - name: Run tests (threads, num_threads=4)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_PROC: 1
+          PPC_NUM_THREADS: 4
+          PPC_ASAN_RUN: 1
+          ASAN_OPTIONS: abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1
   ubuntu-clang-sanitizer-test-extended:
     needs:
       - ubuntu-clang-sanitizer-test
