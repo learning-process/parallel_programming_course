@@ -1,0 +1,51 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Learning Process
+# This file is distributed under the same license as the Parallel
+# Programming Course package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Parallel Programming Course \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-26 10:22+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../../../docs/user_guide/environment_variables.rst:2
+msgid "Environment Variables"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment_variables.rst:4
+msgid ""
+"The following environment variables can be used to configure the "
+"project's runtime behavior:"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment_variables.rst:6
+msgid ""
+"``PPC_NUM_PROC``: Specifies the number of processes to launch. "
+"Default: ``1``"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment_variables.rst:9
+msgid ""
+"``PPC_NUM_THREADS``: Specifies the number of threads to use. Default:"
+" ``1``"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment_variables.rst:12
+msgid ""
+"``PPC_ASAN_RUN``: Specifies that application is compiler with "
+"sanitizers. Used by ``scripts/run_tests.py`` to skip ``valgrind`` runs. "
+"Default: ``0``"
+msgstr ""
+
