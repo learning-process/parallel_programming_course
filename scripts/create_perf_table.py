@@ -49,9 +49,9 @@ for table_name in result_tables:
     worksheet.set_column('A:Z', 23)
     right_bold_border = workbook.add_format({'bold': True, 'right': 2, 'bottom': 2})
     bottom_bold_border = workbook.add_format({'bold': True, 'bottom': 2})
-    cpu_num = os.environ.get("PROC_COUNT")
+    cpu_num = os.environ.get("PPC_NUM_PROC")
     if cpu_num is None:
-        raise EnvironmentError("Required environment variable 'PROC_COUNT' is not set.")
+        raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
     cpu_num = int(cpu_num)
     worksheet.write(0, 0, "cpu_num = " + str(cpu_num), right_bold_border)
 

@@ -114,39 +114,39 @@ jobs:
       - name: Run func tests (MPI, num_proc=1)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 1
-          OMP_NUM_THREADS: 3
+          PPC_NUM_PROC: 1
+          PPC_NUM_THREADS: 3
       - name: Run func tests (MPI, num_proc=2)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 2
-          OMP_NUM_THREADS: 2
+          PPC_NUM_PROC: 2
+          PPC_NUM_THREADS: 2
       - name: Run func tests (MPI, num_proc=3)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 3
-          OMP_NUM_THREADS: 1
+          PPC_NUM_PROC: 3
+          PPC_NUM_THREADS: 1
       - name: Run func tests (MPI, num_proc=4)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 4
-          OMP_NUM_THREADS: 1
+          PPC_NUM_PROC: 4
+          PPC_NUM_THREADS: 1
       - name: Run func tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 1
+          PPC_NUM_THREADS: 1
       - name: Run func tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 2
+          PPC_NUM_THREADS: 2
       - name: Run func tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 3
+          PPC_NUM_THREADS: 3
       - name: Run func tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 4
+          PPC_NUM_THREADS: 4
   ubuntu-gcc-test-extended:
     needs:
       - ubuntu-gcc-test
@@ -172,19 +172,19 @@ jobs:
       - name: Run func tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 5
+          PPC_NUM_THREADS: 5
       - name: Run func tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 7
+          PPC_NUM_THREADS: 7
       - name: Run func tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 11
+          PPC_NUM_THREADS: 11
       - name: Run func tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 13
+          PPC_NUM_THREADS: 13
   ubuntu-clang-build:
     needs:
       - clang-format
@@ -263,39 +263,39 @@ jobs:
       - name: Run func tests (MPI, num_proc=1)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 1
-          OMP_NUM_THREADS: 3
+          PPC_NUM_PROC: 1
+          PPC_NUM_THREADS: 3
       - name: Run func tests (MPI, num_proc=2)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 2
-          OMP_NUM_THREADS: 2
+          PPC_NUM_PROC: 2
+          PPC_NUM_THREADS: 2
       - name: Run func tests (MPI, num_proc=3)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 3
-          OMP_NUM_THREADS: 1
+          PPC_NUM_PROC: 3
+          PPC_NUM_THREADS: 1
       - name: Run func tests (MPI, num_proc=4)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 4
-          OMP_NUM_THREADS: 1
+          PPC_NUM_PROC: 4
+          PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 1
+          PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 2
+          PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 3
+          PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 4
+          PPC_NUM_THREADS: 4
   ubuntu-clang-test-extended:
     needs:
       - ubuntu-clang-test
@@ -323,19 +323,19 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 5
+          PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 7
+          PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 11
+          PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 13
+          PPC_NUM_THREADS: 13
   ubuntu-clang-sanitizer-build:
     needs:
       - ubuntu-clang-build
@@ -416,37 +416,37 @@ jobs:
       - name: Run tests (MPI)
         run: python3 scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
         env:
-          PROC_COUNT: 2
-          OMP_NUM_THREADS: 2
-          ASAN_RUN: 1
+          PPC_NUM_PROC: 2
+          PPC_NUM_THREADS: 2
+          PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 1
-          ASAN_RUN: 1
+          PPC_NUM_THREADS: 1
+          PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 2
-          ASAN_RUN: 1
+          PPC_NUM_THREADS: 2
+          PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 3
-          ASAN_RUN: 1
+          PPC_NUM_THREADS: 3
+          PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 4
-          ASAN_RUN: 1
+          PPC_NUM_THREADS: 4
+          PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
   ubuntu-clang-sanitizer-test-extended:
@@ -477,23 +477,23 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 5
-          ASAN_RUN: 1
+          PPC_NUM_THREADS: 5
+          PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 7
-          ASAN_RUN: 1
+          PPC_NUM_THREADS: 7
+          PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 11
-          ASAN_RUN: 1
+          PPC_NUM_THREADS: 11
+          PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 13
-          ASAN_RUN: 1
+          PPC_NUM_THREADS: 13
+          PPC_ASAN_RUN: 1
   macos-clang-build:
     needs:
       - clang-format
@@ -564,39 +564,39 @@ jobs:
       - name: Run func tests (MPI, num_proc=1)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 1
-          OMP_NUM_THREADS: 3
+          PPC_NUM_PROC: 1
+          PPC_NUM_THREADS: 3
       - name: Run func tests (MPI, num_proc=2)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 2
-          OMP_NUM_THREADS: 2
+          PPC_NUM_PROC: 2
+          PPC_NUM_THREADS: 2
       - name: Run func tests (MPI, num_proc=3)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 3
-          OMP_NUM_THREADS: 1
+          PPC_NUM_PROC: 3
+          PPC_NUM_THREADS: 1
       - name: Run func tests (MPI, num_proc=4)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 4
-          OMP_NUM_THREADS: 1
+          PPC_NUM_PROC: 4
+          PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 1
+          PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 2
+          PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 3
+          PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 4
+          PPC_NUM_THREADS: 4
   macos-clang-test-extended:
     needs:
       - macos-clang-test
@@ -622,19 +622,19 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 5
+          PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 7
+          PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 11
+          PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 13
+          PPC_NUM_THREADS: 13
   windows-msvc-build:
     needs:
       - clang-format
@@ -711,39 +711,39 @@ jobs:
       - name: Run func tests (MPI, num_proc=1)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 1
-          OMP_NUM_THREADS: 3
+          PPC_NUM_PROC: 1
+          PPC_NUM_THREADS: 3
       - name: Run func tests (MPI, num_proc=2)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 2
-          OMP_NUM_THREADS: 2
+          PPC_NUM_PROC: 2
+          PPC_NUM_THREADS: 2
       - name: Run func tests (MPI, num_proc=3)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 3
-          OMP_NUM_THREADS: 1
+          PPC_NUM_PROC: 3
+          PPC_NUM_THREADS: 1
       - name: Run func tests (MPI, num_proc=4)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 4
-          OMP_NUM_THREADS: 1
+          PPC_NUM_PROC: 4
+          PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 1
+          PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 2
+          PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 3
+          PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 4
+          PPC_NUM_THREADS: 4
   windows-msvc-test-extended:
     needs:
       - windows-msvc-test
@@ -771,19 +771,19 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 5
+          PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 7
+          PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 11
+          PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 13
+          PPC_NUM_THREADS: 13
   windows-clang-build:
     needs:
       - clang-format
@@ -864,19 +864,19 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 1
+          PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 2
+          PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 3
+          PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 4
+          PPC_NUM_THREADS: 4
   windows-clang-test-extended:
     needs:
       - windows-clang-test
@@ -904,19 +904,19 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 5
+          PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 7
+          PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 11
+          PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 13
+          PPC_NUM_THREADS: 13
   ubuntu-gcc-build-codecov:
     needs:
       - ubuntu-gcc-test-extended
@@ -950,24 +950,24 @@ jobs:
       - name: Run tests (MPI)
         run: python3 scripts/run_tests.py --running-type="processes"
         env:
-          PROC_COUNT: 2
-          OMP_NUM_THREADS: 2
+          PPC_NUM_PROC: 2
+          PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 1
+          PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 2
+          PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 3
+          PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
-          OMP_NUM_THREADS: 4
+          PPC_NUM_THREADS: 4
       - name: Generate gcovr Coverage Data
         run: |
           mkdir cov-report
@@ -1022,14 +1022,14 @@ jobs:
         run: |
           python3 scripts/run_perf_counter.py --required-tests-number=2
         env:
-          OMP_NUM_THREADS: 2
-          PROC_COUNT: 2
+          PPC_NUM_THREADS: 2
+          PPC_NUM_PROC: 2
       - name: Run perf tests
         run: |
           bash -e scripts/generate_perf_results.sh
         env:
-          OMP_NUM_THREADS: 2
-          PROC_COUNT: 2
+          PPC_NUM_THREADS: 2
+          PPC_NUM_PROC: 2
       - name: Archive results
         uses: montudor/action-zip@v1
         with:
