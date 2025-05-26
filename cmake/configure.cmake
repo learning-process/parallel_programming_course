@@ -88,4 +88,4 @@ if( MSVC )
     set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} ${COMMON_FLAGS}" )
 endif( MSVC )
 
-find_package( Threads )
+find_package( Threads REQUIRED )
