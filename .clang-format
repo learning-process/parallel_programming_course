@@ -5,3 +5,6 @@ ColumnLimit: 120
 UseTab: Never
 QualifierAlignment: Left
 PointerAlignment: Right
+InsertNewlineAtEOF: true
+KeepEmptyLines:
+  AtEndOfFile: false
