@@ -38,8 +38,11 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   virtual bool CheckTestOutputData(OutType& output_data) = 0;
   virtual InType GetTestInputData() = 0;
 
-  void ExecuteTest(ppc::core::PerfResults::TypeOfRunning mode,
-                   std::function<ppc::core::TaskPtr<InType, OutType>(InType)> task_getter, std::string test_name) {
+  void ExecuteTest(const PerfTestParam<InType, OutType>& perfTestParam) {
+    auto task_getter = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(perfTestParam);
+    auto test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(perfTestParam);
+    auto mode = std::get<ppc::util::FuncTestParamIndex::kAddParams>(perfTestParam);
+
     task_ = task_getter(GetTestInputData());
     ppc::core::Perf perf(task_);
     ppc::core::PerfAttr perf_attr;

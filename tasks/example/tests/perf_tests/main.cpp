@@ -43,12 +43,7 @@ class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
   InType GetTestInputData() final { return input_data_; }
 };
 
-TEST_P(ExampleRunPerfTest, RunModes) {
-  auto task_getter = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(GetParam());
-  auto test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(GetParam());
-  auto perf_type = std::get<ppc::util::FuncTestParamIndex::kAddParams>(GetParam());
-  ExecuteTest(perf_type, task_getter, test_name);
-}
+TEST_P(ExampleRunPerfTest, RunPerfModes) { ExecuteTest(GetParam()); }
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(RunModeTests, ExampleRunPerfTest,
                                 ::testing::Values(ADD_PERF_MODES(nesterov_a_test_task_all::TestTaskALL, InType),
