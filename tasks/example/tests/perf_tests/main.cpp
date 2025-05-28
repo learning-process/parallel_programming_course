@@ -20,12 +20,12 @@ using OutType = std::vector<int>;
 
 class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
   static constexpr int kCount = 400;
-  InType input_data;
+  InType input_data_;
 
   void SetUp() override {
-    input_data.assign(kCount * kCount, 0);
+    input_data_.assign(kCount * kCount, 0);
     for (int i = 0; i < kCount; ++i) {
-      input_data[(i * kCount) + i] = 1;
+      input_data_[(i * kCount) + i] = 1;
     }
   }
 
@@ -38,19 +38,23 @@ class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
     };
   }
 
-  bool CheckTestOutputData(OutType& output_data) final { return input_data == output_data; }
+  bool CheckTestOutputData(OutType& output_data) final { return input_data_ == output_data; }
 
-  InType GetTestInputData() final { return input_data; }
+  InType GetTestInputData() final { return input_data_; }
 };
 
 TEST_P(ExampleRunPerfTest, RunModes) {
-  ExecuteTest(std::get<0>(GetParam()), std::get<1>(GetParam()), std::get<2>(GetParam()));
+  auto task_getter = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(GetParam());
+  auto test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(GetParam());
+  auto perf_type = std::get<ppc::util::FuncTestParamIndex::kAddParams>(GetParam());
+  ExecuteTest(perf_type, task_getter, test_name);
 }
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(RunModeTests, ExampleRunPerfTest,
-                                ::testing::Values(ADD_MODES(nesterov_a_test_task_all::TestTaskALL, InType),
-                                                  ADD_MODES(nesterov_a_test_task_mpi::TestTaskMPI, InType),
-                                                  ADD_MODES(nesterov_a_test_task_omp::TestTaskOMP, InType),
-                                                  ADD_MODES(nesterov_a_test_task_seq::TestTaskSEQ, InType),
-                                                  ADD_MODES(nesterov_a_test_task_stl::TestTaskSTL, InType),
-                                                  ADD_MODES(nesterov_a_test_task_tbb::TestTaskTBB, InType)));
+                                ::testing::Values(ADD_PERF_MODES(nesterov_a_test_task_all::TestTaskALL, InType),
+                                                  ADD_PERF_MODES(nesterov_a_test_task_mpi::TestTaskMPI, InType),
+                                                  ADD_PERF_MODES(nesterov_a_test_task_omp::TestTaskOMP, InType),
+                                                  ADD_PERF_MODES(nesterov_a_test_task_seq::TestTaskSEQ, InType),
+                                                  ADD_PERF_MODES(nesterov_a_test_task_stl::TestTaskSTL, InType),
+                                                  ADD_PERF_MODES(nesterov_a_test_task_tbb::TestTaskTBB, InType)),
+                                ExampleRunPerfTest::CustomPerfTestName);

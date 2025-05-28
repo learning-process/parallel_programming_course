@@ -1,10 +1,12 @@
 #include <gtest/gtest.h>
 
+#include <cstddef>
 #include <cstdint>
 #include <stb_library.hpp>
 #include <string>
 #include <vector>
 
+#include "core/util/include/test_util.hpp"
 #include "core/util/include/util.hpp"
 #include "example/all/include/ops_all.hpp"
 #include "example/mpi/include/ops_mpi.hpp"
@@ -16,25 +18,29 @@
 using InType = std::vector<int>;
 using OutType = std::vector<int>;
 
-using TestParam = std::tuple<int, std::function<ppc::core::TaskPtr<InType, OutType>(InType)>>;
+class NesterovARunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTestParam<InType, OutType, int>> {
+ public:
+  static std::string CustomFuncTestName(
+      const ::testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, int>>& info) {
+    return std::to_string(info.index);
+  }
 
-class NesterovARunFuncTests : public ::testing::TestWithParam<TestParam> {
  protected:
   void SetUp() override {
     // Read image
     std::string abs_path = ppc::util::GetAbsolutePath("example/tests/data/pic_all.jpg");
     data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
     ASSERT_TRUE(data != nullptr) << "Failed to load image: " << stbi_failure_reason();
-    img = std::vector<uint8_t>(data, data + (width * height * channels));
+    img = std::vector<uint8_t>(data, data + (static_cast<ptrdiff_t>(width * height * channels)));
     stbi_image_free(data);
     ASSERT_EQ(width, height);
 
-    const int k_count = (width + height) / std::get<0>(GetParam());
-    std::vector<int> in(k_count * k_count, 0);
+    const int k_count = (width + height) / std::get<ppc::util::FuncTestParamIndex::kAddParams>(GetParam());
+    std::vector<int> in(static_cast<std::vector<int>::size_type>(k_count * k_count), 0);
     for (int i = 0; i < k_count; i++) {
       in[(i * k_count) + i] = 1;
     }
-    task = std::get<1>(GetParam())(in);
+    task = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(GetParam())(in);
   }
 
   void ExecuteTest() {
@@ -53,13 +59,15 @@ class NesterovARunFuncTests : public ::testing::TestWithParam<TestParam> {
 
 TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(); }
 
-#define ADD_TASK(TASK) \
-  std::make_tuple(5, ppc::core::TaskGetter<TASK, InType>), std::make_tuple(10, ppc::core::TaskGetter<TASK, InType>)
+#define ADD_FUNC_TASK(TASK)                                    \
+  std::make_tuple(ppc::core::TaskGetter<TASK, InType>, "", 5), \
+      std::make_tuple(ppc::core::TaskGetter<TASK, InType>, "", 10)
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests,
-                                ::testing::Values(ADD_TASK(nesterov_a_test_task_all::TestTaskALL),
-                                                  ADD_TASK(nesterov_a_test_task_mpi::TestTaskMPI),
-                                                  ADD_TASK(nesterov_a_test_task_omp::TestTaskOMP),
-                                                  ADD_TASK(nesterov_a_test_task_seq::TestTaskSEQ),
-                                                  ADD_TASK(nesterov_a_test_task_stl::TestTaskSTL),
-                                                  ADD_TASK(nesterov_a_test_task_tbb::TestTaskTBB)));
+                                ::testing::Values(ADD_FUNC_TASK(nesterov_a_test_task_all::TestTaskALL),
+                                                  ADD_FUNC_TASK(nesterov_a_test_task_mpi::TestTaskMPI),
+                                                  ADD_FUNC_TASK(nesterov_a_test_task_omp::TestTaskOMP),
+                                                  ADD_FUNC_TASK(nesterov_a_test_task_seq::TestTaskSEQ),
+                                                  ADD_FUNC_TASK(nesterov_a_test_task_stl::TestTaskSTL),
+                                                  ADD_FUNC_TASK(nesterov_a_test_task_tbb::TestTaskTBB)),
+                                NesterovARunFuncTests::CustomFuncTestName);

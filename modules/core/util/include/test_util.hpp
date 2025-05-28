@@ -7,12 +7,32 @@
 
 namespace ppc::util {
 
-template <typename InType, typename OutType>
-using TestParam = std::tuple<ppc::core::PerfResults::TypeOfRunning,
-                             std::function<ppc::core::TaskPtr<InType, OutType>(InType)>, std::string>;
+enum FuncTestParamIndex : uint8_t { kTaskGetter, kNameTest, kAddParams };
+
+inline std::string GetStringParamName(ppc::core::PerfResults::TypeOfRunning type_of_running) {
+  if (type_of_running == core::PerfResults::kTaskRun) {
+    return "task_run";
+  }
+  if (type_of_running == core::PerfResults::kPipeline) {
+    return "pipeline";
+  }
+  return "none";
+}
+
+template <typename InType, typename OutType, typename AddParams = void>
+using FuncTestParam = std::tuple<std::function<ppc::core::TaskPtr<InType, OutType>(InType)>, std::string, AddParams>;
 
 template <typename InType, typename OutType>
-class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<InType, OutType>> {
+using PerfTestParam = FuncTestParam<InType, OutType, ppc::core::PerfResults::TypeOfRunning>;
+
+template <typename InType, typename OutType>
+class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, OutType>> {
+ public:
+  static std::string CustomPerfTestName(const ::testing::TestParamInfo<PerfTestParam<InType, OutType>>& info) {
+    return ppc::util::GetStringParamName(std::get<FuncTestParamIndex::kAddParams>(info.param)) + "_" +
+           std::get<FuncTestParamIndex::kNameTest>(info.param);
+  }
+
  protected:
   virtual void SetPerfAttributes(ppc::core::PerfAttr& perf_attrs) = 0;
   virtual bool CheckTestOutputData(OutType& output_data) = 0;
@@ -20,8 +40,8 @@ class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<InType, OutTy
 
   void ExecuteTest(ppc::core::PerfResults::TypeOfRunning mode,
                    std::function<ppc::core::TaskPtr<InType, OutType>(InType)> task_getter, std::string test_name) {
-    task = task_getter(GetTestInputData());
-    ppc::core::Perf perf(task);
+    task_ = task_getter(GetTestInputData());
+    ppc::core::Perf perf(task_);
     ppc::core::PerfAttr perf_attr;
     SetPerfAttributes(perf_attr);
 
@@ -40,18 +60,18 @@ class BaseRunPerfTests : public ::testing::TestWithParam<TestParam<InType, OutTy
     if (rank == 0) {
       perf.PrintPerfStatistic(test_name);
     }
-    OutType output_data = task->GetOutput();
+    OutType output_data = task_->GetOutput();
     ASSERT_TRUE(CheckTestOutputData(output_data));
   }
 
  private:
-  ppc::core::TaskPtr<InType, OutType> task;
+  ppc::core::TaskPtr<InType, OutType> task_;
 };
 
-#define ADD_MODES(TaskType, InputTypeParam)                                                                          \
-  std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kPipeline, ppc::core::TaskGetter<TaskType, InputTypeParam>, \
-                  ppc::util::GetNamespace<TaskType>()),                                                              \
-      std::make_tuple(ppc::core::PerfResults::TypeOfRunning::kTaskRun,                                               \
-                      ppc::core::TaskGetter<TaskType, InputTypeParam>, ppc::util::GetNamespace<TaskType>())
+#define ADD_PERF_MODES(TaskType, InputTypeParam)                                                            \
+  std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>, ppc::util::GetNamespace<TaskType>(),     \
+                  ppc::core::PerfResults::TypeOfRunning::kPipeline),                                        \
+      std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>, ppc::util::GetNamespace<TaskType>(), \
+                      ppc::core::PerfResults::TypeOfRunning::kTaskRun)
 
 }  // namespace ppc::util
