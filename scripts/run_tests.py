@@ -64,14 +64,16 @@ class PPCRunner:
     def run_threads(self):
         if platform.system() == "Linux" and not os.environ.get("ASAN_RUN"):
             for task_type in ["seq", "stl"]:
-                self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'ppc_func_tests'} {self.__get_gtest_settings(1, '_' + task_type + '_')}")
+                self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'ppc_func_tests'} "
+                                f"{self.__get_gtest_settings(1, '_' + task_type + '_')}")
 
         for task_type in ["omp", "seq", "stl", "tbb"]:
             self.__run_exec(f"{self.work_dir / 'ppc_func_tests'} {self.__get_gtest_settings(3, '_' + task_type + '_')}")
 
     def run_core(self):
         if platform.system() == "Linux" and not os.environ.get("ASAN_RUN"):
-            self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'core_func_tests'} {self.__get_gtest_settings(1, '*')}")
+            self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'core_func_tests'} "
+                            f"{self.__get_gtest_settings(1, '*')}")
 
         self.__run_exec(f"{self.work_dir / 'core_func_tests'} {self.__get_gtest_settings(1, '*')}")
 
@@ -83,7 +85,8 @@ class PPCRunner:
         mpi_running = f"{self.mpi_exec} {additional_mpi_args} -np {proc_count}"
         if not os.environ.get("ASAN_RUN"):
             for task_type in ["all", "mpi"]:
-                self.__run_exec(f"{mpi_running} {self.work_dir / 'ppc_func_tests'} {self.__get_gtest_settings(10, '_' + task_type)}")
+                self.__run_exec(f"{mpi_running} {self.work_dir / 'ppc_func_tests'} "
+                                f"{self.__get_gtest_settings(10, '_' + task_type)}")
 
     def run_performance(self):
         if not os.environ.get("ASAN_RUN"):
@@ -92,13 +95,14 @@ class PPCRunner:
                 raise EnvironmentError("Required environment variable 'PROC_COUNT' is not set.")
             mpi_running = f"{self.mpi_exec} -np {proc_count}"
             for task_type in ["all", "mpi"]:
-                self.__run_exec(f"{mpi_running} {self.work_dir / 'ppc_perf_tests'} {self.__get_gtest_settings(1, '_' + task_type)}")
+                self.__run_exec(f"{mpi_running} {self.work_dir / 'ppc_perf_tests'} "
+                                f"{self.__get_gtest_settings(1, '_' + task_type)}")
 
         for task_type in ["omp", "seq", "stl", "tbb"]:
             self.__run_exec(f"{self.work_dir / 'ppc_perf_tests'} {self.__get_gtest_settings(1, '_' + task_type)}")
 
     def run_performance_list(self):
-            self.__run_exec(f"{self.work_dir / 'ppc_perf_tests'} --gtest_list_tests")
+        self.__run_exec(f"{self.work_dir / 'ppc_perf_tests'} --gtest_list_tests")
 
 
 if __name__ == "__main__":
