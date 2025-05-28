@@ -22,7 +22,8 @@ class NesterovARunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTes
  public:
   static std::string CustomFuncTestName(
       const ::testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, int>>& info) {
-    return std::to_string(info.index);
+    return std::get<ppc::util::FuncTestParamIndex::kNameTest>(info.param) + "_" +
+        std::to_string(std::get<ppc::util::FuncTestParamIndex::kAddParams>(info.param));
   }
 
  protected:
@@ -60,8 +61,8 @@ class NesterovARunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTes
 TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(); }
 
 #define ADD_FUNC_TASK(TASK)                                    \
-  std::make_tuple(ppc::core::TaskGetter<TASK, InType>, "", 5), \
-      std::make_tuple(ppc::core::TaskGetter<TASK, InType>, "", 10)
+  std::make_tuple(ppc::core::TaskGetter<TASK, InType>, ppc::util::GetNamespace<TASK>(), 5), \
+      std::make_tuple(ppc::core::TaskGetter<TASK, InType>, ppc::util::GetNamespace<TASK>(), 10)
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests,
                                 ::testing::Values(ADD_FUNC_TASK(nesterov_a_test_task_all::TestTaskALL),

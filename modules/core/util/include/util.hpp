@@ -16,7 +16,7 @@ namespace ppc::util {
 std::string GetAbsolutePath(const std::string &relative_path);
 int GetPPCNumThreads();
 
-#if defined(__clang__) || defined(__GNUC__)
+#if (defined(__clang__) || defined(__GNUC__)) && !defined(_MSC_VER)
 template <typename T>
 consteval std::string_view GetNamespace() {
   constexpr std::string_view kFunc = __PRETTY_FUNCTION__;
