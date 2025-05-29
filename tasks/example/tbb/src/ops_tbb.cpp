@@ -22,23 +22,23 @@ void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_v
 }
 }  // namespace
 
-nesterov_a_test_task_tbb::TestTaskTBB::TestTaskTBB(const InType &in) { GetInput() = in; }
+nesterov_a_test_task_tbb::NesterovATestTaskTBB::NesterovATestTaskTBB(const InType &in) { GetInput() = in; }
 
-bool nesterov_a_test_task_tbb::TestTaskTBB::ValidationImpl() {
+bool nesterov_a_test_task_tbb::NesterovATestTaskTBB::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
   return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
 }
 
-bool nesterov_a_test_task_tbb::TestTaskTBB::PreProcessingImpl() {
+bool nesterov_a_test_task_tbb::NesterovATestTaskTBB::PreProcessingImpl() {
   rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
   GetOutput() = OutType(GetInput().size(), 0);
   return true;
 }
 
-bool nesterov_a_test_task_tbb::TestTaskTBB::RunImpl() {
+bool nesterov_a_test_task_tbb::NesterovATestTaskTBB::RunImpl() {
   tbb::parallel_for(0, ppc::util::GetPPCNumThreads(), [&](int i) { MatMul(GetInput(), rc_size_ - i, GetOutput()); });
   MatMul(GetInput(), rc_size_, GetOutput());
   return true;
 }
 
-bool nesterov_a_test_task_tbb::TestTaskTBB::PostProcessingImpl() { return true; }
+bool nesterov_a_test_task_tbb::NesterovATestTaskTBB::PostProcessingImpl() { return true; }

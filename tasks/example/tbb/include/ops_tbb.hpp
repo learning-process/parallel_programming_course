@@ -10,9 +10,9 @@ namespace nesterov_a_test_task_tbb {
 using InType = std::vector<int>;
 using OutType = std::vector<int>;
 
-class TestTaskTBB : public ppc::core::Task<InType, OutType> {
+class NesterovATestTaskTBB : public ppc::core::Task<InType, OutType> {
  public:
-  explicit TestTaskTBB(const InType& in);
+  explicit NesterovATestTaskTBB(const InType& in);
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;

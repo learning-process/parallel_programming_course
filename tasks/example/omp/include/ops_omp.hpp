@@ -10,9 +10,9 @@ namespace nesterov_a_test_task_omp {
 using InType = std::vector<int>;
 using OutType = std::vector<int>;
 
-class TestTaskOMP : public ppc::core::Task<InType, OutType> {
+class NesterovATestTaskOMP : public ppc::core::Task<InType, OutType> {
  public:
-  explicit TestTaskOMP(const InType& in);
+  explicit NesterovATestTaskOMP(const InType& in);
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;

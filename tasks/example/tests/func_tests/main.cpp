@@ -22,13 +22,6 @@ using TestType = int;
 class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType, TestType> {
   InType input_data_;
 
- public:
-  static std::string CustomFuncTestName(const ppc::util::GTestFuncParam<InType, OutType, TestType> &info) {
-    std::string test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(info.param);
-    std::string test_param = std::to_string(std::get<ppc::util::FuncTestParamIndex::kTestParams>(info.param));
-    return test_name + "_" + test_param;
-  }
-
  protected:
   void SetUp() override {
     int width = -1;
@@ -48,7 +41,7 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
       }
     }
 
-    const int k_count = (width + height) / std::get<ppc::util::FuncTestParamIndex::kTestParams>(GetParam());
+    const int k_count = (width + height) / std::get<ppc::util::TestParamIndex::kTestParams>(GetParam());
     input_data_ = InType(static_cast<std::vector<int>::size_type>(k_count * k_count), 0);
     for (int i = 0; i < k_count; i++) {
       input_data_[(i * k_count) + i] = 1;
@@ -66,14 +59,20 @@ TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(GetParam()); }
 
 constexpr std::array<TestType, 3> kTestParam = {5, 10, 15};
 
-DEFINE_GEN_TASK(InType, kTestParam)
+INIT_TASK_GENERATOR(InType, kTestParam)
 
-const auto kTasksList =
-    std::tuple_cat(GenTask<nesterov_a_test_task_all::TestTaskALL>(), GenTask<nesterov_a_test_task_mpi::TestTaskMPI>(),
-                   GenTask<nesterov_a_test_task_omp::TestTaskOMP>(), GenTask<nesterov_a_test_task_seq::TestTaskSEQ>(),
-                   GenTask<nesterov_a_test_task_stl::TestTaskSTL>(), GenTask<nesterov_a_test_task_tbb::TestTaskTBB>());
+const auto kTestTasksList = std::tuple_cat(TaskListGenerator<nesterov_a_test_task_all::NesterovATestTaskALL>(),
+                                           TaskListGenerator<nesterov_a_test_task_mpi::NesterovATestTaskMPI>(),
+                                           TaskListGenerator<nesterov_a_test_task_omp::NesterovATestTaskOMP>(),
+                                           TaskListGenerator<nesterov_a_test_task_seq::NesterovATestTaskSEQ>(),
+                                           TaskListGenerator<nesterov_a_test_task_stl::NesterovATestTaskSTL>(),
+                                           TaskListGenerator<nesterov_a_test_task_tbb::NesterovATestTaskTBB>());
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests, ppc::util::ExpandToValues(kTasksList),
-                                NesterovARunFuncTests::CustomFuncTestName);
+INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests, ppc::util::ExpandToValues(kTestTasksList),
+                                [](const auto &info) {
+                                  std::string test_name = std::get<ppc::util::TestParamIndex::kNameTest>(info.param);
+                                  TestType test_param = std::get<ppc::util::TestParamIndex::kTestParams>(info.param);
+                                  return test_name + "_" + std::to_string(test_param);
+                                });
 
 }  // namespace

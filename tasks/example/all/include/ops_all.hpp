@@ -13,9 +13,9 @@ void MatMulTBB(const std::vector<int> &in_vec, int rc_size, std::vector<int> &ou
 using InType = std::vector<int>;
 using OutType = std::vector<int>;
 
-class TestTaskALL : public ppc::core::Task<InType, OutType> {
+class NesterovATestTaskALL : public ppc::core::Task<InType, OutType> {
  public:
-  explicit TestTaskALL(const InType &in);
+  explicit NesterovATestTaskALL(const InType &in);
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;

@@ -27,21 +27,21 @@ void nesterov_a_test_task_all::MatMulTBB(const InType &in_vec, int rc_size, OutT
   MatMul(in_vec, rc_size, out_vec);
 }
 
-nesterov_a_test_task_all::TestTaskALL::TestTaskALL(const InType &in) { GetInput() = in; }
+nesterov_a_test_task_all::NesterovATestTaskALL::NesterovATestTaskALL(const InType &in) { GetInput() = in; }
 
-bool nesterov_a_test_task_all::TestTaskALL::ValidationImpl() {
+bool nesterov_a_test_task_all::NesterovATestTaskALL::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
   return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
 }
 
-bool nesterov_a_test_task_all::TestTaskALL::PreProcessingImpl() {
+bool nesterov_a_test_task_all::NesterovATestTaskALL::PreProcessingImpl() {
   // Init value for input and output
   rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
   GetOutput() = OutType(GetInput().size(), 0);
   return true;
 }
 
-bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
+bool nesterov_a_test_task_all::NesterovATestTaskALL::RunImpl() {
   int rank = -1;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == 0) {
@@ -65,4 +65,4 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
   return true;
 }
 
-bool nesterov_a_test_task_all::TestTaskALL::PostProcessingImpl() { return true; }
+bool nesterov_a_test_task_all::NesterovATestTaskALL::PostProcessingImpl() { return true; }

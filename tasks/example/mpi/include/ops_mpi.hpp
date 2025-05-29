@@ -13,9 +13,9 @@ void MultiplyColumnMajor(const std::vector<int> &in, std::vector<int> &out, int 
 using InType = std::vector<int>;
 using OutType = std::vector<int>;
 
-class TestTaskMPI : public ppc::core::Task<InType, OutType> {
+class NesterovATestTaskMPI : public ppc::core::Task<InType, OutType> {
  public:
-  explicit TestTaskMPI(const InType &in);
+  explicit NesterovATestTaskMPI(const InType &in);
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;

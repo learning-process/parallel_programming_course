@@ -26,28 +26,28 @@ void nesterov_a_test_task_mpi::MultiplyColumnMajor(const InType &in, OutType &ou
   }
 }
 
-nesterov_a_test_task_mpi::TestTaskMPI::TestTaskMPI(const InType &in) { GetInput() = in; }
+nesterov_a_test_task_mpi::NesterovATestTaskMPI::NesterovATestTaskMPI(const InType &in) { GetInput() = in; }
 
-bool nesterov_a_test_task_mpi::TestTaskMPI::ValidationImpl() {
+bool nesterov_a_test_task_mpi::NesterovATestTaskMPI::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
   return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
 }
 
-bool nesterov_a_test_task_mpi::TestTaskMPI::PreProcessingImpl() {
+bool nesterov_a_test_task_mpi::NesterovATestTaskMPI::PreProcessingImpl() {
   // Init value for input and output
   rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
   GetOutput() = OutType(GetInput().size(), 0);
   return true;
 }
 
-bool nesterov_a_test_task_mpi::TestTaskMPI::RunImpl() {
+bool nesterov_a_test_task_mpi::NesterovATestTaskMPI::RunImpl() {
   MultiplyMatrixBasedOnRank();
   return true;
 }
 
-bool nesterov_a_test_task_mpi::TestTaskMPI::PostProcessingImpl() { return true; }
+bool nesterov_a_test_task_mpi::NesterovATestTaskMPI::PostProcessingImpl() { return true; }
 
-void nesterov_a_test_task_mpi::TestTaskMPI::MultiplyMatrixBasedOnRank() {
+void nesterov_a_test_task_mpi::NesterovATestTaskMPI::MultiplyMatrixBasedOnRank() {
   int rank = -1;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 

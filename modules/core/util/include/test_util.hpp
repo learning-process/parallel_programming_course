@@ -7,7 +7,7 @@
 
 namespace ppc::util {
 
-enum FuncTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
+enum TestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
 
 inline std::string GetStringParamName(ppc::core::PerfResults::TypeOfRunning type_of_running) {
   if (type_of_running == core::PerfResults::kTaskRun) {
@@ -32,8 +32,8 @@ template <typename InType, typename OutType>
 class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, OutType>> {
  public:
   static std::string CustomPerfTestName(const ::testing::TestParamInfo<PerfTestParam<InType, OutType>>& info) {
-    return ppc::util::GetStringParamName(std::get<FuncTestParamIndex::kTestParams>(info.param)) + "_" +
-           std::get<FuncTestParamIndex::kNameTest>(info.param);
+    return ppc::util::GetStringParamName(std::get<TestParamIndex::kTestParams>(info.param)) + "_" +
+           std::get<TestParamIndex::kNameTest>(info.param);
   }
 
  protected:
@@ -42,9 +42,9 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   virtual InType GetTestInputData() = 0;
 
   void ExecuteTest(const PerfTestParam<InType, OutType>& perf_test_param) {
-    auto task_getter = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(perf_test_param);
-    auto test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(perf_test_param);
-    auto mode = std::get<ppc::util::FuncTestParamIndex::kTestParams>(perf_test_param);
+    auto task_getter = std::get<ppc::util::TestParamIndex::kTaskGetter>(perf_test_param);
+    auto test_name = std::get<ppc::util::TestParamIndex::kNameTest>(perf_test_param);
+    auto mode = std::get<ppc::util::TestParamIndex::kTestParams>(perf_test_param);
 
     task_ = task_getter(GetTestInputData());
     ppc::core::Perf perf(task_);
@@ -88,7 +88,7 @@ class BaseRunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTestPara
 
  protected:
   void ExecuteTest(ppc::util::FuncTestParam<InType, OutType, TestType> test_param) {
-    task_ = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
+    task_ = std::get<ppc::util::TestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
     ASSERT_TRUE(task_->Validation());
     ASSERT_TRUE(task_->PreProcessing());
     ASSERT_TRUE(task_->Run());
@@ -111,7 +111,7 @@ auto ExpandToValues(const Tuple& t) {
   return ExpandToValuesImpl(t, std::make_index_sequence<N>{});
 }
 
-#define DEFINE_GEN_TASK(InTypeParam, SizesParam)                                                                      \
+#define INIT_TASK_GENERATOR(InTypeParam, SizesParam)                                                                  \
   template <typename Task, std::size_t... Is>                                                                         \
   auto GenTaskTuplesImpl(std::index_sequence<Is...>) {                                                                \
     return std::make_tuple(std::make_tuple(ppc::core::TaskGetter<Task, InTypeParam>, ppc::util::GetNamespace<Task>(), \
@@ -119,7 +119,7 @@ auto ExpandToValues(const Tuple& t) {
   }                                                                                                                   \
                                                                                                                       \
   template <typename Task>                                                                                            \
-  auto GenTask() {                                                                                                    \
+  auto TaskListGenerator() {                                                                                          \
     return GenTaskTuplesImpl<Task>(std::make_index_sequence<SizesParam.size()>{});                                    \
   }
 
