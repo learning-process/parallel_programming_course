@@ -23,8 +23,7 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
   InType input_data_;
 
  public:
-  static std::string CustomFuncTestName(
-      const ::testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, TestType>> &info) {
+  static std::string CustomFuncTestName(const ppc::util::GTestFuncParam<InType, OutType, TestType> &info) {
     std::string test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(info.param);
     std::string test_param = std::to_string(std::get<ppc::util::FuncTestParamIndex::kTestParams>(info.param));
     return test_name + "_" + test_param;

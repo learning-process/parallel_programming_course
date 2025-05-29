@@ -22,6 +22,9 @@ inline std::string GetStringParamName(ppc::core::PerfResults::TypeOfRunning type
 template <typename InType, typename OutType, typename TestType = void>
 using FuncTestParam = std::tuple<std::function<ppc::core::TaskPtr<InType, OutType>(InType)>, std::string, TestType>;
 
+template <typename InType, typename OutType, typename TestType = void>
+using GTestFuncParam = ::testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, TestType>>;
+
 template <typename InType, typename OutType>
 using PerfTestParam = FuncTestParam<InType, OutType, ppc::core::PerfResults::TypeOfRunning>;
 
