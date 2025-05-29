@@ -20,12 +20,12 @@ using InType = std::vector<int>;
 using OutType = std::vector<int>;
 
 class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
-  static constexpr unsigned kCount = 400;
+  static constexpr std::vector<int>::size_type kCount = 400;
   InType input_data_;
 
   void SetUp() override {
-    input_data_.assign(static_cast<std::vector<int>::size_type>(kCount * kCount), 0u);
-    for (unsigned i = 0; i < kCount; ++i) {
+    input_data_.assign(kCount * kCount, 0U);
+    for (std::vector<int>::size_type i = 0; i < kCount; ++i) {
       input_data_[(i * kCount) + i] = 1;
     }
   }

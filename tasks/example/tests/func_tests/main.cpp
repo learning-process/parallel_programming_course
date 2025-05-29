@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <stb_library.hpp>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "core/util/include/test_util.hpp"
@@ -41,15 +42,16 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
       }
       auto img = std::vector<uint8_t>(data, data + (static_cast<ptrdiff_t>(width * height * channels)));
       stbi_image_free(data);
-      if (width != height) {
+      if (std::cmp_not_equal(width, height)) {
         throw std::runtime_error("width != height: ");
       }
     }
 
     TestType params = std::get<ppc::util::TestParamIndex::kTestParams>(GetParam());
-    const int k_count = ((width + height) / std::get<0>(params)) * std::stoi(std::get<1>(params));
-    input_data_ = InType(static_cast<std::vector<int>::size_type>(k_count * k_count), 0);
-    for (int i = 0; i < k_count; i++) {
+    const auto k_count = static_cast<const std::vector<int>::size_type>(((width + height) / std::get<0>(params)) *
+                                                                        std::stoi(std::get<1>(params)));
+    input_data_ = InType(k_count * k_count, 0);
+    for (std::vector<int>::size_type i = 0; i < k_count; i++) {
       input_data_[(i * k_count) + i] = 1;
     }
   }
