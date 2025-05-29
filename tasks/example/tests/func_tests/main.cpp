@@ -21,38 +21,41 @@ using TestType = int;
 
 class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType, TestType> {
  public:
-    static std::string CustomFuncTestName(
-        const ::testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, TestType>>& info) {
-      std::string test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(info.param);
-      std::string test_param = std::to_string(std::get<ppc::util::FuncTestParamIndex::kTestParams>(info.param));
-      return test_name + "_" + test_param;
-    }
+  static std::string CustomFuncTestName(
+      const ::testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, TestType>> &info) {
+    std::string test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(info.param);
+    std::string test_param = std::to_string(std::get<ppc::util::FuncTestParamIndex::kTestParams>(info.param));
+    return test_name + "_" + test_param;
+  }
 
  protected:
   void SetUp() override {
+    PrepareData();
+    GetTaskPtr() = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(GetParam())(GetTestInput());
+  }
+
+  void PrepareData() {
+    int width = -1;
+    int height = -1;
+    int channels = -1;
     // Read image
-    std::string abs_path = ppc::util::GetAbsolutePath("example/tests/data/pic_all.jpg");
-    data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
-    ASSERT_TRUE(data != nullptr) << "Failed to load image: " << stbi_failure_reason();
-    img = std::vector<uint8_t>(data, data + (static_cast<ptrdiff_t>(width * height * channels)));
-    stbi_image_free(data);
-    ASSERT_EQ(width, height);
+    {
+      std::string abs_path = ppc::util::GetAbsolutePath("example/tests/data/pic_all.jpg");
+      auto *data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
+      ASSERT_TRUE(data != nullptr) << "Failed to load image: " << stbi_failure_reason();
+      auto img = std::vector<uint8_t>(data, data + (static_cast<ptrdiff_t>(width * height * channels)));
+      stbi_image_free(data);
+      ASSERT_EQ(width, height);
+    }
 
     const int k_count = (width + height) / std::get<ppc::util::FuncTestParamIndex::kTestParams>(GetParam());
-    std::vector<int> in(static_cast<std::vector<int>::size_type>(k_count * k_count), 0);
+    GetTestInput() = InType(static_cast<std::vector<int>::size_type>(k_count * k_count), 0);
     for (int i = 0; i < k_count; i++) {
-      in[(i * k_count) + i] = 1;
+      GetTestInput()[(i * k_count) + i] = 1;
     }
-    GetTaskPtr() = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(GetParam())(in);
   }
 
-  void CheckTestOutputData() final {
-    EXPECT_EQ(GetTaskPtr()->GetInput(), GetTaskPtr()->GetOutput());
-  }
-
-  int width = -1, height = -1, channels = -1;
-  unsigned char* data = nullptr;
-  std::vector<uint8_t> img;
+  void CheckTestOutputData() final { EXPECT_EQ(GetTestInput(), GetTaskPtr()->GetOutput()); }
 };
 
 TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(); }

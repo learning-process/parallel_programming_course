@@ -19,8 +19,8 @@ inline std::string GetStringParamName(ppc::core::PerfResults::TypeOfRunning type
   return "none";
 }
 
-template <typename InType, typename OutType, typename AddParams = void>
-using FuncTestParam = std::tuple<std::function<ppc::core::TaskPtr<InType, OutType>(InType)>, std::string, AddParams>;
+template <typename InType, typename OutType, typename TestType = void>
+using FuncTestParam = std::tuple<std::function<ppc::core::TaskPtr<InType, OutType>(InType)>, std::string, TestType>;
 
 template <typename InType, typename OutType>
 using PerfTestParam = FuncTestParam<InType, OutType, ppc::core::PerfResults::TypeOfRunning>;
@@ -80,22 +80,22 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 template <typename InType, typename OutType, typename TestType = void>
 class BaseRunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTestParam<InType, OutType, TestType>> {
  public:
- virtual void CheckTestOutputData() = 0;
- ppc::core::TaskPtr<InType, OutType>& GetTaskPtr() {
-   return task;
- }
+  virtual void CheckTestOutputData() = 0;
+  ppc::core::TaskPtr<InType, OutType>& GetTaskPtr() { return task; }
+  InType& GetTestInput() { return test_input_; }
 
-protected:
- void ExecuteTest() {
-   ASSERT_TRUE(task->Validation());
-   ASSERT_TRUE(task->PreProcessing());
-   ASSERT_TRUE(task->Run());
-   ASSERT_TRUE(task->PostProcessing());
-   CheckTestOutputData();
- }
+ protected:
+  void ExecuteTest() {
+    ASSERT_TRUE(task->Validation());
+    ASSERT_TRUE(task->PreProcessing());
+    ASSERT_TRUE(task->Run());
+    ASSERT_TRUE(task->PostProcessing());
+    CheckTestOutputData();
+  }
 
  private:
   ppc::core::TaskPtr<InType, OutType> task;
+  InType test_input_;
 };
 
 }  // namespace ppc::util
