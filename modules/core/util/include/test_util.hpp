@@ -7,7 +7,7 @@
 
 namespace ppc::util {
 
-enum FuncTestParamIndex : uint8_t { kTaskGetter, kNameTest, kAddParams };
+enum FuncTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
 
 inline std::string GetStringParamName(ppc::core::PerfResults::TypeOfRunning type_of_running) {
   if (type_of_running == core::PerfResults::kTaskRun) {
@@ -29,7 +29,7 @@ template <typename InType, typename OutType>
 class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, OutType>> {
  public:
   static std::string CustomPerfTestName(const ::testing::TestParamInfo<PerfTestParam<InType, OutType>>& info) {
-    return ppc::util::GetStringParamName(std::get<FuncTestParamIndex::kAddParams>(info.param)) + "_" +
+    return ppc::util::GetStringParamName(std::get<FuncTestParamIndex::kTestParams>(info.param)) + "_" +
            std::get<FuncTestParamIndex::kNameTest>(info.param);
   }
 
@@ -41,7 +41,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   void ExecuteTest(const PerfTestParam<InType, OutType>& perfTestParam) {
     auto task_getter = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(perfTestParam);
     auto test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(perfTestParam);
-    auto mode = std::get<ppc::util::FuncTestParamIndex::kAddParams>(perfTestParam);
+    auto mode = std::get<ppc::util::FuncTestParamIndex::kTestParams>(perfTestParam);
 
     task_ = task_getter(GetTestInputData());
     ppc::core::Perf perf(task_);
@@ -76,5 +76,26 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
                   ppc::core::PerfResults::TypeOfRunning::kPipeline),                                        \
       std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>, ppc::util::GetNamespace<TaskType>(), \
                       ppc::core::PerfResults::TypeOfRunning::kTaskRun)
+
+template <typename InType, typename OutType, typename TestType = void>
+class BaseRunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTestParam<InType, OutType, TestType>> {
+ public:
+ virtual void CheckTestOutputData() = 0;
+ ppc::core::TaskPtr<InType, OutType>& GetTaskPtr() {
+   return task;
+ }
+
+protected:
+ void ExecuteTest() {
+   ASSERT_TRUE(task->Validation());
+   ASSERT_TRUE(task->PreProcessing());
+   ASSERT_TRUE(task->Run());
+   ASSERT_TRUE(task->PostProcessing());
+   CheckTestOutputData();
+ }
+
+ private:
+  ppc::core::TaskPtr<InType, OutType> task;
+};
 
 }  // namespace ppc::util

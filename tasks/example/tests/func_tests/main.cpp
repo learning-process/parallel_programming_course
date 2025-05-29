@@ -17,14 +17,16 @@
 
 using InType = std::vector<int>;
 using OutType = std::vector<int>;
+using TestType = int;
 
-class NesterovARunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTestParam<InType, OutType, int>> {
+class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType, TestType> {
  public:
-  static std::string CustomFuncTestName(
-      const ::testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, int>>& info) {
-    return std::get<ppc::util::FuncTestParamIndex::kNameTest>(info.param) + "_" +
-           std::to_string(std::get<ppc::util::FuncTestParamIndex::kAddParams>(info.param));
-  }
+    static std::string CustomFuncTestName(
+        const ::testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, TestType>>& info) {
+      std::string test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(info.param);
+      std::string test_param = std::to_string(std::get<ppc::util::FuncTestParamIndex::kTestParams>(info.param));
+      return test_name + "_" + test_param;
+    }
 
  protected:
   void SetUp() override {
@@ -36,23 +38,18 @@ class NesterovARunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTes
     stbi_image_free(data);
     ASSERT_EQ(width, height);
 
-    const int k_count = (width + height) / std::get<ppc::util::FuncTestParamIndex::kAddParams>(GetParam());
+    const int k_count = (width + height) / std::get<ppc::util::FuncTestParamIndex::kTestParams>(GetParam());
     std::vector<int> in(static_cast<std::vector<int>::size_type>(k_count * k_count), 0);
     for (int i = 0; i < k_count; i++) {
       in[(i * k_count) + i] = 1;
     }
-    task = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(GetParam())(in);
+    GetTaskPtr() = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(GetParam())(in);
   }
 
-  void ExecuteTest() {
-    ASSERT_TRUE(task->Validation());
-    task->PreProcessing();
-    task->Run();
-    task->PostProcessing();
-    EXPECT_EQ(task->GetInput(), task->GetOutput());
+  void CheckTestOutputData() final {
+    EXPECT_EQ(GetTaskPtr()->GetInput(), GetTaskPtr()->GetOutput());
   }
 
-  ppc::core::TaskPtr<InType, OutType> task;
   int width = -1, height = -1, channels = -1;
   unsigned char* data = nullptr;
   std::vector<uint8_t> img;
