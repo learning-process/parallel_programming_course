@@ -111,7 +111,7 @@ auto ExpandToValues(const Tuple& t) {
   return ExpandToValuesImpl(t, std::make_index_sequence<N>{});
 }
 
-#define DEFINE_GEN_TASK_TUPLES(InTypeParam, SizesParam)                                                               \
+#define DEFINE_GEN_TASK(InTypeParam, SizesParam)                                                                      \
   template <typename Task, std::size_t... Is>                                                                         \
   auto GenTaskTuplesImpl(std::index_sequence<Is...>) {                                                                \
     return std::make_tuple(std::make_tuple(ppc::core::TaskGetter<Task, InTypeParam>, ppc::util::GetNamespace<Task>(), \
@@ -119,7 +119,7 @@ auto ExpandToValues(const Tuple& t) {
   }                                                                                                                   \
                                                                                                                       \
   template <typename Task>                                                                                            \
-  auto GenTaskTuples() {                                                                                              \
+  auto GenTask() {                                                                                                    \
     return GenTaskTuplesImpl<Task>(std::make_index_sequence<SizesParam.size()>{});                                    \
   }
 

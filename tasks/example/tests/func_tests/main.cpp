@@ -60,16 +60,20 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
   InType GetTestInputData() final { return input_data_; }
 };
 
+namespace {
+
 TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(GetParam()); }
 
 constexpr std::array<TestType, 3> kTestParam = {5, 10, 15};
 
-DEFINE_GEN_TASK_TUPLES(InType, kTestParam)
+DEFINE_GEN_TASK(InType, kTestParam)
 
-static auto tasks_list = std::tuple_cat(
-    GenTaskTuples<nesterov_a_test_task_all::TestTaskALL>(), GenTaskTuples<nesterov_a_test_task_mpi::TestTaskMPI>(),
-    GenTaskTuples<nesterov_a_test_task_omp::TestTaskOMP>(), GenTaskTuples<nesterov_a_test_task_seq::TestTaskSEQ>(),
-    GenTaskTuples<nesterov_a_test_task_stl::TestTaskSTL>(), GenTaskTuples<nesterov_a_test_task_tbb::TestTaskTBB>());
+const auto kTasksList =
+    std::tuple_cat(GenTask<nesterov_a_test_task_all::TestTaskALL>(), GenTask<nesterov_a_test_task_mpi::TestTaskMPI>(),
+                   GenTask<nesterov_a_test_task_omp::TestTaskOMP>(), GenTask<nesterov_a_test_task_seq::TestTaskSEQ>(),
+                   GenTask<nesterov_a_test_task_stl::TestTaskSTL>(), GenTask<nesterov_a_test_task_tbb::TestTaskTBB>());
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests, ppc::util::ExpandToValues(tasks_list),
+INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests, ppc::util::ExpandToValues(kTasksList),
                                 NesterovARunFuncTests::CustomFuncTestName);
+
+}  // namespace
