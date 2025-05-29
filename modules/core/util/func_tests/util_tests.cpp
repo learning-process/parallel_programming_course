@@ -10,11 +10,11 @@ TEST(util_tests, check_unset_env) {
 #ifndef _WIN32
   int save_var = ppc::util::GetPPCNumThreads();
 
-  unsetenv("OMP_NUM_THREADS");  // NOLINT(concurrency-mt-unsafe,misc-include-cleaner)
+  unsetenv("PPC_NUM_THREADS");  // NOLINT(concurrency-mt-unsafe)
 
   EXPECT_EQ(ppc::util::GetPPCNumThreads(), 1);
 
-  setenv("OMP_NUM_THREADS", std::to_string(save_var).c_str(), 1);  // NOLINT(concurrency-mt-unsafe,misc-include-cleaner)
+  setenv("PPC_NUM_THREADS", std::to_string(save_var).c_str(), 1);  // NOLINT(concurrency-mt-unsafe)
 #else
   GTEST_SKIP();
 #endif
@@ -25,12 +25,11 @@ TEST(util_tests, check_set_env) {
   int save_var = ppc::util::GetPPCNumThreads();
 
   const int num_threads = static_cast<int>(std::thread::hardware_concurrency());
-  // NOLINTNEXTLINE(concurrency-mt-unsafe,misc-include-cleaner)
-  setenv("OMP_NUM_THREADS", std::to_string(num_threads).c_str(), 1);
+  setenv("PPC_NUM_THREADS", std::to_string(num_threads).c_str(), 1);  // NOLINT(concurrency-mt-unsafe)
 
   EXPECT_EQ(ppc::util::GetPPCNumThreads(), num_threads);
 
-  setenv("OMP_NUM_THREADS", std::to_string(save_var).c_str(), 1);  // NOLINT(concurrency-mt-unsafe,misc-include-cleaner)
+  setenv("PPC_NUM_THREADS", std::to_string(save_var).c_str(), 1);  // NOLINT(concurrency-mt-unsafe)
 #else
   GTEST_SKIP();
 #endif

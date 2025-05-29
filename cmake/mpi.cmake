@@ -1,4 +1,4 @@
-find_package( MPI )
+find_package( MPI REQUIRED )
 if( MPI_FOUND )
     include_directories( ${MPI_INCLUDE_PATH} )
 else( MPI_FOUND )

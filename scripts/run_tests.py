@@ -62,7 +62,7 @@ class PPCRunner:
         return command
 
     def run_threads(self):
-        if platform.system() == "Linux" and not os.environ.get("ASAN_RUN"):
+        if platform.system() == "Linux" and not os.environ.get("PPC_ASAN_RUN"):
             for task_type in ["seq", "stl"]:
                 self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'ppc_func_tests'} "
                                 f"{self.__get_gtest_settings(1, '_' + task_type + '_')}")
@@ -71,29 +71,29 @@ class PPCRunner:
             self.__run_exec(f"{self.work_dir / 'ppc_func_tests'} {self.__get_gtest_settings(3, '_' + task_type + '_')}")
 
     def run_core(self):
-        if platform.system() == "Linux" and not os.environ.get("ASAN_RUN"):
+        if platform.system() == "Linux" and not os.environ.get("PPC_ASAN_RUN"):
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'core_func_tests'} "
                             f"{self.__get_gtest_settings(1, '*')}")
 
         self.__run_exec(f"{self.work_dir / 'core_func_tests'} {self.__get_gtest_settings(1, '*')}")
 
     def run_processes(self, additional_mpi_args):
-        proc_count = os.environ.get("PROC_COUNT")
-        if proc_count is None:
-            raise EnvironmentError("Required environment variable 'PROC_COUNT' is not set.")
+        PPC_NUM_PROC = os.environ.get("PPC_NUM_PROC")
+        if PPC_NUM_PROC is None:
+            raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
 
-        mpi_running = f"{self.mpi_exec} {additional_mpi_args} -np {proc_count}"
-        if not os.environ.get("ASAN_RUN"):
+        mpi_running = f"{self.mpi_exec} {additional_mpi_args} -np {PPC_NUM_PROC}"
+        if not os.environ.get("PPC_ASAN_RUN"):
             for task_type in ["all", "mpi"]:
                 self.__run_exec(f"{mpi_running} {self.work_dir / 'ppc_func_tests'} "
                                 f"{self.__get_gtest_settings(10, '_' + task_type)}")
 
     def run_performance(self):
-        if not os.environ.get("ASAN_RUN"):
-            proc_count = os.environ.get("PROC_COUNT")
-            if proc_count is None:
-                raise EnvironmentError("Required environment variable 'PROC_COUNT' is not set.")
-            mpi_running = f"{self.mpi_exec} -np {proc_count}"
+        if not os.environ.get("PPC_ASAN_RUN"):
+            PPC_NUM_PROC = os.environ.get("PPC_NUM_PROC")
+            if PPC_NUM_PROC is None:
+                raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
+            mpi_running = f"{self.mpi_exec} -np {PPC_NUM_PROC}"
             for task_type in ["all", "mpi"]:
                 self.__run_exec(f"{mpi_running} {self.work_dir / 'ppc_perf_tests'} "
                                 f"{self.__get_gtest_settings(1, '_' + task_type)}")
