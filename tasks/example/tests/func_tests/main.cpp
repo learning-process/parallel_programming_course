@@ -22,6 +22,9 @@ using TestType = int;
 class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType, TestType> {
   InType input_data_;
 
+ public:
+  static std::string PrintTestParam(TestType test_param) { return std::to_string(test_param); }
+
  protected:
   void SetUp() override {
     int width = -1;
@@ -41,7 +44,8 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
       }
     }
 
-    const int k_count = (width + height) / std::get<ppc::util::TestParamIndex::kTestParams>(GetParam());
+    TestType divider = std::get<ppc::util::TestParamIndex::kTestParams>(GetParam());
+    const int k_count = (width + height) / divider;
     input_data_ = InType(static_cast<std::vector<int>::size_type>(k_count * k_count), 0);
     for (int i = 0; i < k_count; i++) {
       input_data_[(i * k_count) + i] = 1;
@@ -69,10 +73,6 @@ const auto kTestTasksList = std::tuple_cat(TaskListGenerator<nesterov_a_test_tas
                                            TaskListGenerator<nesterov_a_test_task_tbb::NesterovATestTaskTBB>());
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests, ppc::util::ExpandToValues(kTestTasksList),
-                                [](const auto &info) {
-                                  std::string test_name = std::get<ppc::util::TestParamIndex::kNameTest>(info.param);
-                                  TestType test_param = std::get<ppc::util::TestParamIndex::kTestParams>(info.param);
-                                  return test_name + "_" + std::to_string(test_param);
-                                });
+                                NesterovARunFuncTests::PrintFuncTestName<NesterovARunFuncTests>);
 
 }  // namespace

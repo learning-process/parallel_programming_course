@@ -23,7 +23,7 @@ template <typename InType, typename OutType, typename TestType = void>
 using FuncTestParam = std::tuple<std::function<ppc::core::TaskPtr<InType, OutType>(InType)>, std::string, TestType>;
 
 template <typename InType, typename OutType, typename TestType = void>
-using GTestFuncParam = ::testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, TestType>>;
+using GTestFuncParam = ::testing::TestParamInfo<FuncTestParam<InType, OutType, TestType>>;
 
 template <typename InType, typename OutType>
 using PerfTestParam = FuncTestParam<InType, OutType, ppc::core::PerfResults::TypeOfRunning>;
@@ -42,9 +42,9 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   virtual InType GetTestInputData() = 0;
 
   void ExecuteTest(const PerfTestParam<InType, OutType>& perf_test_param) {
-    auto task_getter = std::get<ppc::util::TestParamIndex::kTaskGetter>(perf_test_param);
-    auto test_name = std::get<ppc::util::TestParamIndex::kNameTest>(perf_test_param);
-    auto mode = std::get<ppc::util::TestParamIndex::kTestParams>(perf_test_param);
+    auto task_getter = std::get<TestParamIndex::kTaskGetter>(perf_test_param);
+    auto test_name = std::get<TestParamIndex::kNameTest>(perf_test_param);
+    auto mode = std::get<TestParamIndex::kTestParams>(perf_test_param);
 
     task_ = task_getter(GetTestInputData());
     ppc::core::Perf perf(task_);
@@ -80,15 +80,33 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
       std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>, ppc::util::GetNamespace<TaskType>(), \
                       ppc::core::PerfResults::TypeOfRunning::kTaskRun)
 
+template <typename T, typename TestType>
+concept HasPrintTestParam = requires(TestType value) {
+  { T::PrintTestParam(value) } -> std::same_as<std::string>;
+};
+
 template <typename InType, typename OutType, typename TestType = void>
-class BaseRunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTestParam<InType, OutType, TestType>> {
+class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, OutType, TestType>> {
  public:
   virtual bool CheckTestOutputData(OutType& output_data) = 0;
   virtual InType GetTestInputData() = 0;
 
+  template <typename Derived>
+  static void require_static_interface() {
+    static_assert(HasPrintTestParam<Derived, TestType>,
+                  "Derived class must implement: static std::string PrintTestParam(TestType)");
+  }
+
+  template <typename Derived>
+  static std::string PrintFuncTestName(const GTestFuncParam<InType, OutType, TestType>& info) {
+    require_static_interface<Derived>();
+    TestType test_param = std::get<ppc::util::TestParamIndex::kTestParams>(info.param);
+    return std::get<TestParamIndex::kNameTest>(info.param) + "_" + Derived::PrintTestParam(test_param);
+  }
+
  protected:
-  void ExecuteTest(ppc::util::FuncTestParam<InType, OutType, TestType> test_param) {
-    task_ = std::get<ppc::util::TestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
+  void ExecuteTest(FuncTestParam<InType, OutType, TestType> test_param) {
+    task_ = std::get<TestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
     ASSERT_TRUE(task_->Validation());
     ASSERT_TRUE(task_->PreProcessing());
     ASSERT_TRUE(task_->Run());
@@ -101,14 +119,14 @@ class BaseRunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTestPara
 };
 
 template <typename Tuple, std::size_t... Is>
-auto ExpandToValuesImpl(const Tuple& t, std::index_sequence<Is...>) {
+auto ExpandToValuesImpl(const Tuple& t, std::index_sequence<Is...> /*unused*/) {
   return ::testing::Values(std::get<Is>(t)...);
 }
 
 template <typename Tuple>
 auto ExpandToValues(const Tuple& t) {
-  constexpr std::size_t N = std::tuple_size_v<Tuple>;
-  return ExpandToValuesImpl(t, std::make_index_sequence<N>{});
+  constexpr std::size_t kN = std::tuple_size_v<Tuple>;
+  return ExpandToValuesImpl(t, std::make_index_sequence<kN>{});
 }
 
 #define INIT_TASK_GENERATOR(InTypeParam, SizesParam)                                                                  \
