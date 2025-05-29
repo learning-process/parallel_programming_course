@@ -21,6 +21,7 @@ using TestType = int;
 
 class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType, TestType> {
   InType input_data_;
+
  public:
   static std::string CustomFuncTestName(
       const ::testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, TestType>> &info) {
@@ -43,7 +44,7 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
       }
       auto img = std::vector<uint8_t>(data, data + (static_cast<ptrdiff_t>(width * height * channels)));
       stbi_image_free(data);
-      if(width != height) {
+      if (width != height) {
         throw std::runtime_error("width != height: ");
       }
     }
@@ -55,22 +56,21 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
     }
   }
 
-  bool CheckTestOutputData(OutType& output_data) final { return input_data_ == output_data; }
+  bool CheckTestOutputData(OutType &output_data) final { return input_data_ == output_data; }
 
   InType GetTestInputData() final { return input_data_; }
 };
 
 TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(GetParam()); }
 
-#define ADD_FUNC_TASK(TASK)                                                                 \
-  std::make_tuple(ppc::core::TaskGetter<TASK, InType>, ppc::util::GetNamespace<TASK>(), 5), \
-      std::make_tuple(ppc::core::TaskGetter<TASK, InType>, ppc::util::GetNamespace<TASK>(), 10)
+constexpr std::array<TestType, 3> kTestParam = {5, 10, 15};
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests,
-                                ::testing::Values(ADD_FUNC_TASK(nesterov_a_test_task_all::TestTaskALL),
-                                                  ADD_FUNC_TASK(nesterov_a_test_task_mpi::TestTaskMPI),
-                                                  ADD_FUNC_TASK(nesterov_a_test_task_omp::TestTaskOMP),
-                                                  ADD_FUNC_TASK(nesterov_a_test_task_seq::TestTaskSEQ),
-                                                  ADD_FUNC_TASK(nesterov_a_test_task_stl::TestTaskSTL),
-                                                  ADD_FUNC_TASK(nesterov_a_test_task_tbb::TestTaskTBB)),
+DEFINE_GEN_TASK_TUPLES(InType, kTestParam)
+
+static auto tasks_list = std::tuple_cat(
+    GenTaskTuples<nesterov_a_test_task_all::TestTaskALL>(), GenTaskTuples<nesterov_a_test_task_mpi::TestTaskMPI>(),
+    GenTaskTuples<nesterov_a_test_task_omp::TestTaskOMP>(), GenTaskTuples<nesterov_a_test_task_seq::TestTaskSEQ>(),
+    GenTaskTuples<nesterov_a_test_task_stl::TestTaskSTL>(), GenTaskTuples<nesterov_a_test_task_tbb::TestTaskTBB>());
+
+INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests, ppc::util::ExpandToValues(tasks_list),
                                 NesterovARunFuncTests::CustomFuncTestName);

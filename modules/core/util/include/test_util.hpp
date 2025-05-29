@@ -97,4 +97,27 @@ class BaseRunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTestPara
   ppc::core::TaskPtr<InType, OutType> task_;
 };
 
+template <typename Tuple, std::size_t... Is>
+auto ExpandToValuesImpl(const Tuple& t, std::index_sequence<Is...>) {
+  return ::testing::Values(std::get<Is>(t)...);
+}
+
+template <typename Tuple>
+auto ExpandToValues(const Tuple& t) {
+  constexpr std::size_t N = std::tuple_size_v<Tuple>;
+  return ExpandToValuesImpl(t, std::make_index_sequence<N>{});
+}
+
+#define DEFINE_GEN_TASK_TUPLES(InTypeParam, SizesParam)                                                               \
+  template <typename Task, std::size_t... Is>                                                                         \
+  auto GenTaskTuplesImpl(std::index_sequence<Is...>) {                                                                \
+    return std::make_tuple(std::make_tuple(ppc::core::TaskGetter<Task, InTypeParam>, ppc::util::GetNamespace<Task>(), \
+                                           SizesParam[Is])...);                                                       \
+  }                                                                                                                   \
+                                                                                                                      \
+  template <typename Task>                                                                                            \
+  auto GenTaskTuples() {                                                                                              \
+    return GenTaskTuplesImpl<Task>(std::make_index_sequence<SizesParam.size()>{});                                    \
+  }
+
 }  // namespace ppc::util
