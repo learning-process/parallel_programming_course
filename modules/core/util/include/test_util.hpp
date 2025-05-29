@@ -38,10 +38,10 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   virtual bool CheckTestOutputData(OutType& output_data) = 0;
   virtual InType GetTestInputData() = 0;
 
-  void ExecuteTest(const PerfTestParam<InType, OutType>& perfTestParam) {
-    auto task_getter = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(perfTestParam);
-    auto test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(perfTestParam);
-    auto mode = std::get<ppc::util::FuncTestParamIndex::kTestParams>(perfTestParam);
+  void ExecuteTest(const PerfTestParam<InType, OutType>& perf_test_param) {
+    auto task_getter = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(perf_test_param);
+    auto test_name = std::get<ppc::util::FuncTestParamIndex::kNameTest>(perf_test_param);
+    auto mode = std::get<ppc::util::FuncTestParamIndex::kTestParams>(perf_test_param);
 
     task_ = task_getter(GetTestInputData());
     ppc::core::Perf perf(task_);
@@ -80,22 +80,21 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 template <typename InType, typename OutType, typename TestType = void>
 class BaseRunFuncTests : public ::testing::TestWithParam<ppc::util::FuncTestParam<InType, OutType, TestType>> {
  public:
-  virtual void CheckTestOutputData() = 0;
-  ppc::core::TaskPtr<InType, OutType>& GetTaskPtr() { return task; }
-  InType& GetTestInput() { return test_input_; }
+  virtual bool CheckTestOutputData(OutType& output_data) = 0;
+  virtual InType GetTestInputData() = 0;
 
  protected:
-  void ExecuteTest() {
-    ASSERT_TRUE(task->Validation());
-    ASSERT_TRUE(task->PreProcessing());
-    ASSERT_TRUE(task->Run());
-    ASSERT_TRUE(task->PostProcessing());
-    CheckTestOutputData();
+  void ExecuteTest(ppc::util::FuncTestParam<InType, OutType, TestType> test_param) {
+    task_ = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
+    ASSERT_TRUE(task_->Validation());
+    ASSERT_TRUE(task_->PreProcessing());
+    ASSERT_TRUE(task_->Run());
+    ASSERT_TRUE(task_->PostProcessing());
+    ASSERT_TRUE(CheckTestOutputData(task_->GetOutput()));
   }
 
  private:
-  ppc::core::TaskPtr<InType, OutType> task;
-  InType test_input_;
+  ppc::core::TaskPtr<InType, OutType> task_;
 };
 
 }  // namespace ppc::util

@@ -20,6 +20,7 @@ using OutType = std::vector<int>;
 using TestType = int;
 
 class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType, TestType> {
+  InType input_data_;
  public:
   static std::string CustomFuncTestName(
       const ::testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, TestType>> &info) {
@@ -30,11 +31,6 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
 
  protected:
   void SetUp() override {
-    PrepareData();
-    GetTaskPtr() = std::get<ppc::util::FuncTestParamIndex::kTaskGetter>(GetParam())(GetTestInput());
-  }
-
-  void PrepareData() {
     int width = -1;
     int height = -1;
     int channels = -1;
@@ -42,23 +38,29 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
     {
       std::string abs_path = ppc::util::GetAbsolutePath("example/tests/data/pic_all.jpg");
       auto *data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
-      ASSERT_TRUE(data != nullptr) << "Failed to load image: " << stbi_failure_reason();
+      if (data == nullptr) {
+        throw std::runtime_error("Failed to load image: " + std::string(stbi_failure_reason()));
+      }
       auto img = std::vector<uint8_t>(data, data + (static_cast<ptrdiff_t>(width * height * channels)));
       stbi_image_free(data);
-      ASSERT_EQ(width, height);
+      if(width != height) {
+        throw std::runtime_error("width != height: ");
+      }
     }
 
     const int k_count = (width + height) / std::get<ppc::util::FuncTestParamIndex::kTestParams>(GetParam());
-    GetTestInput() = InType(static_cast<std::vector<int>::size_type>(k_count * k_count), 0);
+    input_data_ = InType(static_cast<std::vector<int>::size_type>(k_count * k_count), 0);
     for (int i = 0; i < k_count; i++) {
-      GetTestInput()[(i * k_count) + i] = 1;
+      input_data_[(i * k_count) + i] = 1;
     }
   }
 
-  void CheckTestOutputData() final { EXPECT_EQ(GetTestInput(), GetTaskPtr()->GetOutput()); }
+  bool CheckTestOutputData(OutType& output_data) final { return input_data_ == output_data; }
+
+  InType GetTestInputData() final { return input_data_; }
 };
 
-TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(); }
+TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(GetParam()); }
 
 #define ADD_FUNC_TASK(TASK)                                                                 \
   std::make_tuple(ppc::core::TaskGetter<TASK, InType>, ppc::util::GetNamespace<TASK>(), 5), \
