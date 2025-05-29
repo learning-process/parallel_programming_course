@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-26 10:22+0200\n"
+"POT-Creation-Date: 2025-05-29 19:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -32,20 +32,27 @@ msgstr ""
 
 #: ../../../../docs/user_guide/environment_variables.rst:6
 msgid ""
-"``PPC_NUM_PROC``: Specifies the number of processes to launch. "
-"Default: ``1``"
+"``PPC_NUM_PROC``: Specifies the number of processes to launch. Default: "
+"``1``"
 msgstr ""
 
 #: ../../../../docs/user_guide/environment_variables.rst:9
 msgid ""
-"``PPC_NUM_THREADS``: Specifies the number of threads to use. Default:"
-" ``1``"
+"``PPC_NUM_THREADS``: Specifies the number of threads to use. Default: "
+"``1``"
 msgstr ""
 
 #: ../../../../docs/user_guide/environment_variables.rst:12
 msgid ""
-"``PPC_ASAN_RUN``: Specifies that application is compiler with "
-"sanitizers. Used by ``scripts/run_tests.py`` to skip ``valgrind`` runs. "
-"Default: ``0``"
+"``PPC_ASAN_RUN``: Specifies that application is compiler with sanitizers."
+" Used by ``scripts/run_tests.py`` to skip ``valgrind`` runs. Default: "
+"``0``"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment_variables.rst:15
+msgid ""
+"``PPC_IGNORE_TEST_TIME_LIMIT``: Specifies that test time limits are "
+"ignored. Used by ``scripts/run_tests.py`` to disable time limit "
+"enforcement. Default: ``0``"
 msgstr ""
 

@@ -11,3 +11,6 @@ The following environment variables can be used to configure the project's runti
 
 - ``PPC_ASAN_RUN``: Specifies that application is compiler with sanitizers. Used by ``scripts/run_tests.py`` to skip ``valgrind`` runs.
   Default: ``0``
+
+- ``PPC_IGNORE_TEST_TIME_LIMIT``: Specifies that test time limits are ignored. Used by ``scripts/run_tests.py`` to disable time limit enforcement.
+  Default: ``0``
