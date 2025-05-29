@@ -17,13 +17,15 @@
 
 using InType = std::vector<int>;
 using OutType = std::vector<int>;
-using TestType = int;
+using TestType = std::tuple<int, std::string>;
 
 class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType, TestType> {
   InType input_data_;
 
  public:
-  static std::string PrintTestParam(TestType test_param) { return std::to_string(test_param); }
+  static std::string PrintTestParam(TestType test_param) {
+    return std::to_string(std::get<0>(test_param)) + "_" + std::get<1>(test_param);
+  }
 
  protected:
   void SetUp() override {
@@ -44,8 +46,8 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
       }
     }
 
-    TestType divider = std::get<ppc::util::TestParamIndex::kTestParams>(GetParam());
-    const int k_count = (width + height) / divider;
+    TestType params = std::get<ppc::util::TestParamIndex::kTestParams>(GetParam());
+    const int k_count = ((width + height) / std::get<0>(params)) * std::stoi(std::get<1>(params));
     input_data_ = InType(static_cast<std::vector<int>::size_type>(k_count * k_count), 0);
     for (int i = 0; i < k_count; i++) {
       input_data_[(i * k_count) + i] = 1;
@@ -61,7 +63,8 @@ namespace {
 
 TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(GetParam()); }
 
-constexpr std::array<TestType, 3> kTestParam = {5, 10, 15};
+constexpr std::array<TestType, 3> kTestParam = {std::make_tuple(5, "5"), std::make_tuple(10, "10"),
+                                                std::make_tuple(15, "15")};
 
 INIT_TASK_GENERATOR(InType, kTestParam)
 

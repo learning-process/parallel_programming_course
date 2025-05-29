@@ -24,7 +24,7 @@ class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
   InType input_data_;
 
   void SetUp() override {
-    input_data_.assign(static_cast<std::vector<int>::size_type>(kCount * kCount), 0);
+    input_data_.assign(static_cast<std::vector<int>::size_type>(kCount * kCount), 0u);
     for (unsigned i = 0; i < kCount; ++i) {
       input_data_[(i * kCount) + i] = 1;
     }
