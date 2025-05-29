@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "core/task/include/task.hpp"
 
 #include <algorithm>
@@ -69,7 +70,9 @@ void ppc::core::Task::InternalTimeTest(const std::string &str) {
     auto diff = static_cast<double>(duration) * 1e-9;
 
     std::stringstream err_msg;
-    if (diff < kMaxTestTime) {
+    if (auto env = std::getenv("PPC_IGNORE_TEST_TIME_LIMIT"); env != nullptr && std::string(env) == "1") {
+      err_msg << "Test time:" << std::fixed << std::setprecision(10) << diff << " (no time limit)" << '\n';
+    } else if (diff < kMaxTestTime) {
       err_msg << "Test time:" << std::fixed << std::setprecision(10) << diff << '\n';
     } else {
       err_msg << "\nTask execute time need to be: ";
