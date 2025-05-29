@@ -15,10 +15,10 @@ jobs:
     steps:
       - uses: actions/stale@v9
         with:
-          stale-pr-message: 'This pull request is stale for 2 weeks and is going to be closed'
+          stale-pr-message: 'This pull request is stale for 2 weeks and is going to be closed in a week'
           days-before-pr-stale: 14
           days-before-issue-stale: -1
-          days-before-pr-close: 0
+          days-before-pr-close: 7
           days-before-issue-close: -1
           stale-pr-label: 'stale'
           operations-per-run: 100
