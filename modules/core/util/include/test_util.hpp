@@ -92,14 +92,14 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   virtual InType GetTestInputData() = 0;
 
   template <typename Derived>
-  static void require_static_interface() {
+  static void RequireStaticInterface() {
     static_assert(HasPrintTestParam<Derived, TestType>,
                   "Derived class must implement: static std::string PrintTestParam(TestType)");
   }
 
   template <typename Derived>
   static std::string PrintFuncTestName(const GTestFuncParam<InType, OutType, TestType>& info) {
-    require_static_interface<Derived>();
+    RequireStaticInterface<Derived>();
     TestType test_param = std::get<ppc::util::TestParamIndex::kTestParams>(info.param);
     return std::get<TestParamIndex::kNameTest>(info.param) + "_" + Derived::PrintTestParam(test_param);
   }

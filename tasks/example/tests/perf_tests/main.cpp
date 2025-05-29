@@ -2,6 +2,7 @@
 #include <mpi.h>
 
 #include <chrono>
+#include <cstddef>
 #include <memory>
 #include <vector>
 
@@ -19,12 +20,12 @@ using InType = std::vector<int>;
 using OutType = std::vector<int>;
 
 class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
-  static constexpr int kCount = 400;
+  static constexpr unsigned kCount = 400;
   InType input_data_;
 
   void SetUp() override {
-    input_data_.assign(kCount * kCount, 0);
-    for (int i = 0; i < kCount; ++i) {
+    input_data_.assign(static_cast<std::vector<int>::size_type>(kCount * kCount), 0);
+    for (unsigned i = 0; i < kCount; ++i) {
       input_data_[(i * kCount) + i] = 1;
     }
   }
