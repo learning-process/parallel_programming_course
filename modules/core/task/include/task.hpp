@@ -13,8 +13,6 @@
 #include <string>
 #include <utility>
 
-#include "core/task/include/task.hpp"
-
 using namespace std::chrono;
 
 namespace ppc::core {
@@ -30,7 +28,7 @@ class Task {
     auto custom_terminate = []() {
       std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT! \n"
                    "Expected - \"Validation\", \"PreProcessing\", \"Run\", \"PostProcessing\" \n";
-      std::exit(404);
+      std::abort();
     };
     std::set_terminate(custom_terminate);
     functions_order_.clear();
