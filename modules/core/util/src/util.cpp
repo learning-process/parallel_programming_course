@@ -1,13 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "core/util/include/util.hpp"
 
 #include <cstdlib>
-#ifdef _WIN32
-#include <cstdint>
-#include <iostream>
-#include <memory>
-#include <vector>
-#endif
-
 #include <filesystem>
 #include <string>
 
@@ -17,17 +11,13 @@ std::string ppc::util::GetAbsolutePath(const std::string &relative_path) {
 }
 
 int ppc::util::GetPPCNumThreads() {
-#ifdef _WIN32
-  size_t len;
-  char omp_env[100];
-  errno_t err = getenv_s(&len, omp_env, sizeof(omp_env), "PPC_NUM_THREADS");
-  if (err != 0 || len == 0) {
-    omp_env[0] = '\0';
+  const char *env = std::getenv("PPC_NUM_THREADS");  // NOLINT(concurrency-mt-unsafe)
+  if ((env != nullptr) && (*env != 0)) {
+    char *endptr = nullptr;
+    long val = std::strtol(env, &endptr, 10);
+    if (endptr != env && val > 0) {
+      return static_cast<int>(val);
+    }
   }
-  int num_threads = std::atoi(omp_env);
-#else
-  const char *omp_env = std::getenv("PPC_NUM_THREADS");  // NOLINT(concurrency-mt-unsafe)
-  int num_threads = (omp_env != nullptr) ? std::atoi(omp_env) : 1;
-#endif
-  return num_threads;
+  return 1;
 }
