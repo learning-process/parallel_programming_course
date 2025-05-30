@@ -63,6 +63,8 @@ class PPCRunner:
         if platform.system() == "Linux" and not os.environ.get("PPC_ASAN_RUN"):
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'seq_func_tests'} {self.__get_gtest_settings(1)}")
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'stl_func_tests'} {self.__get_gtest_settings(1)}")
+            self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'tbb_func_tests'} {self.__get_gtest_settings(1)}")
+            self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'omp_func_tests'} {self.__get_gtest_settings(1)}")
 
         self.__run_exec(f"{self.work_dir / 'seq_func_tests'} {self.__get_gtest_settings(3)}")
         self.__run_exec(f"{self.work_dir / 'stl_func_tests'} {self.__get_gtest_settings(3)}")
