@@ -24,9 +24,9 @@ struct PerfResults {
 template <typename InType, typename OutType>
 class Perf {
  public:
-  // Init performance analysis with initialized task and initialized data
+  // Init performance analysis with an initialized task and initialized data
   explicit Perf(const TaskPtr<InType, OutType>& task_ptr) : task_(task_ptr) {
-    task_ptr->GetStateOfTesting() = Task<InType, OutType>::StateOfTesting::kPerf;
+    task_ptr->GetStateOfTesting() = StateOfTesting::kPerf;
   }
   // Check performance of full task's pipeline:  PreProcessing() ->
   // Validation() -> Run() -> PostProcessing()

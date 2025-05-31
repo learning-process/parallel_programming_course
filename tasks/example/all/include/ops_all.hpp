@@ -3,18 +3,16 @@
 #include <utility>
 #include <vector>
 
-#include "core/task/include/task.hpp"
+#include "example/common/include/common.hpp"
 
-namespace nesterov_a_test_task_all {
+namespace nesterov_a_test_task {
 
 void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec);
 void MatMulTBB(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec);
 
-using InType = std::vector<int>;
-using OutType = std::vector<int>;
-
-class NesterovATestTaskALL : public ppc::core::Task<InType, OutType> {
+class NesterovATestTaskALL : public BaseTask {
  public:
+  static constexpr ppc::core::TypeOfTask GetTypeOfTask() { return ppc::core::TypeOfTask::kALL; }
   explicit NesterovATestTaskALL(const InType &in);
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
@@ -25,4 +23,4 @@ class NesterovATestTaskALL : public ppc::core::Task<InType, OutType> {
   int rc_size_{};
 };
 
-}  // namespace nesterov_a_test_task_all
+}  // namespace nesterov_a_test_task

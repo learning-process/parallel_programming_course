@@ -17,13 +17,14 @@ using namespace std::chrono;
 
 namespace ppc::core {
 
-// Memory of inputs and outputs need to be initialized before create object of
+enum TypeOfTask : uint8_t { kALL, kMPI, kOMP, kSEQ, kSTL, kTBB, kUnknown };
+enum StateOfTesting : uint8_t { kFunc, kPerf };
+
+// Memory of inputs and outputs need to be initialized before create an object of
 // Task class
 template <typename InType, typename OutType>
 class Task {
  public:
-  enum StateOfTesting : uint8_t { kFunc, kPerf };
-
   explicit Task(StateOfTesting /*state_of_testing*/ = StateOfTesting::kFunc) {
     auto custom_terminate = []() {
       std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT! \n"
@@ -66,6 +67,9 @@ class Task {
 
   // get state of testing
   StateOfTesting &GetStateOfTesting() { return state_of_testing_; }
+
+  // get a type of task
+  static constexpr TypeOfTask GetTypeOfTask() { return TypeOfTask::kUnknown; }
 
   InType &GetInput() { return input_; }
 

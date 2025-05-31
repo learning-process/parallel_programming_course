@@ -16,11 +16,9 @@
 #include "example/stl/include/ops_stl.hpp"
 #include "example/tbb/include/ops_tbb.hpp"
 
-using InType = std::vector<int>;
-using OutType = std::vector<int>;
-using TestType = std::tuple<int, std::string>;
+namespace nesterov_a_test_task {
 
-class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType, TestType> {
+class NesterovARunFuncTests : public BaseFuncTests {
   InType input_data_;
 
  public:
@@ -47,7 +45,7 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
       }
     }
 
-    TestType params = std::get<ppc::util::TestParamIndex::kTestParams>(GetParam());
+    TestType params = std::get<ppc::util::GTestParamIndex::kTestParams>(GetParam());
     const auto k_count = static_cast<const std::vector<int>::size_type>(((width + height) / std::get<0>(params)) *
                                                                         std::stoi(std::get<1>(params)));
     input_data_ = InType(k_count * k_count, 0);
@@ -70,14 +68,14 @@ constexpr std::array<TestType, 3> kTestParam = {std::make_tuple(5, "5"), std::ma
 
 INIT_TASK_GENERATOR(InType, kTestParam)
 
-const auto kTestTasksList = std::tuple_cat(TaskListGenerator<nesterov_a_test_task_all::NesterovATestTaskALL>(),
-                                           TaskListGenerator<nesterov_a_test_task_mpi::NesterovATestTaskMPI>(),
-                                           TaskListGenerator<nesterov_a_test_task_omp::NesterovATestTaskOMP>(),
-                                           TaskListGenerator<nesterov_a_test_task_seq::NesterovATestTaskSEQ>(),
-                                           TaskListGenerator<nesterov_a_test_task_stl::NesterovATestTaskSTL>(),
-                                           TaskListGenerator<nesterov_a_test_task_tbb::NesterovATestTaskTBB>());
+const auto kTestTasksList =
+    std::tuple_cat(TaskListGenerator<NesterovATestTaskALL>(), TaskListGenerator<NesterovATestTaskMPI>(),
+                   TaskListGenerator<NesterovATestTaskOMP>(), TaskListGenerator<NesterovATestTaskSEQ>(),
+                   TaskListGenerator<NesterovATestTaskSTL>(), TaskListGenerator<NesterovATestTaskTBB>());
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests, ppc::util::ExpandToValues(kTestTasksList),
                                 NesterovARunFuncTests::PrintFuncTestName<NesterovARunFuncTests>);
 
 }  // namespace
+
+}  // namespace nesterov_a_test_task

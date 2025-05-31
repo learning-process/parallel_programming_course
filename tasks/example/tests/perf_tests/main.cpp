@@ -16,10 +16,9 @@
 #include "example/stl/include/ops_stl.hpp"
 #include "example/tbb/include/ops_tbb.hpp"
 
-using InType = std::vector<int>;
-using OutType = std::vector<int>;
+namespace nesterov_a_test_task {
 
-class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
+class ExampleRunPerfTest : public BasePerfTests {
   static constexpr std::vector<int>::size_type kCount = 400;
   InType input_data_;
 
@@ -48,10 +47,9 @@ TEST_P(ExampleRunPerfTest, RunPerfModes) { ExecuteTest(GetParam()); }
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(
     RunModeTests, ExampleRunPerfTest,
-    ::testing::Values(ADD_PERF_MODES(nesterov_a_test_task_all::NesterovATestTaskALL, InType),
-                      ADD_PERF_MODES(nesterov_a_test_task_mpi::NesterovATestTaskMPI, InType),
-                      ADD_PERF_MODES(nesterov_a_test_task_omp::NesterovATestTaskOMP, InType),
-                      ADD_PERF_MODES(nesterov_a_test_task_seq::NesterovATestTaskSEQ, InType),
-                      ADD_PERF_MODES(nesterov_a_test_task_stl::NesterovATestTaskSTL, InType),
-                      ADD_PERF_MODES(nesterov_a_test_task_tbb::NesterovATestTaskTBB, InType)),
+    ::testing::Values(ADD_PERF_MODES(NesterovATestTaskALL, InType), ADD_PERF_MODES(NesterovATestTaskMPI, InType),
+                      ADD_PERF_MODES(NesterovATestTaskOMP, InType), ADD_PERF_MODES(NesterovATestTaskSEQ, InType),
+                      ADD_PERF_MODES(NesterovATestTaskSTL, InType), ADD_PERF_MODES(NesterovATestTaskTBB, InType)),
     ExampleRunPerfTest::CustomPerfTestName);
+
+}  // namespace nesterov_a_test_task

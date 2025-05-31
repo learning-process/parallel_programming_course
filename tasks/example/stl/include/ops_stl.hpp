@@ -4,14 +4,13 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
+#include "example/common/include/common.hpp"
 
-namespace nesterov_a_test_task_stl {
+namespace nesterov_a_test_task {
 
-using InType = std::vector<int>;
-using OutType = std::vector<int>;
-
-class NesterovATestTaskSTL : public ppc::core::Task<InType, OutType> {
+class NesterovATestTaskSTL : public BaseTask {
  public:
+  static constexpr ppc::core::TypeOfTask GetTypeOfTask() { return ppc::core::TypeOfTask::kSTL; }
   explicit NesterovATestTaskSTL(const InType& in);
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
@@ -22,4 +21,4 @@ class NesterovATestTaskSTL : public ppc::core::Task<InType, OutType> {
   int rc_size_{};
 };
 
-}  // namespace nesterov_a_test_task_stl
+}  // namespace nesterov_a_test_task

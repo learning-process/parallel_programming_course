@@ -21,20 +21,20 @@ void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_v
 }
 }  // namespace
 
-nesterov_a_test_task_stl::NesterovATestTaskSTL::NesterovATestTaskSTL(const InType &in) { GetInput() = in; }
+nesterov_a_test_task::NesterovATestTaskSTL::NesterovATestTaskSTL(const InType &in) { GetInput() = in; }
 
-bool nesterov_a_test_task_stl::NesterovATestTaskSTL::ValidationImpl() {
+bool nesterov_a_test_task::NesterovATestTaskSTL::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
   return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
 }
 
-bool nesterov_a_test_task_stl::NesterovATestTaskSTL::PreProcessingImpl() {
+bool nesterov_a_test_task::NesterovATestTaskSTL::PreProcessingImpl() {
   rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
   GetOutput() = OutType(GetInput().size(), 0);
   return true;
 }
 
-bool nesterov_a_test_task_stl::NesterovATestTaskSTL::RunImpl() {
+bool nesterov_a_test_task::NesterovATestTaskSTL::RunImpl() {
   const int num_threads = ppc::util::GetPPCNumThreads();
   std::vector<std::thread> threads(num_threads);
   for (int i = 0; i < num_threads; i++) {
@@ -44,4 +44,4 @@ bool nesterov_a_test_task_stl::NesterovATestTaskSTL::RunImpl() {
   return true;
 }
 
-bool nesterov_a_test_task_stl::NesterovATestTaskSTL::PostProcessingImpl() { return true; }
+bool nesterov_a_test_task::NesterovATestTaskSTL::PostProcessingImpl() { return true; }
