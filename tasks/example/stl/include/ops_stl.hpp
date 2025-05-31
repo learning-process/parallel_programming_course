@@ -10,7 +10,7 @@ namespace nesterov_a_test_task {
 
 class NesterovATestTaskSTL : public BaseTask {
  public:
-  static constexpr ppc::core::TypeOfTask GetTypeOfTask() { return ppc::core::TypeOfTask::kSTL; }
+  static constexpr ppc::core::TypeOfTask GetStaticTypeOfTask() { return ppc::core::TypeOfTask::kSTL; }
   explicit NesterovATestTaskSTL(const InType& in);
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;

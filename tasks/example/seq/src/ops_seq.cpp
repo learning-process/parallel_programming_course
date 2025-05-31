@@ -4,7 +4,10 @@
 #include <cstddef>
 #include <vector>
 
-nesterov_a_test_task::NesterovATestTaskSEQ::NesterovATestTaskSEQ(const InType& in) { GetInput() = in; }
+nesterov_a_test_task::NesterovATestTaskSEQ::NesterovATestTaskSEQ(const InType& in) {
+  SetTypeOfTask(GetStaticTypeOfTask());
+  GetInput() = in;
+}
 
 bool nesterov_a_test_task::NesterovATestTaskSEQ::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));

@@ -29,15 +29,6 @@ class ExampleRunPerfTest : public BasePerfTests {
     }
   }
 
-  void SetPerfAttributes(ppc::core::PerfAttr& perf_attrs) final {
-    const auto t0 = std::chrono::high_resolution_clock::now();
-    perf_attrs.current_timer = [&] {
-      auto now = std::chrono::high_resolution_clock::now();
-      auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(now - t0).count();
-      return static_cast<double>(ns) * 1e-9;
-    };
-  }
-
   bool CheckTestOutputData(OutType& output_data) final { return input_data_ == output_data; }
 
   InType GetTestInputData() final { return input_data_; }

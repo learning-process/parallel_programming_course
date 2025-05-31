@@ -13,7 +13,7 @@ void MultiplyColumnMajor(const std::vector<int> &in, std::vector<int> &out, int 
 
 class NesterovATestTaskMPI : public BaseTask {
  public:
-  static constexpr ppc::core::TypeOfTask GetTypeOfTask() { return ppc::core::TypeOfTask::kMPI; }
+  static constexpr ppc::core::TypeOfTask GetStaticTypeOfTask() { return ppc::core::TypeOfTask::kMPI; }
   explicit NesterovATestTaskMPI(const InType &in);
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;

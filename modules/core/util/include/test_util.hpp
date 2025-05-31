@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 #include <mpi.h>
+#include <omp.h>
+#include <tbb/tick_count.h>
 
 #include "core/perf/include/perf.hpp"
 
@@ -59,9 +61,32 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   }
 
  protected:
-  virtual void SetPerfAttributes(ppc::core::PerfAttr& perf_attrs) = 0;
   virtual bool CheckTestOutputData(OutType& output_data) = 0;
   virtual InType GetTestInputData() = 0;
+
+  virtual void SetPerfAttributes(ppc::core::PerfAttr& perf_attrs) {
+    if (task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kTBB) {
+      const tbb::tick_count t0 = tbb::tick_count::now();
+      perf_attrs.current_timer = [t0] { return (tbb::tick_count::now() - t0).seconds(); };
+    } else if (task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kMPI ||
+               task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kALL) {
+      const double t0 = MPI_Wtime();
+      perf_attrs.current_timer = [t0] { return MPI_Wtime() - t0; };
+    } else if (task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kOMP) {
+      const double t0 = omp_get_wtime();
+      perf_attrs.current_timer = [t0] { return omp_get_wtime() - t0; };
+    } else if (task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kSEQ ||
+               task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kSTL) {
+      const auto t0 = std::chrono::high_resolution_clock::now();
+      perf_attrs.current_timer = [&] {
+        auto now = std::chrono::high_resolution_clock::now();
+        auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(now - t0).count();
+        return static_cast<double>(ns) * 1e-9;
+      };
+    } else {
+      throw std::runtime_error("The task type is not supported for performance testing.");
+    }
+  }
 
   void ExecuteTest(const PerfTestParam<InType, OutType>& perf_test_param) {
     auto task_getter = std::get<GTestParamIndex::kTaskGetter>(perf_test_param);
@@ -99,11 +124,11 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 #define ADD_PERF_MODES(TaskType, InputTypeParam)                                            \
   std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                          \
                   std::string(ppc::util::GetNamespace<TaskType>()) + std::string("_") +     \
-                      ppc::util::GetStringTaskType(TaskType::GetTypeOfTask()),              \
+                      ppc::util::GetStringTaskType(TaskType::GetStaticTypeOfTask()),        \
                   ppc::core::PerfResults::TypeOfRunning::kPipeline),                        \
       std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                      \
                       std::string(ppc::util::GetNamespace<TaskType>()) + std::string("_") + \
-                          ppc::util::GetStringTaskType(TaskType::GetTypeOfTask()),          \
+                          ppc::util::GetStringTaskType(TaskType::GetStaticTypeOfTask()),    \
                       ppc::core::PerfResults::TypeOfRunning::kTaskRun)
 
 template <typename T, typename TestType>
@@ -160,7 +185,7 @@ auto ExpandToValues(const Tuple& t) {
   auto GenTaskTuplesImpl(std::index_sequence<Is...>) {                                                       \
     return std::make_tuple(std::make_tuple(ppc::core::TaskGetter<Task, InTypeParam>,                         \
                                            std::string(ppc::util::GetNamespace<Task>()) + std::string("_") + \
-                                               ppc::util::GetStringTaskType(Task::GetTypeOfTask()),          \
+                                               ppc::util::GetStringTaskType(Task::GetStaticTypeOfTask()),    \
                                            SizesParam[Is])...);                                              \
   }                                                                                                          \
                                                                                                              \

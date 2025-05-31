@@ -26,7 +26,10 @@ void nesterov_a_test_task::MultiplyColumnMajor(const InType &in, OutType &out, i
   }
 }
 
-nesterov_a_test_task::NesterovATestTaskMPI::NesterovATestTaskMPI(const InType &in) { GetInput() = in; }
+nesterov_a_test_task::NesterovATestTaskMPI::NesterovATestTaskMPI(const InType &in) {
+  SetTypeOfTask(GetStaticTypeOfTask());
+  GetInput() = in;
+}
 
 bool nesterov_a_test_task::NesterovATestTaskMPI::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));

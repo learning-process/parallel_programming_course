@@ -68,8 +68,14 @@ class Task {
   // get state of testing
   StateOfTesting &GetStateOfTesting() { return state_of_testing_; }
 
-  // get a type of task
-  static constexpr TypeOfTask GetTypeOfTask() { return TypeOfTask::kUnknown; }
+  // set a type of task
+  void SetTypeOfTask(TypeOfTask type_of_task) { type_of_task_ = type_of_task; }
+
+  // get a dynamic type of task
+  TypeOfTask GetDynamicTypeOfTask() { return type_of_task_; }
+
+  // get a static type of task
+  static constexpr TypeOfTask GetStaticTypeOfTask() { return TypeOfTask::kUnknown; }
 
   InType &GetInput() { return input_; }
 
@@ -130,6 +136,7 @@ class Task {
   InType input_;
   OutType output_;
   StateOfTesting state_of_testing_ = kFunc;
+  TypeOfTask type_of_task_ = kUnknown;
   std::vector<std::string> functions_order_;
   std::vector<std::string> right_functions_order_ = {"Validation", "PreProcessing", "Run", "PostProcessing"};
   static constexpr double kMaxTestTime = 1.0;
