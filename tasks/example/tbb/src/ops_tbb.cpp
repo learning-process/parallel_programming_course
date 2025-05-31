@@ -9,6 +9,8 @@
 
 #include "oneapi/tbb/parallel_for.h"
 
+namespace nesterov_a_test_task {
+
 namespace {
 void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
   for (int i = 0; i < rc_size; ++i) {
@@ -22,26 +24,28 @@ void MatMul(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_v
 }
 }  // namespace
 
-nesterov_a_test_task::NesterovATestTaskTBB::NesterovATestTaskTBB(const InType &in) {
+NesterovATestTaskTBB::NesterovATestTaskTBB(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
   GetInput() = in;
 }
 
-bool nesterov_a_test_task::NesterovATestTaskTBB::ValidationImpl() {
+bool NesterovATestTaskTBB::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
   return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
 }
 
-bool nesterov_a_test_task::NesterovATestTaskTBB::PreProcessingImpl() {
+bool NesterovATestTaskTBB::PreProcessingImpl() {
   rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
   GetOutput() = OutType(GetInput().size(), 0);
   return true;
 }
 
-bool nesterov_a_test_task::NesterovATestTaskTBB::RunImpl() {
+bool NesterovATestTaskTBB::RunImpl() {
   tbb::parallel_for(0, ppc::util::GetPPCNumThreads(), [&](int i) { MatMul(GetInput(), rc_size_ - i, GetOutput()); });
   MatMul(GetInput(), rc_size_, GetOutput());
   return true;
 }
 
-bool nesterov_a_test_task::NesterovATestTaskTBB::PostProcessingImpl() { return true; }
+bool NesterovATestTaskTBB::PostProcessingImpl() { return true; }
+
+}  // namespace nesterov_a_test_task

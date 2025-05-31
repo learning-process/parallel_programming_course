@@ -5,8 +5,9 @@
 #include <cmath>
 #include <cstddef>
 #include <vector>
+namespace nesterov_a_test_task {
 
-void nesterov_a_test_task::MultiplyRowMajor(const InType &in, OutType &out, int rc_size) {
+void MultiplyRowMajor(const InType &in, OutType &out, int rc_size) {
   for (int i = 0; i < rc_size; ++i) {
     for (int j = 0; j < rc_size; ++j) {
       for (int k = 0; k < rc_size; ++k) {
@@ -16,7 +17,7 @@ void nesterov_a_test_task::MultiplyRowMajor(const InType &in, OutType &out, int 
   }
 }
 
-void nesterov_a_test_task::MultiplyColumnMajor(const InType &in, OutType &out, int rc_size) {
+void MultiplyColumnMajor(const InType &in, OutType &out, int rc_size) {
   for (int j = 0; j < rc_size; ++j) {
     for (int k = 0; k < rc_size; ++k) {
       for (int i = 0; i < rc_size; ++i) {
@@ -26,31 +27,31 @@ void nesterov_a_test_task::MultiplyColumnMajor(const InType &in, OutType &out, i
   }
 }
 
-nesterov_a_test_task::NesterovATestTaskMPI::NesterovATestTaskMPI(const InType &in) {
+NesterovATestTaskMPI::NesterovATestTaskMPI(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
   GetInput() = in;
 }
 
-bool nesterov_a_test_task::NesterovATestTaskMPI::ValidationImpl() {
+bool NesterovATestTaskMPI::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
   return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
 }
 
-bool nesterov_a_test_task::NesterovATestTaskMPI::PreProcessingImpl() {
+bool NesterovATestTaskMPI::PreProcessingImpl() {
   // Init value for input and output
   rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
   GetOutput() = OutType(GetInput().size(), 0);
   return true;
 }
 
-bool nesterov_a_test_task::NesterovATestTaskMPI::RunImpl() {
+bool NesterovATestTaskMPI::RunImpl() {
   MultiplyMatrixBasedOnRank();
   return true;
 }
 
-bool nesterov_a_test_task::NesterovATestTaskMPI::PostProcessingImpl() { return true; }
+bool NesterovATestTaskMPI::PostProcessingImpl() { return true; }
 
-void nesterov_a_test_task::NesterovATestTaskMPI::MultiplyMatrixBasedOnRank() {
+void NesterovATestTaskMPI::MultiplyMatrixBasedOnRank() {
   int rank = -1;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -61,3 +62,5 @@ void nesterov_a_test_task::NesterovATestTaskMPI::MultiplyMatrixBasedOnRank() {
   }
   MPI_Barrier(MPI_COMM_WORLD);
 }
+
+}  // namespace nesterov_a_test_task

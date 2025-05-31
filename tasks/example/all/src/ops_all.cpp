@@ -11,7 +11,9 @@
 #include "core/util/include/util.hpp"
 #include "oneapi/tbb/parallel_for.h"
 
-void nesterov_a_test_task::MatMul(const InType &in_vec, int rc_size, OutType &out_vec) {
+namespace nesterov_a_test_task {
+
+void MatMul(const InType &in_vec, int rc_size, OutType &out_vec) {
   for (int i = 0; i < rc_size; ++i) {
     for (int j = 0; j < rc_size; ++j) {
       out_vec[(i * rc_size) + j] = 0;
@@ -22,29 +24,29 @@ void nesterov_a_test_task::MatMul(const InType &in_vec, int rc_size, OutType &ou
   }
 }
 
-void nesterov_a_test_task::MatMulTBB(const InType &in_vec, int rc_size, OutType &out_vec) {
+void MatMulTBB(const InType &in_vec, int rc_size, OutType &out_vec) {
   tbb::parallel_for(0, ppc::util::GetPPCNumThreads(), [&](int i) { MatMul(in_vec, rc_size - i, out_vec); });
   MatMul(in_vec, rc_size, out_vec);
 }
 
-nesterov_a_test_task::NesterovATestTaskALL::NesterovATestTaskALL(const InType &in) {
+NesterovATestTaskALL::NesterovATestTaskALL(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
   GetInput() = in;
 }
 
-bool nesterov_a_test_task::NesterovATestTaskALL::ValidationImpl() {
+bool NesterovATestTaskALL::ValidationImpl() {
   auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
   return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
 }
 
-bool nesterov_a_test_task::NesterovATestTaskALL::PreProcessingImpl() {
+bool NesterovATestTaskALL::PreProcessingImpl() {
   // Init value for input and output
   rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
   GetOutput() = OutType(GetInput().size(), 0);
   return true;
 }
 
-bool nesterov_a_test_task::NesterovATestTaskALL::RunImpl() {
+bool NesterovATestTaskALL::RunImpl() {
   int rank = -1;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == 0) {
@@ -68,4 +70,6 @@ bool nesterov_a_test_task::NesterovATestTaskALL::RunImpl() {
   return true;
 }
 
-bool nesterov_a_test_task::NesterovATestTaskALL::PostProcessingImpl() { return true; }
+bool NesterovATestTaskALL::PostProcessingImpl() { return true; }
+
+}  // namespace nesterov_a_test_task
