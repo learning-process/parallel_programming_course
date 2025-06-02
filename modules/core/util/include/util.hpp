@@ -13,6 +13,6 @@
 namespace ppc::util {
 
 std::string GetAbsolutePath(const std::string &relative_path);
-int GetPPCNumThreads();
+int GetNumThreads();
 
 }  // namespace ppc::util
