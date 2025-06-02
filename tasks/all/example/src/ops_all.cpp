@@ -23,7 +23,7 @@ void nesterov_a_test_task_all::MatMul(const std::vector<int> &in_vec, int rc_siz
 }
 
 void nesterov_a_test_task_all::MatMulTBB(const std::vector<int> &in_vec, int rc_size, std::vector<int> &out_vec) {
-  tbb::parallel_for(0, ppc::util::GetPPCNumThreads(), [&](int i) { MatMul(in_vec, rc_size - i, out_vec); });
+  tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int i) { MatMul(in_vec, rc_size - i, out_vec); });
   MatMul(in_vec, rc_size, out_vec);
 }
 
@@ -52,7 +52,7 @@ bool nesterov_a_test_task_all::TestTaskALL::RunImpl() {
     MatMulTBB(input_, rc_size_, output_);
   }
 
-  const int num_threads = ppc::util::GetPPCNumThreads();
+  const int num_threads = ppc::util::GetNumThreads();
   std::vector<std::thread> threads(num_threads);
   for (int i = 0; i < num_threads; i++) {
     threads[i] = std::thread(MatMul, std::cref(input_), rc_size_, std::ref(output_));
