@@ -33,7 +33,7 @@ class NesterovARunFuncTests : public BaseFuncTests {
     int channels = -1;
     // Read image
     {
-      std::string abs_path = ppc::util::GetAbsolutePath("example/tests/data/pic_all.jpg");
+      std::string abs_path = ppc::util::GetAbsolutePath("example/data/pic_all.jpg");
       auto *data = stbi_load(abs_path.c_str(), &width, &height, &channels, 0);
       if (data == nullptr) {
         throw std::runtime_error("Failed to load image: " + std::string(stbi_failure_reason()));
