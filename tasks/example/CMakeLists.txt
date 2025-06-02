@@ -7,14 +7,14 @@ set(test_base_dir "${CMAKE_CURRENT_SOURCE_DIR}/tests")
 # Init func tests executable files
 set(list_of_exec_tests "")
 if (USE_FUNC_TESTS)
-    file(GLOB_RECURSE func_tests_source_files "${test_base_dir}/func_tests/*")
+    file(GLOB_RECURSE func_tests_source_files "${test_base_dir}/functional/*")
     target_sources(${exec_func_tests} PRIVATE ${func_tests_source_files})
     list(APPEND list_of_exec_tests ${exec_func_tests})
 endif (USE_FUNC_TESTS)
 
 # Init perf tests executable files
 if (USE_PERF_TESTS)
-    file(GLOB_RECURSE perf_tests_source_files "${test_base_dir}/perf_tests/*")
+    file(GLOB_RECURSE perf_tests_source_files "${test_base_dir}/performance/*")
     target_sources(${exec_perf_tests} PRIVATE ${perf_tests_source_files})
     list(APPEND list_of_exec_tests ${exec_perf_tests})
 endif (USE_PERF_TESTS)
