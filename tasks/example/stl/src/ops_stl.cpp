@@ -40,7 +40,7 @@ bool NesterovATestTaskSTL::PreProcessingImpl() {
 }
 
 bool NesterovATestTaskSTL::RunImpl() {
-  const int num_threads = ppc::util::GetPPCNumThreads();
+  const int num_threads = ppc::util::GetNumThreads();
   std::vector<std::thread> threads(num_threads);
   for (int i = 0; i < num_threads; i++) {
     threads[i] = std::thread(MatMul, GetInput(), rc_size_, std::ref(GetOutput()));

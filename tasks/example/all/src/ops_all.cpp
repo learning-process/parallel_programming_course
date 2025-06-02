@@ -25,7 +25,7 @@ void MatMul(const InType &in_vec, int rc_size, OutType &out_vec) {
 }
 
 void MatMulTBB(const InType &in_vec, int rc_size, OutType &out_vec) {
-  tbb::parallel_for(0, ppc::util::GetPPCNumThreads(), [&](int i) { MatMul(in_vec, rc_size - i, out_vec); });
+  tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int i) { MatMul(in_vec, rc_size - i, out_vec); });
   MatMul(in_vec, rc_size, out_vec);
 }
 
@@ -59,7 +59,7 @@ bool NesterovATestTaskALL::RunImpl() {
     MatMulTBB(GetInput(), rc_size_, GetOutput());
   }
 
-  const int num_threads = ppc::util::GetPPCNumThreads();
+  const int num_threads = ppc::util::GetNumThreads();
   std::vector<std::thread> threads(num_threads);
   for (int i = 0; i < num_threads; i++) {
     threads[i] = std::thread(MatMul, std::cref(GetInput()), rc_size_, std::ref(GetOutput()));
