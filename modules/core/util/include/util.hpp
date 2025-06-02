@@ -14,7 +14,7 @@
 namespace ppc::util {
 
 std::string GetAbsolutePath(const std::string &relative_path);
-int GetPPCNumThreads();
+int GetNumThreads();
 
 #if (defined(__clang__) || defined(__GNUC__)) && !defined(_MSC_VER)
 template <typename T>

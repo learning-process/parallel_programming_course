@@ -16,7 +16,7 @@ std::string ppc::util::GetAbsolutePath(const std::string &relative_path) {
   return path.string();
 }
 
-int ppc::util::GetPPCNumThreads() {
+int ppc::util::GetNumThreads() {
 #ifdef _WIN32
   size_t len;
   char omp_env[100];
