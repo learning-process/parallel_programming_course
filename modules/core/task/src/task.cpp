@@ -12,7 +12,6 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
-#include <utility>
 
 using namespace std::chrono;
 
@@ -70,7 +69,8 @@ void ppc::core::Task::InternalTimeTest(const std::string &str) {
     auto diff = static_cast<double>(duration) * 1e-9;
 
     std::stringstream err_msg;
-    if (auto env = std::getenv("PPC_IGNORE_TEST_TIME_LIMIT"); env != nullptr && std::string(env) == "1") {
+    // NOLINTNEXTLINE(concurrency-mt-unsafe)
+    if (auto *env = std::getenv("PPC_IGNORE_TEST_TIME_LIMIT"); env != nullptr && std::string(env) == "1") {
       err_msg << "Test time:" << std::fixed << std::setprecision(10) << diff << " (no time limit)" << '\n';
     } else if (diff < kMaxTestTime) {
       err_msg << "Test time:" << std::fixed << std::setprecision(10) << diff << '\n';
