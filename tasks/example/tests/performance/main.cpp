@@ -19,7 +19,7 @@
 namespace nesterov_a_test_task {
 
 class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
-  static constexpr std::vector<int>::size_type kCount = 400;
+  const std::vector<int>::size_type kCount = 400;
   InType input_data_;
 
   void SetUp() override {

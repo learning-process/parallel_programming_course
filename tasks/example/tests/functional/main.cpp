@@ -44,7 +44,7 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
     }
 
     TestType params = std::get<ppc::util::GTestParamIndex::kTestParams>(GetParam());
-    const auto k_count = static_cast<const std::vector<int>::size_type>(((width + height) / std::get<0>(params)) *
+    const auto k_count = static_cast<std::vector<int>::size_type>(((width + height) / std::get<0>(params)) *
                                                                         std::stoi(std::get<1>(params)));
     input_data_ = InType(k_count * k_count, 0);
     for (std::vector<int>::size_type i = 0; i < k_count; i++) {
