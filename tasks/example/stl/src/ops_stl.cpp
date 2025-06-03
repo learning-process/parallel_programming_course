@@ -1,5 +1,6 @@
 #include "example/stl/include/ops_stl.hpp"
 
+#include <atomic>
 #include <cmath>
 #include <cstddef>
 #include <functional>

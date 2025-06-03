@@ -1,5 +1,6 @@
 #include "example/omp/include/ops_omp.hpp"
 
+#include <atomic>
 #include <cmath>
 #include <cstddef>
 #include <vector>
@@ -34,7 +35,7 @@ bool NesterovATestTaskOMP::RunImpl() {
   GetOutput() *= num_threads;
 
   std::atomic<int> counter(0);
-#pragma omp parallel default(none)
+#pragma omp parallel default(none) shared(counter)
   {
     counter++;
   }

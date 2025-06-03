@@ -2,6 +2,7 @@
 
 #include <tbb/tbb.h>
 
+#include <atomic>
 #include <cmath>
 #include <core/util/include/util.hpp>
 #include <cstddef>
@@ -39,7 +40,7 @@ bool NesterovATestTaskTBB::RunImpl() {
   GetOutput() *= num_threads;
 
   std::atomic<int> counter(0);
-  tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int i) { counter++; });
+  tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int /*i*/) { counter++; });
 
   GetOutput() /= counter;
   return GetOutput() > 0;

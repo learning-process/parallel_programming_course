@@ -2,6 +2,7 @@
 
 #include <mpi.h>
 
+#include <atomic>
 #include <cmath>
 #include <cstddef>
 #include <functional>
@@ -44,7 +45,7 @@ bool NesterovATestTaskALL::RunImpl() {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == 0) {
     std::atomic<int> counter(0);
-#pragma omp parallel default(none)
+#pragma omp parallel default(none) shared(counter)
     {
       counter++;
     }
@@ -62,7 +63,7 @@ bool NesterovATestTaskALL::RunImpl() {
   }
   GetOutput() /= counter;
 
-  tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int i) { counter--; });
+  tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int /*i*/) { counter--; });
   GetOutput() += counter;
 
   MPI_Barrier(MPI_COMM_WORLD);
