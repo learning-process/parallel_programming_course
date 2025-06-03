@@ -1,0 +1,18 @@
+{
+  "tasks": {
+    "mpi": "enabled",
+    "omp": "enabled",
+    "seq": "enabled",
+    "all": "enabled",
+    "stl": "enabled",
+    "tbb": "enabled"
+  },
+  "plagiarism": {
+    "mpi": "original",
+    "omp": "plagiarized",
+    "seq": "original",
+    "all": "original",
+    "stl": "original",
+    "tbb": "original"
+  }
+}

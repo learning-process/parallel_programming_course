@@ -29,6 +29,7 @@ message( STATUS "PPC step: First configures" )
 include(cmake/configure.cmake)
 include(cmake/modes.cmake)
 include(cmake/sanitizers.cmake)
+include(cmake/json.cmake)
 
 ################# Parallel programming technologies #################
 

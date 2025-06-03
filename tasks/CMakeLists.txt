@@ -52,6 +52,10 @@ foreach (exec_func ${list_of_exec_tests})
     add_dependencies(${exec_func} ppc_googletest)
     target_link_directories(${exec_func} PUBLIC "${CMAKE_BINARY_DIR}/ppc_googletest/install/lib")
     target_link_libraries(${exec_func} PUBLIC gtest gtest_main)
+
+    add_dependencies(${exec_func} ppc_json)
+    target_link_directories(${exec_func} INTERFACE "${CMAKE_BINARY_DIR}/ppc_json/install/include")
+
     enable_testing()
     add_test(NAME ${exec_func} COMMAND ${exec_func})
 

@@ -6,18 +6,63 @@
 #include <cstdlib>
 #include <exception>
 #include <functional>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include "nlohmann/json.hpp"
 
 using namespace std::chrono;
 
 namespace ppc::core {
 
 enum TypeOfTask : uint8_t { kALL, kMPI, kOMP, kSEQ, kSTL, kTBB, kUnknown };
+enum StatusOfTask : uint8_t { kEnabled, kDisabled };
+
+inline std::string GetStringTaskStatus(StatusOfTask status_of_task) {
+  if (status_of_task == kDisabled) {
+    return "disabled";
+  } else {
+    return "enabled";
+  }
+}
+
+inline std::string GetStringTaskType(TypeOfTask type_of_task, std::string settings_file_path) {
+  std::ifstream file(settings_file_path);
+  if (!file.is_open()) {
+    throw std::runtime_error("Failed to open file settings.json");
+  }
+  nlohmann::json list_settings;
+  file >> list_settings;
+
+  auto to_type_str = [&](std::string type) -> std::string {
+    return type + "_" + std::string(list_settings["tasks"][type]);
+  };
+
+  if (type_of_task == TypeOfTask::kALL) {
+    return to_type_str("all");
+  }
+  if (type_of_task == TypeOfTask::kSTL) {
+    return to_type_str("stl");
+  }
+  if (type_of_task == TypeOfTask::kOMP) {
+    return to_type_str("omp");
+  }
+  if (type_of_task == TypeOfTask::kMPI) {
+    return to_type_str("mpi");
+  }
+  if (type_of_task == TypeOfTask::kTBB) {
+    return to_type_str("tbb");
+  }
+  if (type_of_task == TypeOfTask::kSEQ) {
+    return to_type_str("seq");
+  }
+  return "unknown";
+}
+
 enum StateOfTesting : uint8_t { kFunc, kPerf };
 
 // Memory of inputs and outputs need to be initialized before create an object of
@@ -73,6 +118,9 @@ class Task {
 
   // get a dynamic type of task
   TypeOfTask GetDynamicTypeOfTask() { return type_of_task_; }
+
+  // get a dynamic type of task
+  StatusOfTask GetStatusOfTask() { return status_of_task_; }
 
   // get a static type of task
   static constexpr TypeOfTask GetStaticTypeOfTask() { return TypeOfTask::kUnknown; }
@@ -137,6 +185,7 @@ class Task {
   OutType output_;
   StateOfTesting state_of_testing_ = kFunc;
   TypeOfTask type_of_task_ = kUnknown;
+  StatusOfTask status_of_task_ = kEnabled;
   std::vector<std::string> functions_order_;
   std::vector<std::string> right_functions_order_ = {"Validation", "PreProcessing", "Run", "PostProcessing"};
   static constexpr double kMaxTestTime = 1.0;
@@ -156,7 +205,7 @@ class Task {
 };
 
 template <typename InType, typename OutType>
-using TaskPtr = std::shared_ptr<ppc::core::Task<InType, OutType>>;
+using TaskPtr = std::shared_ptr<Task<InType, OutType>>;
 
 template <typename TaskType, typename InType>
 std::shared_ptr<TaskType> TaskGetter(InType in) {

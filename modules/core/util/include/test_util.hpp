@@ -5,7 +5,13 @@
 #include <omp.h>
 #include <tbb/tick_count.h>
 
+#include <csignal>
+#include <filesystem>
+#include <fstream>
+
 #include "core/perf/include/perf.hpp"
+#include "core/util/include/util.hpp"
+#include "nlohmann/json.hpp"
 
 namespace ppc::util {
 
@@ -19,28 +25,6 @@ inline std::string GetStringParamName(ppc::core::PerfResults::TypeOfRunning type
     return "pipeline";
   }
   return "none";
-}
-
-inline std::string GetStringTaskType(ppc::core::TypeOfTask type_of_task) {
-  if (type_of_task == ppc::core::TypeOfTask::kALL) {
-    return "all";
-  }
-  if (type_of_task == ppc::core::TypeOfTask::kSTL) {
-    return "stl";
-  }
-  if (type_of_task == ppc::core::TypeOfTask::kOMP) {
-    return "omp";
-  }
-  if (type_of_task == ppc::core::TypeOfTask::kMPI) {
-    return "mpi";
-  }
-  if (type_of_task == ppc::core::TypeOfTask::kTBB) {
-    return "tbb";
-  }
-  if (type_of_task == ppc::core::TypeOfTask::kSEQ) {
-    return "seq";
-  }
-  return "unknown";
 }
 
 template <typename InType, typename OutType, typename TestType = void>
@@ -93,6 +77,11 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
     auto test_name = std::get<GTestParamIndex::kNameTest>(perf_test_param);
     auto mode = std::get<GTestParamIndex::kTestParams>(perf_test_param);
 
+    ASSERT_FALSE(test_name.find("unknown") != std::string::npos);
+    if (test_name.find("disabled") != std::string::npos) {
+      GTEST_SKIP();
+    }
+
     task_ = task_getter(GetTestInputData());
     ppc::core::Perf perf(task_);
     ppc::core::PerfAttr perf_attr;
@@ -124,11 +113,11 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 #define ADD_PERF_MODES(TaskType, InputTypeParam)                                            \
   std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                          \
                   std::string(ppc::util::GetNamespace<TaskType>()) + std::string("_") +     \
-                      ppc::util::GetStringTaskType(TaskType::GetStaticTypeOfTask()),        \
+                      ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), PPC_STUDENT_SETTINGS),        \
                   ppc::core::PerfResults::TypeOfRunning::kPipeline),                        \
       std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                      \
                       std::string(ppc::util::GetNamespace<TaskType>()) + std::string("_") + \
-                          ppc::util::GetStringTaskType(TaskType::GetStaticTypeOfTask()),    \
+                          ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), PPC_STUDENT_SETTINGS),    \
                       ppc::core::PerfResults::TypeOfRunning::kTaskRun)
 
 template <typename T, typename TestType>
@@ -156,7 +145,13 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   }
 
  protected:
+
   void ExecuteTest(FuncTestParam<InType, OutType, TestType> test_param) {
+    ASSERT_FALSE(std::get<GTestParamIndex::kNameTest>(test_param).find("unknown") != std::string::npos);
+    if (std::get<GTestParamIndex::kNameTest>(test_param).find("disabled") != std::string::npos) {
+      GTEST_SKIP();
+    }
+
     task_ = std::get<GTestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
     ASSERT_TRUE(task_->Validation());
     ASSERT_TRUE(task_->PreProcessing());
@@ -185,7 +180,7 @@ auto ExpandToValues(const Tuple& t) {
   auto GenTaskTuplesImpl(std::index_sequence<Is...>) {                                                       \
     return std::make_tuple(std::make_tuple(ppc::core::TaskGetter<Task, InTypeParam>,                         \
                                            std::string(ppc::util::GetNamespace<Task>()) + std::string("_") + \
-                                               ppc::util::GetStringTaskType(Task::GetStaticTypeOfTask()),    \
+                                               ppc::core::GetStringTaskType(Task::GetStaticTypeOfTask(), PPC_STUDENT_SETTINGS),    \
                                            SizesParam[Is])...);                                              \
   }                                                                                                          \
                                                                                                              \

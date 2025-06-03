@@ -1,5 +1,10 @@
-# Init project
-project("parallel_programming_course")
+get_filename_component(CURRENT_DIR_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+project(CURRENT_DIR_NAME)
+
+add_library("${CURRENT_DIR_NAME}_common" INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/common/include/common.hpp")
+get_filename_component(SETTINGS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/settings.json" ABSOLUTE)
+target_compile_definitions("${CURRENT_DIR_NAME}_common" INTERFACE PPC_STUDENT_SETTINGS=\"${SETTINGS_PATH}\")
+
 set(exec_func_tests "ppc_func_tests")
 set(exec_perf_tests "ppc_perf_tests")
 set(test_base_dir "${CMAKE_CURRENT_SOURCE_DIR}/tests")
@@ -46,7 +51,7 @@ foreach (dir_type "all" "mpi" "omp" "seq" "stl" "tbb")
         add_library(${name_lib} STATIC ${lib_source_files})
     endif()
     set_target_properties(${name_lib} PROPERTIES LINKER_LANGUAGE CXX)
-    target_link_libraries(${name_lib} PUBLIC core_module_lib)
+    target_link_libraries(${name_lib} PUBLIC core_module_lib "${CURRENT_DIR_NAME}_common")
 
     # Link core library
     foreach (exec_func ${list_of_exec_tests})
