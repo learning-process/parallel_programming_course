@@ -1,0 +1,4 @@
+blank: true
+template_sources:
+  - "Student task submission (EN) <task_submission_en.md>"
+  - "Student task submission (RU) <task_submission_ru.md>"
