@@ -19,10 +19,10 @@
 namespace nesterov_a_test_task {
 
 class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
-  const std::vector<int>::size_type kCount = 111;
-  InType input_data_;
+  const std::vector<int>::size_type kCount_ = 111;
+  InType input_data_{};
 
-  void SetUp() override { input_data_ = kCount; }
+  void SetUp() override { input_data_ = kCount_; }
 
   bool CheckTestOutputData(OutType& output_data) final { return input_data_ == output_data; }
 
