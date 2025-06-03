@@ -5,14 +5,15 @@
 #include <cstddef>
 #include <cstdlib>
 #include <exception>
-#include <functional>
 #include <fstream>
+#include <functional>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <utility>
+
 #include "nlohmann/json.hpp"
 
 using namespace std::chrono;

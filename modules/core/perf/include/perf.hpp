@@ -101,4 +101,14 @@ class Perf {
   }
 };
 
+inline std::string GetStringParamName(ppc::core::PerfResults::TypeOfRunning type_of_running) {
+  if (type_of_running == core::PerfResults::kTaskRun) {
+    return "task_run";
+  }
+  if (type_of_running == core::PerfResults::kPipeline) {
+    return "pipeline";
+  }
+  return "none";
+}
+
 }  // namespace ppc::core
