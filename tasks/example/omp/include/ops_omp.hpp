@@ -16,9 +16,6 @@ class NesterovATestTaskOMP : public BaseTask {
   bool PreProcessingImpl() override;
   bool RunImpl() override;
   bool PostProcessingImpl() override;
-
- private:
-  int rc_size_{};
 };
 
 }  // namespace nesterov_a_test_task

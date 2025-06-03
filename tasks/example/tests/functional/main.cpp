@@ -30,6 +30,7 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
     int width = -1;
     int height = -1;
     int channels = -1;
+    std::vector<uint8_t> img;
     // Read image
     {
       std::string abs_path = ppc::util::GetAbsolutePath("example/data/pic.jpg");
@@ -37,7 +38,7 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
       if (data == nullptr) {
         throw std::runtime_error("Failed to load image: " + std::string(stbi_failure_reason()));
       }
-      auto img = std::vector<uint8_t>(data, data + (static_cast<ptrdiff_t>(width * height * channels)));
+      img = std::vector<uint8_t>(data, data + (static_cast<ptrdiff_t>(width * height * channels)));
       stbi_image_free(data);
       if (std::cmp_not_equal(width, height)) {
         throw std::runtime_error("width != height: ");
@@ -45,12 +46,7 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
     }
 
     TestType params = std::get<ppc::util::GTestParamIndex::kTestParams>(GetParam());
-    const auto k_count = static_cast<std::vector<int>::size_type>(((width + height) / std::get<0>(params)) *
-                                                                  std::stoi(std::get<1>(params)));
-    input_data_ = InType(k_count * k_count, 0);
-    for (std::vector<int>::size_type i = 0; i < k_count; i++) {
-      input_data_[(i * k_count) + i] = 1;
-    }
+    input_data_ = width - height + std::min(std::accumulate(img.begin(), img.end(), 0), channels);
   }
 
   bool CheckTestOutputData(OutType &output_data) final { return input_data_ == output_data; }

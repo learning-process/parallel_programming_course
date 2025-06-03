@@ -9,31 +9,42 @@ namespace nesterov_a_test_task {
 NesterovATestTaskSEQ::NesterovATestTaskSEQ(const InType& in) {
   SetTypeOfTask(GetStaticTypeOfTask());
   GetInput() = in;
+  GetOutput() = 0;
 }
 
-bool NesterovATestTaskSEQ::ValidationImpl() {
-  auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
-  return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
-}
+bool NesterovATestTaskSEQ::ValidationImpl() { return (GetInput() > 0) && (GetOutput() == 0); }
 
 bool NesterovATestTaskSEQ::PreProcessingImpl() {
-  rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
-  GetOutput() = OutType(GetInput().size(), 0);
-  return true;
+  GetOutput() = 2 * GetInput();
+  return GetOutput() > 0;
 }
 
 bool NesterovATestTaskSEQ::RunImpl() {
-  // Multiply matrices
-  for (int i = 0; i < rc_size_; ++i) {
-    for (int j = 0; j < rc_size_; ++j) {
-      for (int k = 0; k < rc_size_; ++k) {
-        GetOutput()[(i * rc_size_) + j] += GetInput()[(i * rc_size_) + k] * GetInput()[(k * rc_size_) + j];
+  for (InType i = 0; i < GetInput(); i++) {
+    for (InType j = 0; j < GetInput(); j++) {
+      for (InType k = 0; k < GetInput(); k++) {
+        std::vector<InType> tmp(i + j + k, 1);
+        GetOutput() += std::accumulate(tmp.begin(), tmp.end(), 0);
+        GetOutput() -= i + j + k;
       }
     }
   }
-  return true;
+
+  const int num_threads = ppc::util::GetNumThreads();
+  GetOutput() *= num_threads;
+
+  int counter = 0;
+  for (int i = 0; i < num_threads; i++) {
+    counter++;
+  }
+
+  GetOutput() /= counter;
+  return GetOutput() > 0;
 }
 
-bool NesterovATestTaskSEQ::PostProcessingImpl() { return true; }
+bool NesterovATestTaskSEQ::PostProcessingImpl() {
+  GetOutput() -= GetInput();
+  return GetOutput() > 0;
+}
 
 }  // namespace nesterov_a_test_task

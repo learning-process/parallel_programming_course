@@ -13,63 +13,65 @@
 
 namespace nesterov_a_test_task {
 
-void MatMul(const InType &in_vec, int rc_size, OutType &out_vec) {
-  for (int i = 0; i < rc_size; ++i) {
-    for (int j = 0; j < rc_size; ++j) {
-      out_vec[(i * rc_size) + j] = 0;
-      for (int k = 0; k < rc_size; ++k) {
-        out_vec[(i * rc_size) + j] += in_vec[(i * rc_size) + k] * in_vec[(k * rc_size) + j];
-      }
-    }
-  }
-}
-
-void MatMulTBB(const InType &in_vec, int rc_size, OutType &out_vec) {
-  tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int i) { MatMul(in_vec, rc_size - i, out_vec); });
-  MatMul(in_vec, rc_size, out_vec);
-}
-
 NesterovATestTaskALL::NesterovATestTaskALL(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
   GetInput() = in;
+  GetOutput() = 0;
 }
 
-bool NesterovATestTaskALL::ValidationImpl() {
-  auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
-  return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
-}
+bool NesterovATestTaskALL::ValidationImpl() { return (GetInput() > 0) && (GetOutput() == 0); }
 
 bool NesterovATestTaskALL::PreProcessingImpl() {
-  // Init value for input and output
-  rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
-  GetOutput() = OutType(GetInput().size(), 0);
-  return true;
+  GetOutput() = 2 * GetInput();
+  return GetOutput() > 0;
 }
 
 bool NesterovATestTaskALL::RunImpl() {
-  int rank = -1;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  if (rank == 0) {
-#pragma omp parallel default(none)
-    {
-#pragma omp critical
-      MatMul(GetInput(), rc_size_, GetOutput());
+  for (InType i = 0; i < GetInput(); i++) {
+    for (InType j = 0; j < GetInput(); j++) {
+      for (InType k = 0; k < GetInput(); k++) {
+        std::vector<InType> tmp(i + j + k, 1);
+        GetOutput() += std::accumulate(tmp.begin(), tmp.end(), 0);
+        GetOutput() -= i + j + k;
+      }
     }
-  } else {
-    MatMulTBB(GetInput(), rc_size_, GetOutput());
   }
 
   const int num_threads = ppc::util::GetNumThreads();
-  std::vector<std::thread> threads(num_threads);
-  for (int i = 0; i < num_threads; i++) {
-    threads[i] = std::thread(MatMul, std::cref(GetInput()), rc_size_, std::ref(GetOutput()));
-    threads[i].join();
+  GetOutput() *= num_threads;
+
+  int rank = -1;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  if (rank == 0) {
+    std::atomic<int> counter(0);
+#pragma omp parallel default(none)
+    {
+      counter++;
+    }
+    GetOutput() /= counter;
+  } else {
+    GetOutput() /= num_threads;
   }
 
+  GetOutput() *= num_threads;
+  std::vector<std::thread> threads(num_threads);
+  std::atomic<int> counter(0);
+  for (int i = 0; i < num_threads; i++) {
+    threads[i] = std::thread([&]() { counter++; });
+    threads[i].join();
+  }
+  GetOutput() /= counter;
+
+  tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int i) { counter--; });
+  GetOutput() += counter;
+
   MPI_Barrier(MPI_COMM_WORLD);
-  return true;
+  return GetOutput() > 0;
 }
 
-bool NesterovATestTaskALL::PostProcessingImpl() { return true; }
+bool NesterovATestTaskALL::PostProcessingImpl() {
+  GetOutput() -= GetInput();
+  return GetOutput() > 0;
+}
 
 }  // namespace nesterov_a_test_task

@@ -8,8 +8,8 @@
 
 namespace nesterov_a_test_task {
 
-using InType = std::vector<int>;
-using OutType = std::vector<int>;
+using InType = int;
+using OutType = int;
 using TestType = std::tuple<int, std::string>;
 using BaseTask = ppc::core::Task<InType, OutType>;
 

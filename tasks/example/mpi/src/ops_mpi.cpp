@@ -5,62 +5,56 @@
 #include <cmath>
 #include <cstddef>
 #include <vector>
+
 namespace nesterov_a_test_task {
-
-void MultiplyRowMajor(const InType &in, OutType &out, int rc_size) {
-  for (int i = 0; i < rc_size; ++i) {
-    for (int j = 0; j < rc_size; ++j) {
-      for (int k = 0; k < rc_size; ++k) {
-        out[(i * rc_size) + j] += in[(i * rc_size) + k] * in[(k * rc_size) + j];
-      }
-    }
-  }
-}
-
-void MultiplyColumnMajor(const InType &in, OutType &out, int rc_size) {
-  for (int j = 0; j < rc_size; ++j) {
-    for (int k = 0; k < rc_size; ++k) {
-      for (int i = 0; i < rc_size; ++i) {
-        out[(i * rc_size) + j] += in[(i * rc_size) + k] * in[(k * rc_size) + j];
-      }
-    }
-  }
-}
 
 NesterovATestTaskMPI::NesterovATestTaskMPI(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
   GetInput() = in;
+  GetOutput() = 0;
 }
 
-bool NesterovATestTaskMPI::ValidationImpl() {
-  auto sqrt_size = static_cast<int>(std::sqrt(GetInput().size()));
-  return sqrt_size * sqrt_size == static_cast<int>(GetInput().size());
-}
+bool NesterovATestTaskMPI::ValidationImpl() { return (GetInput() > 0) && (GetOutput() == 0); }
 
 bool NesterovATestTaskMPI::PreProcessingImpl() {
-  // Init value for input and output
-  rc_size_ = static_cast<int>(std::sqrt(GetInput().size()));
-  GetOutput() = OutType(GetInput().size(), 0);
-  return true;
+  GetOutput() = 2 * GetInput();
+  return GetOutput() > 0;
 }
 
 bool NesterovATestTaskMPI::RunImpl() {
-  MultiplyMatrixBasedOnRank();
-  return true;
-}
+  for (InType i = 0; i < GetInput(); i++) {
+    for (InType j = 0; j < GetInput(); j++) {
+      for (InType k = 0; k < GetInput(); k++) {
+        std::vector<InType> tmp(i + j + k, 1);
+        GetOutput() += std::accumulate(tmp.begin(), tmp.end(), 0);
+        GetOutput() -= i + j + k;
+      }
+    }
+  }
 
-bool NesterovATestTaskMPI::PostProcessingImpl() { return true; }
+  const int num_threads = ppc::util::GetNumThreads();
+  GetOutput() *= num_threads;
 
-void NesterovATestTaskMPI::MultiplyMatrixBasedOnRank() {
   int rank = -1;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   if (rank == 0) {
-    MultiplyRowMajor(GetInput(), GetOutput(), rc_size_);
+    GetOutput() /= num_threads;
   } else {
-    MultiplyColumnMajor(GetInput(), GetOutput(), rc_size_);
+    int counter = 0;
+    for (int i = 0; i < num_threads; i++) {
+      counter++;
+    }
+    GetOutput() /= counter;
   }
+
   MPI_Barrier(MPI_COMM_WORLD);
+  return GetOutput() > 0;
+}
+
+bool NesterovATestTaskMPI::PostProcessingImpl() {
+  GetOutput() -= GetInput();
+  return GetOutput() > 0;
 }
 
 }  // namespace nesterov_a_test_task
