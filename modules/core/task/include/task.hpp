@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <core/util/include/util.hpp>
 #include <cstddef>
 #include <cstdlib>
 #include <exception>
@@ -13,8 +14,6 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
-
-#include "nlohmann/json.hpp"
 
 using namespace std::chrono;
 

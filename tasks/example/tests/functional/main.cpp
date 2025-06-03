@@ -64,8 +64,8 @@ namespace {
 
 TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(GetParam()); }
 
-constexpr std::array<TestType, 3> kTestParam = {std::make_tuple(5, "5"), std::make_tuple(10, "10"),
-                                                std::make_tuple(15, "15")};
+const std::array<TestType, 3> kTestParam = {std::make_tuple(5, "5"), std::make_tuple(10, "10"),
+                                            std::make_tuple(15, "15")};
 
 INIT_TASK_GENERATOR(InType, kTestParam)
 

@@ -1,6 +1,18 @@
 #pragma once
+#include <cstdint>
 #include <string>
 #include <string_view>
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4459)  // переменная 'last' перекрывает глобальную
+#endif
+
+#include <nlohmann/json.hpp>
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 /* NOLINTBEGIN */
 #define INSTANTIATE_TEST_SUITE_P_NOLINT(prefix, test_case_name, generator, custom_test_name) \

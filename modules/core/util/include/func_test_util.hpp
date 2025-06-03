@@ -11,7 +11,6 @@
 
 #include "core/perf/include/perf.hpp"
 #include "core/util/include/util.hpp"
-#include "nlohmann/json.hpp"
 
 namespace ppc::util {
 
