@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#include "core/util/include/test_util.hpp"
+#include "core/util/include/func_test_util.hpp"
 #include "core/util/include/util.hpp"
 #include "example/all/include/ops_all.hpp"
 #include "example/mpi/include/ops_mpi.hpp"
@@ -18,9 +18,7 @@
 
 namespace nesterov_a_test_task {
 
-class NesterovARunFuncTests : public BaseFuncTests {
-  InType input_data_;
-
+class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType, TestType> {
  public:
   static std::string PrintTestParam(TestType test_param) {
     return std::to_string(std::get<0>(test_param)) + "_" + std::get<1>(test_param);
@@ -57,6 +55,9 @@ class NesterovARunFuncTests : public BaseFuncTests {
   bool CheckTestOutputData(OutType &output_data) final { return input_data_ == output_data; }
 
   InType GetTestInputData() final { return input_data_; }
+
+ private:
+  InType input_data_;
 };
 
 namespace {

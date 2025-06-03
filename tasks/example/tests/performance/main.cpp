@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "core/util/include/test_util.hpp"
+#include "core/util/include/perf_test_util.hpp"
 #include "core/util/include/util.hpp"
 #include "example/all/include/ops_all.hpp"
 #include "example/mpi/include/ops_mpi.hpp"
@@ -18,7 +18,7 @@
 
 namespace nesterov_a_test_task {
 
-class ExampleRunPerfTest : public BasePerfTests {
+class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
   static constexpr std::vector<int>::size_type kCount = 400;
   InType input_data_;
 

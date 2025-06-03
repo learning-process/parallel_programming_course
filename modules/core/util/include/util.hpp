@@ -13,6 +13,8 @@
 
 namespace ppc::util {
 
+enum GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
+
 std::string GetAbsolutePath(const std::string &relative_path);
 int GetNumThreads();
 
