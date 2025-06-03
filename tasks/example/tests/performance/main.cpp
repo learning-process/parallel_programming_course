@@ -38,9 +38,9 @@ TEST_P(ExampleRunPerfTest, RunPerfModes) { ExecuteTest(GetParam()); }
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(
     RunModeTests, ExampleRunPerfTest,
-    ::testing::Values(ADD_PERF_MODES(NesterovATestTaskALL, InType), ADD_PERF_MODES(NesterovATestTaskMPI, InType),
-                      ADD_PERF_MODES(NesterovATestTaskOMP, InType), ADD_PERF_MODES(NesterovATestTaskSEQ, InType),
-                      ADD_PERF_MODES(NesterovATestTaskSTL, InType), ADD_PERF_MODES(NesterovATestTaskTBB, InType)),
+    ::testing::Values(ADD_PERF_TASK(NesterovATestTaskALL, InType), ADD_PERF_TASK(NesterovATestTaskMPI, InType),
+                      ADD_PERF_TASK(NesterovATestTaskOMP, InType), ADD_PERF_TASK(NesterovATestTaskSEQ, InType),
+                      ADD_PERF_TASK(NesterovATestTaskSTL, InType), ADD_PERF_TASK(NesterovATestTaskTBB, InType)),
     ExampleRunPerfTest::CustomPerfTestName);
 
 }  // namespace nesterov_a_test_task

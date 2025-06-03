@@ -100,7 +100,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   ppc::core::TaskPtr<InType, OutType> task_;
 };
 
-#define ADD_PERF_MODES(TaskType, InputTypeParam)                                                               \
+#define ADD_PERF_TASK(TaskType, InputTypeParam)                                                               \
   std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                                             \
                   std::string(ppc::util::GetNamespace<TaskType>()) + std::string("_") +                        \
                       ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), PPC_STUDENT_SETTINGS),     \
