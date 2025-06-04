@@ -825,9 +825,9 @@ jobs:
           -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=Release
           -D CMAKE_INSTALL_PREFIX=install
-          -DCMAKE_INCLUDE_PATH="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/windows/include" ^
-          -DCMAKE_LIBRARY_PATH="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/windows/lib/intel64_win" ^
-          -DCMAKE_EXE_LINKER_FLAGS="/NODEFAULTLIB:vcomp.lib /DEFAULTLIB:libiomp5md.lib"
+          -D CMAKE_INCLUDE_PATH="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/windows/include"
+          -D CMAKE_LIBRARY_PATH="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/windows/lib/intel64_win"
+          -D CMAKE_EXE_LINKER_FLAGS="/NODEFAULTLIB:vcomp.lib \"C:/Program Files (x86)/Intel/oneAPI/compiler/latest/windows/lib/intel64_win/libiomp5md.lib\""
         shell: pwsh
         env:
           CC: clang-cl
