@@ -1,0 +1,15 @@
+{
+   suppress mpi init internal leaks
+   Memcheck:Leak
+   ...
+   fun:MPI_Init
+   ...
+}
+
+{
+   suppress mpi finalize internal leaks
+   Memcheck:Leak
+   ...
+   fun:MPI_Finalize
+   ...
+}
