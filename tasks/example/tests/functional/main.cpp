@@ -49,7 +49,7 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
     input_data_ = width - height + std::min(std::accumulate(img.begin(), img.end(), 0), channels);
   }
 
-  bool CheckTestOutputData(OutType &output_data) final { return input_data_ == output_data; }
+  bool CheckTestOutputData(OutType &output_data) final { return (input_data_ == output_data); }
 
   InType GetTestInputData() final { return input_data_; }
 

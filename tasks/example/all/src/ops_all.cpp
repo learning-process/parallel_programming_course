@@ -39,33 +39,40 @@ bool NesterovATestTaskALL::RunImpl() {
   }
 
   const int num_threads = ppc::util::GetNumThreads();
-  GetOutput() *= num_threads;
+  {
+    GetOutput() *= num_threads;
 
-  int rank = -1;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  if (rank == 0) {
-    std::atomic<int> counter(0);
+    int rank = -1;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if (rank == 0) {
+      std::atomic<int> counter(0);
 #pragma omp parallel default(none) shared(counter)
-    {
-      counter++;
+      {
+        counter++;
+      }
+      GetOutput() /= counter;
+    } else {
+      GetOutput() /= num_threads;
+    }
+  }
+
+  {
+    GetOutput() *= num_threads;
+    std::vector<std::thread> threads(num_threads);
+    std::atomic<int> counter(0);
+    for (int i = 0; i < num_threads; i++) {
+      threads[i] = std::thread([&]() { counter++; });
+      threads[i].join();
     }
     GetOutput() /= counter;
-  } else {
-    GetOutput() /= num_threads;
   }
 
-  GetOutput() *= num_threads;
-  std::vector<std::thread> threads(num_threads);
-  std::atomic<int> counter(0);
-  for (int i = 0; i < num_threads; i++) {
-    threads[i] = std::thread([&]() { counter++; });
-    threads[i].join();
+  {
+    GetOutput() *= num_threads;
+    std::atomic<int> counter(0);
+    tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int /*i*/) { counter++; });
+    GetOutput() /= counter;
   }
-  GetOutput() /= counter;
-
-  tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int /*i*/) { counter--; });
-  GetOutput() += counter;
-
   MPI_Barrier(MPI_COMM_WORLD);
   return GetOutput() > 0;
 }
