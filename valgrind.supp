@@ -1,0 +1,16 @@
+{
+   hwloc_still_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:*/lib*/**/hwloc*.so*
+}
+
+{
+   ignore-rdmacm-leak
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   ...
+   fun:rdma_create_event_channel
+}
