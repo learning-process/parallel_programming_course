@@ -70,15 +70,7 @@ enum StateOfTesting : uint8_t { kFunc, kPerf };
 template <typename InType, typename OutType>
 class Task {
  public:
-  explicit Task(StateOfTesting /*state_of_testing*/ = StateOfTesting::kFunc) {
-    auto custom_terminate = []() {
-      std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT! \n"
-                   "Expected - \"Validation\", \"PreProcessing\", \"Run\", \"PostProcessing\" \n";
-      std::abort();
-    };
-    std::set_terminate(custom_terminate);
-    functions_order_.clear();
-  }
+  explicit Task(StateOfTesting /*state_of_testing*/ = StateOfTesting::kFunc) { functions_order_.clear(); }
 
   // validation of data and validation of task attributes before running
   virtual bool Validation() final {
@@ -131,6 +123,8 @@ class Task {
 
   virtual ~Task() {
     if (!functions_order_.empty() || !was_worked_) {
+      std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT! \n Expected - \"Validation\", \"PreProcessing\", \"Run\", "
+                   "\"PostProcessing\" \n";
       std::terminate();
     } else {
       functions_order_.clear();
