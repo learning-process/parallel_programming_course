@@ -134,18 +134,22 @@ jobs:
       - name: Run func tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run func tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run func tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run func tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   ubuntu-gcc-test-extended:
     needs:
@@ -172,18 +176,22 @@ jobs:
       - name: Run func tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run func tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run func tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run func tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   ubuntu-clang-build:
     needs:
@@ -283,18 +291,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   ubuntu-clang-test-extended:
     needs:
@@ -323,18 +335,22 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   ubuntu-clang-sanitizer-build:
     needs:
@@ -424,6 +440,7 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -431,6 +448,7 @@ jobs:
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -438,6 +456,7 @@ jobs:
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -445,6 +464,7 @@ jobs:
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -477,21 +497,25 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
           PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
           PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
           PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
           PPC_ASAN_RUN: 1
   macos-clang-build:
@@ -584,18 +608,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   macos-clang-test-extended:
     needs:
@@ -622,18 +650,22 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   windows-msvc-build:
     needs:
@@ -731,18 +763,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   windows-msvc-test-extended:
     needs:
@@ -771,18 +807,22 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   windows-clang-build:
     needs:
@@ -876,18 +916,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   windows-clang-test-extended:
     needs:
@@ -916,18 +960,22 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   ubuntu-gcc-build-codecov:
     needs:
@@ -967,18 +1015,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
       - name: Generate gcovr Coverage Data
         run: |

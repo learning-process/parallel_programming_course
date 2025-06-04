@@ -26,6 +26,9 @@ def init_cmd_args():
 
 class PPCRunner:
     def __init__(self):
+        self.__ppc_num_threads = None
+        self.__ppc_num_proc = None
+        self.__ppc_env = None
         self.work_dir = None
         self.valgrind_cmd = "valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all"
 
@@ -40,15 +43,25 @@ class PPCRunner:
         script_dir = script_path.parent  # Directory containing the script
         return script_dir.parent
 
-    def setup_env(self):
+    def setup_env(self, ppc_env):
+        self.__ppc_env = ppc_env
+
+        self.__ppc_num_threads = self.__ppc_env.get("PPC_NUM_THREADS")
+        if self.__ppc_num_threads is None:
+            raise EnvironmentError("Required environment variable 'PPC_NUM_THREADS' is not set.")
+        self.__ppc_env["OMP_NUM_THREADS"] = self.__ppc_num_threads
+
+        self.__ppc_num_proc = self.__ppc_env.get("PPC_NUM_PROC")
+        if self.__ppc_num_proc is None:
+            raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
+
         if (Path(self.__get_project_path()) / "install").exists():
             self.work_dir = Path(self.__get_project_path()) / "install" / "bin"
         else:
             self.work_dir = Path(self.__get_project_path()) / "build" / "bin"
 
-    @staticmethod
-    def __run_exec(command):
-        result = subprocess.run(command, shell=True, env=os.environ)
+    def __run_exec(self, command):
+        result = subprocess.run(command, shell=True, env=self.__ppc_env)
         if result.returncode != 0:
             raise Exception(f"Subprocess return {result.returncode}.")
 
@@ -62,7 +75,7 @@ class PPCRunner:
         return command
 
     def run_threads(self):
-        if platform.system() == "Linux" and not os.environ.get("PPC_ASAN_RUN"):
+        if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
             for task_type in ["seq", "stl"]:
                 self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'ppc_func_tests'} "
                                 f"{self.__get_gtest_settings(1, '_' + task_type + '_')}")
@@ -71,29 +84,26 @@ class PPCRunner:
             self.__run_exec(f"{self.work_dir / 'ppc_func_tests'} {self.__get_gtest_settings(3, '_' + task_type + '_')}")
 
     def run_core(self):
-        if platform.system() == "Linux" and not os.environ.get("PPC_ASAN_RUN"):
+        if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'core_func_tests'} "
                             f"{self.__get_gtest_settings(1, '*')}")
 
         self.__run_exec(f"{self.work_dir / 'core_func_tests'} {self.__get_gtest_settings(1, '*')}")
 
     def run_processes(self, additional_mpi_args):
-        PPC_NUM_PROC = os.environ.get("PPC_NUM_PROC")
-        if PPC_NUM_PROC is None:
+        ppc_num_proc = self.__ppc_env.get("PPC_NUM_PROC")
+        if ppc_num_proc is None:
             raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
 
-        mpi_running = f"{self.mpi_exec} {additional_mpi_args} -np {PPC_NUM_PROC}"
-        if not os.environ.get("PPC_ASAN_RUN"):
+        mpi_running = f"{self.mpi_exec} {additional_mpi_args} -np {ppc_num_proc}"
+        if not self.__ppc_env.get("PPC_ASAN_RUN"):
             for task_type in ["all", "mpi"]:
                 self.__run_exec(f"{mpi_running} {self.work_dir / 'ppc_func_tests'} "
                                 f"{self.__get_gtest_settings(10, '_' + task_type)}")
 
     def run_performance(self):
-        if not os.environ.get("PPC_ASAN_RUN"):
-            PPC_NUM_PROC = os.environ.get("PPC_NUM_PROC")
-            if PPC_NUM_PROC is None:
-                raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
-            mpi_running = f"{self.mpi_exec} -np {PPC_NUM_PROC}"
+        if not self.__ppc_env.get("PPC_ASAN_RUN"):
+            mpi_running = f"{self.mpi_exec} -np {self.__ppc_num_proc}"
             for task_type in ["all", "mpi"]:
                 self.__run_exec(f"{mpi_running} {self.work_dir / 'ppc_perf_tests'} "
                                 f"{self.__get_gtest_settings(1, '_' + task_type)}")
@@ -107,9 +117,8 @@ class PPCRunner:
 
 if __name__ == "__main__":
     args_dict = init_cmd_args()
-
     ppc_runner = PPCRunner()
-    ppc_runner.setup_env()
+    ppc_runner.setup_env(os.environ.copy())
 
     if args_dict["running_type"] in ["threads", "processes"]:
         ppc_runner.run_core()
