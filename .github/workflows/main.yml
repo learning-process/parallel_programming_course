@@ -812,15 +812,14 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@v6
       - name: Setup MSVC for Ninja
         uses: ilammy/msvc-dev-cmd@v1
-      - name: Install Intel OpenMP via NuGet
+      - name: Install Intel oneAPI Base Toolkit (includes OpenMP runtime)
         run: |
-          nuget install intelopenmp.redist.win -Version 2025.1.1.9 -OutputDirectory intel-openmp
-        shell: pwsh
-      - name: Set environment variables for Intel OpenMP
-        shell: pwsh
+          choco install intel-oneapi-runtime -y
+          choco install intel-oneapi-compiler-dpcpp-cpp -y
+          choco install intel-oneapi-runtime-openmp -y
+      - name: Check OpenMP runtime
         run: |
-          echo "LIB=${{ github.workspace }}\\intel-openmp\\intelopenmp.redist.win.2025.1.1.9\\redist\\intel64\\compiler" >> $env:GITHUB_ENV
-          echo "PATH=${{ github.workspace }}\\intel-openmp\\intelopenmp.redist.win.2025.1.1.9\\redist\\intel64\\compiler;$env:PATH" >> $env:GITHUB_ENV
+          dir "C:\Program Files (x86)\Intel\oneAPI\compiler\latest\windows\redist\intel64_win\compiler"
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -830,7 +829,9 @@ jobs:
           -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=Release
           -D CMAKE_INSTALL_PREFIX=install
-          -D CMAKE_CXX_FLAGS="/clang:-fopenmp=libiomp5 /link libiomp5md.lib"
+          -DCMAKE_INCLUDE_PATH="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/windows/include"
+          -DCMAKE_LIBRARY_PATH="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/windows/lib/intel64_win"
+          -DCMAKE_EXE_LINKER_FLAGS="/NODEFAULTLIB:vcomp.lib /DEFAULTLIB:libiomp5md.lib"
         env:
           CC: clang-cl
           CXX: clang-cl
