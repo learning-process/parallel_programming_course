@@ -31,9 +31,7 @@ class PPCRunner:
         self.__ppc_env = None
         self.work_dir = None
 
-        suppression_file = Path(self.__get_project_path()) / "valgrind.supp"
-        self.valgrind_cmd = (f"valgrind --suppressions={suppression_file} "
-                             f"--error-exitcode=1 --leak-check=full --show-leak-kinds=all")
+        self.valgrind_cmd = "valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all"
 
         if platform.system() == "Windows":
             self.mpi_exec = "mpiexec"

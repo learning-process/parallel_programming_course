@@ -25,12 +25,11 @@ enum StatusOfTask : uint8_t { kEnabled, kDisabled };
 inline std::string GetStringTaskStatus(StatusOfTask status_of_task) {
   if (status_of_task == kDisabled) {
     return "disabled";
-  } else {
-    return "enabled";
   }
+  return "enabled";
 }
 
-inline std::string GetStringTaskType(TypeOfTask type_of_task, std::string settings_file_path) {
+inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string &settings_file_path) {
   std::ifstream file(settings_file_path);
   if (!file.is_open()) {
     throw std::runtime_error("Failed to open file settings.json");
@@ -38,7 +37,7 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, std::string settin
   nlohmann::json list_settings;
   file >> list_settings;
 
-  auto to_type_str = [&](std::string type) -> std::string {
+  auto to_type_str = [&](const std::string &type) -> std::string {
     return type + "_" + std::string(list_settings["tasks"][type]);
   };
 

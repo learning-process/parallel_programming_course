@@ -3,8 +3,8 @@
 #include <omp.h>
 
 #include <cstdio>
-#include <cstdlib>
 #include <memory>
+#include <print>
 #include <string>
 #include <utility>
 
@@ -27,12 +27,11 @@ class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {
     MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &flag, &status);
 
     if (flag != 0) {
-      fprintf(
-          stderr,
-          "[  PROCESS %d  ] [  FAILED  ] %s.%s: MPI message queue has an unread message from process %d with tag %d\n",
-          rank, "test_suite_name", "test_name", status.MPI_SOURCE, status.MPI_TAG);
-      MPI_Finalize();
-      std::terminate();
+      std::println(stderr,
+                   "[  PROCESS {}  ] [  FAILED  ] MPI message queue has an unread message from process {} with tag {}",
+                   rank, status.MPI_SOURCE, status.MPI_TAG);
+
+      exit(EXIT_FAILURE);  // NOLINT
     }
 
     MPI_Barrier(MPI_COMM_WORLD);
@@ -65,7 +64,7 @@ class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
   static void PrintProcessRank() {
     int rank = -1;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    printf(" [  PROCESS %d  ] ", rank);
+    std::print(" [  PROCESS {}  ] ", rank);
   }
 
   std::shared_ptr<::testing::TestEventListener> base_;
