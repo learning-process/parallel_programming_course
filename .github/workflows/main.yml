@@ -810,25 +810,37 @@ jobs:
           windows_compile_environment: msvc
       - name: Setup ninja
         uses: seanmiddleditch/gha-setup-ninja@v6
-      - name: Setup MSVC for Ninja again
+      - name: Setup MSVC for Ninja
         uses: ilammy/msvc-dev-cmd@v1
+      - name: Install Intel OpenMP via NuGet
+        run: |
+          nuget install intelopenmp.redist.win -Version 2025.1.1.9 -OutputDirectory intel-openmp
+        shell: pwsh
+      - name: Set environment variables for Intel OpenMP
+        shell: pwsh
+        run: |
+          echo "LIB=${{ github.workspace }}\\intel-openmp\\intelopenmp.redist.win.2025.1.1.9\\redist\\intel64\\compiler" >> $env:GITHUB_ENV
+          echo "PATH=${{ github.workspace }}\\intel-openmp\\intelopenmp.redist.win.2025.1.1.9\\redist\\intel64\\compiler;$env:PATH" >> $env:GITHUB_ENV
       - name: CMake configure
         run: >
-          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+          cmake -S . -B build -G Ninja
+          -D CMAKE_C_COMPILER=clang-cl
+          -D CMAKE_CXX_COMPILER=clang-cl
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache
+          -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D CMAKE_BUILD_TYPE=Release
+          -D CMAKE_INSTALL_PREFIX=install
+          -D CMAKE_CXX_FLAGS="/clang:-fopenmp=libiomp5 /link libiomp5md.lib"
         env:
           CC: clang-cl
           CXX: clang-cl
       - name: Build project
-        run: |
-          cmake --build build --config Release --parallel
+        run: cmake --build build --config Release --parallel
         env:
           CC: clang-cl
           CXX: clang-cl
       - name: Install project
-        run: |
-          cmake --install build
+        run: cmake --install build
       - name: Archive installed package
         run: Compress-Archive -Path install -DestinationPath windows-clang-install.zip
         shell: pwsh
