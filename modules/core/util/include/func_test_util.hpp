@@ -56,6 +56,8 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
     ASSERT_TRUE(task_->PreProcessing());
     ASSERT_TRUE(task_->Run());
     ASSERT_TRUE(task_->PostProcessing());
+    std::cout << "task_->GetInput() = " << task_->GetInput() << std::endl;
+    std::cout << "task_->GetOutput() = " << task_->GetOutput() << std::endl;
     ASSERT_TRUE(CheckTestOutputData(task_->GetOutput()));
   }
 
