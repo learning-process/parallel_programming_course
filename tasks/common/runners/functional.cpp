@@ -71,7 +71,7 @@ class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
 };
 
 int main(int argc, char** argv) {
-#ifndef USE_ASAN
+#ifndef PPC_ASAN_RUN
   MPI_Init(&argc, &argv);
 
   // Limit the number of threads in TBB

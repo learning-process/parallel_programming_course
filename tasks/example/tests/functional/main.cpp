@@ -63,12 +63,12 @@ TEST_P(NesterovARunFuncTests, MatmulFromPic) { ExecuteTest(GetParam()); }
 
 const std::array<TestType, 3> kTestParam = {std::make_tuple(3, "3"), std::make_tuple(5, "5"), std::make_tuple(7, "7")};
 
-INIT_TASK_GENERATOR(InType, kTestParam)
+INIT_TASK_GENERATOR(InType, kTestParam, PPC_SETTINGS_example)
 
 const auto kTestTasksList =
-    std::tuple_cat(TaskListGenerator<NesterovATestTaskALL>(), TaskListGenerator<NesterovATestTaskMPI>(),
-                   TaskListGenerator<NesterovATestTaskOMP>(), TaskListGenerator<NesterovATestTaskSEQ>(),
-                   TaskListGenerator<NesterovATestTaskSTL>(), TaskListGenerator<NesterovATestTaskTBB>());
+    std::tuple_cat(ADD_FUNC_TASK_PROCESS(NesterovATestTaskALL), ADD_FUNC_TASK_PROCESS(NesterovATestTaskMPI),
+                   ADD_FUNC_TASK_THREADS(NesterovATestTaskOMP), ADD_FUNC_TASK_THREADS(NesterovATestTaskSEQ),
+                   ADD_FUNC_TASK_THREADS(NesterovATestTaskSTL), ADD_FUNC_TASK_THREADS(NesterovATestTaskTBB));
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTests, ppc::util::ExpandToValues(kTestTasksList),
                                 NesterovARunFuncTests::PrintFuncTestName<NesterovARunFuncTests>);

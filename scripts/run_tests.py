@@ -123,8 +123,8 @@ if __name__ == "__main__":
     ppc_runner = PPCRunner()
     ppc_runner.setup_env(os.environ.copy())
 
-    if args_dict["running_type"] in ["threads", "processes"]:
-        ppc_runner.run_core()
+    # if args_dict["running_type"] in ["threads", "processes"]:
+    #     ppc_runner.run_core()
 
     if args_dict["running_type"] == "threads":
         ppc_runner.run_threads()

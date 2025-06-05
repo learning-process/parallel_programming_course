@@ -74,19 +74,27 @@ auto ExpandToValues(const Tuple& t) {
   return ExpandToValuesImpl(t, std::make_index_sequence<kN>{});
 }
 
-#define INIT_TASK_GENERATOR(InTypeParam, SizesParam)                                                         \
-  template <typename Task, std::size_t... Is>                                                                \
-  auto GenTaskTuplesImpl(std::index_sequence<Is...>) {                                                       \
-    return std::make_tuple(                                                                                  \
-        std::make_tuple(ppc::core::TaskGetter<Task, InTypeParam>,                                            \
-                        std::string(ppc::util::GetNamespace<Task>()) + std::string("_") +                    \
-                            ppc::core::GetStringTaskType(Task::GetStaticTypeOfTask(), PPC_STUDENT_SETTINGS), \
-                        SizesParam[Is])...);                                                                 \
-  }                                                                                                          \
-                                                                                                             \
-  template <typename Task>                                                                                   \
-  auto TaskListGenerator() {                                                                                 \
-    return GenTaskTuplesImpl<Task>(std::make_index_sequence<SizesParam.size()>{});                           \
+#define INIT_TASK_GENERATOR(InTypeParam, SizesParam, SettingsPath)                                   \
+  template <typename Task, std::size_t... Is>                                                        \
+  auto GenTaskTuplesImpl(std::index_sequence<Is...>) {                                               \
+    return std::make_tuple(                                                                          \
+        std::make_tuple(ppc::core::TaskGetter<Task, InTypeParam>,                                    \
+                        std::string(ppc::util::GetNamespace<Task>()) + std::string("_") +            \
+                            ppc::core::GetStringTaskType(Task::GetStaticTypeOfTask(), SettingsPath), \
+                        SizesParam[Is])...);                                                         \
+  }                                                                                                  \
+                                                                                                     \
+  template <typename Task>                                                                           \
+  auto TaskListGenerator() {                                                                         \
+    return GenTaskTuplesImpl<Task>(std::make_index_sequence<SizesParam.size()>{});                   \
   }
+
+#define ADD_FUNC_TASK_THREADS(TASK) TaskListGenerator<TASK>()
+
+#ifndef PPC_ASAN_RUN
+#define ADD_FUNC_TASK_PROCESS(TASK) TaskListGenerator<TASK>()
+#else
+#define ADD_FUNC_TASK_PROCESS(TASK) std::tuple<>()
+#endif
 
 }  // namespace ppc::util

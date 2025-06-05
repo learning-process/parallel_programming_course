@@ -1,10 +1,6 @@
 get_filename_component(CURRENT_DIR_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(CURRENT_DIR_NAME)
 
-add_library("${CURRENT_DIR_NAME}_common" INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/common/include/common.hpp")
-get_filename_component(SETTINGS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/settings.json" ABSOLUTE)
-target_compile_definitions("${CURRENT_DIR_NAME}_common" INTERFACE PPC_STUDENT_SETTINGS=\"${SETTINGS_PATH}\")
-
 set(exec_func_tests "ppc_func_tests")
 set(exec_perf_tests "ppc_perf_tests")
 set(test_base_dir "${CMAKE_CURRENT_SOURCE_DIR}/tests")
@@ -28,8 +24,13 @@ endif (USE_PERF_TESTS)
 get_filename_component(TASK_NAME ${CMAKE_CURRENT_LIST_DIR} NAME)
 message(STATUS "-- ${TASK_NAME}")
 
+set(technologies "omp" "seq" "stl" "tbb")
+if((NOT DEFINED ENV{PPC_ASAN_RUN}) OR ("$ENV{PPC_ASAN_RUN}" STREQUAL "0"))
+    list(APPEND technologies "all" "mpi")
+endif()
+
 # Create lib
-foreach (dir_type "all" "mpi" "omp" "seq" "stl" "tbb")
+foreach (dir_type ${technologies})
     # Check directory existing
     set(base_dir "${CMAKE_CURRENT_SOURCE_DIR}/${dir_type}")
     if (NOT EXISTS "${base_dir}")
@@ -51,7 +52,7 @@ foreach (dir_type "all" "mpi" "omp" "seq" "stl" "tbb")
         add_library(${name_lib} STATIC ${lib_source_files})
     endif()
     set_target_properties(${name_lib} PROPERTIES LINKER_LANGUAGE CXX)
-    target_link_libraries(${name_lib} PUBLIC core_module_lib "${CURRENT_DIR_NAME}_common")
+    target_link_libraries(${name_lib} PUBLIC core_module_lib)
 
     # Link core library
     foreach (exec_func ${list_of_exec_tests})

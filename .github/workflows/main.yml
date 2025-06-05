@@ -387,6 +387,7 @@ jobs:
         env:
           CC: clang-20
           CXX: clang++-20
+          PPC_ASAN_RUN: 1
       - name: Build project
         run: |
           cmake --build build --parallel

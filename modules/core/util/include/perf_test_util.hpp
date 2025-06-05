@@ -79,11 +79,16 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
       throw std::runtime_error(err_msg.str().c_str());
     }
 
+#ifndef PPC_ASAN_RUN
     int rank = -1;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
       perf.PrintPerfStatistic(test_name);
     }
+#else
+    perf.PrintPerfStatistic(test_name);
+#endif
+
     OutType output_data = task_->GetOutput();
     ASSERT_TRUE(CheckTestOutputData(output_data));
   }
@@ -92,14 +97,39 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   ppc::core::TaskPtr<InType, OutType> task_;
 };
 
-#define ADD_PERF_TASK(TaskType, InputTypeParam)                                                                \
-  std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                                             \
-                  std::string(ppc::util::GetNamespace<TaskType>()) + std::string("_") +                        \
-                      ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), PPC_STUDENT_SETTINGS),     \
-                  ppc::core::PerfResults::TypeOfRunning::kPipeline),                                           \
-      std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                                         \
-                      std::string(ppc::util::GetNamespace<TaskType>()) + std::string("_") +                    \
-                          ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), PPC_STUDENT_SETTINGS), \
-                      ppc::core::PerfResults::TypeOfRunning::kTaskRun)
+#define ADD_PERF_TASK_THREADS(TaskType, InputTypeParam, SettingsPath)                                         \
+  std::tuple(std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                                 \
+                             std::string(ppc::util::GetNamespace<TaskType>()) + "_" +                         \
+                                 ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), SettingsPath), \
+                             ppc::core::PerfResults::TypeOfRunning::kPipeline),                               \
+             std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                                 \
+                             std::string(ppc::util::GetNamespace<TaskType>()) + "_" +                         \
+                                 ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), SettingsPath), \
+                             ppc::core::PerfResults::TypeOfRunning::kTaskRun))
+
+template <typename Tuple, std::size_t... I>
+auto TupleToGTestValuesImpl(Tuple&& tup, std::index_sequence<I...>) {
+  return ::testing::Values(std::get<I>(std::forward<Tuple>(tup))...);
+}
+
+template <typename Tuple>
+auto TupleToGTestValues(Tuple&& tup) {
+  constexpr size_t size = std::tuple_size<std::decay_t<Tuple>>::value;
+  return TupleToGTestValuesImpl(std::forward<Tuple>(tup), std::make_index_sequence<size>{});
+}
+
+#ifndef PPC_ASAN_RUN
+#define ADD_PERF_TASK_PROCESS(TaskType, InputTypeParam, SettingsPath)                                         \
+  std::tuple(std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                                 \
+                             std::string(ppc::util::GetNamespace<TaskType>()) + "_" +                         \
+                                 ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), SettingsPath), \
+                             ppc::core::PerfResults::TypeOfRunning::kPipeline),                               \
+             std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                                 \
+                             std::string(ppc::util::GetNamespace<TaskType>()) + "_" +                         \
+                                 ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), SettingsPath), \
+                             ppc::core::PerfResults::TypeOfRunning::kTaskRun))
+#else
+#define ADD_PERF_TASK_PROCESS(TaskType, InputTypeParam, SettingsPath) std::make_tuple()
+#endif
 
 }  // namespace ppc::util
