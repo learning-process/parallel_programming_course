@@ -27,10 +27,10 @@ class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {
     MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &flag, &status);
 
     if (flag != 0) {
-      std::println(
-          stderr,
-          "[  PROCESS {}  ] [  FAILED  ] {}.{}: MPI message queue has an unread message from process {} with tag {}",
-          rank, "test_suite_name", "test_name", status.MPI_SOURCE, status.MPI_TAG);
+      std::println(stderr,
+                   "[  PROCESS {}  ] [  FAILED  ] MPI message queue has an unread message from process {} with tag {}",
+                   rank, status.MPI_SOURCE, status.MPI_TAG);
+
       MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
     }
 
@@ -71,6 +71,7 @@ class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
 };
 
 int main(int argc, char** argv) {
+#ifndef USE_ASAN
   MPI_Init(&argc, &argv);
 
   // Limit the number of threads in TBB
@@ -92,4 +93,13 @@ int main(int argc, char** argv) {
 
   MPI_Finalize();
   return status;
+#else
+  // Limit the number of threads in TBB
+  tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
+  // Limit the number of threads in OMP
+  omp_set_num_threads(ppc::util::GetNumThreads());
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+#endif
 }

@@ -7,19 +7,19 @@ set(exec_perf_tests "ppc_perf_tests")
 # Init func tests executable files
 set(list_of_exec_tests "")
 if (USE_FUNC_TESTS)
-    add_executable(${exec_func_tests} "${CMAKE_CURRENT_SOURCE_DIR}/runners/functional.cpp")
+    add_executable(${exec_func_tests} "${CMAKE_CURRENT_SOURCE_DIR}/common/runners/functional.cpp")
     list(APPEND list_of_exec_tests ${exec_func_tests})
 endif (USE_FUNC_TESTS)
 
 # Init perf tests executable files
 if (USE_PERF_TESTS)
-    add_executable(${exec_perf_tests} "${CMAKE_CURRENT_SOURCE_DIR}/runners/performance.cpp")
+    add_executable(${exec_perf_tests} "${CMAKE_CURRENT_SOURCE_DIR}/common/runners/performance.cpp")
     list(APPEND list_of_exec_tests ${exec_perf_tests})
 endif (USE_PERF_TESTS)
 
 SUBDIRLIST(subdirs ${CMAKE_CURRENT_LIST_DIR})
 foreach(subd ${subdirs})
-    if (subd STREQUAL "runners")
+    if (subd STREQUAL "common")
         continue()
     endif ()
     add_subdirectory(${subd})

@@ -6,6 +6,10 @@ if (APPLE)
     set(CMAKE_SHARED_LIBRARY_RUNTIME_C_FLAG TRUE)
 endif(APPLE)
 
+if(DEFINED ENV{PPC_ASAN_RUN} AND "$ENV{PPC_ASAN_RUN}" STREQUAL "1")
+    add_compile_definitions(USE_ASAN)
+endif()
+
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif(NOT CMAKE_BUILD_TYPE)
