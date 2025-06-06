@@ -1,10 +1,10 @@
+#include <fmt/core.h>
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <omp.h>
 
 #include <cstdio>
 #include <memory>
-#include <print>
 #include <string>
 #include <utility>
 
@@ -27,7 +27,7 @@ class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {
     MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &flag, &status);
 
     if (flag != 0) {
-      std::println(
+      fmt::println(
           stderr,
           "[  PROCESS {}  ] [  FAILED  ] {}.{}: MPI message queue has an unread message from process {} with tag {}",
           rank, "test_suite_name", "test_name", status.MPI_SOURCE, status.MPI_TAG);
@@ -64,42 +64,37 @@ class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
   static void PrintProcessRank() {
     int rank = -1;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::print(" [  PROCESS {}  ] ", rank);
+    fmt::print(" [  PROCESS {}  ] ", rank);
   }
 
   std::shared_ptr<::testing::TestEventListener> base_;
 };
 
 int main(int argc, char** argv) {
-#ifndef PPC_ASAN_RUN
-  MPI_Init(&argc, &argv);
+  if (ppc::util::IsUnderMpirun()) {
+    MPI_Init(&argc, &argv);
 
-  // Limit the number of threads in TBB
-  tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
-  // Limit the number of threads in OMP
-  omp_set_num_threads(3);
+    // Limit the number of threads in TBB
+    tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
+    // Limit the number of threads in OMP
+    omp_set_num_threads(ppc::util::GetNumThreads());
 
+    ::testing::InitGoogleTest(&argc, argv);
 
-#pragma omp parallel
-  {
-    std::cout << "Thread: " << omp_get_thread_num() << "\n";
+    auto& listeners = ::testing::UnitTest::GetInstance()->listeners();
+    int rank = -1;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if (rank != 0 && (argc < 2 || argv[1] != std::string("--print-workers"))) {
+      auto* listener = listeners.Release(listeners.default_result_printer());
+      listeners.Append(new WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener)));
+    }
+    listeners.Append(new UnreadMessagesDetector());
+    auto status = RUN_ALL_TESTS();
+
+    MPI_Finalize();
+    return status;
   }
 
-  ::testing::InitGoogleTest(&argc, argv);
-
-  auto& listeners = ::testing::UnitTest::GetInstance()->listeners();
-  int rank = -1;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  if (rank != 0 && (argc < 2 || argv[1] != std::string("--print-workers"))) {
-    auto* listener = listeners.Release(listeners.default_result_printer());
-    listeners.Append(new WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener)));
-  }
-  listeners.Append(new UnreadMessagesDetector());
-  auto status = RUN_ALL_TESTS();
-
-  MPI_Finalize();
-  return status;
-#else
   // Limit the number of threads in TBB
   tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
   // Limit the number of threads in OMP
@@ -107,5 +102,4 @@ int main(int argc, char** argv) {
 
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
-#endif
 }

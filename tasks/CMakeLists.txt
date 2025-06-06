@@ -18,10 +18,6 @@ if (USE_PERF_TESTS)
     list(APPEND list_of_exec_tests ${exec_perf_tests})
 endif (USE_PERF_TESTS)
 
-if((DEFINED ENV{PPC_ASAN_RUN}) AND ("$ENV{PPC_ASAN_RUN}" STREQUAL "1"))
-    add_compile_definitions(PPC_ASAN_RUN)
-endif()
-
 SUBDIRLIST(subdirs ${CMAKE_CURRENT_LIST_DIR})
 foreach(subd ${subdirs})
     if (subd STREQUAL "common")

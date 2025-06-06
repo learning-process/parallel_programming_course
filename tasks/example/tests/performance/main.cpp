@@ -19,7 +19,7 @@
 namespace nesterov_a_test_task {
 
 class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
-  const std::vector<int>::size_type kCount_ = 111;
+  const int kCount_ = 111;
   InType input_data_{};
 
   void SetUp() override { input_data_ = kCount_; }
@@ -29,16 +29,16 @@ class ExampleRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
   InType GetTestInputData() final { return input_data_; }
 };
 
-const auto all_perf_tasks = std::tuple_cat(ADD_PERF_TASK_PROCESS(NesterovATestTaskALL, InType, PPC_SETTINGS_example),
-                                           ADD_PERF_TASK_PROCESS(NesterovATestTaskMPI, InType, PPC_SETTINGS_example),
-                                           ADD_PERF_TASK_THREADS(NesterovATestTaskOMP, InType, PPC_SETTINGS_example),
-                                           ADD_PERF_TASK_THREADS(NesterovATestTaskSEQ, InType, PPC_SETTINGS_example),
-                                           ADD_PERF_TASK_THREADS(NesterovATestTaskSTL, InType, PPC_SETTINGS_example),
-                                           ADD_PERF_TASK_THREADS(NesterovATestTaskTBB, InType, PPC_SETTINGS_example));
+const auto kAllPerfTasks = std::tuple_cat(ADD_PERF_TASK_PROCESS(NesterovATestTaskALL, InType, PPC_SETTINGS_example),
+                                          ADD_PERF_TASK_PROCESS(NesterovATestTaskMPI, InType, PPC_SETTINGS_example),
+                                          ADD_PERF_TASK_THREADS(NesterovATestTaskOMP, InType, PPC_SETTINGS_example),
+                                          ADD_PERF_TASK_THREADS(NesterovATestTaskSEQ, InType, PPC_SETTINGS_example),
+                                          ADD_PERF_TASK_THREADS(NesterovATestTaskSTL, InType, PPC_SETTINGS_example),
+                                          ADD_PERF_TASK_THREADS(NesterovATestTaskTBB, InType, PPC_SETTINGS_example));
 
 TEST_P(ExampleRunPerfTest, RunPerfModes) { ExecuteTest(GetParam()); }
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(RunModeTests, ExampleRunPerfTest, ppc::util::TupleToGTestValues(all_perf_tasks),
+INSTANTIATE_TEST_SUITE_P_NOLINT(RunModeTests, ExampleRunPerfTest, ppc::util::TupleToGTestValues(kAllPerfTasks),
                                 ExampleRunPerfTest::CustomPerfTestName);
 
 }  // namespace nesterov_a_test_task

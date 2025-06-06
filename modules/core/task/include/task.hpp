@@ -108,10 +108,10 @@ class Task {
   void SetTypeOfTask(TypeOfTask type_of_task) { type_of_task_ = type_of_task; }
 
   // get a dynamic type of task
-  TypeOfTask GetDynamicTypeOfTask() { return type_of_task_; }
+  [[nodiscard]] TypeOfTask GetDynamicTypeOfTask() const { return type_of_task_; }
 
   // get a dynamic type of task
-  StatusOfTask GetStatusOfTask() { return status_of_task_; }
+  [[nodiscard]] StatusOfTask GetStatusOfTask() const { return status_of_task_; }
 
   // get a static type of task
   static constexpr TypeOfTask GetStaticTypeOfTask() { return TypeOfTask::kUnknown; }

@@ -36,9 +36,8 @@ bool NesterovATestTaskOMP::RunImpl() {
 
   std::atomic<int> counter(0);
 #pragma omp parallel default(none) shared(counter)
-  {
-    counter++;
-  }
+  counter++;
+
   GetOutput() /= counter;
   return GetOutput() > 0;
 }

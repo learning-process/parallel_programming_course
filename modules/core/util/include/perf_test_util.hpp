@@ -79,15 +79,11 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
       throw std::runtime_error(err_msg.str().c_str());
     }
 
-#ifndef PPC_ASAN_RUN
     int rank = -1;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
       perf.PrintPerfStatistic(test_name);
     }
-#else
-    perf.PrintPerfStatistic(test_name);
-#endif
 
     OutType output_data = task_->GetOutput();
     ASSERT_TRUE(CheckTestOutputData(output_data));
@@ -118,7 +114,7 @@ auto TupleToGTestValues(Tuple&& tup) {
   return TupleToGTestValuesImpl(std::forward<Tuple>(tup), std::make_index_sequence<size>{});
 }
 
-#ifndef PPC_ASAN_RUN
+#if 1
 #define ADD_PERF_TASK_PROCESS(TaskType, InputTypeParam, SettingsPath)                                         \
   std::tuple(std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                                 \
                              std::string(ppc::util::GetNamespace<TaskType>()) + "_" +                         \

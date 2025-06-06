@@ -21,7 +21,7 @@ namespace nesterov_a_test_task {
 
 class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType, TestType> {
  public:
-  static std::string PrintTestParam(TestType test_param) {
+  static std::string PrintTestParam(const TestType &test_param) {
     return std::to_string(std::get<0>(test_param)) + "_" + std::get<1>(test_param);
   }
 
@@ -54,7 +54,7 @@ class NesterovARunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
   InType GetTestInputData() final { return input_data_; }
 
  private:
-  InType input_data_;
+  InType input_data_ = 0;
 };
 
 namespace {

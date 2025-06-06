@@ -47,9 +47,8 @@ bool NesterovATestTaskALL::RunImpl() {
     if (rank == 0) {
       std::atomic<int> counter(0);
 #pragma omp parallel default(none) shared(counter)
-      {
-        counter++;
-      }
+      counter++;
+
       GetOutput() /= counter;
     } else {
       GetOutput() /= num_threads;

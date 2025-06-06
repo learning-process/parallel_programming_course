@@ -51,6 +51,15 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
       GTEST_SKIP();
     }
 
+    auto which_task = [&](const std::string& substring) {
+      return std::get<GTestParamIndex::kNameTest>(test_param).find(substring) != std::string::npos;
+    };
+
+    if (!ppc::util::IsUnderMpirun() && (which_task("_all") || which_task("_mpi"))) {
+      std::cerr << "kALL and kMPI tasks are not under mpirun" << '\n';
+      GTEST_SKIP();
+    }
+
     task_ = std::get<GTestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
     ASSERT_TRUE(task_->Validation());
     ASSERT_TRUE(task_->PreProcessing());
@@ -91,7 +100,7 @@ auto ExpandToValues(const Tuple& t) {
 
 #define ADD_FUNC_TASK_THREADS(TASK) TaskListGenerator<TASK>()
 
-#ifndef PPC_ASAN_RUN
+#if 1
 #define ADD_FUNC_TASK_PROCESS(TASK) TaskListGenerator<TASK>()
 #else
 #define ADD_FUNC_TASK_PROCESS(TASK) std::tuple<>()

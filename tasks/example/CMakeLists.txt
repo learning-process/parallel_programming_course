@@ -24,10 +24,7 @@ endif (USE_PERF_TESTS)
 get_filename_component(TASK_NAME ${CMAKE_CURRENT_LIST_DIR} NAME)
 message(STATUS "-- ${TASK_NAME}")
 
-set(technologies "omp" "seq" "stl" "tbb")
-if((NOT DEFINED ENV{PPC_ASAN_RUN}) OR ("$ENV{PPC_ASAN_RUN}" STREQUAL "0"))
-    list(APPEND technologies "all" "mpi")
-endif()
+set(technologies "all" "mpi" "omp" "seq" "stl" "tbb")
 
 # Create lib
 foreach (dir_type ${technologies})
