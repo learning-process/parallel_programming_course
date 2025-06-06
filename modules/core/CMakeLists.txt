@@ -23,10 +23,17 @@ project(${exec_func_lib})
 add_library(${exec_func_lib} STATIC ${LIB_SOURCE_FILES})
 set_target_properties(${exec_func_lib} PROPERTIES LINKER_LANGUAGE CXX)
 
+add_dependencies(${exec_func_lib} ppc_libenvpp)
+target_link_directories(${exec_func_lib} PUBLIC "${CMAKE_BINARY_DIR}/ppc_libenvpp/install/lib")
+target_link_directories(${exec_func_lib} PUBLIC "${CMAKE_BINARY_DIR}/ppc_libenvpp/build")
+target_link_libraries(${exec_func_lib} PUBLIC fmt envpp)
+
 add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
+
 add_dependencies(${exec_func_tests} ppc_googletest)
 target_link_directories(${exec_func_tests} PUBLIC ${CMAKE_BINARY_DIR}/ppc_googletest/install/lib)
 target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
+
 if( MPI_COMPILE_FLAGS )
   set_target_properties(${exec_func_tests} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
 endif( MPI_COMPILE_FLAGS )

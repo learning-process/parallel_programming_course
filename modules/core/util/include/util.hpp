@@ -61,4 +61,9 @@ static_assert(false, "Unsupported compiler");
   return kFunc.substr(start, end - start);
 }
 
+#include <stdbool.h>
+#include <stdlib.h>
+
+bool IsUnderMpirun();
+
 }  // namespace ppc::util

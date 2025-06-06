@@ -87,6 +87,8 @@ class PPCRunner:
             self.__run_exec(f"{self.work_dir / 'ppc_func_tests'} {self.__get_gtest_settings(3, '_' + task_type + '_')}")
 
     def run_core(self):
+        self.__run_exec(f"{self.work_dir / 'ppc_func_tests'} {self.__get_gtest_settings(1, '_common')}")
+
         if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'core_func_tests'} "
                             f"{self.__get_gtest_settings(1, '*')} --gtest_filter=*:-*_death_test")
@@ -123,8 +125,8 @@ if __name__ == "__main__":
     ppc_runner = PPCRunner()
     ppc_runner.setup_env(os.environ.copy())
 
-    # if args_dict["running_type"] in ["threads", "processes"]:
-    #     ppc_runner.run_core()
+    if args_dict["running_type"] in ["threads", "processes"]:
+        ppc_runner.run_core()
 
     if args_dict["running_type"] == "threads":
         ppc_runner.run_threads()

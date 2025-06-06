@@ -30,6 +30,7 @@ include(cmake/configure.cmake)
 include(cmake/modes.cmake)
 include(cmake/sanitizers.cmake)
 include(cmake/json.cmake)
+include(cmake/libenvpp.cmake)
 
 ################# Parallel programming technologies #################
 

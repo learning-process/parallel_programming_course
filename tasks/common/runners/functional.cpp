@@ -77,7 +77,13 @@ int main(int argc, char** argv) {
   // Limit the number of threads in TBB
   tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
   // Limit the number of threads in OMP
-  omp_set_num_threads(ppc::util::GetNumThreads());
+  omp_set_num_threads(3);
+
+
+#pragma omp parallel
+  {
+    std::cout << "Thread: " << omp_get_thread_num() << "\n";
+  }
 
   ::testing::InitGoogleTest(&argc, argv);
 
