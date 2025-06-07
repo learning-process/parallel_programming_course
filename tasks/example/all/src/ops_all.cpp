@@ -46,7 +46,7 @@ bool NesterovATestTaskALL::RunImpl() {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
       std::atomic<int> counter(0);
-#pragma omp parallel default(none) shared(counter)
+#pragma omp parallel default(none) shared(counter) num_threads(ppc::util::GetNumThreads())
       counter++;
 
       GetOutput() /= counter;
