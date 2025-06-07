@@ -1,15 +1,79 @@
 {
-   suppress mpi init internal leaks
+   libucs_strdup_leak
    Memcheck:Leak
-   ...
-   fun:MPI_Init
-   ...
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:strdup
+   fun:ucs_strdup
+   fun:ucs_config_sscanf_string
 }
 
 {
-   suppress mpi finalize internal leaks
+   libucs_array_leak
    Memcheck:Leak
-   ...
-   fun:MPI_Finalize
-   ...
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:ucs_calloc
+   fun:ucs_config_sscanf_array
+}
+
+{
+   libomp_set_num_threads_leak1
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/usr/lib/llvm-20/lib/libomp.so.5
+   fun:omp_set_num_threads
+}
+
+{
+   libomp_set_num_threads_leak2
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   obj:/usr/lib/llvm-20/lib/libomp.so.5
+   fun:omp_set_num_threads
+}
+
+{
+   libomp_internal_alloc1
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:___kmp_allocate
+   obj:/usr/lib/llvm-20/lib/libomp.so.5
+}
+
+{
+   dlopen_strdup_leak
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:strdup
+   fun:_dl_map_object
+}
+
+{
+   dlopen_dl_new_object
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:_dl_new_object
+   fun:_dl_map_object_from_fd
+}
+
+{
+   dlopen_global_resize
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:add_to_global_resize
+}
+
+{
+   dlopen_check_map_versions
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:_dl_check_map_versions
 }
