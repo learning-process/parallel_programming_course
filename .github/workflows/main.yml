@@ -843,10 +843,16 @@ jobs:
         with:
           version: "17.0"
 
-      - name: Setup MPI
-        uses: mpi4py/setup-mpi@v1
-        with:
-          mpi: msmpi
+      - name: Download MPICH (64-bit)
+        run: |
+          curl -LO https://www.mpich.org/static/downloads/4.2/mpich-4.2-windows-x86_64.zip
+          unzip mpich-4.2-windows-x86_64.zip -d mpich
+          echo "MPICH installed"
+
+      - name: Setup environment for MPICH
+        run: |
+          echo "$GITHUB_WORKSPACE/mpich/bin" >> $GITHUB_PATH
+          echo "MPICH_ROOT=$GITHUB_WORKSPACE/mpich" >> $GITHUB_ENV
 
       - name: Setup ccache
         uses: Chocobo1/setup-ccache-action@v1
@@ -865,6 +871,7 @@ jobs:
           -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=Release
           -D CMAKE_INSTALL_PREFIX=install
+          -D CMAKE_PREFIX_PATH="${{ env.MPICH_ROOT }}"
         env:
           CC: clang
           CXX: clang++
