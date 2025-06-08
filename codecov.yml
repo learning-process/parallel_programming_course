@@ -1,5 +1,6 @@
 ignore:
   - "tasks/**/tests/**"
+  - "modules/**/tests/**"
   - "tasks/common/runners/**"
   - "modules/core/util/include/perf_test_util.hpp"
   - "modules/core/util/include/func_test_util.hpp"
