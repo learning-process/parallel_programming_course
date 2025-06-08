@@ -54,6 +54,7 @@ if(NOT MSVC)
   endif()
 endif()
 
+find_package(MPI REQUIRED)
 if( MPI_COMPILE_FLAGS )
   set_target_properties(${exec_func_lib} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
 endif( MPI_COMPILE_FLAGS )
