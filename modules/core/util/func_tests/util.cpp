@@ -17,7 +17,7 @@ TEST(util_tests, extracts_correct_namespace) {
   EXPECT_EQ(kNs, "my::nested");
 }
 
-TEST(util_tests, threads_control_check_openmp) {
+TEST(util_tests, threads_control_check_openmp_disabled_valgrind) {
   int ppc_num_threads = ppc::util::GetNumThreads();
 
   int omp_num_threads = -1;

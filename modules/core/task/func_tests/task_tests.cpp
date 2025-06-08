@@ -128,7 +128,7 @@ TEST(task_tests, check_float) {
   EXPECT_NEAR(test_task.GetOutput(), in.size(), 1e-3);
 }
 
-DEATH_TEST(task_tests, check_wrong_order_death_test) {
+DEATH_TEST(task_tests, check_wrong_order_disabled_valgrind) {
   auto destroy_function = [] {
     // Create data
     std::vector<float> in(20, 1);
@@ -143,7 +143,7 @@ DEATH_TEST(task_tests, check_wrong_order_death_test) {
   EXPECT_DEATH_IF_SUPPORTED(destroy_function(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
 }
 
-DEATH_TEST(task_tests, check_empty_order_death_test) {
+DEATH_TEST(task_tests, check_empty_order_disabled_valgrind) {
   auto destroy_function = [] {
     // Create data
     std::vector<float> in(20, 1);

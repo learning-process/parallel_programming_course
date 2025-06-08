@@ -56,7 +56,6 @@ constexpr std::string_view GetNamespace() {
   if (start == std::string_view::npos) return {};
   start += kKey.size();
 
-  // Удалим class/struct/enum/union префиксы
   constexpr std::string_view prefixes[] = {"class ", "struct ", "enum ", "union "};
   for (auto prefix : prefixes) {
     if (kFunc.substr(start, prefix.size()) == prefix) {
