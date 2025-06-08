@@ -83,7 +83,7 @@ auto ExpandToValues(const Tuple& t) {
   return ExpandToValuesImpl(t, std::make_index_sequence<kN>{});
 }
 
-#define INIT_TASK_GENERATOR(InTypeParam, SizesParam, SettingsPath)                                   \
+#define INIT_FUNC_TASK_GENERATOR(InTypeParam, SizesParam, SettingsPath)                              \
   template <typename Task, std::size_t... Is>                                                        \
   auto GenTaskTuplesImpl(std::index_sequence<Is...>) {                                               \
     return std::make_tuple(                                                                          \
@@ -98,12 +98,10 @@ auto ExpandToValues(const Tuple& t) {
     return GenTaskTuplesImpl<Task>(std::make_index_sequence<SizesParam.size()>{});                   \
   }
 
-#define ADD_FUNC_TASK_THREADS(TASK) TaskListGenerator<TASK>()
-
 #if 1
-#define ADD_FUNC_TASK_PROCESS(TASK) TaskListGenerator<TASK>()
+#define ADD_FUNC_TASK(TASK) TaskListGenerator<TASK>()
 #else
-#define ADD_FUNC_TASK_PROCESS(TASK) std::tuple<>()
+#define ADD_FUNC_TASK(TASK) std::tuple<>()
 #endif
 
 }  // namespace ppc::util
