@@ -1,6 +1,5 @@
 #include <fmt/core.h>
 #include <gtest/gtest.h>
-#include <mpi.h>
 #include <omp.h>
 
 #include <cstdio>
@@ -9,6 +8,7 @@
 #include <utility>
 
 #include "core/util/include/util.hpp"
+#include "mpi.h"
 #include "oneapi/tbb/global_control.h"
 
 class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {

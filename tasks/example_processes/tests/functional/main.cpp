@@ -1,15 +1,20 @@
 #include <gtest/gtest.h>
 
-#include <compare>
+#include <algorithm>
+#include <array>
 #include <cstddef>
 #include <cstdint>
+#include <numeric>
 #include <stb_library.hpp>
+#include <stdexcept>
 #include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
 #include "core/util/include/func_test_util.hpp"
 #include "core/util/include/util.hpp"
+#include "example_processes/common/include/common.hpp"
 #include "example_processes/mpi/include/ops_mpi.hpp"
 #include "example_processes/seq/include/ops_seq.hpp"
 

@@ -1,15 +1,16 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include <mpi.h>
 #include <omp.h>
 #include <tbb/tick_count.h>
 
+#include <concepts>
 #include <csignal>
-#include <filesystem>
-#include <fstream>
+#include <functional>
+#include <string>
+#include <tuple>
 
-#include "core/perf/include/perf.hpp"
+#include "core/task/include/task.hpp"
 #include "core/util/include/util.hpp"
 
 namespace ppc::util {
@@ -44,31 +45,53 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
     return std::get<GTestParamIndex::kNameTest>(info.param) + "_" + Derived::PrintTestParam(test_param);
   }
 
- protected:
   void ExecuteTest(FuncTestParam<InType, OutType, TestType> test_param) {
-    ASSERT_FALSE(std::get<GTestParamIndex::kNameTest>(test_param).find("unknown") != std::string::npos);
-    if (std::get<GTestParamIndex::kNameTest>(test_param).find("disabled") != std::string::npos) {
+    const std::string& test_name = std::get<GTestParamIndex::kNameTest>(test_param);
+
+    validateTestName(test_name);
+
+    if (isTestDisabled(test_name)) {
       GTEST_SKIP();
     }
 
-    auto which_task = [&](const std::string& substring) {
-      return std::get<GTestParamIndex::kNameTest>(test_param).find(substring) != std::string::npos;
-    };
-
-    if (!ppc::util::IsUnderMpirun() && (which_task("_all") || which_task("_mpi"))) {
-      std::cerr << "kALL and kMPI tasks are not under mpirun" << '\n';
+    if (shouldSkipNonMpiTask(test_name)) {
+      std::cerr << "kALL and kMPI tasks are not under mpirun\n";
       GTEST_SKIP();
     }
 
-    task_ = std::get<GTestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
-    ASSERT_TRUE(task_->Validation());
-    ASSERT_TRUE(task_->PreProcessing());
-    ASSERT_TRUE(task_->Run());
-    ASSERT_TRUE(task_->PostProcessing());
-    ASSERT_TRUE(CheckTestOutputData(task_->GetOutput()));
+    initializeAndRunTask(test_param);
   }
 
  private:
+  static constexpr std::string UNKNOWN_TEST = "unknown";
+  static constexpr std::string DISABLED_TEST = "disabled";
+  static constexpr std::string ALL_TASK = "_all";
+  static constexpr std::string MPI_TASK = "_mpi";
+
+  void validateTestName(const std::string& test_name) {
+    EXPECT_FALSE(test_name.find(UNKNOWN_TEST) != std::string::npos);
+  }
+
+  bool isTestDisabled(const std::string& test_name) { return test_name.find(DISABLED_TEST) != std::string::npos; }
+
+  bool shouldSkipNonMpiTask(const std::string& test_name) {
+    auto containsSubstring = [&](const std::string& substring) {
+      return test_name.find(substring) != std::string::npos;
+    };
+
+    return !ppc::util::IsUnderMpirun() && (containsSubstring(ALL_TASK) || containsSubstring(MPI_TASK));
+  }
+
+  void initializeAndRunTask(const FuncTestParam<InType, OutType, TestType>& test_param) {
+    task_ = std::get<GTestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
+
+    EXPECT_TRUE(task_->Validation());
+    EXPECT_TRUE(task_->PreProcessing());
+    EXPECT_TRUE(task_->Run());
+    EXPECT_TRUE(task_->PostProcessing());
+    EXPECT_TRUE(CheckTestOutputData(task_->GetOutput()));
+  }
+
   ppc::core::TaskPtr<InType, OutType> task_;
 };
 
@@ -98,10 +121,6 @@ auto ExpandToValues(const Tuple& t) {
     return GenTaskTuplesImpl<Task>(std::make_index_sequence<SizesParam.size()>{});                   \
   }
 
-#if 1
-#define ADD_FUNC_TASK(TASK) TaskListGenerator<TASK>()
-#else
-#define ADD_FUNC_TASK(TASK) std::tuple<>()
-#endif
+#define ADD_FUNC_TASK(TASK) TaskListGenerator<TASK>()  // std::tuple<>()
 
 }  // namespace ppc::util

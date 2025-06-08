@@ -1,8 +1,11 @@
 #include "example_threads/seq/include/ops_seq.hpp"
 
 #include <cmath>
-#include <cstddef>
+#include <numeric>
 #include <vector>
+
+#include "core/util/include/util.hpp"
+#include "example_threads/common/include/common.hpp"
 
 namespace nesterov_a_test_task_threads {
 
@@ -20,6 +23,10 @@ bool NesterovATestTaskSEQ::PreProcessingImpl() {
 }
 
 bool NesterovATestTaskSEQ::RunImpl() {
+  if (GetInput() == 0) {
+    return false;
+  }
+
   for (InType i = 0; i < GetInput(); i++) {
     for (InType j = 0; j < GetInput(); j++) {
       for (InType k = 0; k < GetInput(); k++) {
@@ -38,7 +45,9 @@ bool NesterovATestTaskSEQ::RunImpl() {
     counter++;
   }
 
-  GetOutput() /= counter;
+  if (counter != 0) {
+    GetOutput() /= counter;
+  }
   return GetOutput() > 0;
 }
 

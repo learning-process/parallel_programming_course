@@ -2,8 +2,11 @@
 
 #include <atomic>
 #include <cmath>
-#include <cstddef>
+#include <numeric>
 #include <vector>
+
+#include "core/util/include/util.hpp"
+#include "example_threads/common/include/common.hpp"
 
 namespace nesterov_a_test_task_threads {
 

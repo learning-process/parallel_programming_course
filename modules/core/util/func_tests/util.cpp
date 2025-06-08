@@ -2,9 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <cstddef>
-#include <cstdint>
-#include <vector>
+#include <string_view>
 
 #include "omp.h"
 

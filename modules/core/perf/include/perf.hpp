@@ -2,7 +2,12 @@
 
 #include <cstdint>
 #include <functional>
+#include <iomanip>
+#include <iostream>
 #include <memory>
+#include <sstream>
+#include <stdexcept>
+#include <string>
 
 #include "core/task/include/task.hpp"
 
@@ -58,7 +63,7 @@ class Perf {
     task_->PostProcessing();
   }
   // Pint results for automation checkers
-  void PrintPerfStatistic(std::string test_id) const {
+  void PrintPerfStatistic(const std::string& test_id) const {
     std::string type_test_name;
     if (perf_results_.type_of_running == PerfResults::TypeOfRunning::kTaskRun) {
       type_test_name = "task_run";

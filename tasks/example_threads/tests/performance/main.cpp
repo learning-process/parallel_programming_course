@@ -1,16 +1,11 @@
 #include <gtest/gtest.h>
-#include <mpi.h>
 
-#include <chrono>
-#include <cstddef>
-#include <memory>
 #include <tuple>
-#include <vector>
 
-#include "core/perf/include/perf.hpp"
 #include "core/util/include/perf_test_util.hpp"
 #include "core/util/include/util.hpp"
 #include "example_threads/all/include/ops_all.hpp"
+#include "example_threads/common/include/common.hpp"
 #include "example_threads/omp/include/ops_omp.hpp"
 #include "example_threads/seq/include/ops_seq.hpp"
 #include "example_threads/stl/include/ops_stl.hpp"

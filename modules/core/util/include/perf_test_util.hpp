@@ -5,11 +5,19 @@
 #include <omp.h>
 #include <tbb/tick_count.h>
 
+#include <chrono>
 #include <csignal>
-#include <filesystem>
-#include <fstream>
+#include <cstddef>
+#include <functional>
+#include <stdexcept>
+#include <string>
+#include <strstream>
+#include <tuple>
+#include <type_traits>
+#include <utility>
 
 #include "core/perf/include/perf.hpp"
+#include "core/task/include/task.hpp"
 #include "core/util/include/util.hpp"
 
 namespace ppc::util {
@@ -93,7 +101,6 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   ppc::core::TaskPtr<InType, OutType> task_;
 };
 
-#if 1
 #define ADD_PERF_TASK(TaskType, InputTypeParam, SettingsPath)                                                 \
   std::tuple(std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                                 \
                              std::string(ppc::util::GetNamespace<TaskType>()) + "_" +                         \
@@ -103,19 +110,18 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
                              std::string(ppc::util::GetNamespace<TaskType>()) + "_" +                         \
                                  ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), SettingsPath), \
                              ppc::core::PerfResults::TypeOfRunning::kTaskRun))
-#else
-#define ADD_PERF_TASK(TaskType, InputTypeParam, SettingsPath) std::make_tuple()
-#endif
+
+// #define ADD_PERF_TASK(TaskType, InputTypeParam, SettingsPath) std::make_tuple()
 
 template <typename Tuple, std::size_t... I>
-auto TupleToGTestValuesImpl(Tuple&& tup, std::index_sequence<I...>) {
+auto TupleToGTestValuesImpl(Tuple&& tup, std::index_sequence<I...> /*unused*/) {
   return ::testing::Values(std::get<I>(std::forward<Tuple>(tup))...);
 }
 
 template <typename Tuple>
 auto TupleToGTestValues(Tuple&& tup) {
-  constexpr size_t size = std::tuple_size<std::decay_t<Tuple>>::value;
-  return TupleToGTestValuesImpl(std::forward<Tuple>(tup), std::make_index_sequence<size>{});
+  constexpr size_t kSize = std::tuple_size<std::decay_t<Tuple>>::value;
+  return TupleToGTestValuesImpl(std::forward<Tuple>(tup), std::make_index_sequence<kSize>{});
 }
 
 #define INIT_PERF_TASK_GENERATOR(InType, EnvVarSettingsPath)                 \

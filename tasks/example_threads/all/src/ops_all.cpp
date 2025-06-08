@@ -1,15 +1,14 @@
 #include "example_threads/all/include/ops_all.hpp"
 
-#include <mpi.h>
-
 #include <atomic>
 #include <cmath>
-#include <cstddef>
-#include <functional>
+#include <numeric>
 #include <thread>
 #include <vector>
 
 #include "core/util/include/util.hpp"
+#include "example_threads/common/include/common.hpp"
+#include "mpi.h"
 #include "oneapi/tbb/parallel_for.h"
 
 namespace nesterov_a_test_task_threads {

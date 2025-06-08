@@ -71,6 +71,7 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
   perf_analyzer.PipelineRun(perf_attr);
 
   // Get perf statistic
+  // NOLINTNEXTLINE(cppcoreguidelines-avoid-goto)
   ASSERT_ANY_THROW(perf_analyzer.PrintPerfStatistic("check_perf_pipeline_uint8_t_slow_test"));
 }
 

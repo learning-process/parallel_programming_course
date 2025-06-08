@@ -1,7 +1,6 @@
 #pragma once
 
-#include <vector>
-
+#include "core/task/include/task.hpp"
 #include "example_threads/common/include/common.hpp"
 
 namespace nesterov_a_test_task_threads {

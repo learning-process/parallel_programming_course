@@ -5,9 +5,10 @@
 #include <atomic>
 #include <cmath>
 #include <core/util/include/util.hpp>
-#include <cstddef>
+#include <numeric>
 #include <vector>
 
+#include "example_threads/common/include/common.hpp"
 #include "oneapi/tbb/parallel_for.h"
 
 namespace nesterov_a_test_task_threads {

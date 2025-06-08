@@ -1,10 +1,12 @@
 #include "example_processes/mpi/include/ops_mpi.hpp"
 
-#include <mpi.h>
-
 #include <cmath>
-#include <cstddef>
+#include <numeric>
 #include <vector>
+
+#include "core/util/include/util.hpp"
+#include "example_processes/common/include/common.hpp"
+#include "mpi.h"
 
 namespace nesterov_a_test_task_processes {
 
@@ -22,6 +24,11 @@ bool NesterovATestTaskMPI::PreProcessingImpl() {
 }
 
 bool NesterovATestTaskMPI::RunImpl() {
+  auto input = GetInput();
+  if (input == 0) {
+    return false;
+  }
+
   for (InType i = 0; i < GetInput(); i++) {
     for (InType j = 0; j < GetInput(); j++) {
       for (InType k = 0; k < GetInput(); k++) {
@@ -35,7 +42,7 @@ bool NesterovATestTaskMPI::RunImpl() {
   const int num_threads = ppc::util::GetNumThreads();
   GetOutput() *= num_threads;
 
-  int rank = -1;
+  int rank = 0;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   if (rank == 0) {
@@ -45,7 +52,10 @@ bool NesterovATestTaskMPI::RunImpl() {
     for (int i = 0; i < num_threads; i++) {
       counter++;
     }
-    GetOutput() /= counter;
+
+    if (counter != 0) {
+      GetOutput() /= counter;
+    }
   }
 
   MPI_Barrier(MPI_COMM_WORLD);

@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <cstdlib>
+#include <memory>
 #include <string>
 #include <string_view>
 
@@ -89,6 +90,8 @@ constexpr std::string_view GetNamespace() {
   return {};
 #endif
 }
+
+inline std::shared_ptr<nlohmann::json> InitJSONPtr() { return std::make_shared<nlohmann::json>(); }
 
 bool IsUnderMpirun();
 

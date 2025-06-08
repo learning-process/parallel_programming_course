@@ -3,12 +3,12 @@
 #include <algorithm>
 #include <array>
 #include <filesystem>
-#include <libenvpp/env.hpp>
+#include <libenvpp/detail/get.hpp>
 #include <string>
 
 namespace {
 
-static std::string GetAbsolutePath(const std::string& relative_path) {
+std::string GetAbsolutePath(const std::string& relative_path) {
   const std::filesystem::path path = std::string(PPC_PATH_TO_PROJECT) + "/tasks/" + relative_path;
   return path.string();
 }

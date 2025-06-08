@@ -3,17 +3,17 @@
 #include <algorithm>
 #include <chrono>
 #include <core/util/include/util.hpp>
-#include <cstddef>
+#include <cstdint>
 #include <cstdlib>
 #include <exception>
 #include <fstream>
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <stdexcept>
 #include <string>
-#include <utility>
 
 using namespace std::chrono;
 
@@ -34,11 +34,12 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
   if (!file.is_open()) {
     throw std::runtime_error("Failed to open file settings.json");
   }
-  nlohmann::json list_settings;
-  file >> list_settings;
+
+  auto list_settings = ppc::util::InitJSONPtr();
+  file >> *list_settings;
 
   auto to_type_str = [&](const std::string &type) -> std::string {
-    return type + "_" + std::string(list_settings["tasks"][type]);
+    return type + "_" + std::string((*list_settings)["tasks"][type]);
   };
 
   if (type_of_task == TypeOfTask::kALL) {
