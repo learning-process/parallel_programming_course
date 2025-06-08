@@ -6,11 +6,11 @@
 #include "core/task/include/task.hpp"
 #include "core/util/include/util.hpp"
 
-namespace nesterov_a_test_task_threads {
+namespace nesterov_a_test_task_processes {
 
 using InType = int;
 using OutType = int;
 using TestType = std::tuple<int, std::string>;
 using BaseTask = ppc::core::Task<InType, OutType>;
 
-}  // namespace nesterov_a_test_task_threads
+}  // namespace nesterov_a_test_task_processes

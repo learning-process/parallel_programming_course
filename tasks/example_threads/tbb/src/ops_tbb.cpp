@@ -10,7 +10,7 @@
 
 #include "oneapi/tbb/parallel_for.h"
 
-namespace nesterov_a_test_task {
+namespace nesterov_a_test_task_threads {
 
 NesterovATestTaskTBB::NesterovATestTaskTBB(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
@@ -51,4 +51,4 @@ bool NesterovATestTaskTBB::PostProcessingImpl() {
   return GetOutput() > 0;
 }
 
-}  // namespace nesterov_a_test_task
+}  // namespace nesterov_a_test_task_threads

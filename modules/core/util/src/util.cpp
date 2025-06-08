@@ -6,9 +6,17 @@
 #include <libenvpp/env.hpp>
 #include <string>
 
-std::string ppc::util::GetAbsolutePath(const std::string& relative_path) {
+namespace {
+
+static std::string GetAbsolutePath(const std::string& relative_path) {
   const std::filesystem::path path = std::string(PPC_PATH_TO_PROJECT) + "/tasks/" + relative_path;
   return path.string();
+}
+
+}  // namespace
+
+std::string ppc::util::GetAbsoluteTaskPath(const std::string& id_path, const std::string& relative_path) {
+  return GetAbsolutePath(id_path + "/data/" + relative_path);
 }
 
 int ppc::util::GetNumThreads() {

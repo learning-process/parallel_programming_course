@@ -3,9 +3,9 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-#include "example_threads/common/include/common.hpp"
+#include "example_processes/common/include/common.hpp"
 
-namespace nesterov_a_test_task {
+namespace nesterov_a_test_task_processes {
 
 class NesterovATestTaskMPI : public BaseTask {
  public:
@@ -17,4 +17,4 @@ class NesterovATestTaskMPI : public BaseTask {
   bool PostProcessingImpl() override;
 };
 
-}  // namespace nesterov_a_test_task
+}  // namespace nesterov_a_test_task_processes

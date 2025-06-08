@@ -1,4 +1,4 @@
-#include "example_threads/mpi/include/ops_mpi.hpp"
+#include "example_processes/mpi/include/ops_mpi.hpp"
 
 #include <mpi.h>
 
@@ -6,7 +6,7 @@
 #include <cstddef>
 #include <vector>
 
-namespace nesterov_a_test_task {
+namespace nesterov_a_test_task_processes {
 
 NesterovATestTaskMPI::NesterovATestTaskMPI(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
@@ -57,4 +57,4 @@ bool NesterovATestTaskMPI::PostProcessingImpl() {
   return GetOutput() > 0;
 }
 
-}  // namespace nesterov_a_test_task
+}  // namespace nesterov_a_test_task_processes

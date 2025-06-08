@@ -64,7 +64,10 @@ if( MPI_LINK_FLAGS )
 endif( MPI_LINK_FLAGS )
 target_link_libraries(${exec_func_lib} PUBLIC ${MPI_LIBRARIES})
 
-target_link_directories(${exec_func_lib} INTERFACE ${CMAKE_SOURCE_DIR}/3rdparty/stb)
+
+add_library(stb_image STATIC ${CMAKE_SOURCE_DIR}/3rdparty/stb_image_wrapper.cpp)
+target_include_directories(stb_image PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty/stb)
+target_link_libraries(${exec_func_lib} PUBLIC stb_image)
 
 add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
 

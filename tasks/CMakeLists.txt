@@ -7,8 +7,7 @@ set(exec_perf_tests "ppc_perf_tests")
 # Init func tests executable files
 set(list_of_exec_tests "")
 if (USE_FUNC_TESTS)
-    add_executable(${exec_func_tests} "${CMAKE_CURRENT_SOURCE_DIR}/common/runners/functional.cpp"
-            "../modules/core/util/func_tests/util.cpp")
+    add_executable(${exec_func_tests} "${CMAKE_CURRENT_SOURCE_DIR}/common/runners/functional.cpp")
     list(APPEND list_of_exec_tests ${exec_func_tests})
 endif (USE_FUNC_TESTS)
 
@@ -26,12 +25,10 @@ foreach(subd ${subdirs})
 
     set(SETTINGS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${subd}/settings.json")
     add_compile_definitions(PPC_SETTINGS_${subd}=\"${SETTINGS_PATH}\")
+    add_compile_definitions(PPC_ID_${subd}=\"${subd}\")
 
     add_subdirectory(${subd})
 endforeach()
-
-# Link 3rdparty libraries
-add_library(stb_image INTERFACE)
 
 foreach (exec_func ${list_of_exec_tests})
     enable_testing()

@@ -12,7 +12,7 @@
 #include "core/util/include/util.hpp"
 #include "oneapi/tbb/parallel_for.h"
 
-namespace nesterov_a_test_task {
+namespace nesterov_a_test_task_threads {
 
 NesterovATestTaskALL::NesterovATestTaskALL(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
@@ -81,4 +81,4 @@ bool NesterovATestTaskALL::PostProcessingImpl() {
   return GetOutput() > 0;
 }
 
-}  // namespace nesterov_a_test_task
+}  // namespace nesterov_a_test_task_threads

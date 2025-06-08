@@ -6,7 +6,7 @@
 #include "core/task/include/task.hpp"
 #include "example_threads/common/include/common.hpp"
 
-namespace nesterov_a_test_task {
+namespace nesterov_a_test_task_threads {
 
 class NesterovATestTaskSTL : public BaseTask {
  public:
@@ -18,4 +18,4 @@ class NesterovATestTaskSTL : public BaseTask {
   bool PostProcessingImpl() override;
 };
 
-}  // namespace nesterov_a_test_task
+}  // namespace nesterov_a_test_task_threads

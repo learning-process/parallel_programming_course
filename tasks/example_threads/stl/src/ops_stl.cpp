@@ -9,7 +9,7 @@
 
 #include "core/util/include/util.hpp"
 
-namespace nesterov_a_test_task {
+namespace nesterov_a_test_task_threads {
 
 NesterovATestTaskSTL::NesterovATestTaskSTL(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
@@ -54,4 +54,4 @@ bool NesterovATestTaskSTL::PostProcessingImpl() {
   return GetOutput() > 0;
 }
 
-}  // namespace nesterov_a_test_task
+}  // namespace nesterov_a_test_task_threads

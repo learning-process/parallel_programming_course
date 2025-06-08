@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <vector>
 
-namespace nesterov_a_test_task {
+namespace nesterov_a_test_task_threads {
 
 NesterovATestTaskSEQ::NesterovATestTaskSEQ(const InType& in) {
   SetTypeOfTask(GetStaticTypeOfTask());
@@ -47,4 +47,4 @@ bool NesterovATestTaskSEQ::PostProcessingImpl() {
   return GetOutput() > 0;
 }
 
-}  // namespace nesterov_a_test_task
+}  // namespace nesterov_a_test_task_threads

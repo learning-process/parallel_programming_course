@@ -1,7 +1,7 @@
 {
+  "tasks_type": "threads",
   "tasks": {
     "all": "enabled",
-    "mpi": "enabled",
     "omp": "enabled",
     "seq": "enabled",
     "stl": "enabled",
@@ -9,7 +9,6 @@
   },
   "plagiarism": {
     "all": "original",
-    "mpi": "original",
     "omp": "plagiarized",
     "seq": "original",
     "stl": "original",

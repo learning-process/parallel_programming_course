@@ -1,26 +1,25 @@
-#include "example_threads/omp/include/ops_omp.hpp"
+#include "example_processes/seq/include/ops_seq.hpp"
 
-#include <atomic>
 #include <cmath>
 #include <cstddef>
 #include <vector>
 
-namespace nesterov_a_test_task_threads {
+namespace nesterov_a_test_task_processes {
 
-NesterovATestTaskOMP::NesterovATestTaskOMP(const InType& in) {
+NesterovATestTaskSEQ::NesterovATestTaskSEQ(const InType& in) {
   SetTypeOfTask(GetStaticTypeOfTask());
   GetInput() = in;
   GetOutput() = 0;
 }
 
-bool NesterovATestTaskOMP::ValidationImpl() { return (GetInput() > 0) && (GetOutput() == 0); }
+bool NesterovATestTaskSEQ::ValidationImpl() { return (GetInput() > 0) && (GetOutput() == 0); }
 
-bool NesterovATestTaskOMP::PreProcessingImpl() {
+bool NesterovATestTaskSEQ::PreProcessingImpl() {
   GetOutput() = 2 * GetInput();
   return GetOutput() > 0;
 }
 
-bool NesterovATestTaskOMP::RunImpl() {
+bool NesterovATestTaskSEQ::RunImpl() {
   for (InType i = 0; i < GetInput(); i++) {
     for (InType j = 0; j < GetInput(); j++) {
       for (InType k = 0; k < GetInput(); k++) {
@@ -34,17 +33,18 @@ bool NesterovATestTaskOMP::RunImpl() {
   const int num_threads = ppc::util::GetNumThreads();
   GetOutput() *= num_threads;
 
-  std::atomic<int> counter(0);
-#pragma omp parallel default(none) shared(counter) num_threads(ppc::util::GetNumThreads())
-  counter++;
+  int counter = 0;
+  for (int i = 0; i < num_threads; i++) {
+    counter++;
+  }
 
   GetOutput() /= counter;
   return GetOutput() > 0;
 }
 
-bool NesterovATestTaskOMP::PostProcessingImpl() {
+bool NesterovATestTaskSEQ::PostProcessingImpl() {
   GetOutput() -= GetInput();
   return GetOutput() > 0;
 }
 
-}  // namespace nesterov_a_test_task_threads
+}  // namespace nesterov_a_test_task_processes

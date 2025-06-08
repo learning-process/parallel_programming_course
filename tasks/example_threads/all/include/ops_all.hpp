@@ -4,7 +4,7 @@
 
 #include "example_threads/common/include/common.hpp"
 
-namespace nesterov_a_test_task {
+namespace nesterov_a_test_task_threads {
 
 class NesterovATestTaskALL : public BaseTask {
  public:
@@ -16,4 +16,4 @@ class NesterovATestTaskALL : public BaseTask {
   bool PostProcessingImpl() override;
 };
 
-}  // namespace nesterov_a_test_task
+}  // namespace nesterov_a_test_task_threads
