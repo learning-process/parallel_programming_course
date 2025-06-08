@@ -1,8 +1,7 @@
 #pragma once
-#include <stdbool.h>
-#include <stdlib.h>
 
 #include <cstdint>
+#include <cstdlib>
 #include <string>
 #include <string_view>
 
@@ -40,13 +39,24 @@ constexpr std::string_view GetNamespace() {
   constexpr std::string_view kKey = "T = ";
 
   auto start = kFunc.find(kKey);
-  if (start == std::string_view::npos) return {};
+  if (start == std::string_view::npos) {
+    return {};
+  }
   start += kKey.size();
 
-  auto end = kFunc.rfind("::");
-  if (end == std::string_view::npos || end <= start) return {};
+  auto end = kFunc.find_first_of(";]> ,", start);
+  if (end == std::string_view::npos) {
+    return {};
+  }
 
-  return kFunc.substr(start, end - start);
+  auto full_type = kFunc.substr(start, end - start);
+
+  auto ns_end = full_type.rfind("::");
+  if (ns_end == std::string_view::npos) {
+    return {};
+  }
+
+  return full_type.substr(0, ns_end);
 
 #elif defined(_MSC_VER)
   constexpr std::string_view kFunc = __FUNCSIG__;
@@ -64,10 +74,15 @@ constexpr std::string_view GetNamespace() {
     }
   }
 
-  auto end = kFunc.rfind("::");
-  if (end == std::string_view::npos || end <= start) return {};
+  auto end = kFunc.find('>', start);
+  if (end == std::string_view::npos) return {};
 
-  return kFunc.substr(start, end - start);
+  auto full_type = kFunc.substr(start, end - start);
+
+  auto ns_end = full_type.rfind("::");
+  if (ns_end == std::string_view::npos) return {};
+
+  return full_type.substr(0, ns_end);
 
 #else
   static_assert([] { return false; }(), "Unsupported compiler");
