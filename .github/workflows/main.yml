@@ -977,7 +977,7 @@ jobs:
           PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   ubuntu-gcc-build-codecov:
-    needs:
+#    needs:
 #      - ubuntu-gcc-test-extended
 #      - ubuntu-clang-test-extended
 #      - macos-clang-test-extended
