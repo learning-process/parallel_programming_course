@@ -67,11 +67,12 @@ TEST_P(NesterovARunFuncTestsThreads, MatmulFromPic) { ExecuteTest(GetParam()); }
 
 const std::array<TestType, 3> kTestParam = {std::make_tuple(3, "3"), std::make_tuple(5, "5"), std::make_tuple(7, "7")};
 
-INIT_FUNC_TASK_GENERATOR(InType, kTestParam, PPC_SETTINGS_example_threads)
-
-const auto kTestTasksList = std::tuple_cat(ADD_FUNC_TASK(NesterovATestTaskALL), ADD_FUNC_TASK(NesterovATestTaskOMP),
-                                           ADD_FUNC_TASK(NesterovATestTaskSEQ), ADD_FUNC_TASK(NesterovATestTaskSTL),
-                                           ADD_FUNC_TASK(NesterovATestTaskTBB));
+const auto kTestTasksList =
+    std::tuple_cat(ppc::util::AddFuncTask<NesterovATestTaskALL, InType>(kTestParam, PPC_SETTINGS_example_threads),
+                   ppc::util::AddFuncTask<NesterovATestTaskOMP, InType>(kTestParam, PPC_SETTINGS_example_threads),
+                   ppc::util::AddFuncTask<NesterovATestTaskSEQ, InType>(kTestParam, PPC_SETTINGS_example_threads),
+                   ppc::util::AddFuncTask<NesterovATestTaskSTL, InType>(kTestParam, PPC_SETTINGS_example_threads),
+                   ppc::util::AddFuncTask<NesterovATestTaskTBB, InType>(kTestParam, PPC_SETTINGS_example_threads));
 
 INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTestsThreads, ppc::util::ExpandToValues(kTestTasksList),
                                 NesterovARunFuncTestsThreads::PrintFuncTestName<NesterovARunFuncTestsThreads>);

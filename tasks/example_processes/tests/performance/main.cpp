@@ -21,15 +21,12 @@ class ExampleRunPerfTestProcesses : public ppc::util::BaseRunPerfTests<InType, O
   InType GetTestInputData() final { return input_data_; }
 };
 
-INIT_PERF_TASK_GENERATOR(InType, PPC_SETTINGS_example_processes)
-
-using PerfTasks = perf_tasks_type_list<NesterovATestTaskMPI, NesterovATestTaskSEQ>;
-
-const auto kAllPerfTasks = std::tuple_cat(MakeTask(PerfTasks{}));
-
 TEST_P(ExampleRunPerfTestProcesses, RunPerfModes) { ExecuteTest(GetParam()); }
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(RunModeTests, ExampleRunPerfTestProcesses, ppc::util::TupleToGTestValues(kAllPerfTasks),
-                                ExampleRunPerfTestProcesses::CustomPerfTestName);
+const auto kAllPerfTasks =
+    ppc::util::MakeAllPerfTasks<InType, NesterovATestTaskMPI, NesterovATestTaskSEQ>(PPC_SETTINGS_example_processes);
+
+INSTANTIATE_TEST_SUITE_P(RunModeTests, ExampleRunPerfTestProcesses, ppc::util::TupleToGTestValues(kAllPerfTasks),
+                         ExampleRunPerfTestProcesses::CustomPerfTestName);
 
 }  // namespace nesterov_a_test_task_processes

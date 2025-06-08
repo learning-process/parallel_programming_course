@@ -3,15 +3,16 @@
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <omp.h>
+#include <tbb/tbb.h>
 #include <tbb/tick_count.h>
 
 #include <chrono>
 #include <csignal>
 #include <cstddef>
 #include <functional>
+#include <sstream>
 #include <stdexcept>
 #include <string>
-#include <strstream>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -101,17 +102,16 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   ppc::core::TaskPtr<InType, OutType> task_;
 };
 
-#define ADD_PERF_TASK(TaskType, InputTypeParam, SettingsPath)                                                 \
-  std::tuple(std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                                 \
-                             std::string(ppc::util::GetNamespace<TaskType>()) + "_" +                         \
-                                 ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), SettingsPath), \
-                             ppc::core::PerfResults::TypeOfRunning::kPipeline),                               \
-             std::make_tuple(ppc::core::TaskGetter<TaskType, InputTypeParam>,                                 \
-                             std::string(ppc::util::GetNamespace<TaskType>()) + "_" +                         \
-                                 ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), SettingsPath), \
-                             ppc::core::PerfResults::TypeOfRunning::kTaskRun))
+template <typename TaskType, typename InputType>
+auto MakePerfTaskTuples(const std::string& settings_path) {
+  const auto name = std::string(GetNamespace<TaskType>()) + "_" +
+                    ppc::core::GetStringTaskType(TaskType::GetStaticTypeOfTask(), settings_path);
 
-// #define ADD_PERF_TASK(TaskType, InputTypeParam, SettingsPath) std::make_tuple()
+  return std::make_tuple(std::make_tuple(ppc::core::TaskGetter<TaskType, InputType>, name,
+                                         ppc::core::PerfResults::TypeOfRunning::kPipeline),
+                         std::make_tuple(ppc::core::TaskGetter<TaskType, InputType>, name,
+                                         ppc::core::PerfResults::TypeOfRunning::kTaskRun));
+}
 
 template <typename Tuple, std::size_t... I>
 auto TupleToGTestValuesImpl(Tuple&& tup, std::index_sequence<I...> /*unused*/) {
@@ -124,12 +124,9 @@ auto TupleToGTestValues(Tuple&& tup) {
   return TupleToGTestValuesImpl(std::forward<Tuple>(tup), std::make_index_sequence<kSize>{});
 }
 
-#define INIT_PERF_TASK_GENERATOR(InType, EnvVarSettingsPath)                 \
-  template <typename... Ts>                                                  \
-  struct perf_tasks_type_list {};                                            \
-  template <typename... Ts>                                                  \
-  auto MakeTask(perf_tasks_type_list<Ts...>) {                               \
-    return std::tuple_cat(ADD_PERF_TASK(Ts, InType, EnvVarSettingsPath)...); \
-  }
+template <typename InputType, typename... TaskTypes>
+auto MakeAllPerfTasks(const std::string& settings_path) {
+  return std::tuple_cat(MakePerfTaskTuples<TaskTypes, InputType>(settings_path)...);
+}
 
 }  // namespace ppc::util

@@ -1,12 +1,13 @@
 #include "example_processes/mpi/include/ops_mpi.hpp"
 
+#include <mpi.h>
+
 #include <cmath>
 #include <numeric>
 #include <vector>
 
 #include "core/util/include/util.hpp"
 #include "example_processes/common/include/common.hpp"
-#include "mpi.h"
 
 namespace nesterov_a_test_task_processes {
 

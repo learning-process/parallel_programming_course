@@ -86,6 +86,7 @@ TEST(perf_tests, check_perf_task_exception) {
   ppc::core::Perf<std::vector<uint32_t>, uint32_t> perf_analyzer(test_task);
 
   // Get perf statistic
+  // NOLINTNEXTLINE(cppcoreguidelines-avoid-goto)
   ASSERT_ANY_THROW(perf_analyzer.PrintPerfStatistic("check_perf_task_exception"));
 
   // Create Perf attributes

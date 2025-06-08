@@ -23,8 +23,7 @@ bool NesterovATestTaskSEQ::PreProcessingImpl() {
 }
 
 bool NesterovATestTaskSEQ::RunImpl() {
-  auto input = GetInput();
-  if (input == 0) {
+  if (GetInput() == 0) {
     return false;
   }
 
@@ -46,7 +45,9 @@ bool NesterovATestTaskSEQ::RunImpl() {
     counter++;
   }
 
-  GetOutput() /= counter;
+  if (counter != 0) {
+    GetOutput() /= counter;
+  }
   return GetOutput() > 0;
 }
 

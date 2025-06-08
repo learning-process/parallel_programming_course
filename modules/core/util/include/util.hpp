@@ -11,7 +11,7 @@
 #pragma warning(disable : 4459)
 #endif
 
-#include <nlohmann/json.hpp>
+#include <nlohmann/json.hpp>  // NOLINT(misc-include-cleaner)
 
 #ifdef _MSC_VER
 #pragma warning(pop)
@@ -91,6 +91,7 @@ constexpr std::string_view GetNamespace() {
 #endif
 }
 
+// NOLINTNEXTLINE(misc-include-cleaner)
 inline std::shared_ptr<nlohmann::json> InitJSONPtr() { return std::make_shared<nlohmann::json>(); }
 
 bool IsUnderMpirun();

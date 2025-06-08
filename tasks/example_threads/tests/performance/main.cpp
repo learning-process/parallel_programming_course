@@ -24,16 +24,13 @@ class ExampleRunPerfTestThreads : public ppc::util::BaseRunPerfTests<InType, Out
   InType GetTestInputData() final { return input_data_; }
 };
 
-INIT_PERF_TASK_GENERATOR(InType, PPC_SETTINGS_example_threads)
-
-using PerfTasks = perf_tasks_type_list<NesterovATestTaskALL, NesterovATestTaskOMP, NesterovATestTaskSEQ,
-                                       NesterovATestTaskSTL, NesterovATestTaskTBB>;
-
-const auto kAllPerfTasks = std::tuple_cat(MakeTask(PerfTasks{}));
-
 TEST_P(ExampleRunPerfTestThreads, RunPerfModes) { ExecuteTest(GetParam()); }
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(RunModeTests, ExampleRunPerfTestThreads, ppc::util::TupleToGTestValues(kAllPerfTasks),
-                                ExampleRunPerfTestThreads::CustomPerfTestName);
+const auto kAllPerfTasks =
+    ppc::util::MakeAllPerfTasks<InType, NesterovATestTaskALL, NesterovATestTaskOMP, NesterovATestTaskSEQ,
+                                NesterovATestTaskSTL, NesterovATestTaskTBB>(PPC_SETTINGS_example_threads);
+
+INSTANTIATE_TEST_SUITE_P(RunModeTests, ExampleRunPerfTestThreads, ppc::util::TupleToGTestValues(kAllPerfTasks),
+                         ExampleRunPerfTestThreads::CustomPerfTestName);
 
 }  // namespace nesterov_a_test_task_threads
