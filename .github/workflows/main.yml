@@ -1038,14 +1038,11 @@ jobs:
           gcovr -r ../ \
                 --exclude '.*3rdparty/.*' \
                 --exclude '/usr/.*' \
-                --exclude '.*/perf_tests/.*' \
-                --exclude '.*/func_tests/.*' \
-                --exclude '.*/all/runner.cpp' \
-                --exclude '.*/mpi/runner.cpp' \
-                --exclude '.*/omp/runner.cpp' \
-                --exclude '.*/seq/runner.cpp' \
-                --exclude '.*/stl/runner.cpp' \
-                --exclude '.*/tbb/runner.cpp' \
+                --exclude '.*tasks/.*/tests/.*' \
+                --exclude '.*tasks/common/runners/.*' \
+                --exclude '.*modules/core/util/include/perf_test_util.hpp' \
+                --exclude '.*modules/core/util/include/func_test_util.hpp' \
+                --exclude '.*modules/core/util/src/func_test_util.cpp' \
                 --xml --output ../coverage.xml \
                 --html=../cov-report/index.html --html-details
       - name: Upload coverage reports to Codecov

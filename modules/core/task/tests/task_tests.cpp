@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "core/task/func_tests/test_task.hpp"
+#include "core/task/tests/test_task.hpp"
 #include "core/util/include/util.hpp"
 
 TEST(task_tests, check_int32_t) {

@@ -5,8 +5,8 @@
 #include <memory>
 #include <vector>
 
-#include "core/perf/func_tests/test_task.hpp"
 #include "core/perf/include/perf.hpp"
+#include "core/perf/tests/test_task.hpp"
 
 TEST(perf_tests, check_perf_pipeline) {
   // Create data
