@@ -977,10 +977,10 @@ jobs:
           PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   ubuntu-gcc-build-codecov:
-#    needs:
-#      - ubuntu-gcc-test-extended
-#      - ubuntu-clang-test-extended
-#      - macos-clang-test-extended
+    needs:
+      - ubuntu-gcc-test-extended
+      - ubuntu-clang-test-extended
+      - macos-clang-test-extended
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
