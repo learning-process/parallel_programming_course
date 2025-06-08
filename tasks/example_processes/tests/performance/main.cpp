@@ -26,7 +26,7 @@ class ExampleRunPerfTestProcesses : public ppc::util::BaseRunPerfTests<InType, O
   InType GetTestInputData() final { return input_data_; }
 };
 
-INIT_PERF_TASK_GENERATOR(InType, PPC_SETTINGS_example_threads)
+INIT_PERF_TASK_GENERATOR(InType, PPC_SETTINGS_example_processes)
 
 using PerfTasks = perf_tasks_type_list<NesterovATestTaskMPI, NesterovATestTaskSEQ>;
 

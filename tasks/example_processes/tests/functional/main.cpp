@@ -59,7 +59,7 @@ TEST_P(NesterovARunFuncTestsProcesses, MatmulFromPic) { ExecuteTest(GetParam());
 
 const std::array<TestType, 3> kTestParam = {std::make_tuple(3, "3"), std::make_tuple(5, "5"), std::make_tuple(7, "7")};
 
-INIT_FUNC_TASK_GENERATOR(InType, kTestParam, PPC_SETTINGS_example_threads)
+INIT_FUNC_TASK_GENERATOR(InType, kTestParam, PPC_SETTINGS_example_processes)
 
 const auto kTestTasksList = std::tuple_cat(ADD_FUNC_TASK(NesterovATestTaskMPI), ADD_FUNC_TASK(NesterovATestTaskSEQ));
 
