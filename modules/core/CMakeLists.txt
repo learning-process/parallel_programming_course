@@ -29,7 +29,11 @@ target_link_directories(${exec_func_lib} PUBLIC "${CMAKE_BINARY_DIR}/ppc_libenvp
 if(MSVC)
   target_link_libraries(${exec_func_lib} PUBLIC fmt libenvpp)
 else()
-  target_link_libraries(${exec_func_lib} PUBLIC fmt envpp)
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_link_libraries(${exec_func_lib} PUBLIC fmtd envpp)
+  else()
+    target_link_libraries(${exec_func_lib} PUBLIC fmt envpp)
+  endif()
 endif ()
 
 add_dependencies(${exec_func_lib} ppc_json)
