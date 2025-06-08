@@ -978,9 +978,9 @@ jobs:
           PPC_NUM_THREADS: 13
   ubuntu-gcc-build-codecov:
     needs:
-      - ubuntu-gcc-test-extended
-      - ubuntu-clang-test-extended
-      - macos-clang-test-extended
+#      - ubuntu-gcc-test-extended
+#      - ubuntu-clang-test-extended
+#      - macos-clang-test-extended
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -999,7 +999,7 @@ jobs:
           max-size: 1G
       - name: CMake configure
         run: >
-          cmake -S . -B build
+          cmake -S . -B build -GNinja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
