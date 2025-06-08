@@ -839,9 +839,9 @@ jobs:
           submodules: recursive
 
       - name: Setup LLVM
-        uses: KyleMayes/install-llvm-action@v1
+        uses: KyleMayes/install-llvm-action@v2
         with:
-          version: "17.0"
+          version: "20.1.4"
 
       - name: Setup MPI
         uses: mpi4py/setup-mpi@v1
