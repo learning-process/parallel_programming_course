@@ -68,9 +68,11 @@ const auto kTestTasksList =
     std::tuple_cat(ppc::util::AddFuncTask<NesterovATestTaskMPI, InType>(kTestParam, PPC_SETTINGS_example_processes),
                    ppc::util::AddFuncTask<NesterovATestTaskSEQ, InType>(kTestParam, PPC_SETTINGS_example_processes));
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTestsProcesses,
-                                ppc::util::ExpandToValues(kTestTasksList),
-                                NesterovARunFuncTestsProcesses::PrintFuncTestName<NesterovARunFuncTestsProcesses>);
+const auto kGtestValues = ppc::util::ExpandToValues(kTestTasksList);
+
+const auto kPerfTestName = NesterovARunFuncTestsProcesses::PrintFuncTestName<NesterovARunFuncTestsProcesses>;
+
+INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTestsProcesses, kGtestValues, kPerfTestName);
 
 }  // namespace
 

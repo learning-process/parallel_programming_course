@@ -3,7 +3,6 @@
 #include <tuple>
 
 #include "core/util/include/perf_test_util.hpp"
-#include "core/util/include/util.hpp"
 #include "example_processes/common/include/common.hpp"
 #include "example_processes/mpi/include/ops_mpi.hpp"
 #include "example_processes/seq/include/ops_seq.hpp"
@@ -26,7 +25,10 @@ TEST_P(ExampleRunPerfTestProcesses, RunPerfModes) { ExecuteTest(GetParam()); }
 const auto kAllPerfTasks =
     ppc::util::MakeAllPerfTasks<InType, NesterovATestTaskMPI, NesterovATestTaskSEQ>(PPC_SETTINGS_example_processes);
 
-INSTANTIATE_TEST_SUITE_P(RunModeTests, ExampleRunPerfTestProcesses, ppc::util::TupleToGTestValues(kAllPerfTasks),
-                         ExampleRunPerfTestProcesses::CustomPerfTestName);
+const auto kGtestValues = ppc::util::TupleToGTestValues(kAllPerfTasks);
+
+const auto kPerfTestName = ExampleRunPerfTestProcesses::CustomPerfTestName;
+
+INSTANTIATE_TEST_SUITE_P(RunModeTests, ExampleRunPerfTestProcesses, kGtestValues, kPerfTestName);
 
 }  // namespace nesterov_a_test_task_processes

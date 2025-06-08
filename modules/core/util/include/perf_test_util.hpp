@@ -1,10 +1,7 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include <mpi.h>
 #include <omp.h>
-#include <tbb/tbb.h>
-#include <tbb/tick_count.h>
 
 #include <chrono>
 #include <csignal>
@@ -23,6 +20,9 @@
 
 namespace ppc::util {
 
+double GetTimeMPI();
+int GetMPIRank();
+
 template <typename InType, typename OutType>
 using PerfTestParam = std::tuple<std::function<ppc::core::TaskPtr<InType, OutType>(InType)>, std::string,
                                  ppc::core::PerfResults::TypeOfRunning>;
@@ -40,18 +40,16 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   virtual InType GetTestInputData() = 0;
 
   virtual void SetPerfAttributes(ppc::core::PerfAttr& perf_attrs) {
-    if (task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kTBB) {
-      const tbb::tick_count t0 = tbb::tick_count::now();
-      perf_attrs.current_timer = [t0] { return (tbb::tick_count::now() - t0).seconds(); };
-    } else if (task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kMPI ||
-               task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kALL) {
-      const double t0 = MPI_Wtime();
-      perf_attrs.current_timer = [t0] { return MPI_Wtime() - t0; };
+    if (task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kMPI ||
+        task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kALL) {
+      const double t0 = GetTimeMPI();
+      perf_attrs.current_timer = [t0] { return GetTimeMPI() - t0; };
     } else if (task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kOMP) {
       const double t0 = omp_get_wtime();
       perf_attrs.current_timer = [t0] { return omp_get_wtime() - t0; };
     } else if (task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kSEQ ||
-               task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kSTL) {
+               task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kSTL ||
+               task_->GetDynamicTypeOfTask() == ppc::core::TypeOfTask::kTBB) {
       const auto t0 = std::chrono::high_resolution_clock::now();
       perf_attrs.current_timer = [&] {
         auto now = std::chrono::high_resolution_clock::now();
@@ -88,9 +86,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
       throw std::runtime_error(err_msg.str().c_str());
     }
 
-    int rank = -1;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if (rank == 0) {
+    if (GetMPIRank() == 0) {
       perf.PrintPerfStatistic(test_name);
     }
 

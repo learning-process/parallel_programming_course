@@ -8,8 +8,10 @@
 #include <csignal>
 #include <cstddef>
 #include <functional>
+#include <iostream>
 #include <string>
 #include <tuple>
+#include <type_traits>
 #include <utility>
 
 #include "core/task/include/task.hpp"
@@ -48,11 +50,6 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   }
 
  protected:
-  const std::string kUnknownTest = "unknown";
-  const std::string kDisabledTest = "disabled";
-  const std::string kAllTask = "_all";
-  const std::string kMpiTask = "_mpi";
-
   void ExecuteTest(FuncTestParam<InType, OutType, TestType> test_param) {
     const std::string& test_name = std::get<GTestParamIndex::kNameTest>(test_param);
 
@@ -70,18 +67,16 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
     InitializeAndRunTask(test_param);
   }
 
-  void ValidateTestName(const std::string& test_name) {
-    EXPECT_FALSE(test_name.find(kUnknownTest) != std::string::npos);
-  }
+  void ValidateTestName(const std::string& test_name) { EXPECT_FALSE(test_name.find("unknown") != std::string::npos); }
 
-  bool IsTestDisabled(const std::string& test_name) { return test_name.find(kDisabledTest) != std::string::npos; }
+  bool IsTestDisabled(const std::string& test_name) { return test_name.find("disabled") != std::string::npos; }
 
   bool ShouldSkipNonMpiTask(const std::string& test_name) {
     auto contains_substring = [&](const std::string& substring) {
       return test_name.find(substring) != std::string::npos;
     };
 
-    return !ppc::util::IsUnderMpirun() && (contains_substring(kAllTask) || contains_substring(kMpiTask));
+    return !ppc::util::IsUnderMpirun() && (contains_substring("_all") || contains_substring("_mpi"));
   }
 
   void InitializeAndRunTask(const FuncTestParam<InType, OutType, TestType>& test_param) {
@@ -110,7 +105,8 @@ auto ExpandToValues(const Tuple& t) {
 }
 
 template <typename Task, typename InType, typename SizesContainer, std::size_t... Is>
-auto GenTaskTuplesImpl(const SizesContainer& sizes, const std::string& settings_path, std::index_sequence<Is...>) {
+auto GenTaskTuplesImpl(const SizesContainer& sizes, const std::string& settings_path,
+                       std::index_sequence<Is...> /*unused*/) {
   return std::make_tuple(std::make_tuple(ppc::core::TaskGetter<Task, InType>,
                                          std::string(GetNamespace<Task>()) + "_" +
                                              ppc::core::GetStringTaskType(Task::GetStaticTypeOfTask(), settings_path),

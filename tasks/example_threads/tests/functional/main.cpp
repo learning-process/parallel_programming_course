@@ -74,8 +74,11 @@ const auto kTestTasksList =
                    ppc::util::AddFuncTask<NesterovATestTaskSTL, InType>(kTestParam, PPC_SETTINGS_example_threads),
                    ppc::util::AddFuncTask<NesterovATestTaskTBB, InType>(kTestParam, PPC_SETTINGS_example_threads));
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTestsThreads, ppc::util::ExpandToValues(kTestTasksList),
-                                NesterovARunFuncTestsThreads::PrintFuncTestName<NesterovARunFuncTestsThreads>);
+const auto kGtestValues = ppc::util::ExpandToValues(kTestTasksList);
+
+const auto kPerfTestName = NesterovARunFuncTestsThreads::PrintFuncTestName<NesterovARunFuncTestsThreads>;
+
+INSTANTIATE_TEST_SUITE_P_NOLINT(PicMatrixTests, NesterovARunFuncTestsThreads, kGtestValues, kPerfTestName);
 
 }  // namespace
 

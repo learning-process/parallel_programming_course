@@ -1,9 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <tuple>
-
 #include "core/util/include/perf_test_util.hpp"
-#include "core/util/include/util.hpp"
 #include "example_threads/all/include/ops_all.hpp"
 #include "example_threads/common/include/common.hpp"
 #include "example_threads/omp/include/ops_omp.hpp"
@@ -30,7 +27,10 @@ const auto kAllPerfTasks =
     ppc::util::MakeAllPerfTasks<InType, NesterovATestTaskALL, NesterovATestTaskOMP, NesterovATestTaskSEQ,
                                 NesterovATestTaskSTL, NesterovATestTaskTBB>(PPC_SETTINGS_example_threads);
 
-INSTANTIATE_TEST_SUITE_P(RunModeTests, ExampleRunPerfTestThreads, ppc::util::TupleToGTestValues(kAllPerfTasks),
-                         ExampleRunPerfTestThreads::CustomPerfTestName);
+const auto kGtestValues = ppc::util::TupleToGTestValues(kAllPerfTasks);
+
+const auto kPerfTestName = ExampleRunPerfTestThreads::CustomPerfTestName;
+
+INSTANTIATE_TEST_SUITE_P(RunModeTests, ExampleRunPerfTestThreads, kGtestValues, kPerfTestName);
 
 }  // namespace nesterov_a_test_task_threads

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "core/task/include/task.hpp"
 #include "example_processes/common/include/common.hpp"
 
