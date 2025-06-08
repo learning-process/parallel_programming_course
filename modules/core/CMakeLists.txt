@@ -26,22 +26,46 @@ set_target_properties(${exec_func_lib} PROPERTIES LINKER_LANGUAGE CXX)
 add_dependencies(${exec_func_lib} ppc_libenvpp)
 target_link_directories(${exec_func_lib} PUBLIC "${CMAKE_BINARY_DIR}/ppc_libenvpp/install/lib")
 target_link_directories(${exec_func_lib} PUBLIC "${CMAKE_BINARY_DIR}/ppc_libenvpp/build")
-target_link_libraries(${exec_func_lib} PUBLIC fmt envpp)
+if(MSVC)
+  target_link_libraries(${exec_func_lib} PUBLIC fmt libenvpp)
+else()
+  target_link_libraries(${exec_func_lib} PUBLIC fmt envpp)
+endif ()
 
-add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
+add_dependencies(${exec_func_lib} ppc_json)
+target_link_directories(${exec_func_lib} INTERFACE "${CMAKE_BINARY_DIR}/ppc_json/install/include")
 
-add_dependencies(${exec_func_tests} ppc_googletest)
-target_link_directories(${exec_func_tests} PUBLIC ${CMAKE_BINARY_DIR}/ppc_googletest/install/lib)
-target_link_libraries(${exec_func_tests} PUBLIC gtest gtest_main)
+add_dependencies(${exec_func_lib} ppc_googletest)
+target_link_directories(${exec_func_lib} PUBLIC "${CMAKE_BINARY_DIR}/ppc_googletest/install/lib")
+target_link_libraries(${exec_func_lib} PUBLIC gtest gtest_main)
+
+target_link_libraries(${exec_func_lib} PUBLIC Threads::Threads)
+
+find_package(OpenMP REQUIRED)
+target_link_libraries(${exec_func_lib} PUBLIC ${OpenMP_libomp_LIBRARY} OpenMP::OpenMP_CXX)
+
+add_dependencies(${exec_func_lib} ppc_onetbb)
+target_link_directories(${exec_func_lib} PUBLIC ${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib)
+if(NOT MSVC)
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_link_libraries(${exec_func_lib} PUBLIC tbb_debug)
+  else()
+    target_link_libraries(${exec_func_lib} PUBLIC tbb)
+  endif()
+endif()
 
 if( MPI_COMPILE_FLAGS )
-  set_target_properties(${exec_func_tests} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
+  set_target_properties(${exec_func_lib} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
 endif( MPI_COMPILE_FLAGS )
 
 if( MPI_LINK_FLAGS )
-  set_target_properties(${exec_func_tests} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}")
+  set_target_properties(${exec_func_lib} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}")
 endif( MPI_LINK_FLAGS )
-target_link_libraries(${exec_func_tests} PUBLIC ${MPI_LIBRARIES})
+target_link_libraries(${exec_func_lib} PUBLIC ${MPI_LIBRARIES})
+
+target_link_directories(${exec_func_lib} INTERFACE ${CMAKE_SOURCE_DIR}/3rdparty/stb)
+
+add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
 
 target_link_libraries(${exec_func_tests} PUBLIC ${exec_func_lib})
 

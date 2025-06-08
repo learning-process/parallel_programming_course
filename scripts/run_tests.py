@@ -85,8 +85,6 @@ class PPCRunner:
             self.__run_exec(f"{self.work_dir / 'ppc_func_tests'} {self.__get_gtest_settings(3, '_' + task_type + '_')}")
 
     def run_core(self):
-        self.__run_exec(f"{self.work_dir / 'ppc_func_tests'} {self.__get_gtest_settings(1, '_common')}")
-
         if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'core_func_tests'} "
                             f"{self.__get_gtest_settings(1, '*')} --gtest_filter=*:-*_death_test")

@@ -6,10 +6,18 @@
 #include <cstdint>
 #include <vector>
 
-#include "core/task/func_tests/test_task.hpp"
 #include "omp.h"
 
-TEST(ppc_func_tests_common, threads_control_check_openmp) {
+namespace my::nested {
+struct Type {};
+}  // namespace my::nested
+
+TEST(util_tests, extracts_correct_namespace) {
+  constexpr std::string_view kNs = ppc::util::GetNamespace<my::nested::Type>();
+  EXPECT_EQ(kNs, "my::nested");
+}
+
+TEST(util_tests, threads_control_check_openmp) {
   int ppc_num_threads = ppc::util::GetNumThreads();
 
   int omp_num_threads = -1;
