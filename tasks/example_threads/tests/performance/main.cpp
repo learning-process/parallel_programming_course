@@ -11,7 +11,7 @@
 namespace nesterov_a_test_task_threads {
 
 class ExampleRunPerfTestThreads : public ppc::util::BaseRunPerfTests<InType, OutType> {
-  const int kCount_ = 111;
+  const int kCount_ = 200;
   InType input_data_{};
 
   void SetUp() override { input_data_ = kCount_; }

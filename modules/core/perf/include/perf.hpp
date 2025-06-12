@@ -15,7 +15,7 @@ namespace ppc::core {
 
 struct PerfAttr {
   // count of task's running
-  uint64_t num_running = 10;
+  uint64_t num_running = 5;
   std::function<double()> current_timer = [&] { return -1.0; };
 };
 
@@ -102,7 +102,7 @@ class Perf {
       pipeline();
     }
     auto end = perf_attr.current_timer();
-    perf_results.time_sec = end - begin;
+    perf_results.time_sec = (end - begin) / perf_attr.num_running;
   }
 };
 
