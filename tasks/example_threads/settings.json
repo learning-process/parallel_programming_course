@@ -6,12 +6,5 @@
     "seq": "enabled",
     "stl": "enabled",
     "tbb": "enabled"
-  },
-  "plagiarism": {
-    "all": "original",
-    "omp": "plagiarized",
-    "seq": "original",
-    "stl": "original",
-    "tbb": "original"
   }
 }
