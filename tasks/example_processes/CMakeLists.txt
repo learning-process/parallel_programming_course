@@ -35,7 +35,7 @@ foreach (dir_type ${technologies})
     endif ()
 
     # Print type of directories
-    message(STATUS "-- -- ${dir_type}")
+    message(STATUS "   -- ${dir_type}")
 
     # Create task library
     file(GLOB_RECURSE lib_source_files "${base_dir}/include/*" "${base_dir}/src/*")
