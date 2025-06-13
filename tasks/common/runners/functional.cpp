@@ -4,6 +4,8 @@
 #include <omp.h>
 
 #include <cstdio>
+#include <format>
+#include <iostream>
 #include <memory>
 #include <string>
 #include <utility>
@@ -27,10 +29,11 @@ class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {
     MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &flag, &status);
 
     if (flag != 0) {
-      fmt::println(
-          stderr,
-          "[  PROCESS {}  ] [  FAILED  ] {}.{}: MPI message queue has an unread message from process {} with tag {}",
-          rank, "test_suite_name", "test_name", status.MPI_SOURCE, status.MPI_TAG);
+      std::cerr << std::format(
+                       "[  PROCESS {}  ] [  FAILED  ] {}.{}: MPI message queue has an unread message from process {} "
+                       "with tag {}",
+                       rank, "test_suite_name", "test_name", status.MPI_SOURCE, status.MPI_TAG)
+                << '\n';
       MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
     }
 
