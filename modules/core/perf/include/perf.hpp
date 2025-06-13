@@ -102,7 +102,7 @@ class Perf {
       pipeline();
     }
     auto end = perf_attr.current_timer();
-    perf_results.time_sec = (end - begin) / perf_attr.num_running;
+    perf_results.time_sec = (end - begin) / static_cast<double>(perf_attr.num_running);
   }
 };
 

@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 
-#include <tuple>
-
 #include "core/util/include/perf_test_util.hpp"
 #include "example_processes/common/include/common.hpp"
 #include "example_processes/mpi/include/ops_mpi.hpp"
@@ -29,6 +27,6 @@ const auto kGtestValues = ppc::util::TupleToGTestValues(kAllPerfTasks);
 
 const auto kPerfTestName = ExampleRunPerfTestProcesses::CustomPerfTestName;
 
-INSTANTIATE_TEST_SUITE_P(RunModeTests, ExampleRunPerfTestProcesses, kGtestValues, kPerfTestName);
+INSTANTIATE_TEST_SUITE_P_NOLINT(RunModeTests, ExampleRunPerfTestProcesses, kGtestValues, kPerfTestName);
 
 }  // namespace nesterov_a_test_task_processes

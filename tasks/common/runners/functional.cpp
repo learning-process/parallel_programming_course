@@ -1,9 +1,9 @@
-#include <fmt/core.h>
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <omp.h>
 
 #include <cstdio>
+#include <cstdlib>
 #include <format>
 #include <iostream>
 #include <memory>
@@ -67,7 +67,7 @@ class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
   static void PrintProcessRank() {
     int rank = -1;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    fmt::print(" [  PROCESS {}  ] ", rank);
+    std::cerr << std::format(" [  PROCESS {}  ] ", rank);
   }
 
   std::shared_ptr<::testing::TestEventListener> base_;
