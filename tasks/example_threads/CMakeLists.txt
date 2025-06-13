@@ -38,8 +38,8 @@ foreach (dir_type ${technologies})
     message(STATUS "-- -- ${dir_type}")
 
     # Create task library
-    file(GLOB_RECURSE lib_source_files "${base_dir}/include/*" "${base_dir}/src/*")
-    file(GLOB source_files "${base_dir}/src/*")
+    file(GLOB_RECURSE lib_source_files "${base_dir}/include/*.h" "${base_dir}/include/*.hpp" "${base_dir}/src/*.cpp")
+    file(GLOB source_files "${base_dir}/src/*.cpp")
 
     list(LENGTH source_files result_length)
     set(name_lib "${TASK_NAME}_${dir_type}")
