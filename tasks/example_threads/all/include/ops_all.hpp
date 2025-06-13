@@ -9,6 +9,8 @@ class NesterovATestTaskALL : public BaseTask {
  public:
   static constexpr ppc::core::TypeOfTask GetStaticTypeOfTask() { return ppc::core::TypeOfTask::kALL; }
   explicit NesterovATestTaskALL(const InType &in);
+
+ private:
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;

@@ -9,6 +9,8 @@ class NesterovATestTaskMPI : public BaseTask {
  public:
   static constexpr ppc::core::TypeOfTask GetStaticTypeOfTask() { return ppc::core::TypeOfTask::kMPI; }
   explicit NesterovATestTaskMPI(const InType &in);
+
+ private:
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;
