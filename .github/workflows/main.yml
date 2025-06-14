@@ -89,6 +89,55 @@ jobs:
         with:
           name: ubuntu-gcc-install-${{ matrix.os }}
           path: ubuntu-gcc-install-${{ matrix.os }}.tar.gz
+  ubuntu-gcc-build-debug:
+    needs:
+      - clang-format
+      - python-lint
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
+          python3 -m pip install -r requirements.txt
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-gcc
+          create-symlink: true
+          max-size: 1G
+      - name: CMake configure
+        run: >
+          cmake -S . -B build
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -G Ninja
+          -D CMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=install
+        env:
+          CC: gcc-14
+          CXX: g++-14
+      - name: Build project
+        run: |
+          cmake --build build --parallel
+        env:
+          CC: gcc-14
+          CXX: g++-14
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: |
+          tar -czvf ubuntu-gcc-debug-install-${{ matrix.os }}.tar.gz -C install .
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-gcc-debug-install-${{ matrix.os }}
+          path: ubuntu-gcc-debug-install-${{ matrix.os }}.tar.gz
   ubuntu-gcc-test:
     needs:
       - ubuntu-gcc-build
@@ -539,6 +588,51 @@ jobs:
         with:
           name: macos-clang-sanitizer-install
           path: macos-clang-sanitizer-install.tar.gz
+  macos-clang-build-debug:
+    needs:
+      - clang-format
+      - python-lint
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup environment
+        run: |
+          brew update-reset
+          brew install ninja mpich llvm
+          brew install libomp
+          brew link libomp --overwrite --force
+          brew install openssl
+          brew link openssl --overwrite --force
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-clang
+          create-symlink: true
+          max-size: 1G
+      - name: CMake configure
+        run: >
+          cmake -S . -B build
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -G Ninja -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
+          -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
+          -D CMAKE_BUILD_TYPE=DEBUG
+          -DCMAKE_INSTALL_PREFIX=install
+      - name: Build project
+        run: |
+          cmake --build build --parallel
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: |
+          tar -czvf macos-clang-debug-install.tar.gz -C install .
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-clang-debug-install
+          path: macos-clang-debug-install.tar.gz
   macos-clang-test:
     needs:
       - macos-clang-build
@@ -684,6 +778,55 @@ jobs:
         with:
           name: windows-msvc-install
           path: windows-msvc-install.zip
+  windows-msvc-build-debug:
+    needs:
+      - clang-format
+      - python-lint
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
+        with:
+          windows_compile_environment: msvc
+      - name: Setup ninja
+        uses: seanmiddleditch/gha-setup-ninja@v6
+      - name: Setup MSVC for Ninja again
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: CMake configure
+        shell: bash
+        run: >
+          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D CMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=install
+      - name: Build project
+        shell: bash
+        run: |
+          cmake --build build --config Debug --parallel
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: Compress-Archive -Path install -DestinationPath windows-msvc-debug-install.zip
+        shell: pwsh
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-msvc-debug-install
+          path: windows-msvc-debug-install.zip
   windows-msvc-test:
     needs:
       - windows-msvc-build
