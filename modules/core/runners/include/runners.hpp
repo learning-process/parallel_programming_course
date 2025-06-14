@@ -2,6 +2,9 @@
 
 #include <gtest/gtest.h>
 
+#include <memory>
+#include <utility>
+
 namespace ppc::core {
 
 class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {

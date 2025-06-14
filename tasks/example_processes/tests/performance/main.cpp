@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "core/util/include/perf_test_util.hpp"
+#include "core/util/include/util.hpp"
 #include "example_processes/common/include/common.hpp"
 #include "example_processes/mpi/include/ops_mpi.hpp"
 #include "example_processes/seq/include/ops_seq.hpp"

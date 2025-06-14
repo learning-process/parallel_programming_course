@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "core/util/include/perf_test_util.hpp"
+#include "core/util/include/util.hpp"
 #include "example_threads/all/include/ops_all.hpp"
 #include "example_threads/common/include/common.hpp"
 #include "example_threads/omp/include/ops_omp.hpp"

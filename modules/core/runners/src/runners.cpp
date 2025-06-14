@@ -10,7 +10,6 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include <utility>
 
 #include "core/util/include/util.hpp"
 #include "oneapi/tbb/global_control.h"
