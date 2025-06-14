@@ -1,8 +1,8 @@
 {
   "student": {
-    "first_name": "Нестеров",
-    "last_name": "Александр",
-    "middle_name": "Юрьевич",
-    "group_number": "АБВ-123"
+    "first_name": "<value>",
+    "last_name": "<value>",
+    "middle_name": "<value>",
+    "group_number": "<value>"
   }
 }
