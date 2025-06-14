@@ -89,6 +89,55 @@ jobs:
         with:
           name: ubuntu-gcc-install-${{ matrix.os }}
           path: ubuntu-gcc-install-${{ matrix.os }}.tar.gz
+  ubuntu-gcc-build-debug:
+    needs:
+      - clang-format
+      - python-lint
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
+          python3 -m pip install -r requirements.txt
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-gcc
+          create-symlink: true
+          max-size: 1G
+      - name: CMake configure
+        run: >
+          cmake -S . -B build
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -G Ninja
+          -D CMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=install
+        env:
+          CC: gcc-14
+          CXX: g++-14
+      - name: Build project
+        run: |
+          cmake --build build --parallel
+        env:
+          CC: gcc-14
+          CXX: g++-14
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: |
+          tar -czvf ubuntu-gcc-debug-install-${{ matrix.os }}.tar.gz -C install .
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-gcc-debug-install-${{ matrix.os }}
+          path: ubuntu-gcc-debug-install-${{ matrix.os }}.tar.gz
   ubuntu-gcc-test:
     needs:
       - ubuntu-gcc-build

@@ -25,3 +25,10 @@ ExternalProject_Add(ppc_onetbb
 )
 install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install/"
         DESTINATION "${CMAKE_INSTALL_PREFIX}")
+
+string(TOLOWER "${CMAKE_BUILD_TYPE}" cmake_build_type_lower)
+if(cmake_build_type_lower STREQUAL "debug")
+    set(PPC_TBB_LIB_NAME tbb_debug)
+else()
+    set(PPC_TBB_LIB_NAME tbb)
+endif()
