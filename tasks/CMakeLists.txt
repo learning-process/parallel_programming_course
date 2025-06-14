@@ -1,113 +1,41 @@
+cmake_minimum_required(VERSION 3.15)
+project(parallel_programming_course LANGUAGES C CXX)
+
 message(STATUS "Student's tasks")
 
-list(APPEND LIST_OF_TASKS "mpi")
-list(APPEND LIST_OF_TASKS "omp")
-list(APPEND LIST_OF_TASKS "seq")
-list(APPEND LIST_OF_TASKS "stl")
-list(APPEND LIST_OF_TASKS "tbb")
-list(APPEND LIST_OF_TASKS "all")
+# ——— Testing options ————————————————————————————————————————
+option(USE_FUNC_TESTS "Enable functional tests" OFF)
+option(USE_PERF_TESTS "Enable performance tests" OFF)
 
-add_compile_definitions(PATH_TO_PPC_PROJECT="${CMAKE_SOURCE_DIR}")
+# Test runner executables
+set(FUNC_TEST_EXEC ppc_func_tests)
+set(PERF_TEST_EXEC ppc_perf_tests)
 
-add_library(stb_image INTERFACE)
+# ——— Global compile definitions —————————————————————————————————————
+add_compile_definitions(
+        PATH_TO_PPC_PROJECT="${PROJECT_SOURCE_DIR}"
+)
 
-foreach(TASK_TYPE ${LIST_OF_TASKS})
-    set(PATH_TO_TASK "${CMAKE_CURRENT_SOURCE_DIR}/${TASK_TYPE}")
-    get_filename_component(MODULE_NAME ${PATH_TO_TASK} NAME)
-    message(STATUS      "${MODULE_NAME} tasks")
-    set(exec_func_tests "${MODULE_NAME}_func_tests")
-    set(exec_perf_tests "${MODULE_NAME}_perf_tests")
-    set(exec_func_lib   "${MODULE_NAME}_module_lib")
-    set(project_suffix  "_${MODULE_NAME}")
+# ——— Include helper scripts ——————————————————————————————————————
+include(${CMAKE_SOURCE_DIR}/cmake/functions.cmake)
 
-    SUBDIRLIST(subdirs ${PATH_TO_TASK})
-    foreach(subd ${subdirs})
-      if ("${subd}" MATCHES "_disabled$")
-        get_filename_component(DIR_NAME ${PATH_TO_TASK} NAME)
-        list(APPEND LIST_OF_REVERTS "${DIR_NAME}_${subd}")
-        continue()
-      endif()
-      get_filename_component(PROJECT_ID ${subd} NAME)
-      set(PATH_PREFIX "${PATH_TO_TASK}/${subd}")
-      message(STATUS "-- ${PROJECT_ID}${project_suffix}")
+# ——— Initialize test executables —————————————————————————————————————
+ppc_add_test(${FUNC_TEST_EXEC} common/runners/functional.cpp USE_FUNC_TESTS)
+ppc_add_test(${PERF_TEST_EXEC} common/runners/performance.cpp USE_PERF_TESTS)
 
-      file(GLOB_RECURSE TMP_LIB_SOURCE_FILES "${PATH_PREFIX}/include/*" "${PATH_PREFIX}/src/*")
-      list(APPEND LIB_SOURCE_FILES ${TMP_LIB_SOURCE_FILES})
+# ——— List of implementations ————————————————————————————————————————
+set(IMPLEMENTATIONS all mpi omp seq stl tbb)
 
-      file(GLOB SRC_RES "${PATH_PREFIX}/src/*")
-      list(APPEND SRC_RES ${TMP_SRC_RES})
-
-      file(GLOB_RECURSE TMP_FUNC_TESTS_SOURCE_FILES "${PATH_PREFIX}/func_tests/*")
-      list(APPEND FUNC_TESTS_SOURCE_FILES ${TMP_FUNC_TESTS_SOURCE_FILES})
-
-      file(GLOB_RECURSE TMP_PERF_TESTS_SOURCE_FILES "${PATH_PREFIX}/perf_tests/*")
-      list(APPEND PERF_TESTS_SOURCE_FILES ${TMP_PERF_TESTS_SOURCE_FILES})
-    endforeach()
-
-    project(${exec_func_lib})
-    list(LENGTH SRC_RES RES_LEN)
-    if(RES_LEN EQUAL 0)
-      add_library(${exec_func_lib} INTERFACE ${LIB_SOURCE_FILES})
-    else()
-      add_library(${exec_func_lib} STATIC ${LIB_SOURCE_FILES})
+# ——— Configure each subproject —————————————————————————————————————
+file(GLOB subdirs RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/*")
+foreach(sub IN LISTS subdirs)
+    if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${sub}" AND NOT sub STREQUAL "common")
+        ppc_configure_subproject(${sub})
     endif()
-    set_target_properties(${exec_func_lib} PROPERTIES LINKER_LANGUAGE CXX)
-
-    if (USE_FUNC_TESTS)
-      add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES} "${PATH_TO_TASK}/runner.cpp")
-      list(APPEND LIST_OF_EXEC_TESTS ${exec_func_tests})
-    endif (USE_FUNC_TESTS)
-    if (USE_PERF_TESTS)
-      add_executable(${exec_perf_tests} ${PERF_TESTS_SOURCE_FILES} "${PATH_TO_TASK}/runner.cpp")
-      list(APPEND LIST_OF_EXEC_TESTS ${exec_perf_tests})
-    endif (USE_PERF_TESTS)
-
-    foreach (EXEC_FUNC ${LIST_OF_EXEC_TESTS})
-      target_link_libraries(${EXEC_FUNC} PUBLIC ${exec_func_lib} core_module_lib)
-      target_link_libraries(${EXEC_FUNC} PUBLIC Threads::Threads)
-      target_link_libraries(${EXEC_FUNC} PUBLIC ${OpenMP_libomp_LIBRARY})
-      if( MPI_COMPILE_FLAGS )
-          set_target_properties(${EXEC_FUNC} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
-      endif( MPI_COMPILE_FLAGS )
-
-      if( MPI_LINK_FLAGS )
-          set_target_properties(${EXEC_FUNC} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}")
-      endif( MPI_LINK_FLAGS )
-      target_link_libraries(${EXEC_FUNC} PUBLIC ${MPI_LIBRARIES})
-
-      add_dependencies(${EXEC_FUNC} ppc_onetbb)
-      target_link_directories(${EXEC_FUNC} PUBLIC ${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib)
-      if(NOT MSVC)
-          target_link_libraries(${EXEC_FUNC} PUBLIC ${PPC_TBB_LIB_NAME})
-      endif()
-
-      target_link_directories(stb_image INTERFACE ${CMAKE_SOURCE_DIR}/3rdparty/stb)
-      target_link_libraries(${EXEC_FUNC} PUBLIC stb_image)
-
-      add_dependencies(${EXEC_FUNC} ppc_googletest)
-      target_link_directories(${EXEC_FUNC} PUBLIC "${CMAKE_BINARY_DIR}/ppc_googletest/install/lib")
-      target_link_libraries(${EXEC_FUNC} PUBLIC gtest gtest_main)
-      enable_testing()
-      add_test(NAME ${EXEC_FUNC} COMMAND ${EXEC_FUNC})
-
-      # Install the executable
-      install(TARGETS ${EXEC_FUNC} RUNTIME DESTINATION bin)
-    endforeach ()
-
-    # Install the library
-    install(TARGETS ${exec_func_lib} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
-
-    set(LIST_OF_EXEC_TESTS "")
-    set(LIB_SOURCE_FILES "")
-    set(SRC_RES "")
-    set(FUNC_TESTS_SOURCE_FILES "")
-    set(PERF_TESTS_SOURCE_FILES "")
 endforeach()
 
-set(OUTPUT_FILE "${CMAKE_BINARY_DIR}/revert-list.txt")
-file(WRITE ${OUTPUT_FILE} "${CONTENT}")
-message(STATUS "revert list")
-foreach (dir_name ${LIST_OF_REVERTS})
-    message(STATUS "-- ${dir_name}")
-    file(APPEND ${OUTPUT_FILE} "${dir_name}\n")
-endforeach()
+# ——— Install library target ——————————————————————————————————————
+install(TARGETS ${name_lib}
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+)

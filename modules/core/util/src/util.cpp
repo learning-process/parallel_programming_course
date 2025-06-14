@@ -1,33 +1,39 @@
 #include "core/util/include/util.hpp"
 
-#include <cstdlib>
-#ifdef _WIN32
-#include <cstdint>
-#include <iostream>
-#include <memory>
-#include <vector>
-#endif
-
+#include <algorithm>
+#include <array>
 #include <filesystem>
+#include <libenvpp/detail/get.hpp>
 #include <string>
 
-std::string ppc::util::GetAbsolutePath(const std::string &relative_path) {
+namespace {
+
+std::string GetAbsolutePath(const std::string& relative_path) {
   const std::filesystem::path path = std::string(PPC_PATH_TO_PROJECT) + "/tasks/" + relative_path;
   return path.string();
 }
 
+}  // namespace
+
+std::string ppc::util::GetAbsoluteTaskPath(const std::string& id_path, const std::string& relative_path) {
+  return GetAbsolutePath(id_path + "/data/" + relative_path);
+}
+
 int ppc::util::GetNumThreads() {
-#ifdef _WIN32
-  size_t len;
-  char omp_env[100];
-  errno_t err = getenv_s(&len, omp_env, sizeof(omp_env), "PPC_NUM_THREADS");
-  if (err != 0 || len == 0) {
-    omp_env[0] = '\0';
+  const auto num_threads = env::get<int>("PPC_NUM_THREADS");
+  if (num_threads.has_value()) {
+    return num_threads.value();
   }
-  int num_threads = std::atoi(omp_env);
-#else
-  const char *omp_env = std::getenv("PPC_NUM_THREADS");  // NOLINT(concurrency-mt-unsafe)
-  int num_threads = (omp_env != nullptr) ? std::atoi(omp_env) : 1;
-#endif
-  return num_threads;
+  return 1;
+}
+
+constexpr std::array<std::string_view, 13> kMpiEnvVars = {
+    "OMPI_COMM_WORLD_SIZE", "OMPI_UNIVERSE_SIZE", "PMI_SIZE",     "PMI_RANK",   "PMI_FD",
+    "HYDRA_CONTROL_FD",     "PMIX_RANK",          "SLURM_PROCID", "MSMPI_RANK", "MSMPI_LOCALRANK"};
+
+bool ppc::util::IsUnderMpirun() {
+  return std::ranges::any_of(kMpiEnvVars, [&](const auto& env_var) {
+    const auto mpi_env = env::get<int>(env_var);
+    return static_cast<bool>(mpi_env.has_value());
+  });
 }

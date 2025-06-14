@@ -1,0 +1,20 @@
+#pragma once
+
+#include "core/task/include/task.hpp"
+#include "example_processes/common/include/common.hpp"
+
+namespace nesterov_a_test_task_processes {
+
+class NesterovATestTaskMPI : public BaseTask {
+ public:
+  static constexpr ppc::core::TypeOfTask GetStaticTypeOfTask() { return ppc::core::TypeOfTask::kMPI; }
+  explicit NesterovATestTaskMPI(const InType &in);
+
+ private:
+  bool ValidationImpl() override;
+  bool PreProcessingImpl() override;
+  bool RunImpl() override;
+  bool PostProcessingImpl() override;
+};
+
+}  // namespace nesterov_a_test_task_processes
