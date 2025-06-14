@@ -27,7 +27,7 @@
       {% if code == language %}
         <span class="current-language">{{ name }}</span>
       {% else %}
-        <a href="/{{ code }}/{{ pagename }}.html">{{ name }}</a>
+        <a href="../{{ code }}/{{ pagename }}.html">{{ name }}</a>
       {% endif %}
       {% if not loop.last %} | {% endif %}
     {% endfor %}
