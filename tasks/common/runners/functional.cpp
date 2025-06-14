@@ -1,0 +1,17 @@
+#include <gtest/gtest.h>
+
+#include "core/runners/include/runners.hpp"
+#include "core/util/include/util.hpp"
+#include "oneapi/tbb/global_control.h"
+
+int main(int argc, char** argv) {
+  if (ppc::util::IsUnderMpirun()) {
+    return ppc::core::Init(argc, argv);
+  }
+
+  // Limit the number of threads in TBB
+  tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

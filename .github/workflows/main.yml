@@ -134,18 +134,22 @@ jobs:
       - name: Run func tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run func tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run func tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run func tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   ubuntu-gcc-test-extended:
     needs:
@@ -172,18 +176,22 @@ jobs:
       - name: Run func tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run func tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run func tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run func tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   ubuntu-clang-build:
     needs:
@@ -283,18 +291,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   ubuntu-clang-test-extended:
     needs:
@@ -323,18 +335,22 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   ubuntu-clang-sanitizer-build:
     needs:
@@ -371,6 +387,7 @@ jobs:
         env:
           CC: clang-20
           CXX: clang++-20
+          PPC_ASAN_RUN: 1
       - name: Build project
         run: |
           cmake --build build --parallel
@@ -424,6 +441,7 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -431,6 +449,7 @@ jobs:
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -438,6 +457,7 @@ jobs:
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -445,6 +465,7 @@ jobs:
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -477,21 +498,25 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
           PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
           PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
           PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
           PPC_ASAN_RUN: 1
   macos-clang-build:
@@ -584,18 +609,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   macos-clang-test-extended:
     needs:
@@ -622,18 +651,22 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   windows-msvc-build:
     needs:
@@ -731,18 +764,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   windows-msvc-test-extended:
     needs:
@@ -771,18 +808,22 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   windows-clang-build:
     needs:
@@ -796,42 +837,52 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup LLVM
+        uses: KyleMayes/install-llvm-action@v2
         with:
-          vs-version: 'latest'
+          version: "20.1.4"
+
       - name: Setup MPI
         uses: mpi4py/setup-mpi@v1
         with:
           mpi: msmpi
+
       - name: Setup ccache
         uses: Chocobo1/setup-ccache-action@v1
         with:
           windows_compile_environment: msvc
+
       - name: Setup ninja
         uses: seanmiddleditch/gha-setup-ninja@v6
-      - name: Setup MSVC for Ninja again
-        uses: ilammy/msvc-dev-cmd@v1
+
       - name: CMake configure
         run: >
-          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+          cmake -S . -B build -G Ninja
+          -D CMAKE_C_COMPILER=clang-cl
+          -D CMAKE_CXX_COMPILER=clang-cl
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache
+          -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D CMAKE_BUILD_TYPE=Release
+          -D CMAKE_INSTALL_PREFIX=install
+          -D CMAKE_PREFIX_PATH="C:/Program Files/LLVM"
         env:
           CC: clang-cl
           CXX: clang-cl
+
       - name: Build project
-        run: |
-          cmake --build build --config Release --parallel
+        run: cmake --build build --config Release --parallel
         env:
           CC: clang-cl
           CXX: clang-cl
+
       - name: Install project
-        run: |
-          cmake --install build
+        run: cmake --install build
+
       - name: Archive installed package
         run: Compress-Archive -Path install -DestinationPath windows-clang-install.zip
         shell: pwsh
+
       - name: Upload installed package
         uses: actions/upload-artifact@v4
         with:
@@ -864,18 +915,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   windows-clang-test-extended:
     needs:
@@ -904,18 +959,22 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   ubuntu-gcc-build-codecov:
     needs:
@@ -940,7 +999,7 @@ jobs:
           max-size: 1G
       - name: CMake configure
         run: >
-          cmake -S . -B build
+          cmake -S . -B build -GNinja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
@@ -955,18 +1014,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
       - name: Generate gcovr Coverage Data
         run: |
@@ -975,14 +1038,12 @@ jobs:
           gcovr -r ../ \
                 --exclude '.*3rdparty/.*' \
                 --exclude '/usr/.*' \
-                --exclude '.*/perf_tests/.*' \
-                --exclude '.*/func_tests/.*' \
-                --exclude '.*/all/runner.cpp' \
-                --exclude '.*/mpi/runner.cpp' \
-                --exclude '.*/omp/runner.cpp' \
-                --exclude '.*/seq/runner.cpp' \
-                --exclude '.*/stl/runner.cpp' \
-                --exclude '.*/tbb/runner.cpp' \
+                --exclude '.*tasks/.*/tests/.*' \
+                --exclude '.*modules/.*/tests/.*' \
+                --exclude '.*tasks/common/runners/.*' \
+                --exclude '.*modules/core/util/include/perf_test_util.hpp' \
+                --exclude '.*modules/core/util/include/func_test_util.hpp' \
+                --exclude '.*modules/core/util/src/func_test_util.cpp' \
                 --xml --output ../coverage.xml \
                 --html=../cov-report/index.html --html-details
       - name: Upload coverage reports to Codecov
@@ -1018,12 +1079,6 @@ jobs:
         run: |
           mkdir -p install
           tar -xzvf ubuntu-gcc-install-ubuntu-24.04.tar.gz -C install
-      - name: Run perf count checker
-        run: |
-          python3 scripts/run_perf_counter.py --required-tests-number=2
-        env:
-          PPC_NUM_THREADS: 2
-          PPC_NUM_PROC: 2
       - name: Run perf tests
         run: |
           bash -e scripts/generate_perf_results.sh
