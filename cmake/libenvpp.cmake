@@ -12,3 +12,16 @@ ExternalProject_Add(ppc_libenvpp
         -D CMAKE_C_COMPILER_LAUNCHER=${CMAKE_C_COMPILER_LAUNCHER} -D CMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}
         BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/build" --config ${CMAKE_BUILD_TYPE} --parallel
         INSTALL_COMMAND   "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/install")
+
+string(TOLOWER "${CMAKE_BUILD_TYPE}" cmake_build_type_lower)
+if(cmake_build_type_lower STREQUAL "debug")
+    set(PPC_FMT_LIB_NAME fmtd)
+else()
+    set(PPC_FMT_LIB_NAME fmt)
+endif()
+
+if(MSVC)
+    set(PPC_ENVPP_LIB_NAME libenvpp)
+else()
+    set(PPC_ENVPP_LIB_NAME envpp)
+endif ()
