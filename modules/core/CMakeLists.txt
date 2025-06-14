@@ -54,11 +54,7 @@ target_link_libraries(${exec_func_lib} PUBLIC ${OpenMP_libomp_LIBRARY} OpenMP::O
 add_dependencies(${exec_func_lib} ppc_onetbb)
 target_link_directories(${exec_func_lib} PUBLIC ${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib)
 if(NOT MSVC)
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_link_libraries(${exec_func_lib} PUBLIC tbb_debug)
-  else()
-    target_link_libraries(${exec_func_lib} PUBLIC tbb)
-  endif()
+    target_link_libraries(${exec_func_lib} PUBLIC ${PPC_TBB_LIB_NAME})
 endif()
 
 find_package(MPI REQUIRED)
