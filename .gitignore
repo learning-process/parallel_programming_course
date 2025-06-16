@@ -1,5 +1,7 @@
 /build*
+docs/build*
 /xml
+docs/xml
 out
 mpich
 cmake-build-*

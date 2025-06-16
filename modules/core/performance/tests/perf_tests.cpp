@@ -9,56 +9,42 @@
 #include "core/performance/tests/test_task.hpp"
 
 TEST(perf_tests, check_perf_pipeline) {
-  // Create data
   std::vector<uint32_t> in(2000, 1);
 
-  // Create Task
   auto test_task = std::make_shared<ppc::test::perf::TestTask<std::vector<uint32_t>, uint32_t>>(in);
 
-  // Create Perf analyzer
   ppc::core::Perf<std::vector<uint32_t>, uint32_t> perf_analyzer(test_task);
 
-  // Create Perf attributes
   ppc::core::PerfAttr perf_attr;
   perf_analyzer.PipelineRun(perf_attr);
 
-  // Get perf statistic
   perf_analyzer.PrintPerfStatistic("check_perf_pipeline");
   ASSERT_LE(perf_analyzer.GetPerfResults().time_sec, ppc::core::PerfResults::kMaxTime);
   EXPECT_EQ(test_task->GetOutput(), in.size());
 }
 
 TEST(perf_tests, check_perf_pipeline_float) {
-  // Create data
   std::vector<float> in(2000, 1);
 
-  // Create Task
   auto test_task = std::make_shared<ppc::test::perf::TestTask<std::vector<float>, float>>(in);
 
-  // Create Perf analyzer
   ppc::core::Perf<std::vector<float>, float> perf_analyzer(test_task);
 
-  // Create Perf attributes
   ppc::core::PerfAttr perf_attr;
   perf_analyzer.PipelineRun(perf_attr);
 
-  // Get perf statistic
   perf_analyzer.PrintPerfStatistic("check_perf_pipeline_float");
   ASSERT_LE(perf_analyzer.GetPerfResults().time_sec, ppc::core::PerfResults::kMaxTime);
   EXPECT_EQ(test_task->GetOutput(), in.size());
 }
 
 TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
-  // Create data
   std::vector<uint8_t> in(128, 1);
 
-  // Create Task
   auto test_task = std::make_shared<ppc::test::perf::FakePerfTask<std::vector<uint8_t>, uint8_t>>(in);
 
-  // Create Perf analyzer
   ppc::core::Perf<std::vector<uint8_t>, uint8_t> perf_analyzer(test_task);
 
-  // Create Perf attributes
   ppc::core::PerfAttr perf_attr;
   perf_attr.num_running = 1;
 
@@ -70,46 +56,217 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
   };
   perf_analyzer.PipelineRun(perf_attr);
 
-  // Get perf statistic
-  // NOLINTNEXTLINE(cppcoreguidelines-avoid-goto)
-  ASSERT_ANY_THROW(perf_analyzer.PrintPerfStatistic("check_perf_pipeline_uint8_t_slow_test"));
+  ASSERT_ANY_THROW_NOLINT(perf_analyzer.PrintPerfStatistic("check_perf_pipeline_uint8_t_slow_test"));
 }
 
 TEST(perf_tests, check_perf_task_exception) {
-  // Create data
   std::vector<uint32_t> in(2000, 1);
 
-  // Create Task
   auto test_task = std::make_shared<ppc::test::perf::TestTask<std::vector<uint32_t>, uint32_t>>(in);
 
-  // Create Perf analyzer
   ppc::core::Perf<std::vector<uint32_t>, uint32_t> perf_analyzer(test_task);
 
-  // Get perf statistic
-  // NOLINTNEXTLINE(cppcoreguidelines-avoid-goto)
-  ASSERT_ANY_THROW(perf_analyzer.PrintPerfStatistic("check_perf_task_exception"));
+  ASSERT_ANY_THROW_NOLINT(perf_analyzer.PrintPerfStatistic("check_perf_task_exception"));
 
-  // Create Perf attributes
   ppc::core::PerfAttr perf_attr;
   perf_analyzer.TaskRun(perf_attr);
 }
 
 TEST(perf_tests, check_perf_task_float) {
-  // Create data
   std::vector<float> in(2000, 1);
 
-  // Create Task
   auto test_task = std::make_shared<ppc::test::perf::TestTask<std::vector<float>, float>>(in);
 
-  // Create Perf analyzer
   ppc::core::Perf<std::vector<float>, float> perf_analyzer(test_task);
 
-  // Create Perf attributes
   ppc::core::PerfAttr perf_attr;
   perf_analyzer.TaskRun(perf_attr);
 
-  // Get perf statistic
   perf_analyzer.PrintPerfStatistic("check_perf_task_float");
   ASSERT_LE(perf_analyzer.GetPerfResults().time_sec, ppc::core::PerfResults::kMaxTime);
   EXPECT_EQ(test_task->GetOutput(), in.size());
+}
+
+struct ParamTestCase {
+  ppc::core::PerfResults::TypeOfRunning input;
+  std::string expected_output;
+};
+
+class GetStringParamNameParamTest : public ::testing::TestWithParam<ParamTestCase> {};
+
+TEST_P(GetStringParamNameParamTest, ReturnsExpectedString) {
+  const auto& param = GetParam();
+  EXPECT_EQ(ppc::core::GetStringParamName(param.input), param.expected_output);
+}
+
+INSTANTIATE_TEST_SUITE_P(ParamTests, GetStringParamNameParamTest,
+                         ::testing::Values(ParamTestCase{ppc::core::PerfResults::kTaskRun, "task_run"},
+                                           ParamTestCase{ppc::core::PerfResults::kPipeline, "pipeline"},
+                                           ParamTestCase{static_cast<ppc::core::PerfResults::TypeOfRunning>(999),
+                                                         "none"}));
+
+struct TaskTypeTestCase {
+  ppc::core::TypeOfTask type;
+  std::string expected;
+  std::string label;
+};
+
+class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> {
+ protected:
+  std::string temp_path;
+
+  void SetUp() override {
+    temp_path = std::filesystem::temp_directory_path() / "test_settings.json";
+    nlohmann::json j;
+    j["tasks"]["all"] = "ALL";
+    j["tasks"]["stl"] = "STL";
+    j["tasks"]["omp"] = "OMP";
+    j["tasks"]["mpi"] = "MPI";
+    j["tasks"]["tbb"] = "TBB";
+    j["tasks"]["seq"] = "SEQ";
+
+    std::ofstream(temp_path) << j.dump();
+  }
+
+  void TearDown() override { std::filesystem::remove(temp_path); }
+};
+
+TEST_P(GetStringTaskTypeTest, ReturnsExpectedString) {
+  const auto& param = GetParam();
+  EXPECT_EQ(GetStringTaskType(param.type, temp_path), param.expected) << "Failed on: " << param.label;
+}
+
+INSTANTIATE_TEST_SUITE_P_NOLINT(AllTypeCases, GetStringTaskTypeTest,
+                                ::testing::Values(TaskTypeTestCase{ppc::core::TypeOfTask::kALL, "all_ALL", "kALL"},
+                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kSTL, "stl_STL", "kSTL"},
+                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kOMP, "omp_OMP", "kOMP"},
+                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kMPI, "mpi_MPI", "kMPI"},
+                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kTBB, "tbb_TBB", "kTBB"},
+                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kSEQ, "seq_SEQ", "kSEQ"}));
+
+DEATH_TEST(GetStringTaskTypeStandaloneTest, ThrowsIfFileMissing) {
+  std::string missing_path = "non_existent_settings.json";
+  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, missing_path), std::runtime_error);
+}
+
+TEST(GetStringTaskTypeStandaloneTest, ReturnsUnknownForInvalidEnum) {
+  std::string path = std::filesystem::temp_directory_path() / "tmp_settings.json";
+  std::ofstream(path) << R"({"tasks":{"seq":"SEQ"}})";
+
+  auto result = GetStringTaskType(static_cast<ppc::core::TypeOfTask>(999), path);
+  EXPECT_EQ(result, "unknown");
+
+  std::filesystem::remove(path);
+}
+
+TEST(GetStringTaskTypeEdgeCases, ThrowsIfFileCannotBeOpened) {
+  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, "definitely_missing_file.json"),
+                      std::runtime_error);
+}
+
+TEST(GetStringTaskTypeEdgeCases, ThrowsIfJsonIsMalformed) {
+  std::string path = std::filesystem::temp_directory_path() / "bad_json.json";
+  std::ofstream(path) << "{ this is not valid json ";
+  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), nlohmann::json::parse_error);
+  std::filesystem::remove(path);
+}
+
+TEST(GetStringTaskTypeEdgeCases, ThrowsIfJsonValueIsNull) {
+  std::string path = std::filesystem::temp_directory_path() / "null_value.json";
+  std::ofstream(path) << R"({"tasks": { "seq": null }})";
+
+  EXPECT_THROW(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), nlohmann::json::type_error);
+
+  std::filesystem::remove(path);
+}
+
+TEST(GetStringTaskTypeEdgeCases, ReturnsUnknownIfEnumOutOfRange) {
+  std::string path = std::filesystem::temp_directory_path() / "ok.json";
+  std::ofstream(path) << R"({"tasks":{"seq":"SEQ"}})";
+  auto result = GetStringTaskType(static_cast<ppc::core::TypeOfTask>(255), path);
+  EXPECT_EQ(result, "unknown");
+  std::filesystem::remove(path);
+}
+
+TEST(GetStringTaskStatusTest, HandlesEnabledAndDisabled) {
+  EXPECT_EQ(GetStringTaskStatus(ppc::core::StatusOfTask::kEnabled), "enabled");
+  EXPECT_EQ(GetStringTaskStatus(ppc::core::StatusOfTask::kDisabled), "disabled");
+}
+
+class DummyTask : public ppc::core::Task<int, int> {
+ public:
+  using Task::Task;
+  bool ValidationImpl() override { return true; }
+  bool PreProcessingImpl() override { return true; }
+  bool RunImpl() override { return true; }
+  bool PostProcessingImpl() override { return true; }
+};
+
+class SlowTask : public ppc::core::Task<int, int> {
+ public:
+  using Task::Task;
+  bool ValidationImpl() override { return true; }
+  bool PreProcessingImpl() override { return true; }
+  bool RunImpl() override { return true; }
+  bool PostProcessingImpl() override {
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    return true;
+  }
+};
+
+TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
+  DummyTask task;
+  task.SetTypeOfTask(ppc::core::TypeOfTask::kOMP);
+  task.Validation();
+  task.PreProcessing();
+  task.Run();
+  task.PostProcessing();
+  EXPECT_EQ(task.GetDynamicTypeOfTask(), ppc::core::TypeOfTask::kOMP);
+}
+
+DEATH_TEST(TaskTest, DestructorTerminatesIfWrongOrder) {
+  testing::FLAGS_gtest_death_test_style = "threadsafe";
+  ASSERT_DEATH_IF_SUPPORTED(
+      {
+        DummyTask task;
+        task.Run();
+      },
+      "");
+}
+
+namespace my {
+namespace nested {
+struct Type {};
+}  // namespace nested
+
+class Another {};
+}  // namespace my
+
+namespace {
+struct NoNamespace {};
+}  // anonymous namespace
+
+template <typename T>
+class GetNamespaceTest : public ::testing::Test {};
+
+using TestTypes = ::testing::Types<my::nested::Type, my::Another, NoNamespace, int, std::vector<int>>;
+
+TYPED_TEST_SUITE(GetNamespaceTest, TestTypes);
+
+TYPED_TEST(GetNamespaceTest, ExtractsNamespaceCorrectly) {
+  constexpr std::string_view ns = ppc::util::GetNamespace<TypeParam>();
+
+  if constexpr (std::is_same_v<TypeParam, my::nested::Type>) {
+    EXPECT_EQ(ns, "my::nested");
+  } else if constexpr (std::is_same_v<TypeParam, my::Another>) {
+    EXPECT_EQ(ns, "my");
+  } else if constexpr (std::is_same_v<TypeParam, NoNamespace>) {
+    EXPECT_EQ(ns, "");
+  } else if constexpr (std::is_same_v<TypeParam, int>) {
+    EXPECT_EQ(ns, "");
+  } else if constexpr (std::is_same_v<TypeParam, std::vector<int>>) {
+    EXPECT_EQ(ns, "std");
+  } else {
+    FAIL() << "Unhandled type in test";
+  }
 }

@@ -586,6 +586,7 @@ jobs:
                 --exclude '.*tasks/.*/tests/.*' \
                 --exclude '.*modules/.*/tests/.*' \
                 --exclude '.*tasks/common/runners/.*' \
+                --exclude '.*modules/core/runners/.*' \
                 --exclude '.*modules/core/util/include/perf_test_util.hpp' \
                 --exclude '.*modules/core/util/include/func_test_util.hpp' \
                 --exclude '.*modules/core/util/src/func_test_util.cpp' \

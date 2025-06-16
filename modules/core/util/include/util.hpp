@@ -18,12 +18,19 @@
 #endif
 
 /* NOLINTBEGIN */
-#define INSTANTIATE_TEST_SUITE_P_NOLINT(prefix, test_case_name, generator, custom_test_name) \
-  INSTANTIATE_TEST_SUITE_P(prefix, test_case_name, generator, custom_test_name)
+#define ASSERT_ANY_THROW_NOLINT(...) ASSERT_ANY_THROW(__VA_ARGS__)
 /* NOLINTEND */
 
 /* NOLINTBEGIN */
-#define DEATH_TEST(test_suite_name, test_name) TEST(test_suite_name, test_name)
+#define EXPECT_THROW_NOLINT(...) EXPECT_THROW(__VA_ARGS__)
+/* NOLINTEND */
+
+/* NOLINTBEGIN */
+#define INSTANTIATE_TEST_SUITE_P_NOLINT(...) INSTANTIATE_TEST_SUITE_P(__VA_ARGS__)
+/* NOLINTEND */
+
+/* NOLINTBEGIN */
+#define DEATH_TEST(...) TEST(__VA_ARGS__)
 /* NOLINTEND */
 
 namespace ppc::util {
