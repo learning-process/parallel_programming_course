@@ -1,0 +1,42 @@
+on:
+  workflow_call:
+
+jobs:
+  ubuntu-gcc-build-perf-stats:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
+          python3 -m pip install -r requirements.txt
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-gcc-install-ubuntu-24.04
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf ubuntu-gcc-install-ubuntu-24.04.tar.gz -C install
+      - name: Run perf count checker
+        run: |
+          python3 scripts/run_perf_counter.py --required-tests-number=2
+        env:
+          PPC_NUM_THREADS: 2
+          PPC_NUM_PROC: 2
+      - name: Run perf tests
+        run: |
+          bash -e scripts/generate_perf_results.sh
+        env:
+          PPC_NUM_THREADS: 2
+          PPC_NUM_PROC: 2
+      - name: Archive results
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r perf-stat.zip build/perf_stat_dir
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-stat
+          path: perf-stat.zip
