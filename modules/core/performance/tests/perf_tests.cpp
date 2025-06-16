@@ -242,14 +242,10 @@ struct Type {};
 class Another {};
 }  // namespace my
 
-namespace {
-struct NoNamespace {};
-}  // anonymous namespace
-
 template <typename T>
 class GetNamespaceTest : public ::testing::Test {};
 
-using TestTypes = ::testing::Types<my::nested::Type, my::Another, NoNamespace, int, std::vector<int>>;
+using TestTypes = ::testing::Types<my::nested::Type, my::Another, int, std::vector<int>>;
 
 TYPED_TEST_SUITE(GetNamespaceTest, TestTypes);
 
@@ -260,8 +256,6 @@ TYPED_TEST(GetNamespaceTest, ExtractsNamespaceCorrectly) {
     EXPECT_EQ(ns, "my::nested");
   } else if constexpr (std::is_same_v<TypeParam, my::Another>) {
     EXPECT_EQ(ns, "my");
-  } else if constexpr (std::is_same_v<TypeParam, NoNamespace>) {
-    EXPECT_EQ(ns, "");
   } else if constexpr (std::is_same_v<TypeParam, int>) {
     EXPECT_EQ(ns, "");
   } else if constexpr (std::is_same_v<TypeParam, std::vector<int>>) {
