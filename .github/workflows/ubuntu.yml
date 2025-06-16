@@ -24,9 +24,8 @@ jobs:
           max-size: 1G
       - name: CMake configure
         run: >
-          cmake -S . -B build
+          cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
           CC: gcc-14
@@ -76,9 +75,8 @@ jobs:
           max-size: 1G
       - name: CMake configure
         run: >
-          cmake -S . -B build
+          cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja
           -D CMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=install
         env:
           CC: gcc-14
@@ -145,18 +143,22 @@ jobs:
       - name: Run func tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run func tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run func tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run func tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   ubuntu-gcc-test-extended:
     needs:
@@ -183,18 +185,22 @@ jobs:
       - name: Run func tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run func tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run func tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run func tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   ubuntu-clang-build:
     runs-on: ${{ matrix.os }}
@@ -220,9 +226,8 @@ jobs:
           max-size: 1G
       - name: CMake configure
         run: >
-          cmake -S . -B build
+          cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
           CC: clang-20
@@ -291,18 +296,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   ubuntu-clang-test-extended:
     needs:
@@ -331,18 +340,22 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
   ubuntu-clang-sanitizer-build:
     needs:
@@ -371,9 +384,8 @@ jobs:
           max-size: 1G
       - name: CMake configure
         run: >
-          cmake -S . -B build
+          cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON
           -D CMAKE_INSTALL_PREFIX=install
         env:
@@ -432,6 +444,7 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -439,6 +452,7 @@ jobs:
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -446,6 +460,7 @@ jobs:
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -453,6 +468,7 @@ jobs:
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
@@ -485,21 +501,25 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
           PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
           PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
           PPC_ASAN_RUN: 1
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13
           PPC_ASAN_RUN: 1
   ubuntu-gcc-build-codecov:
@@ -524,7 +544,7 @@ jobs:
           max-size: 1G
       - name: CMake configure
         run: >
-          cmake -S . -B build
+          cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
@@ -539,18 +559,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
       - name: Generate gcovr Coverage Data
         run: |
@@ -559,14 +583,12 @@ jobs:
           gcovr -r ../ \
                 --exclude '.*3rdparty/.*' \
                 --exclude '/usr/.*' \
-                --exclude '.*/perf_tests/.*' \
-                --exclude '.*/func_tests/.*' \
-                --exclude '.*/all/runner.cpp' \
-                --exclude '.*/mpi/runner.cpp' \
-                --exclude '.*/omp/runner.cpp' \
-                --exclude '.*/seq/runner.cpp' \
-                --exclude '.*/stl/runner.cpp' \
-                --exclude '.*/tbb/runner.cpp' \
+                --exclude '.*tasks/.*/tests/.*' \
+                --exclude '.*modules/.*/tests/.*' \
+                --exclude '.*tasks/common/runners/.*' \
+                --exclude '.*modules/core/util/include/perf_test_util.hpp' \
+                --exclude '.*modules/core/util/include/func_test_util.hpp' \
+                --exclude '.*modules/core/util/src/func_test_util.cpp' \
                 --xml --output ../coverage.xml \
                 --html=../cov-report/index.html --html-details
       - name: Upload coverage reports to Codecov
