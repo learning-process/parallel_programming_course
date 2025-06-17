@@ -122,7 +122,7 @@ class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> 
   std::string temp_path;
 
   void SetUp() override {
-    temp_path = std::filesystem::temp_directory_path() / "test_settings.json";
+    temp_path = (std::filesystem::temp_directory_path() / "test_settings.json").string();
     auto j = ppc::util::InitJSONPtr();
     (*j)["tasks"]["all"] = "ALL";
     (*j)["tasks"]["stl"] = "STL";
@@ -156,7 +156,7 @@ TEST_NOLINT(GetStringTaskTypeStandaloneTest, ThrowsIfFileMissing) {
 }
 
 TEST(GetStringTaskTypeStandaloneTest, ReturnsUnknownForInvalidEnum) {
-  std::string path = std::filesystem::temp_directory_path() / "tmp_settings.json";
+  std::string path = (std::filesystem::temp_directory_path() / "tmp_settings.json").string();
   std::ofstream(path) << R"({"tasks":{"seq":"SEQ"}})";
 
   auto result = GetStringTaskType(ppc::core::TypeOfTask::kUnknown, path);
@@ -171,14 +171,14 @@ TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfFileCannotBeOpened) {
 }
 
 TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfJsonIsMalformed) {
-  std::string path = std::filesystem::temp_directory_path() / "bad_json.json";
+  std::string path = (std::filesystem::temp_directory_path() / "bad_json.json").string();
   std::ofstream(path) << "{ this is not valid json ";
   EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), nlohmann::json::parse_error);
   std::filesystem::remove(path);
 }
 
 TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfJsonValueIsNull) {
-  std::string path = std::filesystem::temp_directory_path() / "null_value.json";
+  std::string path = (std::filesystem::temp_directory_path() / "null_value.json").string();
   std::ofstream(path) << R"({"tasks": { "seq": null }})";
 
   EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), nlohmann::json::type_error);
@@ -187,7 +187,7 @@ TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfJsonValueIsNull) {
 }
 
 TEST(GetStringTaskTypeEdgeCases, ReturnsUnknownIfEnumOutOfRange) {
-  std::string path = std::filesystem::temp_directory_path() / "ok.json";
+  std::string path = (std::filesystem::temp_directory_path() / "ok.json").string();
   std::ofstream(path) << R"({"tasks":{"seq":"SEQ"}})";
   auto result = GetStringTaskType(ppc::core::TypeOfTask::kUnknown, path);
   EXPECT_EQ(result, "unknown");
