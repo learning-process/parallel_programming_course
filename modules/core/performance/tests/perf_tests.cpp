@@ -173,7 +173,7 @@ TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfFileCannotBeOpened) {
 TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfJsonIsMalformed) {
   std::string path = (std::filesystem::temp_directory_path() / "bad_json.json").string();
   std::ofstream(path) << "{ this is not valid json ";
-  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), nlohmann::json::parse_error);
+  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), NlohmannJsonParseError);
   std::filesystem::remove(path);
 }
 
@@ -181,7 +181,7 @@ TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfJsonValueIsNull) {
   std::string path = (std::filesystem::temp_directory_path() / "null_value.json").string();
   std::ofstream(path) << R"({"tasks": { "seq": null }})";
 
-  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), nlohmann::json::type_error);
+  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), NlohmannJsonTypeError);
 
   std::filesystem::remove(path);
 }
