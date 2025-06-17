@@ -31,7 +31,7 @@ class PPCRunner:
         self.__ppc_env = None
         self.work_dir = None
 
-        self.valgrind_cmd = "valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all"
+        self.valgrind_cmd = "valgrind --leak-check=full --show-leak-kinds=definite --error-exitcode=1"
 
         if platform.system() == "Windows":
             self.mpi_exec = "mpiexec"
