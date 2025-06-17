@@ -32,6 +32,6 @@ const auto kGtestValues = ppc::util::TupleToGTestValues(kAllPerfTasks);
 
 const auto kPerfTestName = ExampleRunPerfTestThreads::CustomPerfTestName;
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(RunModeTests, ExampleRunPerfTestThreads, kGtestValues, kPerfTestName);
+INSTANTIATE_TEST_SUITE_P_WITH_NAME(RunModeTests, ExampleRunPerfTestThreads, kGtestValues, kPerfTestName);
 
 }  // namespace nesterov_a_test_task_threads
