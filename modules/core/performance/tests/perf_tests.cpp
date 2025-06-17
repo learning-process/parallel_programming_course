@@ -7,6 +7,7 @@
 
 #include "core/performance/include/performance.hpp"
 #include "core/performance/tests/test_task.hpp"
+#include "core/util/include/util.hpp"
 
 TEST(perf_tests, check_perf_pipeline) {
   std::vector<uint32_t> in(2000, 1);
@@ -99,11 +100,11 @@ TEST_P(GetStringParamNameParamTest, ReturnsExpectedString) {
   EXPECT_EQ(ppc::core::GetStringParamName(param.input), param.expected_output);
 }
 
-INSTANTIATE_TEST_SUITE_P(ParamTests, GetStringParamNameParamTest,
-                         ::testing::Values(ParamTestCase{ppc::core::PerfResults::kTaskRun, "task_run"},
-                                           ParamTestCase{ppc::core::PerfResults::kPipeline, "pipeline"},
-                                           ParamTestCase{static_cast<ppc::core::PerfResults::TypeOfRunning>(999),
-                                                         "none"}));
+INSTANTIATE_TEST_SUITE_P_NOLINT(ParamTests, GetStringParamNameParamTest,
+                                ::testing::Values(ParamTestCase{ppc::core::PerfResults::kTaskRun, "task_run"},
+                                                  ParamTestCase{ppc::core::PerfResults::kPipeline, "pipeline"},
+                                                  ParamTestCase{static_cast<ppc::core::PerfResults::TypeOfRunning>(999),
+                                                                "none"}));
 
 struct TaskTypeTestCase {
   ppc::core::TypeOfTask type;
@@ -144,7 +145,7 @@ INSTANTIATE_TEST_SUITE_P_NOLINT(AllTypeCases, GetStringTaskTypeTest,
                                                   TaskTypeTestCase{ppc::core::TypeOfTask::kTBB, "tbb_TBB", "kTBB"},
                                                   TaskTypeTestCase{ppc::core::TypeOfTask::kSEQ, "seq_SEQ", "kSEQ"}));
 
-DEATH_TEST(GetStringTaskTypeStandaloneTest, ThrowsIfFileMissing) {
+TEST_NOLINT(GetStringTaskTypeStandaloneTest, ThrowsIfFileMissing) {
   std::string missing_path = "non_existent_settings.json";
   EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, missing_path), std::runtime_error);
 }
@@ -159,12 +160,12 @@ TEST(GetStringTaskTypeStandaloneTest, ReturnsUnknownForInvalidEnum) {
   std::filesystem::remove(path);
 }
 
-TEST(GetStringTaskTypeEdgeCases, ThrowsIfFileCannotBeOpened) {
+TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfFileCannotBeOpened) {
   EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, "definitely_missing_file.json"),
                       std::runtime_error);
 }
 
-TEST(GetStringTaskTypeEdgeCases, ThrowsIfJsonIsMalformed) {
+TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfJsonIsMalformed) {
   std::string path = std::filesystem::temp_directory_path() / "bad_json.json";
   std::ofstream(path) << "{ this is not valid json ";
   EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), nlohmann::json::parse_error);
@@ -175,7 +176,7 @@ TEST(GetStringTaskTypeEdgeCases, ThrowsIfJsonValueIsNull) {
   std::string path = std::filesystem::temp_directory_path() / "null_value.json";
   std::ofstream(path) << R"({"tasks": { "seq": null }})";
 
-  EXPECT_THROW(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), nlohmann::json::type_error);
+  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), nlohmann::json::type_error);
 
   std::filesystem::remove(path);
 }
@@ -224,9 +225,9 @@ TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
   EXPECT_EQ(task.GetDynamicTypeOfTask(), ppc::core::TypeOfTask::kOMP);
 }
 
-DEATH_TEST(TaskTest, DestructorTerminatesIfWrongOrder) {
+TEST_NOLINT(TaskTest, DestructorTerminatesIfWrongOrder) {
   testing::FLAGS_gtest_death_test_style = "threadsafe";
-  ASSERT_DEATH_IF_SUPPORTED(
+  ASSERT_DEATH_IF_SUPPORTED_NOLINT(
       {
         DummyTask task;
         task.Run();
@@ -249,17 +250,17 @@ using TestTypes = ::testing::Types<my::nested::Type, my::Another, int, std::vect
 
 TYPED_TEST_SUITE(GetNamespaceTest, TestTypes);
 
-TYPED_TEST(GetNamespaceTest, ExtractsNamespaceCorrectly) {
-  constexpr std::string_view ns = ppc::util::GetNamespace<TypeParam>();
+TYPED_TEST_NOLINT(GetNamespaceTest, ExtractsNamespaceCorrectly) {
+  constexpr std::string_view kNs = ppc::util::GetNamespace<TypeParam>();
 
   if constexpr (std::is_same_v<TypeParam, my::nested::Type>) {
-    EXPECT_EQ(ns, "my::nested");
+    EXPECT_EQ(kNs, "my::nested");
   } else if constexpr (std::is_same_v<TypeParam, my::Another>) {
-    EXPECT_EQ(ns, "my");
+    EXPECT_EQ(kNs, "my");
   } else if constexpr (std::is_same_v<TypeParam, int>) {
-    EXPECT_EQ(ns, "");
+    EXPECT_EQ(kNs, "");
   } else if constexpr (std::is_same_v<TypeParam, std::vector<int>>) {
-    EXPECT_EQ(ns, "std");
+    EXPECT_EQ(kNs, "std");
   } else {
     FAIL() << "Unhandled type in test";
   }

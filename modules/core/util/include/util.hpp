@@ -30,7 +30,15 @@
 /* NOLINTEND */
 
 /* NOLINTBEGIN */
-#define DEATH_TEST(...) TEST(__VA_ARGS__)
+#define TEST_NOLINT(...) TEST(__VA_ARGS__)
+/* NOLINTEND */
+
+/* NOLINTBEGIN */
+#define ASSERT_DEATH_IF_SUPPORTED_NOLINT(...) ASSERT_DEATH_IF_SUPPORTED(__VA_ARGS__)
+/* NOLINTEND */
+
+/* NOLINTBEGIN */
+#define TYPED_TEST_NOLINT(...) TYPED_TEST(__VA_ARGS__)
 /* NOLINTEND */
 
 namespace ppc::util {
