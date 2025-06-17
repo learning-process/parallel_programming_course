@@ -14,7 +14,6 @@
 #include "core/performance/tests/test_task.hpp"
 #include "core/task/include/task.hpp"
 #include "core/util/include/util.hpp"
-#include "nlohmann/json.hpp"
 
 TEST(perf_tests, check_perf_pipeline) {
   std::vector<uint32_t> in(2000, 1);
@@ -124,15 +123,15 @@ class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> 
 
   void SetUp() override {
     temp_path = std::filesystem::temp_directory_path() / "test_settings.json";
-    nlohmann::json j;
-    j["tasks"]["all"] = "ALL";
-    j["tasks"]["stl"] = "STL";
-    j["tasks"]["omp"] = "OMP";
-    j["tasks"]["mpi"] = "MPI";
-    j["tasks"]["tbb"] = "TBB";
-    j["tasks"]["seq"] = "SEQ";
+    auto j = ppc::util::InitJSONPtr();
+    (*j)["tasks"]["all"] = "ALL";
+    (*j)["tasks"]["stl"] = "STL";
+    (*j)["tasks"]["omp"] = "OMP";
+    (*j)["tasks"]["mpi"] = "MPI";
+    (*j)["tasks"]["tbb"] = "TBB";
+    (*j)["tasks"]["seq"] = "SEQ";
 
-    std::ofstream(temp_path) << j.dump();
+    std::ofstream(temp_path) << (*j).dump();
   }
 
   void TearDown() override { std::filesystem::remove(temp_path); }

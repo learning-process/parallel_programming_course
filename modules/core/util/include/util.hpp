@@ -17,29 +17,12 @@
 #pragma warning(pop)
 #endif
 
-/* NOLINTBEGIN */
-#define ASSERT_ANY_THROW_NOLINT(...) ASSERT_ANY_THROW(__VA_ARGS__)
-/* NOLINTEND */
-
-/* NOLINTBEGIN */
-#define EXPECT_THROW_NOLINT(...) EXPECT_THROW(__VA_ARGS__)
-/* NOLINTEND */
-
-/* NOLINTBEGIN */
-#define INSTANTIATE_TEST_SUITE_P_NOLINT(...) INSTANTIATE_TEST_SUITE_P(__VA_ARGS__)
-/* NOLINTEND */
-
-/* NOLINTBEGIN */
-#define TEST_NOLINT(...) TEST(__VA_ARGS__)
-/* NOLINTEND */
-
-/* NOLINTBEGIN */
-#define ASSERT_DEATH_IF_SUPPORTED_NOLINT(...) ASSERT_DEATH_IF_SUPPORTED(__VA_ARGS__)
-/* NOLINTEND */
-
-/* NOLINTBEGIN */
-#define TYPED_TEST_NOLINT(...) TYPED_TEST(__VA_ARGS__)
-/* NOLINTEND */
+#define ASSERT_ANY_THROW_NOLINT(...) ASSERT_ANY_THROW(__VA_ARGS__)                    // NOLINT
+#define EXPECT_THROW_NOLINT(...) EXPECT_THROW(__VA_ARGS__)                            // NOLINT
+#define INSTANTIATE_TEST_SUITE_P_NOLINT(...) INSTANTIATE_TEST_SUITE_P(__VA_ARGS__)    // NOLINT
+#define TEST_NOLINT(...) TEST(__VA_ARGS__)                                            // NOLINT
+#define ASSERT_DEATH_IF_SUPPORTED_NOLINT(...) ASSERT_DEATH_IF_SUPPORTED(__VA_ARGS__)  // NOLINT
+#define TYPED_TEST_NOLINT(...) TYPED_TEST(__VA_ARGS__)                                // NOLINT
 
 namespace ppc::util {
 
