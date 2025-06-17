@@ -105,10 +105,12 @@ TEST_P(GetStringParamNameParamTest, ReturnsExpectedString) {
   EXPECT_EQ(ppc::core::GetStringParamName(param.input), param.expected_output);
 }
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(ParamTests, GetStringParamNameParamTest,
-                                ::testing::Values(ParamTestCase{ppc::core::PerfResults::kTaskRun, "task_run"},
-                                                  ParamTestCase{ppc::core::PerfResults::kPipeline, "pipeline"},
-                                                  ParamTestCase{ppc::core::PerfResults::TypeOfRunning::kNone, "none"}));
+INSTANTIATE_TEST_SUITE_P_WITH_NAME(
+    ParamTests, GetStringParamNameParamTest,
+    ::testing::Values(ParamTestCase{ppc::core::PerfResults::kTaskRun, "task_run"},
+                      ParamTestCase{ppc::core::PerfResults::kPipeline, "pipeline"},
+                      ParamTestCase{ppc::core::PerfResults::TypeOfRunning::kNone, "none"}),
+    [](const ::testing::TestParamInfo<ParamTestCase>& info) { return info.param.expected_output; });
 
 struct TaskTypeTestCase {
   ppc::core::TypeOfTask type;
