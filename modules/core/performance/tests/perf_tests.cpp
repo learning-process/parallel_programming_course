@@ -98,6 +98,10 @@ struct ParamTestCase {
   std::string expected_output;
 };
 
+inline void PrintTo(const ParamTestCase& param, std::ostream* os) {
+  *os << "{ input = " << static_cast<int>(param.input) << ", expected = " << param.expected_output << " }";
+}
+
 class GetStringParamNameParamTest : public ::testing::TestWithParam<ParamTestCase> {};
 
 TEST_P(GetStringParamNameParamTest, ReturnsExpectedString) {
@@ -117,6 +121,11 @@ struct TaskTypeTestCase {
   std::string expected;
   std::string label;
 };
+
+inline void PrintTo(const TaskTypeTestCase& param, std::ostream* os) {
+  *os << "{ type = " << static_cast<int>(param.type) << ", expected = " << param.expected << ", label = " << param.label
+      << " }";
+}
 
 class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> {
  protected:
