@@ -13,8 +13,8 @@
 
 #include <nlohmann/json.hpp>  // NOLINT(misc-include-cleaner)
 
-using NlohmannJsonParseError = nlohmann::json::parse_error;
-using NlohmannJsonTypeError = nlohmann::json::type_error;
+using NlohmannJsonParseError = nlohmann::json::parse_error;  // NOLINT(misc-include-cleaner)
+using NlohmannJsonTypeError = nlohmann::json::type_error;    // NOLINT(misc-include-cleaner)
 
 #ifdef _MSC_VER
 #pragma warning(pop)
