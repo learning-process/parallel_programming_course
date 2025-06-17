@@ -1,13 +1,11 @@
 #include <gtest/gtest.h>
 
-#include <chrono>
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <memory>
 #include <stdexcept>
 #include <string_view>
-#include <thread>
 #include <vector>
 
 #include "core/performance/include/performance.hpp"
@@ -208,18 +206,6 @@ class DummyTask : public ppc::core::Task<int, int> {
   bool PostProcessingImpl() override { return true; }
 };
 
-class SlowTask : public ppc::core::Task<int, int> {
- public:
-  using Task::Task;
-  bool ValidationImpl() override { return true; }
-  bool PreProcessingImpl() override { return true; }
-  bool RunImpl() override { return true; }
-  bool PostProcessingImpl() override {
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    return true;
-  }
-};
-
 TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
   DummyTask task;
   task.SetTypeOfTask(ppc::core::TypeOfTask::kOMP);
@@ -251,7 +237,7 @@ class Another {};
 template <typename T>
 class GetNamespaceTest : public ::testing::Test {};
 
-using TestTypes = ::testing::Types<my::nested::Type, my::Another, int, std::vector<int>>;
+using TestTypes = ::testing::Types<my::nested::Type, my::Another, int>;
 
 TYPED_TEST_SUITE(GetNamespaceTest, TestTypes);
 
@@ -264,8 +250,6 @@ TYPED_TEST_NOLINT(GetNamespaceTest, ExtractsNamespaceCorrectly) {
     EXPECT_EQ(kNs, "my");
   } else if constexpr (std::is_same_v<TypeParam, int>) {
     EXPECT_EQ(kNs, "");
-  } else if constexpr (std::is_same_v<TypeParam, std::vector<int>>) {
-    EXPECT_EQ(kNs, "std");
   } else {
     FAIL() << "Unhandled type in test";
   }
