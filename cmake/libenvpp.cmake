@@ -2,9 +2,9 @@ include_directories(${CMAKE_SOURCE_DIR}/3rdparty/libenvpp/include)
 include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/3rdparty/libenvpp/external/fmt/include)
 
 if(WIN32)
-    set(PPC_FMT_DISABLE_CONSTEVAL "/DFMT_CONSTEVAL=inline")
+    set(PPC_FMT_FLAGS "/EHsc /DFMT_CONSTEVAL=inline")
 else()
-    set(PPC_FMT_DISABLE_CONSTEVAL "-DFMT_CONSTEVAL=inline")
+    set(PPC_FMT_FLAGS "-fexceptions -DFMT_CONSTEVAL=inline")
 endif()
 
 include(ExternalProject)
@@ -20,7 +20,7 @@ ExternalProject_Add(ppc_libenvpp
         -DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}
         -DCMAKE_CXX_STANDARD_REQUIRED=ON
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_CXX_FLAGS=${PPC_FMT_DISABLE_CONSTEVAL}
+        -DCMAKE_CXX_FLAGS=${PPC_FMT_FLAGS}
         BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/build" --config ${CMAKE_BUILD_TYPE} --parallel
         INSTALL_COMMAND   "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/install"
 )
