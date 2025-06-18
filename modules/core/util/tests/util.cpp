@@ -25,3 +25,24 @@ TEST(util_tests, threads_control_check_openmp_disabled_valgrind) {
   // Check Result
   ASSERT_EQ(ppc_num_threads, omp_num_threads);
 }
+
+namespace test_ns {
+struct TypeInNamespace {};
+}  // namespace test_ns
+
+struct PlainType {};
+
+TEST(GetNamespaceTest, ReturnsExpectedNamespace) {
+  constexpr auto kNs = ppc::util::GetNamespace<test_ns::TypeInNamespace>();
+  EXPECT_EQ(kNs, "test_ns");
+}
+
+TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespace_PrimitiveType) {
+  constexpr auto kNs = ppc::util::GetNamespace<int>();
+  EXPECT_EQ(kNs, "");
+}
+
+TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespace_PlainStruct) {
+  constexpr auto kNs = ppc::util::GetNamespace<PlainType>();
+  EXPECT_EQ(kNs, "");
+}
