@@ -97,7 +97,7 @@ TEST(perf_tests, check_perf_task_float) {
 struct ParamTestCase {
   ppc::core::PerfResults::TypeOfRunning input;
   std::string expected_output;
-  friend inline void PrintTo(const ParamTestCase& param, std::ostream* os) {
+  friend void PrintTo(const ParamTestCase& param, std::ostream* os) {
     *os << "{ input = " << static_cast<int>(param.input) << ", expected = " << param.expected_output << " }";
   }
 };
@@ -120,7 +120,7 @@ struct TaskTypeTestCase {
   ppc::core::TypeOfTask type;
   std::string expected;
   std::string label;
-  friend inline void PrintTo(const TaskTypeTestCase& param, std::ostream* os) {
+  friend void PrintTo(const TaskTypeTestCase& param, std::ostream* os) {
     *os << "{ type = " << static_cast<int>(param.type) << ", expected = " << param.expected
         << ", label = " << param.label << " }";
   }
