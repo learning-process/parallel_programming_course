@@ -46,3 +46,36 @@ TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespace_PlainStruct) {
   constexpr auto kNs = ppc::util::GetNamespace<PlainType>();
   EXPECT_EQ(kNs, "");
 }
+
+namespace test_ns {
+struct Nested {};
+}  // namespace test_ns
+
+TEST(GetNamespaceTest, ReturnsNamespaceCorrectly) {
+  constexpr auto kNs = ppc::util::GetNamespace<test_ns::Nested>();
+  EXPECT_EQ(kNs, "test_ns");
+}
+
+struct NoNamespaceType {};
+
+TEST(GetNamespaceTest, NoNamespaceInType) {
+  constexpr auto kNs = ppc::util::GetNamespace<NoNamespaceType>();
+  EXPECT_EQ(kNs, "");
+}
+
+template <typename T>
+struct NotATemplate {};
+
+TEST(GetNamespaceTest, NoKeyInPrettyFunction) {
+  constexpr auto kNs = ppc::util::GetNamespace<NotATemplate<void>>();
+  EXPECT_EQ(kNs, "");
+}
+
+namespace crazy {
+struct VeryLongTypeNameWithOnlyLettersAndUnderscores {};
+}  // namespace crazy
+
+TEST(GetNamespaceTest, NoTerminatorCharactersInPrettyFunction) {
+  constexpr auto kNs = ppc::util::GetNamespace<crazy::VeryLongTypeNameWithOnlyLettersAndUnderscores>();
+  EXPECT_EQ(kNs, "crazy");
+}
