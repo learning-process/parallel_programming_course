@@ -5,7 +5,6 @@
 #pragma clang diagnostic ignored "-Wcast-align"
 #endif
 
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
 #if defined(__clang__)

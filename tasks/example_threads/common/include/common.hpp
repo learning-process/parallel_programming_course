@@ -1,0 +1,15 @@
+#pragma once
+
+#include <string>
+#include <tuple>
+
+#include "core/task/include/task.hpp"
+
+namespace nesterov_a_test_task_threads {
+
+using InType = int;
+using OutType = int;
+using TestType = std::tuple<int, std::string>;
+using BaseTask = ppc::core::Task<InType, OutType>;
+
+}  // namespace nesterov_a_test_task_threads

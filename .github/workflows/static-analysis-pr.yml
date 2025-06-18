@@ -24,11 +24,11 @@ jobs:
         id: review
         with:
           build_dir: build
-          apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-19-dev,valgrind
+          apt_packages: openmpi-bin,openmpi-common,libopenmpi-dev,ninja-build,libomp-19-dev,valgrind
           cmake_command: >
-            cmake -S . -B build
+            cmake -S . -B build -G Ninja
             -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-            -G Ninja -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+            -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           config_file: .clang-tidy
           exclude: 3rdparty
           split_workflow: true
@@ -57,11 +57,10 @@ jobs:
         id: review
         with:
           build_dir: build
-          apt_packages: mpich,libmpich*,mpi*,openmpi-bin,ninja-build,libomp-19-dev,valgrind
+          apt_packages: openmpi-bin,openmpi-common,libopenmpi-dev,ninja-build,libomp-19-dev,valgrind
           cmake_command: >
-            cmake -S . -B build
+            cmake -S . -B build -G Ninja
             -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-            -G Ninja
             -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           config_file: .clang-tidy
           exclude: 3rdparty

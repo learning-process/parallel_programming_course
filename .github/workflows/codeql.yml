@@ -39,9 +39,8 @@ jobs:
           languages: ${{ matrix.language }}
       - name: CMake configure
         run: >
-          cmake -S . -B build
+          cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE
         env:
           CC: gcc-14

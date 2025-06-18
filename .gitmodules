@@ -7,3 +7,9 @@
 [submodule "3rdparty/stb"]
 	path = 3rdparty/stb
 	url = https://github.com/nothings/stb
+[submodule "3rdparty/json"]
+	path = 3rdparty/json
+	url = https://github.com/nlohmann/json
+[submodule "3rdparty/libenvpp"]
+	path = 3rdparty/libenvpp
+	url = https://github.com/ph3at/libenvpp

@@ -1,0 +1,10 @@
+{
+  "tasks_type": "threads",
+  "tasks": {
+    "all": "enabled",
+    "omp": "enabled",
+    "seq": "enabled",
+    "stl": "enabled",
+    "tbb": "enabled"
+  }
+}

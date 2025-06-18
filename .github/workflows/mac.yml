@@ -24,12 +24,11 @@ jobs:
           max-size: 1G
       - name: CMake configure
         run: >
-          cmake -S . -B build
+          cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
+          -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
           -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
-          -D CMAKE_BUILD_TYPE=RELEASE
-          -DCMAKE_INSTALL_PREFIX=install
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
       - name: Build project
         run: |
           cmake --build build --parallel
@@ -66,12 +65,11 @@ jobs:
           max-size: 1G
       - name: CMake configure
         run: >
-          cmake -S . -B build
+          cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -G Ninja -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
+          -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
           -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
-          -D CMAKE_BUILD_TYPE=DEBUG
-          -DCMAKE_INSTALL_PREFIX=install
+          -D CMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=install
       - name: Build project
         run: |
           cmake --build build --parallel
@@ -131,18 +129,22 @@ jobs:
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 3
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 4
   macos-clang-test-extended:
     needs:
@@ -169,16 +171,20 @@ jobs:
       - name: Run tests (threads, num_threads=5)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 5
       - name: Run tests (threads, num_threads=7)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 7
       - name: Run tests (threads, num_threads=11)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 11
       - name: Run tests (threads, num_threads=13)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 13

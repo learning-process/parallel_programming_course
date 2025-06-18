@@ -19,18 +19,12 @@ jobs:
         run: |
           mkdir -p install
           tar -xzvf ubuntu-gcc-install-ubuntu-24.04.tar.gz -C install
-      - name: Run perf count checker
-        run: |
-          python3 scripts/run_perf_counter.py --required-tests-number=2
-        env:
-          PPC_NUM_THREADS: 2
-          PPC_NUM_PROC: 2
       - name: Run perf tests
         run: |
           bash -e scripts/generate_perf_results.sh
         env:
-          PPC_NUM_THREADS: 2
           PPC_NUM_PROC: 2
+          PPC_NUM_THREADS: 2
       - name: Archive results
         uses: montudor/action-zip@v1
         with:

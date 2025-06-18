@@ -1,0 +1,8 @@
+{
+  "student": {
+    "first_name": "<value>",
+    "last_name": "<value>",
+    "middle_name": "<value>",
+    "group_number": "<value>"
+  }
+}
