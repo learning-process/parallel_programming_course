@@ -13,9 +13,10 @@
 
 #include <nlohmann/json.hpp>  // NOLINT(misc-include-cleaner)
 
+/// @brief JSON namespace used for settings and config parsing.
 using NlohmannJsonParseError = nlohmann::json::parse_error;  // NOLINT(misc-include-cleaner)
-using NlohmannJsonTypeError = nlohmann::json::type_error;    // NOLINT(misc-include-cleaner)
-
+/// @brief JSON namespace used for settings and config typing.
+using NlohmannJsonTypeError = nlohmann::json::type_error;  // NOLINT(misc-include-cleaner)
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif

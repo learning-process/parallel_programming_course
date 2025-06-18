@@ -19,9 +19,36 @@ using namespace std::chrono;
 
 namespace ppc::core {
 
-enum TypeOfTask : uint8_t { kALL, kMPI, kOMP, kSEQ, kSTL, kTBB, kUnknown };
-enum StatusOfTask : uint8_t { kEnabled, kDisabled };
+/// @brief Represents the type of task (parallelization technology).
+/// @details Used to select the implementation type in tests and execution logic.
+enum TypeOfTask : uint8_t {
+  /// Use all available implementations
+  kALL,
+  /// MPI (Message Passing Interface)
+  kMPI,
+  /// OpenMP (Open Multi-Processing)
+  kOMP,
+  /// Sequential implementation
+  kSEQ,
+  /// Standard Thread Library (STL threads)
+  kSTL,
+  /// Intel Threading Building Blocks (TBB)
+  kTBB,
+  /// Unknown task type
+  kUnknown
+};
 
+/// @brief Indicates whether a task is enabled or disabled.
+enum StatusOfTask : uint8_t {
+  /// Task is enabled and should be executed
+  kEnabled,
+  /// Task is disabled and will be skipped
+  kDisabled
+};
+
+/// @brief Returns a string representation of the task status.
+/// @param status_of_task Task status (enabled or disabled).
+/// @return "enabled" if the task is enabled, otherwise "disabled".
 inline std::string GetStringTaskStatus(StatusOfTask status_of_task) {
   if (status_of_task == kDisabled) {
     return "disabled";
@@ -29,6 +56,11 @@ inline std::string GetStringTaskStatus(StatusOfTask status_of_task) {
   return "enabled";
 }
 
+/// @brief Returns a string representation of the task type based on the JSON settings file.
+/// @param type_of_task Type of the task.
+/// @param settings_file_path Path to the JSON file containing task type strings.
+/// @return Formatted string combining the task type and its corresponding value from the file.
+/// @throws std::runtime_error If the file cannot be opened.
 inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string &settings_file_path) {
   std::ifstream file(settings_file_path);
   if (!file.is_open()) {
@@ -65,20 +97,24 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
 
 enum StateOfTesting : uint8_t { kFunc, kPerf };
 
-// Memory of inputs and outputs need to be initialized before create an object of
-// Task class
 template <typename InType, typename OutType>
+/// @brief Base abstract class representing a generic task with a defined pipeline.
+/// @tparam InType Input data type.
+/// @tparam OutType Output data type.
 class Task {
  public:
+  /// @brief Constructs a new Task object.
   explicit Task(StateOfTesting /*state_of_testing*/ = StateOfTesting::kFunc) { functions_order_.clear(); }
 
-  // validation of data and validation of task attributes before running
+  /// @brief Validates input data and task attributes before execution.
+  /// @return True if validation is successful.
   virtual bool Validation() final {
     InternalOrderTest(__builtin_FUNCTION());
     return ValidationImpl();
   }
 
-  // pre-processing of input data
+  /// @brief Performs preprocessing on the input data.
+  /// @return True if preprocessing is successful.
   virtual bool PreProcessing() final {
     InternalOrderTest(__builtin_FUNCTION());
     if (state_of_testing_ == StateOfTesting::kFunc) {
@@ -87,13 +123,15 @@ class Task {
     return PreProcessingImpl();
   }
 
-  // realization of the current task
+  /// @brief Executes the main logic of the task.
+  /// @return True if execution is successful.
   virtual bool Run() final {
     InternalOrderTest(__builtin_FUNCTION());
     return RunImpl();
   }
 
-  // post-processing of output data
+  /// @brief Performs postprocessing on the output data.
+  /// @return True if postprocessing is successful.
   virtual bool PostProcessing() final {
     InternalOrderTest(__builtin_FUNCTION());
     if (state_of_testing_ == StateOfTesting::kFunc) {
@@ -102,25 +140,36 @@ class Task {
     return PostProcessingImpl();
   }
 
-  // get state of testing
+  /// @brief Returns the current testing mode.
+  /// @return Reference to the current StateOfTesting.
   StateOfTesting &GetStateOfTesting() { return state_of_testing_; }
 
-  // set a type of task
+  /// @brief Sets the dynamic task type.
+  /// @param type_of_task Task type to set.
   void SetTypeOfTask(TypeOfTask type_of_task) { type_of_task_ = type_of_task; }
 
-  // get a dynamic type of task
+  /// @brief Returns the dynamic task type.
+  /// @return Current dynamic task type.
   [[nodiscard]] TypeOfTask GetDynamicTypeOfTask() const { return type_of_task_; }
 
-  // get a dynamic type of task
+  /// @brief Returns the current task status.
+  /// @return Task status (enabled or disabled).
   [[nodiscard]] StatusOfTask GetStatusOfTask() const { return status_of_task_; }
 
-  // get a static type of task
+  /// @brief Returns the static task type.
+  /// @return Static task type (default: kUnknown).
   static constexpr TypeOfTask GetStaticTypeOfTask() { return TypeOfTask::kUnknown; }
 
+  /// @brief Returns a reference to the input data.
+  /// @return Reference to the task's input data.
   InType &GetInput() { return input_; }
 
+  /// @brief Returns a reference to the output data.
+  /// @return Reference to the task's output data.
   OutType &GetOutput() { return output_; }
 
+  /// @brief Destructor. Verifies that the pipeline was executed in the correct order.
+  /// @note Terminates the program if pipeline order is incorrect or incomplete.
   virtual ~Task() {
     if (!functions_order_.empty() || !was_worked_) {
       std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT! \n Expected - \"Validation\", \"PreProcessing\", \"Run\", "
@@ -132,6 +181,8 @@ class Task {
   }
 
  protected:
+  /// @brief Verifies the correct order of pipeline method calls.
+  /// @param str Name of the method being called.
   virtual void InternalOrderTest(const std::string &str) final {
     functions_order_.push_back(str);
     if (str == "PostProcessing" && IsFullPipelineStage()) {
@@ -141,6 +192,9 @@ class Task {
     }
   }
 
+  /// @brief Measures execution time between preprocessing and postprocessing steps.
+  /// @param str Name of the method being timed.
+  /// @throws std::runtime_error If execution exceeds the allowed time limit.
   virtual void InternalTimeTest(const std::string &str) final {
     if (str == "PreProcessing") {
       tmp_time_point_ = std::chrono::high_resolution_clock::now();
@@ -162,16 +216,20 @@ class Task {
     }
   }
 
-  // implementation of "Validation" function
+  /// @brief User-defined validation logic.
+  /// @return True if validation is successful.
   virtual bool ValidationImpl() = 0;
 
-  // implementation of "PreProcessing" function
+  /// @brief User-defined preprocessing logic.
+  /// @return True if preprocessing is successful.
   virtual bool PreProcessingImpl() = 0;
 
-  // implementation of "Run" function
+  /// @brief User-defined task execution logic.
+  /// @return True if run is successful.
   virtual bool RunImpl() = 0;
 
-  // implementation of "PostProcessing" function
+  /// @brief User-defined postprocessing logic.
+  /// @return True if postprocessing is successful.
   virtual bool PostProcessingImpl() = 0;
 
  private:
@@ -198,9 +256,17 @@ class Task {
   }
 };
 
+/// @brief Smart pointer alias for Task.
+/// @tparam InType Input data type.
+/// @tparam OutType Output data type.
 template <typename InType, typename OutType>
 using TaskPtr = std::shared_ptr<Task<InType, OutType>>;
 
+/// @brief Constructs and returns a shared pointer to a task with the given input.
+/// @tparam TaskType Type of the task to create.
+/// @tparam InType Type of the input.
+/// @param in Input to pass to the task constructor.
+/// @return Shared pointer to the newly created task.
 template <typename TaskType, typename InType>
 std::shared_ptr<TaskType> TaskGetter(InType in) {
   return std::make_shared<TaskType>(in);

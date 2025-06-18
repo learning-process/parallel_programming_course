@@ -14,13 +14,16 @@
 namespace ppc::core {
 
 struct PerfAttr {
-  // count of task's running
+  /// @brief Number of times the task is run for performance evaluation.
   uint64_t num_running = 5;
+  /// @brief Timer function returning current time in seconds.
+  /// @cond
   std::function<double()> current_timer = [&] { return -1.0; };
+  /// @endcond
 };
 
 struct PerfResults {
-  // measurement of task's time (in seconds)
+  /// @brief Measured execution time in seconds.
   double time_sec = 0.0;
   enum TypeOfRunning : uint8_t { kPipeline, kTaskRun, kNone } type_of_running = kNone;
   constexpr static double kMaxTime = 10.0;
@@ -87,7 +90,8 @@ class Perf {
       throw std::runtime_error(err_msg.str().c_str());
     }
   }
-  // Get performance result structure of the current task
+  /// @brief Retrieves the performance test results.
+  /// @return The latest PerfResults structure.
   PerfResults GetPerfResults() { return perf_results_; }
 
  private:

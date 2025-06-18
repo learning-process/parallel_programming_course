@@ -31,9 +31,15 @@ concept HasPrintTestParam = requires(TestType value) {
 };
 
 template <typename InType, typename OutType, typename TestType = void>
+/// @brief Base class for running functional tests on parallel tasks.
+/// @tparam InType Type of input data.
+/// @tparam OutType Type of output data.
+/// @tparam TestType Type of the test case or parameter.
 class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, OutType, TestType>> {
  public:
   virtual bool CheckTestOutputData(OutType& output_data) = 0;
+  /// @brief Provides input data for the task.
+  /// @return Initialized input data.
   virtual InType GetTestInputData() = 0;
 
   template <typename Derived>
@@ -79,6 +85,7 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
     return !ppc::util::IsUnderMpirun() && (contains_substring("_all") || contains_substring("_mpi"));
   }
 
+  /// @brief Initializes task instance and runs it through the full pipeline.
   void InitializeAndRunTask(const FuncTestParam<InType, OutType, TestType>& test_param) {
     task_ = std::get<GTestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
 

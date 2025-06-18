@@ -4,9 +4,11 @@ PROJECT_BRIEF          = "Parallel Programming Course"
 
 # Input
 INPUT                  = modules/core/task/include \
-                         modules/core/task/src \
                          modules/core/util/include \
-                         modules/core/util/src
+                         modules/core/util/src \
+                         modules/core/performance/include \
+                         modules/core/runners/include \
+                         modules/core/runners/src
 FILE_PATTERNS          = *.h *.c *.hpp *.cpp
 RECURSIVE              = YES
 
@@ -15,3 +17,11 @@ GENERATE_HTML          = NO
 GENERATE_LATEX         = NO
 GENERATE_XML           = YES
 XML_OUTPUT             = xml
+
+# Docs
+EXTRACT_ALL        = YES
+EXTRACT_PRIVATE    = YES
+EXTRACT_TEMPLATE_PARAMS = YES
+ENABLE_PREPROCESSING = YES
+MACRO_EXPANSION      = YES
+EXPAND_ONLY_PREDEF   = NO

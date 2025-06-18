@@ -28,8 +28,12 @@ using PerfTestParam = std::tuple<std::function<ppc::core::TaskPtr<InType, OutTyp
                                  ppc::core::PerfResults::TypeOfRunning>;
 
 template <typename InType, typename OutType>
+/// @brief Base class for performance testing of parallel tasks.
+/// @tparam InType Input data type.
+/// @tparam OutType Output data type.
 class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, OutType>> {
  public:
+  /// @brief Generates a readable name for the performance test case.
   static std::string CustomPerfTestName(const ::testing::TestParamInfo<PerfTestParam<InType, OutType>>& info) {
     return ppc::core::GetStringParamName(std::get<GTestParamIndex::kTestParams>(info.param)) + "_" +
            std::get<GTestParamIndex::kNameTest>(info.param);
@@ -37,6 +41,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 
  protected:
   virtual bool CheckTestOutputData(OutType& output_data) = 0;
+  /// @brief Supplies input data for performance testing.
   virtual InType GetTestInputData() = 0;
 
   virtual void SetPerfAttributes(ppc::core::PerfAttr& perf_attrs) {
