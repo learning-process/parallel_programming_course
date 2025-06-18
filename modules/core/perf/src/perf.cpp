@@ -20,15 +20,12 @@ ppc::core::Perf::Perf(const std::shared_ptr<Task>& task_ptr) : task_(task_ptr) {
 void ppc::core::Perf::PipelineRun(const PerfAttr& perf_attr) {
   perf_results_.type_of_running = PerfResults::TypeOfRunning::kPipeline;
 
-  CommonRun(
-      perf_attr,
-      [&]() {
-        task_->Validation();
-        task_->PreProcessing();
-        task_->Run();
-        task_->PostProcessing();
-      },
-      perf_results_);
+  CommonRun(perf_attr, [&]() {
+    task_->Validation();
+    task_->PreProcessing();
+    task_->Run();
+    task_->PostProcessing();
+  }, perf_results_);
 }
 
 void ppc::core::Perf::TaskRun(const PerfAttr& perf_attr) {

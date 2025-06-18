@@ -78,7 +78,7 @@ foreach(TASK_TYPE ${LIST_OF_TASKS})
       add_dependencies(${EXEC_FUNC} ppc_onetbb)
       target_link_directories(${EXEC_FUNC} PUBLIC ${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib)
       if(NOT MSVC)
-          target_link_libraries(${EXEC_FUNC} PUBLIC tbb)
+          target_link_libraries(${EXEC_FUNC} PUBLIC ${PPC_TBB_LIB_NAME})
       endif()
 
       target_link_directories(stb_image INTERFACE ${CMAKE_SOURCE_DIR}/3rdparty/stb)

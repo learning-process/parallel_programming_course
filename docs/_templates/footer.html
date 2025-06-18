@@ -1,0 +1,35 @@
+{%- extends "!footer.html" %}
+
+{% block extrafooter %}
+  <style>
+    .language-switcher {
+      text-align: center;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .language-switcher a {
+      margin: 0 0.5em;
+      text-decoration: none;
+      color: #4183c4;
+    }
+    .language-switcher a:hover {
+      text-decoration: underline;
+    }
+    .language-switcher .current-language {
+      margin: 0 0.5em;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+  <div class="language-switcher">
+    {% set langs = { "en": "English", "ru": "Русский" } %}
+    {% for code, name in langs.items() %}
+      {% if code == language %}
+        <span class="current-language">{{ name }}</span>
+      {% else %}
+        <a href="../{{ code }}/{{ pagename }}.html">{{ name }}</a>
+      {% endif %}
+      {% if not loop.last %} | {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}

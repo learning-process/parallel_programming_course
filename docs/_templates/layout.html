@@ -1,0 +1,7 @@
+{%- extends "!layout.html" %}
+
+{% block metatags %}
+  {{ super() }}
+  {# point every “/foo” URL at the real site root #}
+  <base href="{{ pathto('', 1) }}" />
+{% endblock %}

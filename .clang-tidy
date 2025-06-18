@@ -8,12 +8,12 @@ Checks: >
   misc-*,
   modernize-*,
   mpi-*,
+  openmp-*,
   performance-*,
   portability-*,
   readability-*,
   -bugprone-casting-through-void,
   -bugprone-easily-swappable-parameters,
-  -bugprone-implicit-widening-of-multiplication-result,
   -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-non-private-member-variables-in-classes,
   -cppcoreguidelines-owning-memory,
@@ -87,4 +87,4 @@ CheckOptions:
   - key:             readability-identifier-length.MinimumParameterNameLength
     value:           1
   - key: misc-include-cleaner.IgnoreHeaders
-    value: '(__chrono/.*)'
+    value: '(__chrono/.*|stdlib\.h)'

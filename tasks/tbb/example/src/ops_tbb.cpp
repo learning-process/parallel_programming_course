@@ -34,7 +34,7 @@ bool nesterov_a_test_task_tbb::TestTaskTBB::PreProcessingImpl() {
 }
 
 bool nesterov_a_test_task_tbb::TestTaskTBB::RunImpl() {
-  tbb::parallel_for(0, ppc::util::GetPPCNumThreads(), [&](int i) { MatMul(input_, rc_size_ - i, output_); });
+  tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int i) { MatMul(input_, rc_size_ - i, output_); });
   MatMul(input_, rc_size_, output_);
   return true;
 }

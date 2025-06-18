@@ -1,0 +1,326 @@
+on:
+  workflow_call:
+
+jobs:
+  windows-msvc-build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
+        with:
+          windows_compile_environment: msvc
+      - name: Setup ninja
+        uses: seanmiddleditch/gha-setup-ninja@v6
+      - name: Setup MSVC for Ninja again
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: CMake configure
+        shell: bash
+        run: >
+          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+      - name: Build project
+        shell: bash
+        run: |
+          cmake --build build --config Release --parallel
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: Compress-Archive -Path install -DestinationPath windows-msvc-install.zip
+        shell: pwsh
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-msvc-install
+          path: windows-msvc-install.zip
+  windows-msvc-build-debug:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
+        with:
+          windows_compile_environment: msvc
+      - name: Setup ninja
+        uses: seanmiddleditch/gha-setup-ninja@v6
+      - name: Setup MSVC for Ninja again
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: CMake configure
+        shell: bash
+        run: >
+          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D CMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=install
+      - name: Build project
+        shell: bash
+        run: |
+          cmake --build build --config Debug --parallel
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Archive installed package
+        run: Compress-Archive -Path install -DestinationPath windows-msvc-debug-install.zip
+        shell: pwsh
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-msvc-debug-install
+          path: windows-msvc-debug-install.zip
+  windows-msvc-test:
+    needs:
+      - windows-msvc-build
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-msvc-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-msvc-install.zip -DestinationPath . -Force
+        shell: pwsh
+      - name: Run func tests (MPI, num_proc=1)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PPC_NUM_PROC: 1
+          PPC_NUM_THREADS: 3
+      - name: Run func tests (MPI, num_proc=2)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PPC_NUM_PROC: 2
+          PPC_NUM_THREADS: 2
+      - name: Run func tests (MPI, num_proc=3)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PPC_NUM_PROC: 3
+          PPC_NUM_THREADS: 1
+      - name: Run func tests (MPI, num_proc=4)
+        run: python3 scripts/run_tests.py --running-type="processes"
+        env:
+          PPC_NUM_PROC: 4
+          PPC_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=1)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=2)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 2
+      - name: Run tests (threads, num_threads=3)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 3
+      - name: Run tests (threads, num_threads=4)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 4
+  windows-msvc-test-extended:
+    needs:
+      - windows-msvc-test
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-msvc-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-msvc-install.zip -DestinationPath . -Force
+        shell: pwsh
+      - name: Run tests (threads, num_threads=5)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 5
+      - name: Run tests (threads, num_threads=7)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 7
+      - name: Run tests (threads, num_threads=11)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 11
+      - name: Run tests (threads, num_threads=13)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 13
+  windows-clang-build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
+        with:
+          windows_compile_environment: msvc
+      - name: Setup ninja
+        uses: seanmiddleditch/gha-setup-ninja@v6
+      - name: Setup MSVC for Ninja again
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: CMake configure
+        run: >
+          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+        env:
+          CC: clang-cl
+          CXX: clang-cl
+      - name: Build project
+        run: |
+          cmake --build build --config Release --parallel
+        env:
+          CC: clang-cl
+          CXX: clang-cl
+      - name: Install project
+        run: |
+          cmake --install build
+      - name: Archive installed package
+        run: Compress-Archive -Path install -DestinationPath windows-clang-install.zip
+        shell: pwsh
+      - name: Upload installed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-clang-install
+          path: windows-clang-install.zip
+  windows-clang-test:
+    needs:
+      - windows-clang-build
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-clang-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-clang-install.zip -DestinationPath . -Force
+        shell: pwsh
+      - name: Run tests (threads, num_threads=1)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 1
+      - name: Run tests (threads, num_threads=2)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 2
+      - name: Run tests (threads, num_threads=3)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 3
+      - name: Run tests (threads, num_threads=4)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 4
+  windows-clang-test-extended:
+    needs:
+      - windows-clang-test
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: msmpi
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-clang-install
+      - name: Extract installed package
+        run: Expand-Archive -Path .\windows-clang-install.zip -DestinationPath . -Force
+        shell: pwsh
+      - name: Run tests (threads, num_threads=5)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 5
+      - name: Run tests (threads, num_threads=7)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 7
+      - name: Run tests (threads, num_threads=11)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 11
+      - name: Run tests (threads, num_threads=13)
+        run: python3 scripts/run_tests.py --running-type="threads"
+        env:
+          PPC_NUM_THREADS: 13

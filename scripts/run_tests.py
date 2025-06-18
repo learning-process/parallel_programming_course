@@ -40,24 +40,6 @@ class PPCRunner:
         script_dir = script_path.parent  # Directory containing the script
         return script_dir.parent
 
-    @staticmethod
-    def __source_script(script_path):
-        if platform.system() == "Windows":
-            return {}
-        command = f"bash -c 'source {script_path} && env'"
-        result = subprocess.run(command, stdout=subprocess.PIPE, shell=True, text=True)
-        if result.returncode == 0:
-            # Parse the output environment variables
-            env_vars = {}
-            for line in result.stdout.splitlines():
-                if '=' in line:
-                    key, value = line.split("=", 1)
-                    env_vars[key] = value
-            return env_vars
-        else:
-            print(f"Failed to source script: {script_path}")
-            return {}
-
     def setup_env(self):
         if (Path(self.__get_project_path()) / "install").exists():
             self.work_dir = Path(self.__get_project_path()) / "install" / "bin"
@@ -78,7 +60,7 @@ class PPCRunner:
         return command
 
     def run_threads(self):
-        if platform.system() == "Linux" and not os.environ.get("ASAN_RUN"):
+        if platform.system() == "Linux" and not os.environ.get("PPC_ASAN_RUN"):
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'seq_func_tests'} {self.__get_gtest_settings(1)}")
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'stl_func_tests'} {self.__get_gtest_settings(1)}")
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'tbb_func_tests'} {self.__get_gtest_settings(1)}")
@@ -90,28 +72,27 @@ class PPCRunner:
         self.__run_exec(f"{self.work_dir / 'omp_func_tests'} {self.__get_gtest_settings(3)}")
 
     def run_core(self):
-        if platform.system() == "Linux" and not os.environ.get("ASAN_RUN"):
+        if platform.system() == "Linux" and not os.environ.get("PPC_ASAN_RUN"):
             self.__run_exec(f"{self.valgrind_cmd} {self.work_dir / 'core_func_tests'} {self.__get_gtest_settings(1)}")
 
         self.__run_exec(f"{self.work_dir / 'core_func_tests'} {self.__get_gtest_settings(1)}")
 
     def run_processes(self, additional_mpi_args):
-        proc_count = os.environ.get("PROC_COUNT")
-        if proc_count is None:
-            raise EnvironmentError("Required environment variable 'PROC_COUNT' is not set.")
+        PPC_NUM_PROC = os.environ.get("PPC_NUM_PROC")
+        if PPC_NUM_PROC is None:
+            raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
 
-        mpi_running = f"{self.mpi_exec} {additional_mpi_args} -np {proc_count}"
-        if not os.environ.get("ASAN_RUN"):
+        mpi_running = f"{self.mpi_exec} {additional_mpi_args} -np {PPC_NUM_PROC}"
+        if not os.environ.get("PPC_ASAN_RUN"):
             self.__run_exec(f"{mpi_running} {self.work_dir / 'all_func_tests'} {self.__get_gtest_settings(10)}")
             self.__run_exec(f"{mpi_running} {self.work_dir / 'mpi_func_tests'} {self.__get_gtest_settings(10)}")
 
     def run_performance(self):
-        if not os.environ.get("ASAN_RUN"):
-            mpi_running = ""
-            if platform.system() in ("Linux", "Windows"):
-                mpi_running = f"{self.mpi_exec} -np 4"
-            elif platform.system() == "Darwin":
-                mpi_running = f"{self.mpi_exec} -np 2"
+        if not os.environ.get("PPC_ASAN_RUN"):
+            PPC_NUM_PROC = os.environ.get("PPC_NUM_PROC")
+            if PPC_NUM_PROC is None:
+                raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
+            mpi_running = f"{self.mpi_exec} -np {PPC_NUM_PROC}"
             self.__run_exec(f"{mpi_running} {self.work_dir / 'all_perf_tests'} {self.__get_gtest_settings(1)}")
             self.__run_exec(f"{mpi_running} {self.work_dir / 'mpi_perf_tests'} {self.__get_gtest_settings(1)}")
 

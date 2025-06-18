@@ -33,7 +33,7 @@ bool nesterov_a_test_task_stl::TestTaskSTL::PreProcessingImpl() {
 }
 
 bool nesterov_a_test_task_stl::TestTaskSTL::RunImpl() {
-  const int num_threads = ppc::util::GetPPCNumThreads();
+  const int num_threads = ppc::util::GetNumThreads();
   std::vector<std::thread> threads(num_threads);
   for (int i = 0; i < num_threads; i++) {
     threads[i] = std::thread(MatMul, std::cref(input_), rc_size_, std::ref(output_));

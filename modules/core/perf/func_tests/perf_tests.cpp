@@ -7,7 +7,6 @@
 
 #include "core/perf/func_tests/test_task.hpp"
 #include "core/perf/include/perf.hpp"
-#include "core/task/include/task.hpp"
 
 TEST(perf_tests, check_perf_pipeline) {
   // Create data

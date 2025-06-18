@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-20 23:19+0100\n"
+"POT-Creation-Date: 2025-05-19 16:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -26,38 +26,54 @@ msgid "Set Up Your Environment"
 msgstr "Настройка окружения"
 
 #: ../../user_guide/environment.rst:5
+msgid "Build prerequisites"
+msgstr "Требования к сборке"
+
+#: ../../user_guide/environment.rst:6
+msgid ""
+"**Windows**: Download and install CMake from https://cmake.org/download "
+"(select the Windows installer) or install using Chocolatey:"
+msgstr "**Windows**: Загрузите и установите CMake с https://cmake.org/download (выберите установщик для Windows) или установите с помощью Chocolatey:"
+
+#: ../../user_guide/environment.rst:12
+msgid "**Linux (Ubuntu/Debian)**: Install using package manager:"
+msgstr "**Linux (Ubuntu/Debian)**: Установите с помощью менеджера пакетов:"
+
+#: ../../user_guide/environment.rst:19
+msgid "**macOS**: Install using Homebrew:"
+msgstr "**macOS**: Установите с помощью Homebrew:"
+
+#: ../../user_guide/environment.rst:27
 msgid "Code Style Analysis"
 msgstr "Анализ стиля кодирования"
 
-#: ../../user_guide/environment.rst:6
+#: ../../user_guide/environment.rst:28
 msgid ""
 "Please follow the `Google C++ Style Guide "
 "<https://google.github.io/styleguide/cppguide.html>`_."
 msgstr ""
-"Пожалуйста пройдите по ссылке для изучения стиля кодирования - `Google C++ Style Guide "
-"<https://google.github.io/styleguide/cppguide.html>`_."
+"Пожалуйста пройдите по ссылке для изучения стиля кодирования - `Google "
+"C++ Style Guide <https://google.github.io/styleguide/cppguide.html>`_."
 
-#: ../../user_guide/environment.rst:8
+#: ../../user_guide/environment.rst:30
 msgid ""
 "Code style is checked using the `clang-format "
 "<https://clang.llvm.org/docs/ClangFormat.html>`_ tool."
-msgstr ""
-"Стиль кодирования проверяется с помощью `clang-format "
-"<https://clang.llvm.org/docs/ClangFormat.html>`_ инструмента."
+msgstr "Проверка стиля кода выполняется с помощью инструмента `clang-format <https://clang.llvm.org/docs/ClangFormat.html>`_."
 
-#: ../../user_guide/environment.rst:11
+#: ../../user_guide/environment.rst:33
 msgid "Parallel Programming Technologies"
 msgstr "Технологии параллельного программирования"
 
-#: ../../user_guide/environment.rst:14
+#: ../../user_guide/environment.rst:36
 msgid "``MPI``"
 msgstr "``MPI``"
 
-#: ../../user_guide/environment.rst:15
+#: ../../user_guide/environment.rst:37
 msgid "**Windows (MSVC)**:"
 msgstr "**Windows (MSVC)**:"
 
-#: ../../user_guide/environment.rst:17
+#: ../../user_guide/environment.rst:39
 msgid ""
 "`Installers link <https://www.microsoft.com/en-"
 "us/download/details.aspx?id=105289>`_. You have to install "
@@ -67,46 +83,49 @@ msgstr ""
 "us/download/details.aspx?id=105289>`_. Вы должны установить 2 файла - "
 "``msmpisdk.msi`` и ``msmpisetup.exe``."
 
-#: ../../user_guide/environment.rst:19 ../../user_guide/environment.rst:35
+#: ../../user_guide/environment.rst:41
+#: ../../user_guide/environment.rst:57
 msgid "**Linux (gcc and clang)**:"
 msgstr "**Linux (gcc and clang)**:"
 
-#: ../../user_guide/environment.rst:25
+#: ../../user_guide/environment.rst:47
 msgid "**MacOS (apple clang)**:"
 msgstr "**MacOS (apple clang)**:"
 
-#: ../../user_guide/environment.rst:32
+#: ../../user_guide/environment.rst:54
 msgid "``OpenMP``"
 msgstr "``OpenMP``"
 
-#: ../../user_guide/environment.rst:33
+#: ../../user_guide/environment.rst:55
 msgid ""
 "``OpenMP`` is included in ``gcc`` and ``msvc``, but some components "
 "should be installed additionally:"
 msgstr ""
-"``OpenMP`` в большинстве случаев включен в компиляторы ``gcc`` и ``msvc``, но ряд компонент все равно "
-"должны быть установлены дополнительно:"
+"``OpenMP`` в большинстве случаев включен в компиляторы ``gcc`` и "
+"``msvc``, но ряд компонент все равно должны быть установлены "
+"дополнительно:"
 
-#: ../../user_guide/environment.rst:41
+#: ../../user_guide/environment.rst:63
 msgid "**MacOS (llvm)**:"
 msgstr "**MacOS (llvm)**:"
 
-#: ../../user_guide/environment.rst:49
+#: ../../user_guide/environment.rst:71
 msgid "``TBB``"
 msgstr "``TBB``"
 
-#: ../../user_guide/environment.rst:50
+#: ../../user_guide/environment.rst:72
 msgid ""
 "**Windows (MSVC)**, **Linux (gcc and clang)**, **MacOS (apple clang)**: "
 "Build as 3rdparty in the current project."
 msgstr ""
 "**Windows (MSVC)**, **Linux (gcc and clang)**, **MacOS (apple clang)**: "
-"Данная библиотека строится как внешняя в составе текущего проекта и не требует дополнительных операций."
+"Данная библиотека строится как внешняя в составе текущего проекта и не "
+"требует дополнительных операций."
 
-#: ../../user_guide/environment.rst:54
+#: ../../user_guide/environment.rst:76
 msgid "``std::thread``"
 msgstr "``std::thread``"
 
-#: ../../user_guide/environment.rst:55
+#: ../../user_guide/environment.rst:77
 msgid "``std::thread`` is included in STL libraries."
 msgstr "``std::thread`` включена в состав STL библиотек."

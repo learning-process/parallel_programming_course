@@ -13,6 +13,7 @@ Below is the table of contents for the Parallel Programming Course documentation
    user_guide/submit_work
    user_guide/ci
    user_guide/api
+   user_guide/environment_variables
 
 .. toctree::
    :maxdepth: 2
