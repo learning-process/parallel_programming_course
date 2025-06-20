@@ -15,7 +15,6 @@
 #include <stdexcept>
 #include <string>
 
-using namespace std::chrono;
 
 namespace ppc::core {
 
@@ -201,7 +200,9 @@ class Task {
     }
 
     if (str == "PostProcessing") {
-      auto duration = duration_cast<nanoseconds>(high_resolution_clock::now() - tmp_time_point_).count();
+      auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(
+          std::chrono::high_resolution_clock::now() - tmp_time_point_)
+                            .count();
       auto diff = static_cast<double>(duration) * 1e-9;
 
       std::stringstream err_msg;
