@@ -30,6 +30,12 @@ using NlohmannJsonTypeError = nlohmann::json::type_error;  // NOLINT(misc-includ
 #define INSTANTIATE_TEST_SUITE_P_NOLINT(n, t, g) INSTANTIATE_TEST_SUITE_P(n, t, g)             // NOLINT
 // INSTANTIATE_TEST_SUITE_P | n, t, g, ng == name, test_case_name, generator, name_generator
 
+#if defined(__clang__) || defined(__GNUC__)
+#define PPC_FUNC_NAME __PRETTY_FUNCTION__
+#else
+#define PPC_FUNC_NAME __func__
+#endif
+
 namespace ppc::util {
 
 enum GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
