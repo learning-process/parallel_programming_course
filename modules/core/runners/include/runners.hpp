@@ -39,7 +39,8 @@ class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
 /// @brief Initializes the testing environment (e.g., MPI, logging).
 /// @param argc Argument count.
 /// @param argv Argument vector.
-/// @return Exit code: 0 for success, non-zero for failure.
+/// @return Exit code from RUN_ALL_TESTS or MPI error code if initialization/
+///         finalization fails.
 int Init(int argc, char** argv);
 
 }  // namespace ppc::core
