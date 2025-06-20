@@ -15,7 +15,6 @@
 #include <stdexcept>
 #include <string>
 
-
 namespace ppc::core {
 
 /// @brief Represents the type of task (parallelization technology).
@@ -200,9 +199,9 @@ class Task {
     }
 
     if (str == "PostProcessing") {
-      auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(
-          std::chrono::high_resolution_clock::now() - tmp_time_point_)
-                            .count();
+      auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() -
+                                                                           tmp_time_point_)
+                          .count();
       auto diff = static_cast<double>(duration) * 1e-9;
 
       std::stringstream err_msg;
