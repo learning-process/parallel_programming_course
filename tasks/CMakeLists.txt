@@ -33,9 +33,3 @@ foreach(sub IN LISTS subdirs)
         ppc_configure_subproject(${sub})
     endif()
 endforeach()
-
-# ——— Install library target ——————————————————————————————————————
-install(TARGETS ${name_lib}
-        ARCHIVE DESTINATION lib
-        LIBRARY DESTINATION lib
-)
