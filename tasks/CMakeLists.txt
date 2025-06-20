@@ -33,4 +33,3 @@ foreach(sub IN LISTS subdirs)
         ppc_configure_subproject(${sub})
     endif()
 endforeach()
-
