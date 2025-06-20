@@ -62,7 +62,12 @@ void WorkerTestFailurePrinter::PrintProcessRank() {
 }
 
 int Init(int argc, char** argv) {
-  MPI_Init(&argc, &argv);
+  const int init_res = MPI_Init(&argc, &argv);
+  if (init_res != MPI_SUCCESS) {
+    std::cerr << std::format("[  ERROR  ] MPI_Init failed with code {}", init_res) << '\n';
+    MPI_Abort(MPI_COMM_WORLD, init_res);
+    return init_res;
+  }
 
   // Limit the number of threads in TBB
   tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
@@ -79,7 +84,12 @@ int Init(int argc, char** argv) {
   listeners.Append(new ppc::core::UnreadMessagesDetector());
   auto status = RUN_ALL_TESTS();
 
-  MPI_Finalize();
+  const int finalize_res = MPI_Finalize();
+  if (finalize_res != MPI_SUCCESS) {
+    std::cerr << std::format("[  ERROR  ] MPI_Finalize failed with code {}", finalize_res) << '\n';
+    MPI_Abort(MPI_COMM_WORLD, finalize_res);
+    return finalize_res;
+  }
   return status;
 }
 
