@@ -9,14 +9,15 @@
 namespace {
 
 std::string GetAbsolutePath(const std::string& relative_path) {
-  const std::filesystem::path path = std::string(PPC_PATH_TO_PROJECT) + "/tasks/" + relative_path;
+  std::filesystem::path path = std::filesystem::path(PPC_PATH_TO_PROJECT) / "tasks" / relative_path;
   return path.string();
 }
 
 }  // namespace
 
 std::string ppc::util::GetAbsoluteTaskPath(const std::string& id_path, const std::string& relative_path) {
-  return GetAbsolutePath(id_path + "/data/" + relative_path);
+  std::filesystem::path task_relative = std::filesystem::path(id_path) / "data" / relative_path;
+  return GetAbsolutePath(task_relative.string());
 }
 
 int ppc::util::GetNumThreads() {
