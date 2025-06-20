@@ -164,6 +164,18 @@ TEST_NOLINT(GetStringTaskTypeStandaloneTest, ThrowsIfFileMissing) {
   EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, missing_path), std::runtime_error);
 }
 
+TEST_NOLINT(GetStringTaskTypeStandaloneTest, ExceptionMessageContainsPath) {
+  const std::string missing_path = "non_existent_settings.json";
+  EXPECT_THROW(
+      try {
+        GetStringTaskType(ppc::core::TypeOfTask::kSEQ, missing_path);
+      } catch (const std::runtime_error& e) {
+        EXPECT_NE(std::string(e.what()).find(missing_path), std::string::npos);
+        throw;
+      },
+      std::runtime_error);
+}
+
 TEST(GetStringTaskTypeStandaloneTest, ReturnsUnknownForInvalidEnum) {
   std::string path = (std::filesystem::temp_directory_path() / "tmp_settings.json").string();
   std::ofstream(path) << R"({"tasks":{"seq":"SEQ"}})";
