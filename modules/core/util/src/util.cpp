@@ -28,7 +28,10 @@ int ppc::util::GetNumThreads() {
   return 1;
 }
 
-constexpr std::array<std::string_view, 13> kMpiEnvVars = {
+// List of environment variables that signal the application is running under
+// an MPI launcher. The array size must match the number of entries to avoid
+// looking up empty environment variable names.
+constexpr std::array<std::string_view, 10> kMpiEnvVars = {
     "OMPI_COMM_WORLD_SIZE", "OMPI_UNIVERSE_SIZE", "PMI_SIZE",     "PMI_RANK",   "PMI_FD",
     "HYDRA_CONTROL_FD",     "PMIX_RANK",          "SLURM_PROCID", "MSMPI_RANK", "MSMPI_LOCALRANK"};
 
