@@ -62,7 +62,7 @@ inline std::string GetStringTaskStatus(StatusOfTask status_of_task) {
 inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string &settings_file_path) {
   std::ifstream file(settings_file_path);
   if (!file.is_open()) {
-    throw std::runtime_error("Failed to open file settings.json");
+    throw std::runtime_error("Failed to open " + settings_file_path);
   }
 
   auto list_settings = ppc::util::InitJSONPtr();
