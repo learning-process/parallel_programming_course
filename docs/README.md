@@ -2,9 +2,9 @@
 
 ### How to make and test your changes
 
-1. Navigate to the documentation directory:
+1. Navigate to the project root directory:
 ```bash
-cd parallel_programming_course/docs
+cd parallel_programming_course
 ```
 
 2. (Optional) Create a virtual environment:
@@ -12,9 +12,10 @@ cd parallel_programming_course/docs
 python3 -m venv venv
 ```
 
-3. Install the required dependencies:
+3. Install the required dependencies (for the projects and the docs):
 ```bash
 pip install -r requirements.txt
+pip install -r docs/requirements.txt
 ```
 
 4. Configure the documentation build:
@@ -46,7 +47,7 @@ cmake --build build -t docs_html
 
 9. Make local deployment of the changes:
 ```bash
-cd _build/html
+cd docs/_build/html
 python3 -m http.server 8080
 ```
 
