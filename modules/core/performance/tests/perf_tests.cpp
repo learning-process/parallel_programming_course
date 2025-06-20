@@ -167,10 +167,7 @@ TEST_NOLINT(GetStringTaskTypeStandaloneTest, ThrowsIfFileMissing) {
 TEST_NOLINT(GetStringTaskTypeStandaloneTest, ExceptionMessageContainsPath) {
   const std::string missing_path = "non_existent_settings.json";
   EXPECT_THROW(
-      try {
-        GetStringTaskType(ppc::core::TypeOfTask::kSEQ, missing_path);
-      } catch (const std::runtime_error& e) {
-        EXPECT_NE(std::string(e.what()).find(missing_path), std::string::npos);
+      try { GetStringTaskType(ppc::core::TypeOfTask::kSEQ, missing_path); } catch (const std::runtime_error& e) {        EXPECT_NE(std::string(e.what()).find(missing_path), std::string::npos);
         throw;
       },
       std::runtime_error);
