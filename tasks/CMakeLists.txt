@@ -34,8 +34,3 @@ foreach(sub IN LISTS subdirs)
     endif()
 endforeach()
 
-# ——— Install library target ——————————————————————————————————————
-install(TARGETS ${name_lib}
-        ARCHIVE DESTINATION lib
-        LIBRARY DESTINATION lib
-)
