@@ -6,6 +6,8 @@
 #include <string>
 #include <string_view>
 
+#define PPC_FUNC_NAME __func__
+
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4459)
