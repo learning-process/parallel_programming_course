@@ -51,8 +51,13 @@ cd docs/_build/html
 python3 -m http.server 8080
 ```
 
-10. Open the documentation in your browser:
+10. Open the documentation in your browser. Depending on your platform use `open` (macOS), `xdg-open` (Linux), or `start` (Windows):
 ```bash
-open http://localhost:8080/en
-open http://localhost:8080/ru
+open http://localhost:8080/en     # macOS
+xdg-open http://localhost:8080/en # Linux
+start http://localhost:8080/en    # Windows
+
+open http://localhost:8080/ru     # macOS
+xdg-open http://localhost:8080/ru # Linux
+start http://localhost:8080/ru    # Windows
 ```
