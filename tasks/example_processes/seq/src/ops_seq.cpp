@@ -1,6 +1,5 @@
 #include "example_processes/seq/include/ops_seq.hpp"
 
-#include <cmath>
 #include <numeric>
 #include <vector>
 

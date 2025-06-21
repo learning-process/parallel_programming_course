@@ -1,7 +1,6 @@
 #include "example_threads/omp/include/ops_omp.hpp"
 
 #include <atomic>
-#include <cmath>
 #include <numeric>
 #include <vector>
 

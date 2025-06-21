@@ -1,5 +1,6 @@
 #pragma once
 
+#include "nlohmann/json_fwd.hpp"
 #include <cstdint>
 #include <cstdlib>
 #include <memory>
@@ -13,24 +14,16 @@
 #pragma warning(disable : 4459)
 #endif
 
-#include <nlohmann/json.hpp>  // NOLINT(misc-include-cleaner)
+#include <nlohmann/json.hpp>
 
 /// @brief JSON namespace used for settings and config parsing.
-using NlohmannJsonParseError = nlohmann::json::parse_error;  // NOLINT(misc-include-cleaner)
+using NlohmannJsonParseError = nlohmann::json::parse_error;
 /// @brief JSON namespace used for settings and config typing.
-using NlohmannJsonTypeError = nlohmann::json::type_error;  // NOLINT(misc-include-cleaner)
+using NlohmannJsonTypeError = nlohmann::json::type_error;
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
 
-#define ASSERT_ANY_THROW_NOLINT(stmt) ASSERT_ANY_THROW(stmt)                                   // NOLINT
-#define EXPECT_THROW_NOLINT(stmt, error) EXPECT_THROW(stmt, error)                             // NOLINT
-#define TEST_NOLINT(test_suite_name, test_name) TEST(test_suite_name, test_name)               // NOLINT
-#define ASSERT_DEATH_IF_SUPPORTED_NOLINT(stmt, name) ASSERT_DEATH_IF_SUPPORTED(stmt, name)     // NOLINT
-#define TYPED_TEST_NOLINT(test_suite_name, test_name) TYPED_TEST(test_suite_name, test_name)   // NOLINT
-#define INSTANTIATE_TEST_SUITE_P_WITH_NAME(n, t, g, ng) INSTANTIATE_TEST_SUITE_P(n, t, g, ng)  // NOLINT
-#define INSTANTIATE_TEST_SUITE_P_NOLINT(n, t, g) INSTANTIATE_TEST_SUITE_P(n, t, g)             // NOLINT
-// INSTANTIATE_TEST_SUITE_P | n, t, g, ng == name, test_case_name, generator, name_generator
 
 namespace ppc::util {
 
@@ -97,7 +90,6 @@ constexpr std::string_view GetNamespace() {
 #endif
 }
 
-// NOLINTNEXTLINE(misc-include-cleaner)
 inline std::shared_ptr<nlohmann::json> InitJSONPtr() { return std::make_shared<nlohmann::json>(); }
 
 bool IsUnderMpirun();

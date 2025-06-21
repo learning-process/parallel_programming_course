@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "core/task/tests/test_task.hpp"
-#include "core/util/include/util.hpp"
 
 TEST(task_tests, check_int32_t) {
   // Create data
@@ -128,7 +127,7 @@ TEST(task_tests, check_float) {
   EXPECT_NEAR(test_task.GetOutput(), in.size(), 1e-3);
 }
 
-TEST_NOLINT(task_tests, check_wrong_order_disabled_valgrind) {
+TEST(task_tests, check_wrong_order_disabled_valgrind) {
   auto destroy_function = [] {
     // Create data
     std::vector<float> in(20, 1);
@@ -143,7 +142,7 @@ TEST_NOLINT(task_tests, check_wrong_order_disabled_valgrind) {
   EXPECT_DEATH_IF_SUPPORTED(destroy_function(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
 }
 
-TEST_NOLINT(task_tests, check_empty_order_disabled_valgrind) {
+TEST(task_tests, check_empty_order_disabled_valgrind) {
   auto destroy_function = [] {
     // Create data
     std::vector<float> in(20, 1);

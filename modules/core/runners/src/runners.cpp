@@ -2,9 +2,7 @@
 
 #include <gtest/gtest.h>
 #include <mpi.h>
-#include <omp.h>
 
-#include <cstdio>
 #include <cstdlib>
 #include <format>
 #include <iostream>

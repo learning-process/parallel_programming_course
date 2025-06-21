@@ -1,7 +1,6 @@
 #include "example_threads/stl/include/ops_stl.hpp"
 
 #include <atomic>
-#include <cmath>
 #include <numeric>
 #include <thread>
 #include <vector>

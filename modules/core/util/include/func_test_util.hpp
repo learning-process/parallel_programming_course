@@ -1,7 +1,6 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include <omp.h>
 #include <tbb/tick_count.h>
 
 #include <concepts>
