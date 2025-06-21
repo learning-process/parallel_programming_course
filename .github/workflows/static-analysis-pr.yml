@@ -29,8 +29,8 @@ jobs:
             cmake -S . -B build -G Ninja
             -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
             -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-          config_file: .clang-tidy
           exclude: 3rdparty
+          clang_tidy_checks: ""
           split_workflow: true
           clang_tidy_version: "19"
           lgtm_comment_body: ""
@@ -62,8 +62,8 @@ jobs:
             cmake -S . -B build -G Ninja
             -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
             -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-          config_file: .clang-tidy
           exclude: 3rdparty
+          clang_tidy_checks: ""
           split_workflow: true
           clang_tidy_version: "19"
           lgtm_comment_body: ""
