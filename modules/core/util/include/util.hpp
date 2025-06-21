@@ -6,6 +6,8 @@
 #include <string>
 #include <string_view>
 
+#define PPC_FUNC_NAME __func__
+
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4459)
@@ -29,12 +31,6 @@ using NlohmannJsonTypeError = nlohmann::json::type_error;  // NOLINT(misc-includ
 #define INSTANTIATE_TEST_SUITE_P_WITH_NAME(n, t, g, ng) INSTANTIATE_TEST_SUITE_P(n, t, g, ng)  // NOLINT
 #define INSTANTIATE_TEST_SUITE_P_NOLINT(n, t, g) INSTANTIATE_TEST_SUITE_P(n, t, g)             // NOLINT
 // INSTANTIATE_TEST_SUITE_P | n, t, g, ng == name, test_case_name, generator, name_generator
-
-#if defined(__clang__) || defined(__GNUC__)
-#define PPC_FUNC_NAME __PRETTY_FUNCTION__
-#else
-#define PPC_FUNC_NAME __func__
-#endif
 
 namespace ppc::util {
 
