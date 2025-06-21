@@ -23,6 +23,7 @@ using NlohmannJsonTypeError = nlohmann::json::type_error;  // NOLINT(misc-includ
 #pragma warning(pop)
 #endif
 
+#define ASSERT_NO_THROW_NOLINT(stmt) ASSERT_NO_THROW(stmt)                                     // NOLINT
 #define ASSERT_ANY_THROW_NOLINT(stmt) ASSERT_ANY_THROW(stmt)                                   // NOLINT
 #define EXPECT_THROW_NOLINT(stmt, error) EXPECT_THROW(stmt, error)                             // NOLINT
 #define TEST_NOLINT(test_suite_name, test_name) TEST(test_suite_name, test_name)               // NOLINT
