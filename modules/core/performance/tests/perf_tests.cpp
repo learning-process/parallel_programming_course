@@ -109,12 +109,13 @@ TEST_P(GetStringParamNameParamTest, ReturnsExpectedString) {
   EXPECT_EQ(ppc::core::GetStringParamName(param.input), param.expected_output);
 }
 
-INSTANTIATE_TEST_SUITE_P(
-    ParamTests, GetStringParamNameParamTest,
-    ::testing::Values(ParamTestCase{ppc::core::PerfResults::kTaskRun, "task_run"},
-                      ParamTestCase{ppc::core::PerfResults::kPipeline, "pipeline"},
-                      ParamTestCase{ppc::core::PerfResults::TypeOfRunning::kNone, "none"}),
-    [](const ::testing::TestParamInfo<ParamTestCase>& info) { return info.param.expected_output; });
+INSTANTIATE_TEST_SUITE_P(ParamTests, GetStringParamNameParamTest,
+                         ::testing::Values(ParamTestCase{ppc::core::PerfResults::kTaskRun, "task_run"},
+                                           ParamTestCase{ppc::core::PerfResults::kPipeline, "pipeline"},
+                                           ParamTestCase{ppc::core::PerfResults::TypeOfRunning::kNone, "none"}),
+                         [](const ::testing::TestParamInfo<ParamTestCase>& info) {
+                           return info.param.expected_output;
+                         });
 
 struct TaskTypeTestCase {
   ppc::core::TypeOfTask type;
@@ -152,12 +153,12 @@ TEST_P(GetStringTaskTypeTest, ReturnsExpectedString) {
 }
 
 INSTANTIATE_TEST_SUITE_P(AllTypeCases, GetStringTaskTypeTest,
-                                ::testing::Values(TaskTypeTestCase{ppc::core::TypeOfTask::kALL, "all_ALL", "kALL"},
-                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kSTL, "stl_STL", "kSTL"},
-                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kOMP, "omp_OMP", "kOMP"},
-                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kMPI, "mpi_MPI", "kMPI"},
-                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kTBB, "tbb_TBB", "kTBB"},
-                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kSEQ, "seq_SEQ", "kSEQ"}));
+                         ::testing::Values(TaskTypeTestCase{ppc::core::TypeOfTask::kALL, "all_ALL", "kALL"},
+                                           TaskTypeTestCase{ppc::core::TypeOfTask::kSTL, "stl_STL", "kSTL"},
+                                           TaskTypeTestCase{ppc::core::TypeOfTask::kOMP, "omp_OMP", "kOMP"},
+                                           TaskTypeTestCase{ppc::core::TypeOfTask::kMPI, "mpi_MPI", "kMPI"},
+                                           TaskTypeTestCase{ppc::core::TypeOfTask::kTBB, "tbb_TBB", "kTBB"},
+                                           TaskTypeTestCase{ppc::core::TypeOfTask::kSEQ, "seq_SEQ", "kSEQ"}));
 
 TEST(GetStringTaskTypeStandaloneTest, ThrowsIfFileMissing) {
   std::string missing_path = "non_existent_settings.json";
@@ -185,8 +186,7 @@ TEST(GetStringTaskTypeStandaloneTest, ReturnsUnknownForInvalidEnum) {
 }
 
 TEST(GetStringTaskTypeEdgeCases, ThrowsIfFileCannotBeOpened) {
-  EXPECT_THROW(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, "definitely_missing_file.json"),
-                      std::runtime_error);
+  EXPECT_THROW(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, "definitely_missing_file.json"), std::runtime_error);
 }
 
 TEST(GetStringTaskTypeEdgeCases, ThrowsIfJsonIsMalformed) {

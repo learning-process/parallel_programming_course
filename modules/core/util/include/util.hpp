@@ -1,11 +1,12 @@
 #pragma once
 
-#include "nlohmann/json_fwd.hpp"
 #include <cstdint>
 #include <cstdlib>
 #include <memory>
 #include <string>
 #include <string_view>
+
+#include "nlohmann/json_fwd.hpp"
 
 #define PPC_FUNC_NAME __func__
 
@@ -23,7 +24,6 @@ using NlohmannJsonTypeError = nlohmann::json::type_error;
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
-
 
 namespace ppc::util {
 
