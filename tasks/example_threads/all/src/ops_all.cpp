@@ -3,7 +3,6 @@
 #include <mpi.h>
 
 #include <atomic>
-#include <cmath>
 #include <numeric>
 #include <thread>
 #include <vector>

@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
 #include "core/util/include/perf_test_util.hpp"
-#include "core/util/include/util.hpp"
 #include "example_threads/all/include/ops_all.hpp"
 #include "example_threads/common/include/common.hpp"
 #include "example_threads/omp/include/ops_omp.hpp"
@@ -32,6 +31,6 @@ const auto kGtestValues = ppc::util::TupleToGTestValues(kAllPerfTasks);
 
 const auto kPerfTestName = ExampleRunPerfTestThreads::CustomPerfTestName;
 
-INSTANTIATE_TEST_SUITE_P_WITH_NAME(RunModeTests, ExampleRunPerfTestThreads, kGtestValues, kPerfTestName);
+INSTANTIATE_TEST_SUITE_P(RunModeTests, ExampleRunPerfTestThreads, kGtestValues, kPerfTestName);
 
 }  // namespace nesterov_a_test_task_threads

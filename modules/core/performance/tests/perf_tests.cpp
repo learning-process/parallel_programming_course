@@ -63,7 +63,7 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
   };
   perf_analyzer.PipelineRun(perf_attr);
 
-  ASSERT_ANY_THROW_NOLINT(perf_analyzer.PrintPerfStatistic("check_perf_pipeline_uint8_t_slow_test"));
+  ASSERT_ANY_THROW(perf_analyzer.PrintPerfStatistic("check_perf_pipeline_uint8_t_slow_test"));
 }
 
 TEST(perf_tests, check_perf_task_exception) {
@@ -73,7 +73,7 @@ TEST(perf_tests, check_perf_task_exception) {
 
   ppc::core::Perf<std::vector<uint32_t>, uint32_t> perf_analyzer(test_task);
 
-  ASSERT_ANY_THROW_NOLINT(perf_analyzer.PrintPerfStatistic("check_perf_task_exception"));
+  ASSERT_ANY_THROW(perf_analyzer.PrintPerfStatistic("check_perf_task_exception"));
 
   ppc::core::PerfAttr perf_attr;
   perf_analyzer.TaskRun(perf_attr);
@@ -109,12 +109,13 @@ TEST_P(GetStringParamNameParamTest, ReturnsExpectedString) {
   EXPECT_EQ(ppc::core::GetStringParamName(param.input), param.expected_output);
 }
 
-INSTANTIATE_TEST_SUITE_P_WITH_NAME(
-    ParamTests, GetStringParamNameParamTest,
-    ::testing::Values(ParamTestCase{ppc::core::PerfResults::kTaskRun, "task_run"},
-                      ParamTestCase{ppc::core::PerfResults::kPipeline, "pipeline"},
-                      ParamTestCase{ppc::core::PerfResults::TypeOfRunning::kNone, "none"}),
-    [](const ::testing::TestParamInfo<ParamTestCase>& info) { return info.param.expected_output; });
+INSTANTIATE_TEST_SUITE_P(ParamTests, GetStringParamNameParamTest,
+                         ::testing::Values(ParamTestCase{ppc::core::PerfResults::kTaskRun, "task_run"},
+                                           ParamTestCase{ppc::core::PerfResults::kPipeline, "pipeline"},
+                                           ParamTestCase{ppc::core::PerfResults::TypeOfRunning::kNone, "none"}),
+                         [](const ::testing::TestParamInfo<ParamTestCase>& info) {
+                           return info.param.expected_output;
+                         });
 
 struct TaskTypeTestCase {
   ppc::core::TypeOfTask type;
@@ -151,22 +152,22 @@ TEST_P(GetStringTaskTypeTest, ReturnsExpectedString) {
   EXPECT_EQ(GetStringTaskType(param.type, temp_path), param.expected) << "Failed on: " << param.label;
 }
 
-INSTANTIATE_TEST_SUITE_P_NOLINT(AllTypeCases, GetStringTaskTypeTest,
-                                ::testing::Values(TaskTypeTestCase{ppc::core::TypeOfTask::kALL, "all_ALL", "kALL"},
-                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kSTL, "stl_STL", "kSTL"},
-                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kOMP, "omp_OMP", "kOMP"},
-                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kMPI, "mpi_MPI", "kMPI"},
-                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kTBB, "tbb_TBB", "kTBB"},
-                                                  TaskTypeTestCase{ppc::core::TypeOfTask::kSEQ, "seq_SEQ", "kSEQ"}));
+INSTANTIATE_TEST_SUITE_P(AllTypeCases, GetStringTaskTypeTest,
+                         ::testing::Values(TaskTypeTestCase{ppc::core::TypeOfTask::kALL, "all_ALL", "kALL"},
+                                           TaskTypeTestCase{ppc::core::TypeOfTask::kSTL, "stl_STL", "kSTL"},
+                                           TaskTypeTestCase{ppc::core::TypeOfTask::kOMP, "omp_OMP", "kOMP"},
+                                           TaskTypeTestCase{ppc::core::TypeOfTask::kMPI, "mpi_MPI", "kMPI"},
+                                           TaskTypeTestCase{ppc::core::TypeOfTask::kTBB, "tbb_TBB", "kTBB"},
+                                           TaskTypeTestCase{ppc::core::TypeOfTask::kSEQ, "seq_SEQ", "kSEQ"}));
 
-TEST_NOLINT(GetStringTaskTypeStandaloneTest, ThrowsIfFileMissing) {
+TEST(GetStringTaskTypeStandaloneTest, ThrowsIfFileMissing) {
   std::string missing_path = "non_existent_settings.json";
-  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, missing_path), std::runtime_error);
+  EXPECT_THROW(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, missing_path), std::runtime_error);
 }
 
-TEST_NOLINT(GetStringTaskTypeStandaloneTest, ExceptionMessageContainsPath) {
+TEST(GetStringTaskTypeStandaloneTest, ExceptionMessageContainsPath) {
   const std::string missing_path = "non_existent_settings.json";
-  EXPECT_THROW_NOLINT(
+  EXPECT_THROW(
       try { GetStringTaskType(ppc::core::TypeOfTask::kSEQ, missing_path); } catch (const std::runtime_error& e) {
         EXPECT_NE(std::string(e.what()).find(missing_path), std::string::npos);
         throw;
@@ -184,23 +185,22 @@ TEST(GetStringTaskTypeStandaloneTest, ReturnsUnknownForInvalidEnum) {
   std::filesystem::remove(path);
 }
 
-TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfFileCannotBeOpened) {
-  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, "definitely_missing_file.json"),
-                      std::runtime_error);
+TEST(GetStringTaskTypeEdgeCases, ThrowsIfFileCannotBeOpened) {
+  EXPECT_THROW(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, "definitely_missing_file.json"), std::runtime_error);
 }
 
-TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfJsonIsMalformed) {
+TEST(GetStringTaskTypeEdgeCases, ThrowsIfJsonIsMalformed) {
   std::string path = (std::filesystem::temp_directory_path() / "bad_json.json").string();
   std::ofstream(path) << "{ this is not valid json ";
-  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), NlohmannJsonParseError);
+  EXPECT_THROW(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), NlohmannJsonParseError);
   std::filesystem::remove(path);
 }
 
-TEST_NOLINT(GetStringTaskTypeEdgeCases, ThrowsIfJsonValueIsNull) {
+TEST(GetStringTaskTypeEdgeCases, ThrowsIfJsonValueIsNull) {
   std::string path = (std::filesystem::temp_directory_path() / "null_value.json").string();
   std::ofstream(path) << R"({"tasks": { "seq": null }})";
 
-  EXPECT_THROW_NOLINT(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), NlohmannJsonTypeError);
+  EXPECT_THROW(GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path), NlohmannJsonTypeError);
 
   std::filesystem::remove(path);
 }
@@ -237,9 +237,9 @@ TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
   EXPECT_EQ(task.GetDynamicTypeOfTask(), ppc::core::TypeOfTask::kOMP);
 }
 
-TEST_NOLINT(TaskTest, DestructorTerminatesIfWrongOrder) {
+TEST(TaskTest, DestructorTerminatesIfWrongOrder) {
   testing::FLAGS_gtest_death_test_style = "threadsafe";
-  ASSERT_DEATH_IF_SUPPORTED_NOLINT(
+  ASSERT_DEATH_IF_SUPPORTED(
       {
         DummyTask task;
         task.Run();
@@ -262,7 +262,7 @@ using TestTypes = ::testing::Types<my::nested::Type, my::Another, int>;
 
 TYPED_TEST_SUITE(GetNamespaceTest, TestTypes);
 
-TYPED_TEST_NOLINT(GetNamespaceTest, ExtractsNamespaceCorrectly) {
+TYPED_TEST(GetNamespaceTest, ExtractsNamespaceCorrectly) {
   constexpr std::string_view kNs = ppc::util::GetNamespace<TypeParam>();
 
   if constexpr (std::is_same_v<TypeParam, my::nested::Type>) {

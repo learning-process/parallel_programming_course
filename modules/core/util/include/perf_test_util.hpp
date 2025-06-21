@@ -115,8 +115,8 @@ auto MakePerfTaskTuples(const std::string& settings_path) {
 }
 
 template <typename Tuple, std::size_t... I>
-auto TupleToGTestValuesImpl(Tuple&& tup, std::index_sequence<I...> /*unused*/) {
-  return ::testing::Values(std::get<I>(std::forward<Tuple>(tup))...);
+auto TupleToGTestValuesImpl(const Tuple& tup, std::index_sequence<I...> /*unused*/) {
+  return ::testing::Values(std::get<I>(tup)...);
 }
 
 template <typename Tuple>

@@ -3,7 +3,6 @@
 #include <tbb/tbb.h>
 
 #include <atomic>
-#include <cmath>
 #include <core/util/include/util.hpp>
 #include <numeric>
 #include <vector>
