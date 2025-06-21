@@ -15,7 +15,7 @@ The CI pipeline for this project is illustrated in the following diagram:
     :align: center
 
 Running ``scripts/run_tests.py``
--------------------------------
+--------------------------------
 
 Automated tests are executed through the ``scripts/run_tests.py`` helper.  The
 script requires several environment variables to be defined:
