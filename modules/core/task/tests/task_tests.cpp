@@ -153,21 +153,21 @@ TEST(task_tests, check_empty_order_disabled_valgrind) {
   EXPECT_DEATH_IF_SUPPORTED(destroy_function(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
 }
 
-TEST_NOLINT(task_tests, premature_postprocessing_no_steps) {
+TEST(task_tests, premature_postprocessing_no_steps) {
   auto destroy_function = [] {
     std::vector<float> in(20, 1);
     ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
-    ASSERT_NO_THROW_NOLINT(test_task.PostProcessing());
+    ASSERT_NO_THROW(test_task.PostProcessing());
   };
   EXPECT_DEATH_IF_SUPPORTED(destroy_function(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
 }
 
-TEST_NOLINT(task_tests, premature_postprocessing_after_preprocessing) {
+TEST(task_tests, premature_postprocessing_after_preprocessing) {
   auto destroy_function = [] {
     std::vector<float> in(20, 1);
     ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
-    ASSERT_NO_THROW_NOLINT(test_task.PreProcessing());
-    ASSERT_NO_THROW_NOLINT(test_task.PostProcessing());
+    ASSERT_NO_THROW(test_task.PreProcessing());
+    ASSERT_NO_THROW(test_task.PostProcessing());
   };
   EXPECT_DEATH_IF_SUPPORTED(destroy_function(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
 }
