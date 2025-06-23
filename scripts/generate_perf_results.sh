@@ -1,4 +1,5 @@
-set -o pipefail
+#!/usr/bin/env bash
+set -euo pipefail
 
 mkdir -p build/perf_stat_dir
 python3 scripts/run_tests.py --running-type="performance" | tee build/perf_stat_dir/perf_log.txt

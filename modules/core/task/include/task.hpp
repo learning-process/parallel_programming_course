@@ -246,12 +246,16 @@ class Task {
   bool was_worked_ = false;
 
   bool IsFullPipelineStage() {
+    if (functions_order_.size() < 4) {
+      return false;
+    }
+
     auto it = std::adjacent_find(functions_order_.begin() + 2,
                                  functions_order_.begin() + static_cast<long>(functions_order_.size() - 2),
                                  std::not_equal_to<>());
 
-    return (functions_order_.size() >= 4 && functions_order_[0] == "Validation" &&
-            functions_order_[1] == "PreProcessing" && functions_order_[2] == "Run" &&
+    return (functions_order_[0] == "Validation" && functions_order_[1] == "PreProcessing" &&
+            functions_order_[2] == "Run" &&
             it == (functions_order_.begin() + static_cast<long>(functions_order_.size() - 2)) &&
             functions_order_[functions_order_.size() - 1] == "PostProcessing");
   }
