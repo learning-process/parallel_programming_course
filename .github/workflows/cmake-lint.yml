@@ -1,0 +1,26 @@
+name: CMake Lint
+
+on:
+  pull_request:
+    paths:
+      - "**/CMakeLists.txt"
+      - "**/*.cmake"
+  push:
+    paths:
+      - "**/CMakeLists.txt"
+      - "**/*.cmake"
+  workflow_dispatch:
+
+jobs:
+  cmake-lint:
+    name: Check CMake formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install cmake-format
+        run: python3 -m pip install cmakelang
+      - name: Run cmake-format
+        run: |
+          files=$(git ls-files '**/CMakeLists.txt' 'cmake/*.cmake')
+          cmake-format --check $files
