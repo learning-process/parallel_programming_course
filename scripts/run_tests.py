@@ -20,6 +20,12 @@ def init_cmd_args():
         default="",
         help="Additional MPI arguments to pass to the mpirun command (optional)."
     )
+    parser.add_argument(
+        "--counts",
+        nargs="+",
+        type=int,
+        help="List of process/thread counts to run sequentially"
+    )
     args = parser.parse_args()
     _args_dict = vars(args)
     return _args_dict
@@ -135,19 +141,39 @@ class PPCRunner:
             )
 
 
-if __name__ == "__main__":
-    args_dict = init_cmd_args()
-    ppc_runner = PPCRunner()
-    ppc_runner.setup_env(os.environ.copy())
+def _execute(args_dict, env):
+    runner = PPCRunner()
+    runner.setup_env(env)
 
     if args_dict["running_type"] in ["threads", "processes"]:
-        ppc_runner.run_core()
+        runner.run_core()
 
     if args_dict["running_type"] == "threads":
-        ppc_runner.run_threads()
+        runner.run_threads()
     elif args_dict["running_type"] == "processes":
-        ppc_runner.run_processes(args_dict["additional_mpi_args"])
+        runner.run_processes(args_dict["additional_mpi_args"])
     elif args_dict["running_type"] == "performance":
-        ppc_runner.run_performance()
+        runner.run_performance()
     else:
         raise Exception("running-type is wrong!")
+
+
+if __name__ == "__main__":
+    args_dict = init_cmd_args()
+    counts = args_dict.get("counts")
+
+    if counts:
+        for count in counts:
+            env_copy = os.environ.copy()
+
+            if args_dict["running_type"] == "threads":
+                env_copy["PPC_NUM_THREADS"] = str(count)
+                env_copy.setdefault("PPC_NUM_PROC", "1")
+            elif args_dict["running_type"] == "processes":
+                env_copy["PPC_NUM_PROC"] = str(count)
+                env_copy.setdefault("PPC_NUM_THREADS", "1")
+
+            print(f"Executing with {args_dict['running_type']} count: {count}")
+            _execute(args_dict, env_copy)
+    else:
+        _execute(args_dict, os.environ.copy())
