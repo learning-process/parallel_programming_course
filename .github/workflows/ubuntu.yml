@@ -120,46 +120,14 @@ jobs:
         run: |
           mkdir -p install
           tar -xzvf ubuntu-gcc-install-${{ matrix.os }}.tar.gz -C install
-      - name: Run func tests (MPI, num_proc=1)
-        run: python3 scripts/run_tests.py --running-type="processes"
+      - name: Run func tests (MPI)
+        run: python3 scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
         env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 3
-      - name: Run func tests (MPI, num_proc=2)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PPC_NUM_PROC: 2
-          PPC_NUM_THREADS: 2
-      - name: Run func tests (MPI, num_proc=3)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PPC_NUM_PROC: 3
           PPC_NUM_THREADS: 1
-      - name: Run func tests (MPI, num_proc=4)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PPC_NUM_PROC: 4
-          PPC_NUM_THREADS: 1
-      - name: Run func tests (threads, num_threads=1)
-        run: python3 scripts/run_tests.py --running-type="threads"
+      - name: Run func tests (threads)
+        run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 1
-      - name: Run func tests (threads, num_threads=2)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 2
-      - name: Run func tests (threads, num_threads=3)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 3
-      - name: Run func tests (threads, num_threads=4)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 4
   ubuntu-gcc-test-extended:
     needs:
       - ubuntu-gcc-test
@@ -182,26 +150,10 @@ jobs:
         run: |
           mkdir -p install
           tar -xzvf ubuntu-gcc-install-${{ matrix.os }}.tar.gz -C install
-      - name: Run func tests (threads, num_threads=5)
-        run: python3 scripts/run_tests.py --running-type="threads"
+      - name: Run func tests (threads extended)
+        run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 5
-      - name: Run func tests (threads, num_threads=7)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 7
-      - name: Run func tests (threads, num_threads=11)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 11
-      - name: Run func tests (threads, num_threads=13)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 13
   ubuntu-clang-build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -273,46 +225,14 @@ jobs:
         run: |
           mkdir -p install
           tar -xzvf ubuntu-clang-install-${{ matrix.os }}.tar.gz -C install
-      - name: Run func tests (MPI, num_proc=1)
-        run: python3 scripts/run_tests.py --running-type="processes"
+      - name: Run func tests (MPI)
+        run: python3 scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
         env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 3
-      - name: Run func tests (MPI, num_proc=2)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PPC_NUM_PROC: 2
-          PPC_NUM_THREADS: 2
-      - name: Run func tests (MPI, num_proc=3)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PPC_NUM_PROC: 3
           PPC_NUM_THREADS: 1
-      - name: Run func tests (MPI, num_proc=4)
-        run: python3 scripts/run_tests.py --running-type="processes"
-        env:
-          PPC_NUM_PROC: 4
-          PPC_NUM_THREADS: 1
-      - name: Run tests (threads, num_threads=1)
-        run: python3 scripts/run_tests.py --running-type="threads"
+      - name: Run tests (threads)
+        run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 1
-      - name: Run tests (threads, num_threads=2)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 2
-      - name: Run tests (threads, num_threads=3)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 3
-      - name: Run tests (threads, num_threads=4)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 4
   ubuntu-clang-test-extended:
     needs:
       - ubuntu-clang-test
@@ -337,26 +257,10 @@ jobs:
         run: |
           mkdir -p install
           tar -xzvf ubuntu-clang-install-${{ matrix.os }}.tar.gz -C install
-      - name: Run tests (threads, num_threads=5)
-        run: python3 scripts/run_tests.py --running-type="threads"
+      - name: Run tests (threads extended)
+        run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 5
-      - name: Run tests (threads, num_threads=7)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 7
-      - name: Run tests (threads, num_threads=11)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 11
-      - name: Run tests (threads, num_threads=13)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 13
   ubuntu-clang-sanitizer-build:
     needs:
       - ubuntu-clang-build
@@ -435,42 +339,16 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-clang-sanitizer-install-${{ matrix.os }}.tar.gz -C install
       - name: Run tests (MPI)
-        run: python3 scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
+        run: python3 scripts/run_tests.py --running-type="processes" --counts 2 --additional-mpi-args="--oversubscribe"
         env:
-          PPC_NUM_PROC: 2
           PPC_NUM_THREADS: 2
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
-      - name: Run tests (threads, num_threads=1)
-        run: python3 scripts/run_tests.py --running-type="threads"
+      - name: Run tests (threads)
+        run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 1
-          PPC_ASAN_RUN: 1
-          ASAN_OPTIONS: abort_on_error=1
-          UBSAN_OPTIONS: halt_on_error=1
-      - name: Run tests (threads, num_threads=2)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 2
-          PPC_ASAN_RUN: 1
-          ASAN_OPTIONS: abort_on_error=1
-          UBSAN_OPTIONS: halt_on_error=1
-      - name: Run tests (threads, num_threads=3)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 3
-          PPC_ASAN_RUN: 1
-          ASAN_OPTIONS: abort_on_error=1
-          UBSAN_OPTIONS: halt_on_error=1
-      - name: Run tests (threads, num_threads=4)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 4
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
@@ -499,29 +377,10 @@ jobs:
         run: |
           mkdir -p install
           tar -xzvf ubuntu-clang-sanitizer-install-${{ matrix.os }}.tar.gz -C install
-      - name: Run tests (threads, num_threads=5)
-        run: python3 scripts/run_tests.py --running-type="threads"
+      - name: Run tests (threads extended)
+        run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 5
-          PPC_ASAN_RUN: 1
-      - name: Run tests (threads, num_threads=7)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 7
-          PPC_ASAN_RUN: 1
-      - name: Run tests (threads, num_threads=11)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 11
-          PPC_ASAN_RUN: 1
-      - name: Run tests (threads, num_threads=13)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 13
           PPC_ASAN_RUN: 1
   ubuntu-gcc-build-codecov:
     needs:
@@ -557,26 +416,10 @@ jobs:
         env:
           PPC_NUM_PROC: 2
           PPC_NUM_THREADS: 2
-      - name: Run tests (threads, num_threads=1)
-        run: python3 scripts/run_tests.py --running-type="threads"
+      - name: Run tests (threads)
+        run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 1
-      - name: Run tests (threads, num_threads=2)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 2
-      - name: Run tests (threads, num_threads=3)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 3
-      - name: Run tests (threads, num_threads=4)
-        run: python3 scripts/run_tests.py --running-type="threads"
-        env:
-          PPC_NUM_PROC: 1
-          PPC_NUM_THREADS: 4
       - name: Generate gcovr Coverage Data
         run: |
           mkdir cov-report
