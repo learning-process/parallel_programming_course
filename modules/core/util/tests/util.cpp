@@ -16,14 +16,10 @@ TEST(util_tests, extracts_correct_namespace) {
   EXPECT_EQ(kNs, "my::nested");
 }
 
-TEST(util_tests, GetNumThreadsEnvUnsetReturn) {
+TEST(util_tests, threads_control_check_openmp_disabled_valgrind) {
   const auto num_threads_env_var = env::get<int>("PPC_NUM_THREADS");
 
-  if (num_threads_env_var.has_value()) {
-    EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_max_threads());
-  } else {
-    GTEST_SKIP() << "PPC_NUM_THREADS environment variable is set, skipping test";
-  }
+  EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_max_threads());
 }
 
 namespace test_ns {
