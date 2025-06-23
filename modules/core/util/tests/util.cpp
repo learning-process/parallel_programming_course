@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <libenvpp/detail/get.hpp>
 #include <string_view>
 
 #include "omp.h"
@@ -16,14 +17,9 @@ TEST(util_tests, extracts_correct_namespace) {
 }
 
 TEST(util_tests, threads_control_check_openmp_disabled_valgrind) {
-  int ppc_num_threads = ppc::util::GetNumThreads();
+  const auto num_threads_env_var = env::get<int>("PPC_NUM_THREADS");
 
-  int omp_num_threads = -1;
-#pragma omp parallel default(none) shared(omp_num_threads) num_threads(ppc::util::GetNumThreads())
-  omp_num_threads = omp_get_num_threads();
-
-  // Check Result
-  ASSERT_EQ(ppc_num_threads, omp_num_threads);
+  EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_max_threads());
 }
 
 namespace test_ns {
