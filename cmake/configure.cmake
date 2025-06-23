@@ -2,10 +2,6 @@ if(MSVC)
     option(gtest_force_shared_crt "" TRUE)
 endif(MSVC)
 
-if (APPLE)
-    set(CMAKE_SHARED_LIBRARY_RUNTIME_C_FLAG TRUE)
-endif(APPLE)
-
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif(NOT CMAKE_BUILD_TYPE)
