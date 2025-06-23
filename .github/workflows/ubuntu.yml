@@ -46,13 +46,10 @@ jobs:
         run: |
           cmake --build build --target install
       - name: Archive installed package
-        run: |
-          tar -czvf ubuntu-gcc-install-${{ matrix.os }}.tar.gz -C install .
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: ubuntu-gcc-install-${{ matrix.os }}
-          path: ubuntu-gcc-install-${{ matrix.os }}.tar.gz
   ubuntu-gcc-build-debug:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -91,13 +88,10 @@ jobs:
         run: |
           cmake --build build --target install
       - name: Archive installed package
-        run: |
-          tar -czvf ubuntu-gcc-debug-install-${{ matrix.os }}.tar.gz -C install .
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: ubuntu-gcc-debug-install-${{ matrix.os }}
-          path: ubuntu-gcc-debug-install-${{ matrix.os }}.tar.gz
   ubuntu-gcc-test:
     needs:
       - ubuntu-gcc-build
@@ -242,13 +236,10 @@ jobs:
         run: |
           cmake --build build --target install
       - name: Archive installed package
-        run: |
-          tar -czvf ubuntu-clang-install-${{ matrix.os }}.tar.gz -C install .
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: ubuntu-clang-install-${{ matrix.os }}
-          path: ubuntu-clang-install-${{ matrix.os }}.tar.gz
   ubuntu-clang-test:
     needs:
       - ubuntu-clang-build
@@ -402,13 +393,10 @@ jobs:
         run: |
           cmake --build build --target install
       - name: Archive installed package
-        run: |
-          tar -czvf ubuntu-clang-sanitizer-install-${{ matrix.os }}.tar.gz -C install .
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: ubuntu-clang-sanitizer-install-${{ matrix.os }}
-          path: ubuntu-clang-sanitizer-install-${{ matrix.os }}.tar.gz
   ubuntu-clang-sanitizer-test:
     needs:
       - ubuntu-clang-sanitizer-build

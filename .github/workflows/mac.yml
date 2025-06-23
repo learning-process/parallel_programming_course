@@ -36,13 +36,10 @@ jobs:
         run: |
           cmake --build build --target install
       - name: Archive installed package
-        run: |
-          tar -czvf macos-clang-sanitizer-install.tar.gz -C install .
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: macos-clang-sanitizer-install
-          path: macos-clang-sanitizer-install.tar.gz
   macos-clang-build-debug:
     runs-on: macOS-latest
     steps:
@@ -77,13 +74,10 @@ jobs:
         run: |
           cmake --build build --target install
       - name: Archive installed package
-        run: |
-          tar -czvf macos-clang-debug-install.tar.gz -C install .
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: macos-clang-debug-install
-          path: macos-clang-debug-install.tar.gz
   macos-clang-test:
     needs:
       - macos-clang-build
