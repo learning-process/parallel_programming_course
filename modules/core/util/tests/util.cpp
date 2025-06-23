@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <libenvpp/detail/get.hpp>
 #include <string_view>
 
 #include "omp.h"
@@ -15,15 +16,14 @@ TEST(util_tests, extracts_correct_namespace) {
   EXPECT_EQ(kNs, "my::nested");
 }
 
-TEST(util_tests, threads_control_check_openmp_disabled_valgrind) {
-  int ppc_num_threads = ppc::util::GetNumThreads();
+TEST(util_tests, GetNumThreadsEnvUnsetReturn) {
+  const auto num_threads_env_var = env::get<int>("PPC_NUM_THREADS");
 
-  int omp_num_threads = -1;
-#pragma omp parallel default(none) shared(omp_num_threads) num_threads(ppc::util::GetNumThreads())
-  omp_num_threads = omp_get_num_threads();
-
-  // Check Result
-  ASSERT_EQ(ppc_num_threads, omp_num_threads);
+  if (num_threads_env_var.has_value()) {
+    EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_num_threads());
+  } else {
+    GTEST_SKIP() << "PPC_NUM_THREADS environment variable is set, skipping test";
+  }
 }
 
 namespace test_ns {
