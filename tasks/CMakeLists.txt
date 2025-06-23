@@ -1,3 +1,5 @@
+project(parallel_programming_course LANGUAGES C CXX)
+
 message(STATUS "Student's tasks")
 
 # ——— Testing options ————————————————————————————————————————
