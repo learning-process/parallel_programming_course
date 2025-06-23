@@ -1,0 +1,32 @@
+name: Archive installed package
+inputs:
+  path:
+    description: Directory to archive
+    required: true
+  name:
+    description: Artifact name
+    required: true
+runs:
+  using: composite
+  steps:
+    - id: set-archive
+      shell: bash
+      run: |
+        if [ "${RUNNER_OS}" = "Windows" ]; then
+          echo "archive=${{ inputs.name }}.zip" >> "$GITHUB_OUTPUT"
+        else
+          echo "archive=${{ inputs.name }}.tar.gz" >> "$GITHUB_OUTPUT"
+        fi
+    - name: Compress directory (unix)
+      if: runner.os != 'Windows'
+      shell: bash
+      run: tar -czvf "${{ steps.set-archive.outputs.archive }}" -C "${{ inputs.path }}" .
+    - name: Compress directory (windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: Compress-Archive -Path ${{ inputs.path }} -DestinationPath ${{ steps.set-archive.outputs.archive }}
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.name }}
+        path: ${{ steps.set-archive.outputs.archive }}

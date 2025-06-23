@@ -11,22 +11,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
-        with:
-          vs-version: 'latest'
-      - name: Setup MPI
-        uses: mpi4py/setup-mpi@v1
-        with:
-          mpi: msmpi
-      - name: Setup ccache
-        uses: Chocobo1/setup-ccache-action@v1
-        with:
-          windows_compile_environment: msvc
-      - name: Setup ninja
-        uses: seanmiddleditch/gha-setup-ninja@v6
-      - name: Setup MSVC for Ninja again
-        uses: ilammy/msvc-dev-cmd@v1
+      - uses: ./.github/actions/setup-windows-toolchain
       - name: CMake configure
         shell: bash
         run: >
@@ -41,13 +26,10 @@ jobs:
         run: |
           cmake --build build --target install
       - name: Archive installed package
-        run: Compress-Archive -Path install -DestinationPath windows-msvc-install.zip
-        shell: pwsh
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: windows-msvc-install
-          path: windows-msvc-install.zip
   windows-msvc-build-debug:
     runs-on: windows-latest
     defaults:
@@ -57,22 +39,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
-        with:
-          vs-version: 'latest'
-      - name: Setup MPI
-        uses: mpi4py/setup-mpi@v1
-        with:
-          mpi: msmpi
-      - name: Setup ccache
-        uses: Chocobo1/setup-ccache-action@v1
-        with:
-          windows_compile_environment: msvc
-      - name: Setup ninja
-        uses: seanmiddleditch/gha-setup-ninja@v6
-      - name: Setup MSVC for Ninja again
-        uses: ilammy/msvc-dev-cmd@v1
+      - uses: ./.github/actions/setup-windows-toolchain
       - name: CMake configure
         shell: bash
         run: >
@@ -87,13 +54,10 @@ jobs:
         run: |
           cmake --build build --target install
       - name: Archive installed package
-        run: Compress-Archive -Path install -DestinationPath windows-msvc-debug-install.zip
-        shell: pwsh
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: windows-msvc-debug-install
-          path: windows-msvc-debug-install.zip
   windows-msvc-test:
     needs:
       - windows-msvc-build
@@ -103,14 +67,7 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
-        with:
-          vs-version: 'latest'
-      - name: Setup MPI
-        uses: mpi4py/setup-mpi@v1
-        with:
-          mpi: msmpi
+      - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -167,14 +124,7 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
-        with:
-          vs-version: 'latest'
-      - name: Setup MPI
-        uses: mpi4py/setup-mpi@v1
-        with:
-          mpi: msmpi
+      - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -211,24 +161,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
-        with:
-          vs-version: 'latest'
+      - uses: ./.github/actions/setup-windows-toolchain
       - name: Setup LLVM
         uses: KyleMayes/install-llvm-action@v2
         with:
           version: "20.1.4"
-      - name: Setup MPI
-        uses: mpi4py/setup-mpi@v1
-        with:
-          mpi: msmpi
-      - name: Setup ccache
-        uses: Chocobo1/setup-ccache-action@v1
-        with:
-          windows_compile_environment: msvc
-      - name: Setup ninja
-        uses: seanmiddleditch/gha-setup-ninja@v6
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -249,13 +186,10 @@ jobs:
         run: |
           cmake --install build
       - name: Archive installed package
-        run: Compress-Archive -Path install -DestinationPath windows-clang-install.zip
-        shell: pwsh
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: windows-clang-install
-          path: windows-clang-install.zip
   windows-clang-test:
     needs:
       - windows-clang-build
@@ -265,14 +199,7 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
-        with:
-          vs-version: 'latest'
-      - name: Setup MPI
-        uses: mpi4py/setup-mpi@v1
-        with:
-          mpi: msmpi
+      - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -309,14 +236,7 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
-        with:
-          vs-version: 'latest'
-      - name: Setup MPI
-        uses: mpi4py/setup-mpi@v1
-        with:
-          mpi: msmpi
+      - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
