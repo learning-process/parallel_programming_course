@@ -41,13 +41,10 @@ jobs:
         run: |
           cmake --build build --target install
       - name: Archive installed package
-        run: Compress-Archive -Path install -DestinationPath windows-msvc-install.zip
-        shell: pwsh
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: windows-msvc-install
-          path: windows-msvc-install.zip
   windows-msvc-build-debug:
     runs-on: windows-latest
     defaults:
@@ -87,13 +84,10 @@ jobs:
         run: |
           cmake --build build --target install
       - name: Archive installed package
-        run: Compress-Archive -Path install -DestinationPath windows-msvc-debug-install.zip
-        shell: pwsh
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: windows-msvc-debug-install
-          path: windows-msvc-debug-install.zip
   windows-msvc-test:
     needs:
       - windows-msvc-build
@@ -249,13 +243,10 @@ jobs:
         run: |
           cmake --install build
       - name: Archive installed package
-        run: Compress-Archive -Path install -DestinationPath windows-clang-install.zip
-        shell: pwsh
-      - name: Upload installed package
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/archive-install
         with:
+          path: install
           name: windows-clang-install
-          path: windows-clang-install.zip
   windows-clang-test:
     needs:
       - windows-clang-build
