@@ -3,12 +3,11 @@
 #include <cstdint>
 #include <cstdlib>
 #include <memory>
+#include <source_location>
 #include <string>
 #include <string_view>
 
 #include "nlohmann/json_fwd.hpp"
-
-#define PPC_FUNC_NAME __func__
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -26,6 +25,23 @@ using NlohmannJsonTypeError = nlohmann::json::type_error;
 #endif
 
 namespace ppc::util {
+
+/**
+ * @brief Returns the unqualified name of the current function.
+ *
+ * @param loc Source location, defaults to the current function.
+ * @return Function name without namespaces or parameters.
+ */
+inline std::string FuncName(const std::source_location& loc = std::source_location::current()) {
+  std::string s{loc.function_name()};
+  if (auto p = s.find('('); p != std::string::npos) {
+    s.resize(p);  // drop “(…)”
+  }
+  if (auto p = s.rfind("::"); p != std::string::npos) {
+    s.erase(0, p + 2);  // drop namespaces
+  }
+  return s;
+}
 
 enum GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
 

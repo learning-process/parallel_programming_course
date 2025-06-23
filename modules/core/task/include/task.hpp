@@ -108,16 +108,16 @@ class Task {
   /// @brief Validates input data and task attributes before execution.
   /// @return True if validation is successful.
   virtual bool Validation() final {
-    InternalOrderTest(PPC_FUNC_NAME);
+    InternalOrderTest(ppc::util::FuncName());
     return ValidationImpl();
   }
 
   /// @brief Performs preprocessing on the input data.
   /// @return True if preprocessing is successful.
   virtual bool PreProcessing() final {
-    InternalOrderTest(PPC_FUNC_NAME);
+    InternalOrderTest(ppc::util::FuncName());
     if (state_of_testing_ == StateOfTesting::kFunc) {
-      InternalTimeTest(PPC_FUNC_NAME);
+      InternalTimeTest(ppc::util::FuncName());
     }
     return PreProcessingImpl();
   }
@@ -125,16 +125,16 @@ class Task {
   /// @brief Executes the main logic of the task.
   /// @return True if execution is successful.
   virtual bool Run() final {
-    InternalOrderTest(PPC_FUNC_NAME);
+    InternalOrderTest(ppc::util::FuncName());
     return RunImpl();
   }
 
   /// @brief Performs postprocessing on the output data.
   /// @return True if postprocessing is successful.
   virtual bool PostProcessing() final {
-    InternalOrderTest(PPC_FUNC_NAME);
+    InternalOrderTest(ppc::util::FuncName());
     if (state_of_testing_ == StateOfTesting::kFunc) {
-      InternalTimeTest(PPC_FUNC_NAME);
+      InternalTimeTest(ppc::util::FuncName());
     }
     return PostProcessingImpl();
   }
