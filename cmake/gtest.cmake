@@ -17,7 +17,7 @@ ExternalProject_Add(ppc_googletest
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_C_FLAGS=-w
         -DCMAKE_CXX_FLAGS=-w
-        -Dgtest_force_shared_crt=ON
+        $<$<BOOL:MSVC>:-Dgtest_force_shared_crt=ON>
 
         BUILD_COMMAND     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build" --config ${CMAKE_BUILD_TYPE} --parallel
         INSTALL_COMMAND   "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/install"
