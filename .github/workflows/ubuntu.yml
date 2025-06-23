@@ -385,6 +385,7 @@ jobs:
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
+          TSAN_OPTIONS: ignore_noninstrumented_modules=1
       - name: Run tests (threads, num_threads=1)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -393,6 +394,7 @@ jobs:
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
+          TSAN_OPTIONS: ignore_noninstrumented_modules=1
       - name: Run tests (threads, num_threads=2)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -401,6 +403,7 @@ jobs:
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
+          TSAN_OPTIONS: ignore_noninstrumented_modules=1
       - name: Run tests (threads, num_threads=3)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -409,6 +412,7 @@ jobs:
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
+          TSAN_OPTIONS: ignore_noninstrumented_modules=1
       - name: Run tests (threads, num_threads=4)
         run: python3 scripts/run_tests.py --running-type="threads"
         env:
@@ -417,6 +421,7 @@ jobs:
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
+          TSAN_OPTIONS: ignore_noninstrumented_modules=1
   ubuntu-clang-sanitizer-test-extended:
     needs:
       - ubuntu-clang-sanitizer-test
