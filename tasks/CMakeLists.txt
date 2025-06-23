@@ -1,6 +1,3 @@
-cmake_minimum_required(VERSION 3.15)
-project(parallel_programming_course LANGUAGES C CXX)
-
 message(STATUS "Student's tasks")
 
 # ——— Testing options ————————————————————————————————————————
