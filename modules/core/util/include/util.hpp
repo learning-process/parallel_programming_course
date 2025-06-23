@@ -27,21 +27,11 @@ using NlohmannJsonTypeError = nlohmann::json::type_error;
 namespace ppc::util {
 
 /**
- * @brief Obtain the simple function name (e.g. "PreProcessing" or "foo")
- *        from the full signature returned by std::source_location.
+ * @brief Returns the unqualified name of the current function.
  *
- * @param loc  Source location info (file, line, full signature).
- *             Defaults to the call site via std::source_location::current().
- * @return A std::string with only the function’s unqualified name.
- *
- * @details
- * - On GCC/Clang, function_name() returns a pretty signature
- *   including namespaces, templates, and parameters.
- * - On MSVC, it also includes return type and calling convention.
- * - This routine removes any leading scope qualifiers (“::…”) and
- *   drops everything from the first '(' onward.
+ * @param loc Source location, defaults to the current function.
+ * @return Function name without namespaces or parameters.
  */
-
 inline std::string FuncName(const std::source_location& loc = std::source_location::current()) {
   std::string s{loc.function_name()};
   if (auto p = s.find('('); p != std::string::npos) {
