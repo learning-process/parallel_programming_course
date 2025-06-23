@@ -11,11 +11,6 @@ option(USE_PERF_TESTS "Enable performance tests" OFF)
 set(FUNC_TEST_EXEC ppc_func_tests)
 set(PERF_TEST_EXEC ppc_perf_tests)
 
-# ——— Global compile definitions —————————————————————————————————————
-add_compile_definitions(
-        PATH_TO_PPC_PROJECT="${PROJECT_SOURCE_DIR}"
-)
-
 # ——— Include helper scripts ——————————————————————————————————————
 include(${CMAKE_SOURCE_DIR}/cmake/functions.cmake)
 
