@@ -20,7 +20,7 @@ TEST(util_tests, GetNumThreadsEnvUnsetReturn) {
   const auto num_threads_env_var = env::get<int>("PPC_NUM_THREADS");
 
   if (num_threads_env_var.has_value()) {
-    EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_num_threads());
+    EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_max_threads());
   } else {
     GTEST_SKIP() << "PPC_NUM_THREADS environment variable is set, skipping test";
   }
