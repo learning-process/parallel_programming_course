@@ -23,4 +23,10 @@ jobs:
       - name: Run cmake-format
         run: |
           files=$(git ls-files '**/CMakeLists.txt' 'cmake/*.cmake')
-          cmake-format --check $files
+          if ! cmake-format --check $files; then
+            echo "Formatting errors detected. Showing diff..."
+            for f in $files; do
+              cmake-format "$f" | diff -u "$f" -
+            done
+            exit 1
+          fi
