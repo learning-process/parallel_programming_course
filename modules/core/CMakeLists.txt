@@ -44,10 +44,6 @@ target_link_libraries(${exec_func_lib} PUBLIC gtest gtest_main)
 target_link_libraries(${exec_func_lib} PUBLIC Threads::Threads)
 
 find_package(OpenMP REQUIRED)
-if(MSVC)
-  string(REPLACE "/openmp" "/openmp:llvm" OpenMP_C_FLAGS "${OpenMP_C_FLAGS}")
-  string(REPLACE "/openmp" "/openmp:llvm" OpenMP_CXX_FLAGS "${OpenMP_CXX_FLAGS}")
-endif()
 target_link_libraries(${exec_func_lib} PUBLIC ${OpenMP_libomp_LIBRARY}
                                               OpenMP::OpenMP_CXX)
 
