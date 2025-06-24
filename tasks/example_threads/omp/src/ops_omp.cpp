@@ -3,7 +3,6 @@
 #include <atomic>
 #include <numeric>
 #include <vector>
-#include <omp.h>
 
 #include "core/util/include/util.hpp"
 #include "example_threads/common/include/common.hpp"
