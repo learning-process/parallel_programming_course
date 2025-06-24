@@ -1,5 +1,7 @@
 #pragma once
 
+#include <omp.h>
+
 #include <algorithm>
 #include <chrono>
 #include <core/util/include/util.hpp>
@@ -177,6 +179,9 @@ class Task {
     } else {
       functions_order_.clear();
     }
+#if _OPENMP >= 201811
+    omp_pause_resource_all(omp_pause_soft);
+#endif
   }
 
  protected:
