@@ -1,5 +1,7 @@
 #pragma once
 
+#include <omp.h>
+
 #include <algorithm>
 #include <chrono>
 #include <core/util/include/util.hpp>
@@ -11,7 +13,6 @@
 #include <iomanip>
 #include <iostream>
 #include <memory>
-#include <omp.h>
 #include <sstream>
 #include <stdexcept>
 #include <string>
