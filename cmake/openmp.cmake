@@ -1,6 +1,9 @@
 if(MSVC)
   set(OpenMP_C_FLAGS "/openmp:llvm" CACHE STRING "OpenMP C flags" FORCE)
   set(OpenMP_CXX_FLAGS "/openmp:llvm" CACHE STRING "OpenMP CXX flags" FORCE)
+  # Pretend Clang-style OpenMP 5.0 support so CMake reports a newer version
+  set(OpenMP_C_SPEC_DATE 201811 CACHE STRING "OpenMP C specification date" FORCE)
+  set(OpenMP_CXX_SPEC_DATE 201811 CACHE STRING "OpenMP CXX specification date" FORCE)
 endif()
 
 find_package(OpenMP)
