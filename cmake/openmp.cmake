@@ -1,4 +1,4 @@
-if(MSVC)
+if(MSVC AND NOT (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
   set(OpenMP_C_FLAGS "/openmp:llvm" CACHE STRING "OpenMP C flags" FORCE)
   set(OpenMP_CXX_FLAGS "/openmp:llvm" CACHE STRING "OpenMP CXX flags" FORCE)
   # Pretend Clang-style OpenMP 5.0 support so CMake reports a newer version
