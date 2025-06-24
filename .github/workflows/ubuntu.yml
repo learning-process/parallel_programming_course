@@ -7,6 +7,7 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
+        build_type: [Release, Debug]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,13 +27,13 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+          -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
         env:
           CC: gcc-14
           CXX: g++-14
       - name: Archive revert list
         uses: actions/upload-artifact@v4
-        if: ${{ matrix.os == 'ubuntu-24.04' }}
+        if: ${{ matrix.os == 'ubuntu-24.04' && matrix.build_type == 'Release' }}
         with:
           name: revert-list
           path: build/revert-list.txt
@@ -49,49 +50,9 @@ jobs:
         uses: ./.github/actions/archive-install
         with:
           path: install
-          name: ubuntu-gcc-install-${{ matrix.os }}
-  ubuntu-gcc-build-debug:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: ["ubuntu-24.04"]
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
-          python3 -m pip install -r requirements.txt
-      - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2
-        with:
-          key: ${{ runner.os }}-gcc
-          create-symlink: true
-          max-size: 1G
-      - name: CMake configure
-        run: >
-          cmake -S . -B build -G Ninja
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D CMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=install
-        env:
-          CC: gcc-14
-          CXX: g++-14
-      - name: Build project
-        run: |
-          cmake --build build --parallel
-        env:
-          CC: gcc-14
-          CXX: g++-14
-      - name: Install project
-        run: |
-          cmake --build build --target install
-      - name: Archive installed package
-        uses: ./.github/actions/archive-install
-        with:
-          path: install
-          name: ubuntu-gcc-debug-install-${{ matrix.os }}
+          name: ${{ matrix.build_type == 'Debug' &&
+            format('ubuntu-gcc-debug-install-{0}', matrix.os) ||
+            format('ubuntu-gcc-install-{0}', matrix.os) }}
   ubuntu-gcc-test:
     needs:
       - ubuntu-gcc-build
