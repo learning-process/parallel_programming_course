@@ -179,7 +179,9 @@ class Task {
     } else {
       functions_order_.clear();
     }
+#if _OPENMP >= 201811
     omp_pause_resource_all(omp_pause_soft);
+#endif
   }
 
  protected:
