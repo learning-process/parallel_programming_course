@@ -4,6 +4,9 @@ on:
 jobs:
   windows-msvc-build:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        build_type: [Release, Debug]
     defaults:
       run:
         shell: bash
@@ -17,11 +20,11 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+          -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
       - name: Build project
         shell: bash
         run: |
-          cmake --build build --config Release --parallel
+          cmake --build build --config ${{ matrix.build_type }} --parallel
       - name: Install project
         run: |
           cmake --build build --target install
@@ -29,35 +32,7 @@ jobs:
         uses: ./.github/actions/archive-install
         with:
           path: install
-          name: windows-msvc-install
-  windows-msvc-build-debug:
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - uses: ./.github/actions/setup-windows-toolchain
-      - name: CMake configure
-        shell: bash
-        run: >
-          cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D CMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=install
-      - name: Build project
-        shell: bash
-        run: |
-          cmake --build build --config Debug --parallel
-      - name: Install project
-        run: |
-          cmake --build build --target install
-      - name: Archive installed package
-        uses: ./.github/actions/archive-install
-        with:
-          path: install
-          name: windows-msvc-debug-install
+          name: ${{ matrix.build_type == 'Debug' && 'windows-msvc-debug-install' || 'windows-msvc-install' }}
   windows-msvc-test:
     needs:
       - windows-msvc-build

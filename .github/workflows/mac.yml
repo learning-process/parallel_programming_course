@@ -4,6 +4,9 @@ on:
 jobs:
   macos-clang-build:
     runs-on: macOS-latest
+    strategy:
+      matrix:
+        build_type: [Release, Debug]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,7 +35,7 @@ jobs:
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
           -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
-          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+          -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
       - name: Build project
         run: |
           cmake --build build --parallel
@@ -43,49 +46,7 @@ jobs:
         uses: ./.github/actions/archive-install
         with:
           path: install
-          name: macos-clang-sanitizer-install
-  macos-clang-build-debug:
-    runs-on: macOS-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - name: Install Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: 'latest-stable'
-      - name: Setup environment
-        run: |
-          brew update-reset
-          brew install ninja mpich llvm
-          brew install libomp
-          brew link libomp --overwrite --force
-          brew install openssl
-          brew link openssl --overwrite --force
-      - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2
-        with:
-          key: ${{ runner.os }}-clang
-          create-symlink: true
-          max-size: 1G
-      - name: CMake configure
-        run: >
-          cmake -S . -B build -G Ninja
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
-          -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
-          -D CMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=install
-      - name: Build project
-        run: |
-          cmake --build build --parallel
-      - name: Install project
-        run: |
-          cmake --build build --target install
-      - name: Archive installed package
-        uses: ./.github/actions/archive-install
-        with:
-          path: install
-          name: macos-clang-debug-install
+          name: ${{ matrix.build_type == 'Debug' && 'macos-clang-debug-install' || 'macos-clang-install' }}
   macos-clang-test:
     needs:
       - macos-clang-build
@@ -107,11 +68,11 @@ jobs:
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
-          name: macos-clang-sanitizer-install
+          name: macos-clang-install
       - name: Extract installed package
         run: |
           mkdir -p install
-          tar -xzvf macos-clang-sanitizer-install.tar.gz -C install
+          tar -xzvf macos-clang-install.tar.gz -C install
       - name: Run func tests (MPI)
         run: python3 scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
         env:
@@ -141,11 +102,11 @@ jobs:
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
-          name: macos-clang-sanitizer-install
+          name: macos-clang-install
       - name: Extract installed package
         run: |
           mkdir -p install
-          tar -xzvf macos-clang-sanitizer-install.tar.gz -C install
+          tar -xzvf macos-clang-install.tar.gz -C install
       - name: Run tests (threads extended)
         run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
