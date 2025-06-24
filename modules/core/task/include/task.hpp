@@ -178,9 +178,7 @@ class Task {
     } else {
       functions_order_.clear();
     }
-#ifdef _OPENMP
     omp_pause_resource_all(omp_pause_hard);
-#endif
   }
 
  protected:
