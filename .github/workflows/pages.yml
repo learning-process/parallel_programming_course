@@ -81,7 +81,7 @@ jobs:
           cmake -S . -B build -DUSE_SCOREBOARD=ON
       - name: CMake build
         run: |
-          cmake --build build --parallel
+          cmake --build build -t generate_scoreboard
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
