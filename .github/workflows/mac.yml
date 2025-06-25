@@ -19,6 +19,7 @@ jobs:
         run: |
           brew update
           brew install ninja mpich llvm libomp openssl
+          brew link libomp --overwrite --force
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -57,6 +58,7 @@ jobs:
         run: |
           brew update
           brew install ninja mpich llvm libomp openssl
+          brew link libomp --overwrite --force
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -87,6 +89,7 @@ jobs:
         run: |
           brew update
           brew install ninja mpich llvm libomp openssl
+          brew link libomp --overwrite --force
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
