@@ -65,7 +65,8 @@ if(UNIX)
   if("${ENABLE_ADDRESS_SANITIZER}"
      OR "${ENABLE_UB_SANITIZER}"
      OR "${ENABLE_LEAK_SANITIZER}")
-    set(COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} -Wno-cast-align -Wno-cast-function-type")
+    set(COMMON_COMPILER_FLAGS
+        "${COMMON_COMPILER_FLAGS} -Wno-cast-align -Wno-cast-function-type")
   endif()
 
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COMMON_COMPILER_FLAGS}")
