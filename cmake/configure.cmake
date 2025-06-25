@@ -42,8 +42,6 @@ if(UNIX)
   set(COMMON_COMPILER_FLAGS
       "${COMMON_COMPILER_FLAGS}            \
         -Wall -Wextra                      \
-        -Wno-unused-parameter              \
-        -Wno-cast-function-type            \
         -Wsign-compare")
   if(NOT APPLE)
     set(COMMON_COMPILER_FLAGS
@@ -67,7 +65,7 @@ if(UNIX)
   if("${ENABLE_ADDRESS_SANITIZER}"
      OR "${ENABLE_UB_SANITIZER}"
      OR "${ENABLE_LEAK_SANITIZER}")
-    set(COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} -Wno-cast-align")
+    set(COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} -Wno-cast-align -Wno-cast-function-type")
   endif()
 
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COMMON_COMPILER_FLAGS}")
