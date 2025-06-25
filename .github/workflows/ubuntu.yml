@@ -27,7 +27,7 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
+          -D CMAKE_BUILD_TYPE=${{ matrix.build_type == 'Release' && 'RelWithDebInfo' || matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
         env:
           CC: gcc-14
           CXX: g++-14
@@ -135,7 +135,7 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+          -D CMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=install
         env:
           CC: clang-20
           CXX: clang++-20
@@ -242,7 +242,7 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D CMAKE_BUILD_TYPE=RELEASE
+          -D CMAKE_BUILD_TYPE=RelWithDebInfo
           -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON -D ENABLE_LEAK_SANITIZER=ON
           -D CMAKE_INSTALL_PREFIX=install
         env:
@@ -355,7 +355,7 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-          -D CMAKE_BUILD_TYPE=RELEASE
+          -D CMAKE_BUILD_TYPE=RelWithDebInfo
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
       - name: Build project
         run: |

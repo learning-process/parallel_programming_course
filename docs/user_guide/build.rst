@@ -15,7 +15,10 @@ Navigate to a source code folder.
 
    - ``-D USE_FUNC_TESTS=ON`` enable functional tests.
    - ``-D USE_PERF_TESTS=ON`` enable performance tests.
-   - ``-D CMAKE_BUILD_TYPE=Release`` required parameter for stable work of repo.
+   - ``-D CMAKE_BUILD_TYPE=Release`` normal build (default).
+   - ``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers or
+     running ``valgrind`` to keep debug information.
+   - ``-D CMAKE_BUILD_TYPE=Debug`` for debugging sessions.
 
    *A corresponding flag can be omitted if it's not needed.*
 
