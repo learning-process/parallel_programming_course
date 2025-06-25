@@ -17,12 +17,8 @@ jobs:
           xcode-version: 'latest-stable'
       - name: Setup environment
         run: |
-          brew update-reset
-          brew install ninja mpich llvm
-          brew install libomp
-          brew link libomp --overwrite --force
-          brew install openssl
-          brew link openssl --overwrite --force
+          brew update
+          brew install ninja mpich llvm libomp openssl
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -59,12 +55,8 @@ jobs:
           xcode-version: 'latest-stable'
       - name: Setup environment
         run: |
-          brew update-reset
-          brew install ninja mpich llvm
-          brew install libomp
-          brew link libomp --overwrite --force
-          brew install openssl
-          brew link openssl --overwrite --force
+          brew update
+          brew install ninja mpich llvm libomp openssl
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -93,12 +85,8 @@ jobs:
           xcode-version: 'latest-stable'
       - name: Setup environment
         run: |
-          brew update-reset
-          brew install ninja mpich llvm
-          brew install libomp
-          brew link libomp --overwrite --force
-          brew install openssl
-          brew link openssl --overwrite --force
+          brew update
+          brew install ninja mpich llvm libomp openssl
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
