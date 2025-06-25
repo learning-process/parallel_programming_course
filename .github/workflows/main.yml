@@ -36,3 +36,8 @@ jobs:
       - mac
       - windows
     uses: ./.github/workflows/perf.yml
+
+  pages:
+    needs:
+      - perf
+    uses: ./.github/workflows/pages.yml

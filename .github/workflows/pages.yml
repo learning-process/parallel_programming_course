@@ -1,10 +1,7 @@
 name: Pages
 
 on:
-  workflow_run:
-    workflows: ["Build application"]
-    types:
-      - completed
+  workflow_call:
   workflow_dispatch:
 
 permissions:
@@ -117,8 +114,6 @@ jobs:
         with:
           name: cov-report
           path: ./coverage/
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
