@@ -24,7 +24,6 @@ Checks: >
   -misc-const-correctness,
   -misc-non-private-member-variables-in-classes,
   -modernize-avoid-c-arrays,
-  -modernize-loop-convert,
   -modernize-use-trailing-return-type,
   -portability-template-virtual-member-function,
   -readability-magic-numbers
