@@ -1,8 +1,7 @@
 name: Pages
 
 on:
-  push:
-  pull_request:
+  workflow_call:
   workflow_dispatch:
 
 permissions:
@@ -110,6 +109,11 @@ jobs:
         with:
           name: scoreboard
           path: ./scoreboard/
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cov-report
+          path: ./coverage/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -6,6 +6,7 @@
 # Parallel Programming Course
 Welcome to the Parallel Programming Course! For more detailed documentation and resources, please visit documentation pages: [en](https://learning-process.github.io/parallel_programming_course/en/), [ru](https://learning-process.github.io/parallel_programming_course/ru/).
 Course scoreboard is available [here](https://learning-process.github.io/parallel_programming_course/scoreboard/)
+Coverage report is available [here](https://learning-process.github.io/parallel_programming_course/coverage/)
 
 ### Parallel programming technologies:
   The following parallel programming technologies are considered in practice:
