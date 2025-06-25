@@ -390,7 +390,17 @@ jobs:
         with:
           files: coverage.xml
       - name: Upload coverage report artifact
+        id: upload-cov
         uses: actions/upload-artifact@v4
         with:
           name: cov-report
           path: 'cov-report'
+      - name: Comment coverage report link
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Coverage report is available for download
+            [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
