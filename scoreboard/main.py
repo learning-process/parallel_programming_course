@@ -9,15 +9,18 @@ tasks_dir = Path('tasks')
 
 directories = defaultdict(dict)
 
-for task_type in task_types:
-    task_type_dir = tasks_dir / task_type
-    if task_type_dir.exists() and task_type_dir.is_dir():
-        for task_name in (d.name for d in task_type_dir.iterdir() if d.is_dir()):
-            if task_name.endswith("_disabled"):
-                task_name = task_name[:-len("_disabled")]
-                directories[task_name][task_type] = "disabled"
-            else:
-                directories[task_name][task_type] = "done"
+if tasks_dir.exists() and tasks_dir.is_dir():
+    for task_name_dir in tasks_dir.iterdir():
+        if task_name_dir.is_dir() and task_name_dir.name not in ['common']:
+            task_name = task_name_dir.name
+            for task_type in task_types:
+                task_type_dir = task_name_dir / task_type
+                if task_type_dir.exists() and task_type_dir.is_dir():
+                    if task_name.endswith("_disabled"):
+                        clean_task_name = task_name[:-len("_disabled")]
+                        directories[clean_task_name][task_type] = "disabled"
+                    else:
+                        directories[task_name][task_type] = "done"
 
 config_path = Path(__file__).parent / "data" / "threads-config.yml"
 assert config_path.exists(), f"Config file not found: {config_path}"
