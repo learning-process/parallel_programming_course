@@ -48,3 +48,8 @@ html_theme_options = {
     "collapse_navigation": False,
     "navigation_depth": 2,
 }
+
+
+def setup(app):
+    """Add custom CSS files."""
+    app.add_css_file("custom.css")
