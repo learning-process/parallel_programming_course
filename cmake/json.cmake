@@ -1,5 +1,3 @@
-include_directories(${CMAKE_SOURCE_DIR}/3rdparty/json/include)
-
 include(ExternalProject)
 
 ExternalProject_Add(

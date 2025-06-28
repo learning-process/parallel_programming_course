@@ -1,6 +1,4 @@
 find_package(MPI REQUIRED)
-if(MPI_FOUND)
-  include_directories(${MPI_INCLUDE_PATH})
-else(MPI_FOUND)
+if(NOT MPI_FOUND)
   message(FATAL_ERROR "MPI NOT FOUND")
 endif(MPI_FOUND)

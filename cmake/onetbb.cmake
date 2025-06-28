@@ -1,7 +1,5 @@
 include(ExternalProject)
 
-include_directories("${CMAKE_SOURCE_DIR}/3rdparty/onetbb/include")
-
 if(WIN32)
   set(ppc_onetbb_TEST_COMMAND
       "${CMAKE_COMMAND}" -E copy_directory
