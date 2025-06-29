@@ -50,60 +50,19 @@ int GetNumThreads();
 
 template <typename T>
 constexpr std::string_view GetNamespace() {
-#if defined(__clang__) || defined(__GNUC__)
-  constexpr std::string_view kFunc = __PRETTY_FUNCTION__;
-  constexpr std::string_view kKey = "T = ";
-
-  auto start = kFunc.find(kKey);
-  if (start == std::string_view::npos) {
-    return {};
-  }
-  start += kKey.size();
-
-  auto end = kFunc.find_first_of(";]> ,", start);
-  if (end == std::string_view::npos) {
-    return {};
-  }
-
-  auto full_type = kFunc.substr(start, end - start);
-
-  auto ns_end = full_type.rfind("::");
-  if (ns_end == std::string_view::npos) {
-    return {};
-  }
-
-  return full_type.substr(0, ns_end);
-
-#elif defined(_MSC_VER)
-  constexpr std::string_view kFunc = __FUNCSIG__;
-  constexpr std::string_view kKey = "GetNamespace<";
-
-  auto start = kFunc.find(kKey);
-  if (start == std::string_view::npos) return {};
-  start += kKey.size();
-
-  constexpr std::string_view prefixes[] = {"class ", "struct ", "enum ", "union "};
-  for (auto prefix : prefixes) {
-    if (kFunc.substr(start, prefix.size()) == prefix) {
-      start += prefix.size();
-      break;
-    }
-  }
-
-  auto end = kFunc.find('>', start);
-  if (end == std::string_view::npos) return {};
-
-  auto full_type = kFunc.substr(start, end - start);
-
-  auto ns_end = full_type.rfind("::");
-  if (ns_end == std::string_view::npos) return {};
-
-  return full_type.substr(0, ns_end);
-
+#if defined(_MSC_VER)
+  constexpr auto func = std::string_view{__FUNCSIG__};
+  auto start = func.find("GetNamespace<") + 13;
+  for (auto p : {"class ", "struct ", "enum ", "union "})
+    if (func.substr(start).starts_with(p)) start += p.size();
 #else
-  static_assert([] { return false; }(), "Unsupported compiler");
-  return {};
+  constexpr auto func = std::string_view{__PRETTY_FUNCTION__};
+  auto start = func.find("T = ") + 4;
 #endif
+  auto end = func.find_first_of(";]> ,>", start);
+  if (end == std::string_view::npos) return {};
+  auto ns_end = func.rfind("::", end);
+  return (ns_end != std::string_view::npos && ns_end > start) ? func.substr(start, ns_end - start) : std::string_view{};
 }
 
 inline std::shared_ptr<nlohmann::json> InitJSONPtr() { return std::make_shared<nlohmann::json>(); }
