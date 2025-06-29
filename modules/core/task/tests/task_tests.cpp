@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <fstream>
 #include <vector>
 
 #include "core/task/tests/test_task.hpp"
@@ -188,8 +189,12 @@ TEST(TaskTest, GetStringTaskType_InvalidFileThrows) {
 }
 
 // Test unknown type case
-TEST(TaskTest, GetStringTaskType_UnknownType) {
-  std::string path = "settings.json";  // Provide valid settings file
+TEST(TaskTest, GetStringTaskType_UnknownType_WithValidFile) {
+  std::string path = "settings_valid.json";
+  std::ofstream file(path);
+  file
+      << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "tbb": "enabled", "seq": "enabled"}})";
+  file.close();
   EXPECT_NO_THROW({ GetStringTaskType(ppc::core::TypeOfTask::kUnknown, path); });
 }
 
