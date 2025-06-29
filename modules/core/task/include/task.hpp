@@ -39,6 +39,8 @@ enum TypeOfTask : uint8_t {
   kUnknown
 };
 
+enum class PipelineStage { None, Validation, PreProcessing, Run, Done };
+
 /// @brief Indicates whether a task is enabled or disabled.
 enum StatusOfTask : uint8_t {
   /// Task is enabled and should be executed
@@ -104,22 +106,23 @@ template <typename InType, typename OutType>
 /// @tparam OutType Output data type.
 class Task {
  public:
-  /// @brief Constructs a new Task object.
-  explicit Task(StateOfTesting /*state_of_testing*/ = StateOfTesting::kFunc) { functions_order_.clear(); }
-
   /// @brief Validates input data and task attributes before execution.
   /// @return True if validation is successful.
   virtual bool Validation() final {
-    InternalOrderTest(ppc::util::FuncName());
+    if (stage_ == PipelineStage::None) {
+      stage_ = PipelineStage::Validation;
+    }
     return ValidationImpl();
   }
 
   /// @brief Performs preprocessing on the input data.
   /// @return True if preprocessing is successful.
   virtual bool PreProcessing() final {
-    InternalOrderTest(ppc::util::FuncName());
+    if (stage_ == PipelineStage::Validation) {
+      stage_ = PipelineStage::PreProcessing;
+    }
     if (state_of_testing_ == StateOfTesting::kFunc) {
-      InternalTimeTest(ppc::util::FuncName());
+      InternalTimeTest();
     }
     return PreProcessingImpl();
   }
@@ -127,16 +130,20 @@ class Task {
   /// @brief Executes the main logic of the task.
   /// @return True if execution is successful.
   virtual bool Run() final {
-    InternalOrderTest(ppc::util::FuncName());
+    if (stage_ == PipelineStage::PreProcessing || stage_ == PipelineStage::Run) {
+      stage_ = PipelineStage::Run;
+    }
     return RunImpl();
   }
 
   /// @brief Performs postprocessing on the output data.
   /// @return True if postprocessing is successful.
   virtual bool PostProcessing() final {
-    InternalOrderTest(ppc::util::FuncName());
+    if (stage_ == PipelineStage::Run) {
+      stage_ = PipelineStage::Done;
+    }
     if (state_of_testing_ == StateOfTesting::kFunc) {
-      InternalTimeTest(ppc::util::FuncName());
+      InternalTimeTest();
     }
     return PostProcessingImpl();
   }
@@ -172,12 +179,9 @@ class Task {
   /// @brief Destructor. Verifies that the pipeline was executed in the correct order.
   /// @note Terminates the program if pipeline order is incorrect or incomplete.
   virtual ~Task() {
-    if (!functions_order_.empty() || !was_worked_) {
-      std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT! \n Expected - \"Validation\", \"PreProcessing\", \"Run\", "
-                   "\"PostProcessing\" \n";
+    if (stage_ != PipelineStage::Done) {
+      std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT" << std::endl;
       std::terminate();
-    } else {
-      functions_order_.clear();
     }
 #if _OPENMP >= 201811
     omp_pause_resource_all(omp_pause_soft);
@@ -185,26 +189,15 @@ class Task {
   }
 
  protected:
-  /// @brief Verifies the correct order of pipeline method calls.
-  /// @param str Name of the method being called.
-  virtual void InternalOrderTest(const std::string &str) final {
-    functions_order_.push_back(str);
-    if (str == "PostProcessing" && IsFullPipelineStage()) {
-      functions_order_.clear();
-    } else {
-      was_worked_ = true;
-    }
-  }
-
   /// @brief Measures execution time between preprocessing and postprocessing steps.
   /// @param str Name of the method being timed.
   /// @throws std::runtime_error If execution exceeds the allowed time limit.
-  virtual void InternalTimeTest(const std::string &str) final {
-    if (str == "PreProcessing") {
+  virtual void InternalTimeTest() final {
+    if (stage_ == PipelineStage::PreProcessing) {
       tmp_time_point_ = std::chrono::high_resolution_clock::now();
     }
 
-    if (str == "PostProcessing") {
+    if (stage_ == PipelineStage::Done) {
       auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() -
                                                                            tmp_time_point_)
                           .count();
@@ -244,26 +237,9 @@ class Task {
   StateOfTesting state_of_testing_ = kFunc;
   TypeOfTask type_of_task_ = kUnknown;
   StatusOfTask status_of_task_ = kEnabled;
-  std::vector<std::string> functions_order_;
-  std::vector<std::string> right_functions_order_ = {"Validation", "PreProcessing", "Run", "PostProcessing"};
   static constexpr double kMaxTestTime = 1.0;
   std::chrono::high_resolution_clock::time_point tmp_time_point_;
-  bool was_worked_ = false;
-
-  bool IsFullPipelineStage() {
-    if (functions_order_.size() < 4) {
-      return false;
-    }
-
-    auto it = std::adjacent_find(functions_order_.begin() + 2,
-                                 functions_order_.begin() + static_cast<long>(functions_order_.size() - 2),
-                                 std::not_equal_to<>());
-
-    return (functions_order_[0] == "Validation" && functions_order_[1] == "PreProcessing" &&
-            functions_order_[2] == "Run" &&
-            it == (functions_order_.begin() + static_cast<long>(functions_order_.size() - 2)) &&
-            functions_order_[functions_order_.size() - 1] == "PostProcessing");
-  }
+  PipelineStage stage_ = PipelineStage::None;
 };
 
 /// @brief Smart pointer alias for Task.
