@@ -1,10 +1,15 @@
 #include <gtest/gtest.h>
 
+#include <chrono>
 #include <cstddef>
 #include <cstdint>
+#include <exception>
 #include <fstream>
+#include <stdexcept>
+#include <thread>
 #include <vector>
 
+#include "core/task/include/task.hpp"
 #include "core/task/tests/test_task.hpp"
 
 TEST(task_tests, check_int32_t) {

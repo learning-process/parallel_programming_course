@@ -3,6 +3,7 @@
 #include <omp.h>
 
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <core/util/include/util.hpp>
 #include <cstdint>
@@ -16,6 +17,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace ppc::core {
