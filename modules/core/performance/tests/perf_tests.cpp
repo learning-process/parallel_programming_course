@@ -263,7 +263,7 @@ using TestTypes = ::testing::Types<my::nested::Type, my::Another, int>;
 TYPED_TEST_SUITE(GetNamespaceTest, TestTypes);
 
 TYPED_TEST(GetNamespaceTest, ExtractsNamespaceCorrectly) {
-  constexpr std::string_view kNs = ppc::util::GetNamespace<TypeParam>();
+  std::string kNs = ppc::util::GetNamespace<TypeParam>();
 
   if constexpr (std::is_same_v<TypeParam, my::nested::Type>) {
     EXPECT_EQ(kNs, "my::nested");

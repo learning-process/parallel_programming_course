@@ -12,7 +12,7 @@ struct Type {};
 }  // namespace my::nested
 
 TEST(util_tests, extracts_correct_namespace) {
-  constexpr std::string_view kNs = ppc::util::GetNamespace<my::nested::Type>();
+  std::string kNs = ppc::util::GetNamespace<my::nested::Type>();
   EXPECT_EQ(kNs, "my::nested");
 }
 
@@ -29,17 +29,17 @@ struct TypeInNamespace {};
 struct PlainType {};
 
 TEST(GetNamespaceTest, ReturnsExpectedNamespace) {
-  constexpr auto kNs = ppc::util::GetNamespace<test_ns::TypeInNamespace>();
+  std::string kNs = ppc::util::GetNamespace<test_ns::TypeInNamespace>();
   EXPECT_EQ(kNs, "test_ns");
 }
 
 TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespace_PrimitiveType) {
-  constexpr auto kNs = ppc::util::GetNamespace<int>();
+  std::string kNs = ppc::util::GetNamespace<int>();
   EXPECT_EQ(kNs, "");
 }
 
 TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespace_PlainStruct) {
-  constexpr auto kNs = ppc::util::GetNamespace<PlainType>();
+  std::string kNs = ppc::util::GetNamespace<PlainType>();
   EXPECT_EQ(kNs, "");
 }
 
@@ -48,14 +48,14 @@ struct Nested {};
 }  // namespace test_ns
 
 TEST(GetNamespaceTest, ReturnsNamespaceCorrectly) {
-  constexpr auto kNs = ppc::util::GetNamespace<test_ns::Nested>();
+  std::string kNs = ppc::util::GetNamespace<test_ns::Nested>();
   EXPECT_EQ(kNs, "test_ns");
 }
 
 struct NoNamespaceType {};
 
 TEST(GetNamespaceTest, NoNamespaceInType) {
-  constexpr auto kNs = ppc::util::GetNamespace<NoNamespaceType>();
+  std::string kNs = ppc::util::GetNamespace<NoNamespaceType>();
   EXPECT_EQ(kNs, "");
 }
 
@@ -63,7 +63,7 @@ template <typename T>
 struct NotATemplate {};
 
 TEST(GetNamespaceTest, NoKeyInPrettyFunction) {
-  constexpr auto kNs = ppc::util::GetNamespace<NotATemplate<void>>();
+  std::string kNs = ppc::util::GetNamespace<NotATemplate<void>>();
   EXPECT_EQ(kNs, "");
 }
 
@@ -72,6 +72,6 @@ struct VeryLongTypeNameWithOnlyLettersAndUnderscores {};
 }  // namespace crazy
 
 TEST(GetNamespaceTest, NoTerminatorCharactersInPrettyFunction) {
-  constexpr auto kNs = ppc::util::GetNamespace<crazy::VeryLongTypeNameWithOnlyLettersAndUnderscores>();
+  std::string kNs = ppc::util::GetNamespace<crazy::VeryLongTypeNameWithOnlyLettersAndUnderscores>();
   EXPECT_EQ(kNs, "crazy");
 }

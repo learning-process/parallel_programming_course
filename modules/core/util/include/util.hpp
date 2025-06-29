@@ -5,7 +5,10 @@
 #include <memory>
 #include <source_location>
 #include <string>
-#include <string_view>
+#include <typeinfo>
+#ifdef __GNUG__
+#include <cxxabi.h>
+#endif
 
 #include "nlohmann/json_fwd.hpp"
 
@@ -49,24 +52,16 @@ std::string GetAbsoluteTaskPath(const std::string& id_path, const std::string& r
 int GetNumThreads();
 
 template <typename T>
-constexpr std::string_view GetNamespace() {
-#ifdef _MSC_VER
-  constexpr std::string_view kFunc{__FUNCSIG__};
-  constexpr std::string_view kKey = "GetNamespace<";
-#else
-  constexpr std::string_view kFunc{__PRETTY_FUNCTION__};
-  constexpr std::string_view kKey = "T = ";
+std::string GetNamespace() {
+  std::string name = typeid(T).name();
+#ifdef __GNUG__
+  int status = 0;
+  std::unique_ptr<char, void (*)(void*)> demangled{abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status),
+                                                   std::free};
+  name = (status == 0) ? demangled.get() : name;
 #endif
-
-  auto start = kFunc.find(kKey);
-  start = (start == std::string_view::npos) ? kFunc.size() : start + kKey.size();
-
-  for (auto p : {"class ", "struct ", "enum ", "union "})
-    if (kFunc.substr(start).starts_with(p)) start += std::string_view{p}.size();
-
-  auto ns_type = kFunc.substr(start, kFunc.find(']', start) - start);
-  auto pos = ns_type.rfind("::");
-  return (pos != std::string_view::npos) ? ns_type.substr(0, pos) : std::string_view{};
+  auto pos = name.rfind("::");
+  return (pos != std::string::npos) ? name.substr(0, pos) : std::string{};
 }
 
 inline std::shared_ptr<nlohmann::json> InitJSONPtr() { return std::make_shared<nlohmann::json>(); }
