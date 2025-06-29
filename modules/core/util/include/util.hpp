@@ -1,6 +1,5 @@
 #pragma once
 
-#include <algorithm>
 #include <cstdint>
 #include <cstdlib>
 #include <memory>
@@ -61,6 +60,7 @@ std::string GetNamespace() {
                                                    std::free};
   name = (status == 0) ? demangled.get() : name;
 #endif
+#if defined(_MSC_VER)
   const std::string prefixes[] = {"class ", "struct ", "enum ", "union "};
   for (const auto& prefix : prefixes) {
     if (name.starts_with(prefix)) {
@@ -69,6 +69,7 @@ std::string GetNamespace() {
     }
   }
   name.erase(0, name.find_first_not_of(' '));
+#endif
   auto pos = name.rfind("::");
   return (pos != std::string::npos) ? name.substr(0, pos) : std::string{};
 }

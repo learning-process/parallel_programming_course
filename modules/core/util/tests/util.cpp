@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 
 #include <libenvpp/detail/get.hpp>
-#include <string_view>
+#include <string>
 
 #include "omp.h"
 
