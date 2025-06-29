@@ -153,7 +153,7 @@ TEST(TaskTest, TaskDestructor_ThrowsIfStageIncomplete) {
   auto destroy_func = [] {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : ppc::core::Task<std::vector<int32_t>, int32_t> {
-      LocalTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
+      explicit LocalTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
       bool ValidationImpl() override { return true; }
       bool PreProcessingImpl() override { return true; }
       bool RunImpl() override { return true; }
@@ -166,7 +166,7 @@ TEST(TaskTest, TaskDestructor_ThrowsIfStageIncomplete) {
 
 TEST(TaskTest, InternalTimeTest_ThrowsIfTimeoutExceeded) {
   struct SlowTask : ppc::core::Task<std::vector<int32_t>, int32_t> {
-    SlowTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
+    explicit SlowTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
     bool ValidationImpl() override { return true; }
     bool PreProcessingImpl() override {
       std::this_thread::sleep_for(std::chrono::seconds(2));

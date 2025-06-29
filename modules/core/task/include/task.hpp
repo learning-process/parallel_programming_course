@@ -39,19 +39,24 @@ enum TypeOfTask : uint8_t {
   kUnknown
 };
 
-inline std::string TypeOfTaskToString(TypeOfTask type) {
-  constexpr std::pair<TypeOfTask, std::string> kTypeOfTaskStrings[] = {
-      {TypeOfTask::kALL, "all"}, {TypeOfTask::kMPI, "mpi"}, {TypeOfTask::kOMP, "omp"},
-      {TypeOfTask::kSEQ, "seq"}, {TypeOfTask::kSTL, "stl"}, {TypeOfTask::kTBB, "tbb"},
-  };
+using TaskMapping = std::pair<TypeOfTask, std::string>;
+using TaskMappingArray = std::array<TaskMapping, 6>;
 
-  for (const auto &[key, value] : kTypeOfTaskStrings) {
-    if (key == type) return value;
+constexpr TaskMappingArray kTaskTypeMappings = {{{TypeOfTask::kALL, "all"},
+                                                 {TypeOfTask::kMPI, "mpi"},
+                                                 {TypeOfTask::kOMP, "omp"},
+                                                 {TypeOfTask::kSEQ, "seq"},
+                                                 {TypeOfTask::kSTL, "stl"},
+                                                 {TypeOfTask::kTBB, "tbb"}}};
+
+inline std::string TypeOfTaskToString(TypeOfTask type) {
+  for (const auto &[key, value] : kTaskTypeMappings) {
+    if (key == type) {
+      return value;
+    }
   }
   return "unknown";
 }
-
-enum class PipelineStage { None, Validation, PreProcessing, Run, Done };
 
 /// @brief Indicates whether a task is enabled or disabled.
 enum StatusOfTask : uint8_t {
@@ -104,8 +109,8 @@ class Task {
   /// @brief Validates input data and task attributes before execution.
   /// @return True if validation is successful.
   virtual bool Validation() final {
-    if (stage_ == PipelineStage::None) {
-      stage_ = PipelineStage::Validation;
+    if (stage_ == PipelineStage::kNone) {
+      stage_ = PipelineStage::kValidation;
     }
     return ValidationImpl();
   }
@@ -113,8 +118,8 @@ class Task {
   /// @brief Performs preprocessing on the input data.
   /// @return True if preprocessing is successful.
   virtual bool PreProcessing() final {
-    if (stage_ == PipelineStage::Validation) {
-      stage_ = PipelineStage::PreProcessing;
+    if (stage_ == PipelineStage::kValidation) {
+      stage_ = PipelineStage::kPreProcessing;
     }
     if (state_of_testing_ == StateOfTesting::kFunc) {
       InternalTimeTest();
@@ -125,8 +130,8 @@ class Task {
   /// @brief Executes the main logic of the task.
   /// @return True if execution is successful.
   virtual bool Run() final {
-    if (stage_ == PipelineStage::PreProcessing || stage_ == PipelineStage::Run) {
-      stage_ = PipelineStage::Run;
+    if (stage_ == PipelineStage::kPreProcessing || stage_ == PipelineStage::kRun) {
+      stage_ = PipelineStage::kRun;
     }
     return RunImpl();
   }
@@ -134,8 +139,8 @@ class Task {
   /// @brief Performs postprocessing on the output data.
   /// @return True if postprocessing is successful.
   virtual bool PostProcessing() final {
-    if (stage_ == PipelineStage::Run) {
-      stage_ = PipelineStage::Done;
+    if (stage_ == PipelineStage::kRun) {
+      stage_ = PipelineStage::kDone;
     }
     if (state_of_testing_ == StateOfTesting::kFunc) {
       InternalTimeTest();
@@ -172,10 +177,10 @@ class Task {
   OutType &GetOutput() { return output_; }
 
   /// @brief Destructor. Verifies that the pipeline was executed in the correct order.
-  /// @note Terminates the program if pipeline order is incorrect or incomplete.
+  /// @note Terminates the program if the pipeline order is incorrect or incomplete.
   virtual ~Task() {
-    if (stage_ != PipelineStage::Done) {
-      std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT" << std::endl;
+    if (stage_ != PipelineStage::kDone) {
+      std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT" << '\n';
       std::terminate();
     }
 #if _OPENMP >= 201811
@@ -185,14 +190,13 @@ class Task {
 
  protected:
   /// @brief Measures execution time between preprocessing and postprocessing steps.
-  /// @param str Name of the method being timed.
   /// @throws std::runtime_error If execution exceeds the allowed time limit.
   virtual void InternalTimeTest() final {
-    if (stage_ == PipelineStage::PreProcessing) {
+    if (stage_ == PipelineStage::kPreProcessing) {
       tmp_time_point_ = std::chrono::high_resolution_clock::now();
     }
 
-    if (stage_ == PipelineStage::Done) {
+    if (stage_ == PipelineStage::kDone) {
       auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() -
                                                                            tmp_time_point_)
                           .count();
@@ -234,7 +238,7 @@ class Task {
   StatusOfTask status_of_task_ = kEnabled;
   static constexpr double kMaxTestTime = 1.0;
   std::chrono::high_resolution_clock::time_point tmp_time_point_;
-  PipelineStage stage_ = PipelineStage::None;
+  enum class PipelineStage : uint8_t { kNone, kValidation, kPreProcessing, kRun, kDone } stage_ = PipelineStage::kNone;
 };
 
 /// @brief Smart pointer alias for Task.
@@ -247,7 +251,7 @@ using TaskPtr = std::shared_ptr<Task<InType, OutType>>;
 /// @tparam TaskType Type of the task to create.
 /// @tparam InType Type of the input.
 /// @param in Input to pass to the task constructor.
-/// @return Shared pointer to the newly created task.
+/// @return Shared a pointer to the newly created task.
 template <typename TaskType, typename InType>
 std::shared_ptr<TaskType> TaskGetter(InType in) {
   return std::make_shared<TaskType>(in);
