@@ -172,6 +172,41 @@ TEST(task_tests, premature_postprocessing_after_preprocessing) {
   EXPECT_DEATH_IF_SUPPORTED(destroy_function(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
 }
 
+// Test for disabled status string
+TEST(TaskTest, GetStringTaskStatus_Disabled) {
+  EXPECT_EQ(GetStringTaskStatus(ppc::core::StatusOfTask::kDisabled), "disabled");
+}
+
+// Test for enabled status string
+TEST(TaskTest, GetStringTaskStatus_Enabled) {
+  EXPECT_EQ(GetStringTaskStatus(ppc::core::StatusOfTask::kEnabled), "enabled");
+}
+
+// Test for exception thrown when file cannot be opened
+TEST(TaskTest, GetStringTaskType_InvalidFileThrows) {
+  EXPECT_THROW({ GetStringTaskType(ppc::core::TypeOfTask::kALL, "non_existing_file.json"); }, std::runtime_error);
+}
+
+// Test unknown type case
+TEST(TaskTest, GetStringTaskType_UnknownType) {
+  std::string path = "settings.json";  // Provide valid settings file
+  EXPECT_NO_THROW({ GetStringTaskType(ppc::core::TypeOfTask::kUnknown, path); });
+}
+
+// Death test for destructor when pipeline order is invalid
+TEST(TaskTest, Destructor_InvalidPipelineOrderTerminates) {
+  testing::FLAGS_gtest_death_test_style = "threadsafe";
+  auto test_func = [&] {
+    struct BadTask : ppc::core::Task<int, int> {
+      bool ValidationImpl() override { return true; }
+      bool PreProcessingImpl() override { return true; }
+      bool RunImpl() override { return true; }
+      bool PostProcessingImpl() override { return true; }
+    } task;
+  };
+  ASSERT_DEATH_IF_SUPPORTED({ test_func(); }, "");
+}
+
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
