@@ -39,6 +39,22 @@ enum TypeOfTask : uint8_t {
   kUnknown
 };
 
+constexpr std::pair<TypeOfTask, std::string_view> kTypeOfTaskStrings[] = {
+    {TypeOfTask::kALL, "all"},
+    {TypeOfTask::kMPI, "mpi"},
+    {TypeOfTask::kOMP, "omp"},
+    {TypeOfTask::kSEQ, "seq"},
+    {TypeOfTask::kSTL, "stl"},
+    {TypeOfTask::kTBB, "tbb"},
+};
+
+inline std::string_view TypeOfTaskToString(TypeOfTask type) {
+  for (const auto& [key, value] : kTypeOfTaskStrings) {
+    if (key == type) return value;
+  }
+  return "unknown";
+}
+
 enum class PipelineStage { None, Validation, PreProcessing, Run, Done };
 
 /// @brief Indicates whether a task is enabled or disabled.
@@ -64,7 +80,7 @@ inline std::string GetStringTaskStatus(StatusOfTask status_of_task) {
 /// @param settings_file_path Path to the JSON file containing task type strings.
 /// @return Formatted string combining the task type and its corresponding value from the file.
 /// @throws std::runtime_error If the file cannot be opened.
-inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string &settings_file_path) {
+inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string& settings_file_path) {
   std::ifstream file(settings_file_path);
   if (!file.is_open()) {
     throw std::runtime_error("Failed to open " + settings_file_path);
@@ -73,26 +89,12 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
   auto list_settings = ppc::util::InitJSONPtr();
   file >> *list_settings;
 
-  auto to_type_str = [&](const std::string &type) -> std::string {
-    return type + "_" + std::string((*list_settings)["tasks"][type]);
-  };
-
-  switch (type_of_task) {
-    case TypeOfTask::kALL:
-      return to_type_str("all");
-    case TypeOfTask::kSTL:
-      return to_type_str("stl");
-    case TypeOfTask::kOMP:
-      return to_type_str("omp");
-    case TypeOfTask::kMPI:
-      return to_type_str("mpi");
-    case TypeOfTask::kTBB:
-      return to_type_str("tbb");
-    case TypeOfTask::kSEQ:
-      return to_type_str("seq");
-    default:
-      return "unknown";
+  std::string type_str = std::string(TypeOfTaskToString(type_of_task));
+  if (type_str == "unknown") {
+    return "unknown";
   }
+
+  return type_str + "_" + std::string((*list_settings)["tasks"][type_str]);
 }
 
 enum StateOfTesting : uint8_t { kFunc, kPerf };
