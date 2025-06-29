@@ -332,9 +332,9 @@ jobs:
           PPC_NUM_PROC: 1
           PPC_ASAN_RUN: 1
   gcc-build-codecov:
-    needs:
-      - gcc-test-extended
-      - clang-test-extended
+#    needs:
+#      - gcc-test-extended
+#      - clang-test-extended
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
