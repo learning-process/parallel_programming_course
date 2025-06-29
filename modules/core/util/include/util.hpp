@@ -50,23 +50,26 @@ int GetNumThreads();
 
 template <typename T>
 constexpr std::string_view GetNamespace() {
-#if defined(_MSC_VER)
-  constexpr std::string_view func{__FUNCSIG__};
-  auto start = func.find("GetNamespace<") + 13;
-  for (auto p : {"class ", "struct ", "enum ", "union "})
-    if (func.substr(start).starts_with(p)) {
-      start += std::string_view{p}.size();
-      break;
-    }
+#ifdef _MSC_VER
+  constexpr std::string_view kFunc{__FUNCSIG__};
+  constexpr std::string_view key = "GetNamespace<";
 #else
-  constexpr std::string_view func{__PRETTY_FUNCTION__};
-  auto start = func.find("T = ") + 4;
+  constexpr std::string_view kFunc{__PRETTY_FUNCTION__};
+  constexpr std::string_view key = "T = ";
 #endif
-  auto end = func.find_first_of(";]> ,>", start);
-  auto ns = func.substr(start, end - start);
-  auto pos = ns.rfind("::");
-  return (pos != std::string_view::npos) ? ns.substr(0, pos) : std::string_view{};
+
+  auto start = kFunc.find(key);
+  if (start == std::string_view::npos) return {};
+  start += key.size();
+
+  for (auto p : {"class ", "struct ", "enum ", "union "})
+    if (kFunc.substr(start).starts_with(p)) start += std::string_view{p}.size();
+
+  auto ns_type = kFunc.substr(start, kFunc.find(']', start) - start);
+  auto pos = ns_type.rfind("::");
+  return (pos != std::string_view::npos) ? ns_type.substr(0, pos) : std::string_view{};
 }
+
 
 inline std::shared_ptr<nlohmann::json> InitJSONPtr() { return std::make_shared<nlohmann::json>(); }
 
