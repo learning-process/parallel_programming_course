@@ -2,7 +2,7 @@ on:
   workflow_call:
 
 jobs:
-  windows-msvc-build:
+  msvc-build:
     runs-on: windows-latest
     strategy:
       matrix:
@@ -33,9 +33,9 @@ jobs:
         with:
           path: install
           name: ${{ matrix.build_type == 'Debug' && 'windows-msvc-debug-install' || 'windows-msvc-install' }}
-  windows-msvc-test:
+  msvc-test:
     needs:
-      - windows-msvc-build
+      - msvc-build
     runs-on: windows-latest
     defaults:
       run:
@@ -58,9 +58,9 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-  windows-msvc-test-extended:
+  msvc-test-extended:
     needs:
-      - windows-msvc-test
+      - msvc-test
     runs-on: windows-latest
     defaults:
       run:
@@ -79,7 +79,7 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1
-  windows-clang-build:
+  clang-build:
     runs-on: windows-latest
     defaults:
       run:
@@ -117,9 +117,9 @@ jobs:
         with:
           path: install
           name: windows-clang-install
-  windows-clang-test:
+  clang-test:
     needs:
-      - windows-clang-build
+      - clang-build
     runs-on: windows-latest
     defaults:
       run:
@@ -138,9 +138,9 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-  windows-clang-test-extended:
+  clang-test-extended:
     needs:
-      - windows-clang-test
+      - clang-test
     runs-on: windows-latest
     defaults:
       run:
