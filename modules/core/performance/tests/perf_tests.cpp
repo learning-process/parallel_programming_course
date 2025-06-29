@@ -239,12 +239,11 @@ TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
 
 TEST(TaskTest, DestructorTerminatesIfWrongOrder) {
   testing::FLAGS_gtest_death_test_style = "threadsafe";
-  ASSERT_DEATH_IF_SUPPORTED(
-      {
-        DummyTask task;
-        task.Run();
-      },
-      "");
+  auto test_func = [&] {
+    DummyTask task;
+    task.Run();
+  };
+  ASSERT_DEATH_IF_SUPPORTED({ test_func(); }, "");
 }
 
 namespace my {
@@ -274,4 +273,44 @@ TYPED_TEST(GetNamespaceTest, ExtractsNamespaceCorrectly) {
   } else {
     FAIL() << "Unhandled type in test";
   }
+}
+
+TEST(PerfTest, PipelineRunAndTaskRun) {
+  auto task_ptr = std::make_shared<DummyTask>();
+  ppc::core::Perf<int, int> perf(task_ptr);
+
+  ppc::core::PerfAttr attr;
+  double time = 0.0;
+  attr.num_running = 2;
+  attr.current_timer = [&time]() {
+    double t = time;
+    time += 1.0;
+    return t;
+  };
+
+  EXPECT_NO_THROW(perf.PipelineRun(attr));
+  auto res_pipeline = perf.GetPerfResults();
+  EXPECT_EQ(res_pipeline.type_of_running, ppc::core::PerfResults::kPipeline);
+  EXPECT_GT(res_pipeline.time_sec, 0.0);
+
+  EXPECT_NO_THROW(perf.TaskRun(attr));
+  auto res_taskrun = perf.GetPerfResults();
+  EXPECT_EQ(res_taskrun.type_of_running, ppc::core::PerfResults::kTaskRun);
+  EXPECT_GT(res_taskrun.time_sec, 0.0);
+}
+
+TEST(PerfTest, PrintPerfStatisticThrowsOnNone) {
+  testing::FLAGS_gtest_death_test_style = "threadsafe";
+  auto test_func = [&] {
+    auto task_ptr = std::make_shared<DummyTask>();
+    ppc::core::Perf<int, int> perf(task_ptr);
+    EXPECT_THROW(perf.PrintPerfStatistic("test"), std::runtime_error);
+  };
+  ASSERT_DEATH_IF_SUPPORTED({ test_func(); }, "");
+}
+
+TEST(PerfTest, GetStringParamNameTest) {
+  EXPECT_EQ(GetStringParamName(ppc::core::PerfResults::kTaskRun), "task_run");
+  EXPECT_EQ(GetStringParamName(ppc::core::PerfResults::kPipeline), "pipeline");
+  EXPECT_EQ(GetStringParamName(ppc::core::PerfResults::kNone), "none");
 }
