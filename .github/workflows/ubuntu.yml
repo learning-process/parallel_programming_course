@@ -2,7 +2,7 @@ on:
   workflow_call:
 
 jobs:
-  ubuntu-gcc-build:
+  gcc-build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -53,9 +53,9 @@ jobs:
           name: ${{ matrix.build_type == 'Debug' &&
             format('ubuntu-gcc-debug-install-{0}', matrix.os) ||
             format('ubuntu-gcc-install-{0}', matrix.os) }}
-  ubuntu-gcc-test:
+  gcc-test:
     needs:
-      - ubuntu-gcc-build
+      - gcc-build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -83,9 +83,9 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-  ubuntu-gcc-test-extended:
+  gcc-test-extended:
     needs:
-      - ubuntu-gcc-test
+      - gcc-test
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -109,7 +109,7 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1
-  ubuntu-clang-build:
+  clang-build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -153,9 +153,9 @@ jobs:
         with:
           path: install
           name: ubuntu-clang-install-${{ matrix.os }}
-  ubuntu-clang-test:
+  clang-test:
     needs:
-      - ubuntu-clang-build
+      - clang-build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -185,9 +185,9 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-  ubuntu-clang-test-extended:
+  clang-test-extended:
     needs:
-      - ubuntu-clang-test
+      - clang-test
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -213,9 +213,9 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1
-  ubuntu-clang-sanitizer-build:
+  clang-sanitizer-build:
     needs:
-      - ubuntu-clang-build
+      - clang-build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -262,9 +262,9 @@ jobs:
         with:
           path: install
           name: ubuntu-clang-sanitizer-install-${{ matrix.os }}
-  ubuntu-clang-sanitizer-test:
+  clang-sanitizer-test:
     needs:
-      - ubuntu-clang-sanitizer-build
+      - clang-sanitizer-build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -301,9 +301,9 @@ jobs:
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
-  ubuntu-clang-sanitizer-test-extended:
+  clang-sanitizer-test-extended:
     needs:
-      - ubuntu-clang-sanitizer-test
+      - clang-sanitizer-test
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -331,10 +331,10 @@ jobs:
         env:
           PPC_NUM_PROC: 1
           PPC_ASAN_RUN: 1
-  ubuntu-gcc-build-codecov:
+  gcc-build-codecov:
     needs:
-      - ubuntu-gcc-test-extended
-      - ubuntu-clang-test-extended
+      - gcc-test-extended
+      - clang-test-extended
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4

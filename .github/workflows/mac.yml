@@ -2,7 +2,7 @@ on:
   workflow_call:
 
 jobs:
-  macos-clang-build:
+  clang-build:
     runs-on: macOS-latest
     strategy:
       matrix:
@@ -44,9 +44,9 @@ jobs:
         with:
           path: install
           name: ${{ matrix.build_type == 'Debug' && 'macos-clang-debug-install' || 'macos-clang-install' }}
-  macos-clang-test:
+  clang-test:
     needs:
-      - macos-clang-build
+      - clang-build
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v4
@@ -75,9 +75,9 @@ jobs:
         run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-  macos-clang-test-extended:
+  clang-test-extended:
     needs:
-      - macos-clang-test
+      - clang-test
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v4
