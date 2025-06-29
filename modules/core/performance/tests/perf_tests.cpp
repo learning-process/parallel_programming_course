@@ -314,3 +314,17 @@ TEST(PerfTest, GetStringParamNameTest) {
   EXPECT_EQ(GetStringParamName(ppc::core::PerfResults::kPipeline), "pipeline");
   EXPECT_EQ(GetStringParamName(ppc::core::PerfResults::kNone), "none");
 }
+
+TEST(TaskTest, Destructor_InvalidPipelineOrderTerminates_PartialPipeline) {
+  testing::FLAGS_gtest_death_test_style = "threadsafe";
+  auto test_func = [&] {
+    struct BadTask : ppc::core::Task<int, int> {
+      bool ValidationImpl() override { return true; }
+      bool PreProcessingImpl() override { return true; }
+      bool RunImpl() override { return true; }
+      bool PostProcessingImpl() override { return true; }
+    } task;
+    task.Validation();
+  };
+  ASSERT_DEATH_IF_SUPPORTED({ test_func(); }, "ORDER OF FUNCTIONS IS NOT RIGHT");
+}
