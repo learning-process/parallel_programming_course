@@ -52,15 +52,14 @@ template <typename T>
 constexpr std::string_view GetNamespace() {
 #ifdef _MSC_VER
   constexpr std::string_view kFunc{__FUNCSIG__};
-  constexpr std::string_view key = "GetNamespace<";
+  constexpr std::string_view kKey = "GetNamespace<";
 #else
   constexpr std::string_view kFunc{__PRETTY_FUNCTION__};
-  constexpr std::string_view key = "T = ";
+  constexpr std::string_view kKey = "T = ";
 #endif
 
-  auto start = kFunc.find(key);
-  if (start == std::string_view::npos) return {};
-  start += key.size();
+  auto start = kFunc.find(kKey);
+  start = (start == std::string_view::npos) ? kFunc.size() : start + kKey.size();
 
   for (auto p : {"class ", "struct ", "enum ", "union "})
     if (kFunc.substr(start).starts_with(p)) start += std::string_view{p}.size();
@@ -69,7 +68,6 @@ constexpr std::string_view GetNamespace() {
   auto pos = ns_type.rfind("::");
   return (pos != std::string_view::npos) ? ns_type.substr(0, pos) : std::string_view{};
 }
-
 
 inline std::shared_ptr<nlohmann::json> InitJSONPtr() { return std::make_shared<nlohmann::json>(); }
 
