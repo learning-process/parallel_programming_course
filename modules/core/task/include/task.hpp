@@ -87,7 +87,7 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
 
   std::string type_str = TypeOfTaskToString(type_of_task);
   if (type_str == "unknown") {
-    throw std::runtime_error("Unknown task type");
+    return type_str;
   }
 
   return type_str + "_" + std::string((*list_settings)["tasks"][type_str]);
