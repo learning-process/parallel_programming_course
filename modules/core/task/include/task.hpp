@@ -44,12 +44,12 @@ enum TypeOfTask : uint8_t {
 using TaskMapping = std::pair<TypeOfTask, std::string>;
 using TaskMappingArray = std::array<TaskMapping, 6>;
 
-constexpr TaskMappingArray kTaskTypeMappings = {{{TypeOfTask::kALL, "all"},
-                                                 {TypeOfTask::kMPI, "mpi"},
-                                                 {TypeOfTask::kOMP, "omp"},
-                                                 {TypeOfTask::kSEQ, "seq"},
-                                                 {TypeOfTask::kSTL, "stl"},
-                                                 {TypeOfTask::kTBB, "tbb"}}};
+const TaskMappingArray kTaskTypeMappings = {{{TypeOfTask::kALL, "all"},
+                                             {TypeOfTask::kMPI, "mpi"},
+                                             {TypeOfTask::kOMP, "omp"},
+                                             {TypeOfTask::kSEQ, "seq"},
+                                             {TypeOfTask::kSTL, "stl"},
+                                             {TypeOfTask::kTBB, "tbb"}}};
 
 inline std::string TypeOfTaskToString(TypeOfTask type) {
   for (const auto &[key, value] : kTaskTypeMappings) {
