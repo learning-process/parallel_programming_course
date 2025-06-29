@@ -77,25 +77,22 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
     return type + "_" + std::string((*list_settings)["tasks"][type]);
   };
 
-  if (type_of_task == TypeOfTask::kALL) {
-    return to_type_str("all");
+  switch (type_of_task) {
+    case TypeOfTask::kALL:
+      return to_type_str("all");
+    case TypeOfTask::kSTL:
+      return to_type_str("stl");
+    case TypeOfTask::kOMP:
+      return to_type_str("omp");
+    case TypeOfTask::kMPI:
+      return to_type_str("mpi");
+    case TypeOfTask::kTBB:
+      return to_type_str("tbb");
+    case TypeOfTask::kSEQ:
+      return to_type_str("seq");
+    default:
+      return "unknown";
   }
-  if (type_of_task == TypeOfTask::kSTL) {
-    return to_type_str("stl");
-  }
-  if (type_of_task == TypeOfTask::kOMP) {
-    return to_type_str("omp");
-  }
-  if (type_of_task == TypeOfTask::kMPI) {
-    return to_type_str("mpi");
-  }
-  if (type_of_task == TypeOfTask::kTBB) {
-    return to_type_str("tbb");
-  }
-  if (type_of_task == TypeOfTask::kSEQ) {
-    return to_type_str("seq");
-  }
-  return "unknown";
 }
 
 enum StateOfTesting : uint8_t { kFunc, kPerf };
