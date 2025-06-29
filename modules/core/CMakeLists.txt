@@ -25,22 +25,20 @@ add_library(${exec_func_lib} STATIC ${LIB_SOURCE_FILES})
 set_target_properties(${exec_func_lib} PROPERTIES LINKER_LANGUAGE CXX)
 
 # Add include directories to target
-target_include_directories(${exec_func_lib} PUBLIC
-    ${CMAKE_SOURCE_DIR}/3rdparty
-    ${CMAKE_SOURCE_DIR}/modules
-    ${CMAKE_SOURCE_DIR}/tasks
-)
+target_include_directories(
+  ${exec_func_lib} PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty
+                          ${CMAKE_SOURCE_DIR}/modules ${CMAKE_SOURCE_DIR}/tasks)
 
 # Add external project include directories
-target_include_directories(${exec_func_lib} PUBLIC
-    ${CMAKE_SOURCE_DIR}/3rdparty/onetbb/include
-    ${CMAKE_SOURCE_DIR}/3rdparty/json/include
-    ${CMAKE_SOURCE_DIR}/3rdparty/googletest/googletest/include
-    ${CMAKE_SOURCE_DIR}/3rdparty/libenvpp/include
-)
-target_include_directories(${exec_func_lib} SYSTEM PUBLIC
-    ${CMAKE_SOURCE_DIR}/3rdparty/libenvpp/external/fmt/include
-)
+target_include_directories(
+  ${exec_func_lib}
+  PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty/onetbb/include
+         ${CMAKE_SOURCE_DIR}/3rdparty/json/include
+         ${CMAKE_SOURCE_DIR}/3rdparty/googletest/googletest/include
+         ${CMAKE_SOURCE_DIR}/3rdparty/libenvpp/include)
+target_include_directories(
+  ${exec_func_lib} SYSTEM
+  PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty/libenvpp/external/fmt/include)
 
 add_dependencies(${exec_func_lib} ppc_libenvpp)
 target_link_directories(${exec_func_lib} PUBLIC
