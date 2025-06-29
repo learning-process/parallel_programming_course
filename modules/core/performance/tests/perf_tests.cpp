@@ -263,14 +263,14 @@ using TestTypes = ::testing::Types<my::nested::Type, my::Another, int>;
 TYPED_TEST_SUITE(GetNamespaceTest, TestTypes);
 
 TYPED_TEST(GetNamespaceTest, ExtractsNamespaceCorrectly) {
-  std::string kNs = ppc::util::GetNamespace<TypeParam>();
+  std::string k_ns = ppc::util::GetNamespace<TypeParam>();
 
   if constexpr (std::is_same_v<TypeParam, my::nested::Type>) {
-    EXPECT_EQ(kNs, "my::nested");
+    EXPECT_EQ(k_ns, "my::nested");
   } else if constexpr (std::is_same_v<TypeParam, my::Another>) {
-    EXPECT_EQ(kNs, "my");
+    EXPECT_EQ(k_ns, "my");
   } else if constexpr (std::is_same_v<TypeParam, int>) {
-    EXPECT_EQ(kNs, "");
+    EXPECT_EQ(k_ns, "");
   } else {
     FAIL() << "Unhandled type in test";
   }
