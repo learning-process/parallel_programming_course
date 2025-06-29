@@ -158,7 +158,22 @@ TEST(TaskTest, TaskDestructor_ThrowsIfStageIncomplete) {
     } task(in);
     task.Validation();
   };
-  EXPECT_DEATH_IF_SUPPORTED(destroy_func(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
+  EXPECT_DEATH_IF_SUPPORTED({ destroy_func(); }, ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
+}
+
+TEST(TaskTest, TaskDestructor_ThrowsIfEmpty) {
+  testing::FLAGS_gtest_death_test_style = "threadsafe";
+  auto destroy_func = [] {
+    std::vector<int32_t> in(20, 1);
+    struct LocalTask : ppc::core::Task<std::vector<int32_t>, int32_t> {
+      explicit LocalTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
+      bool ValidationImpl() override { return true; }
+      bool PreProcessingImpl() override { return true; }
+      bool RunImpl() override { return true; }
+      bool PostProcessingImpl() override { return true; }
+    } task(in);
+  };
+  EXPECT_DEATH_IF_SUPPORTED({ destroy_func(); }, ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
 }
 
 TEST(TaskTest, InternalTimeTest_ThrowsIfTimeoutExceeded) {
