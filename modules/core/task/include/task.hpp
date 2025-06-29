@@ -114,6 +114,7 @@ class Task {
     if (stage_ == PipelineStage::kNone || stage_ == PipelineStage::kDone) {
       stage_ = PipelineStage::kValidation;
     } else {
+      stage_ = PipelineStage::kException;
       throw std::runtime_error("Validation should be called before preprocessing");
     }
     return ValidationImpl();
@@ -125,6 +126,7 @@ class Task {
     if (stage_ == PipelineStage::kValidation) {
       stage_ = PipelineStage::kPreProcessing;
     } else {
+      stage_ = PipelineStage::kException;
       throw std::runtime_error("Preprocessing should be called after validation");
     }
     if (state_of_testing_ == StateOfTesting::kFunc) {
@@ -139,6 +141,7 @@ class Task {
     if (stage_ == PipelineStage::kPreProcessing || stage_ == PipelineStage::kRun) {
       stage_ = PipelineStage::kRun;
     } else {
+      stage_ = PipelineStage::kException;
       throw std::runtime_error("Run should be called after preprocessing");
     }
     return RunImpl();
@@ -150,6 +153,7 @@ class Task {
     if (stage_ == PipelineStage::kRun) {
       stage_ = PipelineStage::kDone;
     } else {
+      stage_ = PipelineStage::kException;
       throw std::runtime_error("Postprocessing should be called after run");
     }
     if (state_of_testing_ == StateOfTesting::kFunc) {
@@ -189,7 +193,7 @@ class Task {
   /// @brief Destructor. Verifies that the pipeline was executed in the correct order.
   /// @note Terminates the program if the pipeline order is incorrect or incomplete.
   virtual ~Task() {
-    if (stage_ != PipelineStage::kDone) {
+    if (stage_ != PipelineStage::kDone && stage_ != PipelineStage::kException) {
       std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT" << '\n';
       std::terminate();
     }
@@ -248,7 +252,14 @@ class Task {
   StatusOfTask status_of_task_ = kEnabled;
   static constexpr double kMaxTestTime = 1.0;
   std::chrono::high_resolution_clock::time_point tmp_time_point_;
-  enum class PipelineStage : uint8_t { kNone, kValidation, kPreProcessing, kRun, kDone } stage_ = PipelineStage::kNone;
+  enum class PipelineStage : uint8_t {
+    kNone,
+    kValidation,
+    kPreProcessing,
+    kRun,
+    kDone,
+    kException
+  } stage_ = PipelineStage::kNone;
 };
 
 /// @brief Smart pointer alias for Task.

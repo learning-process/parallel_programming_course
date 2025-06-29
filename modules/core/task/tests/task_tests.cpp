@@ -62,33 +62,24 @@ TEST(task_tests, check_float) {
 }
 
 TEST(task_tests, check_wrong_order_disabled_valgrind) {
-  auto destroy_function = [] {
-    std::vector<float> in(20, 1);
-    ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
-    ASSERT_EQ(test_task.Validation(), true);
-    test_task.PreProcessing();
-    test_task.PostProcessing();
-  };
-  EXPECT_DEATH_IF_SUPPORTED(destroy_function(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
+  std::vector<float> in(20, 1);
+  ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
+  ASSERT_EQ(test_task.Validation(), true);
+  test_task.PreProcessing();
+  EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
 }
 
 TEST(task_tests, premature_postprocessing_no_steps) {
-  auto destroy_function = [] {
-    std::vector<float> in(20, 1);
-    ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
-    ASSERT_NO_THROW(test_task.PostProcessing());
-  };
-  EXPECT_DEATH_IF_SUPPORTED(destroy_function(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
+  std::vector<float> in(20, 1);
+  ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
+  EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
 }
 
 TEST(task_tests, premature_postprocessing_after_preprocessing) {
-  auto destroy_function = [] {
-    std::vector<float> in(20, 1);
-    ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
-    ASSERT_NO_THROW(test_task.PreProcessing());
-    ASSERT_NO_THROW(test_task.PostProcessing());
-  };
-  EXPECT_DEATH_IF_SUPPORTED(destroy_function(), ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
+  std::vector<float> in(20, 1);
+  ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
+  EXPECT_THROW(test_task.PreProcessing(), std::runtime_error);
+  EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
 }
 
 TEST(TaskTest, GetStringTaskStatus_Disabled) {
@@ -201,38 +192,26 @@ class DummyTask : public ppc::core::Task<int, int> {
 };
 
 TEST(TaskTest, ValidationThrowsIfCalledTwice) {
-  auto test_func = [&] {
-    auto task = std::make_shared<DummyTask>();
-    task->Validation();
-    EXPECT_THROW(task->Validation(), std::runtime_error);
-  };
-  EXPECT_DEATH_IF_SUPPORTED({ test_func(); }, "ORDER OF FUNCTIONS IS NOT RIGHT");
+  auto task = std::make_shared<DummyTask>();
+  task->Validation();
+  EXPECT_THROW(task->Validation(), std::runtime_error);
 }
 
 TEST(TaskTest, PreProcessingThrowsIfCalledBeforeValidation) {
-  auto test_func = [&] {
-    auto task = std::make_shared<DummyTask>();
-    EXPECT_THROW(task->PreProcessing(), std::runtime_error);
-  };
-  EXPECT_DEATH_IF_SUPPORTED({ test_func(); }, "ORDER OF FUNCTIONS IS NOT RIGHT");
+  auto task = std::make_shared<DummyTask>();
+  EXPECT_THROW(task->PreProcessing(), std::runtime_error);
 }
 
 TEST(TaskTest, RunThrowsIfCalledBeforePreProcessing) {
-  auto test_func = [&] {
-    auto task = std::make_shared<DummyTask>();
-    EXPECT_THROW(task->Run(), std::runtime_error);
-  };
-  EXPECT_DEATH_IF_SUPPORTED({ test_func(); }, "ORDER OF FUNCTIONS IS NOT RIGHT");
+  auto task = std::make_shared<DummyTask>();
+  EXPECT_THROW(task->Run(), std::runtime_error);
 }
 
 TEST(TaskTest, PostProcessingThrowsIfCalledBeforeRun) {
-  auto test_func = [&] {
-    auto task = std::make_shared<DummyTask>();
-    task->Validation();
-    task->PreProcessing();
-    EXPECT_THROW(task->PostProcessing(), std::runtime_error);
-  };
-  EXPECT_DEATH_IF_SUPPORTED({ test_func(); }, "ORDER OF FUNCTIONS IS NOT RIGHT");
+  auto task = std::make_shared<DummyTask>();
+  task->Validation();
+  task->PreProcessing();
+  EXPECT_THROW(task->PostProcessing(), std::runtime_error);
 }
 
 int main(int argc, char** argv) {

@@ -238,12 +238,8 @@ TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
 }
 
 TEST(TaskTest, DestructorTerminatesIfWrongOrder) {
-  testing::FLAGS_gtest_death_test_style = "threadsafe";
-  auto test_func = [&] {
-    DummyTask task;
-    task.Run();
-  };
-  ASSERT_DEATH_IF_SUPPORTED({ test_func(); }, "");
+  DummyTask task;
+  EXPECT_THROW(task.Run(), std::runtime_error);
 }
 
 namespace my {
