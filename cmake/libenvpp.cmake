@@ -1,7 +1,3 @@
-include_directories(${CMAKE_SOURCE_DIR}/3rdparty/libenvpp/include)
-include_directories(SYSTEM
-                    ${CMAKE_SOURCE_DIR}/3rdparty/libenvpp/external/fmt/include)
-
 if(WIN32)
   set(PPC_FMT_FLAGS "/EHsc /DFMT_CONSTEVAL=inline")
 else()
