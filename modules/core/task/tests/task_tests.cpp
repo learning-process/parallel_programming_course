@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <exception>
 #include <fstream>
+#include <memory>
 #include <stdexcept>
 #include <thread>
 #include <vector>
@@ -188,6 +189,50 @@ TEST(TaskTest, InternalTimeTest_ThrowsIfTimeoutExceeded) {
   EXPECT_NO_THROW(task.PreProcessing());
   task.Run();
   EXPECT_THROW(task.PostProcessing(), std::runtime_error);
+}
+
+class DummyTask : public ppc::core::Task<int, int> {
+ public:
+  using Task::Task;
+  bool ValidationImpl() override { return true; }
+  bool PreProcessingImpl() override { return true; }
+  bool RunImpl() override { return true; }
+  bool PostProcessingImpl() override { return true; }
+};
+
+TEST(TaskTest, ValidationThrowsIfCalledTwice) {
+  auto test_func = [&] {
+    auto task = std::make_shared<DummyTask>();
+    task->Validation();
+    EXPECT_THROW(task->Validation(), std::runtime_error);
+  };
+  EXPECT_DEATH_IF_SUPPORTED({ test_func(); }, "ORDER OF FUNCTIONS IS NOT RIGHT");
+}
+
+TEST(TaskTest, PreProcessingThrowsIfCalledBeforeValidation) {
+  auto test_func = [&] {
+    auto task = std::make_shared<DummyTask>();
+    EXPECT_THROW(task->PreProcessing(), std::runtime_error);
+  };
+  EXPECT_DEATH_IF_SUPPORTED({ test_func(); }, "ORDER OF FUNCTIONS IS NOT RIGHT");
+}
+
+TEST(TaskTest, RunThrowsIfCalledBeforePreProcessing) {
+  auto test_func = [&] {
+    auto task = std::make_shared<DummyTask>();
+    EXPECT_THROW(task->Run(), std::runtime_error);
+  };
+  EXPECT_DEATH_IF_SUPPORTED({ test_func(); }, "ORDER OF FUNCTIONS IS NOT RIGHT");
+}
+
+TEST(TaskTest, PostProcessingThrowsIfCalledBeforeRun) {
+  auto test_func = [&] {
+    auto task = std::make_shared<DummyTask>();
+    task->Validation();
+    task->PreProcessing();
+    EXPECT_THROW(task->PostProcessing(), std::runtime_error);
+  };
+  EXPECT_DEATH_IF_SUPPORTED({ test_func(); }, "ORDER OF FUNCTIONS IS NOT RIGHT");
 }
 
 int main(int argc, char** argv) {

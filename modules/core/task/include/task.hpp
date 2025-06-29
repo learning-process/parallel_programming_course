@@ -111,8 +111,10 @@ class Task {
   /// @brief Validates input data and task attributes before execution.
   /// @return True if validation is successful.
   virtual bool Validation() final {
-    if (stage_ == PipelineStage::kNone) {
+    if (stage_ == PipelineStage::kNone || stage_ == PipelineStage::kDone) {
       stage_ = PipelineStage::kValidation;
+    } else {
+      throw std::runtime_error("Validation should be called before preprocessing");
     }
     return ValidationImpl();
   }
@@ -122,6 +124,8 @@ class Task {
   virtual bool PreProcessing() final {
     if (stage_ == PipelineStage::kValidation) {
       stage_ = PipelineStage::kPreProcessing;
+    } else {
+      throw std::runtime_error("Preprocessing should be called after validation");
     }
     if (state_of_testing_ == StateOfTesting::kFunc) {
       InternalTimeTest();
@@ -134,6 +138,8 @@ class Task {
   virtual bool Run() final {
     if (stage_ == PipelineStage::kPreProcessing || stage_ == PipelineStage::kRun) {
       stage_ = PipelineStage::kRun;
+    } else {
+      throw std::runtime_error("Run should be called after preprocessing");
     }
     return RunImpl();
   }
@@ -143,6 +149,8 @@ class Task {
   virtual bool PostProcessing() final {
     if (stage_ == PipelineStage::kRun) {
       stage_ = PipelineStage::kDone;
+    } else {
+      throw std::runtime_error("Postprocessing should be called after run");
     }
     if (state_of_testing_ == StateOfTesting::kFunc) {
       InternalTimeTest();
