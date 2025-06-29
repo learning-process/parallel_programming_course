@@ -212,6 +212,26 @@ TEST(TaskTest, Destructor_InvalidPipelineOrderTerminates) {
   ASSERT_DEATH_IF_SUPPORTED({ test_func(); }, "");
 }
 
+// Make sure this sucker writes proper JSON so GetStringTaskType doesn't choke
+TEST(TaskTest, GetStringTaskType_UnknownType_ValidJSON) {
+  std::string path = "settings_valid.json";
+  std::ofstream file(path);
+  file << "{\"tasks\": {\"all\": \"enabled\", \"stl\": \"enabled\", \"omp\": \"enabled\", \"mpi\": \"enabled\", "
+          "\"tbb\": \"enabled\", \"seq\": \"enabled\"}}";
+  file.close();
+  auto result = GetStringTaskType(ppc::core::TypeOfTask::kALL, path);
+  EXPECT_TRUE(result.find("all") != std::string::npos);
+}
+
+// Feed it garbage JSON and watch it crash like it should
+TEST(TaskTest, GetStringTaskType_ThrowsOnBadJSON) {
+  std::string path = "bad_settings.json";
+  std::ofstream file(path);
+  file << "{";  // broken trash
+  file.close();
+  EXPECT_THROW({ GetStringTaskType(ppc::core::TypeOfTask::kALL, path); }, std::exception);
+}
+
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
