@@ -56,7 +56,7 @@ int GetNumThreads();
 template <typename T>
 std::string GetNamespace() {
   std::string name = typeid(T).name();
-#ifdef __GNUG__
+#ifdef __GNUC__
   int status = 0;
   std::unique_ptr<char, void (*)(void*)> demangled{abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status),
                                                    std::free};
