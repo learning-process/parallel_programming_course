@@ -2,7 +2,32 @@ on:
   workflow_call:
 
 jobs:
+  pre-commit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: Setup environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y \
+            gcc-14 g++-14 ninja-build python3-pip clang-format-16
+          python3 -m pip install -r requirements.txt
+      - name: Run pre-commit checks
+        run: |
+          # For push events, compare with previous commit
+          if [ "${{ github.event_name }}" = "push" ]; then
+            pre-commit run --from-ref HEAD~1 --to-ref HEAD
+          else
+            # For PRs, compare with base branch
+            git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
+            pre-commit run --from-ref ${{ github.base_ref }} --to-ref HEAD
+          fi
   gcc-build:
+    needs:
+      - pre-commit
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -110,6 +135,8 @@ jobs:
         env:
           PPC_NUM_PROC: 1
   clang-build:
+    needs:
+      - pre-commit
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
