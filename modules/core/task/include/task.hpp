@@ -194,8 +194,7 @@ class Task {
   /// @note Terminates the program if the pipeline order is incorrect or incomplete.
   virtual ~Task() {
     if (stage_ != PipelineStage::kDone && stage_ != PipelineStage::kException) {
-      std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT" << '\n';
-      std::terminate();
+      ppc::util::DestructorFailureFlag::Set();
     }
 #if _OPENMP >= 201811
     omp_pause_resource_all(omp_pause_soft);

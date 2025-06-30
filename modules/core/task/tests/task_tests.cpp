@@ -10,6 +10,7 @@
 #include <thread>
 #include <vector>
 
+#include "core/runners/include/runners.hpp"
 #include "core/task/include/task.hpp"
 #include "core/task/tests/test_task.hpp"
 
@@ -146,8 +147,7 @@ TEST(TaskTest, GetStringTaskType_ThrowsIfKeyMissing) {
 }
 
 TEST(TaskTest, TaskDestructor_ThrowsIfStageIncomplete) {
-  testing::FLAGS_gtest_death_test_style = "threadsafe";
-  auto destroy_func = [] {
+  {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : ppc::core::Task<std::vector<int32_t>, int32_t> {
       explicit LocalTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
@@ -157,13 +157,13 @@ TEST(TaskTest, TaskDestructor_ThrowsIfStageIncomplete) {
       bool PostProcessingImpl() override { return true; }
     } task(in);
     task.Validation();
-  };
-  EXPECT_DEATH_IF_SUPPORTED({ destroy_func(); }, ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
+  }
+  EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, TaskDestructor_ThrowsIfEmpty) {
-  testing::FLAGS_gtest_death_test_style = "threadsafe";
-  auto destroy_func = [] {
+  {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : ppc::core::Task<std::vector<int32_t>, int32_t> {
       explicit LocalTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
@@ -172,8 +172,9 @@ TEST(TaskTest, TaskDestructor_ThrowsIfEmpty) {
       bool RunImpl() override { return true; }
       bool PostProcessingImpl() override { return true; }
     } task(in);
-  };
-  EXPECT_DEATH_IF_SUPPORTED({ destroy_func(); }, ".*ORDER OF FUNCTIONS IS NOT RIGHT.*");
+  }
+  EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, InternalTimeTest_ThrowsIfTimeoutExceeded) {
@@ -229,7 +230,4 @@ TEST(TaskTest, PostProcessingThrowsIfCalledBeforeRun) {
   EXPECT_THROW(task->PostProcessing(), std::runtime_error);
 }
 
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
+int main(int argc, char** argv) { return ppc::core::SimpleInit(argc, argv); }

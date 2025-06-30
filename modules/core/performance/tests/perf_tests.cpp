@@ -296,13 +296,13 @@ TEST(PerfTest, PipelineRunAndTaskRun) {
 }
 
 TEST(PerfTest, PrintPerfStatisticThrowsOnNone) {
-  testing::FLAGS_gtest_death_test_style = "threadsafe";
-  auto test_func = [&] {
+  {
     auto task_ptr = std::make_shared<DummyTask>();
     ppc::core::Perf<int, int> perf(task_ptr);
     EXPECT_THROW(perf.PrintPerfStatistic("test"), std::runtime_error);
-  };
-  ASSERT_DEATH_IF_SUPPORTED({ test_func(); }, "");
+  }
+  EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(PerfTest, GetStringParamNameTest) {
@@ -312,8 +312,7 @@ TEST(PerfTest, GetStringParamNameTest) {
 }
 
 TEST(TaskTest, Destructor_InvalidPipelineOrderTerminates_PartialPipeline) {
-  testing::FLAGS_gtest_death_test_style = "threadsafe";
-  auto test_func = [&] {
+  {
     struct BadTask : ppc::core::Task<int, int> {
       bool ValidationImpl() override { return true; }
       bool PreProcessingImpl() override { return true; }
@@ -321,6 +320,7 @@ TEST(TaskTest, Destructor_InvalidPipelineOrderTerminates_PartialPipeline) {
       bool PostProcessingImpl() override { return true; }
     } task;
     task.Validation();
-  };
-  ASSERT_DEATH_IF_SUPPORTED({ test_func(); }, "ORDER OF FUNCTIONS IS NOT RIGHT");
+  }
+  EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
+  ppc::util::DestructorFailureFlag::Unset();
 }

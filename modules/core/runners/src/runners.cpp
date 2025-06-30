@@ -7,6 +7,7 @@
 #include <format>
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 
 #include "core/util/include/util.hpp"
@@ -82,11 +83,29 @@ int Init(int argc, char** argv) {
   listeners.Append(new ppc::core::UnreadMessagesDetector());
   auto status = RUN_ALL_TESTS();
 
+  if (ppc::util::DestructorFailureFlag::Get()) {
+    throw std::runtime_error(
+        std::format("[  ERROR  ] Destructor failed with code {}", ppc::util::DestructorFailureFlag::Get()));
+  }
+
   const int finalize_res = MPI_Finalize();
   if (finalize_res != MPI_SUCCESS) {
     std::cerr << std::format("[  ERROR  ] MPI_Finalize failed with code {}", finalize_res) << '\n';
     MPI_Abort(MPI_COMM_WORLD, finalize_res);
     return finalize_res;
+  }
+  return status;
+}
+
+int SimpleInit(int argc, char** argv) {
+  // Limit the number of threads in TBB
+  tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
+
+  testing::InitGoogleTest(&argc, argv);
+  auto status = RUN_ALL_TESTS();
+  if (ppc::util::DestructorFailureFlag::Get()) {
+    throw std::runtime_error(
+        std::format("[  ERROR  ] Destructor failed with code {}", ppc::util::DestructorFailureFlag::Get()));
   }
   return status;
 }

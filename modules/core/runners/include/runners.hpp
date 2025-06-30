@@ -43,4 +43,10 @@ class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
 ///         finalization fails.
 int Init(int argc, char** argv);
 
+/// @brief Initializes the testing environment only for gtest.
+/// @param argc Argument count.
+/// @param argv Argument vector.
+/// @return Exit code from RUN_ALL_TESTS.
+int SimpleInit(int argc, char** argv);
+
 }  // namespace ppc::core
