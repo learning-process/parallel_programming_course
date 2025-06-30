@@ -13,6 +13,7 @@
 #include "core/runners/include/runners.hpp"
 #include "core/task/include/task.hpp"
 #include "core/task/tests/test_task.hpp"
+#include "core/util/include/util.hpp"
 
 TEST(task_tests, check_int32_t) {
   std::vector<int32_t> in(20, 1);
