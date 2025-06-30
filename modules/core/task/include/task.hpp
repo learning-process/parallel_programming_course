@@ -3,6 +3,7 @@
 #include <omp.h>
 
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <core/util/include/util.hpp>
 #include <cstdint>
@@ -16,6 +17,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace ppc::core {
@@ -38,6 +40,25 @@ enum TypeOfTask : uint8_t {
   /// Unknown task type
   kUnknown
 };
+
+using TaskMapping = std::pair<TypeOfTask, std::string>;
+using TaskMappingArray = std::array<TaskMapping, 6>;
+
+const TaskMappingArray kTaskTypeMappings = {{{TypeOfTask::kALL, "all"},
+                                             {TypeOfTask::kMPI, "mpi"},
+                                             {TypeOfTask::kOMP, "omp"},
+                                             {TypeOfTask::kSEQ, "seq"},
+                                             {TypeOfTask::kSTL, "stl"},
+                                             {TypeOfTask::kTBB, "tbb"}}};
+
+inline std::string TypeOfTaskToString(TypeOfTask type) {
+  for (const auto &[key, value] : kTaskTypeMappings) {
+    if (key == type) {
+      return value;
+    }
+  }
+  return "unknown";
+}
 
 /// @brief Indicates whether a task is enabled or disabled.
 enum StatusOfTask : uint8_t {
@@ -71,29 +92,12 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
   auto list_settings = ppc::util::InitJSONPtr();
   file >> *list_settings;
 
-  auto to_type_str = [&](const std::string &type) -> std::string {
-    return type + "_" + std::string((*list_settings)["tasks"][type]);
-  };
+  std::string type_str = TypeOfTaskToString(type_of_task);
+  if (type_str == "unknown") {
+    return type_str;
+  }
 
-  if (type_of_task == TypeOfTask::kALL) {
-    return to_type_str("all");
-  }
-  if (type_of_task == TypeOfTask::kSTL) {
-    return to_type_str("stl");
-  }
-  if (type_of_task == TypeOfTask::kOMP) {
-    return to_type_str("omp");
-  }
-  if (type_of_task == TypeOfTask::kMPI) {
-    return to_type_str("mpi");
-  }
-  if (type_of_task == TypeOfTask::kTBB) {
-    return to_type_str("tbb");
-  }
-  if (type_of_task == TypeOfTask::kSEQ) {
-    return to_type_str("seq");
-  }
-  return "unknown";
+  return type_str + "_" + std::string((*list_settings)["tasks"][type_str]);
 }
 
 enum StateOfTesting : uint8_t { kFunc, kPerf };
@@ -104,22 +108,29 @@ template <typename InType, typename OutType>
 /// @tparam OutType Output data type.
 class Task {
  public:
-  /// @brief Constructs a new Task object.
-  explicit Task(StateOfTesting /*state_of_testing*/ = StateOfTesting::kFunc) { functions_order_.clear(); }
-
   /// @brief Validates input data and task attributes before execution.
   /// @return True if validation is successful.
   virtual bool Validation() final {
-    InternalOrderTest(ppc::util::FuncName());
+    if (stage_ == PipelineStage::kNone || stage_ == PipelineStage::kDone) {
+      stage_ = PipelineStage::kValidation;
+    } else {
+      stage_ = PipelineStage::kException;
+      throw std::runtime_error("Validation should be called before preprocessing");
+    }
     return ValidationImpl();
   }
 
   /// @brief Performs preprocessing on the input data.
   /// @return True if preprocessing is successful.
   virtual bool PreProcessing() final {
-    InternalOrderTest(ppc::util::FuncName());
+    if (stage_ == PipelineStage::kValidation) {
+      stage_ = PipelineStage::kPreProcessing;
+    } else {
+      stage_ = PipelineStage::kException;
+      throw std::runtime_error("Preprocessing should be called after validation");
+    }
     if (state_of_testing_ == StateOfTesting::kFunc) {
-      InternalTimeTest(ppc::util::FuncName());
+      InternalTimeTest();
     }
     return PreProcessingImpl();
   }
@@ -127,16 +138,26 @@ class Task {
   /// @brief Executes the main logic of the task.
   /// @return True if execution is successful.
   virtual bool Run() final {
-    InternalOrderTest(ppc::util::FuncName());
+    if (stage_ == PipelineStage::kPreProcessing || stage_ == PipelineStage::kRun) {
+      stage_ = PipelineStage::kRun;
+    } else {
+      stage_ = PipelineStage::kException;
+      throw std::runtime_error("Run should be called after preprocessing");
+    }
     return RunImpl();
   }
 
   /// @brief Performs postprocessing on the output data.
   /// @return True if postprocessing is successful.
   virtual bool PostProcessing() final {
-    InternalOrderTest(ppc::util::FuncName());
+    if (stage_ == PipelineStage::kRun) {
+      stage_ = PipelineStage::kDone;
+    } else {
+      stage_ = PipelineStage::kException;
+      throw std::runtime_error("Postprocessing should be called after run");
+    }
     if (state_of_testing_ == StateOfTesting::kFunc) {
-      InternalTimeTest(ppc::util::FuncName());
+      InternalTimeTest();
     }
     return PostProcessingImpl();
   }
@@ -170,14 +191,10 @@ class Task {
   OutType &GetOutput() { return output_; }
 
   /// @brief Destructor. Verifies that the pipeline was executed in the correct order.
-  /// @note Terminates the program if pipeline order is incorrect or incomplete.
+  /// @note Terminates the program if the pipeline order is incorrect or incomplete.
   virtual ~Task() {
-    if (!functions_order_.empty() || !was_worked_) {
-      std::cerr << "ORDER OF FUNCTIONS IS NOT RIGHT! \n Expected - \"Validation\", \"PreProcessing\", \"Run\", "
-                   "\"PostProcessing\" \n";
-      std::terminate();
-    } else {
-      functions_order_.clear();
+    if (stage_ != PipelineStage::kDone && stage_ != PipelineStage::kException) {
+      ppc::util::DestructorFailureFlag::Set();
     }
 #if _OPENMP >= 201811
     omp_pause_resource_all(omp_pause_soft);
@@ -185,26 +202,14 @@ class Task {
   }
 
  protected:
-  /// @brief Verifies the correct order of pipeline method calls.
-  /// @param str Name of the method being called.
-  virtual void InternalOrderTest(const std::string &str) final {
-    functions_order_.push_back(str);
-    if (str == "PostProcessing" && IsFullPipelineStage()) {
-      functions_order_.clear();
-    } else {
-      was_worked_ = true;
-    }
-  }
-
   /// @brief Measures execution time between preprocessing and postprocessing steps.
-  /// @param str Name of the method being timed.
   /// @throws std::runtime_error If execution exceeds the allowed time limit.
-  virtual void InternalTimeTest(const std::string &str) final {
-    if (str == "PreProcessing") {
+  virtual void InternalTimeTest() final {
+    if (stage_ == PipelineStage::kPreProcessing) {
       tmp_time_point_ = std::chrono::high_resolution_clock::now();
     }
 
-    if (str == "PostProcessing") {
+    if (stage_ == PipelineStage::kDone) {
       auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() -
                                                                            tmp_time_point_)
                           .count();
@@ -244,26 +249,16 @@ class Task {
   StateOfTesting state_of_testing_ = kFunc;
   TypeOfTask type_of_task_ = kUnknown;
   StatusOfTask status_of_task_ = kEnabled;
-  std::vector<std::string> functions_order_;
-  std::vector<std::string> right_functions_order_ = {"Validation", "PreProcessing", "Run", "PostProcessing"};
   static constexpr double kMaxTestTime = 1.0;
   std::chrono::high_resolution_clock::time_point tmp_time_point_;
-  bool was_worked_ = false;
-
-  bool IsFullPipelineStage() {
-    if (functions_order_.size() < 4) {
-      return false;
-    }
-
-    auto it = std::adjacent_find(functions_order_.begin() + 2,
-                                 functions_order_.begin() + static_cast<long>(functions_order_.size() - 2),
-                                 std::not_equal_to<>());
-
-    return (functions_order_[0] == "Validation" && functions_order_[1] == "PreProcessing" &&
-            functions_order_[2] == "Run" &&
-            it == (functions_order_.begin() + static_cast<long>(functions_order_.size() - 2)) &&
-            functions_order_[functions_order_.size() - 1] == "PostProcessing");
-  }
+  enum class PipelineStage : uint8_t {
+    kNone,
+    kValidation,
+    kPreProcessing,
+    kRun,
+    kDone,
+    kException
+  } stage_ = PipelineStage::kNone;
 };
 
 /// @brief Smart pointer alias for Task.
@@ -276,7 +271,7 @@ using TaskPtr = std::shared_ptr<Task<InType, OutType>>;
 /// @tparam TaskType Type of the task to create.
 /// @tparam InType Type of the input.
 /// @param in Input to pass to the task constructor.
-/// @return Shared pointer to the newly created task.
+/// @return Shared a pointer to the newly created task.
 template <typename TaskType, typename InType>
 std::shared_ptr<TaskType> TaskGetter(InType in) {
   return std::make_shared<TaskType>(in);

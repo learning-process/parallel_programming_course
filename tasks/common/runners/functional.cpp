@@ -8,10 +8,5 @@ int main(int argc, char** argv) {
   if (ppc::util::IsUnderMpirun()) {
     return ppc::core::Init(argc, argv);
   }
-
-  // Limit the number of threads in TBB
-  tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
-
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  return ppc::core::SimpleInit(argc, argv);
 }
