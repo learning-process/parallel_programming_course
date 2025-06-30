@@ -141,7 +141,7 @@ class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> 
     (*j)["tasks"]["tbb"] = "TBB";
     (*j)["tasks"]["seq"] = "SEQ";
 
-    std::ofstream(temp_path) << (*j).dump();
+    std::ofstream(temp_path) << j->dump();
   }
 
   void TearDown() override { std::filesystem::remove(temp_path); }
