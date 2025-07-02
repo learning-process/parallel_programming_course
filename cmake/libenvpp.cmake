@@ -38,3 +38,20 @@ if(WIN32)
 else()
   set(PPC_ENVPP_LIB_NAME envpp)
 endif()
+
+function(ppc_link_envpp exec_func_lib)
+  # Add external project include directories
+  target_include_directories(
+    ${exec_func_lib} PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty/libenvpp/include)
+  target_include_directories(
+    ${exec_func_lib} SYSTEM
+    PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty/libenvpp/external/fmt/include)
+
+  add_dependencies(${exec_func_lib} ppc_libenvpp)
+  target_link_directories(${exec_func_lib} PUBLIC
+                          "${CMAKE_BINARY_DIR}/ppc_libenvpp/install/lib")
+  target_link_directories(${exec_func_lib} PUBLIC
+                          "${CMAKE_BINARY_DIR}/ppc_libenvpp/build")
+  target_link_libraries(${exec_func_lib} PUBLIC ${PPC_ENVPP_LIB_NAME})
+  target_link_libraries(${exec_func_lib} PUBLIC ${PPC_FMT_LIB_NAME})
+endfunction()
