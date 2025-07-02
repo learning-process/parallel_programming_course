@@ -26,13 +26,13 @@ ExternalProject_Add(
     "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/install")
 
 function(ppc_link_gtest exec_func_lib)
-    # Add external project include directories
-    target_include_directories(
-            ${exec_func_lib}
-            PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty/googletest/googletest/include)
+  # Add external project include directories
+  target_include_directories(
+    ${exec_func_lib}
+    PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty/googletest/googletest/include)
 
-    add_dependencies(${exec_func_lib} ppc_googletest)
-    target_link_directories(${exec_func_lib} PUBLIC
-            "${CMAKE_BINARY_DIR}/ppc_googletest/install/lib")
-    target_link_libraries(${exec_func_lib} PUBLIC gtest gtest_main)
+  add_dependencies(${exec_func_lib} ppc_googletest)
+  target_link_directories(${exec_func_lib} PUBLIC
+                          "${CMAKE_BINARY_DIR}/ppc_googletest/install/lib")
+  target_link_libraries(${exec_func_lib} PUBLIC gtest gtest_main)
 endfunction()
