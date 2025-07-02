@@ -42,3 +42,17 @@ if(cmake_build_type_lower STREQUAL "debug")
 else()
   set(PPC_TBB_LIB_NAME tbb)
 endif()
+
+function(ppc_link_tbb exec_func_lib)
+  # Add external project include directories
+  target_include_directories(
+          ${exec_func_lib}
+          PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty/onetbb/include)
+
+  add_dependencies(${exec_func_lib} ppc_onetbb)
+  target_link_directories(${exec_func_lib} PUBLIC
+          ${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib)
+  if(NOT MSVC)
+    target_link_libraries(${exec_func_lib} PUBLIC ${PPC_TBB_LIB_NAME})
+  endif()
+endfunction()

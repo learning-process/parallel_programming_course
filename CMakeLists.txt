@@ -31,6 +31,7 @@ include(cmake/modes.cmake)
 include(cmake/sanitizers.cmake)
 include(cmake/json.cmake)
 include(cmake/libenvpp.cmake)
+include(cmake/stb.cmake)
 
 ################# Parallel programming technologies #################
 

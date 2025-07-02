@@ -23,3 +23,13 @@ if(OpenMP_FOUND)
 else(OpenMP_FOUND)
   message(FATAL_ERROR "OpenMP NOT FOUND")
 endif(OpenMP_FOUND)
+
+function(ppc_link_threads exec_func_lib)
+  target_link_libraries(${exec_func_lib} PUBLIC Threads::Threads)
+endfunction()
+
+function(ppc_link_openmp exec_func_lib)
+  find_package(OpenMP REQUIRED)
+  target_link_libraries(${exec_func_lib} PUBLIC ${OpenMP_libomp_LIBRARY}
+          OpenMP::OpenMP_CXX)
+endfunction()
