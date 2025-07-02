@@ -1,13 +1,13 @@
 #pragma once
 
-#include "core/task/include/task.hpp"
 #include "example_processes/common/include/common.hpp"
+#include "task/include/task.hpp"
 
 namespace nesterov_a_test_task_processes {
 
 class NesterovATestTaskMPI : public BaseTask {
  public:
-  static constexpr ppc::core::TypeOfTask GetStaticTypeOfTask() { return ppc::core::TypeOfTask::kMPI; }
+  static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() { return ppc::task::TypeOfTask::kMPI; }
   explicit NesterovATestTaskMPI(const InType &in);
 
  private:

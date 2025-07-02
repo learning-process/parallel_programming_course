@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <array>
 #include <chrono>
-#include <core/util/include/util.hpp>
 #include <cstdint>
 #include <cstdlib>
 #include <exception>
@@ -17,10 +16,11 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <util/include/util.hpp>
 #include <utility>
 #include <vector>
 
-namespace ppc::core {
+namespace ppc::task {
 
 /// @brief Represents the type of task (parallelization technology).
 /// @details Used to select the implementation type in tests and execution logic.
@@ -236,7 +236,7 @@ class Task {
   virtual bool PreProcessingImpl() = 0;
 
   /// @brief User-defined task execution logic.
-  /// @return True if run is successful.
+  /// @return True if a run is successful.
   virtual bool RunImpl() = 0;
 
   /// @brief User-defined postprocessing logic.
@@ -277,4 +277,4 @@ std::shared_ptr<TaskType> TaskGetter(InType in) {
   return std::make_shared<TaskType>(in);
 }
 
-}  // namespace ppc::core
+}  // namespace ppc::task
