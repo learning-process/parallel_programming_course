@@ -13,12 +13,14 @@
 
 namespace ppc::performance {
 
+inline double DefaultTimer() { return -1.0; }
+
 struct PerfAttr {
   /// @brief Number of times the task is run for performance evaluation.
   uint64_t num_running = 5;
   /// @brief Timer function returning current time in seconds.
   /// @cond
-  std::function<double()> current_timer = [&] { return -1.0; };
+  std::function<double()> current_timer = DefaultTimer;
   /// @endcond
 };
 
@@ -41,7 +43,7 @@ class Perf {
   void PipelineRun(const PerfAttr& perf_attr) {
     perf_results_.type_of_running = PerfResults::TypeOfRunning::kPipeline;
 
-    CommonRun(perf_attr, [&]() {
+    CommonRun(perf_attr, [&] {
       task_->Validation();
       task_->PreProcessing();
       task_->Run();
@@ -54,7 +56,7 @@ class Perf {
 
     task_->Validation();
     task_->PreProcessing();
-    CommonRun(perf_attr, [&]() { task_->Run(); }, perf_results_);
+    CommonRun(perf_attr, [&] { task_->Run(); }, perf_results_);
     task_->PostProcessing();
 
     task_->Validation();
