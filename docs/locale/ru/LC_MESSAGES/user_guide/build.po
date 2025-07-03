@@ -46,12 +46,16 @@ msgid "``-D USE_PERF_TESTS=ON`` enable performance tests."
 msgstr "``-D USE_PERF_TESTS=ON`` включает тесты на производительность."
 
 #: ../../user_guide/build.rst:22
-msgid ""
-"``-D CMAKE_BUILD_TYPE=Release`` required parameter for stable work of "
-"repo."
-msgstr ""
-"``-D CMAKE_BUILD_TYPE=Release`` требуемый CMake параметр для стабильной работы "
-"репозитория."
+msgid "``-D CMAKE_BUILD_TYPE=Release`` normal build (default)."
+msgstr "``-D CMAKE_BUILD_TYPE=Release`` нормальная сборка (по умолчанию)."
+
+#: ../../user_guide/build.rst:23
+msgid "``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers or running ``valgrind`` to keep debug information."
+msgstr "``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` рекомендуется при использовании санитайзеров или запуске ``valgrind`` для сохранения отладочной информации."
+
+#: ../../user_guide/build.rst:24
+msgid "``-D CMAKE_BUILD_TYPE=Debug`` for debugging sessions."
+msgstr "``-D CMAKE_BUILD_TYPE=Debug`` используется при отладке."
 
 #: ../../user_guide/build.rst:24
 msgid "*A corresponding flag can be omitted if it's not needed.*"

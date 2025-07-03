@@ -31,6 +31,7 @@ include(cmake/modes.cmake)
 include(cmake/sanitizers.cmake)
 include(cmake/json.cmake)
 include(cmake/libenvpp.cmake)
+include(cmake/stb.cmake)
 
 ################# Parallel programming technologies #################
 
@@ -43,13 +44,6 @@ include(cmake/onetbb.cmake)
 
 message( STATUS "PPC step: Setup external projects" )
 include(cmake/gtest.cmake)
-
-############################## Headers ##############################
-
-message( STATUS "PPC step: Setup headers" )
-include_directories(3rdparty)
-include_directories(modules)
-include_directories(tasks)
 
 ############################## Modules ##############################
 

@@ -45,9 +45,15 @@ msgid "``-D USE_PERF_TESTS=ON`` enable performance tests."
 msgstr ""
 
 #: ../../user_guide/build.rst:22
-msgid ""
-"``-D CMAKE_BUILD_TYPE=Release`` required parameter for stable work of "
-"repo."
+msgid "``-D CMAKE_BUILD_TYPE=Release`` normal build (default)."
+msgstr ""
+
+#: ../../user_guide/build.rst:23
+msgid "``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers or running ``valgrind`` to keep debug information."
+msgstr ""
+
+#: ../../user_guide/build.rst:24
+msgid "``-D CMAKE_BUILD_TYPE=Debug`` for debugging sessions."
 msgstr ""
 
 #: ../../user_guide/build.rst:24

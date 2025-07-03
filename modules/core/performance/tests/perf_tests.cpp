@@ -141,7 +141,7 @@ class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> 
     (*j)["tasks"]["tbb"] = "TBB";
     (*j)["tasks"]["seq"] = "SEQ";
 
-    std::ofstream(temp_path) << (*j).dump();
+    std::ofstream(temp_path) << j->dump();
   }
 
   void TearDown() override { std::filesystem::remove(temp_path); }
@@ -238,13 +238,8 @@ TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
 }
 
 TEST(TaskTest, DestructorTerminatesIfWrongOrder) {
-  testing::FLAGS_gtest_death_test_style = "threadsafe";
-  ASSERT_DEATH_IF_SUPPORTED(
-      {
-        DummyTask task;
-        task.Run();
-      },
-      "");
+  DummyTask task;
+  EXPECT_THROW(task.Run(), std::runtime_error);
 }
 
 namespace my {
@@ -263,15 +258,69 @@ using TestTypes = ::testing::Types<my::nested::Type, my::Another, int>;
 TYPED_TEST_SUITE(GetNamespaceTest, TestTypes);
 
 TYPED_TEST(GetNamespaceTest, ExtractsNamespaceCorrectly) {
-  constexpr std::string_view kNs = ppc::util::GetNamespace<TypeParam>();
+  std::string k_ns = ppc::util::GetNamespace<TypeParam>();
 
   if constexpr (std::is_same_v<TypeParam, my::nested::Type>) {
-    EXPECT_EQ(kNs, "my::nested");
+    EXPECT_EQ(k_ns, "my::nested");
   } else if constexpr (std::is_same_v<TypeParam, my::Another>) {
-    EXPECT_EQ(kNs, "my");
+    EXPECT_EQ(k_ns, "my");
   } else if constexpr (std::is_same_v<TypeParam, int>) {
-    EXPECT_EQ(kNs, "");
+    EXPECT_EQ(k_ns, "");
   } else {
     FAIL() << "Unhandled type in test";
   }
+}
+
+TEST(PerfTest, PipelineRunAndTaskRun) {
+  auto task_ptr = std::make_shared<DummyTask>();
+  ppc::core::Perf<int, int> perf(task_ptr);
+
+  ppc::core::PerfAttr attr;
+  double time = 0.0;
+  attr.num_running = 2;
+  attr.current_timer = [&time]() {
+    double t = time;
+    time += 1.0;
+    return t;
+  };
+
+  EXPECT_NO_THROW(perf.PipelineRun(attr));
+  auto res_pipeline = perf.GetPerfResults();
+  EXPECT_EQ(res_pipeline.type_of_running, ppc::core::PerfResults::kPipeline);
+  EXPECT_GT(res_pipeline.time_sec, 0.0);
+
+  EXPECT_NO_THROW(perf.TaskRun(attr));
+  auto res_taskrun = perf.GetPerfResults();
+  EXPECT_EQ(res_taskrun.type_of_running, ppc::core::PerfResults::kTaskRun);
+  EXPECT_GT(res_taskrun.time_sec, 0.0);
+}
+
+TEST(PerfTest, PrintPerfStatisticThrowsOnNone) {
+  {
+    auto task_ptr = std::make_shared<DummyTask>();
+    ppc::core::Perf<int, int> perf(task_ptr);
+    EXPECT_THROW(perf.PrintPerfStatistic("test"), std::runtime_error);
+  }
+  EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
+  ppc::util::DestructorFailureFlag::Unset();
+}
+
+TEST(PerfTest, GetStringParamNameTest) {
+  EXPECT_EQ(GetStringParamName(ppc::core::PerfResults::kTaskRun), "task_run");
+  EXPECT_EQ(GetStringParamName(ppc::core::PerfResults::kPipeline), "pipeline");
+  EXPECT_EQ(GetStringParamName(ppc::core::PerfResults::kNone), "none");
+}
+
+TEST(TaskTest, Destructor_InvalidPipelineOrderTerminates_PartialPipeline) {
+  {
+    struct BadTask : ppc::core::Task<int, int> {
+      bool ValidationImpl() override { return true; }
+      bool PreProcessingImpl() override { return true; }
+      bool RunImpl() override { return true; }
+      bool PostProcessingImpl() override { return true; }
+    } task;
+    task.Validation();
+  }
+  EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
+  ppc::util::DestructorFailureFlag::Unset();
 }

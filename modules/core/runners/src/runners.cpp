@@ -7,6 +7,7 @@
 #include <format>
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 
 #include "core/util/include/util.hpp"
@@ -59,6 +60,17 @@ void WorkerTestFailurePrinter::PrintProcessRank() {
   std::cerr << std::format(" [  PROCESS {}  ] ", rank);
 }
 
+namespace {
+int RunAllTests() {
+  auto status = RUN_ALL_TESTS();
+  if (ppc::util::DestructorFailureFlag::Get()) {
+    throw std::runtime_error(
+        std::format("[  ERROR  ] Destructor failed with code {}", ppc::util::DestructorFailureFlag::Get()));
+  }
+  return status;
+}
+}  // namespace
+
 int Init(int argc, char** argv) {
   const int init_res = MPI_Init(&argc, &argv);
   if (init_res != MPI_SUCCESS) {
@@ -80,7 +92,8 @@ int Init(int argc, char** argv) {
     listeners.Append(new ppc::core::WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener)));
   }
   listeners.Append(new ppc::core::UnreadMessagesDetector());
-  auto status = RUN_ALL_TESTS();
+
+  auto status = RunAllTests();
 
   const int finalize_res = MPI_Finalize();
   if (finalize_res != MPI_SUCCESS) {
@@ -89,6 +102,14 @@ int Init(int argc, char** argv) {
     return finalize_res;
   }
   return status;
+}
+
+int SimpleInit(int argc, char** argv) {
+  // Limit the number of threads in TBB
+  tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
+
+  testing::InitGoogleTest(&argc, argv);
+  return RunAllTests();
 }
 
 }  // namespace ppc::core
