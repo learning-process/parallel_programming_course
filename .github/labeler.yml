@@ -15,10 +15,14 @@ task:
 ci:
   - ".github/**"
   - "appveyor.yml"
-core:
-  - "modules/core/**"
-samples:
-  - "modules/ref/**"
+'modules:performance':
+  - "modules/performance/**"
+'modules:runners':
+  - "modules/runners/**"
+'modules:task':
+  - "modules/task/**"
+'modules:util':
+  - "modules/util/**"
 3rdparty:
   - "3rdparty/**"
 infrastructure:
