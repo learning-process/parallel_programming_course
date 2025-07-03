@@ -1,13 +1,13 @@
 #pragma once
 
-#include "core/task/include/task.hpp"
 #include "example_threads/common/include/common.hpp"
+#include "task/include/task.hpp"
 
 namespace nesterov_a_test_task_threads {
 
 class NesterovATestTaskTBB : public BaseTask {
  public:
-  static constexpr ppc::core::TypeOfTask GetStaticTypeOfTask() { return ppc::core::TypeOfTask::kTBB; }
+  static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() { return ppc::task::TypeOfTask::kTBB; }
   explicit NesterovATestTaskTBB(const InType& in);
 
  private:

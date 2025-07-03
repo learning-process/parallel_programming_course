@@ -1,3 +1,3 @@
-#include "core/runners/include/runners.hpp"
+#include "runners/include/runners.hpp"
 
-int main(int argc, char** argv) { return ppc::core::Init(argc, argv); }
+int main(int argc, char** argv) { return ppc::runners::Init(argc, argv); }

@@ -379,10 +379,10 @@ jobs:
                 --exclude '.*tasks/.*/tests/.*' \
                 --exclude '.*modules/.*/tests/.*' \
                 --exclude '.*tasks/common/runners/.*' \
-                --exclude '.*modules/core/runners/.*' \
-                --exclude '.*modules/core/util/include/perf_test_util.hpp' \
-                --exclude '.*modules/core/util/include/func_test_util.hpp' \
-                --exclude '.*modules/core/util/src/func_test_util.cpp' \
+                --exclude '.*modules/runners/.*' \
+                --exclude '.*modules/util/include/perf_test_util.hpp' \
+                --exclude '.*modules/util/include/func_test_util.hpp' \
+                --exclude '.*modules/util/src/func_test_util.cpp' \
                 --xml --output ../coverage.xml \
                 --html=../cov-report/index.html --html-details
       - name: Upload coverage reports to Codecov

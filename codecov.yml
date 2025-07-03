@@ -2,10 +2,10 @@ ignore:
   - "tasks/**/tests/**"
   - "modules/**/tests/**"
   - "tasks/common/runners/**"
-  - "modules/core/runners/**"
-  - "modules/core/util/include/perf_test_util.hpp"
-  - "modules/core/util/include/func_test_util.hpp"
-  - "modules/core/util/src/func_test_util.cpp"
+  - "modules/runners/**"
+  - "modules/util/include/perf_test_util.hpp"
+  - "modules/util/include/func_test_util.hpp"
+  - "modules/util/src/func_test_util.cpp"
 coverage:
   status:
     project:

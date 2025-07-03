@@ -10,14 +10,52 @@
 #include <thread>
 #include <vector>
 
-#include "core/runners/include/runners.hpp"
-#include "core/task/include/task.hpp"
-#include "core/task/tests/test_task.hpp"
-#include "core/util/include/util.hpp"
+#include "runners/include/runners.hpp"
+#include "task/include/task.hpp"
+#include "util/include/util.hpp"
+
+using namespace ppc::task;
+
+namespace ppc::test {
+
+template <typename InType, typename OutType>
+class TestTask : public ppc::task::Task<InType, OutType> {
+ public:
+  explicit TestTask(const InType& in) { this->GetInput() = in; }
+
+  bool ValidationImpl() override { return !this->GetInput().empty(); }
+
+  bool PreProcessingImpl() override {
+    this->GetOutput() = 0;
+    return true;
+  }
+
+  bool RunImpl() override {
+    for (unsigned i = 0; i < this->GetInput().size(); i++) {
+      this->GetOutput() += this->GetInput()[i];
+    }
+    return true;
+  }
+
+  bool PostProcessingImpl() override { return true; }
+};
+
+template <typename InType, typename OutType>
+class FakeSlowTask : public TestTask<InType, OutType> {
+ public:
+  explicit FakeSlowTask(const InType& in) : TestTask<InType, OutType>(in) {}
+
+  bool RunImpl() override {
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    return TestTask<InType, OutType>::RunImpl();
+  }
+};
+
+}  // namespace ppc::test
 
 TEST(task_tests, check_int32_t) {
   std::vector<int32_t> in(20, 1);
-  ppc::test::task::TestTask<std::vector<int32_t>, int32_t> test_task(in);
+  ppc::test::TestTask<std::vector<int32_t>, int32_t> test_task(in);
   ASSERT_EQ(test_task.Validation(), true);
   test_task.PreProcessing();
   test_task.Run();
@@ -27,7 +65,7 @@ TEST(task_tests, check_int32_t) {
 
 TEST(task_tests, check_int32_t_slow) {
   std::vector<int32_t> in(20, 1);
-  ppc::test::task::FakeSlowTask<std::vector<int32_t>, int32_t> test_task(in);
+  ppc::test::FakeSlowTask<std::vector<int32_t>, int32_t> test_task(in);
   ASSERT_EQ(test_task.Validation(), true);
   test_task.PreProcessing();
   test_task.Run();
@@ -36,7 +74,7 @@ TEST(task_tests, check_int32_t_slow) {
 
 TEST(task_tests, check_validate_func) {
   std::vector<int32_t> in;
-  ppc::test::task::TestTask<std::vector<int32_t>, int32_t> test_task(in);
+  ppc::test::TestTask<std::vector<int32_t>, int32_t> test_task(in);
   ASSERT_EQ(test_task.Validation(), false);
   test_task.PreProcessing();
   test_task.Run();
@@ -45,7 +83,7 @@ TEST(task_tests, check_validate_func) {
 
 TEST(task_tests, check_double) {
   std::vector<double> in(20, 1);
-  ppc::test::task::TestTask<std::vector<double>, double> test_task(in);
+  ppc::test::TestTask<std::vector<double>, double> test_task(in);
   ASSERT_EQ(test_task.Validation(), true);
   test_task.PreProcessing();
   test_task.Run();
@@ -55,7 +93,7 @@ TEST(task_tests, check_double) {
 
 TEST(task_tests, check_float) {
   std::vector<float> in(20, 1);
-  ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
+  ppc::test::TestTask<std::vector<float>, float> test_task(in);
   ASSERT_EQ(test_task.Validation(), true);
   test_task.PreProcessing();
   test_task.Run();
@@ -65,7 +103,7 @@ TEST(task_tests, check_float) {
 
 TEST(task_tests, check_wrong_order_disabled_valgrind) {
   std::vector<float> in(20, 1);
-  ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
+  ppc::test::TestTask<std::vector<float>, float> test_task(in);
   ASSERT_EQ(test_task.Validation(), true);
   test_task.PreProcessing();
   EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
@@ -73,27 +111,23 @@ TEST(task_tests, check_wrong_order_disabled_valgrind) {
 
 TEST(task_tests, premature_postprocessing_no_steps) {
   std::vector<float> in(20, 1);
-  ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
+  ppc::test::TestTask<std::vector<float>, float> test_task(in);
   EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
 }
 
 TEST(task_tests, premature_postprocessing_after_preprocessing) {
   std::vector<float> in(20, 1);
-  ppc::test::task::TestTask<std::vector<float>, float> test_task(in);
+  ppc::test::TestTask<std::vector<float>, float> test_task(in);
   EXPECT_THROW(test_task.PreProcessing(), std::runtime_error);
   EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
 }
 
-TEST(TaskTest, GetStringTaskStatus_Disabled) {
-  EXPECT_EQ(GetStringTaskStatus(ppc::core::StatusOfTask::kDisabled), "disabled");
-}
+TEST(TaskTest, GetStringTaskStatus_Disabled) { EXPECT_EQ(GetStringTaskStatus(StatusOfTask::kDisabled), "disabled"); }
 
-TEST(TaskTest, GetStringTaskStatus_Enabled) {
-  EXPECT_EQ(GetStringTaskStatus(ppc::core::StatusOfTask::kEnabled), "enabled");
-}
+TEST(TaskTest, GetStringTaskStatus_Enabled) { EXPECT_EQ(GetStringTaskStatus(StatusOfTask::kEnabled), "enabled"); }
 
 TEST(TaskTest, GetStringTaskType_InvalidFileThrows) {
-  EXPECT_THROW({ GetStringTaskType(ppc::core::TypeOfTask::kALL, "non_existing_file.json"); }, std::runtime_error);
+  EXPECT_THROW({ GetStringTaskType(TypeOfTask::kALL, "non_existing_file.json"); }, std::runtime_error);
 }
 
 TEST(TaskTest, GetStringTaskType_UnknownType_WithValidFile) {
@@ -102,7 +136,7 @@ TEST(TaskTest, GetStringTaskType_UnknownType_WithValidFile) {
   file
       << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "tbb": "enabled", "seq": "enabled"}})";
   file.close();
-  EXPECT_NO_THROW({ GetStringTaskType(ppc::core::TypeOfTask::kUnknown, path); });
+  EXPECT_NO_THROW({ GetStringTaskType(TypeOfTask::kUnknown, path); });
 }
 
 TEST(TaskTest, GetStringTaskType_ThrowsOnBadJSON) {
@@ -110,7 +144,7 @@ TEST(TaskTest, GetStringTaskType_ThrowsOnBadJSON) {
   std::ofstream file(path);
   file << "{";
   file.close();
-  EXPECT_THROW({ GetStringTaskType(ppc::core::TypeOfTask::kALL, path); }, std::exception);
+  EXPECT_THROW({ GetStringTaskType(TypeOfTask::kALL, path); }, std::exception);
 }
 
 TEST(TaskTest, GetStringTaskType_EachType_WithValidFile) {
@@ -120,12 +154,12 @@ TEST(TaskTest, GetStringTaskType_EachType_WithValidFile) {
       << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "tbb": "enabled", "seq": "enabled"}})";
   file.close();
 
-  EXPECT_NO_THROW(ppc::core::GetStringTaskType(ppc::core::TypeOfTask::kALL, path));
-  EXPECT_NO_THROW(ppc::core::GetStringTaskType(ppc::core::TypeOfTask::kSTL, path));
-  EXPECT_NO_THROW(ppc::core::GetStringTaskType(ppc::core::TypeOfTask::kOMP, path));
-  EXPECT_NO_THROW(ppc::core::GetStringTaskType(ppc::core::TypeOfTask::kMPI, path));
-  EXPECT_NO_THROW(ppc::core::GetStringTaskType(ppc::core::TypeOfTask::kTBB, path));
-  EXPECT_NO_THROW(ppc::core::GetStringTaskType(ppc::core::TypeOfTask::kSEQ, path));
+  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kALL, path));
+  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kSTL, path));
+  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kOMP, path));
+  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kMPI, path));
+  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kTBB, path));
+  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kSEQ, path));
 }
 
 TEST(TaskTest, GetStringTaskType_ReturnsUnknown_OnDefault) {
@@ -134,7 +168,7 @@ TEST(TaskTest, GetStringTaskType_ReturnsUnknown_OnDefault) {
   file << R"({"tasks": {"all": "enabled"}})";
   file.close();
 
-  auto result = ppc::core::GetStringTaskType(ppc::core::TypeOfTask::kUnknown, path);
+  auto result = GetStringTaskType(TypeOfTask::kUnknown, path);
   EXPECT_EQ(result, "unknown");
 }
 
@@ -144,13 +178,13 @@ TEST(TaskTest, GetStringTaskType_ThrowsIfKeyMissing) {
   file << R"({"tasks": {"all": "enabled"}})";
   file.close();
 
-  EXPECT_ANY_THROW(ppc::core::GetStringTaskType(ppc::core::TypeOfTask::kSTL, path));
+  EXPECT_ANY_THROW(GetStringTaskType(TypeOfTask::kSTL, path));
 }
 
 TEST(TaskTest, TaskDestructor_ThrowsIfStageIncomplete) {
   {
     std::vector<int32_t> in(20, 1);
-    struct LocalTask : ppc::core::Task<std::vector<int32_t>, int32_t> {
+    struct LocalTask : Task<std::vector<int32_t>, int32_t> {
       explicit LocalTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
       bool ValidationImpl() override { return true; }
       bool PreProcessingImpl() override { return true; }
@@ -166,7 +200,7 @@ TEST(TaskTest, TaskDestructor_ThrowsIfStageIncomplete) {
 TEST(TaskTest, TaskDestructor_ThrowsIfEmpty) {
   {
     std::vector<int32_t> in(20, 1);
-    struct LocalTask : ppc::core::Task<std::vector<int32_t>, int32_t> {
+    struct LocalTask : Task<std::vector<int32_t>, int32_t> {
       explicit LocalTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
       bool ValidationImpl() override { return true; }
       bool PreProcessingImpl() override { return true; }
@@ -179,7 +213,7 @@ TEST(TaskTest, TaskDestructor_ThrowsIfEmpty) {
 }
 
 TEST(TaskTest, InternalTimeTest_ThrowsIfTimeoutExceeded) {
-  struct SlowTask : ppc::core::Task<std::vector<int32_t>, int32_t> {
+  struct SlowTask : Task<std::vector<int32_t>, int32_t> {
     explicit SlowTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
     bool ValidationImpl() override { return true; }
     bool PreProcessingImpl() override {
@@ -192,14 +226,14 @@ TEST(TaskTest, InternalTimeTest_ThrowsIfTimeoutExceeded) {
 
   std::vector<int32_t> in(20, 1);
   SlowTask task(in);
-  task.GetStateOfTesting() = ppc::core::StateOfTesting::kFunc;
+  task.GetStateOfTesting() = StateOfTesting::kFunc;
   task.Validation();
   EXPECT_NO_THROW(task.PreProcessing());
   task.Run();
   EXPECT_THROW(task.PostProcessing(), std::runtime_error);
 }
 
-class DummyTask : public ppc::core::Task<int, int> {
+class DummyTask : public Task<int, int> {
  public:
   using Task::Task;
   bool ValidationImpl() override { return true; }
@@ -231,4 +265,4 @@ TEST(TaskTest, PostProcessingThrowsIfCalledBeforeRun) {
   EXPECT_THROW(task->PostProcessing(), std::runtime_error);
 }
 
-int main(int argc, char** argv) { return ppc::core::SimpleInit(argc, argv); }
+int main(int argc, char** argv) { return ppc::runners::SimpleInit(argc, argv); }
