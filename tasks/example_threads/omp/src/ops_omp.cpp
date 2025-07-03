@@ -4,8 +4,8 @@
 #include <numeric>
 #include <vector>
 
-#include "core/util/include/util.hpp"
 #include "example_threads/common/include/common.hpp"
+#include "util/include/util.hpp"
 
 namespace nesterov_a_test_task_threads {
 

@@ -12,14 +12,14 @@
 #include <utility>
 #include <vector>
 
-#include "core/util/include/func_test_util.hpp"
-#include "core/util/include/util.hpp"
 #include "example_threads/all/include/ops_all.hpp"
 #include "example_threads/common/include/common.hpp"
 #include "example_threads/omp/include/ops_omp.hpp"
 #include "example_threads/seq/include/ops_seq.hpp"
 #include "example_threads/stl/include/ops_stl.hpp"
 #include "example_threads/tbb/include/ops_tbb.hpp"
+#include "util/include/func_test_util.hpp"
+#include "util/include/util.hpp"
 
 namespace nesterov_a_test_task_threads {
 

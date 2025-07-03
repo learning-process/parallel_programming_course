@@ -3,8 +3,8 @@
 #include <tbb/tbb.h>
 
 #include <atomic>
-#include <core/util/include/util.hpp>
 #include <numeric>
+#include <util/include/util.hpp>
 #include <vector>
 
 #include "example_threads/common/include/common.hpp"

@@ -9,16 +9,18 @@
 #include <stdexcept>
 #include <string>
 
-#include "core/task/include/task.hpp"
+#include "task/include/task.hpp"
 
-namespace ppc::core {
+namespace ppc::performance {
+
+inline double DefaultTimer() { return -1.0; }
 
 struct PerfAttr {
   /// @brief Number of times the task is run for performance evaluation.
   uint64_t num_running = 5;
   /// @brief Timer function returning current time in seconds.
   /// @cond
-  std::function<double()> current_timer = [&] { return -1.0; };
+  std::function<double()> current_timer = DefaultTimer;
   /// @endcond
 };
 
@@ -33,15 +35,15 @@ template <typename InType, typename OutType>
 class Perf {
  public:
   // Init performance analysis with an initialized task and initialized data
-  explicit Perf(const TaskPtr<InType, OutType>& task_ptr) : task_(task_ptr) {
-    task_ptr->GetStateOfTesting() = StateOfTesting::kPerf;
+  explicit Perf(const ppc::task::TaskPtr<InType, OutType>& task_ptr) : task_(task_ptr) {
+    task_ptr->GetStateOfTesting() = ppc::task::StateOfTesting::kPerf;
   }
   // Check performance of full task's pipeline:  PreProcessing() ->
   // Validation() -> Run() -> PostProcessing()
   void PipelineRun(const PerfAttr& perf_attr) {
     perf_results_.type_of_running = PerfResults::TypeOfRunning::kPipeline;
 
-    CommonRun(perf_attr, [&]() {
+    CommonRun(perf_attr, [&] {
       task_->Validation();
       task_->PreProcessing();
       task_->Run();
@@ -54,7 +56,7 @@ class Perf {
 
     task_->Validation();
     task_->PreProcessing();
-    CommonRun(perf_attr, [&]() { task_->Run(); }, perf_results_);
+    CommonRun(perf_attr, [&] { task_->Run(); }, perf_results_);
     task_->PostProcessing();
 
     task_->Validation();
@@ -92,11 +94,11 @@ class Perf {
   }
   /// @brief Retrieves the performance test results.
   /// @return The latest PerfResults structure.
-  PerfResults GetPerfResults() { return perf_results_; }
+  [[nodiscard]] PerfResults GetPerfResults() const { return perf_results_; }
 
  private:
   PerfResults perf_results_;
-  std::shared_ptr<Task<InType, OutType>> task_;
+  std::shared_ptr<ppc::task::Task<InType, OutType>> task_;
   static void CommonRun(const PerfAttr& perf_attr, const std::function<void()>& pipeline, PerfResults& perf_results) {
     auto begin = perf_attr.current_timer();
     for (uint64_t i = 0; i < perf_attr.num_running; i++) {
@@ -107,14 +109,14 @@ class Perf {
   }
 };
 
-inline std::string GetStringParamName(ppc::core::PerfResults::TypeOfRunning type_of_running) {
-  if (type_of_running == core::PerfResults::kTaskRun) {
+inline std::string GetStringParamName(PerfResults::TypeOfRunning type_of_running) {
+  if (type_of_running == PerfResults::kTaskRun) {
     return "task_run";
   }
-  if (type_of_running == core::PerfResults::kPipeline) {
+  if (type_of_running == PerfResults::kPipeline) {
     return "pipeline";
   }
   return "none";
 }
 
-}  // namespace ppc::core
+}  // namespace ppc::performance

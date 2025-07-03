@@ -1,4 +1,4 @@
-#include "core/runners/include/runners.hpp"
+#include "runners/include/runners.hpp"
 
 #include <gtest/gtest.h>
 #include <mpi.h>
@@ -10,10 +10,10 @@
 #include <stdexcept>
 #include <string>
 
-#include "core/util/include/util.hpp"
 #include "oneapi/tbb/global_control.h"
+#include "util/include/util.hpp"
 
-namespace ppc::core {
+namespace ppc::runners {
 
 void UnreadMessagesDetector::OnTestEnd(const ::testing::TestInfo& /*test_info*/) {
   int rank = -1;
@@ -89,9 +89,9 @@ int Init(int argc, char** argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank != 0 && (argc < 2 || argv[1] != std::string("--print-workers"))) {
     auto* listener = listeners.Release(listeners.default_result_printer());
-    listeners.Append(new ppc::core::WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener)));
+    listeners.Append(new WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener)));
   }
-  listeners.Append(new ppc::core::UnreadMessagesDetector());
+  listeners.Append(new UnreadMessagesDetector());
 
   auto status = RunAllTests();
 
@@ -112,4 +112,4 @@ int SimpleInit(int argc, char** argv) {
   return RunAllTests();
 }
 
-}  // namespace ppc::core
+}  // namespace ppc::runners
