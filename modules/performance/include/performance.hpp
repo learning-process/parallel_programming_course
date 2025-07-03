@@ -105,7 +105,7 @@ class Perf {
 
   /**
    * @brief Measures only the Run() part of the task.
-   * Pre/Post-processing and validation are still invoked before and after.
+   * Pre- / Post-processing and validation are still invoked before and after.
    * @param perf_attr Performance measurement configuration.
    */
   void TaskRun(const PerfAttr& perf_attr) {
@@ -116,7 +116,7 @@ class Perf {
     CommonRun(perf_attr, RunOnly<::Task<InType, OutType>>);
     task_->PostProcessing();
 
-    // Ensure correctness after performance run
+    // Ensure correctness after a performance run
     task_->Validation();
     task_->PreProcessing();
     task_->Run();
