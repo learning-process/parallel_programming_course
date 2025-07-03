@@ -67,14 +67,13 @@ struct PerfResults {
  * @return String name corresponding to the enum.
  */
 inline std::string GetStringParamName(PerfResults::TypeOfRunning type_of_running) {
-  switch (type_of_running) {
-    case PerfResults::kTaskRun:
-      return "task_run";
-    case PerfResults::kPipeline:
-      return "pipeline";
-    default:
-      return "none";
+  if (type_of_running == PerfResults::kTaskRun) {
+    return "task_run";
   }
+  if (type_of_running == PerfResults::kPipeline) {
+    return "pipeline";
+  }
+  return "none";
 }
 
 /**
