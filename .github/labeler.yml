@@ -1,44 +1,94 @@
-'task:all':
-  - "tasks/**/all"
-'task:mpi':
-  - "tasks/**/mpi"
-'task:omp':
-  - "tasks/**/omp"
-'task:seq':
-  - "tasks/**/seq"
-'task:stl':
-  - "tasks/**/stl"
-'task:tbb':
-  - "tasks/**/tbb"
+"task:all":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tasks/**/all"
+
+"task:mpi":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tasks/**/mpi"
+
+"task:omp":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tasks/**/omp"
+
+"task:seq":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tasks/**/seq"
+
+"task:stl":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tasks/**/stl"
+
+"task:tbb":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tasks/**/tbb"
+
 task:
-  - "tasks/**"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tasks/**"
+
 ci:
-  - ".github/**"
-  - "appveyor.yml"
-'modules:performance':
-  - "modules/performance/**"
-'modules:runners':
-  - "modules/runners/**"
-'modules:task':
-  - "modules/task/**"
-'modules:util':
-  - "modules/util/**"
-3rdparty:
-  - "3rdparty/**"
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+          - "appveyor.yml"
+
+"modules:performance":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "modules/performance/**"
+
+"modules:runners":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "modules/runners/**"
+
+"modules:task":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "modules/task/**"
+
+"modules:util":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "modules/util/**"
+
+"3rdparty":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "3rdparty/**"
+
 infrastructure:
-  - "scripts/**"
-  - "**/CMakeLists.txt"
-  - "cmake/**"
-  - ".clang-format"
-  - ".clang-tidy"
-  - ".gitignore"
-  - ".gitmodules"
-  - "codecov.yml"
-  - "setup.cfg"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "scripts/**"
+          - "**/CMakeLists.txt"
+          - "cmake/**"
+          - ".clang-format"
+          - ".clang-tidy"
+          - ".gitignore"
+          - ".gitmodules"
+          - "codecov.yml"
+          - "setup.cfg"
+
 python:
-  - "**/requirements.txt"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/requirements.txt"
+
 docs:
-  - "docs/**"
-  - "README.md"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "README.md"
+
 scoreboard:
-  - "scoreboard/**"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "scoreboard/**"
