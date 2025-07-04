@@ -46,13 +46,13 @@ Example usage:
    export PPC_NUM_PROC=2
 
    # Multithreaded functional tests
-   python3 scripts/run_tests.py --running-type="threads"
+   scripts/run_tests.py --running-type="threads"
 
    # MPI functional tests
-   python3 scripts/run_tests.py --running-type="processes"
+   scripts/run_tests.py --running-type="processes"
 
    # Performance benchmarks
-   python3 scripts/run_tests.py --running-type="performance"
+   scripts/run_tests.py --running-type="performance"
 
 Additional MPI arguments can be supplied with ``--additional-mpi-args`` when
 running in ``processes`` mode.
