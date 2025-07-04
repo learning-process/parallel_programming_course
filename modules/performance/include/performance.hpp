@@ -64,7 +64,7 @@ class Perf {
     task_->Run();
     task_->PostProcessing();
   }
-  // Pint results for automation checkers
+  // Print results for automation checkers
   void PrintPerfStatistic(const std::string& test_id) const {
     std::string type_test_name;
     if (perf_results_.type_of_running == PerfResults::TypeOfRunning::kTaskRun) {
