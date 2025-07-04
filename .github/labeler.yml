@@ -1,94 +1,94 @@
 "task:all":
   - changed-files:
-    - any-glob-to-any-file:
-      - "tasks/**/all"
+      - any-glob-to-any-file:
+          - "tasks/**/all"
 
 "task:mpi":
   - changed-files:
-    - any-glob-to-any-file:
-      - "tasks/**/mpi"
+      - any-glob-to-any-file:
+          - "tasks/**/mpi"
 
 "task:omp":
   - changed-files:
-    - any-glob-to-any-file:
-      - "tasks/**/omp"
+      - any-glob-to-any-file:
+          - "tasks/**/omp"
 
 "task:seq":
   - changed-files:
-    - any-glob-to-any-file:
-      - "tasks/**/seq"
+      - any-glob-to-any-file:
+          - "tasks/**/seq"
 
 "task:stl":
   - changed-files:
-    - any-glob-to-any-file:
-      - "tasks/**/stl"
+      - any-glob-to-any-file:
+          - "tasks/**/stl"
 
 "task:tbb":
   - changed-files:
-    - any-glob-to-any-file:
-      - "tasks/**/tbb"
+      - any-glob-to-any-file:
+          - "tasks/**/tbb"
 
 task:
   - changed-files:
-    - any-glob-to-any-file:
-      - "tasks/**"
+      - any-glob-to-any-file:
+          - "tasks/**"
 
 ci:
   - changed-files:
-    - any-glob-to-any-file:
-      - ".github/**"
-      - "appveyor.yml"
+      - any-glob-to-any-file:
+          - ".github/**"
+          - "appveyor.yml"
 
 "modules:performance":
   - changed-files:
-    - any-glob-to-any-file:
-      - "modules/performance/**"
+      - any-glob-to-any-file:
+          - "modules/performance/**"
 
 "modules:runners":
   - changed-files:
-    - any-glob-to-any-file:
-      - "modules/runners/**"
+      - any-glob-to-any-file:
+          - "modules/runners/**"
 
 "modules:task":
   - changed-files:
-    - any-glob-to-any-file:
-      - "modules/task/**"
+      - any-glob-to-any-file:
+          - "modules/task/**"
 
 "modules:util":
   - changed-files:
-    - any-glob-to-any-file:
-      - "modules/util/**"
+      - any-glob-to-any-file:
+          - "modules/util/**"
 
 "3rdparty":
   - changed-files:
-    - any-glob-to-any-file:
-      - "3rdparty/**"
+      - any-glob-to-any-file:
+          - "3rdparty/**"
 
 infrastructure:
   - changed-files:
-    - any-glob-to-any-file:
-      - "scripts/**"
-      - "**/CMakeLists.txt"
-      - "cmake/**"
-      - ".clang-format"
-      - ".clang-tidy"
-      - ".gitignore"
-      - ".gitmodules"
-      - "codecov.yml"
-      - "setup.cfg"
+      - any-glob-to-any-file:
+          - "scripts/**"
+          - "**/CMakeLists.txt"
+          - "cmake/**"
+          - ".clang-format"
+          - ".clang-tidy"
+          - ".gitignore"
+          - ".gitmodules"
+          - "codecov.yml"
+          - "setup.cfg"
 
 python:
   - changed-files:
-    - any-glob-to-any-file:
-      - "**/requirements.txt"
+      - any-glob-to-any-file:
+          - "**/requirements.txt"
 
 docs:
   - changed-files:
-    - any-glob-to-any-file:
-      - "docs/**"
-      - "README.md"
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "README.md"
 
 scoreboard:
   - changed-files:
-    - any-glob-to-any-file:
-      - "scoreboard/**"
+      - any-glob-to-any-file:
+          - "scoreboard/**"
