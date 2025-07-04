@@ -8,6 +8,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <util/include/util.hpp>
 
 #include "task/include/task.hpp"
 
