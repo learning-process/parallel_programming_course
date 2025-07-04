@@ -396,8 +396,8 @@ jobs:
           name: cov-report
           path: 'cov-report'
       - name: Comment coverage report link
-        # TODO: Support PRs from forks too
-        if: ${{ github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork }}
+        # TODO: Support PRs from forks and handle cases with insufficient write permissions
+        continue-on-error: true
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
