@@ -76,11 +76,11 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-gcc-install-${{ matrix.os }}.tar.gz -C install
       - name: Run func tests (MPI)
-        run: python3 scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
         env:
           PPC_NUM_THREADS: 1
       - name: Run func tests (threads)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
   gcc-test-extended:
@@ -106,7 +106,7 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-gcc-install-${{ matrix.os }}.tar.gz -C install
       - name: Run func tests (threads extended)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
+        run: scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1
   clang-build:
@@ -178,11 +178,11 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-clang-install-${{ matrix.os }}.tar.gz -C install
       - name: Run func tests (MPI)
-        run: python3 scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
         env:
           PPC_NUM_THREADS: 1
       - name: Run tests (threads)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
   clang-test-extended:
@@ -210,7 +210,7 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-clang-install-${{ matrix.os }}.tar.gz -C install
       - name: Run tests (threads extended)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
+        run: scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1
   clang-sanitizer-build:
@@ -288,14 +288,14 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-clang-sanitizer-install-${{ matrix.os }}.tar.gz -C install
       - name: Run tests (MPI)
-        run: python3 scripts/run_tests.py --running-type="processes" --counts 2 --additional-mpi-args="--oversubscribe"
+        run: scripts/run_tests.py --running-type="processes" --counts 2 --additional-mpi-args="--oversubscribe"
         env:
           PPC_NUM_THREADS: 2
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
       - name: Run tests (threads)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
           PPC_ASAN_RUN: 1
@@ -327,7 +327,7 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-clang-sanitizer-install-${{ matrix.os }}.tar.gz -C install
       - name: Run tests (threads extended)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
+        run: scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1
           PPC_ASAN_RUN: 1
@@ -361,12 +361,12 @@ jobs:
         run: |
           cmake --build build --parallel
       - name: Run tests (MPI)
-        run: python3 scripts/run_tests.py --running-type="processes"
+        run: scripts/run_tests.py --running-type="processes"
         env:
           PPC_NUM_PROC: 2
           PPC_NUM_THREADS: 2
       - name: Run tests (threads)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
       - name: Generate gcovr Coverage Data
@@ -396,8 +396,8 @@ jobs:
           name: cov-report
           path: 'cov-report'
       - name: Comment coverage report link
-        # TODO: Support PRs from forks too
-        if: ${{ github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork }}
+        # TODO: Support PRs from forks and handle cases with insufficient write permissions
+        continue-on-error: true
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

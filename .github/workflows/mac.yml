@@ -68,11 +68,11 @@ jobs:
           mkdir -p install
           tar -xzvf macos-clang-install.tar.gz -C install
       - name: Run func tests (MPI)
-        run: python3 scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
         env:
           PPC_NUM_THREADS: 1
       - name: Run tests (threads)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
   clang-test-extended:
@@ -99,6 +99,6 @@ jobs:
           mkdir -p install
           tar -xzvf macos-clang-install.tar.gz -C install
       - name: Run tests (threads extended)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
+        run: scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1

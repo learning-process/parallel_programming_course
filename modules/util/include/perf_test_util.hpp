@@ -18,17 +18,14 @@
 #include "task/include/task.hpp"
 #include "util/include/util.hpp"
 
-using namespace ppc::task;
-using namespace ppc::performance;
-
 namespace ppc::util {
 
 double GetTimeMPI();
 int GetMPIRank();
 
 template <typename InType, typename OutType>
-using PerfTestParam =
-    std::tuple<std::function<TaskPtr<InType, OutType>(InType)>, std::string, PerfResults::TypeOfRunning>;
+using PerfTestParam = std::tuple<std::function<ppc::task::TaskPtr<InType, OutType>(InType)>, std::string,
+                                 ppc::performance::PerfResults::TypeOfRunning>;
 
 template <typename InType, typename OutType>
 /// @brief Base class for performance testing of parallel tasks.
@@ -38,7 +35,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
  public:
   /// @brief Generates a readable name for the performance test case.
   static std::string CustomPerfTestName(const ::testing::TestParamInfo<PerfTestParam<InType, OutType>>& info) {
-    return GetStringParamName(std::get<GTestParamIndex::kTestParams>(info.param)) + "_" +
+    return ppc::performance::GetStringParamName(std::get<GTestParamIndex::kTestParams>(info.param)) + "_" +
            std::get<GTestParamIndex::kNameTest>(info.param);
   }
 
@@ -47,7 +44,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   /// @brief Supplies input data for performance testing.
   virtual InType GetTestInputData() = 0;
 
-  virtual void SetPerfAttributes(PerfAttr& perf_attrs) {
+  virtual void SetPerfAttributes(ppc::performance::PerfAttr& perf_attrs) {
     if (task_->GetDynamicTypeOfTask() == ppc::task::TypeOfTask::kMPI ||
         task_->GetDynamicTypeOfTask() == ppc::task::TypeOfTask::kALL) {
       const double t0 = GetTimeMPI();
@@ -80,13 +77,13 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
     }
 
     task_ = task_getter(GetTestInputData());
-    Perf perf(task_);
-    PerfAttr perf_attr;
+    ppc::performance::Perf perf(task_);
+    ppc::performance::PerfAttr perf_attr;
     SetPerfAttributes(perf_attr);
 
-    if (mode == PerfResults::TypeOfRunning::kPipeline) {
+    if (mode == ppc::performance::PerfResults::TypeOfRunning::kPipeline) {
       perf.PipelineRun(perf_attr);
-    } else if (mode == PerfResults::TypeOfRunning::kTaskRun) {
+    } else if (mode == ppc::performance::PerfResults::TypeOfRunning::kTaskRun) {
       perf.TaskRun(perf_attr);
     } else {
       std::stringstream err_msg;
@@ -103,16 +100,18 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   }
 
  private:
-  TaskPtr<InType, OutType> task_;
+  ppc::task::TaskPtr<InType, OutType> task_;
 };
 
 template <typename TaskType, typename InputType>
 auto MakePerfTaskTuples(const std::string& settings_path) {
-  const auto name =
-      std::string(GetNamespace<TaskType>()) + "_" + GetStringTaskType(TaskType::GetStaticTypeOfTask(), settings_path);
+  const auto name = std::string(GetNamespace<TaskType>()) + "_" +
+                    ppc::task::GetStringTaskType(TaskType::GetStaticTypeOfTask(), settings_path);
 
-  return std::make_tuple(std::make_tuple(TaskGetter<TaskType, InputType>, name, PerfResults::TypeOfRunning::kPipeline),
-                         std::make_tuple(TaskGetter<TaskType, InputType>, name, PerfResults::TypeOfRunning::kTaskRun));
+  return std::make_tuple(std::make_tuple(ppc::task::TaskGetter<TaskType, InputType>, name,
+                                         ppc::performance::PerfResults::TypeOfRunning::kPipeline),
+                         std::make_tuple(ppc::task::TaskGetter<TaskType, InputType>, name,
+                                         ppc::performance::PerfResults::TypeOfRunning::kTaskRun));
 }
 
 template <typename Tuple, std::size_t... I>
