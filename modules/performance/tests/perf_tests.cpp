@@ -282,7 +282,7 @@ TEST(TaskTest, DestructorTerminatesIfWrongOrder) {
     DummyTask task;
     EXPECT_THROW(task.Run(), std::runtime_error);
   }
-  
+
   // Create a new task to complete the lifecycle properly
   DummyTask task2;
   task2.Validation();
@@ -360,9 +360,7 @@ TEST(PerfTest, GetStringParamNameTest) {
   EXPECT_EQ(GetStringParamName(PerfResults::kNone), "none");
 }
 
-TEST(PerfTest, DefaultTimerReturnsNegativeOne) {
-  EXPECT_EQ(DefaultTimer(), -1.0);
-}
+TEST(PerfTest, DefaultTimerReturnsNegativeOne) { EXPECT_EQ(DefaultTimer(), -1.0); }
 
 TEST(PerfTest, PerfAttrDefaultValues) {
   PerfAttr attr;
@@ -386,9 +384,9 @@ TEST(PerfTest, PerfResultsEnumValues) {
 TEST(PerfTest, PerfConstructorSetsTaskState) {
   auto task_ptr = std::make_shared<DummyTask>();
   Perf<int, int> perf(task_ptr);
-  
+
   EXPECT_EQ(task_ptr->GetStateOfTesting(), ppc::task::StateOfTesting::kPerf);
-  
+
   // Complete the task lifecycle to avoid destructor issues
   task_ptr->Validation();
   task_ptr->PreProcessing();
@@ -399,12 +397,12 @@ TEST(PerfTest, PerfConstructorSetsTaskState) {
 TEST(PerfTest, GetPerfResultsReturnsCorrectResults) {
   auto task_ptr = std::make_shared<DummyTask>();
   Perf<int, int> perf(task_ptr);
-  
+
   // Initially should be default values
   auto initial_results = perf.GetPerfResults();
   EXPECT_EQ(initial_results.time_sec, 0.0);
   EXPECT_EQ(initial_results.type_of_running, PerfResults::kNone);
-  
+
   PerfAttr attr;
   double time = 0.0;
   attr.current_timer = [&time]() {
@@ -412,12 +410,12 @@ TEST(PerfTest, GetPerfResultsReturnsCorrectResults) {
     time += 0.5;
     return t;
   };
-  
+
   perf.PipelineRun(attr);
   auto pipeline_results = perf.GetPerfResults();
   EXPECT_EQ(pipeline_results.type_of_running, PerfResults::kPipeline);
   EXPECT_GT(pipeline_results.time_sec, 0.0);
-  
+
   perf.TaskRun(attr);
   auto taskrun_results = perf.GetPerfResults();
   EXPECT_EQ(taskrun_results.type_of_running, PerfResults::kTaskRun);
@@ -427,22 +425,22 @@ TEST(PerfTest, GetPerfResultsReturnsCorrectResults) {
 TEST(PerfTest, CommonRunCalculatesAverageTime) {
   auto task_ptr = std::make_shared<DummyTask>();
   Perf<int, int> perf(task_ptr);
-  
+
   PerfAttr attr;
   int call_count = 0;
   attr.num_running = 3;
   attr.current_timer = [&call_count]() {
     if (call_count == 0) {
       call_count++;
-      return 0.0; // Start time
+      return 0.0;  // Start time
     } else {
-      return 3.0; // End time after 3 runs
+      return 3.0;  // End time after 3 runs
     }
   };
-  
+
   perf.PipelineRun(attr);
   auto results = perf.GetPerfResults();
-  
+
   // Total time should be 3 seconds, average should be 1 second (3.0 - 0.0) / 3
   EXPECT_DOUBLE_EQ(results.time_sec, 1.0);
 }
@@ -450,7 +448,7 @@ TEST(PerfTest, CommonRunCalculatesAverageTime) {
 TEST(PerfTest, PrintPerfStatisticPipelineOutput) {
   auto task_ptr = std::make_shared<DummyTask>();
   Perf<int, int> perf(task_ptr);
-  
+
   PerfAttr attr;
   double time = 0.0;
   attr.current_timer = [&time]() {
@@ -458,21 +456,21 @@ TEST(PerfTest, PrintPerfStatisticPipelineOutput) {
     time += 0.1;
     return t;
   };
-  
+
   perf.PipelineRun(attr);
-  
+
   testing::internal::CaptureStdout();
   perf.PrintPerfStatistic("test_pipeline");
   std::string output = testing::internal::GetCapturedStdout();
-  
+
   EXPECT_NE(output.find("test_pipeline:pipeline:"), std::string::npos);
-  EXPECT_NE(output.find("0.0200000000"), std::string::npos); // 0.1/5 = 0.02
+  EXPECT_NE(output.find("0.0200000000"), std::string::npos);  // 0.1/5 = 0.02
 }
 
 TEST(PerfTest, PrintPerfStatisticTaskRunOutput) {
   auto task_ptr = std::make_shared<DummyTask>();
   Perf<int, int> perf(task_ptr);
-  
+
   PerfAttr attr;
   double time = 0.0;
   attr.current_timer = [&time]() {
@@ -480,30 +478,30 @@ TEST(PerfTest, PrintPerfStatisticTaskRunOutput) {
     time += 0.25;
     return t;
   };
-  
+
   perf.TaskRun(attr);
-  
+
   testing::internal::CaptureStdout();
   perf.PrintPerfStatistic("test_taskrun");
   std::string output = testing::internal::GetCapturedStdout();
-  
+
   EXPECT_NE(output.find("test_taskrun:task_run:"), std::string::npos);
 }
 
 TEST(PerfTest, PrintPerfStatisticThrowsOnExceedingMaxTime) {
   auto task_ptr = std::make_shared<DummyTask>();
   Perf<int, int> perf(task_ptr);
-  
+
   PerfAttr attr;
   double time = 0.0;
   attr.current_timer = [&time]() {
     double t = time;
-    time += 55.0; // Exceeds kMaxTime (10.0)
+    time += 55.0;  // Exceeds kMaxTime (10.0)
     return t;
   };
-  
+
   perf.PipelineRun(attr);
-  
+
   testing::internal::CaptureStdout();
   try {
     perf.PrintPerfStatistic("test_exceed_time");
@@ -523,7 +521,7 @@ TEST(PerfTest, TaskRunCompletesPipelineAfterTiming) {
   int preprocessing_count = 0;
   int run_count = 0;
   int postprocessing_count = 0;
-  
+
   // Create a custom task that counts method calls
   class CountingTask : public Task<int, int> {
    public:
@@ -531,65 +529,66 @@ TEST(PerfTest, TaskRunCompletesPipelineAfterTiming) {
     int* preprocessing_count_;
     int* run_count_;
     int* postprocessing_count_;
-    
-    CountingTask(int* vc, int* pc, int* rc, int* ppc) 
+
+    CountingTask(int* vc, int* pc, int* rc, int* ppc)
         : validation_count_(vc), preprocessing_count_(pc), run_count_(rc), postprocessing_count_(ppc) {}
-    
+
     bool ValidationImpl() override {
       (*validation_count_)++;
       return true;
     }
-    
+
     bool PreProcessingImpl() override {
       (*preprocessing_count_)++;
       return true;
     }
-    
+
     bool RunImpl() override {
       (*run_count_)++;
       return true;
     }
-    
+
     bool PostProcessingImpl() override {
       (*postprocessing_count_)++;
       return true;
     }
   };
-  
-  auto counting_task = std::make_shared<CountingTask>(&validation_count, &preprocessing_count, &run_count, &postprocessing_count);
+
+  auto counting_task =
+      std::make_shared<CountingTask>(&validation_count, &preprocessing_count, &run_count, &postprocessing_count);
   Perf<int, int> counting_perf(counting_task);
-  
+
   PerfAttr attr;
   attr.num_running = 1;
-  
+
   counting_perf.TaskRun(attr);
-  
+
   // TaskRun should call:
   // 1. Validation + PreProcessing + Run (num_running times) + PostProcessing
   // 2. Validation + PreProcessing + Run + PostProcessing (one additional complete cycle)
   EXPECT_EQ(validation_count, 2);      // Called twice
-  EXPECT_EQ(preprocessing_count, 2);   // Called twice  
+  EXPECT_EQ(preprocessing_count, 2);   // Called twice
   EXPECT_EQ(run_count, 2);             // Called twice (once in timing, once in final cycle)
   EXPECT_EQ(postprocessing_count, 2);  // Called twice
 }
 
 namespace test_namespace {
 struct TestType {};
-}
+}  // namespace test_namespace
 
 TEST(PerfTest, TemplateInstantiationWithDifferentTypes) {
   // Test that Perf template can be instantiated with different types
   auto int_task = std::make_shared<DummyTask>();
   Perf<int, int> int_perf(int_task);
-  
+
   auto vector_task = std::make_shared<ppc::test::TestPerfTask<std::vector<int>, int>>(std::vector<int>{1, 2, 3});
   Perf<std::vector<int>, int> vector_perf(vector_task);
-  
+
   PerfAttr attr;
-  
+
   EXPECT_NO_THROW(int_perf.PipelineRun(attr));
   EXPECT_NO_THROW(vector_perf.PipelineRun(attr));
-  
+
   EXPECT_EQ(int_perf.GetPerfResults().type_of_running, PerfResults::kPipeline);
   EXPECT_EQ(vector_perf.GetPerfResults().type_of_running, PerfResults::kPipeline);
 }
@@ -598,7 +597,7 @@ TEST(PerfTest, PerfAttrCustomValues) {
   PerfAttr attr;
   attr.num_running = 10;
   attr.current_timer = []() { return 42.0; };
-  
+
   EXPECT_EQ(attr.num_running, 10U);
   EXPECT_EQ(attr.current_timer(), 42.0);
 }
