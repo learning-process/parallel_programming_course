@@ -52,6 +52,8 @@ enum GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
 
 std::string GetAbsoluteTaskPath(const std::string& id_path, const std::string& relative_path);
 int GetNumThreads();
+double GetTaskMaxTime();
+double GetPerfMaxTime();
 
 template <typename T>
 std::string GetNamespace() {

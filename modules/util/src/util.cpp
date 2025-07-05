@@ -28,6 +28,22 @@ int ppc::util::GetNumThreads() {
   return 1;
 }
 
+double ppc::util::GetTaskMaxTime() {
+  const auto val = env::get<double>("PPC_TASK_MAX_TIME");
+  if (val.has_value()) {
+    return val.value();
+  }
+  return 1.0;
+}
+
+double ppc::util::GetPerfMaxTime() {
+  const auto val = env::get<double>("PPC_PERF_MAX_TIME");
+  if (val.has_value()) {
+    return val.value();
+  }
+  return 10.0;
+}
+
 // List of environment variables that signal the application is running under
 // an MPI launcher. The array size must match the number of entries to avoid
 // looking up empty environment variable names.

@@ -215,12 +215,13 @@ class Task {
                           .count();
       auto diff = static_cast<double>(duration) * 1e-9;
 
+      const auto max_time = ppc::util::GetTaskMaxTime();
       std::stringstream err_msg;
-      if (diff < kMaxTestTime) {
+      if (diff < max_time) {
         err_msg << "Test time:" << std::fixed << std::setprecision(10) << diff << '\n';
       } else {
         err_msg << "\nTask execute time need to be: ";
-        err_msg << "time < " << kMaxTestTime << " secs.\n";
+        err_msg << "time < " << max_time << " secs.\n";
         err_msg << "Original time in secs: " << diff << '\n';
         throw std::runtime_error(err_msg.str().c_str());
       }
@@ -249,7 +250,6 @@ class Task {
   StateOfTesting state_of_testing_ = kFunc;
   TypeOfTask type_of_task_ = kUnknown;
   StatusOfTask status_of_task_ = kEnabled;
-  static constexpr double kMaxTestTime = 1.0;
   std::chrono::high_resolution_clock::time_point tmp_time_point_;
   enum class PipelineStage : uint8_t {
     kNone,
