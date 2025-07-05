@@ -11,18 +11,24 @@ namespace my::nested {
 struct Type {};
 }  // namespace my::nested
 
-TEST(util_tests, extracts_correct_namespace) {
+TEST(UtilTest, GetNamespace_WithNestedType_ReturnsCorrectNamespace) {
   std::string k_ns = ppc::util::GetNamespace<my::nested::Type>();
   EXPECT_EQ(k_ns, "my::nested");
 }
 
-TEST(util_tests, threads_control_check_openmp_disabled_valgrind) {
+TEST(UtilTest, GetNumThreads_WithOpenMPEnvironment_HandlesThreadControlCorrectly) {
   const auto num_threads_env_var = env::get<int>("PPC_NUM_THREADS");
 
   if (num_threads_env_var.has_value()) {
+    // When PPC_NUM_THREADS is set, GetNumThreads() should return that value
+    EXPECT_EQ(ppc::util::GetNumThreads(), num_threads_env_var.value());
+
+    // And after setting OpenMP threads, it should match
     omp_set_num_threads(num_threads_env_var.value());
     EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_max_threads());
   } else {
+    // When PPC_NUM_THREADS is not set, GetNumThreads() should return 1
+    // This is independent of OpenMP's thread count
     EXPECT_EQ(ppc::util::GetNumThreads(), 1);
   }
 }
@@ -33,17 +39,17 @@ struct TypeInNamespace {};
 
 struct PlainType {};
 
-TEST(GetNamespaceTest, ReturnsExpectedNamespace) {
+TEST(GetNamespaceTest, GetNamespace_WithNamespacedType_ReturnsExpectedNamespace) {
   std::string k_ns = ppc::util::GetNamespace<test_ns::TypeInNamespace>();
   EXPECT_EQ(k_ns, "test_ns");
 }
 
-TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespace_PrimitiveType) {
+TEST(GetNamespaceTest, GetNamespace_WithPrimitiveType_ReturnsEmptyString) {
   std::string k_ns = ppc::util::GetNamespace<int>();
   EXPECT_EQ(k_ns, "");
 }
 
-TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespace_PlainStruct) {
+TEST(GetNamespaceTest, GetNamespace_WithPlainStruct_ReturnsEmptyString) {
   std::string k_ns = ppc::util::GetNamespace<PlainType>();
   EXPECT_EQ(k_ns, "");
 }
@@ -52,14 +58,14 @@ namespace test_ns {
 struct Nested {};
 }  // namespace test_ns
 
-TEST(GetNamespaceTest, ReturnsNamespaceCorrectly) {
+TEST(GetNamespaceTest, GetNamespace_WithNestedStruct_ReturnsNamespaceCorrectly) {
   std::string k_ns = ppc::util::GetNamespace<test_ns::Nested>();
   EXPECT_EQ(k_ns, "test_ns");
 }
 
 struct NoNamespaceType {};
 
-TEST(GetNamespaceTest, NoNamespaceInType) {
+TEST(GetNamespaceTest, GetNamespace_WithNoNamespaceType_ReturnsEmptyString) {
   std::string k_ns = ppc::util::GetNamespace<NoNamespaceType>();
   EXPECT_EQ(k_ns, "");
 }
@@ -67,7 +73,7 @@ TEST(GetNamespaceTest, NoNamespaceInType) {
 template <typename T>
 struct NotATemplate {};
 
-TEST(GetNamespaceTest, NoKeyInPrettyFunction) {
+TEST(GetNamespaceTest, GetNamespace_WithTemplateType_ReturnsEmptyString) {
   std::string k_ns = ppc::util::GetNamespace<NotATemplate<void>>();
   EXPECT_EQ(k_ns, "");
 }
@@ -76,7 +82,7 @@ namespace crazy {
 struct VeryLongTypeNameWithOnlyLettersAndUnderscores {};
 }  // namespace crazy
 
-TEST(GetNamespaceTest, NoTerminatorCharactersInPrettyFunction) {
+TEST(GetNamespaceTest, GetNamespace_WithLongTypeName_ReturnsCorrectNamespace) {
   std::string k_ns = ppc::util::GetNamespace<crazy::VeryLongTypeNameWithOnlyLettersAndUnderscores>();
   EXPECT_EQ(k_ns, "crazy");
 }
