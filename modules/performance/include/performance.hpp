@@ -78,14 +78,15 @@ class Perf {
     }
 
     auto time_secs = perf_results_.time_sec;
+    const auto max_time = ppc::util::GetPerfMaxTime();
     std::stringstream perf_res_str;
-    if (time_secs < PerfResults::kMaxTime) {
+    if (time_secs < max_time) {
       perf_res_str << std::fixed << std::setprecision(10) << time_secs;
       std::cout << test_id << ":" << type_test_name << ":" << perf_res_str.str() << '\n';
     } else {
       std::stringstream err_msg;
       err_msg << '\n' << "Task execute time need to be: ";
-      err_msg << "time < " << PerfResults::kMaxTime << " secs." << '\n';
+      err_msg << "time < " << max_time << " secs." << '\n';
       err_msg << "Original time in secs: " << time_secs << '\n';
       perf_res_str << std::fixed << std::setprecision(10) << -1.0;
       std::cout << test_id << ":" << type_test_name << ":" << perf_res_str.str() << '\n';
