@@ -18,7 +18,7 @@ class RunnersAdditionalTest : public ::testing::Test {
 // Keep only unique functionality tests - InitJSONPtr
 // No environment variable manipulation needed here
 
-TEST_F(RunnersAdditionalTest, InitJSONPtr_BasicFunctionality) {
+TEST_F(RunnersAdditionalTest, InitJSONPtr_WithBasicUsage_CreatesValidJsonPointer) {
   // Test the InitJSONPtr function
   auto json_ptr = ppc::util::InitJSONPtr();
 
@@ -30,7 +30,7 @@ TEST_F(RunnersAdditionalTest, InitJSONPtr_BasicFunctionality) {
   EXPECT_EQ((*json_ptr)["test_key"], "test_value");
 }
 
-TEST_F(RunnersAdditionalTest, InitJSONPtr_EmptyJSON) {
+TEST_F(RunnersAdditionalTest, InitJSONPtr_WhenCreated_ReturnsEmptyJsonPointer) {
   // Test with empty JSON
   auto json_ptr = ppc::util::InitJSONPtr();
 
