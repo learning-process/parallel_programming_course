@@ -80,21 +80,24 @@ TEST(task_tests, check_int32_t) {
 }
 
 TEST(task_tests, check_int32_t_slow) {
-  std::vector<int32_t> in(20, 1);
-  ppc::test::FakeSlowTask<std::vector<int32_t>, int32_t> test_task(in);
-  ASSERT_EQ(test_task.Validation(), true);
-  test_task.PreProcessing();
-  test_task.Run();
-  ASSERT_ANY_THROW(test_task.PostProcessing());
+  {
+    std::vector<int32_t> in(20, 1);
+    ppc::test::FakeSlowTask<std::vector<int32_t>, int32_t> test_task(in);
+    ASSERT_EQ(test_task.Validation(), true);
+    test_task.PreProcessing();
+    test_task.Run();
+    ASSERT_ANY_THROW(test_task.PostProcessing());
+  }
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(task_tests, check_validate_func) {
-  std::vector<int32_t> in;
-  ppc::test::TestTask<std::vector<int32_t>, int32_t> test_task(in);
-  ASSERT_EQ(test_task.Validation(), false);
-  test_task.PreProcessing();
-  test_task.Run();
-  test_task.PostProcessing();
+  {
+    std::vector<int32_t> in;
+    ppc::test::TestTask<std::vector<int32_t>, int32_t> test_task(in);
+    ASSERT_EQ(test_task.Validation(), false);
+  }
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(task_tests, check_double) {
@@ -118,24 +121,33 @@ TEST(task_tests, check_float) {
 }
 
 TEST(task_tests, check_wrong_order_disabled_valgrind) {
-  std::vector<float> in(20, 1);
-  ppc::test::TestTask<std::vector<float>, float> test_task(in);
-  ASSERT_EQ(test_task.Validation(), true);
-  test_task.PreProcessing();
-  EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
+  {
+    std::vector<float> in(20, 1);
+    ppc::test::TestTask<std::vector<float>, float> test_task(in);
+    ASSERT_EQ(test_task.Validation(), true);
+    test_task.PreProcessing();
+    EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
+  }
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(task_tests, premature_postprocessing_no_steps) {
-  std::vector<float> in(20, 1);
-  ppc::test::TestTask<std::vector<float>, float> test_task(in);
-  EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
+  {
+    std::vector<float> in(20, 1);
+    ppc::test::TestTask<std::vector<float>, float> test_task(in);
+    EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
+  }
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(task_tests, premature_postprocessing_after_preprocessing) {
-  std::vector<float> in(20, 1);
-  ppc::test::TestTask<std::vector<float>, float> test_task(in);
-  EXPECT_THROW(test_task.PreProcessing(), std::runtime_error);
-  EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
+  {
+    std::vector<float> in(20, 1);
+    ppc::test::TestTask<std::vector<float>, float> test_task(in);
+    EXPECT_THROW(test_task.PreProcessing(), std::runtime_error);
+    EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
+  }
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, GetStringTaskStatus_Disabled) { EXPECT_EQ(GetStringTaskStatus(StatusOfTask::kDisabled), "disabled"); }
@@ -245,13 +257,16 @@ TEST(TaskTest, InternalTimeTest_ThrowsIfTimeoutExceeded) {
     bool PostProcessingImpl() override { return true; }
   };
 
-  std::vector<int32_t> in(20, 1);
-  SlowTask task(in);
-  task.GetStateOfTesting() = StateOfTesting::kFunc;
-  task.Validation();
-  EXPECT_NO_THROW(task.PreProcessing());
-  task.Run();
-  EXPECT_THROW(task.PostProcessing(), std::runtime_error);
+  {
+    std::vector<int32_t> in(20, 1);
+    SlowTask task(in);
+    task.GetStateOfTesting() = StateOfTesting::kFunc;
+    task.Validation();
+    EXPECT_NO_THROW(task.PreProcessing());
+    task.Run();
+    EXPECT_THROW(task.PostProcessing(), std::runtime_error);
+  }
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 class DummyTask : public Task<int, int> {
@@ -264,26 +279,38 @@ class DummyTask : public Task<int, int> {
 };
 
 TEST(TaskTest, ValidationThrowsIfCalledTwice) {
-  auto task = std::make_shared<DummyTask>();
-  task->Validation();
-  EXPECT_THROW(task->Validation(), std::runtime_error);
+  {
+    auto task = std::make_shared<DummyTask>();
+    task->Validation();
+    EXPECT_THROW(task->Validation(), std::runtime_error);
+  }
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, PreProcessingThrowsIfCalledBeforeValidation) {
-  auto task = std::make_shared<DummyTask>();
-  EXPECT_THROW(task->PreProcessing(), std::runtime_error);
+  {
+    auto task = std::make_shared<DummyTask>();
+    EXPECT_THROW(task->PreProcessing(), std::runtime_error);
+  }
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, RunThrowsIfCalledBeforePreProcessing) {
-  auto task = std::make_shared<DummyTask>();
-  EXPECT_THROW(task->Run(), std::runtime_error);
+  {
+    auto task = std::make_shared<DummyTask>();
+    EXPECT_THROW(task->Run(), std::runtime_error);
+  }
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, PostProcessingThrowsIfCalledBeforeRun) {
-  auto task = std::make_shared<DummyTask>();
-  task->Validation();
-  task->PreProcessing();
-  EXPECT_THROW(task->PostProcessing(), std::runtime_error);
+  {
+    auto task = std::make_shared<DummyTask>();
+    task->Validation();
+    task->PreProcessing();
+    EXPECT_THROW(task->PostProcessing(), std::runtime_error);
+  }
+  ppc::util::DestructorFailureFlag::Unset();
 }
 
 int main(int argc, char** argv) { return ppc::runners::SimpleInit(argc, argv); }
