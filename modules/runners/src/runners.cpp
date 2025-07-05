@@ -60,17 +60,6 @@ void WorkerTestFailurePrinter::PrintProcessRank() {
   std::cerr << std::format(" [  PROCESS {}  ] ", rank);
 }
 
-namespace {
-int RunAllTests() {
-  auto status = RUN_ALL_TESTS();
-  if (ppc::util::DestructorFailureFlag::Get()) {
-    throw std::runtime_error(
-        std::format("[  ERROR  ] Destructor failed with code {}", ppc::util::DestructorFailureFlag::Get()));
-  }
-  return status;
-}
-}  // namespace
-
 int Init(int argc, char** argv) {
   const int init_res = MPI_Init(&argc, &argv);
   if (init_res != MPI_SUCCESS) {
@@ -79,21 +68,25 @@ int Init(int argc, char** argv) {
     return init_res;
   }
 
-  // Limit the number of threads in TBB
-  tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
+  auto status = 0;
+  {
+    // Limit the number of threads in TBB
+    tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
 
-  ::testing::InitGoogleTest(&argc, argv);
+    ::testing::InitGoogleTest(&argc, argv);
 
-  auto& listeners = ::testing::UnitTest::GetInstance()->listeners();
-  int rank = -1;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  if (rank != 0 && (argc < 2 || argv[1] != std::string("--print-workers"))) {
-    auto* listener = listeners.Release(listeners.default_result_printer());
-    listeners.Append(new WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener)));
-  }
-  listeners.Append(new UnreadMessagesDetector());
+    auto& listeners = ::testing::UnitTest::GetInstance()->listeners();
+    int rank = -1;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if (rank != 0 && (argc < 2 || argv[1] != std::string("--print-workers"))) {
+      auto* listener = listeners.Release(listeners.default_result_printer());
+      listeners.Append(new WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener)));
+    }
+    listeners.Append(new UnreadMessagesDetector());
 
-  auto status = RunAllTests();
+    status = RUN_ALL_TESTS();
+  } // TBB control object destroyed here
+
 
   const int finalize_res = MPI_Finalize();
   if (finalize_res != MPI_SUCCESS) {
@@ -105,11 +98,16 @@ int Init(int argc, char** argv) {
 }
 
 int SimpleInit(int argc, char** argv) {
-  // Limit the number of threads in TBB
-  tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
+  auto status = 0;
+  {
+    // Limit the number of threads in TBB
+    tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
 
-  testing::InitGoogleTest(&argc, argv);
-  return RunAllTests();
+    testing::InitGoogleTest(&argc, argv);
+    status = RUN_ALL_TESTS();
+  } // TBB control object destroyed here
+
+  return status;
 }
 
 }  // namespace ppc::runners

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <atomic>
 #include <cstdint>
 #include <cstdlib>
 #include <memory>
@@ -30,23 +29,6 @@ using NlohmannJsonTypeError = nlohmann::json::type_error;
 
 namespace ppc::util {
 
-/// @brief Utility class for tracking destructor failure across tests.
-/// @details Provides thread-safe methods to set, unset, and check the failure flag.
-class DestructorFailureFlag {
- public:
-  /// @brief Marks that a destructor failure has occurred.
-  static void Set() { failure_flag.store(true); }
-
-  /// @brief Clears the destructor failure flag.
-  static void Unset() { failure_flag.store(false); }
-
-  /// @brief Checks if a destructor failure was recorded.
-  /// @return True if failure occurred, false otherwise.
-  static bool Get() { return failure_flag.load(); }
-
- private:
-  inline static std::atomic<bool> failure_flag{false};
-};
 
 enum GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
 

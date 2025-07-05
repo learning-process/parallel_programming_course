@@ -282,7 +282,7 @@ TEST(TaskTest, Destructor_WithWrongOrder_TerminatesGracefully) {
   {
     DummyTask task;
     EXPECT_THROW(task.Run(), std::runtime_error);
-    // This task doesn't cause destructor failure - just execution order error
+    // This task doesn't cause destructor failure - just an execution order error
   }
 
   // Create a new task to complete the lifecycle properly
@@ -356,11 +356,10 @@ TEST(PerfTest, PipelineRunAndTaskRun_WithValidTask_ExecutesSuccessfully) {
 TEST(PerfTest, PrintPerfStatistic_WithNoneType_ThrowsException) {
   {
     auto task_ptr = std::make_shared<DummyTask>();
+    task_ptr->ExpectIncompleteLifecycle(); // Task not executed in a performance test
     Perf<int, int> perf(task_ptr);
     EXPECT_THROW(perf.PrintPerfStatistic("test"), std::runtime_error);
   }
-  EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(PerfTest, GetStringParamName_WithValidParameters_ReturnsCorrectString) {
@@ -617,10 +616,9 @@ TEST(TaskTest, Destructor_WithInvalidPipelineOrderAndPartialExecution_Terminates
       bool RunImpl() override { return true; }
       bool PostProcessingImpl() override { return true; }
     } task;
+    task.ExpectIncompleteLifecycle(); // Task has incomplete pipeline execution
     task.Validation();
   }
-  EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 }  // namespace

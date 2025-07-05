@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Search for linter suppression markers
+      - name: Search for forbidden patterns in student tasks
         run: |
           export BASE_REF=${{ github.event.pull_request.base.ref }}
           export CHANGED_FILES="$(git diff --name-only origin/$BASE_REF HEAD | grep '^tasks/')"
@@ -92,5 +92,9 @@ jobs:
               echo "::error::Found 'IWYU pragma' in $file."
               exit 1
             fi
+            if grep -n "ExpectIncompleteLifecycle" "$file"; then
+              echo "::error::Found 'ExpectIncompleteLifecycle' in $file. This function is for internal testing only and should not be used in student tasks."
+              exit 1
+            fi
           done
-          echo "No linter suppression markers found in changed files."
+          echo "No forbidden patterns found in changed files."

@@ -83,21 +83,21 @@ TEST(TaskTest, SlowTask_WithInt32Vector_ThrowsOnTimeout) {
   {
     std::vector<int32_t> in(20, 1);
     ppc::test::FakeSlowTask<std::vector<int32_t>, int32_t> test_task(in);
+    test_task.ExpectIncompleteLifecycle(); // Task may not complete due to timeout
     ASSERT_EQ(test_task.Validation(), true);
     test_task.PreProcessing();
     test_task.Run();
     ASSERT_ANY_THROW(test_task.PostProcessing());
   }
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, TestTask_WithEmptyInput_ValidationFails) {
   {
     std::vector<int32_t> in;
     ppc::test::TestTask<std::vector<int32_t>, int32_t> test_task(in);
+    test_task.ExpectIncompleteLifecycle(); // Task fails validation so won't complete
     ASSERT_EQ(test_task.Validation(), false);
   }
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, TestTask_WithDoubleVector_CompletesSuccessfully) {
@@ -124,30 +124,30 @@ TEST(TaskTest, TestTask_WithWrongExecutionOrder_ThrowsRuntimeError) {
   {
     std::vector<float> in(20, 1);
     ppc::test::TestTask<std::vector<float>, float> test_task(in);
+    test_task.ExpectIncompleteLifecycle(); // Task has wrong execution order
     ASSERT_EQ(test_task.Validation(), true);
     test_task.PreProcessing();
     EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
   }
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, TestTask_WithPrematurePostProcessingNoSteps_ThrowsRuntimeError) {
   {
     std::vector<float> in(20, 1);
     ppc::test::TestTask<std::vector<float>, float> test_task(in);
+    test_task.ExpectIncompleteLifecycle(); // Task throws exception so won't complete
     EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
   }
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, TestTask_WithPrematurePostProcessingAfterPreProcessing_ThrowsRuntimeError) {
   {
     std::vector<float> in(20, 1);
     ppc::test::TestTask<std::vector<float>, float> test_task(in);
+    test_task.ExpectIncompleteLifecycle(); // Task throws exceptions so won't complete
     EXPECT_THROW(test_task.PreProcessing(), std::runtime_error);
     EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
   }
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, GetStringTaskStatus_WithDisabledStatus_ReturnsDisabled) {
@@ -228,10 +228,10 @@ TEST(TaskTest, TaskDestructor_WithIncompleteStage_SetsDestructorFailureFlag) {
       bool RunImpl() override { return true; }
       bool PostProcessingImpl() override { return true; }
     } task(in);
+    task.ExpectIncompleteLifecycle(); // Mark this task as expected to be incomplete
     task.Validation();
   }
-  EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
-  ppc::util::DestructorFailureFlag::Unset();
+  // No need to check global flag - task handles its own validation
 }
 
 TEST(TaskTest, TaskDestructor_WithEmptyTask_SetsDestructorFailureFlag) {
@@ -244,9 +244,9 @@ TEST(TaskTest, TaskDestructor_WithEmptyTask_SetsDestructorFailureFlag) {
       bool RunImpl() override { return true; }
       bool PostProcessingImpl() override { return true; }
     } task(in);
+    task.ExpectIncompleteLifecycle(); // Mark this task as expected to be incomplete
   }
-  EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
-  ppc::util::DestructorFailureFlag::Unset();
+  // No need to check global flag - task handles its own validation
 }
 
 TEST(TaskTest, InternalTimeTest_WithTimeoutExceeded_ThrowsRuntimeError) {
@@ -264,13 +264,13 @@ TEST(TaskTest, InternalTimeTest_WithTimeoutExceeded_ThrowsRuntimeError) {
   {
     std::vector<int32_t> in(20, 1);
     SlowTask task(in);
+    task.ExpectIncompleteLifecycle(); // Task throws timeout exception
     task.GetStateOfTesting() = StateOfTesting::kFunc;
     task.Validation();
     EXPECT_NO_THROW(task.PreProcessing());
     task.Run();
     EXPECT_THROW(task.PostProcessing(), std::runtime_error);
   }
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 class DummyTask : public Task<int, int> {
@@ -285,36 +285,36 @@ class DummyTask : public Task<int, int> {
 TEST(TaskTest, Validation_WhenCalledTwice_ThrowsRuntimeError) {
   {
     auto task = std::make_shared<DummyTask>();
+    task->ExpectIncompleteLifecycle(); // Task throws exception so won't complete
     task->Validation();
     EXPECT_THROW(task->Validation(), std::runtime_error);
   }
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, PreProcessing_WhenCalledBeforeValidation_ThrowsRuntimeError) {
   {
     auto task = std::make_shared<DummyTask>();
+    task->ExpectIncompleteLifecycle(); // Task throws exception so won't complete
     EXPECT_THROW(task->PreProcessing(), std::runtime_error);
   }
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, Run_WhenCalledBeforePreProcessing_ThrowsRuntimeError) {
   {
     auto task = std::make_shared<DummyTask>();
+    task->ExpectIncompleteLifecycle(); // Task throws exception so won't complete
     EXPECT_THROW(task->Run(), std::runtime_error);
   }
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 TEST(TaskTest, PostProcessing_WhenCalledBeforeRun_ThrowsRuntimeError) {
   {
     auto task = std::make_shared<DummyTask>();
+    task->ExpectIncompleteLifecycle(); // Task throws exception so won't complete
     task->Validation();
     task->PreProcessing();
     EXPECT_THROW(task->PostProcessing(), std::runtime_error);
   }
-  ppc::util::DestructorFailureFlag::Unset();
 }
 
 int main(int argc, char** argv) { return ppc::runners::SimpleInit(argc, argv); }

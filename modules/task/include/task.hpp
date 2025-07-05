@@ -190,11 +190,20 @@ class Task {
   /// @return Reference to the task's output data.
   OutType &GetOutput() { return output_; }
 
+  /// @brief Marks that this task is expected to have an incomplete lifecycle.
+  /// @note FOR INTERNAL TESTING ONLY. This function should NOT be used in student tasks.
+  ///       Usage in tasks/ directory will cause CI to fail.
+  /// @warning This function is only for framework testing purposes.
+  void ExpectIncompleteLifecycle() { expect_incomplete_ = true; }
+
   /// @brief Destructor. Verifies that the pipeline was executed in the correct order.
   /// @note Terminates the program if the pipeline order is incorrect or incomplete.
   virtual ~Task() {
-    if (stage_ != PipelineStage::kDone && stage_ != PipelineStage::kException) {
-      ppc::util::DestructorFailureFlag::Set();
+    if (stage_ != PipelineStage::kDone && stage_ != PipelineStage::kException && !expect_incomplete_) {
+      // Immediate failure - better than global state pollution
+      std::cerr << "[TASK ERROR] Task destroyed without completing pipeline. Stage: "
+                << static_cast<int>(stage_) << std::endl;
+      std::terminate();
     }
 #if _OPENMP >= 201811
     omp_pause_resource_all(omp_pause_soft);
@@ -259,6 +268,7 @@ class Task {
     kDone,
     kException
   } stage_ = PipelineStage::kNone;
+  bool expect_incomplete_ = false;  // Allow testing of incomplete pipelines
 };
 
 /// @brief Smart pointer alias for Task.
