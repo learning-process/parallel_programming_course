@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <memory>
@@ -105,6 +106,29 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
   perf_analyzer.PipelineRun(perf_attr);
 
   ASSERT_ANY_THROW(perf_analyzer.PrintPerfStatistic("check_perf_pipeline_uint8_t_slow_test"));
+}
+
+TEST(perf_tests, slow_perf_respects_env_override) {
+  const char* old = std::getenv("PPC_PERF_MAX_TIME");
+  setenv("PPC_PERF_MAX_TIME", "12", 1);
+  std::vector<uint8_t> in(128, 1);
+  auto test_task = std::make_shared<ppc::test::FakePerfTask<std::vector<uint8_t>, uint8_t>>(in);
+  Perf<std::vector<uint8_t>, uint8_t> perf_analyzer(test_task);
+  PerfAttr perf_attr;
+  perf_attr.num_running = 1;
+  const auto t0 = std::chrono::high_resolution_clock::now();
+  perf_attr.current_timer = [&] {
+    auto current_time_point = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+    return static_cast<double>(duration) * 1e-9;
+  };
+  perf_analyzer.PipelineRun(perf_attr);
+  EXPECT_NO_THROW(perf_analyzer.PrintPerfStatistic("slow_perf_respects_env_override"));
+  if (old) {
+    setenv("PPC_PERF_MAX_TIME", old, 1);
+  } else {
+    unsetenv("PPC_PERF_MAX_TIME");
+  }
 }
 
 TEST(perf_tests, check_perf_task_exception) {
