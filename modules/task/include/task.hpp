@@ -194,7 +194,9 @@ class Task {
   /// @note FOR INTERNAL TESTING ONLY. This function should NOT be used in student tasks.
   ///       Usage in tasks/ directory will cause CI to fail.
   /// @warning This function is only for framework testing purposes.
-  void ExpectIncompleteLifecycle() { terminate_handler_ = []{}; }
+  void ExpectIncompleteLifecycle() {
+    terminate_handler_ = [] {};
+  }
 
   /// @brief Destructor. Verifies that the pipeline was executed in the correct order.
   /// @note Terminates the program if the pipeline order is incorrect or incomplete.

@@ -320,11 +320,11 @@ TEST(TaskTest, PostProcessing_WhenCalledBeforeRun_ThrowsRuntimeError) {
 TEST(TaskTest, Destructor_WhenTaskIncompleteWithoutExpectIncomplete_ExecutesErrorPath) {
   // Test that an error path in destructor is executed when a task is destroyed without completing the pipeline
   // This test covers the previously uncovered lines: std::cerr and terminate_handler_() calls
-  
+
   // We use ExpectIncompleteLifecycle first, then reset it to test the path
   {
     auto task = std::make_shared<DummyTask>();
-    task->ExpectIncompleteLifecycle(); // This prevents termination by setting an empty lambda
+    task->ExpectIncompleteLifecycle();  // This prevents termination by setting an empty lambda
     task->Validation();
     // Task is destroyed here - this executes the std::cerr and terminate_handler_() lines
     // but terminate_handler_ is now an empty lambda, so no actual termination occurs
