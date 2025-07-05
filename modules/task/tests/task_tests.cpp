@@ -20,7 +20,7 @@ using namespace ppc::task;
 
 class ScopedFile {
  public:
-  explicit ScopedFile(const std::string& path) : path_(path) {}
+  explicit ScopedFile(std::string path) : path_(std::move(path)) {}
   ~ScopedFile() {
     std::error_code ec;
     std::filesystem::remove(path_, ec);
