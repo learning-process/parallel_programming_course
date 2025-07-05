@@ -69,7 +69,7 @@ class FakeSlowTask : public TestTask<InType, OutType> {
 
 }  // namespace ppc::test
 
-TEST(task_tests, check_int32_t) {
+TEST(TaskTest, TestTask_WithInt32Vector_CompletesSuccessfully) {
   std::vector<int32_t> in(20, 1);
   ppc::test::TestTask<std::vector<int32_t>, int32_t> test_task(in);
   ASSERT_EQ(test_task.Validation(), true);
@@ -79,7 +79,7 @@ TEST(task_tests, check_int32_t) {
   ASSERT_EQ(static_cast<size_t>(test_task.GetOutput()), in.size());
 }
 
-TEST(task_tests, check_int32_t_slow) {
+TEST(TaskTest, SlowTask_WithInt32Vector_ThrowsOnTimeout) {
   {
     std::vector<int32_t> in(20, 1);
     ppc::test::FakeSlowTask<std::vector<int32_t>, int32_t> test_task(in);
@@ -91,7 +91,7 @@ TEST(task_tests, check_int32_t_slow) {
   ppc::util::DestructorFailureFlag::Unset();
 }
 
-TEST(task_tests, check_validate_func) {
+TEST(TaskTest, TestTask_WithEmptyInput_ValidationFails) {
   {
     std::vector<int32_t> in;
     ppc::test::TestTask<std::vector<int32_t>, int32_t> test_task(in);
@@ -100,7 +100,7 @@ TEST(task_tests, check_validate_func) {
   ppc::util::DestructorFailureFlag::Unset();
 }
 
-TEST(task_tests, check_double) {
+TEST(TaskTest, TestTask_WithDoubleVector_CompletesSuccessfully) {
   std::vector<double> in(20, 1);
   ppc::test::TestTask<std::vector<double>, double> test_task(in);
   ASSERT_EQ(test_task.Validation(), true);
@@ -110,7 +110,7 @@ TEST(task_tests, check_double) {
   EXPECT_NEAR(test_task.GetOutput(), static_cast<double>(in.size()), 1e-6);
 }
 
-TEST(task_tests, check_float) {
+TEST(TaskTest, TestTask_WithFloatVector_CompletesSuccessfully) {
   std::vector<float> in(20, 1);
   ppc::test::TestTask<std::vector<float>, float> test_task(in);
   ASSERT_EQ(test_task.Validation(), true);
@@ -120,7 +120,7 @@ TEST(task_tests, check_float) {
   EXPECT_NEAR(test_task.GetOutput(), in.size(), 1e-3);
 }
 
-TEST(task_tests, check_wrong_order_disabled_valgrind) {
+TEST(TaskTest, TestTask_WithWrongExecutionOrder_ThrowsRuntimeError) {
   {
     std::vector<float> in(20, 1);
     ppc::test::TestTask<std::vector<float>, float> test_task(in);
@@ -131,7 +131,7 @@ TEST(task_tests, check_wrong_order_disabled_valgrind) {
   ppc::util::DestructorFailureFlag::Unset();
 }
 
-TEST(task_tests, premature_postprocessing_no_steps) {
+TEST(TaskTest, TestTask_WithPrematurePostProcessingNoSteps_ThrowsRuntimeError) {
   {
     std::vector<float> in(20, 1);
     ppc::test::TestTask<std::vector<float>, float> test_task(in);
@@ -140,7 +140,7 @@ TEST(task_tests, premature_postprocessing_no_steps) {
   ppc::util::DestructorFailureFlag::Unset();
 }
 
-TEST(task_tests, premature_postprocessing_after_preprocessing) {
+TEST(TaskTest, TestTask_WithPrematurePostProcessingAfterPreProcessing_ThrowsRuntimeError) {
   {
     std::vector<float> in(20, 1);
     ppc::test::TestTask<std::vector<float>, float> test_task(in);
@@ -150,15 +150,19 @@ TEST(task_tests, premature_postprocessing_after_preprocessing) {
   ppc::util::DestructorFailureFlag::Unset();
 }
 
-TEST(TaskTest, GetStringTaskStatus_Disabled) { EXPECT_EQ(GetStringTaskStatus(StatusOfTask::kDisabled), "disabled"); }
+TEST(TaskTest, GetStringTaskStatus_WithDisabledStatus_ReturnsDisabled) {
+  EXPECT_EQ(GetStringTaskStatus(StatusOfTask::kDisabled), "disabled");
+}
 
-TEST(TaskTest, GetStringTaskStatus_Enabled) { EXPECT_EQ(GetStringTaskStatus(StatusOfTask::kEnabled), "enabled"); }
+TEST(TaskTest, GetStringTaskStatus_WithEnabledStatus_ReturnsEnabled) {
+  EXPECT_EQ(GetStringTaskStatus(StatusOfTask::kEnabled), "enabled");
+}
 
-TEST(TaskTest, GetStringTaskType_InvalidFileThrows) {
+TEST(TaskTest, GetStringTaskType_WithInvalidFile_ThrowsRuntimeError) {
   EXPECT_THROW({ GetStringTaskType(TypeOfTask::kALL, "non_existing_file.json"); }, std::runtime_error);
 }
 
-TEST(TaskTest, GetStringTaskType_UnknownType_WithValidFile) {
+TEST(TaskTest, GetStringTaskType_WithUnknownTypeAndValidFile_DoesNotThrow) {
   std::string path = "settings_valid.json";
   ScopedFile cleaner(path);
   std::ofstream file(path);
@@ -168,7 +172,7 @@ TEST(TaskTest, GetStringTaskType_UnknownType_WithValidFile) {
   EXPECT_NO_THROW({ GetStringTaskType(TypeOfTask::kUnknown, path); });
 }
 
-TEST(TaskTest, GetStringTaskType_ThrowsOnBadJSON) {
+TEST(TaskTest, GetStringTaskType_WithBadJSON_ThrowsException) {
   std::string path = "bad_settings.json";
   ScopedFile cleaner(path);
   std::ofstream file(path);
@@ -177,7 +181,7 @@ TEST(TaskTest, GetStringTaskType_ThrowsOnBadJSON) {
   EXPECT_THROW({ GetStringTaskType(TypeOfTask::kALL, path); }, std::exception);
 }
 
-TEST(TaskTest, GetStringTaskType_EachType_WithValidFile) {
+TEST(TaskTest, GetStringTaskType_WithEachTypeAndValidFile_DoesNotThrow) {
   std::string path = "settings_valid_all.json";
   ScopedFile cleaner(path);
   std::ofstream file(path);
@@ -193,7 +197,7 @@ TEST(TaskTest, GetStringTaskType_EachType_WithValidFile) {
   EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kSEQ, path));
 }
 
-TEST(TaskTest, GetStringTaskType_ReturnsUnknown_OnDefault) {
+TEST(TaskTest, GetStringTaskType_WithUnknownType_ReturnsUnknown) {
   std::string path = "settings_valid_unknown.json";
   ScopedFile cleaner(path);
   std::ofstream file(path);
@@ -204,7 +208,7 @@ TEST(TaskTest, GetStringTaskType_ReturnsUnknown_OnDefault) {
   EXPECT_EQ(result, "unknown");
 }
 
-TEST(TaskTest, GetStringTaskType_ThrowsIfKeyMissing) {
+TEST(TaskTest, GetStringTaskType_WithMissingKey_ThrowsException) {
   std::string path = "settings_partial.json";
   ScopedFile cleaner(path);
   std::ofstream file(path);
@@ -214,7 +218,7 @@ TEST(TaskTest, GetStringTaskType_ThrowsIfKeyMissing) {
   EXPECT_ANY_THROW(GetStringTaskType(TypeOfTask::kSTL, path));
 }
 
-TEST(TaskTest, TaskDestructor_ThrowsIfStageIncomplete) {
+TEST(TaskTest, TaskDestructor_WithIncompleteStage_SetsDestructorFailureFlag) {
   {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : Task<std::vector<int32_t>, int32_t> {
@@ -230,7 +234,7 @@ TEST(TaskTest, TaskDestructor_ThrowsIfStageIncomplete) {
   ppc::util::DestructorFailureFlag::Unset();
 }
 
-TEST(TaskTest, TaskDestructor_ThrowsIfEmpty) {
+TEST(TaskTest, TaskDestructor_WithEmptyTask_SetsDestructorFailureFlag) {
   {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : Task<std::vector<int32_t>, int32_t> {
@@ -245,7 +249,7 @@ TEST(TaskTest, TaskDestructor_ThrowsIfEmpty) {
   ppc::util::DestructorFailureFlag::Unset();
 }
 
-TEST(TaskTest, InternalTimeTest_ThrowsIfTimeoutExceeded) {
+TEST(TaskTest, InternalTimeTest_WithTimeoutExceeded_ThrowsRuntimeError) {
   struct SlowTask : Task<std::vector<int32_t>, int32_t> {
     explicit SlowTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
     bool ValidationImpl() override { return true; }
@@ -278,7 +282,7 @@ class DummyTask : public Task<int, int> {
   bool PostProcessingImpl() override { return true; }
 };
 
-TEST(TaskTest, ValidationThrowsIfCalledTwice) {
+TEST(TaskTest, Validation_WhenCalledTwice_ThrowsRuntimeError) {
   {
     auto task = std::make_shared<DummyTask>();
     task->Validation();
@@ -287,7 +291,7 @@ TEST(TaskTest, ValidationThrowsIfCalledTwice) {
   ppc::util::DestructorFailureFlag::Unset();
 }
 
-TEST(TaskTest, PreProcessingThrowsIfCalledBeforeValidation) {
+TEST(TaskTest, PreProcessing_WhenCalledBeforeValidation_ThrowsRuntimeError) {
   {
     auto task = std::make_shared<DummyTask>();
     EXPECT_THROW(task->PreProcessing(), std::runtime_error);
@@ -295,7 +299,7 @@ TEST(TaskTest, PreProcessingThrowsIfCalledBeforeValidation) {
   ppc::util::DestructorFailureFlag::Unset();
 }
 
-TEST(TaskTest, RunThrowsIfCalledBeforePreProcessing) {
+TEST(TaskTest, Run_WhenCalledBeforePreProcessing_ThrowsRuntimeError) {
   {
     auto task = std::make_shared<DummyTask>();
     EXPECT_THROW(task->Run(), std::runtime_error);
@@ -303,7 +307,7 @@ TEST(TaskTest, RunThrowsIfCalledBeforePreProcessing) {
   ppc::util::DestructorFailureFlag::Unset();
 }
 
-TEST(TaskTest, PostProcessingThrowsIfCalledBeforeRun) {
+TEST(TaskTest, PostProcessing_WhenCalledBeforeRun_ThrowsRuntimeError) {
   {
     auto task = std::make_shared<DummyTask>();
     task->Validation();
