@@ -19,7 +19,7 @@ class TaskAdditionalTest : public ::testing::Test {
 };
 
 // Test TaskGetter function - unique functionality not covered elsewhere
-TEST_F(TaskAdditionalTest, TaskGetter_BasicFunctionality) {
+TEST_F(TaskAdditionalTest, TaskGetter_WithBasicTask_CreatesTaskSuccessfully) {
   // Create a task to test with
   class GetterTestTask : public ppc::task::Task<std::vector<int>, std::vector<int>> {
    public:
@@ -43,7 +43,7 @@ TEST_F(TaskAdditionalTest, TaskGetter_BasicFunctionality) {
   EXPECT_EQ(getter_result->GetValue(), 42);
 }
 
-TEST_F(TaskAdditionalTest, TaskGetter_DifferentTaskTypes) {
+TEST_F(TaskAdditionalTest, TaskGetter_WithDifferentTaskTypes_CreatesTasksSuccessfully) {
   // Test TaskGetter with different task types
   class TaskType1 : public ppc::task::Task<std::vector<int>, std::vector<int>> {
    public:
