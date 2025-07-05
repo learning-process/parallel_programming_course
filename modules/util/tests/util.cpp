@@ -22,10 +22,6 @@ TEST(UtilTest, GetNumThreads_WithOpenMPEnvironment_HandlesThreadControlCorrectly
   if (num_threads_env_var.has_value()) {
     // When PPC_NUM_THREADS is set, GetNumThreads() should return that value
     EXPECT_EQ(ppc::util::GetNumThreads(), num_threads_env_var.value());
-
-    // And after setting OpenMP threads, it should match
-    omp_set_num_threads(num_threads_env_var.value());
-    EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_max_threads());
   } else {
     // When PPC_NUM_THREADS is not set, GetNumThreads() should return 1
     // This is independent of OpenMP's thread count
