@@ -93,7 +93,8 @@ jobs:
               exit 1
             fi
             if grep -n "ExpectIncompleteLifecycle" "$file"; then
-              echo "::error::Found 'ExpectIncompleteLifecycle' in $file. This function is for internal testing only and should not be used in student tasks."
+              echo "::error::Found 'ExpectIncompleteLifecycle' in $file." \
+                   "This function is for internal testing only and should not be used in student tasks."
               exit 1
             fi
           done
