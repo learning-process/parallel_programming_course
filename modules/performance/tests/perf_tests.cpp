@@ -1,13 +1,12 @@
 #include <gtest/gtest.h>
 
 #include <chrono>
-#include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <memory>
 #include <ostream>
 #include <stdexcept>
-#include <string_view>
+#include <string>
 #include <thread>
 #include <vector>
 
@@ -55,6 +54,8 @@ class FakePerfTask : public TestPerfTask<InType, OutType> {
 }  // namespace ppc::test
 
 namespace ppc::performance {
+
+namespace {
 
 TEST(perf_tests, check_perf_pipeline) {
   std::vector<uint32_t> in(2000, 1);
@@ -136,7 +137,7 @@ TEST(perf_tests, check_perf_task_float) {
 }
 
 struct ParamTestCase {
-  PerfResults::TypeOfRunning input;
+  PerfResults::TypeOfRunning input{};
   std::string expected_output;
   friend void PrintTo(const ParamTestCase& param, std::ostream* os) {
     *os << "{ input = " << static_cast<int>(param.input) << ", expected = " << param.expected_output << " }";
@@ -159,7 +160,7 @@ INSTANTIATE_TEST_SUITE_P(ParamTests, GetStringParamNameParamTest,
                          });
 
 struct TaskTypeTestCase {
-  TypeOfTask type;
+  TypeOfTask type{};
   std::string expected;
   std::string label;
   friend void PrintTo(const TaskTypeTestCase& param, std::ostream* os) {
@@ -441,7 +442,7 @@ TEST(PerfTest, CommonRunCalculatesAverageTime) {
   perf.PipelineRun(attr);
   auto results = perf.GetPerfResults();
 
-  // Total time should be 3 seconds, average should be 1 second (3.0 - 0.0) / 3
+  // Total time should be 3 seconds, average should be 1 second (3.0-0.0) / 3
   EXPECT_DOUBLE_EQ(results.time_sec, 1.0);
 }
 
@@ -573,11 +574,10 @@ TEST(PerfTest, TaskRunCompletesPipelineAfterTiming) {
 }
 
 namespace test_namespace {
-struct TestType {};
 }  // namespace test_namespace
 
 TEST(PerfTest, TemplateInstantiationWithDifferentTypes) {
-  // Test that Perf template can be instantiated with different types
+  // Test that the Perf template can be instantiated with different types
   auto int_task = std::make_shared<DummyTask>();
   Perf<int, int> int_perf(int_task);
 
@@ -615,5 +615,7 @@ TEST(TaskTest, Destructor_InvalidPipelineOrderTerminates_PartialPipeline) {
   EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
   ppc::util::DestructorFailureFlag::Unset();
 }
+
+}  // namespace
 
 }  // namespace ppc::performance
