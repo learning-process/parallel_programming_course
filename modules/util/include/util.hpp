@@ -29,7 +29,6 @@ using NlohmannJsonTypeError = nlohmann::json::type_error;
 
 namespace ppc::util {
 
-
 enum GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
 
 std::string GetAbsoluteTaskPath(const std::string& id_path, const std::string& relative_path);

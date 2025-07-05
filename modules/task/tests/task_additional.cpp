@@ -38,7 +38,7 @@ TEST_F(TaskAdditionalTest, TaskGetter_WithBasicTask_CreatesTaskSuccessfully) {
 
   // Test TaskGetter function
   auto getter_result = ppc::task::TaskGetter<GetterTestTask>(42);
-  getter_result->ExpectIncompleteLifecycle(); // Task is only created for testing, not executed
+  getter_result->ExpectIncompleteLifecycle();  // Task is only created for testing, not executed
 
   EXPECT_NE(getter_result, nullptr);
   EXPECT_EQ(getter_result->GetValue(), 42);
@@ -79,9 +79,9 @@ TEST_F(TaskAdditionalTest, TaskGetter_WithDifferentTaskTypes_CreatesTasksSuccess
 
   auto getter1 = ppc::task::TaskGetter<TaskType1>(std::string("test"));
   auto getter2 = ppc::task::TaskGetter<TaskType2>(3.14);
-  
-  getter1->ExpectIncompleteLifecycle(); // Tasks are only created for testing
-  getter2->ExpectIncompleteLifecycle(); // Tasks are only created for testing
+
+  getter1->ExpectIncompleteLifecycle();  // Tasks are only created for testing
+  getter2->ExpectIncompleteLifecycle();  // Tasks are only created for testing
 
   EXPECT_NE(getter1, nullptr);
   EXPECT_NE(getter2, nullptr);

@@ -85,8 +85,7 @@ int Init(int argc, char** argv) {
     listeners.Append(new UnreadMessagesDetector());
 
     status = RUN_ALL_TESTS();
-  } // TBB control object destroyed here
-
+  }  // TBB control object destroyed here
 
   const int finalize_res = MPI_Finalize();
   if (finalize_res != MPI_SUCCESS) {
@@ -105,7 +104,7 @@ int SimpleInit(int argc, char** argv) {
 
     testing::InitGoogleTest(&argc, argv);
     status = RUN_ALL_TESTS();
-  } // TBB control object destroyed here
+  }  // TBB control object destroyed here
 
   return status;
 }

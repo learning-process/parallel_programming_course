@@ -356,7 +356,7 @@ TEST(PerfTest, PipelineRunAndTaskRun_WithValidTask_ExecutesSuccessfully) {
 TEST(PerfTest, PrintPerfStatistic_WithNoneType_ThrowsException) {
   {
     auto task_ptr = std::make_shared<DummyTask>();
-    task_ptr->ExpectIncompleteLifecycle(); // Task not executed in a performance test
+    task_ptr->ExpectIncompleteLifecycle();  // Task not executed in a performance test
     Perf<int, int> perf(task_ptr);
     EXPECT_THROW(perf.PrintPerfStatistic("test"), std::runtime_error);
   }
@@ -616,7 +616,7 @@ TEST(TaskTest, Destructor_WithInvalidPipelineOrderAndPartialExecution_Terminates
       bool RunImpl() override { return true; }
       bool PostProcessingImpl() override { return true; }
     } task;
-    task.ExpectIncompleteLifecycle(); // Task has incomplete pipeline execution
+    task.ExpectIncompleteLifecycle();  // Task has incomplete pipeline execution
     task.Validation();
   }
 }

@@ -201,8 +201,8 @@ class Task {
   virtual ~Task() {
     if (stage_ != PipelineStage::kDone && stage_ != PipelineStage::kException && !expect_incomplete_) {
       // Immediate failure - better than global state pollution
-      std::cerr << "[TASK ERROR] Task destroyed without completing pipeline. Stage: "
-                << static_cast<int>(stage_) << std::endl;
+      std::cerr << "[TASK ERROR] Task destroyed without completing pipeline. Stage: " << static_cast<int>(stage_)
+                << std::endl;
       std::terminate();
     }
 #if _OPENMP >= 201811
