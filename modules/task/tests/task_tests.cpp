@@ -4,10 +4,14 @@
 #include <cstddef>
 #include <cstdint>
 #include <exception>
+#include <filesystem>
 #include <fstream>
 #include <memory>
 #include <stdexcept>
+#include <string>
+#include <system_error>
 #include <thread>
+#include <utility>
 #include <vector>
 
 #include "runners/include/runners.hpp"
@@ -15,6 +19,18 @@
 #include "util/include/util.hpp"
 
 using namespace ppc::task;
+
+class ScopedFile {
+ public:
+  explicit ScopedFile(std::string path) : path_(std::move(path)) {}
+  ~ScopedFile() {
+    std::error_code ec;
+    std::filesystem::remove(path_, ec);
+  }
+
+ private:
+  std::string path_;
+};
 
 namespace ppc::test {
 
@@ -132,6 +148,7 @@ TEST(TaskTest, GetStringTaskType_InvalidFileThrows) {
 
 TEST(TaskTest, GetStringTaskType_UnknownType_WithValidFile) {
   std::string path = "settings_valid.json";
+  ScopedFile cleaner(path);
   std::ofstream file(path);
   file
       << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "tbb": "enabled", "seq": "enabled"}})";
@@ -141,6 +158,7 @@ TEST(TaskTest, GetStringTaskType_UnknownType_WithValidFile) {
 
 TEST(TaskTest, GetStringTaskType_ThrowsOnBadJSON) {
   std::string path = "bad_settings.json";
+  ScopedFile cleaner(path);
   std::ofstream file(path);
   file << "{";
   file.close();
@@ -149,6 +167,7 @@ TEST(TaskTest, GetStringTaskType_ThrowsOnBadJSON) {
 
 TEST(TaskTest, GetStringTaskType_EachType_WithValidFile) {
   std::string path = "settings_valid_all.json";
+  ScopedFile cleaner(path);
   std::ofstream file(path);
   file
       << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "tbb": "enabled", "seq": "enabled"}})";
@@ -164,6 +183,7 @@ TEST(TaskTest, GetStringTaskType_EachType_WithValidFile) {
 
 TEST(TaskTest, GetStringTaskType_ReturnsUnknown_OnDefault) {
   std::string path = "settings_valid_unknown.json";
+  ScopedFile cleaner(path);
   std::ofstream file(path);
   file << R"({"tasks": {"all": "enabled"}})";
   file.close();
@@ -174,6 +194,7 @@ TEST(TaskTest, GetStringTaskType_ReturnsUnknown_OnDefault) {
 
 TEST(TaskTest, GetStringTaskType_ThrowsIfKeyMissing) {
   std::string path = "settings_partial.json";
+  ScopedFile cleaner(path);
   std::ofstream file(path);
   file << R"({"tasks": {"all": "enabled"}})";
   file.close();
