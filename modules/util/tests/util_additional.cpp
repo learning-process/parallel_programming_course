@@ -18,7 +18,7 @@ class UtilAdditionalTest : public ::testing::Test {
 };
 
 // Tests for GetAbsoluteTaskPath - understand it creates full absolute paths
-TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_ValidPaths) {
+TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_WithValidPaths_ReturnsCorrectPath) {
   std::string result = ppc::util::GetAbsoluteTaskPath("task1", "src/main.cpp");
   // The function adds PPC_PATH_TO_PROJECT/tasks/task1/data/src/main.cpp
   // Use platform-agnostic path checking - simplified to reduce complexity
@@ -27,7 +27,7 @@ TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_ValidPaths) {
   EXPECT_TRUE(result.find("task1") != std::string::npos);
 }
 
-TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_EmptyIdPath) {
+TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_WithEmptyIdPath_ReturnsDefaultPath) {
   std::string result = ppc::util::GetAbsoluteTaskPath("", "src/main.cpp");
   // The function adds PPC_PATH_TO_PROJECT/tasks/data/src/main.cpp
   EXPECT_TRUE(result.find("tasks") != std::string::npos);
@@ -35,7 +35,7 @@ TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_EmptyIdPath) {
   EXPECT_TRUE(result.find("main.cpp") != std::string::npos);
 }
 
-TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_EmptyRelativePath) {
+TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_WithEmptyRelativePath_ReturnsTaskDataPath) {
   std::string result = ppc::util::GetAbsoluteTaskPath("task1", "");
   // The function adds PPC_PATH_TO_PROJECT/tasks/task1/data/
   EXPECT_TRUE(result.find("tasks") != std::string::npos);
@@ -43,7 +43,7 @@ TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_EmptyRelativePath) {
   EXPECT_TRUE(result.find("data") != std::string::npos);
 }
 
-TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_BothEmpty) {
+TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_WithBothEmpty_ReturnsTasksDataPath) {
   std::string result = ppc::util::GetAbsoluteTaskPath("", "");
   // The function adds PPC_PATH_TO_PROJECT/tasks/data/
   EXPECT_TRUE(result.find("tasks") != std::string::npos);
@@ -51,7 +51,7 @@ TEST_F(UtilAdditionalTest, GetAbsoluteTaskPath_BothEmpty) {
 }
 
 // Tests for GetNumThreads - returns 1 by default if no env var, otherwise returns env var value
-TEST_F(UtilAdditionalTest, GetNumThreads_EnvironmentVariableNotSet) {
+TEST_F(UtilAdditionalTest, GetNumThreads_WithEnvironmentVariableNotSet_ReturnsDefaultValue) {
   // Ensure PPC_NUM_THREADS is not set in the system environment
   env::detail::delete_environment_variable("PPC_NUM_THREADS");
 
@@ -62,7 +62,7 @@ TEST_F(UtilAdditionalTest, GetNumThreads_EnvironmentVariableNotSet) {
   EXPECT_EQ(result, 1);  // Default value when no environment variable is set
 }
 
-TEST_F(UtilAdditionalTest, GetNumThreads_EnvironmentVariableSet) {
+TEST_F(UtilAdditionalTest, GetNumThreads_WithEnvironmentVariableSet_ReturnsEnvironmentValue) {
   // Create a scoped environment with PPC_NUM_THREADS=4
   env::scoped_test_environment test_env("PPC_NUM_THREADS", "4");
 
@@ -70,21 +70,21 @@ TEST_F(UtilAdditionalTest, GetNumThreads_EnvironmentVariableSet) {
   EXPECT_EQ(result, 4);
 }
 
-TEST_F(UtilAdditionalTest, GetNumThreads_EnvironmentVariableZero) {
+TEST_F(UtilAdditionalTest, GetNumThreads_WithEnvironmentVariableZero_ReturnsZero) {
   env::scoped_test_environment test_env("PPC_NUM_THREADS", "0");
 
   int result = ppc::util::GetNumThreads();
   EXPECT_EQ(result, 0);
 }
 
-TEST_F(UtilAdditionalTest, GetNumThreads_EnvironmentVariableNegative) {
+TEST_F(UtilAdditionalTest, GetNumThreads_WithEnvironmentVariableNegative_ReturnsNegativeValue) {
   env::scoped_test_environment test_env("PPC_NUM_THREADS", "-1");
 
   int result = ppc::util::GetNumThreads();
   EXPECT_EQ(result, -1);
 }
 
-TEST_F(UtilAdditionalTest, GetNumThreads_EnvironmentVariableInvalid) {
+TEST_F(UtilAdditionalTest, GetNumThreads_WithEnvironmentVariableInvalid_ReturnsDefaultValue) {
   env::scoped_test_environment test_env("PPC_NUM_THREADS", "invalid");
 
   int result = ppc::util::GetNumThreads();
@@ -92,7 +92,7 @@ TEST_F(UtilAdditionalTest, GetNumThreads_EnvironmentVariableInvalid) {
 }
 
 // Tests for IsUnderMpirun - checks specific environment variables from the kMpiEnvVars array
-TEST_F(UtilAdditionalTest, IsUnderMpirun_NoEnvironmentVariables) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithNoEnvironmentVariables_ReturnsFalse) {
   // Create an empty environment to ensure no MPI vars are set
   env::scoped_test_environment test_env({});
 
@@ -100,77 +100,77 @@ TEST_F(UtilAdditionalTest, IsUnderMpirun_NoEnvironmentVariables) {
   EXPECT_FALSE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_OMPI_COMM_WORLD_SIZE) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithOMPICommWorldSize_ReturnsTrue) {
   env::scoped_test_environment test_env("OMPI_COMM_WORLD_SIZE", "4");
 
   bool result = ppc::util::IsUnderMpirun();
   EXPECT_TRUE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_OMPI_UNIVERSE_SIZE) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithOMPIUniverseSize_ReturnsTrue) {
   env::scoped_test_environment test_env("OMPI_UNIVERSE_SIZE", "8");
 
   bool result = ppc::util::IsUnderMpirun();
   EXPECT_TRUE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_PMI_SIZE) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithPMISize_ReturnsTrue) {
   env::scoped_test_environment test_env("PMI_SIZE", "2");
 
   bool result = ppc::util::IsUnderMpirun();
   EXPECT_TRUE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_PMI_RANK) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithPMIRank_ReturnsTrue) {
   env::scoped_test_environment test_env("PMI_RANK", "0");
 
   bool result = ppc::util::IsUnderMpirun();
   EXPECT_TRUE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_PMI_FD) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithPMIFd_ReturnsTrue) {
   env::scoped_test_environment test_env("PMI_FD", "3");
 
   bool result = ppc::util::IsUnderMpirun();
   EXPECT_TRUE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_HYDRA_CONTROL_FD) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithHydraControlFd_ReturnsTrue) {
   env::scoped_test_environment test_env("HYDRA_CONTROL_FD", "4");
 
   bool result = ppc::util::IsUnderMpirun();
   EXPECT_TRUE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_PMIX_RANK) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithPMIXRank_ReturnsTrue) {
   env::scoped_test_environment test_env("PMIX_RANK", "1");
 
   bool result = ppc::util::IsUnderMpirun();
   EXPECT_TRUE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_SLURM_PROCID) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithSlurmProcid_ReturnsTrue) {
   env::scoped_test_environment test_env("SLURM_PROCID", "0");
 
   bool result = ppc::util::IsUnderMpirun();
   EXPECT_TRUE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_MSMPI_RANK) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithMSMPIRank_ReturnsTrue) {
   env::scoped_test_environment test_env("MSMPI_RANK", "2");
 
   bool result = ppc::util::IsUnderMpirun();
   EXPECT_TRUE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_MSMPI_LOCALRANK) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithMSMPILocalRank_ReturnsTrue) {
   env::scoped_test_environment test_env("MSMPI_LOCALRANK", "0");
 
   bool result = ppc::util::IsUnderMpirun();
   EXPECT_TRUE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_MultipleEnvironmentVariables) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithMultipleEnvironmentVariables_ReturnsTrue) {
   // Test with multiple MPI environment variables set
   env::scoped_test_environment test_env({{"OMPI_COMM_WORLD_SIZE", "4"}, {"PMI_SIZE", "4"}, {"SLURM_PROCID", "0"}});
 
@@ -178,7 +178,7 @@ TEST_F(UtilAdditionalTest, IsUnderMpirun_MultipleEnvironmentVariables) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(UtilAdditionalTest, IsUnderMpirun_EmptyEnvironmentVariable) {
+TEST_F(UtilAdditionalTest, IsUnderMpirun_WithEmptyEnvironmentVariable_DoesNotCrash) {
   // Test with empty value - behavior is implementation-dependent
   env::scoped_test_environment test_env("OMPI_COMM_WORLD_SIZE", "");
 
