@@ -19,7 +19,12 @@ TEST(util_tests, extracts_correct_namespace) {
 TEST(util_tests, threads_control_check_openmp_disabled_valgrind) {
   const auto num_threads_env_var = env::get<int>("PPC_NUM_THREADS");
 
-  EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_max_threads());
+  if (num_threads_env_var.has_value()) {
+    omp_set_num_threads(num_threads_env_var.value());
+    EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_max_threads());
+  } else {
+    EXPECT_EQ(ppc::util::GetNumThreads(), 1);
+  }
 }
 
 namespace test_ns {
