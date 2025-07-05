@@ -194,16 +194,16 @@ class Task {
   /// @note FOR INTERNAL TESTING ONLY. This function should NOT be used in student tasks.
   ///       Usage in tasks/ directory will cause CI to fail.
   /// @warning This function is only for framework testing purposes.
-  void ExpectIncompleteLifecycle() { expect_incomplete_ = true; }
+  void ExpectIncompleteLifecycle() { terminate_handler_ = []{}; }
 
   /// @brief Destructor. Verifies that the pipeline was executed in the correct order.
   /// @note Terminates the program if the pipeline order is incorrect or incomplete.
   virtual ~Task() {
-    if (stage_ != PipelineStage::kDone && stage_ != PipelineStage::kException && !expect_incomplete_) {
+    if (stage_ != PipelineStage::kDone && stage_ != PipelineStage::kException) {
       // Immediate failure - better than global state pollution
       std::cerr << "[TASK ERROR] Task destroyed without completing pipeline. Stage: " << static_cast<int>(stage_)
                 << std::endl;
-      std::terminate();
+      terminate_handler_();
     }
 #if _OPENMP >= 201811
     omp_pause_resource_all(omp_pause_soft);
@@ -268,7 +268,7 @@ class Task {
     kDone,
     kException
   } stage_ = PipelineStage::kNone;
-  bool expect_incomplete_ = false;  // Allow testing of incomplete pipelines
+  std::function<void()> terminate_handler_ = std::terminate;  // Custom terminate handler for testing
 };
 
 /// @brief Smart pointer alias for Task.
