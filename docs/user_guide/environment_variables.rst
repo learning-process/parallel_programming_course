@@ -14,3 +14,7 @@ The following environment variables can be used to configure the project's runti
 
 - ``PPC_IGNORE_TEST_TIME_LIMIT``: Specifies that test time limits are ignored. Used by ``scripts/run_tests.py`` to disable time limit enforcement.
   Default: ``0``
+- ``PPC_TASK_MAX_TIME``: Maximum allowed execution time in seconds for functional tests.
+  Default: ``1.0``
+- ``PPC_PERF_MAX_TIME``: Maximum allowed execution time in seconds for performance tests.
+  Default: ``10.0``
