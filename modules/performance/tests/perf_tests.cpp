@@ -4,14 +4,13 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <libenvpp/detail/environment.hpp>
 #include <memory>
 #include <ostream>
 #include <stdexcept>
 #include <string_view>
 #include <thread>
 #include <vector>
-
-#include <libenvpp/detail/environment.hpp>
 
 #include "performance/include/performance.hpp"
 #include "task/include/task.hpp"
