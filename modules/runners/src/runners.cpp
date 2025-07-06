@@ -24,7 +24,11 @@ void UnreadMessagesDetector::OnTestEnd(const ::testing::TestInfo& /*test_info*/)
   int flag = -1;
   MPI_Status status;
 
-  MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &flag, &status);
+  const int iprobe_res = MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &flag, &status);
+  if (iprobe_res != MPI_SUCCESS) {
+    std::cerr << std::format("[  PROCESS {}  ] [  ERROR  ] MPI_Iprobe failed with code {}", rank, iprobe_res) << '\n';
+    MPI_Abort(MPI_COMM_WORLD, iprobe_res);
+  }
 
   if (flag != 0) {
     std::cerr
