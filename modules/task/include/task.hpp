@@ -204,7 +204,7 @@ class Task {
     if (stage_ != PipelineStage::kDone && stage_ != PipelineStage::kException) {
       // Immediate failure - better than global state pollution
       std::cerr << "[TASK ERROR] Task destroyed without completing pipeline. Stage: " << static_cast<int>(stage_)
-                << std::endl;
+                << '\n';
       terminate_handler_();
     }
 #if _OPENMP >= 201811

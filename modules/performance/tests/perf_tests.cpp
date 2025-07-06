@@ -441,9 +441,8 @@ TEST(PerfTest, CommonRun_WithMultipleExecutions_CalculatesAverageTime) {
     if (call_count == 0) {
       call_count++;
       return 0.0;  // Start time
-    } else {
-      return 3.0;  // End time after 3 runs
     }
+    return 3.0;  // End time after 3 runs
   };
 
   perf.PipelineRun(attr);
@@ -533,31 +532,31 @@ TEST(PerfTest, TaskRun_WithTiming_CompletesPipelineCorrectly) {
   // Create a custom task that counts method calls
   class CountingTask : public Task<int, int> {
    public:
-    int* validation_count_;
-    int* preprocessing_count_;
-    int* run_count_;
-    int* postprocessing_count_;
+    int* validation_count;
+    int* preprocessing_count;
+    int* run_count;
+    int* postprocessing_count;
 
     CountingTask(int* vc, int* pc, int* rc, int* ppc)
-        : validation_count_(vc), preprocessing_count_(pc), run_count_(rc), postprocessing_count_(ppc) {}
+        : validation_count(vc), preprocessing_count(pc), run_count(rc), postprocessing_count(ppc) {}
 
     bool ValidationImpl() override {
-      (*validation_count_)++;
+      (*validation_count)++;
       return true;
     }
 
     bool PreProcessingImpl() override {
-      (*preprocessing_count_)++;
+      (*preprocessing_count)++;
       return true;
     }
 
     bool RunImpl() override {
-      (*run_count_)++;
+      (*run_count)++;
       return true;
     }
 
     bool PostProcessingImpl() override {
-      (*postprocessing_count_)++;
+      (*postprocessing_count)++;
       return true;
     }
   };

@@ -361,7 +361,7 @@ jobs:
         run: |
           cmake --build build --parallel
       - name: Run tests (MPI)
-        run: scripts/run_tests.py --running-type="processes"
+        run: scripts/run_tests.py --running-type="processes_coverage"
         env:
           PPC_NUM_PROC: 2
           PPC_NUM_THREADS: 2
@@ -373,6 +373,7 @@ jobs:
         run: |
           mkdir cov-report
           cd build
+          # Collect coverage data from all MPI rank directories and regular build directory
           gcovr -r ../ \
                 --exclude '.*3rdparty/.*' \
                 --exclude '/usr/.*' \
@@ -383,6 +384,12 @@ jobs:
                 --exclude '.*modules/util/include/perf_test_util.hpp' \
                 --exclude '.*modules/util/include/func_test_util.hpp' \
                 --exclude '.*modules/util/src/func_test_util.cpp' \
+                --gcov-ignore-parse-errors \
+                --search-paths . \
+                --search-paths gcov_data/rank_0 \
+                --search-paths gcov_data/rank_1 \
+                --search-paths gcov_data/rank_2 \
+                --search-paths gcov_data/rank_3 \
                 --xml --output ../coverage.xml \
                 --html=../cov-report/index.html --html-details
       - name: Upload coverage reports to Codecov

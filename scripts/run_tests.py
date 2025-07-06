@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
+"""
+Test runner script for a PPC project.
 
+This script provides functionality to run tests in different modes:
+- threads: for multithreading tests
+- processes: for multiprocessing tests
+- processes_coverage: for multiprocessing tests with coverage collection
+- performance: for performance testing
+"""
+
+import argparse
 import os
 import shlex
 import subprocess
@@ -8,13 +18,15 @@ from pathlib import Path
 
 
 def init_cmd_args():
-    import argparse
+    """Initialize and parse command line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--running-type",
         required=True,
-        choices=["threads", "processes", "performance"],
-        help="Specify the execution mode. Choose 'threads' for multithreading or 'processes' for multiprocessing."
+        choices=["threads", "processes", "processes_coverage", "performance"],
+        help="Specify the execution mode. Choose 'threads' for multithreading, "
+             "'processes' for multiprocessing, 'processes_coverage' for multiprocessing "
+             "with coverage, or 'performance' for performance testing."
     )
     parser.add_argument(
         "--additional-mpi-args",
@@ -34,6 +46,8 @@ def init_cmd_args():
 
 
 class PPCRunner:
+    """Runner class for PPC test execution in different modes."""
+
     def __init__(self):
         self.__ppc_num_threads = None
         self.__ppc_num_proc = None
@@ -54,6 +68,7 @@ class PPCRunner:
         return script_dir.parent
 
     def setup_env(self, ppc_env):
+        """Setup environment variables and working directory."""
         self.__ppc_env = ppc_env
 
         self.__ppc_num_threads = self.__ppc_env.get("PPC_NUM_THREADS")
@@ -71,9 +86,9 @@ class PPCRunner:
             self.work_dir = Path(self.__get_project_path()) / "build" / "bin"
 
     def __run_exec(self, command):
-        result = subprocess.run(command, shell=False, env=self.__ppc_env)
+        result = subprocess.run(command, shell=False, env=self.__ppc_env, check=False)
         if result.returncode != 0:
-            raise Exception(f"Subprocess return {result.returncode}.")
+            raise subprocess.CalledProcessError(result.returncode, command)
 
     @staticmethod
     def __get_gtest_settings(repeats_count, type_task):
@@ -87,6 +102,7 @@ class PPCRunner:
         return command
 
     def run_threads(self):
+        """Run tests in threading mode."""
         if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
             for task_type in ["seq", "stl"]:
                 self.__run_exec(
@@ -97,10 +113,12 @@ class PPCRunner:
 
         for task_type in ["omp", "seq", "stl", "tbb"]:
             self.__run_exec(
-                [str(self.work_dir / 'ppc_func_tests')] + self.__get_gtest_settings(3, '_' + task_type + '_')
+                [str(self.work_dir / 'ppc_func_tests')] +
+                self.__get_gtest_settings(3, '_' + task_type + '_')
             )
 
     def run_core(self):
+        """Run core functionality tests."""
         if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
             self.__run_exec(
                 shlex.split(self.valgrind_cmd)
@@ -114,6 +132,7 @@ class PPCRunner:
         )
 
     def run_processes(self, additional_mpi_args):
+        """Run tests in multiprocessing mode."""
         ppc_num_proc = self.__ppc_env.get("PPC_NUM_PROC")
         if ppc_num_proc is None:
             raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
@@ -127,7 +146,63 @@ class PPCRunner:
                     + self.__get_gtest_settings(10, '_' + task_type)
                 )
 
+    def run_processes_coverage(self, additional_mpi_args):
+        """Run tests in multiprocessing mode with a coverage collection."""
+        ppc_num_proc = self.__ppc_env.get("PPC_NUM_PROC")
+        if ppc_num_proc is None:
+            raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
+
+        mpi_running = [self.mpi_exec] + shlex.split(additional_mpi_args) + ["-np", ppc_num_proc]
+
+        # Set up coverage environment for MPI processes
+        if not self.__ppc_env.get("PPC_ASAN_RUN"):
+            # Enable coverage data collection for each MPI process
+            self.__ppc_env["GCOV_PREFIX_STRIP"] = "0"
+            # Use MPI rank to create unique coverage directories for each process
+            gcov_base_dir = Path(self.__get_project_path()) / "build" / "gcov_data"
+            gcov_base_dir.mkdir(parents=True, exist_ok=True)
+
+            # Set GCOV_PREFIX to include MPI rank - this creates separate directories
+            # for each MPI process at runtime
+            self.__ppc_env["GCOV_PREFIX"] = str(
+                gcov_base_dir / "rank_${PMI_RANK:-${OMPI_COMM_WORLD_RANK:-${SLURM_PROCID:-0}}}"
+            )
+
+            # Create a wrapper script to set a unique prefix per process
+            wrapper_script = Path(self.__get_project_path()) / "build" / "mpi_coverage_wrapper.sh"
+            wrapper_content = f"""#!/bin/bash
+# Get MPI rank from environment variables
+if [ -n "$PMIX_RANK" ]; then
+    RANK=$PMIX_RANK
+elif [ -n "$PMI_RANK" ]; then
+    RANK=$PMI_RANK
+elif [ -n "$OMPI_COMM_WORLD_RANK" ]; then
+    RANK=$OMPI_COMM_WORLD_RANK
+elif [ -n "$SLURM_PROCID" ]; then
+    RANK=$SLURM_PROCID
+else
+    RANK=0
+fi
+
+export GCOV_PREFIX="{gcov_base_dir}/rank_$RANK"
+mkdir -p "$GCOV_PREFIX"
+exec "$@"
+"""
+            wrapper_script.write_text(wrapper_content)
+            wrapper_script.chmod(0o755)
+
+            # Run tests with a coverage wrapper
+            for task_type in ["all", "mpi"]:
+                test_command = (
+                    mpi_running
+                    + [str(wrapper_script)]
+                    + [str(self.work_dir / 'ppc_func_tests')]
+                    + self.__get_gtest_settings(10, '_' + task_type)
+                )
+                self.__run_exec(test_command)
+
     def run_performance(self):
+        """Run performance tests."""
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
             mpi_running = [self.mpi_exec, "-np", self.__ppc_num_proc]
             for task_type in ["all", "mpi"]:
@@ -139,25 +214,29 @@ class PPCRunner:
 
         for task_type in ["omp", "seq", "stl", "tbb"]:
             self.__run_exec(
-                [str(self.work_dir / 'ppc_perf_tests')] + self.__get_gtest_settings(1, '_' + task_type)
+                [str(self.work_dir / 'ppc_perf_tests')] +
+                self.__get_gtest_settings(1, '_' + task_type)
             )
 
 
-def _execute(args_dict, env):
+def _execute(args_dict_, env):
+    """Execute tests based on the provided arguments."""
     runner = PPCRunner()
     runner.setup_env(env)
 
-    if args_dict["running_type"] in ["threads", "processes"]:
+    if args_dict_["running_type"] in ["threads", "processes", "processes_coverage"]:
         runner.run_core()
 
-    if args_dict["running_type"] == "threads":
+    if args_dict_["running_type"] == "threads":
         runner.run_threads()
-    elif args_dict["running_type"] == "processes":
-        runner.run_processes(args_dict["additional_mpi_args"])
-    elif args_dict["running_type"] == "performance":
+    elif args_dict_["running_type"] == "processes":
+        runner.run_processes(args_dict_["additional_mpi_args"])
+    elif args_dict_["running_type"] == "processes_coverage":
+        runner.run_processes_coverage(args_dict_["additional_mpi_args"])
+    elif args_dict_["running_type"] == "performance":
         runner.run_performance()
     else:
-        raise Exception("running-type is wrong!")
+        raise ValueError(f"Invalid running-type: {args_dict_['running_type']}")
 
 
 if __name__ == "__main__":
@@ -171,7 +250,7 @@ if __name__ == "__main__":
             if args_dict["running_type"] == "threads":
                 env_copy["PPC_NUM_THREADS"] = str(count)
                 env_copy.setdefault("PPC_NUM_PROC", "1")
-            elif args_dict["running_type"] == "processes":
+            elif args_dict["running_type"] in ["processes", "processes_coverage"]:
                 env_copy["PPC_NUM_PROC"] = str(count)
                 env_copy.setdefault("PPC_NUM_THREADS", "1")
 
