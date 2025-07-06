@@ -332,9 +332,9 @@ jobs:
           PPC_NUM_PROC: 1
           PPC_ASAN_RUN: 1
   clang-build-codecov:
-#    needs:
-#      - gcc-test-extended
-#      - clang-test-extended
+    # needs:
+    #   - gcc-test-extended
+    #   - clang-test-extended
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -381,63 +381,11 @@ jobs:
           LLVM_PROFILE_FILE: "build/llvm_profile_%p_%m.profraw"
       - name: Generate LLVM Coverage Data
         run: |
-          mkdir cov-report
-          cd build
-          # Collect all profile data files (including from MPI ranks)
-          PROFILE_FILES=$(find . -name "*.profraw" -type f | tr '\n' ' ')
-          
-          if [ -z "$PROFILE_FILES" ]; then
-            echo "No profile files found!"
-            exit 1
-          fi
-          
-          # Merge all profile data files
-          llvm-profdata-20 merge -sparse $PROFILE_FILES -o merged.profdata
-          
-          # Generate coverage summary
-          llvm-cov-20 report \
-            -instr-profile=merged.profdata \
-            bin/ppc_func_tests bin/core_func_tests \
-            -ignore-filename-regex='.*3rdparty/.*' \
-            -ignore-filename-regex='/usr/.*' \
-            -ignore-filename-regex='.*tasks/.*/tests/.*' \
-            -ignore-filename-regex='.*modules/.*/tests/.*' \
-            -ignore-filename-regex='.*tasks/common/runners/.*' \
-            -ignore-filename-regex='.*modules/runners/.*'
-          
-          # Generate LCOV report for Codecov
-          llvm-cov-20 export \
-            -instr-profile=merged.profdata \
-            bin/ppc_func_tests bin/core_func_tests \
-            -format=lcov \
-            -ignore-filename-regex='.*3rdparty/.*' \
-            -ignore-filename-regex='/usr/.*' \
-            -ignore-filename-regex='.*tasks/.*/tests/.*' \
-            -ignore-filename-regex='.*modules/.*/tests/.*' \
-            -ignore-filename-regex='.*tasks/common/runners/.*' \
-            -ignore-filename-regex='.*modules/runners/.*' \
-            -ignore-filename-regex='.*modules/util/include/perf_test_util.hpp' \
-            -ignore-filename-regex='.*modules/util/include/func_test_util.hpp' \
-            -ignore-filename-regex='.*modules/util/src/func_test_util.cpp' \
-            > ../coverage.lcov
-          
-          # Generate HTML report
-          llvm-cov-20 show \
-            -instr-profile=merged.profdata \
-            bin/ppc_func_tests bin/core_func_tests \
-            -format=html \
-            -output-dir=../cov-report \
-            -show-line-counts-or-regions \
-            -show-instantiations \
-            -ignore-filename-regex='.*3rdparty/.*' \
-            -ignore-filename-regex='/usr/.*' \
-            -ignore-filename-regex='.*tasks/.*/tests/.*' \
-            -ignore-filename-regex='.*modules/.*/tests/.*' \
-            -ignore-filename-regex='.*tasks/common/runners/.*' \
-            -ignore-filename-regex='.*modules/runners/.*' \
-            -ignore-filename-regex='.*modules/util/include/perf_test_util.hpp' \
-            -ignore-filename-regex='.*modules/util/include/func_test_util.hpp' \
-            -ignore-filename-regex='.*modules/util/src/func_test_util.cpp'
+          scripts/generate_llvm_coverage.py \
+            --build-dir build \
+            --output-dir cov-report \
+            --llvm-profdata llvm-profdata-20 \
+            --llvm-cov llvm-cov-20
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:

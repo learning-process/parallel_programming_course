@@ -25,6 +25,7 @@ ExternalProject_Add(
     "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build" --prefix
     "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/install")
 
+# Link Google Test library to target
 function(ppc_link_gtest exec_func_lib)
   # Add external project include directories
   target_include_directories(

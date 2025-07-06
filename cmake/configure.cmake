@@ -76,8 +76,10 @@ if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
   endif(USE_COVERAGE)
   if(USE_LLVM_COVERAGE)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
+    set(CMAKE_C_FLAGS
+        "${CMAKE_C_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
+    set(CMAKE_CXX_FLAGS
+        "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
   endif(USE_LLVM_COVERAGE)
 endif()
 
