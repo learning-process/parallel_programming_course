@@ -6,6 +6,7 @@
 #include <exception>
 #include <filesystem>
 #include <fstream>
+#include <libenvpp/env.hpp>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -86,6 +87,16 @@ TEST(task_tests, check_int32_t_slow) {
   test_task.PreProcessing();
   test_task.Run();
   ASSERT_ANY_THROW(test_task.PostProcessing());
+}
+
+TEST(task_tests, slow_task_respects_env_override) {
+  env::detail::set_scoped_environment_variable scoped("PPC_TASK_MAX_TIME", "3");
+  std::vector<int32_t> in(20, 1);
+  ppc::test::FakeSlowTask<std::vector<int32_t>, int32_t> test_task(in);
+  ASSERT_EQ(test_task.Validation(), true);
+  test_task.PreProcessing();
+  test_task.Run();
+  EXPECT_NO_THROW(test_task.PostProcessing());
 }
 
 TEST(task_tests, check_validate_func) {
