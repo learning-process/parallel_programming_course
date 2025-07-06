@@ -374,15 +374,14 @@ jobs:
           mkdir cov-report
           cd build
           # Collect coverage data from all MPI rank directories and regular build directory
-          # Find existing gcov_data directories
-          SEARCH_PATHS="."
-          for rank_dir in gcov_data/rank_*; do
-            if [ -d "$rank_dir" ]; then
-              SEARCH_PATHS="$SEARCH_PATHS $rank_dir"
-            fi
-          done
+          # Copy coverage files from MPI rank directories to main build directory
+          if [ -d "gcov_data" ]; then
+            find gcov_data -name "*.gcda" -exec cp {} . \;
+            find gcov_data -name "*.gcno" -exec cp {} . \;
+          fi
 
           gcovr -r ../ \
+                --gcov-object-directory . \
                 --exclude '.*3rdparty/.*' \
                 --exclude '/usr/.*' \
                 --exclude '.*tasks/.*/tests/.*' \
@@ -396,7 +395,7 @@ jobs:
                 --xml --output ../coverage.xml \
                 --html=../cov-report/index.html \
                 --html-details=../cov-report/ \
-                $SEARCH_PATHS
+                .
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:
