@@ -374,11 +374,13 @@ jobs:
         env:
           PPC_NUM_THREADS: 2
           LLVM_PROFILE_FILE: "build/llvm_profile_%p_%m.profraw"
+          PPC_DISABLE_VALGRIND: 1
       - name: Run tests (threads)
         run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
           LLVM_PROFILE_FILE: "build/llvm_profile_%p_%m.profraw"
+          PPC_DISABLE_VALGRIND: 1
       - name: Generate LLVM Coverage Data
         run: |
           scripts/generate_llvm_coverage.py \
