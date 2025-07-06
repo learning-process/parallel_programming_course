@@ -3,9 +3,9 @@
 #include <chrono>
 #include <cstddef>
 #include <cstdint>
-#include <cstdlib>
 #include <exception>
 #include <fstream>
+#include <libenvpp/env.hpp>
 #include <memory>
 #include <stdexcept>
 #include <thread>
@@ -74,19 +74,13 @@ TEST(task_tests, check_int32_t_slow) {
 }
 
 TEST(task_tests, slow_task_respects_env_override) {
-  const char* old = std::getenv("PPC_TASK_MAX_TIME");
-  setenv("PPC_TASK_MAX_TIME", "3", 1);
+  env::detail::set_scoped_environment_variable scoped("PPC_TASK_MAX_TIME", "3");
   std::vector<int32_t> in(20, 1);
   ppc::test::FakeSlowTask<std::vector<int32_t>, int32_t> test_task(in);
   ASSERT_EQ(test_task.Validation(), true);
   test_task.PreProcessing();
   test_task.Run();
   EXPECT_NO_THROW(test_task.PostProcessing());
-  if (old) {
-    setenv("PPC_TASK_MAX_TIME", old, 1);
-  } else {
-    unsetenv("PPC_TASK_MAX_TIME");
-  }
 }
 
 TEST(task_tests, check_validate_func) {

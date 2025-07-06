@@ -2,8 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <cstdlib>
-#include <libenvpp/detail/get.hpp>
+#include <libenvpp/env.hpp>
 #include <string>
 
 #include "omp.h"
@@ -78,41 +77,33 @@ TEST(GetNamespaceTest, NoTerminatorCharactersInPrettyFunction) {
 }
 
 TEST(GetTaskMaxTime, ReturnsDefaultWhenUnset) {
-  const char* old = std::getenv("PPC_TASK_MAX_TIME");
-  unsetenv("PPC_TASK_MAX_TIME");
+  const auto old = env::detail::get_environment_variable("PPC_TASK_MAX_TIME");
+  if (old.has_value()) {
+    env::detail::delete_environment_variable("PPC_TASK_MAX_TIME");
+  }
   EXPECT_DOUBLE_EQ(ppc::util::GetTaskMaxTime(), 1.0);
-  if (old) {
-    setenv("PPC_TASK_MAX_TIME", old, 1);
+  if (old.has_value()) {
+    env::detail::set_environment_variable("PPC_TASK_MAX_TIME", *old);
   }
 }
 
 TEST(GetTaskMaxTime, ReadsFromEnvironment) {
-  const char* old = std::getenv("PPC_TASK_MAX_TIME");
-  setenv("PPC_TASK_MAX_TIME", "2.5", 1);
+  env::detail::set_scoped_environment_variable scoped("PPC_TASK_MAX_TIME", "2.5");
   EXPECT_DOUBLE_EQ(ppc::util::GetTaskMaxTime(), 2.5);
-  if (old) {
-    setenv("PPC_TASK_MAX_TIME", old, 1);
-  } else {
-    unsetenv("PPC_TASK_MAX_TIME");
-  }
 }
 
 TEST(GetPerfMaxTime, ReturnsDefaultWhenUnset) {
-  const char* old = std::getenv("PPC_PERF_MAX_TIME");
-  unsetenv("PPC_PERF_MAX_TIME");
+  const auto old = env::detail::get_environment_variable("PPC_PERF_MAX_TIME");
+  if (old.has_value()) {
+    env::detail::delete_environment_variable("PPC_PERF_MAX_TIME");
+  }
   EXPECT_DOUBLE_EQ(ppc::util::GetPerfMaxTime(), 10.0);
-  if (old) {
-    setenv("PPC_PERF_MAX_TIME", old, 1);
+  if (old.has_value()) {
+    env::detail::set_environment_variable("PPC_PERF_MAX_TIME", *old);
   }
 }
 
 TEST(GetPerfMaxTime, ReadsFromEnvironment) {
-  const char* old = std::getenv("PPC_PERF_MAX_TIME");
-  setenv("PPC_PERF_MAX_TIME", "12.5", 1);
+  env::detail::set_scoped_environment_variable scoped("PPC_PERF_MAX_TIME", "12.5");
   EXPECT_DOUBLE_EQ(ppc::util::GetPerfMaxTime(), 12.5);
-  if (old) {
-    setenv("PPC_PERF_MAX_TIME", old, 1);
-  } else {
-    unsetenv("PPC_PERF_MAX_TIME");
-  }
 }

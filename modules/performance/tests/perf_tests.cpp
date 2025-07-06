@@ -2,9 +2,9 @@
 
 #include <chrono>
 #include <cstdint>
-#include <cstdlib>
 #include <filesystem>
 #include <fstream>
+#include <libenvpp/env.hpp>
 #include <memory>
 #include <ostream>
 #include <stdexcept>
@@ -109,8 +109,7 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
 }
 
 TEST(perf_tests, slow_perf_respects_env_override) {
-  const char* old = std::getenv("PPC_PERF_MAX_TIME");
-  setenv("PPC_PERF_MAX_TIME", "12", 1);
+  env::detail::set_scoped_environment_variable scoped("PPC_PERF_MAX_TIME", "12");
   std::vector<uint8_t> in(128, 1);
   auto test_task = std::make_shared<ppc::test::FakePerfTask<std::vector<uint8_t>, uint8_t>>(in);
   Perf<std::vector<uint8_t>, uint8_t> perf_analyzer(test_task);
@@ -124,11 +123,6 @@ TEST(perf_tests, slow_perf_respects_env_override) {
   };
   perf_analyzer.PipelineRun(perf_attr);
   EXPECT_NO_THROW(perf_analyzer.PrintPerfStatistic("slow_perf_respects_env_override"));
-  if (old) {
-    setenv("PPC_PERF_MAX_TIME", old, 1);
-  } else {
-    unsetenv("PPC_PERF_MAX_TIME");
-  }
 }
 
 TEST(perf_tests, check_perf_task_exception) {
