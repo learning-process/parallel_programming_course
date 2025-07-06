@@ -10,6 +10,7 @@
 #include <string>
 
 #include "task/include/task.hpp"
+#include "util.hpp"
 
 namespace ppc::performance {
 
