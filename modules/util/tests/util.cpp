@@ -2,7 +2,8 @@
 
 #include <gtest/gtest.h>
 
-#include <libenvpp/env.hpp>
+#include <libenvpp/detail/environment.hpp>
+#include <libenvpp/detail/get.hpp>
 #include <string>
 
 #include "omp.h"
@@ -77,7 +78,7 @@ TEST(GetNamespaceTest, NoTerminatorCharactersInPrettyFunction) {
 }
 
 TEST(GetTaskMaxTime, ReturnsDefaultWhenUnset) {
-  const auto old = env::detail::get_environment_variable("PPC_TASK_MAX_TIME");
+  const auto old = env::get<double>("PPC_TASK_MAX_TIME");
   if (old.has_value()) {
     env::detail::delete_environment_variable("PPC_TASK_MAX_TIME");
   }
@@ -93,7 +94,7 @@ TEST(GetTaskMaxTime, ReadsFromEnvironment) {
 }
 
 TEST(GetPerfMaxTime, ReturnsDefaultWhenUnset) {
-  const auto old = env::detail::get_environment_variable("PPC_PERF_MAX_TIME");
+  const auto old = env::get<double>("PPC_PERF_MAX_TIME");
   if (old.has_value()) {
     env::detail::delete_environment_variable("PPC_PERF_MAX_TIME");
   }
