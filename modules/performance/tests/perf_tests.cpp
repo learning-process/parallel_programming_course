@@ -11,6 +11,8 @@
 #include <thread>
 #include <vector>
 
+#include <libenvpp/detail/environment.hpp>
+
 #include "performance/include/performance.hpp"
 #include "task/include/task.hpp"
 #include "util/include/util.hpp"

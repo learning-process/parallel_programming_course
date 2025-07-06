@@ -84,7 +84,7 @@ TEST(GetTaskMaxTime, ReturnsDefaultWhenUnset) {
   }
   EXPECT_DOUBLE_EQ(ppc::util::GetTaskMaxTime(), 1.0);
   if (old.has_value()) {
-    env::detail::set_environment_variable("PPC_TASK_MAX_TIME", *old);
+    env::detail::set_environment_variable("PPC_TASK_MAX_TIME", std::to_string(old));
   }
 }
 
@@ -100,7 +100,7 @@ TEST(GetPerfMaxTime, ReturnsDefaultWhenUnset) {
   }
   EXPECT_DOUBLE_EQ(ppc::util::GetPerfMaxTime(), 10.0);
   if (old.has_value()) {
-    env::detail::set_environment_variable("PPC_PERF_MAX_TIME", *old);
+    env::detail::set_environment_variable("PPC_PERF_MAX_TIME", std::to_string(old));
   }
 }
 
