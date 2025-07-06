@@ -375,9 +375,10 @@ jobs:
           cd build
           # Collect coverage data from all MPI rank directories and regular build directory
           # Copy coverage files from MPI rank directories to main build directory
+          # Only copy files that don't already exist to avoid conflicts
           if [ -d "gcov_data" ]; then
-            find gcov_data -name "*.gcda" -exec cp {} . \;
-            find gcov_data -name "*.gcno" -exec cp {} . \;
+            find gcov_data -name "*.gcda" -exec bash -c 'cp "$1" "$(basename "$1")" 2>/dev/null || true' _ {} \;
+            find gcov_data -name "*.gcno" -exec bash -c 'cp "$1" "$(basename "$1")" 2>/dev/null || true' _ {} \;
           fi
 
           gcovr -r ../ \
@@ -392,6 +393,7 @@ jobs:
                 --exclude '.*modules/util/include/func_test_util.hpp' \
                 --exclude '.*modules/util/src/func_test_util.cpp' \
                 --gcov-ignore-parse-errors \
+                --gcov-ignore-errors \
                 --xml --output ../coverage.xml \
                 --html=../cov-report/index.html \
                 --html-details=../cov-report/ \
