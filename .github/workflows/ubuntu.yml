@@ -331,7 +331,7 @@ jobs:
         env:
           PPC_NUM_PROC: 1
           PPC_ASAN_RUN: 1
-  gcc-build-codecov:
+  clang-build-codecov:
 #    needs:
 #      - gcc-test-extended
 #      - clang-test-extended
@@ -343,12 +343,15 @@ jobs:
       - name: Setup environment
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y \
-            gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind gcovr
+          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev libomp-dev valgrind python3-pip
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 20 all
+          python3 -m pip install -r requirements.txt
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
-          key: ${{ runner.os }}-gcc
+          key: ${{ runner.os }}-clang-coverage
           create-symlink: true
           max-size: 1G
       - name: CMake configure
@@ -356,52 +359,89 @@ jobs:
           cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE
-          -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
+          -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_LLVM_COVERAGE=ON
+        env:
+          CC: clang-20
+          CXX: clang++-20
       - name: Build project
         run: |
           cmake --build build --parallel
-      - name: Run tests (MPI)
-        run: scripts/run_tests.py --running-type="processes_coverage"
         env:
-          PPC_NUM_PROC: 2
+          CC: clang-20
+          CXX: clang++-20
+      - name: Run tests (MPI)
+        run: scripts/run_tests.py --running-type="processes_coverage" --counts 2
+        env:
           PPC_NUM_THREADS: 2
+          LLVM_PROFILE_FILE: "build/llvm_profile_%p_%m.profraw"
       - name: Run tests (threads)
         run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-      - name: Generate gcovr Coverage Data
+          LLVM_PROFILE_FILE: "build/llvm_profile_%p_%m.profraw"
+      - name: Generate LLVM Coverage Data
         run: |
           mkdir cov-report
           cd build
-          # Collect coverage data from all MPI rank directories and regular build directory
-          # Copy coverage files from MPI rank directories to main build directory
-          # Only copy files that don't already exist to avoid conflicts
-          if [ -d "gcov_data" ]; then
-            find gcov_data -name "*.gcda" -exec bash -c 'cp "$1" "$(basename "$1")" 2>/dev/null || true' _ {} \;
-            find gcov_data -name "*.gcno" -exec bash -c 'cp "$1" "$(basename "$1")" 2>/dev/null || true' _ {} \;
+          # Collect all profile data files (including from MPI ranks)
+          PROFILE_FILES=$(find . -name "*.profraw" -type f | tr '\n' ' ')
+          
+          if [ -z "$PROFILE_FILES" ]; then
+            echo "No profile files found!"
+            exit 1
           fi
-
-          gcovr -r ../ \
-                --gcov-object-directory . \
-                --exclude '.*3rdparty/.*' \
-                --exclude '/usr/.*' \
-                --exclude '.*tasks/.*/tests/.*' \
-                --exclude '.*modules/.*/tests/.*' \
-                --exclude '.*tasks/common/runners/.*' \
-                --exclude '.*modules/runners/.*' \
-                --exclude '.*modules/util/include/perf_test_util.hpp' \
-                --exclude '.*modules/util/include/func_test_util.hpp' \
-                --exclude '.*modules/util/src/func_test_util.cpp' \
-                --gcov-ignore-parse-errors \
-                --gcov-ignore-errors \
-                --xml --output ../coverage.xml \
-                --html=../cov-report/index.html \
-                --html-details=../cov-report/ \
-                .
+          
+          # Merge all profile data files
+          llvm-profdata-20 merge -sparse $PROFILE_FILES -o merged.profdata
+          
+          # Generate coverage summary
+          llvm-cov-20 report \
+            -instr-profile=merged.profdata \
+            bin/ppc_func_tests bin/core_func_tests \
+            -ignore-filename-regex='.*3rdparty/.*' \
+            -ignore-filename-regex='/usr/.*' \
+            -ignore-filename-regex='.*tasks/.*/tests/.*' \
+            -ignore-filename-regex='.*modules/.*/tests/.*' \
+            -ignore-filename-regex='.*tasks/common/runners/.*' \
+            -ignore-filename-regex='.*modules/runners/.*'
+          
+          # Generate LCOV report for Codecov
+          llvm-cov-20 export \
+            -instr-profile=merged.profdata \
+            bin/ppc_func_tests bin/core_func_tests \
+            -format=lcov \
+            -ignore-filename-regex='.*3rdparty/.*' \
+            -ignore-filename-regex='/usr/.*' \
+            -ignore-filename-regex='.*tasks/.*/tests/.*' \
+            -ignore-filename-regex='.*modules/.*/tests/.*' \
+            -ignore-filename-regex='.*tasks/common/runners/.*' \
+            -ignore-filename-regex='.*modules/runners/.*' \
+            -ignore-filename-regex='.*modules/util/include/perf_test_util.hpp' \
+            -ignore-filename-regex='.*modules/util/include/func_test_util.hpp' \
+            -ignore-filename-regex='.*modules/util/src/func_test_util.cpp' \
+            > ../coverage.lcov
+          
+          # Generate HTML report
+          llvm-cov-20 show \
+            -instr-profile=merged.profdata \
+            bin/ppc_func_tests bin/core_func_tests \
+            -format=html \
+            -output-dir=../cov-report \
+            -show-line-counts-or-regions \
+            -show-instantiations \
+            -ignore-filename-regex='.*3rdparty/.*' \
+            -ignore-filename-regex='/usr/.*' \
+            -ignore-filename-regex='.*tasks/.*/tests/.*' \
+            -ignore-filename-regex='.*modules/.*/tests/.*' \
+            -ignore-filename-regex='.*tasks/common/runners/.*' \
+            -ignore-filename-regex='.*modules/runners/.*' \
+            -ignore-filename-regex='.*modules/util/include/perf_test_util.hpp' \
+            -ignore-filename-regex='.*modules/util/include/func_test_util.hpp' \
+            -ignore-filename-regex='.*modules/util/src/func_test_util.cpp'
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:
-          files: coverage.xml
+          files: coverage.lcov
       - name: Upload coverage report artifact
         id: upload-cov
         uses: actions/upload-artifact@v4

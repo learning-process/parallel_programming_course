@@ -146,6 +146,29 @@ class PPCRunner:
                     + self.__get_gtest_settings(10, '_' + task_type)
                 )
 
+    def __create_coverage_wrapper(self, template_name, replacements):
+        """Create a coverage wrapper script from the template."""
+        template_path = (
+            Path(self.__get_project_path()) / "scripts" / "templates" / template_name
+        )
+        wrapper_path = (
+            Path(self.__get_project_path()) / "build" / template_name.replace('.template', '')
+        )
+
+        # Read template
+        with open(template_path, 'r', encoding='utf-8') as template_file:
+            content = template_file.read()
+
+        # Replace placeholders
+        for key, value in replacements.items():
+            content = content.replace(f"{{{key}}}", value)
+
+        # Write a wrapper script
+        wrapper_path.write_text(content)
+        wrapper_path.chmod(0o755)
+
+        return wrapper_path
+
     def run_processes_coverage(self, additional_mpi_args):
         """Run tests in multiprocessing mode with a coverage collection."""
         ppc_num_proc = self.__ppc_env.get("PPC_NUM_PROC")
@@ -156,50 +179,54 @@ class PPCRunner:
 
         # Set up coverage environment for MPI processes
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
-            # Enable coverage data collection for each MPI process
-            self.__ppc_env["GCOV_PREFIX_STRIP"] = "0"
-            # Use MPI rank to create unique coverage directories for each process
-            gcov_base_dir = Path(self.__get_project_path()) / "build" / "gcov_data"
-            gcov_base_dir.mkdir(parents=True, exist_ok=True)
+            # Check if we're using LLVM coverage or gcov
+            llvm_profile_file = self.__ppc_env.get("LLVM_PROFILE_FILE")
 
-            # Set GCOV_PREFIX to include MPI rank - this creates separate directories
-            # for each MPI process at runtime
-            self.__ppc_env["GCOV_PREFIX"] = str(
-                gcov_base_dir / "rank_${PMI_RANK:-${OMPI_COMM_WORLD_RANK:-${SLURM_PROCID:-0}}}"
-            )
-
-            # Create a wrapper script to set a unique prefix per process
-            wrapper_script = Path(self.__get_project_path()) / "build" / "mpi_coverage_wrapper.sh"
-            wrapper_content = f"""#!/bin/bash
-# Get MPI rank from environment variables
-if [ -n "$PMIX_RANK" ]; then
-    RANK=$PMIX_RANK
-elif [ -n "$PMI_RANK" ]; then
-    RANK=$PMI_RANK
-elif [ -n "$OMPI_COMM_WORLD_RANK" ]; then
-    RANK=$OMPI_COMM_WORLD_RANK
-elif [ -n "$SLURM_PROCID" ]; then
-    RANK=$SLURM_PROCID
-else
-    RANK=0
-fi
-
-export GCOV_PREFIX="{gcov_base_dir}/rank_$RANK"
-mkdir -p "$GCOV_PREFIX"
-exec "$@"
-"""
-            wrapper_script.write_text(wrapper_content)
-            wrapper_script.chmod(0o755)
-
-            # Run tests with a coverage wrapper
-            for task_type in ["all", "mpi"]:
-                test_command = (
-                    mpi_running
-                    + [str(wrapper_script)]
-                    + [str(self.work_dir / 'ppc_func_tests')]
-                    + self.__get_gtest_settings(10, '_' + task_type)
+            if llvm_profile_file:
+                # LLVM coverage setup
+                wrapper_script = self.__create_coverage_wrapper(
+                    "mpi_llvm_coverage_wrapper.sh.template",
+                    {"llvm_profile_base": llvm_profile_file.replace('%p', '%p').replace('%m', '%m')}
                 )
-                self.__run_exec(test_command)
+
+                # Run tests with the LLVM coverage wrapper
+                for task_type in ["all", "mpi"]:
+                    test_command = (
+                        mpi_running
+                        + [str(wrapper_script)]
+                        + [str(self.work_dir / 'ppc_func_tests')]
+                        + self.__get_gtest_settings(10, '_' + task_type)
+                    )
+                    self.__run_exec(test_command)
+            else:
+                # Original gcov coverage setup
+                # Enable coverage data collection for each MPI process
+                self.__ppc_env["GCOV_PREFIX_STRIP"] = "0"
+                # Use MPI rank to create unique coverage directories for each process
+                gcov_base_dir = Path(self.__get_project_path()) / "build" / "gcov_data"
+                gcov_base_dir.mkdir(parents=True, exist_ok=True)
+
+                # Set GCOV_PREFIX to include MPI rank - this creates separate directories
+                # for each MPI process at runtime
+                self.__ppc_env["GCOV_PREFIX"] = str(
+                    gcov_base_dir / "rank_${PMI_RANK:-${OMPI_COMM_WORLD_RANK:-${SLURM_PROCID:-0}}}"
+                )
+
+                # Create a wrapper script to set a unique prefix per process
+                wrapper_script = self.__create_coverage_wrapper(
+                    "mpi_gcov_coverage_wrapper.sh.template",
+                    {"gcov_base_dir": str(gcov_base_dir)}
+                )
+
+                # Run tests with a coverage wrapper
+                for task_type in ["all", "mpi"]:
+                    test_command = (
+                        mpi_running
+                        + [str(wrapper_script)]
+                        + [str(self.work_dir / 'ppc_func_tests')]
+                        + self.__get_gtest_settings(10, '_' + task_type)
+                    )
+                    self.__run_exec(test_command)
 
     def run_performance(self):
         """Run performance tests."""

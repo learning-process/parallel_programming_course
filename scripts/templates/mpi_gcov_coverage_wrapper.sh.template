@@ -1,0 +1,17 @@
+#!/bin/bash
+# Get MPI rank from environment variables
+if [ -n "$PMIX_RANK" ]; then
+    RANK=$PMIX_RANK
+elif [ -n "$PMI_RANK" ]; then
+    RANK=$PMI_RANK
+elif [ -n "$OMPI_COMM_WORLD_RANK" ]; then
+    RANK=$OMPI_COMM_WORLD_RANK
+elif [ -n "$SLURM_PROCID" ]; then
+    RANK=$SLURM_PROCID
+else
+    RANK=0
+fi
+
+export GCOV_PREFIX="{gcov_base_dir}/rank_$RANK"
+mkdir -p "$GCOV_PREFIX"
+exec "$@"
