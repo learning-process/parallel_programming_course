@@ -385,13 +385,9 @@ jobs:
                 --exclude '.*modules/util/include/func_test_util.hpp' \
                 --exclude '.*modules/util/src/func_test_util.cpp' \
                 --gcov-ignore-parse-errors \
-                --search-paths . \
-                --search-paths gcov_data/rank_0 \
-                --search-paths gcov_data/rank_1 \
-                --search-paths gcov_data/rank_2 \
-                --search-paths gcov_data/rank_3 \
                 --xml --output ../coverage.xml \
-                --html=../cov-report/index.html --html-details
+                --html=../cov-report/index.html --html-details \
+                . gcov_data/rank_0 gcov_data/rank_1 gcov_data/rank_2 gcov_data/rank_3
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:
