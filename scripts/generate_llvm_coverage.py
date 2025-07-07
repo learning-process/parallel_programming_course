@@ -78,7 +78,7 @@ def generate_coverage_reports(
             # Try to find similar executables
             bin_dir = Path(build_dir) / "bin"
             if bin_dir.exists():
-                print(f"  Available executables in bin/:", file=sys.stderr)
+                print("  Available executables in bin/:", file=sys.stderr)
                 for f in bin_dir.iterdir():
                     if f.is_file() and f.stat().st_mode & 0o111:  # executable
                         print(f"    {f.name}", file=sys.stderr)
@@ -106,7 +106,7 @@ def generate_coverage_reports(
     # Place coverage.lcov in the current working directory (build dir)
     lcov_file = Path("coverage.lcov")
     print(f"\nGenerating LCOV report: {lcov_file}")
-    
+
     # For llvm-cov export, we need to specify the object files differently
     # The first executable is the main object, others are specified with -object
     cmd = [llvm_cov, "export"]
@@ -118,7 +118,7 @@ def generate_coverage_reports(
         "-instr-profile", profdata_file,
         "-format=lcov"
     ] + ignore_args)
-    
+
     print(f"Running: {' '.join(cmd[:10])}...")  # Print first part of command for debugging
 
     with open(lcov_file, 'w', encoding='utf-8') as f:
