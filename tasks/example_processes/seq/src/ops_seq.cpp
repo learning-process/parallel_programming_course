@@ -22,10 +22,6 @@ bool NesterovATestTaskSEQ::PreProcessingImpl() {
 }
 
 bool NesterovATestTaskSEQ::RunImpl() {
-  if (GetInput() == 0) {
-    return false;
-  }
-
   for (InType i = 0; i < GetInput(); i++) {
     for (InType j = 0; j < GetInput(); j++) {
       for (InType k = 0; k < GetInput(); k++) {
