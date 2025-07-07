@@ -86,4 +86,3 @@ TEST(DemangleFailureTest, GetNamespace_WithExtremelyLongTypeName_HandlesCorrectl
 #ifndef __GNUC__
 TEST(DemangleFailureTest, SkippedOnNonGCC) { EXPECT_TRUE(true); }
 #endif
-

@@ -153,4 +153,3 @@ TEST(GetNamespaceEdgeCases, GetNamespace_WithMemberFunctionPointer_HandlesCorrec
   // Member function pointers have complex mangling
   EXPECT_TRUE(k_ns.empty() || !k_ns.empty());
 }
-
