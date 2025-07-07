@@ -18,7 +18,16 @@ def find_profile_files(build_dir):
     profile_files = list(Path(build_dir).rglob("*.profraw"))
     if not profile_files:
         print("No profile files found!", file=sys.stderr)
+        print(f"Searched in: {Path(build_dir).absolute()}", file=sys.stderr)
+        # List all files to debug
+        print("Files in build directory:", file=sys.stderr)
+        for f in Path(build_dir).iterdir():
+            if f.is_file():
+                print(f"  {f.name}", file=sys.stderr)
         sys.exit(1)
+    print(f"Found {len(profile_files)} profile files:")
+    for f in profile_files:
+        print(f"  {f}")
     return profile_files
 
 
@@ -58,12 +67,21 @@ def generate_coverage_reports(
 
     # Build the executable list
     exec_paths = []
+    print(f"\nLooking for executables in {Path(build_dir).absolute()}:")
     for exe in executables:
         exe_path = Path(build_dir) / exe
         if exe_path.exists():
             exec_paths.append(str(exe_path))
+            print(f"  Found: {exe_path}")
         else:
-            print(f"Warning: Executable not found: {exe_path}", file=sys.stderr)
+            print(f"  Warning: Executable not found: {exe_path}", file=sys.stderr)
+            # Try to find similar executables
+            bin_dir = Path(build_dir) / "bin"
+            if bin_dir.exists():
+                print(f"  Available executables in bin/:", file=sys.stderr)
+                for f in bin_dir.iterdir():
+                    if f.is_file() and f.stat().st_mode & 0o111:  # executable
+                        print(f"    {f.name}", file=sys.stderr)
 
     if not exec_paths:
         print("No executables found!", file=sys.stderr)
@@ -76,34 +94,55 @@ def generate_coverage_reports(
 
     # Generate coverage summary (to console)
     print("\nGenerating coverage summary...")
-    cmd = [llvm_cov, "report", "-instr-profile", profdata_file] + exec_paths + ignore_args
+    cmd = [llvm_cov, "report"]
+    if exec_paths:
+        cmd.append(exec_paths[0])  # First executable
+        for exe in exec_paths[1:]:
+            cmd.extend(["-object", exe])  # Additional executables
+    cmd.extend(["-instr-profile", profdata_file] + ignore_args)
     subprocess.run(cmd, check=True)
 
     # Generate LCOV report
     # Place coverage.lcov in the current working directory (build dir)
     lcov_file = Path("coverage.lcov")
     print(f"\nGenerating LCOV report: {lcov_file}")
-    cmd = [
-        llvm_cov, "export",
+    
+    # For llvm-cov export, we need to specify the object files differently
+    # The first executable is the main object, others are specified with -object
+    cmd = [llvm_cov, "export"]
+    if exec_paths:
+        cmd.append(exec_paths[0])  # First executable
+        for exe in exec_paths[1:]:
+            cmd.extend(["-object", exe])  # Additional executables
+    cmd.extend([
         "-instr-profile", profdata_file,
         "-format=lcov"
-    ] + exec_paths + ignore_args
+    ] + ignore_args)
+    
+    print(f"Running: {' '.join(cmd[:10])}...")  # Print first part of command for debugging
 
     with open(lcov_file, 'w', encoding='utf-8') as f:
-        subprocess.run(cmd, stdout=f, check=True)
+        result = subprocess.run(cmd, stdout=f, stderr=subprocess.PIPE, text=True)
+        if result.returncode != 0:
+            print(f"Error generating LCOV: {result.stderr}", file=sys.stderr)
+            raise subprocess.CalledProcessError(result.returncode, cmd)
 
     # Generate HTML report
     html_dir = Path(output_dir)
     html_dir.mkdir(parents=True, exist_ok=True)
     print(f"\nGenerating HTML report: {html_dir}")
-    cmd = [
-        llvm_cov, "show",
+    cmd = [llvm_cov, "show"]
+    if exec_paths:
+        cmd.append(exec_paths[0])  # First executable
+        for exe in exec_paths[1:]:
+            cmd.extend(["-object", exe])  # Additional executables
+    cmd.extend([
         "-instr-profile", profdata_file,
         "-format=html",
         "-output-dir", str(html_dir),
         "-show-line-counts-or-regions",
         "-show-instantiations"
-    ] + exec_paths + ignore_args
+    ] + ignore_args)
 
     subprocess.run(cmd, check=True)
     print("\nCoverage reports generated successfully!")
