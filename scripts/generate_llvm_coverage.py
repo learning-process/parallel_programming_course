@@ -15,7 +15,25 @@ from pathlib import Path
 
 def find_profile_files(build_dir):
     """Find all .profraw files in the build directory."""
-    profile_files = list(Path(build_dir).rglob("*.profraw"))
+    # Look for both regular .profraw files and MPI rank-specific files
+    profile_files = []
+
+    # Standard .profraw files
+    profile_files.extend(list(Path(build_dir).rglob("*.profraw")))
+
+    # MPI rank-specific files (e.g., file.profraw_rank_0)
+    profile_files.extend(list(Path(build_dir).rglob("*.profraw_rank_*")))
+
+    # Remove duplicates while preserving order
+    seen = set()
+    unique_files = []
+    for f in profile_files:
+        if f not in seen:
+            seen.add(f)
+            unique_files.append(f)
+
+    profile_files = unique_files
+
     if not profile_files:
         print("No profile files found!", file=sys.stderr)
         print(f"Searched in: {Path(build_dir).absolute()}", file=sys.stderr)
