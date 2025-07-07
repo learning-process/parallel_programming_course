@@ -389,12 +389,12 @@ jobs:
             --llvm-profdata llvm-profdata-20 \
             --llvm-cov llvm-cov-20
           # Check if files were generated
-          ls -la coverage.lcov
+          ls -la build/coverage.lcov
           ls -la build/cov-report/
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:
-          files: ./coverage.lcov
+          files: ./build/coverage.lcov
           verbose: true
           name: llvm-codecov
       - name: Upload coverage report artifact

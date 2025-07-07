@@ -80,7 +80,8 @@ def generate_coverage_reports(
     subprocess.run(cmd, check=True)
 
     # Generate LCOV report
-    lcov_file = Path(output_dir).parent / "coverage.lcov"
+    # Place coverage.lcov in the current working directory (build dir)
+    lcov_file = Path("coverage.lcov")
     print(f"\nGenerating LCOV report: {lcov_file}")
     cmd = [
         llvm_cov, "export",
