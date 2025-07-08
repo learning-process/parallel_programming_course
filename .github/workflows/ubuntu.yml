@@ -331,10 +331,10 @@ jobs:
         env:
           PPC_NUM_PROC: 1
           PPC_ASAN_RUN: 1
-  gcc-build-codecov:
-    needs:
-      - gcc-test-extended
-      - clang-test-extended
+  clang-build-codecov:
+    # needs:
+    #   - gcc-test-extended
+    #   - clang-test-extended
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -343,12 +343,15 @@ jobs:
       - name: Setup environment
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y \
-            gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind gcovr
+          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev libomp-dev valgrind python3-pip
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 20 all
+          python3 -m pip install -r requirements.txt
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
-          key: ${{ runner.os }}-gcc
+          key: ${{ runner.os }}-clang-coverage
           create-symlink: true
           max-size: 1G
       - name: CMake configure
@@ -356,45 +359,50 @@ jobs:
           cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE
-          -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
+          -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_LLVM_COVERAGE=ON
+        env:
+          CC: clang-20
+          CXX: clang++-20
       - name: Build project
         run: |
           cmake --build build --parallel
-      - name: Run tests (MPI)
-        run: scripts/run_tests.py --running-type="processes"
         env:
-          PPC_NUM_PROC: 2
+          CC: clang-20
+          CXX: clang++-20
+      - name: Run tests (MPI)
+        run: scripts/run_tests.py --running-type="processes_coverage" --counts 2
+        env:
           PPC_NUM_THREADS: 2
+          LLVM_PROFILE_FILE: "build/llvm_profile_%p_%m.profraw"
+          PPC_DISABLE_VALGRIND: 1
       - name: Run tests (threads)
         run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-      - name: Generate gcovr Coverage Data
+          LLVM_PROFILE_FILE: "build/llvm_profile_%p_%m.profraw"
+          PPC_DISABLE_VALGRIND: 1
+      - name: Generate LLVM Coverage Data
         run: |
-          mkdir cov-report
-          cd build
-          gcovr -r ../ \
-                --exclude '.*3rdparty/.*' \
-                --exclude '/usr/.*' \
-                --exclude '.*tasks/.*/tests/.*' \
-                --exclude '.*modules/.*/tests/.*' \
-                --exclude '.*tasks/common/runners/.*' \
-                --exclude '.*modules/runners/.*' \
-                --exclude '.*modules/util/include/perf_test_util.hpp' \
-                --exclude '.*modules/util/include/func_test_util.hpp' \
-                --exclude '.*modules/util/src/func_test_util.cpp' \
-                --xml --output ../coverage.xml \
-                --html=../cov-report/index.html --html-details
+          scripts/generate_llvm_coverage.py \
+            --build-dir build \
+            --output-dir cov-report \
+            --llvm-profdata llvm-profdata-20 \
+            --llvm-cov llvm-cov-20
+          # Check if files were generated
+          ls -la build/coverage.lcov
+          ls -la build/cov-report/
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:
-          files: coverage.xml
+          files: ./build/coverage.lcov
+          verbose: true
+          name: llvm-codecov
       - name: Upload coverage report artifact
         id: upload-cov
         uses: actions/upload-artifact@v4
         with:
           name: cov-report
-          path: 'cov-report'
+          path: 'build/cov-report'
       - name: Comment coverage report link
         # TODO: Support PRs from forks and handle cases with insufficient write permissions
         continue-on-error: true

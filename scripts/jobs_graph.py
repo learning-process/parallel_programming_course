@@ -1,26 +1,32 @@
+#!/usr/bin/env python3
+"""Script to generate job dependency graphs from GitHub Actions workflow files."""
+
 import os
+import sys
 
 try:
     import yaml
 except ImportError:
     print("Please install pyyaml: pip install pyyaml")
-    exit(1)
+    sys.exit(1)
 
 try:
     import graphviz
 except ImportError:
     print("Please install graphviz: pip install graphviz")
-    exit(1)
+    sys.exit(1)
 
 
 def parse_gha_yml(file_path):
-    with open(file_path, "r") as file:
-        gha_data = yaml.safe_load(file)
-    return gha_data
+    """Parse GitHub Actions YAML workflow file."""
+    with open(file_path, "r", encoding='utf-8') as file:
+        data = yaml.safe_load(file)
+    return data
 
 
-def build_jobs_graph(gha_data):
-    jobs = gha_data.get("jobs", {})
+def build_jobs_graph(workflow_data):
+    """Build a dependency graph from workflow jobs data."""
+    jobs = workflow_data.get("jobs", {})
     dot = graphviz.Digraph()
 
     for job_name, job_data in jobs.items():
@@ -35,6 +41,7 @@ def build_jobs_graph(gha_data):
 
 
 def save_graph(dot, filename, file_format):
+    """Save the graph in the specified format."""
     dot.render(filename, format=file_format, cleanup=True)
 
 

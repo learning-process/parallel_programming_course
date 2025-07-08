@@ -20,7 +20,7 @@ include(cmake/sphinx.cmake)
 add_subdirectory(docs)
 
 if( USE_SCOREBOARD OR USE_DOCS )
-    return()
+  return()
 endif()
 
 ############################ Configures #############################

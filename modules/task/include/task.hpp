@@ -190,11 +190,22 @@ class Task {
   /// @return Reference to the task's output data.
   OutType &GetOutput() { return output_; }
 
+  /// @brief Marks that this task is expected to have an incomplete lifecycle.
+  /// @note FOR INTERNAL TESTING ONLY. This function should NOT be used in student tasks.
+  ///       Usage in tasks/ directory will cause CI to fail.
+  /// @warning This function is only for framework testing purposes.
+  void ExpectIncompleteLifecycle() {
+    terminate_handler_ = [] {};
+  }
+
   /// @brief Destructor. Verifies that the pipeline was executed in the correct order.
   /// @note Terminates the program if the pipeline order is incorrect or incomplete.
   virtual ~Task() {
     if (stage_ != PipelineStage::kDone && stage_ != PipelineStage::kException) {
-      ppc::util::DestructorFailureFlag::Set();
+      // Immediate failure - better than global state pollution
+      std::cerr << "[TASK ERROR] Task destroyed without completing pipeline. Stage: " << static_cast<int>(stage_)
+                << '\n';
+      terminate_handler_();
     }
 #if _OPENMP >= 201811
     omp_pause_resource_all(omp_pause_soft);
@@ -259,6 +270,7 @@ class Task {
     kDone,
     kException
   } stage_ = PipelineStage::kNone;
+  std::function<void()> terminate_handler_ = std::terminate;  // Custom terminate handler for testing
 };
 
 /// @brief Smart pointer alias for Task.
@@ -273,7 +285,7 @@ using TaskPtr = std::shared_ptr<Task<InType, OutType>>;
 /// @param in Input to pass to the task constructor.
 /// @return Shared a pointer to the newly created task.
 template <typename TaskType, typename InType>
-std::shared_ptr<TaskType> TaskGetter(InType in) {
+std::shared_ptr<TaskType> TaskGetter(const InType &in) {
   return std::make_shared<TaskType>(in);
 }
 

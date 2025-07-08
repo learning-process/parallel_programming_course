@@ -1,12 +1,12 @@
 include(ExternalProject)
 
 if(WIN32)
-  set(ppc_onetbb_TEST_COMMAND
+  set(PPC_ONETBB_TEST_COMMAND
       "${CMAKE_COMMAND}" -E copy_directory
       "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install/bin"
       "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 else()
-  set(ppc_onetbb_TEST_COMMAND "")
+  set(PPC_ONETBB_TEST_COMMAND "")
 endif()
 
 ExternalProject_Add(
@@ -31,7 +31,7 @@ ExternalProject_Add(
   INSTALL_COMMAND
     "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build"
     --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install"
-  TEST_COMMAND ${ppc_onetbb_TEST_COMMAND})
+  TEST_COMMAND ${PPC_ONETBB_TEST_COMMAND})
 
 install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install/"
         DESTINATION "${CMAKE_INSTALL_PREFIX}")
@@ -43,6 +43,7 @@ else()
   set(PPC_TBB_LIB_NAME tbb)
 endif()
 
+# Link TBB library to target
 function(ppc_link_tbb exec_func_lib)
   # Add external project include directories
   target_include_directories(${exec_func_lib}

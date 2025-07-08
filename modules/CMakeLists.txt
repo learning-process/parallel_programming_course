@@ -1,6 +1,6 @@
 message(STATUS "Core components")
-set(exec_func_tests "core_func_tests")
-set(exec_func_lib "core_module_lib")
+set(EXEC_FUNC_TESTS "core_func_tests")
+set(EXEC_FUNC_LIB "core_module_lib")
 
 subdirlist(subdirs ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -18,36 +18,36 @@ foreach(subd ${subdirs})
   list(APPEND FUNC_TESTS_SOURCE_FILES ${TMP_FUNC_TESTS_SOURCE_FILES})
 endforeach()
 
-project(${exec_func_lib})
-add_library(${exec_func_lib} STATIC ${LIB_SOURCE_FILES})
-set_target_properties(${exec_func_lib} PROPERTIES LINKER_LANGUAGE CXX)
+project(${EXEC_FUNC_LIB})
+add_library(${EXEC_FUNC_LIB} STATIC ${LIB_SOURCE_FILES})
+set_target_properties(${EXEC_FUNC_LIB} PROPERTIES LINKER_LANGUAGE CXX)
 
 # Add include directories to target
 target_include_directories(
-  ${exec_func_lib} PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty
+  ${EXEC_FUNC_LIB} PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty
                           ${CMAKE_SOURCE_DIR}/modules ${CMAKE_SOURCE_DIR}/tasks)
 
-ppc_link_envpp(${exec_func_lib})
-ppc_link_json(${exec_func_lib})
-ppc_link_gtest(${exec_func_lib})
-ppc_link_threads(${exec_func_lib})
-ppc_link_openmp(${exec_func_lib})
-ppc_link_tbb(${exec_func_lib})
-ppc_link_mpi(${exec_func_lib})
-ppc_link_stb(${exec_func_lib})
+ppc_link_envpp(${EXEC_FUNC_LIB})
+ppc_link_json(${EXEC_FUNC_LIB})
+ppc_link_gtest(${EXEC_FUNC_LIB})
+ppc_link_threads(${EXEC_FUNC_LIB})
+ppc_link_openmp(${EXEC_FUNC_LIB})
+ppc_link_tbb(${EXEC_FUNC_LIB})
+ppc_link_mpi(${EXEC_FUNC_LIB})
+ppc_link_stb(${EXEC_FUNC_LIB})
 
-add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
+add_executable(${EXEC_FUNC_TESTS} ${FUNC_TESTS_SOURCE_FILES})
 
-target_link_libraries(${exec_func_tests} PUBLIC ${exec_func_lib})
+target_link_libraries(${EXEC_FUNC_TESTS} PUBLIC ${EXEC_FUNC_LIB})
 
 enable_testing()
-add_test(NAME ${exec_func_tests} COMMAND ${exec_func_tests})
+add_test(NAME ${EXEC_FUNC_TESTS} COMMAND ${EXEC_FUNC_TESTS})
 
 # Installation rules
 install(
-  TARGETS ${exec_func_lib}
+  TARGETS ${EXEC_FUNC_LIB}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
 
-install(TARGETS ${exec_func_tests} RUNTIME DESTINATION bin)
+install(TARGETS ${EXEC_FUNC_TESTS} RUNTIME DESTINATION bin)

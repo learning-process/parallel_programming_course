@@ -1,18 +1,25 @@
+#!/usr/bin/env python3
+"""Script to generate variant tables for student assignments."""
+
 import csv
+from pathlib import Path
 import numpy as np
 from xlsxwriter.workbook import Workbook
-from pathlib import Path
 
 
 def get_project_path():
+    """Get the project root path."""
     script_path = Path(__file__).resolve()  # Absolute path of the script
     script_dir = script_path.parent  # Directory containing the script
     return script_dir.parent
 
 
 def generate_group_table(_num_tasks, _num_students, _num_variants, _csv_file):
+    """Generate a group table with task variants for students."""
     if _num_tasks != len(_num_variants):
-        raise Exception(f"Count of students: {_num_tasks} != count of list of variants: {len(_num_variants)}")
+        raise ValueError(
+            f"Count of students: {_num_tasks} != count of list of variants: {len(_num_variants)}"
+        )
 
     list_of_tasks = []
     str_of_print = ""
@@ -20,7 +27,7 @@ def generate_group_table(_num_tasks, _num_students, _num_variants, _csv_file):
     for i, num_v in zip(range(_num_tasks), _num_variants):
         list_of_variants = []
         shuffled_list_of_variants = []
-        for j in range(int(_num_students / num_v) + 1):
+        for _ in range(int(_num_students / num_v) + 1):
             list_of_variants.append(np.arange(num_v) + 1)
         for variant in list_of_variants:
             np.random.shuffle(variant)
@@ -36,7 +43,7 @@ def generate_group_table(_num_tasks, _num_students, _num_variants, _csv_file):
 
     workbook = Workbook(_csv_file[:-4] + '.xlsx')
     worksheet = workbook.add_worksheet()
-    with open(_csv_file, 'rt') as f:
+    with open(_csv_file, 'rt', encoding='utf-8') as f:
         reader = csv.reader(f)
         for r, row in enumerate(reader):
             for c, col in enumerate(row):
@@ -46,7 +53,7 @@ def generate_group_table(_num_tasks, _num_students, _num_variants, _csv_file):
 
 if __name__ == "__main__":
     # Define the number of tasks
-    num_tasks = 3
+    NUM_TASKS = 3
 
     # List containing the number of students for each task
     list_students = [29, 10, 40]
@@ -60,4 +67,4 @@ if __name__ == "__main__":
 
     for num_students, index in zip(list_students, range(len(list_students))):
         csv_path = path_to_results / f'variants_group_{index + 1}.csv'
-        generate_group_table(num_tasks, num_students, num_variants, csv_path.as_posix())
+        generate_group_table(NUM_TASKS, num_students, num_variants, csv_path.as_posix())
