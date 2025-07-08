@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <string>
+
 #include "util/include/util.hpp"
 
 // This file tests edge cases that might cause demangling failures
@@ -7,7 +9,7 @@
 
 // Test with an extern "C" function type that might have special handling
 extern "C" {
-typedef void (*CFunction)();
+using CFunction = void (*)();
 }
 
 TEST(GetNamespaceEdgeCases, GetNamespace_WithExternCFunction_HandlesCorrectly) {
@@ -25,21 +27,35 @@ TEST(GetNamespaceEdgeCases, GetNamespace_WithNoColonColon_ReturnsEmpty) {
   EXPECT_EQ(k_ns, "");
 }
 
-// Test with built-in types that might have special mangling
-TEST(GetNamespaceEdgeCases, GetNamespace_WithBuiltinTypes_ReturnsEmpty) {
+// Test with basic built-in types
+TEST(GetNamespaceEdgeCases, GetNamespace_WithBasicBuiltinTypes_ReturnsEmpty) {
   EXPECT_EQ(ppc::util::GetNamespace<void>(), "");
   EXPECT_EQ(ppc::util::GetNamespace<char>(), "");
   EXPECT_EQ(ppc::util::GetNamespace<short>(), "");
+  EXPECT_EQ(ppc::util::GetNamespace<int>(), "");
   EXPECT_EQ(ppc::util::GetNamespace<long>(), "");
   EXPECT_EQ(ppc::util::GetNamespace<long long>(), "");
+  EXPECT_EQ(ppc::util::GetNamespace<bool>(), "");
+}
+
+// Test with unsigned built-in types
+TEST(GetNamespaceEdgeCases, GetNamespace_WithUnsignedBuiltinTypes_ReturnsEmpty) {
   EXPECT_EQ(ppc::util::GetNamespace<unsigned char>(), "");
   EXPECT_EQ(ppc::util::GetNamespace<unsigned short>(), "");
+  EXPECT_EQ(ppc::util::GetNamespace<unsigned int>(), "");
   EXPECT_EQ(ppc::util::GetNamespace<unsigned long>(), "");
   EXPECT_EQ(ppc::util::GetNamespace<unsigned long long>(), "");
+}
+
+// Test with floating point types
+TEST(GetNamespaceEdgeCases, GetNamespace_WithFloatingPointTypes_ReturnsEmpty) {
   EXPECT_EQ(ppc::util::GetNamespace<float>(), "");
   EXPECT_EQ(ppc::util::GetNamespace<double>(), "");
   EXPECT_EQ(ppc::util::GetNamespace<long double>(), "");
-  EXPECT_EQ(ppc::util::GetNamespace<bool>(), "");
+}
+
+// Test with character types
+TEST(GetNamespaceEdgeCases, GetNamespace_WithCharacterTypes_ReturnsEmpty) {
   EXPECT_EQ(ppc::util::GetNamespace<wchar_t>(), "");
   EXPECT_EQ(ppc::util::GetNamespace<char16_t>(), "");
   EXPECT_EQ(ppc::util::GetNamespace<char32_t>(), "");
@@ -49,23 +65,9 @@ TEST(GetNamespaceEdgeCases, GetNamespace_WithBuiltinTypes_ReturnsEmpty) {
 }
 
 // Test with very long namespace chain
-namespace a {
-namespace b {
-namespace c {
-namespace d {
-namespace e {
-namespace f {
-namespace g {
-namespace h {
+namespace a::b::c::d::e::f::g::h {
 struct DeepType {};
-}  // namespace h
-}  // namespace g
-}  // namespace f
-}  // namespace e
-}  // namespace d
-}  // namespace c
-}  // namespace b
-}  // namespace a
+}  // namespace a::b::c::d::e::f::g::h
 
 TEST(GetNamespaceEdgeCases, GetNamespace_WithVeryDeepNamespace_ExtractsCorrectly) {
   std::string k_ns = ppc::util::GetNamespace<a::b::c::d::e::f::g::h::DeepType>();

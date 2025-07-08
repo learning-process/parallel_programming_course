@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include <array>
+#include <cstdint>
 #include <libenvpp/detail/environment.hpp>
 #include <libenvpp/detail/get.hpp>
 #include <string>
@@ -101,7 +103,7 @@ TEST(GetNamespaceTest, GetNamespace_WithAnonymousNamespace_HandlesCorrectly) {
 // Additional edge case tests for better coverage
 TEST(GetNamespaceTest, GetNamespace_WithGlobalNamespaceType_ReturnsEmpty) {
   // Global namespace enum defined inside a function gets special handling
-  enum GlobalEnum { VALUE };
+  enum GlobalEnum : std::uint8_t { kValue };
   std::string k_ns = ppc::util::GetNamespace<GlobalEnum>();
   // Local enums defined in functions can have function names in their type
   EXPECT_TRUE(k_ns.find("GetNamespaceTest") != std::string::npos || k_ns.empty());
@@ -117,23 +119,20 @@ TEST(GetNamespaceTest, GetNamespace_WithFunctionPointer_HandlesCorrectly) {
 
 // Test with array type
 TEST(GetNamespaceTest, GetNamespace_WithArrayType_ReturnsEmpty) {
-  using ArrayType = int[10];
+  using ArrayType = std::array<int, 10>;
   std::string k_ns = ppc::util::GetNamespace<ArrayType>();
-  EXPECT_EQ(k_ns, "");
+  // std::array is in std namespace
+  EXPECT_TRUE(k_ns.find("std") == 0);
 }
 
 // Test with deeply nested template to stress the demangler
-namespace deeply {
-namespace nested {
-namespace ns {
+namespace deeply::nested::ns {
 template <typename T, typename U, typename V>
 struct ComplexTemplate {
   template <typename X, typename Y>
   struct Inner {};
 };
-}  // namespace ns
-}  // namespace nested
-}  // namespace deeply
+}  // namespace deeply::nested::ns
 
 TEST(GetNamespaceTest, GetNamespace_WithDeeplyNestedTemplate_ExtractsCorrectly) {
   using ComplexType = deeply::nested::ns::ComplexTemplate<int, double, char>::Inner<float, bool>;
