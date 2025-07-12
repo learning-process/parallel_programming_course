@@ -1,6 +1,15 @@
 name: Static analysis
 
-on: [pull_request]
+on:
+  pull_request:
+    paths:
+      - '**/*.cpp'
+      - '**/*.hpp'
+      - '**/*.c'
+      - '**/*.h'
+      - '**/CMakeLists.txt'
+      - '**/*.cmake'
+      - '.github/workflows/static-analysis-pr.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
