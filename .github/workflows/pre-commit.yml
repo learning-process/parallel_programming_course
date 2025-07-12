@@ -2,6 +2,12 @@ name: Pre-commit checks
 
 on:
   pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - '*.rst'
+      - '*.txt'
+      - 'LICENSE'
 
 jobs:
   pre-commit:
