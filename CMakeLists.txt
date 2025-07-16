@@ -19,10 +19,6 @@ message( STATUS "PPC step: Setup documentation generation" )
 include(cmake/sphinx.cmake)
 add_subdirectory(docs)
 
-if( USE_SCOREBOARD OR USE_DOCS )
-    return()
-endif()
-
 ############################ Configures #############################
 
 message( STATUS "PPC step: First configures" )
