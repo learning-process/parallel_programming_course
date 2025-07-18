@@ -28,17 +28,23 @@ def init_cmd_args():
         type=int,
         help="List of process/thread counts to run sequentially"
     )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Print commands executed by the script"
+    )
     args = parser.parse_args()
     _args_dict = vars(args)
     return _args_dict
 
 
 class PPCRunner:
-    def __init__(self):
+    def __init__(self, verbose=False):
         self.__ppc_num_threads = None
         self.__ppc_num_proc = None
         self.__ppc_env = None
         self.work_dir = None
+        self.verbose = verbose
 
         self.valgrind_cmd = "valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all"
 
@@ -71,6 +77,8 @@ class PPCRunner:
             self.work_dir = Path(self.__get_project_path()) / "build" / "bin"
 
     def __run_exec(self, command):
+        if self.verbose:
+            print("Executing:", " ".join(shlex.quote(part) for part in command))
         result = subprocess.run(command, shell=False, env=self.__ppc_env)
         if result.returncode != 0:
             raise Exception(f"Subprocess return {result.returncode}.")
@@ -144,7 +152,7 @@ class PPCRunner:
 
 
 def _execute(args_dict, env):
-    runner = PPCRunner()
+    runner = PPCRunner(verbose=args_dict.get("verbose", False))
     runner.setup_env(env)
 
     if args_dict["running_type"] in ["threads", "processes"]:

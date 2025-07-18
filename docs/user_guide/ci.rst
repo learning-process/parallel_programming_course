@@ -56,3 +56,12 @@ Example usage:
 
 Additional MPI arguments can be supplied with ``--additional-mpi-args`` when
 running in ``processes`` mode.
+
+The ``--counts`` option allows sequential execution of tests with several
+thread/process counts.  When specified, the script will iterate over the provided
+values, updating ``PPC_NUM_THREADS`` or ``PPC_NUM_PROC`` accordingly before each
+run.
+
+Use ``--verbose`` to print every command executed by ``run_tests.py``.  This can
+be helpful for debugging CI failures or verifying the exact arguments passed to
+the test binaries.
