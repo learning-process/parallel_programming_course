@@ -38,3 +38,12 @@ scoreboard:
       visible: true
   plagiarism:
     coefficient: 0.5
+  efficiency:
+    num_proc: 4
+  deadlines:
+    mpi: "2025-12-31"
+    omp: "2025-12-31"
+    seq: "2025-12-31"
+    stl: "2025-12-31"
+    tbb: "2025-12-31"
+    all: "2025-12-31"

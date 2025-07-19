@@ -37,8 +37,8 @@
             {% for cell in row.types %}
                 <td style="text-align: center{% if cell.solution_style %};{{ cell.solution_style }}{% endif %}">{{ cell.solution_points }}</td>
                 <td style="text-align: center;background-color: lavender;">{{ cell.perf }}</td>
-                <td style="text-align: center;background-color: lavender;">0</td>
-                <td style="text-align: center;">0</td>
+                <td style="text-align: center;background-color: lavender;">{{ cell.efficiency }}</td>
+                <td style="text-align: center;">{{ cell.deadline_points }}</td>
                 <td style="text-align: center{% if cell.plagiarised %}; background-color: pink{% endif %}">{{ cell.plagiarism_points }}</td>
             {% endfor %}
             <td style="text-align: center;">{{ row.total }}</td>
