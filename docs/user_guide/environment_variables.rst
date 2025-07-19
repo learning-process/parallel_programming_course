@@ -5,6 +5,7 @@ The following environment variables can be used to configure the project's runti
 
 - ``PPC_NUM_PROC``: Specifies the number of processes to launch.
   Default: ``1``
+  Can be queried from C++ with ``ppc::util::GetNumProc()``.
 
 - ``PPC_NUM_THREADS``: Specifies the number of threads to use.
   Default: ``1``
