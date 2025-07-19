@@ -88,4 +88,4 @@ CheckOptions:
   - key:             readability-identifier-length.MinimumParameterNameLength
     value:           1
   - key: misc-include-cleaner.IgnoreHeaders
-    value: '(__chrono/.*|stdlib\.h)'
+    value: '(__chrono/.*|stdlib\.h|3rdparty/.*)'
