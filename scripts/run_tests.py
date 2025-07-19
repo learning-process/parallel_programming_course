@@ -9,29 +9,28 @@ from pathlib import Path
 
 def init_cmd_args():
     import argparse
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--running-type",
         required=True,
         choices=["threads", "processes", "performance"],
-        help="Specify the execution mode. Choose 'threads' for multithreading or 'processes' for multiprocessing."
+        help="Specify the execution mode. Choose 'threads' for multithreading or 'processes' for multiprocessing.",
     )
     parser.add_argument(
         "--additional-mpi-args",
         required=False,
         default="",
-        help="Additional MPI arguments to pass to the mpirun command (optional)."
+        help="Additional MPI arguments to pass to the mpirun command (optional).",
     )
     parser.add_argument(
         "--counts",
         nargs="+",
         type=int,
-        help="List of process/thread counts to run sequentially"
+        help="List of process/thread counts to run sequentially",
     )
     parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Print commands executed by the script"
+        "--verbose", action="store_true", help="Print commands executed by the script"
     )
     args = parser.parse_args()
     _args_dict = vars(args)
@@ -46,7 +45,9 @@ class PPCRunner:
         self.work_dir = None
         self.verbose = verbose
 
-        self.valgrind_cmd = "valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all"
+        self.valgrind_cmd = (
+            "valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all"
+        )
 
         if platform.system() == "Windows":
             self.mpi_exec = "mpiexec"
@@ -64,12 +65,16 @@ class PPCRunner:
 
         self.__ppc_num_threads = self.__ppc_env.get("PPC_NUM_THREADS")
         if self.__ppc_num_threads is None:
-            raise EnvironmentError("Required environment variable 'PPC_NUM_THREADS' is not set.")
+            raise EnvironmentError(
+                "Required environment variable 'PPC_NUM_THREADS' is not set."
+            )
         self.__ppc_env["OMP_NUM_THREADS"] = self.__ppc_num_threads
 
         self.__ppc_num_proc = self.__ppc_env.get("PPC_NUM_PROC")
         if self.__ppc_num_proc is None:
-            raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
+            raise EnvironmentError(
+                "Required environment variable 'PPC_NUM_PROC' is not set."
+            )
 
         if (Path(self.__get_project_path()) / "install").exists():
             self.work_dir = Path(self.__get_project_path()) / "install" / "bin"
@@ -99,40 +104,45 @@ class PPCRunner:
             for task_type in ["seq", "stl"]:
                 self.__run_exec(
                     shlex.split(self.valgrind_cmd)
-                    + [str(self.work_dir / 'ppc_func_tests')]
-                    + self.__get_gtest_settings(1, '_' + task_type + '_')
+                    + [str(self.work_dir / "ppc_func_tests")]
+                    + self.__get_gtest_settings(1, "_" + task_type + "_")
                 )
 
         for task_type in ["omp", "seq", "stl", "tbb"]:
             self.__run_exec(
-                [str(self.work_dir / 'ppc_func_tests')] + self.__get_gtest_settings(3, '_' + task_type + '_')
+                [str(self.work_dir / "ppc_func_tests")]
+                + self.__get_gtest_settings(3, "_" + task_type + "_")
             )
 
     def run_core(self):
         if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
             self.__run_exec(
                 shlex.split(self.valgrind_cmd)
-                + [str(self.work_dir / 'core_func_tests')]
-                + self.__get_gtest_settings(1, '*')
+                + [str(self.work_dir / "core_func_tests")]
+                + self.__get_gtest_settings(1, "*")
                 + ["--gtest_filter=*:-*_disabled_valgrind"]
             )
 
         self.__run_exec(
-            [str(self.work_dir / 'core_func_tests')] + self.__get_gtest_settings(1, '*')
+            [str(self.work_dir / "core_func_tests")] + self.__get_gtest_settings(1, "*")
         )
 
     def run_processes(self, additional_mpi_args):
         ppc_num_proc = self.__ppc_env.get("PPC_NUM_PROC")
         if ppc_num_proc is None:
-            raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
+            raise EnvironmentError(
+                "Required environment variable 'PPC_NUM_PROC' is not set."
+            )
 
-        mpi_running = [self.mpi_exec] + shlex.split(additional_mpi_args) + ["-np", ppc_num_proc]
+        mpi_running = (
+            [self.mpi_exec] + shlex.split(additional_mpi_args) + ["-np", ppc_num_proc]
+        )
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
             for task_type in ["all", "mpi"]:
                 self.__run_exec(
                     mpi_running
-                    + [str(self.work_dir / 'ppc_func_tests')]
-                    + self.__get_gtest_settings(10, '_' + task_type)
+                    + [str(self.work_dir / "ppc_func_tests")]
+                    + self.__get_gtest_settings(10, "_" + task_type)
                 )
 
     def run_performance(self):
@@ -141,13 +151,14 @@ class PPCRunner:
             for task_type in ["all", "mpi"]:
                 self.__run_exec(
                     mpi_running
-                    + [str(self.work_dir / 'ppc_perf_tests')]
-                    + self.__get_gtest_settings(1, '_' + task_type)
+                    + [str(self.work_dir / "ppc_perf_tests")]
+                    + self.__get_gtest_settings(1, "_" + task_type)
                 )
 
         for task_type in ["omp", "seq", "stl", "tbb"]:
             self.__run_exec(
-                [str(self.work_dir / 'ppc_perf_tests')] + self.__get_gtest_settings(1, '_' + task_type)
+                [str(self.work_dir / "ppc_perf_tests")]
+                + self.__get_gtest_settings(1, "_" + task_type)
             )
 
 

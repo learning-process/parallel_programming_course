@@ -5,8 +5,12 @@ import xlsxwriter
 import csv
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-i', '--input', help='Input file path (logs of perf tests, .txt)', required=True)
-parser.add_argument('-o', '--output', help='Output file path (path to .xlsx table)', required=True)
+parser.add_argument(
+    "-i", "--input", help="Input file path (logs of perf tests, .txt)", required=True
+)
+parser.add_argument(
+    "-o", "--output", help="Output file path (path to .xlsx table)", required=True
+)
 args = parser.parse_args()
 logs_path = os.path.abspath(args.input)
 xlsx_path = os.path.abspath(args.output)
@@ -19,7 +23,7 @@ set_of_task_name = []
 logs_file = open(logs_path, "r")
 logs_lines = logs_file.readlines()
 for line in logs_lines:
-    pattern = r'tasks[\/|\\](\w*)[\/|\\](\w*):(\w*):(-*\d*\.\d*)'
+    pattern = r"tasks[\/|\\](\w*)[\/|\\](\w*):(\w*):(-*\d*\.\d*)"
     result = re.findall(pattern, line)
     if len(result):
         task_name = result[0][1]
@@ -31,7 +35,7 @@ for line in logs_lines:
             result_tables[perf_type][task_name][ttype] = -1.0
 
 for line in logs_lines:
-    pattern = r'tasks[\/|\\](\w*)[\/|\\](\w*):(\w*):(-*\d*\.\d*)'
+    pattern = r"tasks[\/|\\](\w*)[\/|\\](\w*):(\w*):(-*\d*\.\d*)"
     result = re.findall(pattern, line)
     if len(result):
         task_type = result[0][0]
@@ -45,37 +49,72 @@ for line in logs_lines:
 
 
 for table_name in result_tables:
-    workbook = xlsxwriter.Workbook(os.path.join(xlsx_path, table_name + '_perf_table.xlsx'))
+    workbook = xlsxwriter.Workbook(
+        os.path.join(xlsx_path, table_name + "_perf_table.xlsx")
+    )
     worksheet = workbook.add_worksheet()
-    worksheet.set_column('A:Z', 23)
-    right_bold_border = workbook.add_format({'bold': True, 'right': 2, 'bottom': 2})
-    bottom_bold_border = workbook.add_format({'bold': True, 'bottom': 2})
+    worksheet.set_column("A:Z", 23)
+    right_bold_border = workbook.add_format({"bold": True, "right": 2, "bottom": 2})
+    bottom_bold_border = workbook.add_format({"bold": True, "bottom": 2})
     cpu_num = os.environ.get("PPC_NUM_PROC")
     if cpu_num is None:
-        raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
+        raise EnvironmentError(
+            "Required environment variable 'PPC_NUM_PROC' is not set."
+        )
     cpu_num = int(cpu_num)
     worksheet.write(0, 0, "cpu_num = " + str(cpu_num), right_bold_border)
 
     it = 1
     for type_of_task in list_of_type_of_tasks:
-        worksheet.write(0, it, "T_" + type_of_task + "(" + str(cpu_num) + ")", bottom_bold_border)
+        worksheet.write(
+            0, it, "T_" + type_of_task + "(" + str(cpu_num) + ")", bottom_bold_border
+        )
         it += 1
-        worksheet.write(0, it, "S(" + str(cpu_num) + ")" + " = " +
-                        "T_seq(" + str(cpu_num) + ")" + " / " +
-                        "T_" + type_of_task + "(" + str(cpu_num) + ")", bottom_bold_border)
+        worksheet.write(
+            0,
+            it,
+            "S("
+            + str(cpu_num)
+            + ")"
+            + " = "
+            + "T_seq("
+            + str(cpu_num)
+            + ")"
+            + " / "
+            + "T_"
+            + type_of_task
+            + "("
+            + str(cpu_num)
+            + ")",
+            bottom_bold_border,
+        )
         it += 1
-        worksheet.write(0, it, "Eff(" + str(cpu_num) + ")" + " = " +
-                        "S(" + str(cpu_num) + ")" + " / " + str(cpu_num), right_bold_border)
+        worksheet.write(
+            0,
+            it,
+            "Eff("
+            + str(cpu_num)
+            + ")"
+            + " = "
+            + "S("
+            + str(cpu_num)
+            + ")"
+            + " / "
+            + str(cpu_num),
+            right_bold_border,
+        )
         it += 1
 
     it = 1
     for task_name in list(set(set_of_task_name)):
-        worksheet.write(it, 0, task_name, workbook.add_format({'bold': True, 'right': 2}))
+        worksheet.write(
+            it, 0, task_name, workbook.add_format({"bold": True, "right": 2})
+        )
         it += 1
 
     it_i = 1
     it_j = 1
-    right_border = workbook.add_format({'right': 2})
+    right_border = workbook.add_format({"right": 2})
     for task_name in list(set(set_of_task_name)):
         for type_of_task in list_of_type_of_tasks:
             if task_name not in result_tables[table_name].keys():
@@ -104,19 +143,27 @@ for table_name in result_tables:
         it_j += 1
     workbook.close()
     # Dump CSV for performance times
-    csv_file = os.path.join(xlsx_path, table_name + '_perf_table.csv')
-    with open(csv_file, 'w', newline='') as csvfile:
+    csv_file = os.path.join(xlsx_path, table_name + "_perf_table.csv")
+    with open(csv_file, "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         # Write header: Task, SEQ, OMP, TBB, STL, ALL
-        writer.writerow(['Task', 'SEQ', 'OMP', 'TBB', 'STL', 'ALL'])
+        writer.writerow(["Task", "SEQ", "OMP", "TBB", "STL", "ALL"])
         for task_name in sorted(result_tables[table_name].keys()):
-            seq_time = result_tables[table_name][task_name]['seq']
+            seq_time = result_tables[table_name][task_name]["seq"]
             row = [
                 task_name,
-                1.0 if seq_time != 0 else '?',
-                (result_tables[table_name][task_name]['omp'] / seq_time) if seq_time != 0 else '?',
-                (result_tables[table_name][task_name]['tbb'] / seq_time) if seq_time != 0 else '?',
-                (result_tables[table_name][task_name]['stl'] / seq_time) if seq_time != 0 else '?',
-                (result_tables[table_name][task_name]['all'] / seq_time) if seq_time != 0 else '?',
+                1.0 if seq_time != 0 else "?",
+                (result_tables[table_name][task_name]["omp"] / seq_time)
+                if seq_time != 0
+                else "?",
+                (result_tables[table_name][task_name]["tbb"] / seq_time)
+                if seq_time != 0
+                else "?",
+                (result_tables[table_name][task_name]["stl"] / seq_time)
+                if seq_time != 0
+                else "?",
+                (result_tables[table_name][task_name]["all"] / seq_time)
+                if seq_time != 0
+                else "?",
             ]
             writer.writerow(row)

@@ -8,15 +8,15 @@
 
 import os
 
-project = 'Parallel Programming Course'
-copyright = '2025, Learning Process'
-author = 'Learning Process'
+project = "Parallel Programming Course"
+copyright = "2025, Learning Process"
+author = "Learning Process"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'breathe',
+    "breathe",
 ]
 
 breathe_projects = {
@@ -24,16 +24,16 @@ breathe_projects = {
 }
 breathe_default_project = "ParallelProgrammingCourse"
 
-templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-locale_dirs = ['locale']
+templates_path = ["_templates"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+locale_dirs = ["locale"]
 gettext_compact = False
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+html_theme = "sphinx_rtd_theme"
+html_static_path = ["_static"]
 
 html_sidebars = {
     "**": [
