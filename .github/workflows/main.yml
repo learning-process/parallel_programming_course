@@ -16,19 +16,24 @@ concurrency:
         !startsWith(github.ref, 'refs/heads/gh-readonly-queue') }}
 
 jobs:
-  lint:
-    uses: ./.github/workflows/lint.yml
+  cpp-lint:
+    uses: ./.github/workflows/cpp-lint.yml
+  python-lint:
+    uses: ./.github/workflows/python-lint.yml
   ubuntu:
     needs:
-      - lint
+      - cpp-lint
+      - python-lint
     uses: ./.github/workflows/ubuntu.yml
   mac:
     needs:
-      - lint
+      - cpp-lint
+      - python-lint
     uses: ./.github/workflows/mac.yml
   windows:
     needs:
-      - lint
+      - cpp-lint
+      - python-lint
     uses: ./.github/workflows/windows.yml
   perf:
     needs:
