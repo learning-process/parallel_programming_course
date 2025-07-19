@@ -2,6 +2,7 @@ from pathlib import Path
 from collections import defaultdict
 import argparse
 import yaml
+import csv
 
 task_types = ['all', 'mpi', 'omp', 'seq', 'stl', 'tbb']
 
@@ -67,6 +68,27 @@ html_content = f"""
         </tr>
 """
 
+
+perf_stat_file_path = Path(__file__).parent.parent / "build" / "perf_stat_dir" / "task_run_perf_table.csv"
+
+# Read and parse performance statistics CSV
+perf_stats = dict()
+if perf_stat_file_path.exists():
+    with open(perf_stat_file_path, 'r', newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            perf_stats[row['Task']] = {
+                "seq": row['SEQ'],
+                "omp": row['OMP'],
+                "tbb": row['TBB'],
+                "stl": row['STL'],
+                "all": row['ALL'],
+                "mpi": "N/A",
+            }
+else:
+    print(f"Warning: Performance stats CSV not found at {perf_stat_file_path}")
+
+
 for dir in sorted(directories.keys()):
     html_content += f"<tr><td>{dir}</td>"
     total_count = 0
@@ -81,7 +103,12 @@ for dir in sorted(directories.keys()):
             task_count += max_sol_points
         else:
             html_content += '<td style="text-align: center;">0</td>'
-        html_content += '<td style="text-align: center;background-color: lavender;">0</td>'
+        html_content += '<td style="text-align: center;background-color: lavender;">'
+        if dir in perf_stats.keys():
+            html_content += perf_stats[dir][task_type]
+        else:
+            html_content += '?'
+        html_content += '</td>'
         html_content += '<td style="text-align: center;background-color: lavender;">0</td>'
         html_content += '<td style="text-align: center;">0</td>'
         is_cheated = \
