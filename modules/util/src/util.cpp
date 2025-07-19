@@ -28,6 +28,14 @@ int ppc::util::GetNumThreads() {
   return 1;
 }
 
+int ppc::util::GetNumProc() {
+  const auto num_proc = env::get<int>("PPC_NUM_PROC");
+  if (num_proc.has_value()) {
+    return num_proc.value();
+  }
+  return 1;
+}
+
 double ppc::util::GetTaskMaxTime() {
   const auto val = env::get<double>("PPC_TASK_MAX_TIME");
   if (val.has_value()) {
