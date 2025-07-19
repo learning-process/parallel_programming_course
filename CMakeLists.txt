@@ -29,16 +29,16 @@ message( STATUS "PPC step: First configures" )
 include(cmake/configure.cmake)
 include(cmake/modes.cmake)
 include(cmake/sanitizers.cmake)
-include(cmake/json.cmake)
-include(cmake/libenvpp.cmake)
-include(cmake/stb.cmake)
+foreach(dep json libenvpp stb)
+    include(cmake/${dep}.cmake)
+endforeach()
 
 ################# Parallel programming technologies #################
 
 message( STATUS "PPC step: Setup parallel programming technologies" )
-include(cmake/mpi.cmake)
-include(cmake/openmp.cmake)
-include(cmake/onetbb.cmake)
+foreach(dep mpi openmp onetbb)
+    include(cmake/${dep}.cmake)
+endforeach()
 
 ######################### External projects #########################
 
