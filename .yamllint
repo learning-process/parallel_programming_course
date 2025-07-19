@@ -1,4 +1,6 @@
 extends: default
+ignore: |
+  .git
 rules:
   line-length:
     max: 120
