@@ -12,7 +12,9 @@ def get_project_path():
 
 def generate_group_table(_num_tasks, _num_students, _num_variants, _csv_file):
     if _num_tasks != len(_num_variants):
-        raise Exception(f"Count of students: {_num_tasks} != count of list of variants: {len(_num_variants)}")
+        raise Exception(
+            f"Count of students: {_num_tasks} != count of list of variants: {len(_num_variants)}"
+        )
 
     list_of_tasks = []
     str_of_print = ""
@@ -27,16 +29,18 @@ def generate_group_table(_num_tasks, _num_students, _num_variants, _csv_file):
             shuffled_list_of_variants.append(variant)
         result_variants = np.concatenate(shuffled_list_of_variants)
         list_of_tasks.append(result_variants[:_num_students])
-        str_of_print += '%d,'
-        str_of_headers += 'Task ' + str(i + 1) + ','
+        str_of_print += "%d,"
+        str_of_headers += "Task " + str(i + 1) + ","
     str_of_print = str_of_print[:-1]
     str_of_headers = str_of_headers[:-1]
 
-    np.savetxt(_csv_file, np.dstack(list_of_tasks)[0], str_of_print, header=str_of_headers)
+    np.savetxt(
+        _csv_file, np.dstack(list_of_tasks)[0], str_of_print, header=str_of_headers
+    )
 
-    workbook = Workbook(_csv_file[:-4] + '.xlsx')
+    workbook = Workbook(_csv_file[:-4] + ".xlsx")
     worksheet = workbook.add_worksheet()
-    with open(_csv_file, 'rt') as f:
+    with open(_csv_file, "rt") as f:
         reader = csv.reader(f)
         for r, row in enumerate(reader):
             for c, col in enumerate(row):
@@ -59,5 +63,5 @@ if __name__ == "__main__":
     path_to_results.mkdir(parents=True, exist_ok=True)
 
     for num_students, index in zip(list_students, range(len(list_students))):
-        csv_path = path_to_results / f'variants_group_{index + 1}.csv'
+        csv_path = path_to_results / f"variants_group_{index + 1}.csv"
         generate_group_table(num_tasks, num_students, num_variants, csv_path.as_posix())

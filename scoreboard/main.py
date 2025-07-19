@@ -5,52 +5,54 @@ import yaml
 import csv
 from jinja2 import Environment, FileSystemLoader
 
-task_types = ['all', 'mpi', 'omp', 'seq', 'stl', 'tbb']
+task_types = ["all", "mpi", "omp", "seq", "stl", "tbb"]
 
-tasks_dir = Path('tasks')
+tasks_dir = Path("tasks")
 
 directories = defaultdict(dict)
 
 if tasks_dir.exists() and tasks_dir.is_dir():
     for task_name_dir in tasks_dir.iterdir():
-        if task_name_dir.is_dir() and task_name_dir.name not in ['common']:
+        if task_name_dir.is_dir() and task_name_dir.name not in ["common"]:
             task_name = task_name_dir.name
             for task_type in task_types:
                 task_type_dir = task_name_dir / task_type
                 if task_type_dir.exists() and task_type_dir.is_dir():
                     if task_name.endswith("_disabled"):
-                        clean_task_name = task_name[:-len("_disabled")]
+                        clean_task_name = task_name[: -len("_disabled")]
                         directories[clean_task_name][task_type] = "disabled"
                     else:
                         directories[task_name][task_type] = "done"
 
 config_path = Path(__file__).parent / "data" / "threads-config.yml"
 assert config_path.exists(), f"Config file not found: {config_path}"
-with open(config_path, 'r') as file:
+with open(config_path, "r") as file:
     cfg = yaml.safe_load(file)
 assert cfg, "Configuration is empty"
 plagiarism_config_path = Path(__file__).parent / "data" / "plagiarism.yml"
-with open(plagiarism_config_path, 'r') as file:
+with open(plagiarism_config_path, "r") as file:
     plagiarism_cfg = yaml.safe_load(file)
 assert plagiarism_cfg, "Plagiarism configuration is empty"
 
 env = Environment(loader=FileSystemLoader(Path(__file__).parent / "templates"))
 
 
-perf_stat_file_path = Path(__file__).parent.parent / "build" / "perf_stat_dir" / "task_run_perf_table.csv"
+perf_stat_file_path = (
+    Path(__file__).parent.parent / "build" / "perf_stat_dir" / "task_run_perf_table.csv"
+)
 
 # Read and parse performance statistics CSV
 perf_stats = dict()
 if perf_stat_file_path.exists():
-    with open(perf_stat_file_path, 'r', newline='') as csvfile:
+    with open(perf_stat_file_path, "r", newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            perf_stats[row['Task']] = {
-                "seq": row['SEQ'],
-                "omp": row['OMP'],
-                "tbb": row['TBB'],
-                "stl": row['STL'],
-                "all": row['ALL'],
+            perf_stats[row["Task"]] = {
+                "seq": row["SEQ"],
+                "omp": row["OMP"],
+                "tbb": row["TBB"],
+                "stl": row["STL"],
+                "all": row["ALL"],
                 "mpi": "N/A",
             }
 else:
@@ -99,12 +101,12 @@ for dir in sorted(directories.keys()):
 template = env.get_template("index.html.j2")
 html_content = template.render(task_types=task_types, rows=rows)
 
-parser = argparse.ArgumentParser(description='Generate HTML scoreboard.')
-parser.add_argument('-o', '--output', type=str, required=True, help='Output file path')
+parser = argparse.ArgumentParser(description="Generate HTML scoreboard.")
+parser.add_argument("-o", "--output", type=str, required=True, help="Output file path")
 args = parser.parse_args()
 
 output_file = Path(args.output) / "index.html"
-with open(output_file, 'w') as file:
+with open(output_file, "w") as file:
     file.write(html_content)
 
 print(f"HTML page generated at {output_file}")
