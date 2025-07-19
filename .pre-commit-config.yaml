@@ -20,6 +20,20 @@ repos:
         files: \.(cmake|CMakeLists\.txt)$
         exclude: ^(3rdparty/|build.*/|install/)
 
+  # Ruff Python linter
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.12.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # Flake8 Python style/lint checker (supplemental to Ruff)
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+
 # Configuration
 default_stages: [pre-commit]
 fail_fast: false
