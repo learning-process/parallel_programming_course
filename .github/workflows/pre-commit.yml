@@ -21,7 +21,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y \
-            gcc-14 g++-14 ninja-build python3-pip clang-format-16
+            gcc-14 g++-14 ninja-build python3-pip
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          sudo ./llvm.sh 20 all
           python3 -m pip install -r requirements.txt
       - name: Run pre-commit checks
         run: |
