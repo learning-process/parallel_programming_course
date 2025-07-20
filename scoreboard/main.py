@@ -6,6 +6,10 @@ import subprocess
 import yaml
 import csv
 from jinja2 import Environment, FileSystemLoader
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
 
 task_types = ["all", "mpi", "omp", "seq", "stl", "tbb"]
 
@@ -60,7 +64,7 @@ if perf_stat_file_path.exists():
                 "mpi": "N/A",
             }
 else:
-    print(f"Warning: Performance stats CSV not found at {perf_stat_file_path}")
+    logger.warning("Performance stats CSV not found at %s", perf_stat_file_path)
 
 rows = []
 for dir in sorted(directories.keys()):
@@ -147,4 +151,4 @@ output_file = Path(args.output) / "index.html"
 with open(output_file, "w") as file:
     file.write(html_content)
 
-print(f"HTML page generated at {output_file}")
+logger.info("HTML page generated at %s", output_file)
