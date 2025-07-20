@@ -27,7 +27,16 @@ target_include_directories(
   ${exec_func_lib} PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty
                           ${CMAKE_SOURCE_DIR}/modules ${CMAKE_SOURCE_DIR}/tasks)
 
-foreach(link envpp json gtest threads openmp tbb mpi stb)
+foreach(
+  link
+  envpp
+  json
+  gtest
+  threads
+  openmp
+  tbb
+  mpi
+  stb)
   cmake_language(CALL "ppc_link_${link}" ${exec_func_lib})
 endforeach()
 
