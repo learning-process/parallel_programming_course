@@ -28,7 +28,7 @@ target_include_directories(
                           ${CMAKE_SOURCE_DIR}/modules ${CMAKE_SOURCE_DIR}/tasks)
 
 foreach(link envpp json gtest threads openmp tbb mpi stb)
-  ppc_link_${link}(${exec_func_lib})
+  cmake_language(CALL "ppc_link_${link}" ${exec_func_lib})
 endforeach()
 
 add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
