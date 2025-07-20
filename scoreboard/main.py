@@ -48,14 +48,16 @@ def load_performance_data(perf_stat_file_path):
         with open(perf_stat_file_path, "r", newline="") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                perf_stats[row["Task"]] = {
-                    "seq": row["SEQ"],
-                    "omp": row["OMP"],
-                    "tbb": row["TBB"],
-                    "stl": row["STL"],
-                    "all": row["ALL"],
-                    "mpi": "N/A",
-                }
+                task_name = row.get("Task")
+                if task_name:
+                    perf_stats[task_name] = {
+                        "seq": row.get("SEQ", "?"),
+                        "omp": row.get("OMP", "?"),
+                        "tbb": row.get("TBB", "?"),
+                        "stl": row.get("STL", "?"),
+                        "all": row.get("ALL", "?"),
+                        "mpi": "N/A",
+                    }
     else:
         logger.warning("Performance stats CSV not found at %s", perf_stat_file_path)
     return perf_stats
@@ -67,7 +69,9 @@ def calculate_performance_metrics(perf_val, eff_num_proc):
     efficiency = "?"
     try:
         perf_float = float(perf_val)
-        if perf_float > 0:
+        if perf_float > 0 and not (
+            perf_float == float("inf") or perf_float != perf_float
+        ):
             speedup = 1.0 / perf_float
             acceleration = f"{speedup:.2f}"
             efficiency = f"{speedup / eff_num_proc * 100:.2f}%"
@@ -92,9 +96,10 @@ def check_plagiarism_and_calculate_penalty(
     dir, task_type, sol_points, plagiarism_cfg, cfg
 ):
     """Check if task is plagiarized and calculate penalty points."""
+    clean_dir = dir[: -len("_disabled")] if dir.endswith("_disabled") else dir
     is_cheated = (
         dir in plagiarism_cfg["plagiarism"][task_type]
-        or dir.rstrip("_disabled") in plagiarism_cfg["plagiarism"][task_type]
+        or clean_dir in plagiarism_cfg["plagiarism"][task_type]
     )
     plagiarism_points = 0
     if is_cheated:
