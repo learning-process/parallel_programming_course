@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 
 task_types = ["all", "mpi", "omp", "seq", "stl", "tbb"]
 
-tasks_dir = Path("tasks")
+script_dir = Path(__file__).parent
+tasks_dir = script_dir.parent / "tasks"
 
 directories = defaultdict(dict)
 
@@ -46,7 +47,7 @@ env = Environment(loader=FileSystemLoader(Path(__file__).parent / "templates"))
 
 
 perf_stat_file_path = (
-    Path(__file__).parent.parent / "build" / "perf_stat_dir" / "task_run_perf_table.csv"
+    script_dir.parent / "build" / "perf_stat_dir" / "task_run_perf_table.csv"
 )
 
 # Read and parse performance statistics CSV
@@ -93,13 +94,15 @@ for dir in sorted(directories.keys()):
 
         perf_val = perf_stats.get(dir, {}).get(task_type, "?")
 
-        # Calculate efficiency if performance data is available
+        # Calculate acceleration and efficiency if performance data is available
+        acceleration = "?"
         efficiency = "?"
         try:
             perf_float = float(perf_val)
             if perf_float > 0:
                 speedup = 1.0 / perf_float
-                efficiency = f"{speedup / eff_num_proc * 100:.2f}"
+                acceleration = f"{speedup:.2f}"
+                efficiency = f"{speedup / eff_num_proc * 100:.2f}%"
         except (ValueError, TypeError):
             pass
 
@@ -114,7 +117,11 @@ for dir in sorted(directories.keys()):
                     "log",
                     "-1",
                     "--format=%ct",
-                    str(tasks_dir / (dir + ("_disabled" if status == "disabled" else "")) / task_type),
+                    str(
+                        tasks_dir
+                        / (dir + ("_disabled" if status == "disabled" else ""))
+                        / task_type
+                    ),
                 ]
                 result = subprocess.run(git_cmd, capture_output=True, text=True)
                 if result.stdout.strip().isdigit():
@@ -130,6 +137,7 @@ for dir in sorted(directories.keys()):
                 "solution_points": sol_points,
                 "solution_style": solution_style,
                 "perf": perf_val,
+                "acceleration": acceleration,
                 "efficiency": efficiency,
                 "deadline_points": deadline_points,
                 "plagiarised": is_cheated,

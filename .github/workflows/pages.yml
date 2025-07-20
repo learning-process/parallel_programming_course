@@ -76,6 +76,14 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install -r requirements.txt
+      - name: Download performance data
+        uses: actions/download-artifact@v4
+        with:
+          name: perf-stat
+      - name: Extract performance data
+        run: |
+          mkdir -p build/perf_stat_dir
+          unzip -o perf-stat.zip -d .
       - name: CMake configure
         run: |
           cmake -S . -B build -DUSE_SCOREBOARD=ON
