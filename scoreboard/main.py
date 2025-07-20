@@ -102,7 +102,7 @@ for dir in sorted(directories.keys()):
             if perf_float > 0:
                 speedup = 1.0 / perf_float
                 acceleration = f"{speedup:.2f}"
-                efficiency = f"{speedup / eff_num_proc * 100:.2f}"
+                efficiency = f"{speedup / eff_num_proc * 100:.2f}%"
         except (ValueError, TypeError):
             pass
 
