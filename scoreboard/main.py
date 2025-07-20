@@ -1,6 +1,8 @@
 from pathlib import Path
 from collections import defaultdict
+from datetime import datetime
 import argparse
+import subprocess
 import yaml
 import csv
 from jinja2 import Environment, FileSystemLoader
@@ -29,6 +31,8 @@ assert config_path.exists(), f"Config file not found: {config_path}"
 with open(config_path, "r") as file:
     cfg = yaml.safe_load(file)
 assert cfg, "Configuration is empty"
+eff_num_proc = int(cfg["scoreboard"].get("efficiency", {}).get("num_proc", 1))
+deadlines_cfg = cfg["scoreboard"].get("deadlines", {})
 plagiarism_config_path = Path(__file__).parent / "data" / "plagiarism.yml"
 with open(plagiarism_config_path, "r") as file:
     plagiarism_cfg = yaml.safe_load(file)
@@ -85,11 +89,45 @@ for dir in sorted(directories.keys()):
 
         perf_val = perf_stats.get(dir, {}).get(task_type, "?")
 
+        # Calculate efficiency if performance data is available
+        efficiency = "?"
+        try:
+            perf_float = float(perf_val)
+            if perf_float > 0:
+                speedup = 1.0 / perf_float
+                efficiency = f"{speedup / eff_num_proc * 100:.2f}"
+        except (ValueError, TypeError):
+            pass
+
+        # Calculate deadline penalty points
+        deadline_points = 0
+        deadline_str = deadlines_cfg.get(task_type)
+        if status == "done" and deadline_str:
+            try:
+                deadline_dt = datetime.fromisoformat(deadline_str)
+                git_cmd = [
+                    "git",
+                    "log",
+                    "-1",
+                    "--format=%ct",
+                    str(tasks_dir / (dir + ("_disabled" if status == "disabled" else "")) / task_type),
+                ]
+                result = subprocess.run(git_cmd, capture_output=True, text=True)
+                if result.stdout.strip().isdigit():
+                    commit_dt = datetime.fromtimestamp(int(result.stdout.strip()))
+                    days_late = (commit_dt - deadline_dt).days
+                    if days_late > 0:
+                        deadline_points = -days_late
+            except Exception:
+                pass
+
         row_types.append(
             {
                 "solution_points": sol_points,
                 "solution_style": solution_style,
                 "perf": perf_val,
+                "efficiency": efficiency,
+                "deadline_points": deadline_points,
                 "plagiarised": is_cheated,
                 "plagiarism_points": plagiarism_points,
             }
