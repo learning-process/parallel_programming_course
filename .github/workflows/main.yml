@@ -18,22 +18,22 @@ concurrency:
 jobs:
   cpp-lint:
     uses: ./.github/workflows/cpp-lint.yml
-  python-lint:
-    uses: ./.github/workflows/python-lint.yml
+  shell-lint:
+    uses: ./.github/workflows/shell-lint.yml
   ubuntu:
     needs:
       - cpp-lint
-      - python-lint
+      - shell-lint
     uses: ./.github/workflows/ubuntu.yml
   mac:
     needs:
       - cpp-lint
-      - python-lint
+      - shell-lint
     uses: ./.github/workflows/mac.yml
   windows:
     needs:
       - cpp-lint
-      - python-lint
+      - shell-lint
     uses: ./.github/workflows/windows.yml
   perf:
     needs:
