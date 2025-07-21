@@ -63,7 +63,7 @@ def load_performance_data(perf_stat_file_path):
     return perf_stats
 
 
-def calculate_performance_metrics(perf_val, eff_num_proc):
+def calculate_performance_metrics(perf_val, eff_num_proc, task_type):
     """Calculate acceleration and efficiency from performance value."""
     acceleration = "?"
     efficiency = "?"
@@ -73,8 +73,14 @@ def calculate_performance_metrics(perf_val, eff_num_proc):
             perf_float == float("inf") or perf_float != perf_float
         ):
             speedup = 1.0 / perf_float
-            acceleration = f"{speedup:.2f}"
-            efficiency = f"{speedup / eff_num_proc * 100:.2f}%"
+            # For sequential code, acceleration and efficiency don't make sense
+            # as it should be the baseline (speedup = 1.0 by definition)
+            if task_type == "seq":
+                acceleration = "1.00"  # Sequential is the baseline
+                efficiency = "N/A"
+            else:
+                acceleration = f"{speedup:.2f}"
+                efficiency = f"{speedup / eff_num_proc * 100:.2f}%"
     except (ValueError, TypeError):
         pass
     return acceleration, efficiency
@@ -189,7 +195,7 @@ def main():
 
             # Calculate acceleration and efficiency if performance data is available
             acceleration, efficiency = calculate_performance_metrics(
-                perf_val, eff_num_proc
+                perf_val, eff_num_proc, task_type
             )
 
             # Calculate deadline penalty points
