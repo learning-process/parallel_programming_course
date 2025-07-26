@@ -45,7 +45,6 @@ if(UNIX)
     add_compile_options(
       -Wpedantic
       -Wpointer-arith
-      -Wcast-align
       -Wwrite-strings
       -Wswitch-enum
       -Wnull-dereference
