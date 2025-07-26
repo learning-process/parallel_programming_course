@@ -34,6 +34,12 @@ repos:
     hooks:
       - id: flake8
 
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+
 # Configuration
 default_stages: [pre-commit]
 fail_fast: false
