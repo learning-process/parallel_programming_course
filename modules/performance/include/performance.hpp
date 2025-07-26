@@ -14,7 +14,9 @@
 
 namespace ppc::performance {
 
-inline double DefaultTimer() { return -1.0; }
+inline double DefaultTimer() {
+  return -1.0;
+}
 
 struct PerfAttr {
   /// @brief Number of times the task is run for performance evaluation.
@@ -96,7 +98,9 @@ class Perf {
   }
   /// @brief Retrieves the performance test results.
   /// @return The latest PerfResults structure.
-  [[nodiscard]] PerfResults GetPerfResults() const { return perf_results_; }
+  [[nodiscard]] PerfResults GetPerfResults() const {
+    return perf_results_;
+  }
 
  private:
   PerfResults perf_results_;

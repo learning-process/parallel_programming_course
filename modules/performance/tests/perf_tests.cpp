@@ -23,9 +23,13 @@ namespace ppc::test {
 template <typename InType, typename OutType>
 class TestPerfTask : public ppc::task::Task<InType, OutType> {
  public:
-  explicit TestPerfTask(const InType& in) { this->GetInput() = in; }
+  explicit TestPerfTask(const InType& in) {
+    this->GetInput() = in;
+  }
 
-  bool ValidationImpl() override { return !this->GetInput().empty(); }
+  bool ValidationImpl() override {
+    return !this->GetInput().empty();
+  }
 
   bool PreProcessingImpl() override {
     this->GetOutput() = 0;
@@ -39,7 +43,9 @@ class TestPerfTask : public ppc::task::Task<InType, OutType> {
     return true;
   }
 
-  bool PostProcessingImpl() override { return true; }
+  bool PostProcessingImpl() override {
+    return true;
+  }
 };
 
 template <typename InType, typename OutType>
@@ -203,7 +209,9 @@ class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> 
     std::ofstream(temp_path) << j->dump();
   }
 
-  void TearDown() override { std::filesystem::remove(temp_path); }
+  void TearDown() override {
+    std::filesystem::remove(temp_path);
+  }
 };
 
 TEST_P(GetStringTaskTypeTest, ReturnsExpectedString) {
@@ -279,10 +287,18 @@ TEST(GetStringTaskStatusTest, HandlesEnabledAndDisabled) {
 class DummyTask : public Task<int, int> {
  public:
   using Task::Task;
-  bool ValidationImpl() override { return true; }
-  bool PreProcessingImpl() override { return true; }
-  bool RunImpl() override { return true; }
-  bool PostProcessingImpl() override { return true; }
+  bool ValidationImpl() override {
+    return true;
+  }
+  bool PreProcessingImpl() override {
+    return true;
+  }
+  bool RunImpl() override {
+    return true;
+  }
+  bool PostProcessingImpl() override {
+    return true;
+  }
 };
 
 TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
@@ -372,10 +388,18 @@ TEST(PerfTest, GetStringParamNameTest) {
 TEST(TaskTest, Destructor_InvalidPipelineOrderTerminates_PartialPipeline) {
   {
     struct BadTask : Task<int, int> {
-      bool ValidationImpl() override { return true; }
-      bool PreProcessingImpl() override { return true; }
-      bool RunImpl() override { return true; }
-      bool PostProcessingImpl() override { return true; }
+      bool ValidationImpl() override {
+        return true;
+      }
+      bool PreProcessingImpl() override {
+        return true;
+      }
+      bool RunImpl() override {
+        return true;
+      }
+      bool PostProcessingImpl() override {
+        return true;
+      }
     } task;
     task.Validation();
   }

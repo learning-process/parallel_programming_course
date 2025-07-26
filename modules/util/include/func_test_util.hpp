@@ -72,9 +72,13 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
     InitializeAndRunTask(test_param);
   }
 
-  void ValidateTestName(const std::string& test_name) { EXPECT_FALSE(test_name.find("unknown") != std::string::npos); }
+  void ValidateTestName(const std::string& test_name) {
+    EXPECT_FALSE(test_name.find("unknown") != std::string::npos);
+  }
 
-  bool IsTestDisabled(const std::string& test_name) { return test_name.find("disabled") != std::string::npos; }
+  bool IsTestDisabled(const std::string& test_name) {
+    return test_name.find("disabled") != std::string::npos;
+  }
 
   bool ShouldSkipNonMpiTask(const std::string& test_name) {
     auto contains_substring = [&](const std::string& substring) {

@@ -7,7 +7,9 @@ namespace nesterov_a_test_task_threads {
 
 class NesterovATestTaskALL : public BaseTask {
  public:
-  static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() { return ppc::task::TypeOfTask::kALL; }
+  static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() {
+    return ppc::task::TypeOfTask::kALL;
+  }
   explicit NesterovATestTaskALL(const InType &in);
 
  private:

@@ -19,7 +19,9 @@ NesterovATestTaskALL::NesterovATestTaskALL(const InType &in) {
   GetOutput() = 0;
 }
 
-bool NesterovATestTaskALL::ValidationImpl() { return (GetInput() > 0) && (GetOutput() == 0); }
+bool NesterovATestTaskALL::ValidationImpl() {
+  return (GetInput() > 0) && (GetOutput() == 0);
+}
 
 bool NesterovATestTaskALL::PreProcessingImpl() {
   GetOutput() = 2 * GetInput();
