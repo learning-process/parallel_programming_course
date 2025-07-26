@@ -4,9 +4,11 @@ on:
       - master
     paths:
       - 'docker/**'
+      - '.github/workflows/docker.yml'
   pull_request_target:
     paths:
       - 'docker/**'
+      - '.github/workflows/docker.yml'
   workflow_dispatch:
 
 permissions:
