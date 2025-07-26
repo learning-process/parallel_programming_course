@@ -7,6 +7,7 @@ on:
   pull_request_target:
     paths:
       - 'docker/**'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -44,3 +45,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true  # ${{ github.ref == 'refs/heads/master' }}
           tags: ghcr.io/learning-process/ppc-ubuntu:latest
+          visibility: public
