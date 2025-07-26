@@ -5,6 +5,7 @@ import csv
 import argparse
 import subprocess
 import yaml
+import shutil
 from jinja2 import Environment, FileSystemLoader
 import logging
 
@@ -228,9 +229,21 @@ def main():
     )
     args = parser.parse_args()
 
-    output_file = Path(args.output) / "index.html"
+    output_path = Path(args.output)
+    output_path.mkdir(parents=True, exist_ok=True)
+    output_file = output_path / "index.html"
     with open(output_file, "w") as file:
         file.write(html_content)
+
+    static_src = script_dir / "static"
+    static_dst = output_path / "static"
+    if static_src.exists():
+        if static_dst.exists():
+            shutil.rmtree(static_dst)
+        shutil.copytree(static_src, static_dst)
+        logger.info("Static directory copied to %s", static_dst)
+    else:
+        logger.warning("Static directory not found at %s", static_src)
 
     logger.info("HTML page generated at %s", output_file)
 

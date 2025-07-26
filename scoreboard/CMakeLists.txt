@@ -11,10 +11,3 @@ add_custom_target(
           ${OUTPUT_DIR}
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMENT "Running main.py")
-
-add_custom_command(
-  TARGET generate_scoreboard
-  POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/static
-          ${OUTPUT_DIR}/static
-  COMMENT "Copying static directory to binary directory")
