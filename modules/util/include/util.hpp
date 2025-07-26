@@ -35,14 +35,20 @@ namespace ppc::util {
 class DestructorFailureFlag {
  public:
   /// @brief Marks that a destructor failure has occurred.
-  static void Set() { failure_flag.store(true); }
+  static void Set() {
+    failure_flag.store(true);
+  }
 
   /// @brief Clears the destructor failure flag.
-  static void Unset() { failure_flag.store(false); }
+  static void Unset() {
+    failure_flag.store(false);
+  }
 
   /// @brief Checks if a destructor failure was recorded.
   /// @return True if failure occurred, false otherwise.
-  static bool Get() { return failure_flag.load(); }
+  static bool Get() {
+    return failure_flag.load();
+  }
 
  private:
   inline static std::atomic<bool> failure_flag{false};
@@ -79,7 +85,9 @@ std::string GetNamespace() {
   return (pos != std::string::npos) ? name.substr(0, pos) : std::string{};
 }
 
-inline std::shared_ptr<nlohmann::json> InitJSONPtr() { return std::make_shared<nlohmann::json>(); }
+inline std::shared_ptr<nlohmann::json> InitJSONPtr() {
+  return std::make_shared<nlohmann::json>();
+}
 
 bool IsUnderMpirun();
 

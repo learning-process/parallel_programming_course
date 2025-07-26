@@ -18,7 +18,9 @@ NesterovATestTaskTBB::NesterovATestTaskTBB(const InType &in) {
   GetOutput() = 0;
 }
 
-bool NesterovATestTaskTBB::ValidationImpl() { return (GetInput() > 0) && (GetOutput() == 0); }
+bool NesterovATestTaskTBB::ValidationImpl() {
+  return (GetInput() > 0) && (GetOutput() == 0);
+}
 
 bool NesterovATestTaskTBB::PreProcessingImpl() {
   GetOutput() = 2 * GetInput();

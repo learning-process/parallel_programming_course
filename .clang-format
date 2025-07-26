@@ -3,6 +3,7 @@ Standard: c++20
 BasedOnStyle: Google
 ColumnLimit: 120
 UseTab: Never
+AllowShortFunctionsOnASingleLine: Empty
 QualifierAlignment: Left
 PointerAlignment: Right
 ReferenceAlignment: Right

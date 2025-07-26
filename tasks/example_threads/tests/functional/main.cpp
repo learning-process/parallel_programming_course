@@ -53,9 +53,13 @@ class NesterovARunFuncTestsThreads : public ppc::util::BaseRunFuncTests<InType, 
     input_data_ = width - height + std::min(std::accumulate(img.begin(), img.end(), 0), channels);
   }
 
-  bool CheckTestOutputData(OutType &output_data) final { return (input_data_ == output_data); }
+  bool CheckTestOutputData(OutType &output_data) final {
+    return (input_data_ == output_data);
+  }
 
-  InType GetTestInputData() final { return input_data_; }
+  InType GetTestInputData() final {
+    return input_data_;
+  }
 
  private:
   InType input_data_ = 0;
@@ -63,7 +67,9 @@ class NesterovARunFuncTestsThreads : public ppc::util::BaseRunFuncTests<InType, 
 
 namespace {
 
-TEST_P(NesterovARunFuncTestsThreads, MatmulFromPic) { ExecuteTest(GetParam()); }
+TEST_P(NesterovARunFuncTestsThreads, MatmulFromPic) {
+  ExecuteTest(GetParam());
+}
 
 const std::array<TestType, 3> kTestParam = {std::make_tuple(3, "3"), std::make_tuple(5, "5"), std::make_tuple(7, "7")};
 
