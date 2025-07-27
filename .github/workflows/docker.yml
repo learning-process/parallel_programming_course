@@ -37,7 +37,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build and push multi-arch image
         uses: docker/build-push-action@v6
@@ -47,4 +47,3 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true  # ${{ github.ref == 'refs/heads/master' }}
           tags: ghcr.io/learning-process/ppc-ubuntu:latest
-          visibility: public
