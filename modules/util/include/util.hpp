@@ -8,14 +8,14 @@
 #include <string>
 #include <typeinfo>
 #ifdef __GNUG__
-#include <cxxabi.h>
+#  include <cxxabi.h>
 #endif
 
 #include "nlohmann/json_fwd.hpp"
 
 #ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4459)
+#  pragma warning(push)
+#  pragma warning(disable : 4459)
 #endif
 
 #include <nlohmann/json.hpp>
@@ -25,7 +25,7 @@ using NlohmannJsonParseError = nlohmann::json::parse_error;
 /// @brief JSON namespace used for settings and config typing.
 using NlohmannJsonTypeError = nlohmann::json::type_error;
 #ifdef _MSC_VER
-#pragma warning(pop)
+#  pragma warning(pop)
 #endif
 
 namespace ppc::util {
