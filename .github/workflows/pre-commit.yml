@@ -3,6 +3,7 @@ name: Pre-commit checks
 on:
   push:
   pull_request:
+  workflow_call:
 
 jobs:
   pre-commit:
@@ -23,5 +24,6 @@ jobs:
           python3 -m pip install -r requirements.txt
       - name: Run pre-commit checks
         run: |
-          git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
-          pre-commit run --from-ref ${{ github.base_ref }} --to-ref HEAD
+          FROM_REF="${{ github.base_ref || 'HEAD~1' }}"
+          git fetch origin $FROM_REF:$FROM_REF || true
+          pre-commit run --from-ref $FROM_REF --to-ref HEAD
