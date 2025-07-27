@@ -34,3 +34,40 @@ jobs:
         with:
           name: perf-stat
           path: perf-stat.zip
+  macos-clang-build-perf-stats:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: 'latest-stable'
+      - name: Setup environment
+        run: |
+          brew update
+          brew install ninja mpich llvm libomp openssl
+          brew link libomp --overwrite --force
+          python3 -m pip install -r requirements.txt
+      - name: Download installed package
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-clang-install
+      - name: Extract installed package
+        run: |
+          mkdir -p install
+          tar -xzvf macos-clang-install.tar.gz -C install
+      - name: Run perf tests
+        run: |
+          bash -e scripts/generate_perf_results.sh
+        env:
+          PPC_NUM_PROC: 2
+          PPC_NUM_THREADS: 2
+      - name: Archive results
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r perf-stat-macos.zip build/perf_stat_dir
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-stat-macos
+          path: perf-stat-macos.zip
