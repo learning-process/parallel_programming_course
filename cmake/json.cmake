@@ -13,6 +13,7 @@ ExternalProject_Add(
              -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
              -DCMAKE_CXX_STANDARD_REQUIRED=ON
              -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+             -DJSON_BuildTests=OFF
   BUILD_COMMAND
     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_json/build"
     --config ${CMAKE_BUILD_TYPE} --parallel
