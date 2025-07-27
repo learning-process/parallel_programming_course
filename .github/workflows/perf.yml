@@ -47,7 +47,7 @@ jobs:
           brew update
           brew install ninja mpich llvm libomp openssl
           brew link libomp --overwrite --force
-          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r requirements.txt --break-system-packages
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -60,7 +60,7 @@ jobs:
         run: |
           bash -e scripts/generate_perf_results.sh
         env:
-          PPC_NUM_PROC: 2
+          PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Archive results
         uses: montudor/action-zip@v1
