@@ -18,6 +18,8 @@ ExternalProject_Add(
              -DCMAKE_CXX_STANDARD_REQUIRED=ON
              -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
              -DCMAKE_CXX_FLAGS=${PPC_FMT_FLAGS}
+             -DLIBENVPP_TESTS=OFF
+             -DLIBENVPP_EXAMPLES=OFF
   BUILD_COMMAND
     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/build"
     --config ${CMAKE_BUILD_TYPE} --parallel
