@@ -1,0 +1,51 @@
+name: 'Update Pre-commit Hooks'
+description: 'Updates pre-commit hook versions and creates a PR if changes are detected'
+inputs:
+  token:
+    description: 'GitHub token for creating PRs'
+    required: true
+  python-version:
+    description: 'Python version to use'
+    required: false
+    default: '3.13'
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install pre-commit
+      shell: bash
+      run: pip install pre-commit
+    - name: Update pre-commit hooks
+      shell: bash
+      run: |
+        pre-commit autoupdate > /tmp/autoupdate.log 2>&1
+        cat /tmp/autoupdate.log
+    - name: Check for changes
+      id: changes
+      shell: bash
+      run: |
+        if git diff --quiet .pre-commit-config.yaml; then
+          echo "changed=false" >> $GITHUB_OUTPUT
+        else
+          echo "changed=true" >> $GITHUB_OUTPUT
+        fi
+    - name: Create Pull Request
+      if: steps.changes.outputs.changed == 'true'
+      uses: peter-evans/create-pull-request@v7
+      with:
+        token: ${{ inputs.token }}
+        commit-message: "[pre-commit] Update hooks versions"
+        title: "[pre-commit] Update hooks versions"
+        committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+        author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+        body: |
+          🤖 This PR was created automatically by the update-pre-commit workflow.
+        branch: update-pre-commit-hooks
+        base: master
+        delete-branch: true
+        labels: |
+          dependencies
