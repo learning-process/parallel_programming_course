@@ -1,6 +1,34 @@
 Set Up Your Environment
 ========================
 
+Development Container (Recommended)
+------------------------------------
+The easiest way to set up your development environment is using the provided ``.devcontainer`` configuration with VS Code and Docker.
+
+**Prerequisites:**
+
+- `Visual Studio Code <https://code.visualstudio.com/>`_
+- `Docker Desktop <https://www.docker.com/products/docker-desktop/>`_
+- `Dev Containers extension <https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers>`_
+
+**Setup:**
+
+1. Clone the repository and open it in VS Code
+2. When prompted, click "Reopen in Container" or use Command Palette: ``Dev Containers: Reopen in Container``
+3. VS Code will automatically build the container with all dependencies pre-installed
+4. The container includes:
+
+   - Ubuntu environment with gcc-14, CMake, MPI, OpenMP
+   - Pre-configured C++ and Python development tools
+   - All project dependencies ready to use
+
+This provides a consistent development environment across all platforms without manual dependency installation.
+
+Manual Setup
+------------
+
+If you prefer manual setup or cannot use containers, follow the instructions below.
+
 Build prerequisites
 -------------------
 - **Windows**: Download and install CMake from https://cmake.org/download (select the Windows installer) or install using Chocolatey:
