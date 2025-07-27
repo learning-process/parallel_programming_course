@@ -45,5 +45,5 @@ jobs:
           context: .
           file: ./docker/ubuntu.Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true  # ${{ github.ref == 'refs/heads/master' }}
+          push: ${{ github.ref == 'refs/heads/master' }}
           tags: ghcr.io/learning-process/ppc-ubuntu:latest
