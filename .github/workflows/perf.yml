@@ -63,9 +63,8 @@ jobs:
           PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2
       - name: Archive results
-        uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r perf-stat-macos.zip build/perf_stat_dir
+        working-directory: build
+        run: zip -r perf-stat-macos.zip perf_stat_dir
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
