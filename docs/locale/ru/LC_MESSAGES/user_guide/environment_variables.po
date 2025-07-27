@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-29 19:31+0200\n"
+"POT-Creation-Date: 2025-07-27 12:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,13 +19,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../../../docs/user_guide/environment_variables.rst:2
+#: ../../user_guide/environment_variables.rst:2
 msgid "Environment Variables"
 msgstr "Переменные окружения"
 
-#: ../../../../docs/user_guide/environment_variables.rst:4
+#: ../../user_guide/environment_variables.rst:4
 msgid ""
 "The following environment variables can be used to configure the "
 "project's runtime behavior:"
@@ -33,15 +33,16 @@ msgstr ""
 "Следующие переменные окружения могут использоваться для настройки "
 "поведения программы во время выполнения:"
 
-#: ../../../../docs/user_guide/environment_variables.rst:6
+#: ../../user_guide/environment_variables.rst:6
+#, fuzzy
 msgid ""
 "``PPC_NUM_PROC``: Specifies the number of processes to launch. Default: "
-"``1``"
+"``1`` Can be queried from C++ with ``ppc::util::GetNumProc()``."
 msgstr ""
 "``PPC_NUM_PROC``: задаёт количество запускаемых процессов. По умолчанию: "
 "``1``"
 
-#: ../../../../docs/user_guide/environment_variables.rst:9
+#: ../../user_guide/environment_variables.rst:10
 msgid ""
 "``PPC_NUM_THREADS``: Specifies the number of threads to use. Default: "
 "``1``"
@@ -49,7 +50,7 @@ msgstr ""
 "``PPC_NUM_THREADS``: задаёт количество используемых потоков. По "
 "умолчанию: ``1``"
 
-#: ../../../../docs/user_guide/environment_variables.rst:12
+#: ../../user_guide/environment_variables.rst:13
 msgid ""
 "``PPC_ASAN_RUN``: Specifies that application is compiler with sanitizers."
 " Used by ``scripts/run_tests.py`` to skip ``valgrind`` runs. Default: "
@@ -59,14 +60,26 @@ msgstr ""
 "Используется в ``scripts/run_tests.py`` для пропуска запусков под "
 "``valgrind``. По умолчанию: ``0``"
 
-#: ../../../../docs/user_guide/environment_variables.rst:15
+#: ../../user_guide/environment_variables.rst:16
 #, fuzzy
 msgid ""
 "``PPC_IGNORE_TEST_TIME_LIMIT``: Specifies that test time limits are "
 "ignored. Used by ``scripts/run_tests.py`` to disable time limit "
 "enforcement. Default: ``0``"
 msgstr ""
-"``PPC_IGNORE_TEST_TIME_LIMIT``: указывает, что ограничения по времени выполнения тестов игнорируются. "
-"Используется в ``scripts/run_tests.py`` для отключения контроля ограничений по времени. "
-"По умолчанию: ``0``"
+"``PPC_IGNORE_TEST_TIME_LIMIT``: указывает, что ограничения по времени "
+"выполнения тестов игнорируются. Используется в ``scripts/run_tests.py`` "
+"для отключения контроля ограничений по времени. По умолчанию: ``0``"
+
+#: ../../user_guide/environment_variables.rst:18
+msgid ""
+"``PPC_TASK_MAX_TIME``: Maximum allowed execution time in seconds for "
+"functional tests. Default: ``1.0``"
+msgstr ""
+
+#: ../../user_guide/environment_variables.rst:20
+msgid ""
+"``PPC_PERF_MAX_TIME``: Maximum allowed execution time in seconds for "
+"performance tests. Default: ``10.0``"
+msgstr ""
 
