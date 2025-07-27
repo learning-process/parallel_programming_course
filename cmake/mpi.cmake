@@ -4,7 +4,6 @@ if(NOT MPI_FOUND)
 endif()
 
 function(ppc_link_mpi exec_func_lib)
-  find_package(MPI REQUIRED)
   if(MPI_COMPILE_FLAGS)
     set_target_properties(${exec_func_lib} PROPERTIES COMPILE_FLAGS
                                                       "${MPI_COMPILE_FLAGS}")
