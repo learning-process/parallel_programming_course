@@ -6,6 +6,7 @@ RUN set -e \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
     build-essential \
+    git \
     ca-certificates curl wget gnupg lsb-release software-properties-common \
     python3 python3-pip \
     ninja-build cmake make \
