@@ -51,7 +51,8 @@ if(UNIX)
       -Wnull-dereference
       -Wformat=2
       -Wmissing-declarations
-      -Wno-c11-extensions)
+      -Wno-c11-extensions
+      -Wno-cast-function-type)
   endif(NOT APPLE)
   add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wold-style-definition>)
   add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wmissing-prototypes>)
