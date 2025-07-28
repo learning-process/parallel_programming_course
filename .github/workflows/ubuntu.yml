@@ -4,6 +4,11 @@ on:
 jobs:
   gcc-build:
     runs-on: ${{ matrix.os }}
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
@@ -14,9 +19,7 @@ jobs:
           submodules: recursive
       - name: Setup environment
         run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
-          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r requirements.txt --break-system-packages --ignore-installed
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -57,6 +60,11 @@ jobs:
     needs:
       - gcc-build
     runs-on: ${{ matrix.os }}
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
@@ -64,9 +72,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment
         run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
-          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r requirements.txt --break-system-packages --ignore-installed
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -76,9 +82,11 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-gcc-install-${{ matrix.os }}.tar.gz -C install
       - name: Run func tests (MPI)
-        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4 --additional-mpi-args="--oversubscribe"
         env:
           PPC_NUM_THREADS: 1
+          OMPI_ALLOW_RUN_AS_ROOT: 1
+          OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
       - name: Run func tests (threads)
         run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
@@ -87,6 +95,11 @@ jobs:
     needs:
       - gcc-test
     runs-on: ${{ matrix.os }}
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
@@ -94,9 +107,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment
         run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
-          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r requirements.txt --break-system-packages --ignore-installed
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -111,6 +122,11 @@ jobs:
           PPC_NUM_PROC: 1
   clang-build:
     runs-on: ${{ matrix.os }}
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
@@ -118,13 +134,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
-          wget https://apt.llvm.org/llvm.sh
-          chmod u+x llvm.sh
-          sudo ./llvm.sh 20 all
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -157,18 +166,16 @@ jobs:
     needs:
       - clang-build
     runs-on: ${{ matrix.os }}
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
       - uses: actions/checkout@v4
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
-          wget https://apt.llvm.org/llvm.sh
-          chmod u+x llvm.sh
-          sudo ./llvm.sh 20 all
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -178,9 +185,11 @@ jobs:
           mkdir -p install
           tar -xzvf ubuntu-clang-install-${{ matrix.os }}.tar.gz -C install
       - name: Run func tests (MPI)
-        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4 --additional-mpi-args="--oversubscribe"
         env:
           PPC_NUM_THREADS: 1
+          OMPI_ALLOW_RUN_AS_ROOT: 1
+          OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
       - name: Run tests (threads)
         run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
@@ -189,18 +198,16 @@ jobs:
     needs:
       - clang-test
     runs-on: ${{ matrix.os }}
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
       - uses: actions/checkout@v4
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build libmpich-dev python3-pip valgrind
-          wget https://apt.llvm.org/llvm.sh
-          chmod u+x llvm.sh
-          sudo ./llvm.sh 20 all
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -217,6 +224,11 @@ jobs:
     needs:
       - clang-build
     runs-on: ${{ matrix.os }}
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ["ubuntu-24.04"]
@@ -224,14 +236,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build python3-pip \
-              openmpi-bin openmpi-common libopenmpi-dev
-          wget https://apt.llvm.org/llvm.sh
-          chmod u+x llvm.sh
-          sudo ./llvm.sh 20 all
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -266,19 +270,16 @@ jobs:
     needs:
       - clang-sanitizer-build
     runs-on: ${{ matrix.os }}
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ["ubuntu-24.04"]
     steps:
       - uses: actions/checkout@v4
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build python3-pip valgrind \
-              openmpi-bin openmpi-common libopenmpi-dev
-          wget https://apt.llvm.org/llvm.sh
-          chmod u+x llvm.sh
-          sudo ./llvm.sh 20 all
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -294,6 +295,8 @@ jobs:
           PPC_ASAN_RUN: 1
           ASAN_OPTIONS: abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1
+          OMPI_ALLOW_RUN_AS_ROOT: 1
+          OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
       - name: Run tests (threads)
         run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
@@ -305,19 +308,16 @@ jobs:
     needs:
       - clang-sanitizer-test
     runs-on: ${{ matrix.os }}
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ["ubuntu-24.04"]
     steps:
       - uses: actions/checkout@v4
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y ninja-build python3-pip valgrind \
-              openmpi-bin openmpi-common libopenmpi-dev
-          wget https://apt.llvm.org/llvm.sh
-          chmod u+x llvm.sh
-          sudo ./llvm.sh 20 all
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -336,15 +336,15 @@ jobs:
       - gcc-test-extended
       - clang-test-extended
     runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Setup environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y \
-            gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind gcovr
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -361,10 +361,12 @@ jobs:
         run: |
           cmake --build build --parallel
       - name: Run tests (MPI)
-        run: scripts/run_tests.py --running-type="processes"
+        run: scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
         env:
           PPC_NUM_PROC: 2
           PPC_NUM_THREADS: 2
+          OMPI_ALLOW_RUN_AS_ROOT: 1
+          OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
       - name: Run tests (threads)
         run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
@@ -373,7 +375,8 @@ jobs:
         run: |
           mkdir cov-report
           cd build
-          gcovr -r ../ \
+          gcovr --gcov-executable `which gcov-14` \
+                -r ../ \
                 --exclude '.*3rdparty/.*' \
                 --exclude '/usr/.*' \
                 --exclude '.*tasks/.*/tests/.*' \

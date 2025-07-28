@@ -4,13 +4,16 @@ on:
 jobs:
   ubuntu-gcc-build-perf-stats:
     runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup environment
         run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y gcc-14 g++-14 ninja-build libmpich-dev libomp-dev valgrind
-          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r requirements.txt --break-system-packages --ignore-installed
       - name: Download installed package
         uses: actions/download-artifact@v4
         with:
@@ -25,6 +28,8 @@ jobs:
         env:
           PPC_NUM_PROC: 2
           PPC_NUM_THREADS: 2
+          OMPI_ALLOW_RUN_AS_ROOT: 1
+          OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
       - name: Archive results
         working-directory: build
         run: zip -r ../perf-stat.zip perf_stat_dir
