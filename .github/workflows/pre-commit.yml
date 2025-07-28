@@ -8,6 +8,11 @@ on:
 jobs:
   pre-commit:
     runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -15,13 +20,10 @@ jobs:
           fetch-depth: 0
       - name: Setup environment
         run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y \
-            gcc-14 g++-14 ninja-build python3-pip
-          wget https://apt.llvm.org/llvm.sh
-          chmod u+x llvm.sh
-          sudo ./llvm.sh 20 all
-          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r requirements.txt --break-system-packages --ignore-installed
+      - name: Configure git safe directory
+        run: |
+          git config --global --add safe.directory '*'
       - name: Run pre-commit checks
         run: |
           FROM_REF="${{ github.base_ref || 'HEAD~1' }}"
