@@ -243,16 +243,32 @@ class PPCRunner:
         if result.returncode != 0:
             raise Exception("Failed to merge coverage profiles")
 
-        # Find executables
-        executables = []
+        # Find executables and libraries with coverage
+        objects = []
+        
+        # Add all executables from bin directory
         for f in self.work_dir.iterdir():
             if f.is_file() and os.access(f, os.X_OK) and not f.suffix == ".txt":
-                executables.append(str(f))
+                objects.append(str(f))
+        
+        # Add all static libraries from arch directory
+        arch_dir = build_dir / "arch"
+        if arch_dir.exists():
+            for f in arch_dir.glob("*.a"):
+                objects.append(str(f))
+        
+        # Add all shared libraries from lib directory
+        lib_dir = build_dir / "lib"
+        if lib_dir.exists():
+            for f in lib_dir.glob("*.so"):
+                objects.append(str(f))
+            for f in lib_dir.glob("*.dylib"):
+                objects.append(str(f))
 
-        if not executables:
-            raise Exception("No executables found in bin directory")
+        if not objects:
+            raise Exception("No executables or libraries found")
 
-        print(f"Found {len(executables)} executables")
+        print(f"Found {len(objects)} executables and libraries")
 
         # Get project root
         project_root = build_dir.parent
@@ -261,7 +277,7 @@ class PPCRunner:
         lcov_file = output_dir / "coverage.lcov"
         cmd = (
             [llvm_cov, "export"]
-            + executables
+            + objects
             + [
                 "--format=lcov",
                 "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tasks/.*/tests/.*|"
@@ -292,7 +308,7 @@ class PPCRunner:
         html_dir = output_dir / "html"
         cmd = (
             [llvm_cov, "show"]
-            + executables
+            + objects
             + [
                 "--format=html",
                 f"--output-dir={html_dir}",
@@ -315,7 +331,7 @@ class PPCRunner:
         # Generate summary
         cmd = (
             [llvm_cov, "report"]
-            + executables
+            + objects
             + [
                 f"--instr-profile={profdata_file}",
                 "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tasks/.*/tests/.*|"
