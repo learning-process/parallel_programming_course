@@ -245,18 +245,18 @@ class PPCRunner:
 
         # Find executables and libraries with coverage
         objects = []
-        
+
         # Add all executables from bin directory
         for f in self.work_dir.iterdir():
             if f.is_file() and os.access(f, os.X_OK) and not f.suffix == ".txt":
                 objects.append(str(f))
-        
+
         # Add all static libraries from arch directory
         arch_dir = build_dir / "arch"
         if arch_dir.exists():
             for f in arch_dir.glob("*.a"):
                 objects.append(str(f))
-        
+
         # Add all shared libraries from lib directory
         lib_dir = build_dir / "lib"
         if lib_dir.exists():
