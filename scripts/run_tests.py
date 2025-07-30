@@ -106,7 +106,11 @@ class PPCRunner:
         return command
 
     def run_threads(self):
-        if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
+        if (
+            platform.system() == "Linux"
+            and not self.__ppc_env.get("PPC_ASAN_RUN")
+            and not self.__ppc_env.get("PPC_DISABLE_VALGRIND")
+        ):
             for task_type in ["seq", "stl"]:
                 self.__run_exec(
                     shlex.split(self.valgrind_cmd)
@@ -121,7 +125,11 @@ class PPCRunner:
             )
 
     def run_core(self):
-        if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
+        if (
+            platform.system() == "Linux"
+            and not self.__ppc_env.get("PPC_ASAN_RUN")
+            and not self.__ppc_env.get("PPC_DISABLE_VALGRIND")
+        ):
             self.__run_exec(
                 shlex.split(self.valgrind_cmd)
                 + [str(self.work_dir / "core_func_tests")]
