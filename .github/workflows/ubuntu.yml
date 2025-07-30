@@ -322,10 +322,10 @@ jobs:
         env:
           PPC_NUM_PROC: 1
           PPC_ASAN_RUN: 1
-  gcc-build-codecov:
-    needs:
-      - gcc-test-extended
-      - clang-test-extended
+  clang-build-codecov:
+    # needs:
+    #   - gcc-test-extended
+    #   - clang-test-extended
     runs-on: ubuntu-24.04
     container:
       image: ghcr.io/learning-process/ppc-ubuntu:latest
@@ -339,56 +339,44 @@ jobs:
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
-          key: ${{ runner.os }}-gcc
+          key: ${{ runner.os }}-clang-coverage
           create-symlink: true
           max-size: 1G
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
+          -D CMAKE_C_COMPILER=clang-20 -D CMAKE_CXX_COMPILER=clang++-20
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
+          -D CMAKE_INSTALL_PREFIX=install
       - name: Build project
         run: |
           cmake --build build --parallel
-      - name: Run tests (MPI)
-        run: scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
+      - name: Install project
+        run: |
+          cmake --build build --target install
+      - name: Run tests and generate coverage
+        run: >
+          python3 scripts/run_tests.py --running-type=processes_coverage
+          --additional-mpi-args="--oversubscribe" --llvm-version=20
         env:
-          PPC_NUM_PROC: 2
+          LLVM_PROFILE_FILE: build/coverage-%p-%m.profraw
           PPC_NUM_THREADS: 2
+          PPC_NUM_PROC: 2
           OMPI_ALLOW_RUN_AS_ROOT: 1
           OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
-      - name: Run tests (threads)
-        run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
-        env:
-          PPC_NUM_PROC: 1
-      - name: Generate gcovr Coverage Data
-        run: |
-          mkdir cov-report
-          cd build
-          gcovr --gcov-executable `which gcov-14` \
-                -r ../ \
-                --exclude '.*3rdparty/.*' \
-                --exclude '/usr/.*' \
-                --exclude '.*tasks/.*/tests/.*' \
-                --exclude '.*modules/.*/tests/.*' \
-                --exclude '.*tasks/common/runners/.*' \
-                --exclude '.*modules/runners/.*' \
-                --exclude '.*modules/util/include/perf_test_util.hpp' \
-                --exclude '.*modules/util/include/func_test_util.hpp' \
-                --exclude '.*modules/util/src/func_test_util.cpp' \
-                --xml --output ../coverage.xml \
-                --html=../cov-report/index.html --html-details
+          PPC_DISABLE_VALGRIND: 1
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:
-          files: coverage.xml
+          files: build/coverage/coverage.lcov
       - name: Upload coverage report artifact
         id: upload-cov
         uses: actions/upload-artifact@v4
         with:
           name: cov-report
-          path: 'cov-report'
+          path: 'build/coverage/html'
       - name: Comment coverage report link
         # TODO: Support PRs from forks and handle cases with insufficient write permissions
         continue-on-error: true

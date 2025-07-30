@@ -16,7 +16,7 @@ RUN set -e \
     openmpi-bin openmpi-common libopenmpi-dev \
     libomp-dev \
     gcc-14 g++-14 \
-    gcovr zip \
+    zip \
  && wget -q https://apt.llvm.org/llvm.sh \
  && chmod +x llvm.sh \
  && ./llvm.sh 20 all \

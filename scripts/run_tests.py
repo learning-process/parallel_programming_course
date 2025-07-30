@@ -14,8 +14,9 @@ def init_cmd_args():
     parser.add_argument(
         "--running-type",
         required=True,
-        choices=["threads", "processes", "performance"],
-        help="Specify the execution mode. Choose 'threads' for multithreading or 'processes' for multiprocessing.",
+        choices=["threads", "processes", "performance", "processes_coverage"],
+        help="Specify the execution mode. Choose 'threads' for multithreading, "
+        "'processes' for multiprocessing, or 'processes_coverage' for coverage generation.",
     )
     parser.add_argument(
         "--additional-mpi-args",
@@ -31,6 +32,11 @@ def init_cmd_args():
     )
     parser.add_argument(
         "--verbose", action="store_true", help="Print commands executed by the script"
+    )
+    parser.add_argument(
+        "--llvm-version",
+        default="20",
+        help="LLVM version for coverage tools (default: 20)",
     )
     args = parser.parse_args()
     _args_dict = vars(args)
@@ -100,7 +106,11 @@ class PPCRunner:
         return command
 
     def run_threads(self):
-        if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
+        if (
+            platform.system() == "Linux"
+            and not self.__ppc_env.get("PPC_ASAN_RUN")
+            and not self.__ppc_env.get("PPC_DISABLE_VALGRIND")
+        ):
             for task_type in ["seq", "stl"]:
                 self.__run_exec(
                     shlex.split(self.valgrind_cmd)
@@ -115,7 +125,11 @@ class PPCRunner:
             )
 
     def run_core(self):
-        if platform.system() == "Linux" and not self.__ppc_env.get("PPC_ASAN_RUN"):
+        if (
+            platform.system() == "Linux"
+            and not self.__ppc_env.get("PPC_ASAN_RUN")
+            and not self.__ppc_env.get("PPC_DISABLE_VALGRIND")
+        ):
             self.__run_exec(
                 shlex.split(self.valgrind_cmd)
                 + [str(self.work_dir / "core_func_tests")]
@@ -161,18 +175,228 @@ class PPCRunner:
                 + self.__get_gtest_settings(1, "_" + task_type)
             )
 
+    def generate_coverage(self, llvm_version="20"):
+        """Generate LLVM coverage report after running tests."""
+
+        # Find llvm-profdata and llvm-cov
+        if llvm_version:
+            profdata_names = [f"llvm-profdata-{llvm_version}", "llvm-profdata"]
+            cov_names = [f"llvm-cov-{llvm_version}", "llvm-cov"]
+        else:
+            profdata_names = ["llvm-profdata"]
+            cov_names = ["llvm-cov"]
+
+        llvm_profdata = None
+        llvm_cov = None
+
+        for name in profdata_names:
+            result = subprocess.run(["which", name], capture_output=True, text=True)
+            if result.returncode == 0:
+                llvm_profdata = name
+                break
+
+        for name in cov_names:
+            result = subprocess.run(["which", name], capture_output=True, text=True)
+            if result.returncode == 0:
+                llvm_cov = name
+                break
+
+        if not llvm_profdata or not llvm_cov:
+            raise Exception("Could not find llvm-profdata or llvm-cov in PATH")
+
+        # Always use build directory for coverage
+        build_dir = Path(self.__get_project_path()) / "build"
+        output_dir = build_dir / "coverage"
+        output_dir.mkdir(exist_ok=True)
+
+        print(f"Looking for .profraw files in: {build_dir}")
+        print(f"Current working directory: {os.getcwd()}")
+
+        # Find all .profraw files
+        # First look in build directory
+        profraw_files = list(build_dir.glob("*.profraw"))
+        # Also look in current directory (for backward compatibility)
+        if not profraw_files:
+            cwd = Path.cwd()
+            profraw_files = list(cwd.glob("*.profraw"))
+        # Look recursively if still nothing found
+        if not profraw_files:
+            profraw_files = list(build_dir.glob("**/*.profraw"))
+        if not profraw_files:
+            raise Exception(
+                "No .profraw files found. Make sure to run tests with LLVM_PROFILE_FILE set."
+            )
+
+        print(f"Found {len(profraw_files)} .profraw files")
+        for f in profraw_files[:5]:  # Show first 5 files
+            print(f"  - {f}")
+
+        # Merge profiles
+        profdata_file = output_dir / "coverage.profdata"
+        cmd = (
+            [llvm_profdata, "merge", "-sparse"]
+            + [str(f) for f in profraw_files]
+            + ["-o", str(profdata_file)]
+        )
+        if self.verbose:
+            print("Executing:", " ".join(shlex.quote(part) for part in cmd))
+        result = subprocess.run(cmd)
+        if result.returncode != 0:
+            raise Exception("Failed to merge coverage profiles")
+
+        # Find executables and libraries with coverage
+        objects = []
+
+        # Add all executables from bin directory
+        bin_dir = build_dir / "bin"
+        if bin_dir.exists():
+            for f in bin_dir.iterdir():
+                if f.is_file() and os.access(f, os.X_OK) and not f.suffix == ".txt":
+                    objects.append(str(f))
+
+        # Add all static libraries from arch directory (excluding third-party)
+        arch_dir = build_dir / "arch"
+        if arch_dir.exists():
+            for f in arch_dir.glob("*.a"):
+                # Skip third-party libraries
+                if "gtest" not in f.name and "gmock" not in f.name and "tbb" not in f.name:
+                    objects.append(str(f))
+
+        # Add all shared libraries from lib directory (excluding third-party)
+        lib_dir = build_dir / "lib" 
+        if lib_dir.exists():
+            for f in lib_dir.glob("*.so"):
+                # Skip third-party libraries
+                if "tbb" not in f.name:
+                    objects.append(str(f))
+            for f in lib_dir.glob("*.dylib"):
+                # Skip third-party libraries
+                if "tbb" not in f.name:
+                    objects.append(str(f))
+
+        if not objects:
+            raise Exception("No executables or libraries found")
+
+        print(f"Found {len(objects)} executables and libraries")
+
+        # Get project root
+        project_root = Path(self.__get_project_path())
+
+        # Generate LCOV report
+        lcov_file = output_dir / "coverage.lcov"
+        cmd = (
+            [llvm_cov, "export"]
+            + objects
+            + [
+                "--format=lcov",
+                "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tasks/.*/tests/.*|"
+                ".*modules/.*/tests/.*|.*tasks/common/runners/.*|"
+                ".*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|"
+                ".*modules/util/include/func_test_util.hpp|.*modules/util/src/func_test_util.cpp",
+                f"--instr-profile={profdata_file}",
+            ]
+        )
+
+        with open(lcov_file, "w") as f:
+            result = subprocess.run(cmd, stdout=f, stderr=subprocess.PIPE, text=True)
+            if result.returncode != 0:
+                raise Exception(f"Error generating LCOV report: {result.stderr}")
+
+        # Post-process LCOV file to use relative paths
+        with open(lcov_file, "r") as f:
+            lcov_content = f.read()
+
+        lcov_content = lcov_content.replace(str(project_root) + "/", "")
+
+        with open(lcov_file, "w") as f:
+            f.write(lcov_content)
+
+        print(f"Generated LCOV report: {lcov_file}")
+
+        # Generate HTML report
+        html_dir = output_dir / "html"
+        html_dir.mkdir(exist_ok=True)
+        
+        print("Generating HTML coverage report...")
+        
+        # Generate HTML report with all objects at once
+        # Use the first executable as the main binary and others as additional objects
+        if objects:
+            cmd = [
+                llvm_cov, "show",
+                objects[0],  # Main binary
+            ]
+            
+            # Add other objects with -object flag
+            for obj in objects[1:]:
+                cmd.extend(["-object", obj])
+            
+            cmd.extend([
+                "--format=html",
+                f"--output-dir={html_dir}",
+                "--show-line-counts-or-regions",
+                "--show-instantiations",
+                "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tasks/.*/tests/.*|"
+                ".*modules/.*/tests/.*|.*tasks/common/runners/.*|"
+                ".*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|"
+                ".*modules/util/include/func_test_util.hpp|.*modules/util/src/func_test_util.cpp",
+                f"--instr-profile={profdata_file}",
+            ])
+
+            if self.verbose:
+                print("Executing:", " ".join(shlex.quote(part) for part in cmd))
+            
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            if result.returncode != 0:
+                print(f"Warning: HTML generation returned non-zero: {result.stderr}")
+            else:
+                print(f"Generated HTML report: {html_dir}/index.html")
+        else:
+            print("Error: No objects found for HTML generation")
+
+        # Generate summary
+        cmd = (
+            [llvm_cov, "report"]
+            + objects
+            + [
+                f"--instr-profile={profdata_file}",
+                "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tasks/.*/tests/.*|"
+                ".*modules/.*/tests/.*|.*tasks/common/runners/.*|"
+                ".*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|"
+                ".*modules/util/include/func_test_util.hpp|.*modules/util/src/func_test_util.cpp",
+            ]
+        )
+
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode == 0:
+            print("\nCoverage Summary:")
+            print(result.stdout)
+
 
 def _execute(args_dict, env):
     runner = PPCRunner(verbose=args_dict.get("verbose", False))
     runner.setup_env(env)
 
-    if args_dict["running_type"] in ["threads", "processes"]:
+    if args_dict["running_type"] in ["threads", "processes", "processes_coverage"]:
         runner.run_core()
 
     if args_dict["running_type"] == "threads":
         runner.run_threads()
     elif args_dict["running_type"] == "processes":
         runner.run_processes(args_dict["additional_mpi_args"])
+    elif args_dict["running_type"] == "processes_coverage":
+        # Run both threads and processes tests, then generate coverage
+        # Continue even if tests fail to generate coverage report
+        try:
+            runner.run_threads()
+        except Exception as e:
+            print(f"Warning: Thread tests failed: {e}")
+        try:
+            runner.run_processes(args_dict["additional_mpi_args"])
+        except Exception as e:
+            print(f"Warning: Process tests failed: {e}")
+        # Generate coverage report
+        runner.generate_coverage(args_dict.get("llvm_version", "20"))
     elif args_dict["running_type"] == "performance":
         runner.run_performance()
     else:
