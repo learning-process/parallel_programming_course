@@ -323,9 +323,9 @@ jobs:
           PPC_NUM_PROC: 1
           PPC_ASAN_RUN: 1
   clang-build-codecov:
-    needs:
-      - gcc-test-extended
-      - clang-test-extended
+#    needs:
+#      - gcc-test-extended
+#      - clang-test-extended
     runs-on: ubuntu-24.04
     container:
       image: ghcr.io/learning-process/ppc-ubuntu:latest
@@ -356,6 +356,12 @@ jobs:
         run: >
           python3 scripts/run_tests.py --running-type processes_coverage
           --additional-mpi-args "--oversubscribe" --llvm-version 20
+        env:
+          LLVM_PROFILE_FILE: coverage-%p-%m.profraw
+          PPC_NUM_THREADS: 2
+          PPC_NUM_PROC: 2
+          OMPI_ALLOW_RUN_AS_ROOT: 1
+          OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:

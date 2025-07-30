@@ -319,7 +319,8 @@ def _execute(args_dict, env):
     elif args_dict["running_type"] == "processes":
         runner.run_processes(args_dict["additional_mpi_args"])
     elif args_dict["running_type"] == "processes_coverage":
-        # Run processes tests
+        # Run both threads and processes tests, then generate coverage
+        runner.run_threads()
         runner.run_processes(args_dict["additional_mpi_args"])
         # Generate coverage report
         runner.generate_coverage(args_dict.get("llvm_version", "20"))
@@ -333,33 +334,7 @@ if __name__ == "__main__":
     args_dict = init_cmd_args()
     counts = args_dict.get("counts")
 
-    if args_dict["running_type"] == "processes_coverage":
-        # For coverage, set environment variables for profiling
-        env_copy = os.environ.copy()
-        env_copy["LLVM_PROFILE_FILE"] = "coverage-%p-%m.profraw"
-        env_copy["PPC_NUM_PROC"] = "2"
-        env_copy["PPC_NUM_THREADS"] = "2"
-        env_copy["OMPI_ALLOW_RUN_AS_ROOT"] = "1"
-        env_copy["OMPI_ALLOW_RUN_AS_ROOT_CONFIRM"] = "1"
-
-        # Run threads tests with different counts
-        print("Running thread tests with coverage...")
-        threads_args = args_dict.copy()
-        threads_args["running_type"] = "threads"
-        for count in [1, 2, 3, 4]:
-            env_threads = env_copy.copy()
-            env_threads["PPC_NUM_THREADS"] = str(count)
-            env_threads["PPC_NUM_PROC"] = "1"
-            print(f"Executing with threads count: {count}")
-            try:
-                _execute(threads_args, env_threads)
-            except Exception as e:
-                print(f"Warning: Thread tests with count {count} failed: {e}")
-
-        # Now run the process coverage tests
-        print("\nRunning process tests with coverage...")
-        _execute(args_dict, env_copy)
-    elif counts:
+    if counts:
         for count in counts:
             env_copy = os.environ.copy()
 
