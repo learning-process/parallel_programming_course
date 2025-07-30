@@ -323,9 +323,9 @@ jobs:
           PPC_NUM_PROC: 1
           PPC_ASAN_RUN: 1
   clang-build-codecov:
-#    needs:
-#      - gcc-test-extended
-#      - clang-test-extended
+    # needs:
+    #   - gcc-test-extended
+    #   - clang-test-extended
     runs-on: ubuntu-24.04
     container:
       image: ghcr.io/learning-process/ppc-ubuntu:latest
@@ -354,8 +354,8 @@ jobs:
           cmake --build build --parallel
       - name: Run tests and generate coverage
         run: >
-          python3 scripts/run_tests.py --running-type processes_coverage
-          --additional-mpi-args "--oversubscribe" --llvm-version 20
+          python3 scripts/run_tests.py --running-type=processes_coverage
+          --additional-mpi-args="--oversubscribe" --llvm-version=20
         env:
           LLVM_PROFILE_FILE: coverage-%p-%m.profraw
           PPC_NUM_THREADS: 2
