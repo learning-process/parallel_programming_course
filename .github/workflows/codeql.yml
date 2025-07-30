@@ -18,6 +18,7 @@ jobs:
       matrix:
         language:
           - cpp
+          - python
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,6 +39,7 @@ jobs:
         with:
           languages: ${{ matrix.language }}
       - name: CMake configure
+        if: matrix.language == 'cpp'
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -46,6 +48,7 @@ jobs:
           CC: gcc-14
           CXX: g++-14
       - name: Build project
+        if: matrix.language == 'cpp'
         run: |
           cmake --build build --parallel
         env:

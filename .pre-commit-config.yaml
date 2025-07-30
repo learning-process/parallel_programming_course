@@ -5,7 +5,7 @@
 repos:
   # C++ formatting with clang-format
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v20.1.7
+    rev: v20.1.8
     hooks:
       - id: clang-format
         files: \.(cpp|hpp|c|h)$
@@ -19,6 +19,33 @@ repos:
       - id: cmake-format
         files: \.(cmake|CMakeLists\.txt)$
         exclude: ^(3rdparty/|build.*/|install/)
+
+  # Ruff Python linter
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.12.7
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # Flake8 Python style/lint checker (supplemental to Ruff)
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+
+  # Shell script linting with shellcheck
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.10.0
+    hooks:
+      - id: shellcheck
+        files: \.sh$
 
 # Configuration
 default_stages: [pre-commit]

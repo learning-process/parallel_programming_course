@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <libenvpp/detail/environment.hpp>
 #include <memory>
 #include <ostream>
 #include <stdexcept>
@@ -22,9 +23,13 @@ namespace ppc::test {
 template <typename InType, typename OutType>
 class TestPerfTask : public ppc::task::Task<InType, OutType> {
  public:
-  explicit TestPerfTask(const InType& in) { this->GetInput() = in; }
+  explicit TestPerfTask(const InType& in) {
+    this->GetInput() = in;
+  }
 
-  bool ValidationImpl() override { return !this->GetInput().empty(); }
+  bool ValidationImpl() override {
+    return !this->GetInput().empty();
+  }
 
   bool PreProcessingImpl() override {
     this->GetOutput() = 0;
@@ -38,7 +43,9 @@ class TestPerfTask : public ppc::task::Task<InType, OutType> {
     return true;
   }
 
-  bool PostProcessingImpl() override { return true; }
+  bool PostProcessingImpl() override {
+    return true;
+  }
 };
 
 template <typename InType, typename OutType>
@@ -105,6 +112,23 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
   perf_analyzer.PipelineRun(perf_attr);
 
   ASSERT_ANY_THROW(perf_analyzer.PrintPerfStatistic("check_perf_pipeline_uint8_t_slow_test"));
+}
+
+TEST(perf_tests, slow_perf_respects_env_override) {
+  env::detail::set_scoped_environment_variable scoped("PPC_PERF_MAX_TIME", "12");
+  std::vector<uint8_t> in(128, 1);
+  auto test_task = std::make_shared<ppc::test::FakePerfTask<std::vector<uint8_t>, uint8_t>>(in);
+  Perf<std::vector<uint8_t>, uint8_t> perf_analyzer(test_task);
+  PerfAttr perf_attr;
+  perf_attr.num_running = 1;
+  const auto t0 = std::chrono::high_resolution_clock::now();
+  perf_attr.current_timer = [&] {
+    auto current_time_point = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+    return static_cast<double>(duration) * 1e-9;
+  };
+  perf_analyzer.PipelineRun(perf_attr);
+  EXPECT_NO_THROW(perf_analyzer.PrintPerfStatistic("slow_perf_respects_env_override"));
 }
 
 TEST(perf_tests, check_perf_task_exception) {
@@ -185,7 +209,9 @@ class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> 
     std::ofstream(temp_path) << j->dump();
   }
 
-  void TearDown() override { std::filesystem::remove(temp_path); }
+  void TearDown() override {
+    std::filesystem::remove(temp_path);
+  }
 };
 
 TEST_P(GetStringTaskTypeTest, ReturnsExpectedString) {
@@ -261,10 +287,18 @@ TEST(GetStringTaskStatusTest, HandlesEnabledAndDisabled) {
 class DummyTask : public Task<int, int> {
  public:
   using Task::Task;
-  bool ValidationImpl() override { return true; }
-  bool PreProcessingImpl() override { return true; }
-  bool RunImpl() override { return true; }
-  bool PostProcessingImpl() override { return true; }
+  bool ValidationImpl() override {
+    return true;
+  }
+  bool PreProcessingImpl() override {
+    return true;
+  }
+  bool RunImpl() override {
+    return true;
+  }
+  bool PostProcessingImpl() override {
+    return true;
+  }
 };
 
 TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
@@ -354,10 +388,18 @@ TEST(PerfTest, GetStringParamNameTest) {
 TEST(TaskTest, Destructor_InvalidPipelineOrderTerminates_PartialPipeline) {
   {
     struct BadTask : Task<int, int> {
-      bool ValidationImpl() override { return true; }
-      bool PreProcessingImpl() override { return true; }
-      bool RunImpl() override { return true; }
-      bool PostProcessingImpl() override { return true; }
+      bool ValidationImpl() override {
+        return true;
+      }
+      bool PreProcessingImpl() override {
+        return true;
+      }
+      bool RunImpl() override {
+        return true;
+      }
+      bool PostProcessingImpl() override {
+        return true;
+      }
     } task;
     task.Validation();
   }

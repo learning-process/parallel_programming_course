@@ -16,19 +16,19 @@ concurrency:
         !startsWith(github.ref, 'refs/heads/gh-readonly-queue') }}
 
 jobs:
-  lint:
-    uses: ./.github/workflows/lint.yml
+  pre-commit:
+    uses: ./.github/workflows/pre-commit.yml
   ubuntu:
     needs:
-      - lint
+      - pre-commit
     uses: ./.github/workflows/ubuntu.yml
   mac:
     needs:
-      - lint
+      - pre-commit
     uses: ./.github/workflows/mac.yml
   windows:
     needs:
-      - lint
+      - pre-commit
     uses: ./.github/workflows/windows.yml
   perf:
     needs:

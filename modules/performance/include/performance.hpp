@@ -10,10 +10,13 @@
 #include <string>
 
 #include "task/include/task.hpp"
+#include "util/include/util.hpp"
 
 namespace ppc::performance {
 
-inline double DefaultTimer() { return -1.0; }
+inline double DefaultTimer() {
+  return -1.0;
+}
 
 struct PerfAttr {
   /// @brief Number of times the task is run for performance evaluation.
@@ -64,7 +67,7 @@ class Perf {
     task_->Run();
     task_->PostProcessing();
   }
-  // Pint results for automation checkers
+  // Print results for automation checkers
   void PrintPerfStatistic(const std::string& test_id) const {
     std::string type_test_name;
     if (perf_results_.type_of_running == PerfResults::TypeOfRunning::kTaskRun) {
@@ -78,14 +81,15 @@ class Perf {
     }
 
     auto time_secs = perf_results_.time_sec;
+    const auto max_time = ppc::util::GetPerfMaxTime();
     std::stringstream perf_res_str;
-    if (time_secs < PerfResults::kMaxTime) {
+    if (time_secs < max_time) {
       perf_res_str << std::fixed << std::setprecision(10) << time_secs;
       std::cout << test_id << ":" << type_test_name << ":" << perf_res_str.str() << '\n';
     } else {
       std::stringstream err_msg;
       err_msg << '\n' << "Task execute time need to be: ";
-      err_msg << "time < " << PerfResults::kMaxTime << " secs." << '\n';
+      err_msg << "time < " << max_time << " secs." << '\n';
       err_msg << "Original time in secs: " << time_secs << '\n';
       perf_res_str << std::fixed << std::setprecision(10) << -1.0;
       std::cout << test_id << ":" << type_test_name << ":" << perf_res_str.str() << '\n';
@@ -94,7 +98,9 @@ class Perf {
   }
   /// @brief Retrieves the performance test results.
   /// @return The latest PerfResults structure.
-  [[nodiscard]] PerfResults GetPerfResults() const { return perf_results_; }
+  [[nodiscard]] PerfResults GetPerfResults() const {
+    return perf_results_;
+  }
 
  private:
   PerfResults perf_results_;

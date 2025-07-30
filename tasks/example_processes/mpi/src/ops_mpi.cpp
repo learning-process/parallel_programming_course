@@ -16,7 +16,9 @@ NesterovATestTaskMPI::NesterovATestTaskMPI(const InType &in) {
   GetOutput() = 0;
 }
 
-bool NesterovATestTaskMPI::ValidationImpl() { return (GetInput() > 0) && (GetOutput() == 0); }
+bool NesterovATestTaskMPI::ValidationImpl() {
+  return (GetInput() > 0) && (GetOutput() == 0);
+}
 
 bool NesterovATestTaskMPI::PreProcessingImpl() {
   GetOutput() = 2 * GetInput();

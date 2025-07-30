@@ -4,10 +4,15 @@
 #include <cstddef>
 #include <cstdint>
 #include <exception>
+#include <filesystem>
 #include <fstream>
+#include <libenvpp/env.hpp>
 #include <memory>
 #include <stdexcept>
+#include <string>
+#include <system_error>
 #include <thread>
+#include <utility>
 #include <vector>
 
 #include "runners/include/runners.hpp"
@@ -16,14 +21,30 @@
 
 using namespace ppc::task;
 
+class ScopedFile {
+ public:
+  explicit ScopedFile(std::string path) : path_(std::move(path)) {}
+  ~ScopedFile() {
+    std::error_code ec;
+    std::filesystem::remove(path_, ec);
+  }
+
+ private:
+  std::string path_;
+};
+
 namespace ppc::test {
 
 template <typename InType, typename OutType>
 class TestTask : public ppc::task::Task<InType, OutType> {
  public:
-  explicit TestTask(const InType& in) { this->GetInput() = in; }
+  explicit TestTask(const InType& in) {
+    this->GetInput() = in;
+  }
 
-  bool ValidationImpl() override { return !this->GetInput().empty(); }
+  bool ValidationImpl() override {
+    return !this->GetInput().empty();
+  }
 
   bool PreProcessingImpl() override {
     this->GetOutput() = 0;
@@ -37,7 +58,9 @@ class TestTask : public ppc::task::Task<InType, OutType> {
     return true;
   }
 
-  bool PostProcessingImpl() override { return true; }
+  bool PostProcessingImpl() override {
+    return true;
+  }
 };
 
 template <typename InType, typename OutType>
@@ -70,6 +93,16 @@ TEST(task_tests, check_int32_t_slow) {
   test_task.PreProcessing();
   test_task.Run();
   ASSERT_ANY_THROW(test_task.PostProcessing());
+}
+
+TEST(task_tests, slow_task_respects_env_override) {
+  env::detail::set_scoped_environment_variable scoped("PPC_TASK_MAX_TIME", "3");
+  std::vector<int32_t> in(20, 1);
+  ppc::test::FakeSlowTask<std::vector<int32_t>, int32_t> test_task(in);
+  ASSERT_EQ(test_task.Validation(), true);
+  test_task.PreProcessing();
+  test_task.Run();
+  EXPECT_NO_THROW(test_task.PostProcessing());
 }
 
 TEST(task_tests, check_validate_func) {
@@ -122,9 +155,13 @@ TEST(task_tests, premature_postprocessing_after_preprocessing) {
   EXPECT_THROW(test_task.PostProcessing(), std::runtime_error);
 }
 
-TEST(TaskTest, GetStringTaskStatus_Disabled) { EXPECT_EQ(GetStringTaskStatus(StatusOfTask::kDisabled), "disabled"); }
+TEST(TaskTest, GetStringTaskStatus_Disabled) {
+  EXPECT_EQ(GetStringTaskStatus(StatusOfTask::kDisabled), "disabled");
+}
 
-TEST(TaskTest, GetStringTaskStatus_Enabled) { EXPECT_EQ(GetStringTaskStatus(StatusOfTask::kEnabled), "enabled"); }
+TEST(TaskTest, GetStringTaskStatus_Enabled) {
+  EXPECT_EQ(GetStringTaskStatus(StatusOfTask::kEnabled), "enabled");
+}
 
 TEST(TaskTest, GetStringTaskType_InvalidFileThrows) {
   EXPECT_THROW({ GetStringTaskType(TypeOfTask::kALL, "non_existing_file.json"); }, std::runtime_error);
@@ -132,6 +169,7 @@ TEST(TaskTest, GetStringTaskType_InvalidFileThrows) {
 
 TEST(TaskTest, GetStringTaskType_UnknownType_WithValidFile) {
   std::string path = "settings_valid.json";
+  ScopedFile cleaner(path);
   std::ofstream file(path);
   file
       << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "tbb": "enabled", "seq": "enabled"}})";
@@ -141,6 +179,7 @@ TEST(TaskTest, GetStringTaskType_UnknownType_WithValidFile) {
 
 TEST(TaskTest, GetStringTaskType_ThrowsOnBadJSON) {
   std::string path = "bad_settings.json";
+  ScopedFile cleaner(path);
   std::ofstream file(path);
   file << "{";
   file.close();
@@ -149,6 +188,7 @@ TEST(TaskTest, GetStringTaskType_ThrowsOnBadJSON) {
 
 TEST(TaskTest, GetStringTaskType_EachType_WithValidFile) {
   std::string path = "settings_valid_all.json";
+  ScopedFile cleaner(path);
   std::ofstream file(path);
   file
       << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "tbb": "enabled", "seq": "enabled"}})";
@@ -164,6 +204,7 @@ TEST(TaskTest, GetStringTaskType_EachType_WithValidFile) {
 
 TEST(TaskTest, GetStringTaskType_ReturnsUnknown_OnDefault) {
   std::string path = "settings_valid_unknown.json";
+  ScopedFile cleaner(path);
   std::ofstream file(path);
   file << R"({"tasks": {"all": "enabled"}})";
   file.close();
@@ -174,6 +215,7 @@ TEST(TaskTest, GetStringTaskType_ReturnsUnknown_OnDefault) {
 
 TEST(TaskTest, GetStringTaskType_ThrowsIfKeyMissing) {
   std::string path = "settings_partial.json";
+  ScopedFile cleaner(path);
   std::ofstream file(path);
   file << R"({"tasks": {"all": "enabled"}})";
   file.close();
@@ -185,11 +227,21 @@ TEST(TaskTest, TaskDestructor_ThrowsIfStageIncomplete) {
   {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : Task<std::vector<int32_t>, int32_t> {
-      explicit LocalTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
-      bool ValidationImpl() override { return true; }
-      bool PreProcessingImpl() override { return true; }
-      bool RunImpl() override { return true; }
-      bool PostProcessingImpl() override { return true; }
+      explicit LocalTask(const std::vector<int32_t>& in) {
+        this->GetInput() = in;
+      }
+      bool ValidationImpl() override {
+        return true;
+      }
+      bool PreProcessingImpl() override {
+        return true;
+      }
+      bool RunImpl() override {
+        return true;
+      }
+      bool PostProcessingImpl() override {
+        return true;
+      }
     } task(in);
     task.Validation();
   }
@@ -201,11 +253,21 @@ TEST(TaskTest, TaskDestructor_ThrowsIfEmpty) {
   {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : Task<std::vector<int32_t>, int32_t> {
-      explicit LocalTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
-      bool ValidationImpl() override { return true; }
-      bool PreProcessingImpl() override { return true; }
-      bool RunImpl() override { return true; }
-      bool PostProcessingImpl() override { return true; }
+      explicit LocalTask(const std::vector<int32_t>& in) {
+        this->GetInput() = in;
+      }
+      bool ValidationImpl() override {
+        return true;
+      }
+      bool PreProcessingImpl() override {
+        return true;
+      }
+      bool RunImpl() override {
+        return true;
+      }
+      bool PostProcessingImpl() override {
+        return true;
+      }
     } task(in);
   }
   EXPECT_TRUE(ppc::util::DestructorFailureFlag::Get());
@@ -214,14 +276,22 @@ TEST(TaskTest, TaskDestructor_ThrowsIfEmpty) {
 
 TEST(TaskTest, InternalTimeTest_ThrowsIfTimeoutExceeded) {
   struct SlowTask : Task<std::vector<int32_t>, int32_t> {
-    explicit SlowTask(const std::vector<int32_t>& in) { this->GetInput() = in; }
-    bool ValidationImpl() override { return true; }
+    explicit SlowTask(const std::vector<int32_t>& in) {
+      this->GetInput() = in;
+    }
+    bool ValidationImpl() override {
+      return true;
+    }
     bool PreProcessingImpl() override {
       std::this_thread::sleep_for(std::chrono::seconds(2));
       return true;
     }
-    bool RunImpl() override { return true; }
-    bool PostProcessingImpl() override { return true; }
+    bool RunImpl() override {
+      return true;
+    }
+    bool PostProcessingImpl() override {
+      return true;
+    }
   };
 
   std::vector<int32_t> in(20, 1);
@@ -236,10 +306,18 @@ TEST(TaskTest, InternalTimeTest_ThrowsIfTimeoutExceeded) {
 class DummyTask : public Task<int, int> {
  public:
   using Task::Task;
-  bool ValidationImpl() override { return true; }
-  bool PreProcessingImpl() override { return true; }
-  bool RunImpl() override { return true; }
-  bool PostProcessingImpl() override { return true; }
+  bool ValidationImpl() override {
+    return true;
+  }
+  bool PreProcessingImpl() override {
+    return true;
+  }
+  bool RunImpl() override {
+    return true;
+  }
+  bool PostProcessingImpl() override {
+    return true;
+  }
 };
 
 TEST(TaskTest, ValidationThrowsIfCalledTwice) {
@@ -265,4 +343,6 @@ TEST(TaskTest, PostProcessingThrowsIfCalledBeforeRun) {
   EXPECT_THROW(task->PostProcessing(), std::runtime_error);
 }
 
-int main(int argc, char** argv) { return ppc::runners::SimpleInit(argc, argv); }
+int main(int argc, char** argv) {
+  return ppc::runners::SimpleInit(argc, argv);
+}

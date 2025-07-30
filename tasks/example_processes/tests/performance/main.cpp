@@ -11,14 +11,22 @@ class ExampleRunPerfTestProcesses : public ppc::util::BaseRunPerfTests<InType, O
   const int kCount_ = 200;
   InType input_data_{};
 
-  void SetUp() override { input_data_ = kCount_; }
+  void SetUp() override {
+    input_data_ = kCount_;
+  }
 
-  bool CheckTestOutputData(OutType& output_data) final { return input_data_ == output_data; }
+  bool CheckTestOutputData(OutType& output_data) final {
+    return input_data_ == output_data;
+  }
 
-  InType GetTestInputData() final { return input_data_; }
+  InType GetTestInputData() final {
+    return input_data_;
+  }
 };
 
-TEST_P(ExampleRunPerfTestProcesses, RunPerfModes) { ExecuteTest(GetParam()); }
+TEST_P(ExampleRunPerfTestProcesses, RunPerfModes) {
+  ExecuteTest(GetParam());
+}
 
 const auto kAllPerfTasks =
     ppc::util::MakeAllPerfTasks<InType, NesterovATestTaskMPI, NesterovATestTaskSEQ>(PPC_SETTINGS_example_processes);

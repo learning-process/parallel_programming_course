@@ -7,7 +7,9 @@ namespace nesterov_a_test_task_processes {
 
 class NesterovATestTaskMPI : public BaseTask {
  public:
-  static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() { return ppc::task::TypeOfTask::kMPI; }
+  static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() {
+    return ppc::task::TypeOfTask::kMPI;
+  }
   explicit NesterovATestTaskMPI(const InType &in);
 
  private:

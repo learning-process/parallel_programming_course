@@ -39,52 +39,37 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
 set(CMAKE_SKIP_BUILD_RPATH OFF)
 
 if(UNIX)
-  set(COMMON_COMPILER_FLAGS
-      "${COMMON_COMPILER_FLAGS}            \
-        -Wall -Wextra                      \
-        -Wsign-compare")
+  add_compile_options(-Wall -Wextra -Wsign-compare)
+
   if(NOT APPLE)
-    set(COMMON_COMPILER_FLAGS
-        "${COMMON_COMPILER_FLAGS}        \
-            -Wpedantic                   \
-            -Wpointer-arith              \
-            -Wcast-align                 \
-            -Wwrite-strings              \
-            -Wswitch-enum                \
-            -Wnull-dereference           \
-            -Wswitch-enum                \
-            -Wformat=2                   \
-            -Wmissing-declarations       \
-            -Wno-c11-extensions")
+    add_compile_options(
+      -Wpedantic
+      -Wpointer-arith
+      -Wwrite-strings
+      -Wswitch-enum
+      -Wnull-dereference
+      -Wformat=2
+      -Wmissing-declarations
+      -Wno-c11-extensions
+      -Wno-cast-function-type)
   endif(NOT APPLE)
-  set(CMAKE_C_FLAGS
-      "${CMAKE_C_FLAGS}                    \
-        -Wold-style-definition             \
-        -Wmissing-prototypes")
+  add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wold-style-definition>)
+  add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wmissing-prototypes>)
 
   if("${ENABLE_ADDRESS_SANITIZER}"
      OR "${ENABLE_UB_SANITIZER}"
      OR "${ENABLE_LEAK_SANITIZER}")
-    set(COMMON_COMPILER_FLAGS
-        "${COMMON_COMPILER_FLAGS} -Wno-cast-align -Wno-cast-function-type")
+    add_compile_options(-Wno-cast-align -Wno-cast-function-type)
   endif()
 
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COMMON_COMPILER_FLAGS}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMMON_COMPILER_FLAGS}")
   if(USE_COVERAGE)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+    add_compile_options(--coverage)
+    add_link_options(--coverage)
   endif(USE_COVERAGE)
 endif()
 
 if(MSVC)
-  set(COMMON_FLAGS "/W4 /wd4267 /wd4244")
-  set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${COMMON_FLAGS}")
-  set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${COMMON_FLAGS}")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COMMON_FLAGS}")
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${COMMON_FLAGS}")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${COMMON_FLAGS}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMMON_FLAGS}")
+  add_compile_options(/W4 /wd4267 /wd4244)
 endif(MSVC)
 
 find_package(Threads REQUIRED)

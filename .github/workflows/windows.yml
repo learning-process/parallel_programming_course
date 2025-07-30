@@ -51,11 +51,11 @@ jobs:
         run: Expand-Archive -Path .\windows-msvc-install.zip -DestinationPath . -Force
         shell: pwsh
       - name: Run func tests (MPI)
-        run: python3 scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
         env:
           PPC_NUM_THREADS: 1
       - name: Run tests (threads)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
   msvc-test-extended:
@@ -76,7 +76,7 @@ jobs:
         run: Expand-Archive -Path .\windows-msvc-install.zip -DestinationPath . -Force
         shell: pwsh
       - name: Run tests (threads extended)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
+        run: scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1
   clang-build:
@@ -135,7 +135,7 @@ jobs:
         run: Expand-Archive -Path .\windows-clang-install.zip -DestinationPath . -Force
         shell: pwsh
       - name: Run tests (threads)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
   clang-test-extended:
@@ -156,6 +156,6 @@ jobs:
         run: Expand-Archive -Path .\windows-clang-install.zip -DestinationPath . -Force
         shell: pwsh
       - name: Run tests (threads extended)
-        run: python3 scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
+        run: scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
           PPC_NUM_PROC: 1

@@ -8,14 +8,14 @@
 #include <string>
 #include <typeinfo>
 #ifdef __GNUG__
-#include <cxxabi.h>
+#  include <cxxabi.h>
 #endif
 
 #include "nlohmann/json_fwd.hpp"
 
 #ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4459)
+#  pragma warning(push)
+#  pragma warning(disable : 4459)
 #endif
 
 #include <nlohmann/json.hpp>
@@ -25,7 +25,7 @@ using NlohmannJsonParseError = nlohmann::json::parse_error;
 /// @brief JSON namespace used for settings and config typing.
 using NlohmannJsonTypeError = nlohmann::json::type_error;
 #ifdef _MSC_VER
-#pragma warning(pop)
+#  pragma warning(pop)
 #endif
 
 namespace ppc::util {
@@ -35,14 +35,20 @@ namespace ppc::util {
 class DestructorFailureFlag {
  public:
   /// @brief Marks that a destructor failure has occurred.
-  static void Set() { failure_flag.store(true); }
+  static void Set() {
+    failure_flag.store(true);
+  }
 
   /// @brief Clears the destructor failure flag.
-  static void Unset() { failure_flag.store(false); }
+  static void Unset() {
+    failure_flag.store(false);
+  }
 
   /// @brief Checks if a destructor failure was recorded.
   /// @return True if failure occurred, false otherwise.
-  static bool Get() { return failure_flag.load(); }
+  static bool Get() {
+    return failure_flag.load();
+  }
 
  private:
   inline static std::atomic<bool> failure_flag{false};
@@ -52,6 +58,9 @@ enum GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
 
 std::string GetAbsoluteTaskPath(const std::string& id_path, const std::string& relative_path);
 int GetNumThreads();
+int GetNumProc();
+double GetTaskMaxTime();
+double GetPerfMaxTime();
 
 template <typename T>
 std::string GetNamespace() {
@@ -76,7 +85,9 @@ std::string GetNamespace() {
   return (pos != std::string::npos) ? name.substr(0, pos) : std::string{};
 }
 
-inline std::shared_ptr<nlohmann::json> InitJSONPtr() { return std::make_shared<nlohmann::json>(); }
+inline std::shared_ptr<nlohmann::json> InitJSONPtr() {
+  return std::make_shared<nlohmann::json>();
+}
 
 bool IsUnderMpirun();
 

@@ -27,14 +27,18 @@ target_include_directories(
   ${exec_func_lib} PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty
                           ${CMAKE_SOURCE_DIR}/modules ${CMAKE_SOURCE_DIR}/tasks)
 
-ppc_link_envpp(${exec_func_lib})
-ppc_link_json(${exec_func_lib})
-ppc_link_gtest(${exec_func_lib})
-ppc_link_threads(${exec_func_lib})
-ppc_link_openmp(${exec_func_lib})
-ppc_link_tbb(${exec_func_lib})
-ppc_link_mpi(${exec_func_lib})
-ppc_link_stb(${exec_func_lib})
+foreach(
+  link
+  envpp
+  json
+  gtest
+  threads
+  openmp
+  tbb
+  mpi
+  stb)
+  cmake_language(CALL "ppc_link_${link}" ${exec_func_lib})
+endforeach()
 
 add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
 

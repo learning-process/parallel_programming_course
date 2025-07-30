@@ -3,6 +3,11 @@ Standard: c++20
 BasedOnStyle: Google
 ColumnLimit: 120
 UseTab: Never
+AllowShortFunctionsOnASingleLine: Empty
+IndentPPDirectives: AfterHash
+SortIncludes: true
+FixNamespaceComments: true
+InsertBraces: true
 QualifierAlignment: Left
 PointerAlignment: Right
 ReferenceAlignment: Right

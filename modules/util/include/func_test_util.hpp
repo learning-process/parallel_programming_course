@@ -16,12 +16,10 @@
 #include "task/include/task.hpp"
 #include "util/include/util.hpp"
 
-using namespace ppc::task;
-
 namespace ppc::util {
 
 template <typename InType, typename OutType, typename TestType = void>
-using FuncTestParam = std::tuple<std::function<TaskPtr<InType, OutType>(InType)>, std::string, TestType>;
+using FuncTestParam = std::tuple<std::function<ppc::task::TaskPtr<InType, OutType>(InType)>, std::string, TestType>;
 
 template <typename InType, typename OutType, typename TestType = void>
 using GTestFuncParam = ::testing::TestParamInfo<FuncTestParam<InType, OutType, TestType>>;
@@ -74,9 +72,13 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
     InitializeAndRunTask(test_param);
   }
 
-  void ValidateTestName(const std::string& test_name) { EXPECT_FALSE(test_name.find("unknown") != std::string::npos); }
+  void ValidateTestName(const std::string& test_name) {
+    EXPECT_FALSE(test_name.find("unknown") != std::string::npos);
+  }
 
-  bool IsTestDisabled(const std::string& test_name) { return test_name.find("disabled") != std::string::npos; }
+  bool IsTestDisabled(const std::string& test_name) {
+    return test_name.find("disabled") != std::string::npos;
+  }
 
   bool ShouldSkipNonMpiTask(const std::string& test_name) {
     auto contains_substring = [&](const std::string& substring) {
@@ -98,7 +100,7 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   }
 
  private:
-  TaskPtr<InType, OutType> task_;
+  ppc::task::TaskPtr<InType, OutType> task_;
 };
 
 template <typename Tuple, std::size_t... Is>
@@ -115,10 +117,10 @@ auto ExpandToValues(const Tuple& t) {
 template <typename Task, typename InType, typename SizesContainer, std::size_t... Is>
 auto GenTaskTuplesImpl(const SizesContainer& sizes, const std::string& settings_path,
                        std::index_sequence<Is...> /*unused*/) {
-  return std::make_tuple(std::make_tuple(
-      TaskGetter<Task, InType>,
-      std::string(GetNamespace<Task>()) + "_" + GetStringTaskType(Task::GetStaticTypeOfTask(), settings_path),
-      sizes[Is])...);
+  return std::make_tuple(std::make_tuple(ppc::task::TaskGetter<Task, InType>,
+                                         std::string(GetNamespace<Task>()) + "_" +
+                                             ppc::task::GetStringTaskType(Task::GetStaticTypeOfTask(), settings_path),
+                                         sizes[Is])...);
 }
 
 template <typename Task, typename InType, typename SizesContainer>

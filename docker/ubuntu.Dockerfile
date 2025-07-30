@@ -6,6 +6,7 @@ RUN set -e \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
     build-essential \
+    git \
     ca-certificates curl wget gnupg lsb-release software-properties-common \
     python3 python3-pip \
     ninja-build cmake make \
@@ -15,7 +16,7 @@ RUN set -e \
     openmpi-bin openmpi-common libopenmpi-dev \
     libomp-dev \
     gcc-14 g++-14 \
-    gcovr \
+    gcovr zip \
  && wget -q https://apt.llvm.org/llvm.sh \
  && chmod +x llvm.sh \
  && ./llvm.sh 20 all \

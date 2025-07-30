@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <libenvpp/detail/environment.hpp>
 #include <libenvpp/detail/get.hpp>
 #include <string>
 
@@ -74,4 +75,52 @@ struct VeryLongTypeNameWithOnlyLettersAndUnderscores {};
 TEST(GetNamespaceTest, NoTerminatorCharactersInPrettyFunction) {
   std::string k_ns = ppc::util::GetNamespace<crazy::VeryLongTypeNameWithOnlyLettersAndUnderscores>();
   EXPECT_EQ(k_ns, "crazy");
+}
+
+TEST(GetTaskMaxTime, ReturnsDefaultWhenUnset) {
+  const auto old = env::get<double>("PPC_TASK_MAX_TIME");
+  if (old.has_value()) {
+    env::detail::delete_environment_variable("PPC_TASK_MAX_TIME");
+  }
+  EXPECT_DOUBLE_EQ(ppc::util::GetTaskMaxTime(), 1.0);
+  if (old.has_value()) {
+    env::detail::set_environment_variable("PPC_TASK_MAX_TIME", std::to_string(*old));
+  }
+}
+
+TEST(GetTaskMaxTime, ReadsFromEnvironment) {
+  env::detail::set_scoped_environment_variable scoped("PPC_TASK_MAX_TIME", "2.5");
+  EXPECT_DOUBLE_EQ(ppc::util::GetTaskMaxTime(), 2.5);
+}
+
+TEST(GetPerfMaxTime, ReturnsDefaultWhenUnset) {
+  const auto old = env::get<double>("PPC_PERF_MAX_TIME");
+  if (old.has_value()) {
+    env::detail::delete_environment_variable("PPC_PERF_MAX_TIME");
+  }
+  EXPECT_DOUBLE_EQ(ppc::util::GetPerfMaxTime(), 10.0);
+  if (old.has_value()) {
+    env::detail::set_environment_variable("PPC_PERF_MAX_TIME", std::to_string(*old));
+  }
+}
+
+TEST(GetPerfMaxTime, ReadsFromEnvironment) {
+  env::detail::set_scoped_environment_variable scoped("PPC_PERF_MAX_TIME", "12.5");
+  EXPECT_DOUBLE_EQ(ppc::util::GetPerfMaxTime(), 12.5);
+}
+
+TEST(GetNumProc, ReturnsDefaultWhenUnset) {
+  const auto old = env::get<int>("PPC_NUM_PROC");
+  if (old.has_value()) {
+    env::detail::delete_environment_variable("PPC_NUM_PROC");
+  }
+  EXPECT_EQ(ppc::util::GetNumProc(), 1);
+  if (old.has_value()) {
+    env::detail::set_environment_variable("PPC_NUM_PROC", std::to_string(*old));
+  }
+}
+
+TEST(GetNumProc, ReadsFromEnvironment) {
+  env::detail::set_scoped_environment_variable scoped("PPC_NUM_PROC", "4");
+  EXPECT_EQ(ppc::util::GetNumProc(), 4);
 }

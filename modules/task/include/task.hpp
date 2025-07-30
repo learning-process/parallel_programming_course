@@ -164,31 +164,45 @@ class Task {
 
   /// @brief Returns the current testing mode.
   /// @return Reference to the current StateOfTesting.
-  StateOfTesting &GetStateOfTesting() { return state_of_testing_; }
+  StateOfTesting &GetStateOfTesting() {
+    return state_of_testing_;
+  }
 
   /// @brief Sets the dynamic task type.
   /// @param type_of_task Task type to set.
-  void SetTypeOfTask(TypeOfTask type_of_task) { type_of_task_ = type_of_task; }
+  void SetTypeOfTask(TypeOfTask type_of_task) {
+    type_of_task_ = type_of_task;
+  }
 
   /// @brief Returns the dynamic task type.
   /// @return Current dynamic task type.
-  [[nodiscard]] TypeOfTask GetDynamicTypeOfTask() const { return type_of_task_; }
+  [[nodiscard]] TypeOfTask GetDynamicTypeOfTask() const {
+    return type_of_task_;
+  }
 
   /// @brief Returns the current task status.
   /// @return Task status (enabled or disabled).
-  [[nodiscard]] StatusOfTask GetStatusOfTask() const { return status_of_task_; }
+  [[nodiscard]] StatusOfTask GetStatusOfTask() const {
+    return status_of_task_;
+  }
 
   /// @brief Returns the static task type.
   /// @return Static task type (default: kUnknown).
-  static constexpr TypeOfTask GetStaticTypeOfTask() { return TypeOfTask::kUnknown; }
+  static constexpr TypeOfTask GetStaticTypeOfTask() {
+    return TypeOfTask::kUnknown;
+  }
 
   /// @brief Returns a reference to the input data.
   /// @return Reference to the task's input data.
-  InType &GetInput() { return input_; }
+  InType &GetInput() {
+    return input_;
+  }
 
   /// @brief Returns a reference to the output data.
   /// @return Reference to the task's output data.
-  OutType &GetOutput() { return output_; }
+  OutType &GetOutput() {
+    return output_;
+  }
 
   /// @brief Destructor. Verifies that the pipeline was executed in the correct order.
   /// @note Terminates the program if the pipeline order is incorrect or incomplete.
@@ -215,12 +229,13 @@ class Task {
                           .count();
       auto diff = static_cast<double>(duration) * 1e-9;
 
+      const auto max_time = ppc::util::GetTaskMaxTime();
       std::stringstream err_msg;
-      if (diff < kMaxTestTime) {
+      if (diff < max_time) {
         err_msg << "Test time:" << std::fixed << std::setprecision(10) << diff << '\n';
       } else {
         err_msg << "\nTask execute time need to be: ";
-        err_msg << "time < " << kMaxTestTime << " secs.\n";
+        err_msg << "time < " << max_time << " secs.\n";
         err_msg << "Original time in secs: " << diff << '\n';
         throw std::runtime_error(err_msg.str().c_str());
       }
@@ -249,7 +264,6 @@ class Task {
   StateOfTesting state_of_testing_ = kFunc;
   TypeOfTask type_of_task_ = kUnknown;
   StatusOfTask status_of_task_ = kEnabled;
-  static constexpr double kMaxTestTime = 1.0;
   std::chrono::high_resolution_clock::time_point tmp_time_point_;
   enum class PipelineStage : uint8_t {
     kNone,
