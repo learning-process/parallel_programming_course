@@ -352,51 +352,20 @@ jobs:
       - name: Build project
         run: |
           cmake --build build --parallel
-      - name: Run tests (MPI)
-        run: scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
-        env:
-          PPC_NUM_PROC: 2
-          PPC_NUM_THREADS: 2
-          OMPI_ALLOW_RUN_AS_ROOT: 1
-          OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
-          LLVM_PROFILE_FILE: "coverage-%p-%m.profraw"
-      - name: Run tests (threads)
-        run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
-        env:
-          PPC_NUM_PROC: 1
-          LLVM_PROFILE_FILE: "coverage-%p-%m.profraw"
-      - name: Generate LLVM Coverage Data
-        run: |
-          mkdir cov-report
-          cd build
-          # Merge all raw profiles into a single indexed profile
-          llvm-profdata-20 merge -sparse $(find . -name "*.profraw") -o coverage.profdata
-          # Find all test executables
-          BINARIES=$(find bin -type f -executable | tr '\n' ' ')
-          # Generate coverage report in LCOV format for Codecov
-          llvm-cov-20 export \
-            $BINARIES \
-            --format=lcov \
-            --ignore-filename-regex='.*3rdparty/.*|/usr/.*|.*tests/.*|.*tasks/.*|.*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|.*modules/util/include/func_test_util.hpp|.*modules/util/src/func_test_util.cpp' \
-            --instr-profile=coverage.profdata \
-            > ../coverage.lcov
-          # Generate HTML report
-          llvm-cov-20 show \
-            $BINARIES \
-            --format=html \
-            --output-dir=../cov-report \
-            --ignore-filename-regex='.*3rdparty/.*|/usr/.*|.*tests/.*|.*tasks/.*|.*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|.*modules/util/include/func_test_util.hpp|.*modules/util/src/func_test_util.cpp' \
-            --instr-profile=coverage.profdata
+      - name: Run tests and generate coverage
+        run: >
+          python3 scripts/run_tests.py --running-type processes_coverage
+          --additional-mpi-args "--oversubscribe" --llvm-version 20
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:
-          files: coverage.lcov
+          files: build/coverage/coverage.lcov
       - name: Upload coverage report artifact
         id: upload-cov
         uses: actions/upload-artifact@v4
         with:
           name: cov-report
-          path: 'cov-report'
+          path: 'build/coverage/html'
       - name: Comment coverage report link
         # TODO: Support PRs from forks and handle cases with insufficient write permissions
         continue-on-error: true
