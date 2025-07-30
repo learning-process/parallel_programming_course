@@ -361,7 +361,7 @@ jobs:
           python3 scripts/run_tests.py --running-type=processes_coverage
           --additional-mpi-args="--oversubscribe" --llvm-version=20
         env:
-          LLVM_PROFILE_FILE: coverage-%p-%m.profraw
+          LLVM_PROFILE_FILE: build/coverage-%p-%m.profraw
           PPC_NUM_THREADS: 2
           PPC_NUM_PROC: 2
           OMPI_ALLOW_RUN_AS_ROOT: 1
@@ -370,13 +370,13 @@ jobs:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:
-          files: install/coverage/coverage.lcov
+          files: build/coverage/coverage.lcov
       - name: Upload coverage report artifact
         id: upload-cov
         uses: actions/upload-artifact@v4
         with:
           name: cov-report
-          path: 'install/coverage/html'
+          path: 'build/coverage/html'
       - name: Comment coverage report link
         # TODO: Support PRs from forks and handle cases with insufficient write permissions
         continue-on-error: true

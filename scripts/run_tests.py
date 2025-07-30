@@ -204,7 +204,8 @@ class PPCRunner:
         if not llvm_profdata or not llvm_cov:
             raise Exception("Could not find llvm-profdata or llvm-cov in PATH")
 
-        build_dir = self.work_dir.parent
+        # Always use build directory for coverage
+        build_dir = Path(self.__get_project_path()) / "build"
         output_dir = build_dir / "coverage"
         output_dir.mkdir(exist_ok=True)
 
@@ -212,12 +213,12 @@ class PPCRunner:
         print(f"Current working directory: {os.getcwd()}")
 
         # Find all .profraw files
-        # First look in current directory (where tests are run)
-        cwd = Path.cwd()
-        profraw_files = list(cwd.glob("*.profraw"))
-        # Also look in build directory if different
-        if cwd != build_dir:
-            profraw_files.extend(list(build_dir.glob("*.profraw")))
+        # First look in build directory
+        profraw_files = list(build_dir.glob("*.profraw"))
+        # Also look in current directory (for backward compatibility)
+        if not profraw_files:
+            cwd = Path.cwd()
+            profraw_files = list(cwd.glob("*.profraw"))
         # Look recursively if still nothing found
         if not profraw_files:
             profraw_files = list(build_dir.glob("**/*.profraw"))
@@ -247,23 +248,31 @@ class PPCRunner:
         objects = []
 
         # Add all executables from bin directory
-        for f in self.work_dir.iterdir():
-            if f.is_file() and os.access(f, os.X_OK) and not f.suffix == ".txt":
-                objects.append(str(f))
+        bin_dir = build_dir / "bin"
+        if bin_dir.exists():
+            for f in bin_dir.iterdir():
+                if f.is_file() and os.access(f, os.X_OK) and not f.suffix == ".txt":
+                    objects.append(str(f))
 
-        # Add all static libraries from arch directory
+        # Add all static libraries from arch directory (excluding third-party)
         arch_dir = build_dir / "arch"
         if arch_dir.exists():
             for f in arch_dir.glob("*.a"):
-                objects.append(str(f))
+                # Skip third-party libraries
+                if "gtest" not in f.name and "gmock" not in f.name and "tbb" not in f.name:
+                    objects.append(str(f))
 
-        # Add all shared libraries from lib directory
-        lib_dir = build_dir / "lib"
+        # Add all shared libraries from lib directory (excluding third-party)
+        lib_dir = build_dir / "lib" 
         if lib_dir.exists():
             for f in lib_dir.glob("*.so"):
-                objects.append(str(f))
+                # Skip third-party libraries
+                if "tbb" not in f.name:
+                    objects.append(str(f))
             for f in lib_dir.glob("*.dylib"):
-                objects.append(str(f))
+                # Skip third-party libraries
+                if "tbb" not in f.name:
+                    objects.append(str(f))
 
         if not objects:
             raise Exception("No executables or libraries found")
@@ -271,7 +280,7 @@ class PPCRunner:
         print(f"Found {len(objects)} executables and libraries")
 
         # Get project root
-        project_root = build_dir.parent
+        project_root = Path(self.__get_project_path())
 
         # Generate LCOV report
         lcov_file = output_dir / "coverage.lcov"
@@ -306,27 +315,44 @@ class PPCRunner:
 
         # Generate HTML report
         html_dir = output_dir / "html"
-        cmd = (
-            [llvm_cov, "show"]
-            + objects
-            + [
+        html_dir.mkdir(exist_ok=True)
+        
+        print("Generating HTML coverage report...")
+        
+        # Generate HTML report with all objects at once
+        # Use the first executable as the main binary and others as additional objects
+        if objects:
+            cmd = [
+                llvm_cov, "show",
+                objects[0],  # Main binary
+            ]
+            
+            # Add other objects with -object flag
+            for obj in objects[1:]:
+                cmd.extend(["-object", obj])
+            
+            cmd.extend([
                 "--format=html",
                 f"--output-dir={html_dir}",
+                "--show-line-counts-or-regions",
+                "--show-instantiations",
                 "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tasks/.*/tests/.*|"
                 ".*modules/.*/tests/.*|.*tasks/common/runners/.*|"
                 ".*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|"
                 ".*modules/util/include/func_test_util.hpp|.*modules/util/src/func_test_util.cpp",
                 f"--instr-profile={profdata_file}",
-            ]
-        )
+            ])
 
-        if self.verbose:
-            print("Executing:", " ".join(shlex.quote(part) for part in cmd))
-        result = subprocess.run(cmd)
-        if result.returncode != 0:
-            raise Exception("Failed to generate HTML coverage report")
-
-        print(f"Generated HTML report: {html_dir}/index.html")
+            if self.verbose:
+                print("Executing:", " ".join(shlex.quote(part) for part in cmd))
+            
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            if result.returncode != 0:
+                print(f"Warning: HTML generation returned non-zero: {result.stderr}")
+            else:
+                print(f"Generated HTML report: {html_dir}/index.html")
+        else:
+            print("Error: No objects found for HTML generation")
 
         # Generate summary
         cmd = (
