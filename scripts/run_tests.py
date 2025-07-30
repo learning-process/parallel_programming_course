@@ -264,8 +264,9 @@ class PPCRunner:
             + executables
             + [
                 "--format=lcov",
-                "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tests/.*|"
-                ".*tasks/.*|.*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|"
+                "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tasks/.*/tests/.*|"
+                ".*modules/.*/tests/.*|.*tasks/common/runners/.*|"
+                ".*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|"
                 ".*modules/util/include/func_test_util.hpp|.*modules/util/src/func_test_util.cpp",
                 f"--instr-profile={profdata_file}",
             ]
@@ -295,8 +296,9 @@ class PPCRunner:
             + [
                 "--format=html",
                 f"--output-dir={html_dir}",
-                "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tests/.*|"
-                ".*tasks/.*|.*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|"
+                "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tasks/.*/tests/.*|"
+                ".*modules/.*/tests/.*|.*tasks/common/runners/.*|"
+                ".*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|"
                 ".*modules/util/include/func_test_util.hpp|.*modules/util/src/func_test_util.cpp",
                 f"--instr-profile={profdata_file}",
             ]
@@ -316,8 +318,9 @@ class PPCRunner:
             + executables
             + [
                 f"--instr-profile={profdata_file}",
-                "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tasks/.*/tests/.*|.*modules/.*/tests/.*|"
-                ".*tasks/common/runners/.*|.*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|"
+                "--ignore-filename-regex=.*3rdparty/.*|/usr/.*|.*tasks/.*/tests/.*|"
+                ".*modules/.*/tests/.*|.*tasks/common/runners/.*|"
+                ".*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|"
                 ".*modules/util/include/func_test_util.hpp|.*modules/util/src/func_test_util.cpp",
             ]
         )
