@@ -322,7 +322,7 @@ jobs:
         env:
           PPC_NUM_PROC: 1
           PPC_ASAN_RUN: 1
-  gcc-build-codecov:
+  clang-build-codecov:
     needs:
       - gcc-test-extended
       - clang-test-extended
@@ -339,12 +339,13 @@ jobs:
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
-          key: ${{ runner.os }}-gcc
+          key: ${{ runner.os }}-clang-coverage
           create-symlink: true
           max-size: 1G
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
+          -D CMAKE_C_COMPILER=clang-20 -D CMAKE_CXX_COMPILER=clang++-20
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
@@ -358,31 +359,38 @@ jobs:
           PPC_NUM_THREADS: 2
           OMPI_ALLOW_RUN_AS_ROOT: 1
           OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
+          LLVM_PROFILE_FILE: "coverage-%p-%m.profraw"
       - name: Run tests (threads)
         run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
           PPC_NUM_PROC: 1
-      - name: Generate gcovr Coverage Data
+          LLVM_PROFILE_FILE: "coverage-%p-%m.profraw"
+      - name: Generate LLVM Coverage Data
         run: |
           mkdir cov-report
           cd build
-          gcovr --gcov-executable `which gcov-14` \
-                -r ../ \
-                --exclude '.*3rdparty/.*' \
-                --exclude '/usr/.*' \
-                --exclude '.*tasks/.*/tests/.*' \
-                --exclude '.*modules/.*/tests/.*' \
-                --exclude '.*tasks/common/runners/.*' \
-                --exclude '.*modules/runners/.*' \
-                --exclude '.*modules/util/include/perf_test_util.hpp' \
-                --exclude '.*modules/util/include/func_test_util.hpp' \
-                --exclude '.*modules/util/src/func_test_util.cpp' \
-                --xml --output ../coverage.xml \
-                --html=../cov-report/index.html --html-details
+          # Merge all raw profiles into a single indexed profile
+          llvm-profdata-20 merge -sparse $(find . -name "*.profraw") -o coverage.profdata
+          # Find all test executables
+          BINARIES=$(find bin -type f -executable | tr '\n' ' ')
+          # Generate coverage report in LCOV format for Codecov
+          llvm-cov-20 export \
+            $BINARIES \
+            --format=lcov \
+            --ignore-filename-regex='.*3rdparty/.*|/usr/.*|.*tests/.*|.*tasks/.*|.*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|.*modules/util/include/func_test_util.hpp|.*modules/util/src/func_test_util.cpp' \
+            --instr-profile=coverage.profdata \
+            > ../coverage.lcov
+          # Generate HTML report
+          llvm-cov-20 show \
+            $BINARIES \
+            --format=html \
+            --output-dir=../cov-report \
+            --ignore-filename-regex='.*3rdparty/.*|/usr/.*|.*tests/.*|.*tasks/.*|.*modules/runners/.*|.*modules/util/include/perf_test_util.hpp|.*modules/util/include/func_test_util.hpp|.*modules/util/src/func_test_util.cpp' \
+            --instr-profile=coverage.profdata
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:
-          files: coverage.xml
+          files: coverage.lcov
       - name: Upload coverage report artifact
         id: upload-cov
         uses: actions/upload-artifact@v4
