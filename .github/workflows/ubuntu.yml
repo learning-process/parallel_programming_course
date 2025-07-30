@@ -349,9 +349,13 @@ jobs:
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
+          -D CMAKE_INSTALL_PREFIX=install
       - name: Build project
         run: |
           cmake --build build --parallel
+      - name: Install project
+        run: |
+          cmake --build build --target install
       - name: Run tests and generate coverage
         run: >
           python3 scripts/run_tests.py --running-type=processes_coverage
@@ -366,13 +370,13 @@ jobs:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         with:
-          files: build/coverage/coverage.lcov
+          files: install/coverage/coverage.lcov
       - name: Upload coverage report artifact
         id: upload-cov
         uses: actions/upload-artifact@v4
         with:
           name: cov-report
-          path: 'build/coverage/html'
+          path: 'install/coverage/html'
       - name: Comment coverage report link
         # TODO: Support PRs from forks and handle cases with insufficient write permissions
         continue-on-error: true

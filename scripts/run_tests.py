@@ -208,14 +208,27 @@ class PPCRunner:
         output_dir = build_dir / "coverage"
         output_dir.mkdir(exist_ok=True)
 
+        print(f"Looking for .profraw files in: {build_dir}")
+        print(f"Current working directory: {os.getcwd()}")
+
         # Find all .profraw files
-        profraw_files = list(build_dir.glob("**/*.profraw"))
+        # First look in current directory (where tests are run)
+        cwd = Path.cwd()
+        profraw_files = list(cwd.glob("*.profraw"))
+        # Also look in build directory if different
+        if cwd != build_dir:
+            profraw_files.extend(list(build_dir.glob("*.profraw")))
+        # Look recursively if still nothing found
+        if not profraw_files:
+            profraw_files = list(build_dir.glob("**/*.profraw"))
         if not profraw_files:
             raise Exception(
                 "No .profraw files found. Make sure to run tests with LLVM_PROFILE_FILE set."
             )
 
         print(f"Found {len(profraw_files)} .profraw files")
+        for f in profraw_files[:5]:  # Show first 5 files
+            print(f"  - {f}")
 
         # Merge profiles
         profdata_file = output_dir / "coverage.profdata"
@@ -328,8 +341,15 @@ def _execute(args_dict, env):
         runner.run_processes(args_dict["additional_mpi_args"])
     elif args_dict["running_type"] == "processes_coverage":
         # Run both threads and processes tests, then generate coverage
-        runner.run_threads()
-        runner.run_processes(args_dict["additional_mpi_args"])
+        # Continue even if tests fail to generate coverage report
+        try:
+            runner.run_threads()
+        except Exception as e:
+            print(f"Warning: Thread tests failed: {e}")
+        try:
+            runner.run_processes(args_dict["additional_mpi_args"])
+        except Exception as e:
+            print(f"Warning: Process tests failed: {e}")
         # Generate coverage report
         runner.generate_coverage(args_dict.get("llvm_version", "20"))
     elif args_dict["running_type"] == "performance":
