@@ -2,10 +2,6 @@ project(parallel_programming_course LANGUAGES C CXX)
 
 message(STATUS "Student's tasks")
 
-# ——— Testing options ————————————————————————————————————————
-option(USE_FUNC_TESTS "Enable functional tests" OFF)
-option(USE_PERF_TESTS "Enable performance tests" OFF)
-
 # Test runner executables
 set(FUNC_TEST_EXEC ppc_func_tests)
 set(PERF_TEST_EXEC ppc_perf_tests)
