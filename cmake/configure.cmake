@@ -28,6 +28,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 
+option(USE_COVERAGE "Enable coverage instrumentation" OFF)
+
 if(USE_COVERAGE)
   set(CMAKE_INSTALL_RPATH "${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib")
 else()
