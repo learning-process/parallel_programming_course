@@ -27,6 +27,6 @@ function(ppc_link_json exec_func_lib)
                              PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty/json/include)
 
   add_dependencies(${exec_func_lib} ppc_json)
-  target_link_directories(${exec_func_lib} INTERFACE
-                          "${CMAKE_BINARY_DIR}/ppc_json/install/include")
+  target_include_directories(
+    ${exec_func_lib} INTERFACE "${CMAKE_BINARY_DIR}/ppc_json/install/include")
 endfunction()
