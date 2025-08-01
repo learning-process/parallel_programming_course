@@ -18,7 +18,7 @@ ppc_add_test(${FUNC_TEST_EXEC} common/runners/functional.cpp USE_FUNC_TESTS)
 ppc_add_test(${PERF_TEST_EXEC} common/runners/performance.cpp USE_PERF_TESTS)
 
 # ——— List of implementations ————————————————————————————————————————
-set(IMPLEMENTATIONS all mpi omp seq stl tbb)
+set(PPC_IMPLEMENTATIONS "all;mpi;omp;seq;stl;tbb" CACHE STRING "Implementations to build (semicolon-separated)")
 
 # ——— Configure each subproject —————————————————————————————————————
 file(
