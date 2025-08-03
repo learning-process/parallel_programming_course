@@ -44,6 +44,8 @@ jobs:
         with:
           path: install
           name: ${{ matrix.build_type == 'Debug' && 'macos-clang-debug-install' || 'macos-clang-install' }}
+      - name: Show ccache stats
+        run: ccache --show-stats
   clang-test:
     needs:
       - clang-build

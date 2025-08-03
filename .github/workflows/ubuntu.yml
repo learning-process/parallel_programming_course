@@ -53,6 +53,8 @@ jobs:
           name: ${{ matrix.build_type == 'Debug' &&
             format('ubuntu-gcc-debug-install-{0}', matrix.os) ||
             format('ubuntu-gcc-install-{0}', matrix.os) }}
+      - name: Show ccache stats
+        run: ccache --show-stats
   gcc-test:
     needs:
       - gcc-build
@@ -153,6 +155,8 @@ jobs:
         with:
           path: install
           name: ubuntu-clang-install-${{ matrix.os }}
+      - name: Show ccache stats
+        run: ccache --show-stats
   clang-test:
     needs:
       - clang-build
@@ -257,6 +261,8 @@ jobs:
         with:
           path: install
           name: ubuntu-clang-sanitizer-install-${{ matrix.os }}
+      - name: Show ccache stats
+        run: ccache --show-stats
   clang-sanitizer-test:
     needs:
       - clang-sanitizer-build
@@ -399,3 +405,5 @@ jobs:
           body: |
             Coverage report is available for download
             [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+      - name: Show ccache stats
+        run: ccache --show-stats
