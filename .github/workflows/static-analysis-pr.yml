@@ -21,31 +21,45 @@ concurrency:
 jobs:
   clang-tidy:
     runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
+
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           key: ${{ runner.os }}-clang
-      - uses: ZedThree/clang-tidy-review@v0.21.0
+          create-symlink: true
+          max-size: 1G
+
+      - name: CMake configure
+        run: >
+          cmake -S . -B build -G Ninja
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        env:
+          CC: clang-20
+          CXX: clang++-20
+
+      - name: Build project
+        run: |
+          cmake --build build --parallel
+        env:
+          CC: clang-20
+          CXX: clang++-20
+
+      - uses: ./.github/actions/clang-tidy-native
         id: review
         with:
-          build_dir: build
-          apt_packages: openmpi-bin,openmpi-common,libopenmpi-dev,ninja-build,libomp-19-dev,valgrind
-          cmake_command: >
-            cmake -S . -B build -G Ninja
-            -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-            -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           exclude: 3rdparty
-          clang_tidy_checks: ""
-          split_workflow: true
-          clang_tidy_version: "19"
-          lgtm_comment_body: ""
-        env:
-          CC: clang-19
-          CXX: clang++-19
+          clang_tidy_version: "20"
       - if: steps.review.outputs.total_comments > 0
         run: |
           echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
@@ -54,28 +68,45 @@ jobs:
     needs:
       - clang-tidy
     runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
+
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           key: ${{ runner.os }}-gcc
-      - uses: ZedThree/clang-tidy-review@v0.21.0
+          create-symlink: true
+          max-size: 1G
+
+      - name: CMake configure
+        run: >
+          cmake -S . -B build -G Ninja
+          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        env:
+          CC: gcc-14
+          CXX: g++-14
+
+      - name: Build project
+        run: |
+          cmake --build build --parallel
+        env:
+          CC: gcc-14
+          CXX: g++-14
+
+      - uses: ./.github/actions/clang-tidy-native
         id: review
         with:
-          build_dir: build
-          apt_packages: openmpi-bin,openmpi-common,libopenmpi-dev,ninja-build,libomp-19-dev,valgrind
-          cmake_command: >
-            cmake -S . -B build -G Ninja
-            -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-            -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           exclude: 3rdparty
-          clang_tidy_checks: ""
-          split_workflow: true
-          clang_tidy_version: "19"
-          lgtm_comment_body: ""
+          clang_tidy_version: "20"
       - if: steps.review.outputs.total_comments > 0
         run: |
           echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
