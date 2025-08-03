@@ -55,7 +55,8 @@ jobs:
           CC: clang-20
           CXX: clang++-20
 
-      - uses: ./.github/actions/clang-tidy-native
+      - name: Run clang-tidy
+        uses: ./.github/actions/clang-tidy-native
         id: review
         with:
           exclude: 3rdparty
@@ -102,7 +103,8 @@ jobs:
           CC: gcc-14
           CXX: g++-14
 
-      - uses: ./.github/actions/clang-tidy-native
+      - name: Run clang-tidy
+        uses: ./.github/actions/clang-tidy-native
         id: review
         with:
           exclude: 3rdparty

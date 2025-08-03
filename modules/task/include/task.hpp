@@ -2,14 +2,11 @@
 
 #include <omp.h>
 
-#include <algorithm>
 #include <array>
 #include <chrono>
 #include <cstdint>
 #include <cstdlib>
-#include <exception>
 #include <fstream>
-#include <functional>
 #include <iomanip>
 #include <iostream>
 #include <memory>
@@ -18,7 +15,6 @@
 #include <string>
 #include <util/include/util.hpp>
 #include <utility>
-#include <vector>
 
 namespace ppc::task {
 
@@ -259,8 +255,8 @@ class Task {
   virtual bool PostProcessingImpl() = 0;
 
  private:
-  InType input_;
-  OutType output_;
+  InType input_{};
+  OutType output_{};
   StateOfTesting state_of_testing_ = kFunc;
   TypeOfTask type_of_task_ = kUnknown;
   StatusOfTask status_of_task_ = kEnabled;
