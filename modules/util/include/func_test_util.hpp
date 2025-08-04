@@ -92,14 +92,26 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   void InitializeAndRunTask(const FuncTestParam<InType, OutType, TestType>& test_param) {
     task_ = std::get<GTestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
 
-    EXPECT_TRUE(task_->Validation());
-    EXPECT_TRUE(task_->PreProcessing());
-    EXPECT_TRUE(task_->Run());
-    EXPECT_TRUE(task_->PostProcessing());
-    EXPECT_TRUE(CheckTestOutputData(task_->GetOutput()));
+    ValidateTask();
+    ExecuteTaskPipeline();
+    VerifyOutput();
   }
 
  private:
+  void ValidateTask() {
+    EXPECT_TRUE(task_->Validation());
+  }
+
+  void ExecuteTaskPipeline() {
+    EXPECT_TRUE(task_->PreProcessing());
+    EXPECT_TRUE(task_->Run());
+    EXPECT_TRUE(task_->PostProcessing());
+  }
+
+  void VerifyOutput() {
+    EXPECT_TRUE(CheckTestOutputData(task_->GetOutput()));
+  }
+
   ppc::task::TaskPtr<InType, OutType> task_;
 };
 

@@ -31,9 +31,24 @@ runs:
       run: |
         git config --global --add safe.directory $GITHUB_WORKSPACE
         git fetch origin ${{ github.event.pull_request.base.ref }}
-        CHANGED_FILES=$(git diff --name-only \
+
+        # Check if .clang-tidy files were changed
+        CLANG_TIDY_CHANGED=$(git diff --name-only \
           origin/${{ github.event.pull_request.base.ref }}...HEAD \
-          -- '*.cpp' '*.hpp' '*.c' '*.h' | grep -v '^${{ inputs.exclude }}/' || true)
+          -- '.clang-tidy' '**/.clang-tidy' || true)
+
+        if [ -n "$CLANG_TIDY_CHANGED" ]; then
+          echo "Clang-tidy configuration changed, analyzing all files"
+          # Get all C++ files in the repo (excluding specified directories)
+          CHANGED_FILES=$(find . -name "*.cpp" -o -name "*.hpp" -o -name "*.c" -o -name "*.h" | \
+            grep -v "^\./${{ inputs.exclude }}/" | sed 's|^\./||' || true)
+        else
+          # Only analyze changed C++ files
+          CHANGED_FILES=$(git diff --name-only \
+            origin/${{ github.event.pull_request.base.ref }}...HEAD \
+            -- '*.cpp' '*.hpp' '*.c' '*.h' | grep -v '^${{ inputs.exclude }}/' || true)
+        fi
+
         echo "changed_files<<EOF" >> $GITHUB_OUTPUT
         echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
