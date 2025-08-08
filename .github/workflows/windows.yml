@@ -47,7 +47,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: windows-msvc-install
       - name: Extract installed package
@@ -72,7 +72,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: windows-msvc-install
       - name: Extract installed package
@@ -134,7 +134,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: windows-clang-install
       - name: Extract installed package
@@ -155,7 +155,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: windows-clang-install
       - name: Extract installed package
