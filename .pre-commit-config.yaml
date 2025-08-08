@@ -22,7 +22,7 @@ repos:
 
   # Ruff Python linter
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.12.7
+    rev: v0.12.8
     hooks:
       - id: ruff
         args: [--fix]
@@ -42,7 +42,7 @@ repos:
 
   # Shell script linting with shellcheck
   - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.10.0
+    rev: v0.11.0
     hooks:
       - id: shellcheck
         files: \.sh$
