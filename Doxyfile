@@ -3,12 +3,12 @@ PROJECT_NAME           = "Parallel Programming Course"
 PROJECT_BRIEF          = "Parallel Programming Course"
 
 # Input
-INPUT                  = modules/core/task/include \
-                         modules/core/util/include \
-                         modules/core/util/src \
-                         modules/core/performance/include \
-                         modules/core/runners/include \
-                         modules/core/runners/src
+INPUT                  = modules/task/include \
+                         modules/util/include \
+                         modules/util/src \
+                         modules/performance/include \
+                         modules/runners/include \
+                         modules/runners/src
 FILE_PATTERNS          = *.h *.c *.hpp *.cpp
 RECURSIVE              = YES
 
