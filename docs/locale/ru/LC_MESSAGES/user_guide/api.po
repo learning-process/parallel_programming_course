@@ -1,0 +1,74 @@
+# Parallel Programming Course Documentation.
+# Copyright (C) 2025, Learning Process
+# This file is distributed under the same license as the Parallel
+# Programming Course package.
+# Learning Process Team <gooddoog@student.su>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Parallel Programming Course \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-22 21:38+0200\n"
+"PO-Revision-Date: 2025-08-22 21:45+0200\n"
+"Last-Translator: Learning Process Team <gooddoog@student.su>\n"
+"Language: ru\n"
+"Language-Team: Learning Process Team (gooddoog@student.su, nesterov.alexander@outlook.com)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../../../docs/user_guide/api.rst:2
+msgid "API Reference"
+msgstr "Справочник API"
+
+#: ../../../../docs/user_guide/api.rst:8
+msgid "Runners Module"
+msgstr "Модуль выполнения"
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Functions"
+msgstr "Функции"
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Parameters"
+msgstr "Параметры"
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Returns"
+msgstr "Возвращаемые значения"
+
+#: ../../../../docs/user_guide/api.rst:14
+msgid "Task Module"
+msgstr "Модуль задач"
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Typedefs"
+msgstr "Псевдонимы типов"
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Template Parameters"
+msgstr "Параметры шаблона"
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Enums"
+msgstr "Перечисления"
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Throws"
+msgstr "Исключения"
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Variables"
+msgstr "Переменные"
+
+#: ../../../../docs/user_guide/api.rst:20
+msgid "Utility Module"
+msgstr "Вспомогательный модуль (модуль с утилитами)"
+
+#: ../../../../docs/user_guide/api.rst:26
+msgid "Performance Module"
+msgstr "Модуль измерения производительности"
+
