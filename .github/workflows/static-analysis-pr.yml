@@ -9,6 +9,7 @@ on:
       - '**/*.h'
       - '**/CMakeLists.txt'
       - '**/*.cmake'
+      - '**/.clang-tidy'
       - '.github/workflows/static-analysis-pr.yml'
 
 concurrency:
@@ -59,7 +60,7 @@ jobs:
         uses: ./.github/actions/clang-tidy-native
         id: review
         with:
-          exclude: 3rdparty
+          exclude: "3rdparty build"
           clang_tidy_version: "20"
       - if: steps.review.outputs.total_comments > 0
         run: |
@@ -107,7 +108,7 @@ jobs:
         uses: ./.github/actions/clang-tidy-native
         id: review
         with:
-          exclude: 3rdparty
+          exclude: "3rdparty build docs_venv .git .pytest_cache .ruff_cache xml"
           clang_tidy_version: "20"
       - if: steps.review.outputs.total_comments > 0
         run: |

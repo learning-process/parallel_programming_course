@@ -6,7 +6,7 @@ inputs:
     required: false
     default: 'build'
   exclude:
-    description: 'Directories to exclude from analysis'
+    description: 'Directories to exclude from analysis (space-separated)'
     required: false
     default: '3rdparty'
   clang_tidy_version:
@@ -31,9 +31,31 @@ runs:
       run: |
         git config --global --add safe.directory $GITHUB_WORKSPACE
         git fetch origin ${{ github.event.pull_request.base.ref }}
-        CHANGED_FILES=$(git diff --name-only \
+
+        # Check if .clang-tidy files were changed
+        CLANG_TIDY_CHANGED=$(git diff --name-only \
           origin/${{ github.event.pull_request.base.ref }}...HEAD \
-          -- '*.cpp' '*.hpp' '*.c' '*.h' | grep -v '^${{ inputs.exclude }}/' || true)
+          -- '**/.clang-tidy' || true)
+
+        if [ -n "$CLANG_TIDY_CHANGED" ]; then
+          echo "::notice::.clang-tidy configuration changed, analyzing all source files"
+          # Find all source files in the repository (excluding specified directories)
+          CHANGED_FILES=$(find . -name "*.cpp" -o -name "*.hpp" -o -name "*.c" -o -name "*.h")
+          # Filter out excluded directories
+          for exclude_dir in ${{ inputs.exclude }}; do
+            CHANGED_FILES=$(echo "$CHANGED_FILES" | grep -v "^./${exclude_dir}/" || true)
+          done
+        else
+          # Only analyze changed source files
+          CHANGED_FILES=$(git diff --name-only \
+            origin/${{ github.event.pull_request.base.ref }}...HEAD \
+            -- '*.cpp' '*.hpp' '*.c' '*.h')
+          # Filter out excluded directories
+          for exclude_dir in ${{ inputs.exclude }}; do
+            CHANGED_FILES=$(echo "$CHANGED_FILES" | grep -v "^${exclude_dir}/" || true)
+          done
+        fi
+
         echo "changed_files<<EOF" >> $GITHUB_OUTPUT
         echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
