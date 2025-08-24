@@ -91,7 +91,11 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   /// @brief Initializes task instance and runs it through the full pipeline.
   void InitializeAndRunTask(const FuncTestParam<InType, OutType, TestType>& test_param) {
     task_ = std::get<GTestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
+    ExecuteTaskPipeline();
+  }
 
+  /// @brief Executes the full task pipeline with validation.
+  void ExecuteTaskPipeline() {
     EXPECT_TRUE(task_->Validation());
     EXPECT_TRUE(task_->PreProcessing());
     EXPECT_TRUE(task_->Run());

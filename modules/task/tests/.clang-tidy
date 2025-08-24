@@ -10,4 +10,4 @@ Checks: >
 
 CheckOptions:
   - key: readability-function-cognitive-complexity.Threshold
-    value: 50  # Relaxed for tests
+    value: 100  # Relaxed for tests

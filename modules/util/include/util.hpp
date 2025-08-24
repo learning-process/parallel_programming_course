@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <cstdlib>
 #include <memory>
-#include <source_location>
 #include <string>
 #include <typeinfo>
 #ifdef __GNUG__
