@@ -194,7 +194,9 @@ if __name__ == "__main__":
                 env_copy["PPC_NUM_PROC"] = str(count)
                 env_copy.setdefault("PPC_NUM_THREADS", "1")
 
-            print(f"Executing with {args_dict['running_type']} count: {count}")
+            print(
+                f"Executing with {args_dict['running_type']} count: {count}", flush=True
+            )
             _execute(args_dict, env_copy)
     else:
         _execute(args_dict, os.environ.copy())
