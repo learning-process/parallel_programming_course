@@ -5,7 +5,7 @@ jobs:
   gcc-build:
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -60,7 +60,7 @@ jobs:
       - gcc-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -92,7 +92,7 @@ jobs:
       - gcc-test
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -116,7 +116,7 @@ jobs:
   clang-build:
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -139,14 +139,14 @@ jobs:
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
-          CC: clang-20
-          CXX: clang++-20
+          CC: clang-21
+          CXX: clang++-21
       - name: Build project
         run: |
           cmake --build build --parallel
         env:
-          CC: clang-20
-          CXX: clang++-20
+          CC: clang-21
+          CXX: clang++-21
       - name: Install project
         run: |
           cmake --build build --target install
@@ -162,7 +162,7 @@ jobs:
       - clang-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -194,7 +194,7 @@ jobs:
       - clang-test
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -220,7 +220,7 @@ jobs:
       - clang-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -245,14 +245,14 @@ jobs:
           -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON -D ENABLE_LEAK_SANITIZER=ON
           -D CMAKE_INSTALL_PREFIX=install
         env:
-          CC: clang-20
-          CXX: clang++-20
+          CC: clang-21
+          CXX: clang++-21
       - name: Build project
         run: |
           cmake --build build --parallel
         env:
-          CC: clang-20
-          CXX: clang++-20
+          CC: clang-21
+          CXX: clang++-21
       - name: Install project
         run: |
           cmake --build build --target install
@@ -268,7 +268,7 @@ jobs:
       - clang-sanitizer-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -306,7 +306,7 @@ jobs:
       - clang-sanitizer-test
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -334,7 +334,7 @@ jobs:
       - clang-test-extended
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}

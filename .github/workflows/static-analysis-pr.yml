@@ -23,7 +23,7 @@ jobs:
   clang-tidy:
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -46,22 +46,22 @@ jobs:
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         env:
-          CC: clang-20
-          CXX: clang++-20
+          CC: clang-21
+          CXX: clang++-21
 
       - name: Build project
         run: |
           cmake --build build --parallel
         env:
-          CC: clang-20
-          CXX: clang++-20
+          CC: clang-21
+          CXX: clang++-21
 
       - name: Run clang-tidy
         uses: ./.github/actions/clang-tidy-native
         id: review
         with:
           exclude: "3rdparty build"
-          clang_tidy_version: "20"
+          clang_tidy_version: "21"
       - if: steps.review.outputs.total_comments > 0
         run: |
           echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
@@ -71,7 +71,7 @@ jobs:
       - clang-tidy
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.0
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -109,7 +109,7 @@ jobs:
         id: review
         with:
           exclude: "3rdparty build docs_venv .git .pytest_cache .ruff_cache xml"
-          clang_tidy_version: "20"
+          clang_tidy_version: "21"
       - if: steps.review.outputs.total_comments > 0
         run: |
           echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
