@@ -5,7 +5,7 @@ jobs:
   ubuntu-gcc-build-perf-stats:
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.0
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
