@@ -1,6 +1,6 @@
 {
 	"name": "Parallel Programming Course",
-	"image": "ghcr.io/learning-process/ppc-ubuntu:latest",
+	"image": "ghcr.io/learning-process/ppc-ubuntu:1.1",
 	"customizations": {
 		"vscode": {
 			"extensions": [
