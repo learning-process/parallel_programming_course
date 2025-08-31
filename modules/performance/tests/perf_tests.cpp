@@ -16,7 +16,9 @@
 #include "task/include/task.hpp"
 #include "util/include/util.hpp"
 
-using namespace ppc::task;
+using ppc::task::StatusOfTask;
+using ppc::task::Task;
+using ppc::task::TypeOfTask;
 
 namespace ppc::test {
 
@@ -63,7 +65,7 @@ class FakePerfTask : public TestPerfTask<InType, OutType> {
 
 namespace ppc::performance {
 
-TEST(perf_tests, check_perf_pipeline) {
+TEST(PerfTests, CheckPerfPipeline) {
   std::vector<uint32_t> in(2000, 1);
 
   auto test_task = std::make_shared<ppc::test::TestPerfTask<std::vector<uint32_t>, uint32_t>>(in);
@@ -78,7 +80,7 @@ TEST(perf_tests, check_perf_pipeline) {
   EXPECT_EQ(test_task->GetOutput(), in.size());
 }
 
-TEST(perf_tests, check_perf_pipeline_float) {
+TEST(PerfTests, CheckPerfPipelineFloat) {
   std::vector<float> in(2000, 1);
 
   auto test_task = std::make_shared<ppc::test::TestPerfTask<std::vector<float>, float>>(in);
@@ -93,7 +95,7 @@ TEST(perf_tests, check_perf_pipeline_float) {
   EXPECT_EQ(test_task->GetOutput(), in.size());
 }
 
-TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
+TEST(PerfTests, CheckPerfPipelineUint8tSlowTest) {
   std::vector<uint8_t> in(128, 1);
 
   auto test_task = std::make_shared<ppc::test::FakePerfTask<std::vector<uint8_t>, uint8_t>>(in);
@@ -114,7 +116,7 @@ TEST(perf_tests, check_perf_pipeline_uint8_t_slow_test) {
   ASSERT_ANY_THROW(perf_analyzer.PrintPerfStatistic("check_perf_pipeline_uint8_t_slow_test"));
 }
 
-TEST(perf_tests, slow_perf_respects_env_override) {
+TEST(PerfTests, SlowPerfRespectsEnvOverride) {
   env::detail::set_scoped_environment_variable scoped("PPC_PERF_MAX_TIME", "12");
   std::vector<uint8_t> in(128, 1);
   auto test_task = std::make_shared<ppc::test::FakePerfTask<std::vector<uint8_t>, uint8_t>>(in);
@@ -131,7 +133,7 @@ TEST(perf_tests, slow_perf_respects_env_override) {
   EXPECT_NO_THROW(perf_analyzer.PrintPerfStatistic("slow_perf_respects_env_override"));
 }
 
-TEST(perf_tests, check_perf_task_exception) {
+TEST(PerfTests, CheckPerfTaskException) {
   std::vector<uint32_t> in(2000, 1);
 
   auto test_task = std::make_shared<ppc::test::TestPerfTask<std::vector<uint32_t>, uint32_t>>(in);
@@ -144,7 +146,7 @@ TEST(perf_tests, check_perf_task_exception) {
   perf_analyzer.TaskRun(perf_attr);
 }
 
-TEST(perf_tests, check_perf_task_float) {
+TEST(PerfTests, CheckPerfTaskFloat) {
   std::vector<float> in(2000, 1);
 
   auto test_task = std::make_shared<ppc::test::TestPerfTask<std::vector<float>, float>>(in);
@@ -385,7 +387,7 @@ TEST(PerfTest, GetStringParamNameTest) {
   EXPECT_EQ(GetStringParamName(PerfResults::TypeOfRunning::kNone), "none");
 }
 
-TEST(TaskTest, Destructor_InvalidPipelineOrderTerminates_PartialPipeline) {
+TEST(TaskTest, DestructorInvalidPipelineOrderTerminatesPartialPipeline) {
   {
     struct BadTask : Task<int, int> {
       bool ValidationImpl() override {
