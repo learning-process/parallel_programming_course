@@ -19,6 +19,7 @@ jobs:
   build-and-push:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
+    if: github.repository == 'learning-process/parallel_programming_course'
 
     steps:
       - name: Check out code
