@@ -175,8 +175,8 @@ TEST_P(GetStringParamNameParamTest, ReturnsExpectedString) {
 }
 
 INSTANTIATE_TEST_SUITE_P(ParamTests, GetStringParamNameParamTest,
-                         ::testing::Values(ParamTestCase{PerfResults::kTaskRun, "task_run"},
-                                           ParamTestCase{PerfResults::kPipeline, "pipeline"},
+                         ::testing::Values(ParamTestCase{PerfResults::TypeOfRunning::kTaskRun, "task_run"},
+                                           ParamTestCase{PerfResults::TypeOfRunning::kPipeline, "pipeline"},
                                            ParamTestCase{PerfResults::TypeOfRunning::kNone, "none"}),
                          [](const ::testing::TestParamInfo<ParamTestCase>& info) {
                            return info.param.expected_output;
@@ -360,12 +360,12 @@ TEST(PerfTest, PipelineRunAndTaskRun) {
 
   EXPECT_NO_THROW(perf.PipelineRun(attr));
   auto res_pipeline = perf.GetPerfResults();
-  EXPECT_EQ(res_pipeline.type_of_running, PerfResults::kPipeline);
+  EXPECT_EQ(res_pipeline.type_of_running, PerfResults::TypeOfRunning::kPipeline);
   EXPECT_GT(res_pipeline.time_sec, 0.0);
 
   EXPECT_NO_THROW(perf.TaskRun(attr));
   auto res_taskrun = perf.GetPerfResults();
-  EXPECT_EQ(res_taskrun.type_of_running, PerfResults::kTaskRun);
+  EXPECT_EQ(res_taskrun.type_of_running, PerfResults::TypeOfRunning::kTaskRun);
   EXPECT_GT(res_taskrun.time_sec, 0.0);
 }
 
@@ -380,9 +380,9 @@ TEST(PerfTest, PrintPerfStatisticThrowsOnNone) {
 }
 
 TEST(PerfTest, GetStringParamNameTest) {
-  EXPECT_EQ(GetStringParamName(PerfResults::kTaskRun), "task_run");
-  EXPECT_EQ(GetStringParamName(PerfResults::kPipeline), "pipeline");
-  EXPECT_EQ(GetStringParamName(PerfResults::kNone), "none");
+  EXPECT_EQ(GetStringParamName(PerfResults::TypeOfRunning::kTaskRun), "task_run");
+  EXPECT_EQ(GetStringParamName(PerfResults::TypeOfRunning::kPipeline), "pipeline");
+  EXPECT_EQ(GetStringParamName(PerfResults::TypeOfRunning::kNone), "none");
 }
 
 TEST(TaskTest, Destructor_InvalidPipelineOrderTerminates_PartialPipeline) {

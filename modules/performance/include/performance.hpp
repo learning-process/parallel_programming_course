@@ -30,7 +30,8 @@ struct PerfAttr {
 struct PerfResults {
   /// @brief Measured execution time in seconds.
   double time_sec = 0.0;
-  enum TypeOfRunning : uint8_t { kPipeline, kTaskRun, kNone } type_of_running = kNone;
+  enum class TypeOfRunning : uint8_t { kPipeline, kTaskRun, kNone };
+  TypeOfRunning type_of_running = TypeOfRunning::kNone;
   constexpr static double kMaxTime = 10.0;
 };
 
@@ -116,10 +117,10 @@ class Perf {
 };
 
 inline std::string GetStringParamName(PerfResults::TypeOfRunning type_of_running) {
-  if (type_of_running == PerfResults::kTaskRun) {
+  if (type_of_running == PerfResults::TypeOfRunning::kTaskRun) {
     return "task_run";
   }
-  if (type_of_running == PerfResults::kPipeline) {
+  if (type_of_running == PerfResults::TypeOfRunning::kPipeline) {
     return "pipeline";
   }
   return "none";

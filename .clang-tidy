@@ -36,6 +36,7 @@ Checks: >
   -misc-non-private-member-variables-in-classes,
   -modernize-avoid-c-arrays,
   -modernize-use-trailing-return-type,
+  -portability-avoid-pragma-once,
   -portability-template-virtual-member-function,
   -readability-magic-numbers
 

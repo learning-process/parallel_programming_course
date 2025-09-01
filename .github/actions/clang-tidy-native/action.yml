@@ -77,15 +77,19 @@ runs:
         while IFS= read -r file; do
           if [ -n "$file" ] && [ -f "$file" ]; then
             echo "Analyzing $file..."
+            FILE_OUTPUT=$(mktemp)
             if clang-tidy-${{ inputs.clang_tidy_version }} "$file" \
                -p ${{ inputs.build_dir }} --format-style=file 2>&1 | \
-               tee -a "$COMMENTS_FILE"; then
-              ISSUES=$(grep -c "warning:\|error:" "$COMMENTS_FILE" || echo "0")
-              TOTAL_ISSUES=$((TOTAL_ISSUES + ISSUES))
+               tee "$FILE_OUTPUT"; then
+              ISSUES=$(grep -c "warning:\|error:" "$FILE_OUTPUT" 2>/dev/null || echo "0")
+              ISSUES=$(echo "$ISSUES" | tr -d '[:space:]')
+              TOTAL_ISSUES=$((TOTAL_ISSUES + ${ISSUES:-0}))
+              cat "$FILE_OUTPUT" >> "$COMMENTS_FILE"
             else
               echo "::error::Failed to analyze $file"
               TOTAL_ISSUES=$((TOTAL_ISSUES + 1))
             fi
+            rm -f "$FILE_OUTPUT"
           fi
         done <<< "${{ steps.changed-files.outputs.changed_files }}"
 

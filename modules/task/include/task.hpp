@@ -20,7 +20,7 @@ namespace ppc::task {
 
 /// @brief Represents the type of task (parallelization technology).
 /// @details Used to select the implementation type in tests and execution logic.
-enum TypeOfTask : uint8_t {
+enum class TypeOfTask : uint8_t {
   /// Use all available implementations
   kALL,
   /// MPI (Message Passing Interface)
@@ -57,7 +57,7 @@ inline std::string TypeOfTaskToString(TypeOfTask type) {
 }
 
 /// @brief Indicates whether a task is enabled or disabled.
-enum StatusOfTask : uint8_t {
+enum class StatusOfTask : uint8_t {
   /// Task is enabled and should be executed
   kEnabled,
   /// Task is disabled and will be skipped
@@ -68,7 +68,7 @@ enum StatusOfTask : uint8_t {
 /// @param status_of_task Task status (enabled or disabled).
 /// @return "enabled" if the task is enabled, otherwise "disabled".
 inline std::string GetStringTaskStatus(StatusOfTask status_of_task) {
-  if (status_of_task == kDisabled) {
+  if (status_of_task == StatusOfTask::kDisabled) {
     return "disabled";
   }
   return "enabled";
@@ -96,7 +96,7 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
   return type_str + "_" + std::string((*list_settings)["tasks"][type_str]);
 }
 
-enum StateOfTesting : uint8_t { kFunc, kPerf };
+enum class StateOfTesting : uint8_t { kFunc, kPerf };
 
 template <typename InType, typename OutType>
 /// @brief Base abstract class representing a generic task with a defined pipeline.
@@ -257,9 +257,9 @@ class Task {
  private:
   InType input_{};
   OutType output_{};
-  StateOfTesting state_of_testing_ = kFunc;
-  TypeOfTask type_of_task_ = kUnknown;
-  StatusOfTask status_of_task_ = kEnabled;
+  StateOfTesting state_of_testing_ = StateOfTesting::kFunc;
+  TypeOfTask type_of_task_ = TypeOfTask::kUnknown;
+  StatusOfTask status_of_task_ = StatusOfTask::kEnabled;
   std::chrono::high_resolution_clock::time_point tmp_time_point_;
   enum class PipelineStage : uint8_t {
     kNone,
