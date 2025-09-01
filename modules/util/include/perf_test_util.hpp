@@ -122,7 +122,7 @@ auto TupleToGTestValuesImpl(const Tuple& tup, std::index_sequence<I...> /*unused
 
 template <typename Tuple>
 auto TupleToGTestValues(Tuple&& tup) {
-  constexpr size_t kSize = std::tuple_size<std::decay_t<Tuple>>::value;
+  constexpr size_t kSize = std::tuple_size_v<std::decay_t<Tuple>>;
   return TupleToGTestValuesImpl(std::forward<Tuple>(tup), std::make_index_sequence<kSize>{});
 }
 
