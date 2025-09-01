@@ -120,7 +120,7 @@ class PPCRunner:
                 shlex.split(self.valgrind_cmd)
                 + [str(self.work_dir / "core_func_tests")]
                 + self.__get_gtest_settings(1, "*")
-                + ["--gtest_filter=*:-*_disabled_valgrind"]
+                + ["--gtest_filter=*:-*DisabledValgrind"]
             )
 
         self.__run_exec(
