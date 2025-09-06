@@ -1,7 +1,3 @@
-if(MSVC)
-  option(gtest_force_shared_crt "" TRUE)
-endif(MSVC)
-
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
 endif(NOT CMAKE_BUILD_TYPE)
