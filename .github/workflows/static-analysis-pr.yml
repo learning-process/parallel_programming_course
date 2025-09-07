@@ -51,7 +51,7 @@ jobs:
 
       - name: Build project
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
         env:
           CC: clang-21
           CXX: clang++-21
@@ -99,7 +99,7 @@ jobs:
 
       - name: Build project
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
         env:
           CC: gcc-14
           CXX: g++-14

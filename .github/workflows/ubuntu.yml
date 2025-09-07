@@ -39,13 +39,13 @@ jobs:
           path: build/revert-list.txt
       - name: Build project
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
         env:
           CC: gcc-14
           CXX: g++-14
       - name: Install project
         run: |
-          cmake --build build --target install
+          cmake --build build --target install -- --quiet
       - name: Archive installed package
         uses: ./.github/actions/archive-install
         with:
@@ -143,13 +143,13 @@ jobs:
           CXX: clang++-21
       - name: Build project
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
         env:
           CC: clang-21
           CXX: clang++-21
       - name: Install project
         run: |
-          cmake --build build --target install
+          cmake --build build --target install -- --quiet
       - name: Archive installed package
         uses: ./.github/actions/archive-install
         with:
@@ -249,13 +249,13 @@ jobs:
           CXX: clang++-21
       - name: Build project
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
         env:
           CC: clang-21
           CXX: clang++-21
       - name: Install project
         run: |
-          cmake --build build --target install
+          cmake --build build --target install -- --quiet
       - name: Archive installed package
         uses: ./.github/actions/archive-install
         with:
@@ -356,7 +356,7 @@ jobs:
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
       - name: Build project
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
       - name: Run tests (MPI)
         run: scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
         env:

@@ -35,10 +35,10 @@ jobs:
           -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
       - name: Build project
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
       - name: Install project
         run: |
-          cmake --build build --target install
+          cmake --build build --target install -- --quiet
       - name: Archive installed package
         uses: ./.github/actions/archive-install
         with:

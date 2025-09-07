@@ -54,11 +54,11 @@ jobs:
           cmake -S . -B build -D USE_DOCS=ON
       - name: Build i18n
         run: |
-          cmake --build build -t docs_gettext
-          cmake --build build -t docs_update
+          cmake --build build -t docs_gettext -- --quiet
+          cmake --build build -t docs_update -- --quiet
       - name: Build documentation
         run: |
-          cmake --build build -t docs_html
+          cmake --build build -t docs_html -- --quiet
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -90,7 +90,7 @@ jobs:
           cmake -S . -B build -DUSE_SCOREBOARD=ON
       - name: CMake build
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
