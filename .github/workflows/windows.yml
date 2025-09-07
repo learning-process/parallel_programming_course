@@ -24,10 +24,10 @@ jobs:
       - name: Build project
         shell: bash
         run: |
-          cmake --build build --config ${{ matrix.build_type }} --parallel
+          cmake --build build --config ${{ matrix.build_type }} --parallel -- --quiet
       - name: Install project
         run: |
-          cmake --build build --target install
+          cmake --build build --target install -- --quiet
       - name: Archive installed package
         uses: ./.github/actions/archive-install
         with:
