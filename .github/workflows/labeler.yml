@@ -11,10 +11,6 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
       - name: Apply labels based on changed files
         uses: actions/labeler@v6
         with:
