@@ -42,7 +42,6 @@ jobs:
         if: matrix.language == 'cpp'
         run: >
           cmake -S . -B build -G Ninja
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE
         env:
           CC: gcc-14
@@ -54,5 +53,8 @@ jobs:
         env:
           CC: gcc-14
           CXX: g++-14
+      - name: Show ccache stats
+        if: matrix.language == 'cpp'
+        run: ccache --show-stats
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3

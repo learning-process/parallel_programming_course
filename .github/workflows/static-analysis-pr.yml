@@ -43,7 +43,6 @@ jobs:
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         env:
           CC: clang-21
@@ -56,6 +55,8 @@ jobs:
           CC: clang-21
           CXX: clang++-21
 
+      - name: Show ccache stats
+        run: ccache --show-stats
       - name: Run clang-tidy
         uses: ./.github/actions/clang-tidy-native
         id: review
@@ -91,7 +92,6 @@ jobs:
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         env:
           CC: gcc-14
@@ -104,6 +104,8 @@ jobs:
           CC: gcc-14
           CXX: g++-14
 
+      - name: Show ccache stats
+        run: ccache --show-stats
       - name: Run clang-tidy
         uses: ./.github/actions/clang-tidy-native
         id: review
