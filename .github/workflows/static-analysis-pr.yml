@@ -9,6 +9,7 @@ on:
       - '**/*.h'
       - '**/CMakeLists.txt'
       - '**/*.cmake'
+      - '**/.clang-tidy'
       - '.github/workflows/static-analysis-pr.yml'
 
 concurrency:
@@ -21,31 +22,47 @@ concurrency:
 jobs:
   clang-tidy:
     runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
+          fetch-depth: 0
+
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           key: ${{ runner.os }}-clang
-      - uses: ZedThree/clang-tidy-review@v0.21.0
+          create-symlink: true
+          max-size: 1G
+
+      - name: CMake configure
+        run: >
+          cmake -S . -B build -G Ninja
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        env:
+          CC: clang-21
+          CXX: clang++-21
+
+      - name: Build project
+        run: |
+          cmake --build build --parallel -- --quiet
+        env:
+          CC: clang-21
+          CXX: clang++-21
+
+      - name: Show ccache stats
+        run: ccache --show-stats
+      - name: Run clang-tidy
+        uses: ./.github/actions/clang-tidy-native
         id: review
         with:
-          build_dir: build
-          apt_packages: openmpi-bin,openmpi-common,libopenmpi-dev,ninja-build,libomp-19-dev,valgrind
-          cmake_command: >
-            cmake -S . -B build -G Ninja
-            -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-            -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-          exclude: 3rdparty
-          clang_tidy_checks: ""
-          split_workflow: true
-          clang_tidy_version: "19"
-          lgtm_comment_body: ""
-        env:
-          CC: clang-19
-          CXX: clang++-19
+          exclude: "3rdparty build"
+          clang_tidy_version: "21"
       - if: steps.review.outputs.total_comments > 0
         run: |
           echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
@@ -54,28 +71,47 @@ jobs:
     needs:
       - clang-tidy
     runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
+          fetch-depth: 0
+
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           key: ${{ runner.os }}-gcc
-      - uses: ZedThree/clang-tidy-review@v0.21.0
+          create-symlink: true
+          max-size: 1G
+
+      - name: CMake configure
+        run: >
+          cmake -S . -B build -G Ninja
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        env:
+          CC: gcc-14
+          CXX: g++-14
+
+      - name: Build project
+        run: |
+          cmake --build build --parallel -- --quiet
+        env:
+          CC: gcc-14
+          CXX: g++-14
+
+      - name: Show ccache stats
+        run: ccache --show-stats
+      - name: Run clang-tidy
+        uses: ./.github/actions/clang-tidy-native
         id: review
         with:
-          build_dir: build
-          apt_packages: openmpi-bin,openmpi-common,libopenmpi-dev,ninja-build,libomp-19-dev,valgrind
-          cmake_command: >
-            cmake -S . -B build -G Ninja
-            -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-            -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-          exclude: 3rdparty
-          clang_tidy_checks: ""
-          split_workflow: true
-          clang_tidy_version: "19"
-          lgtm_comment_body: ""
+          exclude: "3rdparty build docs_venv .git .pytest_cache .ruff_cache xml"
+          clang_tidy_version: "21"
       - if: steps.review.outputs.total_comments > 0
         run: |
           echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
@@ -83,7 +119,7 @@ jobs:
   nolint-check:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Search for linter suppression markers
         run: |
           export BASE_REF=${{ github.event.pull_request.base.ref }}

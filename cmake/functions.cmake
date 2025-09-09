@@ -83,7 +83,7 @@ function(ppc_configure_subproject SUBDIR)
   message(STATUS "${SUBDIR}")
 
   # List of implementations to configure
-  foreach(IMPL IN LISTS IMPLEMENTATIONS)
+  foreach(IMPL IN LISTS PPC_IMPLEMENTATIONS)
     setup_implementation(
       NAME
       ${IMPL}

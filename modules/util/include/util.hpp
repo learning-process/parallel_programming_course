@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <cstdlib>
 #include <memory>
-#include <source_location>
 #include <string>
 #include <typeinfo>
 #ifdef __GNUG__
@@ -54,7 +53,7 @@ class DestructorFailureFlag {
   inline static std::atomic<bool> failure_flag{false};
 };
 
-enum GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
+enum class GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
 
 std::string GetAbsoluteTaskPath(const std::string& id_path, const std::string& relative_path);
 int GetNumThreads();
@@ -71,7 +70,7 @@ std::string GetNamespace() {
                                                    std::free};
   name = (status == 0) ? demangled.get() : name;
 #endif
-#if defined(_MSC_VER)
+#ifdef _MSC_VER
   const std::string prefixes[] = {"class ", "struct ", "enum ", "union "};
   for (const auto& prefix : prefixes) {
     if (name.starts_with(prefix)) {

@@ -12,12 +12,12 @@ namespace my::nested {
 struct Type {};
 }  // namespace my::nested
 
-TEST(util_tests, extracts_correct_namespace) {
+TEST(UtilTests, ExtractsCorrectNamespace) {
   std::string k_ns = ppc::util::GetNamespace<my::nested::Type>();
   EXPECT_EQ(k_ns, "my::nested");
 }
 
-TEST(util_tests, threads_control_check_openmp_disabled_valgrind) {
+TEST(UtilTests, ThreadsControlCheckOpenmpDisabledValgrind) {
   const auto num_threads_env_var = env::get<int>("PPC_NUM_THREADS");
 
   EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_max_threads());
@@ -34,12 +34,12 @@ TEST(GetNamespaceTest, ReturnsExpectedNamespace) {
   EXPECT_EQ(k_ns, "test_ns");
 }
 
-TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespace_PrimitiveType) {
+TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespacePrimitiveType) {
   std::string k_ns = ppc::util::GetNamespace<int>();
   EXPECT_EQ(k_ns, "");
 }
 
-TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespace_PlainStruct) {
+TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespacePlainStruct) {
   std::string k_ns = ppc::util::GetNamespace<PlainType>();
   EXPECT_EQ(k_ns, "");
 }

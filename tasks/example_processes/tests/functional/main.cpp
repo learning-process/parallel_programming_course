@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
+#include <stb/stb_image.h>
 
 #include <algorithm>
 #include <array>
 #include <cstddef>
 #include <cstdint>
 #include <numeric>
-#include <stb_library.hpp>
 #include <stdexcept>
 #include <string>
 #include <tuple>
@@ -46,7 +46,7 @@ class NesterovARunFuncTestsProcesses : public ppc::util::BaseRunFuncTests<InType
       }
     }
 
-    TestType params = std::get<ppc::util::GTestParamIndex::kTestParams>(GetParam());
+    TestType params = std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kTestParams)>(GetParam());
     input_data_ = width - height + std::min(std::accumulate(img.begin(), img.end(), 0), channels);
   }
 

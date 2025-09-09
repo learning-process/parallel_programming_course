@@ -5,17 +5,17 @@ jobs:
   ubuntu-gcc-build-perf-stats:
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup environment
         run: |
           python3 -m pip install -r requirements.txt --break-system-packages --ignore-installed
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ubuntu-gcc-install-ubuntu-24.04
       - name: Extract installed package
@@ -41,7 +41,7 @@ jobs:
   macos-clang-build-perf-stats:
     runs-on: macOS-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -53,7 +53,7 @@ jobs:
           brew link libomp --overwrite --force
           python3 -m pip install -r requirements.txt --break-system-packages
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: macos-clang-install
       - name: Extract installed package

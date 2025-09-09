@@ -5,7 +5,7 @@ jobs:
   gcc-build:
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -14,7 +14,7 @@ jobs:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
         build_type: [Release, Debug]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
       - name: ccache
@@ -26,7 +26,6 @@ jobs:
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
         env:
           CC: gcc-14
@@ -39,13 +38,13 @@ jobs:
           path: build/revert-list.txt
       - name: Build project
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
         env:
           CC: gcc-14
           CXX: g++-14
       - name: Install project
         run: |
-          cmake --build build --target install
+          cmake --build build --target install -- --quiet
       - name: Archive installed package
         uses: ./.github/actions/archive-install
         with:
@@ -53,12 +52,14 @@ jobs:
           name: ${{ matrix.build_type == 'Debug' &&
             format('ubuntu-gcc-debug-install-{0}', matrix.os) ||
             format('ubuntu-gcc-install-{0}', matrix.os) }}
+      - name: Show ccache stats
+        run: ccache --show-stats
   gcc-test:
     needs:
       - gcc-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -66,9 +67,9 @@ jobs:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ubuntu-gcc-install-${{ matrix.os }}
       - name: Extract installed package
@@ -90,7 +91,7 @@ jobs:
       - gcc-test
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -98,9 +99,9 @@ jobs:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ubuntu-gcc-install-${{ matrix.os }}
       - name: Extract installed package
@@ -114,7 +115,7 @@ jobs:
   clang-build:
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -122,7 +123,7 @@ jobs:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
       - name: ccache
@@ -134,31 +135,32 @@ jobs:
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
-          CC: clang-20
-          CXX: clang++-20
+          CC: clang-21
+          CXX: clang++-21
       - name: Build project
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
         env:
-          CC: clang-20
-          CXX: clang++-20
+          CC: clang-21
+          CXX: clang++-21
       - name: Install project
         run: |
-          cmake --build build --target install
+          cmake --build build --target install -- --quiet
       - name: Archive installed package
         uses: ./.github/actions/archive-install
         with:
           path: install
           name: ubuntu-clang-install-${{ matrix.os }}
+      - name: Show ccache stats
+        run: ccache --show-stats
   clang-test:
     needs:
       - clang-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -166,9 +168,9 @@ jobs:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ubuntu-clang-install-${{ matrix.os }}
       - name: Extract installed package
@@ -190,7 +192,7 @@ jobs:
       - clang-test
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -198,9 +200,9 @@ jobs:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ubuntu-clang-install-${{ matrix.os }}
       - name: Extract installed package
@@ -216,7 +218,7 @@ jobs:
       - clang-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -224,7 +226,7 @@ jobs:
       matrix:
         os: ["ubuntu-24.04"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
       - name: ccache
@@ -236,33 +238,34 @@ jobs:
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RelWithDebInfo
           -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON -D ENABLE_LEAK_SANITIZER=ON
           -D CMAKE_INSTALL_PREFIX=install
         env:
-          CC: clang-20
-          CXX: clang++-20
+          CC: clang-21
+          CXX: clang++-21
       - name: Build project
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
         env:
-          CC: clang-20
-          CXX: clang++-20
+          CC: clang-21
+          CXX: clang++-21
       - name: Install project
         run: |
-          cmake --build build --target install
+          cmake --build build --target install -- --quiet
       - name: Archive installed package
         uses: ./.github/actions/archive-install
         with:
           path: install
           name: ubuntu-clang-sanitizer-install-${{ matrix.os }}
+      - name: Show ccache stats
+        run: ccache --show-stats
   clang-sanitizer-test:
     needs:
       - clang-sanitizer-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -270,9 +273,9 @@ jobs:
       matrix:
         os: ["ubuntu-24.04"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ubuntu-clang-sanitizer-install-${{ matrix.os }}
       - name: Extract installed package
@@ -300,7 +303,7 @@ jobs:
       - clang-sanitizer-test
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -308,9 +311,9 @@ jobs:
       matrix:
         os: ["ubuntu-24.04"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download installed package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ubuntu-clang-sanitizer-install-${{ matrix.os }}
       - name: Extract installed package
@@ -328,12 +331,12 @@ jobs:
       - clang-test-extended
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:latest
+      image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
       - name: ccache
@@ -345,12 +348,11 @@ jobs:
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
-          -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=RELEASE
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
       - name: Build project
         run: |
-          cmake --build build --parallel
+          cmake --build build --parallel -- --quiet
       - name: Run tests (MPI)
         run: scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
         env:
@@ -380,7 +382,7 @@ jobs:
                 --xml --output ../coverage.xml \
                 --html=../cov-report/index.html --html-details
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5.4.3
+        uses: codecov/codecov-action@v5.5.1
         with:
           files: coverage.xml
       - name: Upload coverage report artifact
@@ -399,3 +401,5 @@ jobs:
           body: |
             Coverage report is available for download
             [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+      - name: Show ccache stats
+        run: ccache --show-stats

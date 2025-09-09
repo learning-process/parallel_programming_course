@@ -35,8 +35,9 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
  public:
   /// @brief Generates a readable name for the performance test case.
   static std::string CustomPerfTestName(const ::testing::TestParamInfo<PerfTestParam<InType, OutType>>& info) {
-    return ppc::performance::GetStringParamName(std::get<GTestParamIndex::kTestParams>(info.param)) + "_" +
-           std::get<GTestParamIndex::kNameTest>(info.param);
+    return ppc::performance::GetStringParamName(
+               std::get<static_cast<std::size_t>(GTestParamIndex::kTestParams)>(info.param)) +
+           "_" + std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(info.param);
   }
 
  protected:
@@ -67,9 +68,9 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   }
 
   void ExecuteTest(const PerfTestParam<InType, OutType>& perf_test_param) {
-    auto task_getter = std::get<GTestParamIndex::kTaskGetter>(perf_test_param);
-    auto test_name = std::get<GTestParamIndex::kNameTest>(perf_test_param);
-    auto mode = std::get<GTestParamIndex::kTestParams>(perf_test_param);
+    auto task_getter = std::get<static_cast<std::size_t>(GTestParamIndex::kTaskGetter)>(perf_test_param);
+    auto test_name = std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(perf_test_param);
+    auto mode = std::get<static_cast<std::size_t>(GTestParamIndex::kTestParams)>(perf_test_param);
 
     ASSERT_FALSE(test_name.find("unknown") != std::string::npos);
     if (test_name.find("disabled") != std::string::npos) {
@@ -121,7 +122,7 @@ auto TupleToGTestValuesImpl(const Tuple& tup, std::index_sequence<I...> /*unused
 
 template <typename Tuple>
 auto TupleToGTestValues(Tuple&& tup) {
-  constexpr size_t kSize = std::tuple_size<std::decay_t<Tuple>>::value;
+  constexpr size_t kSize = std::tuple_size_v<std::decay_t<Tuple>>;
   return TupleToGTestValuesImpl(std::forward<Tuple>(tup), std::make_index_sequence<kSize>{});
 }
 

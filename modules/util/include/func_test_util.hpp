@@ -50,13 +50,14 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   template <typename Derived>
   static std::string PrintFuncTestName(const GTestFuncParam<InType, OutType, TestType>& info) {
     RequireStaticInterface<Derived>();
-    TestType test_param = std::get<ppc::util::GTestParamIndex::kTestParams>(info.param);
-    return std::get<GTestParamIndex::kNameTest>(info.param) + "_" + Derived::PrintTestParam(test_param);
+    TestType test_param = std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kTestParams)>(info.param);
+    return std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(info.param) + "_" +
+           Derived::PrintTestParam(test_param);
   }
 
  protected:
   void ExecuteTest(FuncTestParam<InType, OutType, TestType> test_param) {
-    const std::string& test_name = std::get<GTestParamIndex::kNameTest>(test_param);
+    const std::string& test_name = std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(test_param);
 
     ValidateTestName(test_name);
 
@@ -90,8 +91,13 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
 
   /// @brief Initializes task instance and runs it through the full pipeline.
   void InitializeAndRunTask(const FuncTestParam<InType, OutType, TestType>& test_param) {
-    task_ = std::get<GTestParamIndex::kTaskGetter>(test_param)(GetTestInputData());
+    task_ = std::get<static_cast<std::size_t>(GTestParamIndex::kTaskGetter)>(test_param)(GetTestInputData());
+    ExecuteTaskPipeline();
+  }
 
+  /// @brief Executes the full task pipeline with validation.
+  // NOLINTNEXTLINE(readability-function-cognitive-complexity)
+  void ExecuteTaskPipeline() {
     EXPECT_TRUE(task_->Validation());
     EXPECT_TRUE(task_->PreProcessing());
     EXPECT_TRUE(task_->Run());

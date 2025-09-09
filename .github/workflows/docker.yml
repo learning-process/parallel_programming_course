@@ -19,10 +19,11 @@ jobs:
   build-and-push:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
+    if: github.repository == 'learning-process/parallel_programming_course'
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -47,4 +48,4 @@ jobs:
           file: ./docker/ubuntu.Dockerfile
           platforms: linux/amd64,linux/arm64
           push: ${{ github.ref == 'refs/heads/master' }}
-          tags: ghcr.io/learning-process/ppc-ubuntu:latest
+          tags: ghcr.io/learning-process/ppc-ubuntu:1.1

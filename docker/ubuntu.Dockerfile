@@ -19,7 +19,7 @@ RUN set -e \
     gcovr zip \
  && wget -q https://apt.llvm.org/llvm.sh \
  && chmod +x llvm.sh \
- && ./llvm.sh 20 all \
+ && ./llvm.sh 21 all \
  && rm llvm.sh \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*

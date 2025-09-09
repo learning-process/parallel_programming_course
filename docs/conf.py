@@ -24,6 +24,12 @@ breathe_projects = {
 }
 breathe_default_project = "ParallelProgrammingCourse"
 
+# Suppress specific warnings for API documentation
+suppress_warnings = [
+    "ref.ref",  # undefined label warnings
+    "ref.identifier",  # cpp:identifier reference target not found
+]
+
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 locale_dirs = ["locale"]

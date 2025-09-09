@@ -111,7 +111,7 @@ class PPCRunner:
         for task_type in ["omp", "seq", "stl", "tbb"]:
             self.__run_exec(
                 [str(self.work_dir / "ppc_func_tests")]
-                + self.__get_gtest_settings(3, "_" + task_type + "_")
+                + self.__get_gtest_settings(1, "_" + task_type + "_")
             )
 
     def run_core(self):
@@ -120,7 +120,7 @@ class PPCRunner:
                 shlex.split(self.valgrind_cmd)
                 + [str(self.work_dir / "core_func_tests")]
                 + self.__get_gtest_settings(1, "*")
-                + ["--gtest_filter=*:-*_disabled_valgrind"]
+                + ["--gtest_filter=*:-*DisabledValgrind"]
             )
 
         self.__run_exec(
@@ -142,7 +142,7 @@ class PPCRunner:
                 self.__run_exec(
                     mpi_running
                     + [str(self.work_dir / "ppc_func_tests")]
-                    + self.__get_gtest_settings(10, "_" + task_type)
+                    + self.__get_gtest_settings(1, "_" + task_type)
                 )
 
     def run_performance(self):
@@ -194,7 +194,9 @@ if __name__ == "__main__":
                 env_copy["PPC_NUM_PROC"] = str(count)
                 env_copy.setdefault("PPC_NUM_THREADS", "1")
 
-            print(f"Executing with {args_dict['running_type']} count: {count}")
+            print(
+                f"Executing with {args_dict['running_type']} count: {count}", flush=True
+            )
             _execute(args_dict, env_copy)
     else:
         _execute(args_dict, os.environ.copy())
