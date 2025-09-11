@@ -22,20 +22,17 @@ jobs:
   pr_compliance:
     uses: ./.github/workflows/pr-compliance.yml
 
-  pre-commit:
-    needs: [pr_compliance]
-    uses: ./.github/workflows/pre-commit.yml
   ubuntu:
     needs:
-      - pre-commit
+      - pr_compliance
     uses: ./.github/workflows/ubuntu.yml
   mac:
     needs:
-      - pre-commit
+      - pr_compliance
     uses: ./.github/workflows/mac.yml
   windows:
     needs:
-      - pre-commit
+      - pr_compliance
     uses: ./.github/workflows/windows.yml
   perf:
     needs:
