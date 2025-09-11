@@ -1,39 +1,76 @@
-<!--
-Pull request title requirement:
+PR Title (enforced by CI):
+- Pattern: [TASK] <Task>-<Variant>. <Last Name> <First Name> <Middle Name>. <Group>. <Task name>.
+- Notes: `[TASK]` is optional; <Group> can be any text; there must be a dot and a space after each block.
+- Example (RU): 2-12. Иванов Иван Иванович. 2341-а234. Вычисление суммы элементов вектора.
+- Example (EN): 2-12. Ivanov Ivan Ivanovich. 2341-a234. Vector elements sum calculation.
 
-"<LastName> <FirstName>. Technology <TECHNOLOGY_NAME:SEQ|OMP|TBB|STL|MPI>. <Full Task Name>. Variant <Number>"
--->
+PR Body (enforced by CI):
+- Use the 12 sections below exactly as titled; do not include HTML comments.
+- After each label line (e.g., `Assignment:`), provide non-empty text.
 
-## Description
-<!--
-Please provide a detailed description of your implementation, including:
- - key solution details (chosen algorithm description)
- - parallelism technology application (if applicable)
--->
+Commit Messages (enforced by CI):
+- Subject pattern: <type>(<technology>|<task_folder>): <short_change_summary>
+- Allowed types: feat, fix, perf, test, refactor, docs, build, chore
+- Allowed technology: seq, omp, mpi, stl, tbb, all; or use your task folder name instead of a technology
+- Subject length: ≤ 72 characters, then one blank line
+- Required body sections: [What], [Why], [How], Scope: (Task/Variant/Technology/Folder), Tests:, Local runs:
+- Example subject: feat(omp|nesterov_a_vector_sum): implement parallel vector sum
+- Example body:
+  [What]
+  Add OMP reduction for vector sum.
 
-- **Task**: _Enter the full task name here_
-- **Variant**: _Enter the variant number here_
-- **Technology**: _Enter technology (e.g., SEQ, OMP, TBB, STL, MPI)_
-- **Description** of your implementation and report.  
-  _Provide a concise summary of your implementation and report here._
+  [Why]
+  Improve performance and parallel coverage.
 
----
+  [How]
+  Use #pragma omp parallel for reduction(+:sum).
 
-## Checklist
-<!--
-Please ensure the following items are completed **before** submitting your pull request and requesting a review:
--->
+  Scope:
+  - Task: 2
+  - Variant: 12
+  - Technology: omp
+  - Folder: nesterov_a_vector_sum
 
-- [ ] **CI Status**: All CI jobs (build, tests, report generation) are passing on my branch in my fork
-- [ ] **Task Directory & Naming**: I have created a directory named `<lastName>_<firstInitial>_<short_task_name>`
-- [ ] **Full Task Definition**: I have provided the complete task description in the pull request body.
-- [ ] **clang-format**: My changes pass `clang-format` locally in my fork (no formatting errors)
-- [ ] **clang-tidy**: My changes pass `clang-tidy` locally in my fork (no warnings/errors)
-- [ ] **Functional Tests**: All functional tests are passing locally on my machine
-- [ ] **Performance Tests**: All performance tests are passing locally on my machine
-- [ ] **Branch**: I am working on a branch named exactly as my task directory (e.g., `nesterov_a_vector_sum`), not on `master`.
-- [ ] **Truthful Content**: I confirm that every detail provided in this pull request is accurate and truthful to the best of my knowledge.
+  Tests:
+  Added unit and perf tests.
 
-<!--
-NOTE: Untruthful entries in this checklist may result in PR rejection and zero points for the associated task.
--->
+  Local runs:
+  make test
+
+Please fill in ALL sections below (no HTML comments). Use English headers as given.
+
+## 1. Full name and group
+Name and group:
+
+## 2. Assignment / Topic / Task
+Assignment:
+
+## 3. Technology / Platform used
+Technology:
+
+## 4. Goals of the work
+Goals:
+
+## 5. Solution description and structure
+Description:
+
+## 6. System requirements and build instructions
+Build & Run:
+
+## 7. Testing and verification
+Testing:
+
+## 8. Results
+Results:
+
+## 9. Performance analysis
+Analysis:
+
+## 10. Conclusions and possible improvements
+Conclusions:
+
+## 11. Limitations / known issues
+Limitations:
+
+## 12. CI / static analysis / code style
+CI & Style:
