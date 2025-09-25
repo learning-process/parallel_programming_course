@@ -2,7 +2,10 @@ name: Build application
 
 on:
   push:
+    branches:
+      - master
   pull_request:
+    types: [opened, edited, synchronize, reopened]
   merge_group:
   schedule:
     - cron: '0 0 * * *'
@@ -16,19 +19,20 @@ concurrency:
         !startsWith(github.ref, 'refs/heads/gh-readonly-queue') }}
 
 jobs:
-  pre-commit:
-    uses: ./.github/workflows/pre-commit.yml
+  pr_compliance:
+    uses: ./.github/workflows/pr-compliance.yml
+
   ubuntu:
     needs:
-      - pre-commit
+      - pr_compliance
     uses: ./.github/workflows/ubuntu.yml
   mac:
     needs:
-      - pre-commit
+      - pr_compliance
     uses: ./.github/workflows/mac.yml
   windows:
     needs:
-      - pre-commit
+      - pr_compliance
     uses: ./.github/workflows/windows.yml
   perf:
     needs:
