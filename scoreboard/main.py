@@ -13,19 +13,44 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
 task_types = ["all", "mpi", "omp", "seq", "stl", "tbb"]
+task_types_threads = ["all", "omp", "seq", "stl", "tbb"]
+task_types_processes = ["mpi", "seq"]
 
 script_dir = Path(__file__).parent
 tasks_dir = script_dir.parent / "tasks"
 
 
+def _read_tasks_type(task_dir: Path) -> str | None:
+    """Read tasks_type from settings.json in the task directory (if present)."""
+    settings_path = task_dir / "settings.json"
+    if settings_path.exists():
+        try:
+            import json
+
+            with open(settings_path, "r") as f:
+                data = json.load(f)
+            return data.get("tasks_type")  # "threads" or "processes"
+        except Exception as e:
+            logger.warning("Failed to parse %s: %s", settings_path, e)
+    return None
+
+
 def discover_tasks(tasks_dir, task_types):
-    """Discover tasks and their implementation status from the filesystem."""
+    """Discover tasks and their implementation status from the filesystem.
+
+    Returns:
+        directories: dict[task_name][task_type] -> status
+        tasks_type_map: dict[task_name] -> "threads" | "processes" | None
+    """
     directories = defaultdict(dict)
+    tasks_type_map: dict[str, str | None] = {}
 
     if tasks_dir.exists() and tasks_dir.is_dir():
         for task_name_dir in tasks_dir.iterdir():
             if task_name_dir.is_dir() and task_name_dir.name not in ["common"]:
                 task_name = task_name_dir.name
+                # Save tasks_type from settings.json if present
+                tasks_type_map[task_name] = _read_tasks_type(task_name_dir)
                 for task_type in task_types:
                     task_type_dir = task_name_dir / task_type
                     if task_type_dir.exists() and task_type_dir.is_dir():
@@ -35,10 +60,10 @@ def discover_tasks(tasks_dir, task_types):
                         else:
                             directories[task_name][task_type] = "done"
 
-    return directories
+    return directories, tasks_type_map
 
 
-directories = discover_tasks(tasks_dir, task_types)
+directories, tasks_type_map = discover_tasks(tasks_dir, task_types)
 
 
 def load_performance_data(perf_stat_file_path):
@@ -163,24 +188,20 @@ def load_configurations():
     return cfg, eff_num_proc, deadlines_cfg, plagiarism_cfg
 
 
-def main():
-    """Main function to generate the scoreboard."""
-    cfg, eff_num_proc, deadlines_cfg, plagiarism_cfg = load_configurations()
-
-    env = Environment(loader=FileSystemLoader(Path(__file__).parent / "templates"))
-
-    perf_stat_file_path = (
-        script_dir.parent / "build" / "perf_stat_dir" / "task_run_perf_table.csv"
-    )
-
-    # Read and parse performance statistics CSV
-    perf_stats = load_performance_data(perf_stat_file_path)
-
+def _build_rows_for_task_types(
+    selected_task_types: list[str],
+    dir_names: list[str],
+    perf_stats: dict,
+    cfg,
+    eff_num_proc,
+    deadlines_cfg,
+):
+    """Build rows for the given list of task directories and selected task types."""
     rows = []
-    for dir in sorted(directories.keys()):
+    for dir in sorted(dir_names):
         row_types = []
         total_count = 0
-        for task_type in task_types:
+        for task_type in selected_task_types:
             status = directories[dir].get(task_type)
             sol_points, solution_style = get_solution_points_and_style(
                 task_type, status, cfg
@@ -219,22 +240,113 @@ def main():
             total_count += task_points
 
         rows.append({"task": dir, "types": row_types, "total": total_count})
+    return rows
 
-    template = env.get_template("index.html.j2")
-    html_content = template.render(task_types=task_types, rows=rows)
+
+def main():
+    """Main function to generate the scoreboard.
+
+    Now generates three pages in the output dir:
+      - index.html: simple menu linking to threads.html and processes.html
+      - threads.html: scoreboard for thread-based tasks
+      - processes.html: scoreboard for process-based tasks
+    """
+    cfg, eff_num_proc, deadlines_cfg, plagiarism_cfg_local = load_configurations()
+
+    # Make plagiarism config available to rows builder
+    global plagiarism_cfg
+    plagiarism_cfg = plagiarism_cfg_local
+
+    env = Environment(loader=FileSystemLoader(Path(__file__).parent / "templates"))
+
+    # Locate perf CSV from CI or local runs
+    candidates = [
+        script_dir.parent / "build" / "perf_stat_dir" / "task_run_perf_table.csv",
+        script_dir.parent / "perf_stat_dir" / "task_run_perf_table.csv",
+    ]
+    perf_stat_file_path = next((p for p in candidates if p.exists()), candidates[0])
+
+    # Read and parse performance statistics CSV
+    perf_stats = load_performance_data(perf_stat_file_path)
+
+    # Partition tasks by tasks_type from settings.json
+    threads_task_dirs = [
+        name for name, ttype in tasks_type_map.items() if ttype == "threads"
+    ]
+    processes_task_dirs = [
+        name for name, ttype in tasks_type_map.items() if ttype == "processes"
+    ]
+
+    # Fallback: if settings.json is missing, guess by directory name heuristic
+    for name in directories.keys():
+        if name not in tasks_type_map or tasks_type_map[name] is None:
+            if "threads" in name:
+                threads_task_dirs.append(name)
+            elif "processes" in name:
+                processes_task_dirs.append(name)
+
+    # Build rows for each page
+    threads_rows = _build_rows_for_task_types(
+        task_types_threads, threads_task_dirs, perf_stats, cfg, eff_num_proc, deadlines_cfg
+    )
+    processes_rows = _build_rows_for_task_types(
+        task_types_processes,
+        processes_task_dirs,
+        perf_stats,
+        cfg,
+        eff_num_proc,
+        deadlines_cfg,
+    )
 
     parser = argparse.ArgumentParser(description="Generate HTML scoreboard.")
     parser.add_argument(
-        "-o", "--output", type=str, required=True, help="Output file path"
+        "-o", "--output", type=str, required=True, help="Output directory path"
     )
     args = parser.parse_args()
 
     output_path = Path(args.output)
     output_path.mkdir(parents=True, exist_ok=True)
-    output_file = output_path / "index.html"
-    with open(output_file, "w") as file:
-        file.write(html_content)
 
+    # Render tables
+    table_template = env.get_template("index.html.j2")
+    threads_html = table_template.render(
+        task_types=task_types_threads, rows=threads_rows
+    )
+    processes_html = table_template.render(
+        task_types=task_types_processes, rows=processes_rows
+    )
+
+    with open(output_path / "threads.html", "w") as f:
+        f.write(threads_html)
+    with open(output_path / "processes.html", "w") as f:
+        f.write(processes_html)
+
+    # Render index menu page
+    try:
+        menu_template = env.get_template("menu_index.html.j2")
+    except Exception:
+        # Simple fallback menu if template missing
+        menu_html_content = (
+            "<html><head><title>Scoreboard</title><link rel=\"stylesheet\" "
+            "type=\"text/css\" href=\"static/main.css\"></head><body>"
+            "<h1>Scoreboard</h1>"
+            "<ul>"
+            "<li><a href=\"threads.html\">Threads Scoreboard</a></li>"
+            "<li><a href=\"processes.html\">Processes Scoreboard</a></li>"
+            "</ul></body></html>"
+        )
+    else:
+        menu_html_content = menu_template.render(
+            pages=[
+                {"href": "threads.html", "title": "Threads Scoreboard"},
+                {"href": "processes.html", "title": "Processes Scoreboard"},
+            ]
+        )
+
+    with open(output_path / "index.html", "w") as f:
+        f.write(menu_html_content)
+
+    # Copy static assets
     static_src = script_dir / "static"
     static_dst = output_path / "static"
     if static_src.exists():
@@ -245,7 +357,7 @@ def main():
     else:
         logger.warning("Static directory not found at %s", static_src)
 
-    logger.info("HTML page generated at %s", output_file)
+    logger.info("HTML pages generated at %s (index.html, threads.html, processes.html)", output_path)
 
 
 if __name__ == "__main__":

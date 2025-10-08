@@ -83,8 +83,8 @@ jobs:
           name: perf-stat
       - name: Extract performance data
         run: |
-          mkdir -p build/perf_stat_dir
-          unzip -o perf-stat.zip -d .
+          mkdir -p build
+          unzip -o perf-stat.zip -d build
       - name: CMake configure
         run: |
           cmake -S . -B build -DUSE_SCOREBOARD=ON
