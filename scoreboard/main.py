@@ -287,7 +287,12 @@ def main():
 
     # Build rows for each page
     threads_rows = _build_rows_for_task_types(
-        task_types_threads, threads_task_dirs, perf_stats, cfg, eff_num_proc, deadlines_cfg
+        task_types_threads,
+        threads_task_dirs,
+        perf_stats,
+        cfg,
+        eff_num_proc,
+        deadlines_cfg,
     )
     processes_rows = _build_rows_for_task_types(
         task_types_processes,
@@ -327,12 +332,12 @@ def main():
     except Exception:
         # Simple fallback menu if template missing
         menu_html_content = (
-            "<html><head><title>Scoreboard</title><link rel=\"stylesheet\" "
-            "type=\"text/css\" href=\"static/main.css\"></head><body>"
+            '<html><head><title>Scoreboard</title><link rel="stylesheet" '
+            'type="text/css" href="static/main.css"></head><body>'
             "<h1>Scoreboard</h1>"
             "<ul>"
-            "<li><a href=\"threads.html\">Threads Scoreboard</a></li>"
-            "<li><a href=\"processes.html\">Processes Scoreboard</a></li>"
+            '<li><a href="threads.html">Threads Scoreboard</a></li>'
+            '<li><a href="processes.html">Processes Scoreboard</a></li>'
             "</ul></body></html>"
         )
     else:
@@ -357,7 +362,10 @@ def main():
     else:
         logger.warning("Static directory not found at %s", static_src)
 
-    logger.info("HTML pages generated at %s (index.html, threads.html, processes.html)", output_path)
+    logger.info(
+        "HTML pages generated at %s (index.html, threads.html, processes.html)",
+        output_path,
+    )
 
 
 if __name__ == "__main__":
