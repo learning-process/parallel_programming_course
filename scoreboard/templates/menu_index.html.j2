@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Scoreboard Menu</title>
+    <link rel="stylesheet" type="text/css" href="static/main.css">
+    <style>
+        nav { margin: 16px 0; }
+        nav a { margin-right: 16px; font-weight: bold; }
+        .note { color: #444; font-size: 0.9em; margin-top: 12px; }
+    </style>
+    <script>
+      function openPage(href) {
+        document.getElementById('content').src = href;
+      }
+    </script>
+</head>
+<body>
+    <h1>Scoreboard</h1>
+    <nav>
+        {% for page in pages %}
+            <a href="{{ page.href }}" onclick="openPage('{{ page.href }}'); return false;">{{ page.title }}</a>
+        {% endfor %}
+    </nav>
+    <p>
+        <b>(S)olution</b> - The correctness and completeness of the implemented solution.<br/>
+        <b>(A)cceleration</b> - The process of speeding up software to improve performance. Speedup = T(seq) / T(parallel)<br/>
+        <b>(E)fficiency</b> - Optimizing software speed-up by improving CPU utilization and resource management. Efficiency = Speedup / NumProcs * 100%<br/>
+        <b>(D)eadline</b> - The timeliness of the submission in relation to the given deadline.<br/>
+        <b>(P)lagiarism</b> - The originality of the work, ensuring no copied content from external sources.
+    </p>
+    <div class="note">Choose a scoreboard above to view. Defaults to Threads.</div>
+    <iframe id="content" src="threads.html" style="width: 100%; height: 85vh; border: 1px solid #ddd;"></iframe>
+</body>
+</html>
