@@ -198,6 +198,7 @@ def _build_rows_for_task_types(
 ):
     """Build rows for the given list of task directories and selected task types."""
     rows = []
+
     def _load_student_info_label(dir_name: str):
         import json
 
@@ -219,6 +220,7 @@ def _build_rows_for_task_types(
 
     def _load_variant(dir_name: str):
         import json
+
         info_path = tasks_dir / dir_name / "info.json"
         if not info_path.exists():
             return "?"
@@ -272,12 +274,14 @@ def _build_rows_for_task_types(
 
         label_name = _load_student_info_label(dir) or dir
         variant = _load_variant(dir)
-        rows.append({
-            "task": label_name,
-            "variant": variant,
-            "types": row_types,
-            "total": total_count,
-        })
+        rows.append(
+            {
+                "task": label_name,
+                "variant": variant,
+                "types": row_types,
+                "total": total_count,
+            }
+        )
     return rows
 
 
@@ -456,14 +460,16 @@ def main():
     row_variant = "?"
     if target_identity:
         parts = target_identity.split("|")
-        if len(parts) >= 4:
-            first, last, middle, _group = parts[0], parts[1], parts[2], parts[3]
+        if len(parts) >= 3:
+            first, last, middle = parts[0], parts[1], parts[2]
             name_parts = [p for p in [last, first, middle] if p]
             name = "<br/>".join(name_parts)
             row_label = name or row_label
+
     # Choose variant from the first available task (1..3)
     def _load_variant(dir_name: str):
         import json
+
         info_path = tasks_dir / dir_name / "info.json"
         if not info_path.exists():
             return "?"
@@ -473,6 +479,7 @@ def main():
             return str(data.get("student", {}).get("variant_number", "?"))
         except Exception:
             return "?"
+
     for n in expected_numbers:
         ent = num_to_dir.get(n)
         if ent:
@@ -504,7 +511,9 @@ def main():
     # Use dedicated template for processes table layout
     processes_template = env.get_template("processes.html.j2")
     processes_html = processes_template.render(
-        top_task_names=proc_top_headers, group_headers=proc_group_headers, rows=processes_rows
+        top_task_names=proc_top_headers,
+        group_headers=proc_group_headers,
+        rows=processes_rows,
     )
 
     with open(output_path / "threads.html", "w") as f:
@@ -527,7 +536,9 @@ def main():
             return None
 
     def _slugify(text: str) -> str:
-        return "".join(ch if ch.isalnum() or ch in ("-", "_") else "_" for ch in str(text))
+        return "".join(
+            ch if ch.isalnum() or ch in ("-", "_") else "_" for ch in str(text)
+        )
 
     # Collect groups
     threads_groups = sorted(
@@ -544,7 +555,12 @@ def main():
         out_file = output_path / f"threads_{slug}.html"
         filtered_dirs = [d for d in threads_task_dirs if _load_group_number(d) == g]
         rows_g = _build_rows_for_task_types(
-            task_types_threads, filtered_dirs, perf_stats, cfg, eff_num_proc, deadlines_cfg
+            task_types_threads,
+            filtered_dirs,
+            perf_stats,
+            cfg,
+            eff_num_proc,
+            deadlines_cfg,
         )
         html_g = table_template.render(task_types=task_types_threads, rows=rows_g)
         with open(out_file, "w") as f:
@@ -560,6 +576,7 @@ def main():
 
         # Reuse earlier logic but limited to filtered_dirs
         import json as _json
+
         def _load_student_info_group(dir_name: str):
             info_path = tasks_dir / dir_name / "info.json"
             if not info_path.exists():
@@ -623,8 +640,10 @@ def main():
                         ttype, status, cfg
                     )
                     task_points = sol_points
-                    is_cheated, plagiarism_points = check_plagiarism_and_calculate_penalty(
-                        d, ttype, sol_points, plagiarism_cfg, cfg
+                    is_cheated, plagiarism_points = (
+                        check_plagiarism_and_calculate_penalty(
+                            d, ttype, sol_points, plagiarism_cfg, cfg
+                        )
                     )
                     task_points += plagiarism_points
                     perf_val = perf_stats.get(d, {}).get(ttype, "?")
@@ -669,14 +688,16 @@ def main():
         row_label_g = f"group {g}"
         if target_identity_g:
             parts = target_identity_g.split("|")
-            if len(parts) >= 4:
-                first, last, middle, _group = parts[0], parts[1], parts[2], parts[3]
+            if len(parts) >= 3:
+                first, last, middle = parts[0], parts[1], parts[2]
                 nm_parts = [p for p in [last, first, middle] if p]
                 nm = "<br/>".join(nm_parts)
                 row_label_g = nm or row_label_g
+
         # Variant for group row
         def _load_variant_g(dir_name: str):
             import json
+
             info_path = tasks_dir / dir_name / "info.json"
             if not info_path.exists():
                 return "?"
@@ -686,6 +707,7 @@ def main():
                 return str(data.get("student", {}).get("variant_number", "?"))
             except Exception:
                 return "?"
+
         row_variant_g = "?"
         for n in [1, 2, 3]:
             entry2 = num_to_dir_g.get(n)
