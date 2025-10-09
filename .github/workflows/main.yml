@@ -31,8 +31,8 @@ jobs:
       - pre-commit
     uses: ./.github/workflows/windows.yml
   perf:
-#    needs:
-#      - ubuntu
+    needs:
+      - ubuntu
 #      - mac
 #      - windows
     uses: ./.github/workflows/perf.yml
