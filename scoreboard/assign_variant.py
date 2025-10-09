@@ -62,12 +62,12 @@ def _hash_int(key: str) -> int:
 
 
 def assign_variant(
-        surname: str,
-        name: str,
-        group: str,
-        repo: str,
-        patronymic: Optional[str] = "",
-        num_variants: int = 31,
+    surname: str,
+    name: str,
+    group: str,
+    repo: str,
+    patronymic: Optional[str] = "",
+    num_variants: int = 31,
 ) -> int:
     """
     Deterministically returns a variant index in [0 .. num_variants-1]
@@ -102,6 +102,7 @@ def assign_variant(
 
 # Minimal self-check when executed directly (no CLI arguments).
 if __name__ == "__main__":
+
     def demo():
         print("Demo: deterministic assignment\n")
 

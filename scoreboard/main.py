@@ -2,7 +2,6 @@ from pathlib import Path
 from collections import defaultdict, Counter
 from datetime import datetime
 import csv
-import math
 import argparse
 import subprocess
 import yaml
@@ -33,7 +32,15 @@ if str(script_dir) not in sys.path:
 try:
     from assign_variant import assign_variant
 except Exception:
-    def assign_variant(surname: str, name: str, group: str, repo: str, patronymic: str = "", num_variants: int = 1) -> int:
+
+    def assign_variant(
+        surname: str,
+        name: str,
+        group: str,
+        repo: str,
+        patronymic: str = "",
+        num_variants: int = 1,
+    ) -> int:
         return 0
 
 
@@ -225,6 +232,7 @@ def _find_process_report_max(points_info, task_number: int) -> int:
                 return 0
     return 0
 
+
 def _find_process_points(points_info, task_number: int) -> tuple[int, int, int, int]:
     """Return (S_mpi, S_seq, A_mpi, R) maxima for a given process task ordinal (1..3).
     Supports both mapping and list-of-maps (per user's YAML example).
@@ -233,6 +241,7 @@ def _find_process_points(points_info, task_number: int) -> tuple[int, int, int, 
     key = f"mpi_task_{task_number}"
     for t in proc_tasks:
         if str(t.get("name")) == key:
+
             def _extract(obj, k):
                 if isinstance(obj, dict):
                     return int(obj.get(k, 0))
@@ -268,6 +277,7 @@ def _find_process_variants_max(points_info, task_number: int) -> int:
             except Exception:
                 return 1
     return 1
+
 
 def get_solution_points_and_style(task_type, status, cfg):
     """Get solution points and CSS style based on task type and status."""
@@ -309,7 +319,9 @@ def check_plagiarism_and_calculate_penalty(
         and isinstance(plagiarism_cfg[semester], dict)
     ):
         inner = plagiarism_cfg[semester]
-        plag_map = (inner.get("copying") if "copying" in inner else inner.get("plagiarism", {})) or {}
+        plag_map = (
+            inner.get("copying") if "copying" in inner else inner.get("plagiarism", {})
+        ) or {}
 
     flagged_list = set(plag_map.get(task_type, []) or [])
     is_cheated = dir in flagged_list or clean_dir in flagged_list
@@ -459,11 +471,11 @@ def _build_rows_for_task_types(
             # Performance points P for non-seq types, based on efficiency
             perf_max = _find_performance_max(cfg, task_type)
             if task_type != "seq":
-                perf_points = _calc_perf_points_from_efficiency(
-                    efficiency, perf_max
-                )
+                perf_points = _calc_perf_points_from_efficiency(efficiency, perf_max)
                 perf_points_display = (
-                    f"{perf_points:.2f}" if isinstance(efficiency, str) and efficiency.endswith("%") else "—"
+                    f"{perf_points:.2f}"
+                    if isinstance(efficiency, str) and efficiency.endswith("%")
+                    else "—"
                 )
             else:
                 perf_points = 0.0
@@ -494,7 +506,14 @@ def _build_rows_for_task_types(
         if fields:
             last, first, middle, group = fields
             try:
-                v_idx = assign_variant(last, first, group, REPO_SALT, patronymic=middle, num_variants=threads_vmax)
+                v_idx = assign_variant(
+                    last,
+                    first,
+                    group,
+                    REPO_SALT,
+                    patronymic=middle,
+                    num_variants=threads_vmax,
+                )
                 variant = str(v_idx + 1)
             except Exception:
                 variant = "?"
@@ -535,8 +554,8 @@ def main():
         if dl_file.exists():
             with open(dl_file, "r") as f:
                 dl_cfg = yaml.safe_load(f) or {}
-            deadlines_display_threads = (dl_cfg.get("threads") or {})
-            deadlines_display_processes = (dl_cfg.get("processes") or {})
+            deadlines_display_threads = dl_cfg.get("threads") or {}
+            deadlines_display_processes = dl_cfg.get("processes") or {}
     except Exception:
         pass
 
@@ -778,10 +797,14 @@ def main():
             except Exception:
                 plag_coeff = 0.0
             p_mpi = (
-                -plag_coeff * s_mpi if (has_mpi and group_cells[0].get("plagiarised")) else 0
+                -plag_coeff * s_mpi
+                if (has_mpi and group_cells[0].get("plagiarised"))
+                else 0
             )
             p_seq = (
-                -plag_coeff * s_seq if (has_seq and group_cells[1].get("plagiarised")) else 0
+                -plag_coeff * s_seq
+                if (has_seq and group_cells[1].get("plagiarised"))
+                else 0
             )
             group_cells[0]["plagiarism_points"] = p_mpi
             group_cells[1]["plagiarism_points"] = p_seq
@@ -866,7 +889,9 @@ def main():
     output_path.mkdir(parents=True, exist_ok=True)
 
     # Render tables
-    generated_msk = datetime.now(ZoneInfo("Europe/Moscow")).strftime("%Y-%m-%d %H:%M:%S")
+    generated_msk = datetime.now(ZoneInfo("Europe/Moscow")).strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
     table_template = env.get_template("index.html.j2")
     threads_vmax = int((cfg.get("threads", {}) or {}).get("variants_max", 1))
     # Build display deadlines (use file values if present, fill missing with auto)
@@ -914,7 +939,9 @@ def main():
         label = None
         if deadlines_display_processes:
             key = f"task_{n}"
-            val = deadlines_display_processes.get(key) or deadlines_display_processes.get(f"mpi_task_{n}")
+            val = deadlines_display_processes.get(
+                key
+            ) or deadlines_display_processes.get(f"mpi_task_{n}")
             if val is not None:
                 if isinstance(val, int):
                     shift_days = val
@@ -1148,7 +1175,9 @@ def main():
                     else:
                         perf_points_mpi_display_g = "—"
                     proc_groups_g[base_idx]["perf_points"] = perf_points_mpi_g
-                    proc_groups_g[base_idx]["perf_points_display"] = perf_points_mpi_display_g
+                    proc_groups_g[base_idx]["perf_points_display"] = (
+                        perf_points_mpi_display_g
+                    )
                     proc_groups_g[base_idx + 1]["perf_points"] = 0
                     try:
                         plag_coeff_g = float(
@@ -1165,7 +1194,9 @@ def main():
                     )
                     p_seq_g = (
                         -plag_coeff_g * s_seq_g
-                        if (has_seq_g and proc_groups_g[base_idx + 1].get("plagiarised"))
+                        if (
+                            has_seq_g and proc_groups_g[base_idx + 1].get("plagiarised")
+                        )
                         else 0
                     )
                     proc_groups_g[base_idx]["plagiarism_points"] = p_mpi_g
@@ -1174,7 +1205,9 @@ def main():
                 # Sum points by processes S + P + R (and C penalties)
                 s_inc_g = (s_mpi_g if has_mpi_g else 0) + (s_seq_g if has_seq_g else 0)
                 r_inc_g = r_max_g if report_present_g else 0
-                total_points_sum_g += s_inc_g + perf_points_mpi_g + r_inc_g + p_mpi_g + p_seq_g
+                total_points_sum_g += (
+                    s_inc_g + perf_points_mpi_g + r_inc_g + p_mpi_g + p_seq_g
+                )
                 proc_r_values_g.append(r_inc_g)
             else:
                 proc_top_headers_g.append(f"task-{n}")
@@ -1249,7 +1282,9 @@ def main():
             label = None
             if deadlines_display_processes:
                 key = f"task_{n}"
-                val = deadlines_display_processes.get(key) or deadlines_display_processes.get(f"mpi_task_{n}")
+                val = deadlines_display_processes.get(
+                    key
+                ) or deadlines_display_processes.get(f"mpi_task_{n}")
                 if val is not None:
                     if isinstance(val, int):
                         shift_days = val
