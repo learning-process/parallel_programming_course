@@ -7,9 +7,17 @@ import subprocess
 import yaml
 import shutil
 from jinja2 import Environment, FileSystemLoader
-from zoneinfo import ZoneInfo
 import logging
 import sys
+
+# Try ZoneInfo from stdlib, then from backports, else fall back to naive time
+try:
+    from zoneinfo import ZoneInfo  # type: ignore
+except Exception:  # pragma: no cover - fallback for Python < 3.9
+    try:
+        from backports.zoneinfo import ZoneInfo  # type: ignore
+    except Exception:  # Last resort: define a stub
+        ZoneInfo = None  # type: ignore
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -42,6 +50,16 @@ except Exception:
         num_variants: int = 1,
     ) -> int:
         return 0
+
+
+def _now_msk():
+    """Return current datetime in MSK if tz support is available, else local time."""
+    try:
+        if ZoneInfo is not None:
+            return datetime.now(ZoneInfo("Europe/Moscow"))
+    except Exception:
+        pass
+    return datetime.now()
 
 
 def _read_tasks_type(task_dir: Path) -> str | None:
@@ -561,7 +579,6 @@ def main():
 
     # Helper: compute evenly spaced dates for current semester (MSK)
     from datetime import date, timedelta
-    from zoneinfo import ZoneInfo as _ZoneInfo
     import calendar
 
     def _abbr(day: date) -> str:
@@ -616,15 +633,21 @@ def main():
         return res
 
     def _compute_display_deadlines_threads(order: list[str]) -> dict[str, date]:
-        # Threads = Spring semester
-        today = datetime.now(_ZoneInfo("Europe/Moscow")).date()
+        # Threads = Spring semester (prefer MSK; fallback to local time)
+        try:
+            today = _now_msk().date()
+        except Exception:
+            today = datetime.now().date()
         s, e = _spring_bounds(today)
         ds = _evenly_spaced_dates(len(order), s, e)
         return {t: d for t, d in zip(order, ds)}
 
     def _compute_display_deadlines_processes(n_items: int) -> list[date]:
-        # Processes = Autumn semester
-        today = datetime.now(_ZoneInfo("Europe/Moscow")).date()
+        # Processes = Autumn semester (prefer MSK; fallback to local time)
+        try:
+            today = _now_msk().date()
+        except Exception:
+            today = datetime.now().date()
         s, e = _autumn_bounds(today)
         ds = _evenly_spaced_dates(n_items, s, e)
         return ds
@@ -889,9 +912,7 @@ def main():
     output_path.mkdir(parents=True, exist_ok=True)
 
     # Render tables
-    generated_msk = datetime.now(ZoneInfo("Europe/Moscow")).strftime(
-        "%Y-%m-%d %H:%M:%S"
-    )
+    generated_msk = _now_msk().strftime("%Y-%m-%d %H:%M:%S")
     table_template = env.get_template("index.html.j2")
     threads_vmax = int((cfg.get("threads", {}) or {}).get("variants_max", 1))
     # Build display deadlines (use file values if present, fill missing with auto)
