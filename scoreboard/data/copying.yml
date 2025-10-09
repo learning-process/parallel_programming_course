@@ -1,0 +1,14 @@
+threads:
+  copying:
+    seq:
+      - example_threads
+    omp: []
+    tbb: []
+    stl: []
+    all: []
+processes:
+  copying:
+    mpi:
+      - example_processes
+    seq:
+      - example_processes

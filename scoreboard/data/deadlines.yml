@@ -1,0 +1,13 @@
+threads:
+  # Put integer to shift auto date by N days (negative allowed). Default 0.
+  seq: 0
+  omp: 0
+  tbb: 0
+  stl: 0
+  all: 0
+
+processes:
+  # Use integer offsets for tasks; default 0.
+  task_1: 0
+  task_2: 0
+  task_3: 0

@@ -2,6 +2,7 @@ from pathlib import Path
 from collections import defaultdict, Counter
 from datetime import datetime
 import csv
+import math
 import argparse
 import subprocess
 import yaml
@@ -9,16 +10,31 @@ import shutil
 from jinja2 import Environment, FileSystemLoader
 from zoneinfo import ZoneInfo
 import logging
+import sys
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
 task_types = ["all", "mpi", "omp", "seq", "stl", "tbb"]
-task_types_threads = ["all", "omp", "seq", "stl", "tbb"]
+# Threads table order: seq first, then omp, tbb, stl, all
+task_types_threads = ["seq", "omp", "tbb", "stl", "all"]
 task_types_processes = ["mpi", "seq"]
 
 script_dir = Path(__file__).parent
 tasks_dir = script_dir.parent / "tasks"
+# Salt is derived from the repository root directory name (dynamic)
+REPO_ROOT = script_dir.parent.resolve()
+# Salt format: "learning_process/<repo_name>"
+REPO_SALT = f"learning_process/{REPO_ROOT.name}"
+
+# Ensure we can import assign_variant from scoreboard directory
+if str(script_dir) not in sys.path:
+    sys.path.insert(0, str(script_dir))
+try:
+    from assign_variant import assign_variant
+except Exception:
+    def assign_variant(surname: str, name: str, group: str, repo: str, patronymic: str = "", num_variants: int = 1) -> int:
+        return 0
 
 
 def _read_tasks_type(task_dir: Path) -> str | None:
@@ -141,6 +157,60 @@ def _find_report_max(points_info, task_type: str) -> int:
     return 0
 
 
+def _find_performance_max(points_info, task_type: str) -> int:
+    """Resolve max Performance (A) points for a given task type (threads)."""
+    threads_tasks = (points_info.get("threads", {}) or {}).get("tasks", [])
+    for t in threads_tasks:
+        if str(t.get("name")) == task_type:
+            try:
+                return int(t.get("A", 0))
+            except Exception:
+                return 0
+    return 0
+
+
+def _calc_perf_points_from_efficiency(efficiency_str: str, max_points: int) -> float:
+    """Calculate Performance points as a real number (x.yy).
+
+    Mapping (eff -> percent of max):
+      >=50 -> 100; [45,50) -> 90; [42,45) -> 80; [40,42) -> 70; [37,40) -> 60;
+      [35,37) -> 50; [32,35) -> 40; [30,32) -> 30; [27,30) -> 20; [25,27) -> 10; <25 -> 0
+    Returns a float rounded to 2 decimals (no ceil).
+    """
+    if not isinstance(efficiency_str, str) or not efficiency_str.endswith("%"):
+        return 0.0
+    try:
+        val = float(efficiency_str.rstrip("%"))
+    except Exception:
+        return 0.0
+    perc = 0.0
+    if val >= 50:
+        perc = 1.0
+    elif 45 <= val < 50:
+        perc = 0.9
+    elif 42 <= val < 45:
+        perc = 0.8
+    elif 40 <= val < 42:
+        perc = 0.7
+    elif 37 <= val < 40:
+        perc = 0.6
+    elif 35 <= val < 37:
+        perc = 0.5
+    elif 32 <= val < 35:
+        perc = 0.4
+    elif 30 <= val < 32:
+        perc = 0.3
+    elif 27 <= val < 30:
+        perc = 0.2
+    elif 25 <= val < 27:
+        perc = 0.1
+    else:
+        perc = 0.0
+    pts = max_points * perc if max_points > 0 else 0.0
+    # round to 2 decimals (banker's rounding acceptable here)
+    return round(pts, 2)
+
+
 def _find_process_report_max(points_info, task_number: int) -> int:
     """Get max report (R) points for process task by ordinal (1..3).
     Looks up processes.tasks with names like 'mpi_task_1'.
@@ -187,6 +257,18 @@ def _find_process_points(points_info, task_number: int) -> tuple[int, int, int, 
             return s_mpi, s_seq, a_mpi, r
     return 0, 0, 0, 0
 
+
+def _find_process_variants_max(points_info, task_number: int) -> int:
+    proc_tasks = (points_info.get("processes", {}) or {}).get("tasks", [])
+    key = f"mpi_task_{task_number}"
+    for t in proc_tasks:
+        if str(t.get("name")) == key:
+            try:
+                return int(t.get("variants_max", 1))
+            except Exception:
+                return 1
+    return 1
+
 def get_solution_points_and_style(task_type, status, cfg):
     """Get solution points and CSS style based on task type and status."""
     max_sol_points = _find_max_solution(cfg, task_type)
@@ -200,17 +282,48 @@ def get_solution_points_and_style(task_type, status, cfg):
 
 
 def check_plagiarism_and_calculate_penalty(
-    dir, task_type, sol_points, plagiarism_cfg, cfg
+    dir, task_type, sol_points, plagiarism_cfg, cfg, semester: str | None
 ):
-    """Check if task is plagiarized and calculate penalty points."""
+    """Check if task is plagiarized and calculate penalty points.
+
+    Supports two config layouts:
+      - legacy: { plagiarism: { seq: [...], omp: [...], ... } }
+      - semesters: { threads: {plagiarism: {...}}, processes: {plagiarism: {...}} }
+    """
     clean_dir = dir[: -len("_disabled")] if dir.endswith("_disabled") else dir
-    is_cheated = (
-        dir in plagiarism_cfg["plagiarism"][task_type]
-        or clean_dir in plagiarism_cfg["plagiarism"][task_type]
-    )
+
+    # Resolve copying/plagiarism mapping based on layout
+    plag_map = {}
+    if isinstance(plagiarism_cfg, dict) and (
+        "copying" in plagiarism_cfg or "plagiarism" in plagiarism_cfg
+    ):
+        plag_map = (
+            plagiarism_cfg.get("copying")
+            if "copying" in plagiarism_cfg
+            else plagiarism_cfg.get("plagiarism", {})
+        ) or {}
+    elif (
+        isinstance(plagiarism_cfg, dict)
+        and semester
+        and semester in plagiarism_cfg
+        and isinstance(plagiarism_cfg[semester], dict)
+    ):
+        inner = plagiarism_cfg[semester]
+        plag_map = (inner.get("copying") if "copying" in inner else inner.get("plagiarism", {})) or {}
+
+    flagged_list = set(plag_map.get(task_type, []) or [])
+    is_cheated = dir in flagged_list or clean_dir in flagged_list
     plagiarism_points = 0
     if is_cheated:
-        plag_coeff = float(cfg.get("plagiarism", {}).get("coefficient", 0.0))
+        # Prefer new key 'copying', fallback to legacy 'plagiarism'
+        try:
+            plag_coeff = float(
+                (cfg.get("copying", {}) or cfg.get("plagiarism", {})).get(
+                    "coefficient", 0.0
+                )
+            )
+        except Exception:
+            plag_coeff = 0.0
         plagiarism_points = -plag_coeff * sol_points
     return is_cheated, plagiarism_points
 
@@ -255,7 +368,7 @@ def load_configurations():
     eff_num_proc = int(points_info.get("efficiency", {}).get("num_proc", 1))
     deadlines_cfg = points_info.get("deadlines", {})
 
-    plagiarism_config_path = Path(__file__).parent / "data" / "plagiarism.yml"
+    plagiarism_config_path = Path(__file__).parent / "data" / "copying.yml"
     with open(plagiarism_config_path, "r") as file:
         plagiarism_cfg = yaml.safe_load(file)
     assert plagiarism_cfg, "Plagiarism configuration is empty"
@@ -293,18 +406,24 @@ def _build_rows_for_task_types(
         except Exception:
             return None
 
-    def _load_variant(dir_name: str):
+    def _load_student_fields(dir_name: str):
         import json
 
         info_path = tasks_dir / dir_name / "info.json"
         if not info_path.exists():
-            return "?"
+            return None
         try:
             with open(info_path, "r") as f:
                 data = json.load(f)
-            return str(data.get("student", {}).get("variant_number", "?"))
+            s = data.get("student", {})
+            return (
+                str(s.get("last_name", "")),
+                str(s.get("first_name", "")),
+                str(s.get("middle_name", "")),
+                str(s.get("group_number", "")),
+            )
         except Exception:
-            return "?"
+            return None
 
     for dir in sorted(dir_names):
         row_types = []
@@ -317,7 +436,7 @@ def _build_rows_for_task_types(
 
             task_points = sol_points
             is_cheated, plagiarism_points = check_plagiarism_and_calculate_penalty(
-                dir, task_type, sol_points, plagiarism_cfg, cfg
+                dir, task_type, sol_points, plagiarism_cfg, cfg, semester="threads"
             )
             task_points += plagiarism_points
 
@@ -337,6 +456,19 @@ def _build_rows_for_task_types(
             report_present = (tasks_dir / dir / "report.md").exists()
             report_points = _find_report_max(cfg, task_type) if report_present else 0
 
+            # Performance points P for non-seq types, based on efficiency
+            perf_max = _find_performance_max(cfg, task_type)
+            if task_type != "seq":
+                perf_points = _calc_perf_points_from_efficiency(
+                    efficiency, perf_max
+                )
+                perf_points_display = (
+                    f"{perf_points:.2f}" if isinstance(efficiency, str) and efficiency.endswith("%") else "—"
+                )
+            else:
+                perf_points = 0.0
+                perf_points_display = "—"
+
             row_types.append(
                 {
                     "solution_points": sol_points,
@@ -344,16 +476,30 @@ def _build_rows_for_task_types(
                     "perf": perf_val,
                     "acceleration": acceleration,
                     "efficiency": efficiency,
+                    "perf_points": perf_points,
+                    "perf_points_display": perf_points_display,
                     "deadline_points": deadline_points,
                     "plagiarised": is_cheated,
                     "plagiarism_points": plagiarism_points,
                     "report": report_points,
                 }
             )
-            total_count += task_points
+            # Total: include Solution + Performance + Report + Copying penalty (exclude Deadline)
+            total_count += task_points + perf_points + report_points
 
         label_name = _load_student_info_label(dir) or dir
-        variant = _load_variant(dir)
+        # Generate variant for threads based on student info and variants_max
+        threads_vmax = int((cfg.get("threads", {}) or {}).get("variants_max", 1))
+        fields = _load_student_fields(dir)
+        if fields:
+            last, first, middle, group = fields
+            try:
+                v_idx = assign_variant(last, first, group, REPO_SALT, patronymic=middle, num_variants=threads_vmax)
+                variant = str(v_idx + 1)
+            except Exception:
+                variant = "?"
+        else:
+            variant = "?"
         rows.append(
             {
                 "task": label_name,
@@ -380,6 +526,89 @@ def main():
     plagiarism_cfg = plagiarism_cfg_local
 
     env = Environment(loader=FileSystemLoader(Path(__file__).parent / "templates"))
+
+    # Load optional display deadlines from deadlines.yml and/or auto-compute evenly
+    deadlines_display_threads: dict[str, str] | None = None
+    deadlines_display_processes: dict[str, str] | None = None
+    try:
+        dl_file = script_dir / "data" / "deadlines.yml"
+        if dl_file.exists():
+            with open(dl_file, "r") as f:
+                dl_cfg = yaml.safe_load(f) or {}
+            deadlines_display_threads = (dl_cfg.get("threads") or {})
+            deadlines_display_processes = (dl_cfg.get("processes") or {})
+    except Exception:
+        pass
+
+    # Helper: compute evenly spaced dates for current semester (MSK)
+    from datetime import date, timedelta
+    from zoneinfo import ZoneInfo as _ZoneInfo
+    import calendar
+
+    def _abbr(day: date) -> str:
+        return f"{day.day} {calendar.month_abbr[day.month]}"
+
+    def _spring_bounds(today: date) -> tuple[date, date]:
+        """Return [1 Feb .. 15 May] window for the appropriate year.
+        If today is past 15 May, use next year's spring; otherwise this year's.
+        """
+        y = today.year
+        start = date(y, 2, 1)
+        end = date(y, 5, 15)
+        if today > end:
+            y += 1
+            start = date(y, 2, 1)
+            end = date(y, 5, 15)
+        return start, end
+
+    def _autumn_bounds(today: date) -> tuple[date, date]:
+        """Return [15 Oct .. 14 Dec] window for the appropriate year.
+        If today is past 14 Dec, use next year's autumn; otherwise this year's.
+        """
+        y = today.year
+        start = date(y, 10, 15)
+        end = date(y, 12, 14)
+        if today > end:
+            y += 1
+            start = date(y, 10, 15)
+            end = date(y, 12, 14)
+        return start, end
+
+    def _evenly_spaced_dates(n: int, start: date, end: date) -> list[date]:
+        """
+        Return n deadlines evenly spaced across the window (start..end],
+        i.e., strictly after the start date, with the last at end.
+        Positions are at fractions (i+1)/n of the total span.
+        """
+        if n <= 1:
+            return [end]
+        total = (end - start).days
+        if total < 0:
+            start, end = end, start
+            total = -total
+        res = []
+        for i in range(n):
+            off = int(round((i + 1) * total / n))
+            if off <= 0:
+                off = 1
+            if off > total:
+                off = total
+            res.append(start + timedelta(days=off))
+        return res
+
+    def _compute_display_deadlines_threads(order: list[str]) -> dict[str, date]:
+        # Threads = Spring semester
+        today = datetime.now(_ZoneInfo("Europe/Moscow")).date()
+        s, e = _spring_bounds(today)
+        ds = _evenly_spaced_dates(len(order), s, e)
+        return {t: d for t, d in zip(order, ds)}
+
+    def _compute_display_deadlines_processes(n_items: int) -> list[date]:
+        # Processes = Autumn semester
+        today = datetime.now(_ZoneInfo("Europe/Moscow")).date()
+        s, e = _autumn_bounds(today)
+        ds = _evenly_spaced_dates(n_items, s, e)
+        return ds
 
     # Locate perf CSV from CI or local runs
     candidates = [
@@ -446,7 +675,7 @@ def main():
         sol_points, solution_style = get_solution_points_and_style(ttype, status, cfg)
         task_points = sol_points
         is_cheated, plagiarism_points = check_plagiarism_and_calculate_penalty(
-            dir_name, ttype, sol_points, plagiarism_cfg, cfg
+            dir_name, ttype, sol_points, plagiarism_cfg, cfg, semester="processes"
         )
         task_points += plagiarism_points
         perf_val = perf_stats.get(dir_name, {}).get(ttype, "?")
@@ -524,14 +753,44 @@ def main():
             report_present = (tasks_dir / d / "report.md").exists()
             group_cells[0]["solution_points"] = s_mpi if has_mpi else 0
             group_cells[1]["solution_points"] = s_seq if has_seq else 0
-            group_cells[0]["a_points"] = a_mpi if (has_mpi and has_seq) else 0
-            group_cells[1]["a_points"] = 0
+            # Calculate Performance P for MPI based on efficiency and max a_mpi
+            mpi_eff = group_cells[0].get("efficiency", "N/A")
+            perf_points_mpi = (
+                _calc_perf_points_from_efficiency(mpi_eff, a_mpi)
+                if (has_mpi and has_seq)
+                else 0
+            )
+            # Display '—' instead of 0 when metrics are absent (efficiency not a percent)
+            if isinstance(mpi_eff, str) and mpi_eff.endswith("%"):
+                perf_points_mpi_display = perf_points_mpi
+            else:
+                perf_points_mpi_display = "—"
+            group_cells[0]["perf_points"] = perf_points_mpi
+            group_cells[0]["perf_points_display"] = perf_points_mpi_display
+            group_cells[1]["perf_points"] = 0
+            # Recompute plagiarism penalty based on processes S maxima
+            try:
+                plag_coeff = float(
+                    (cfg.get("copying", {}) or cfg.get("plagiarism", {})).get(
+                        "coefficient", 0.0
+                    )
+                )
+            except Exception:
+                plag_coeff = 0.0
+            p_mpi = (
+                -plag_coeff * s_mpi if (has_mpi and group_cells[0].get("plagiarised")) else 0
+            )
+            p_seq = (
+                -plag_coeff * s_seq if (has_seq and group_cells[1].get("plagiarised")) else 0
+            )
+            group_cells[0]["plagiarism_points"] = p_mpi
+            group_cells[1]["plagiarism_points"] = p_seq
             proc_groups.extend(group_cells)
-            # Sum points S + A + R with gating
+            # Sum points S + P + R + C (penalty negative) with gating
             s_inc = (s_mpi if has_mpi else 0) + (s_seq if has_seq else 0)
-            a_inc = a_mpi if (has_mpi and has_seq) else 0
+            p_inc = perf_points_mpi
             r_inc = r_max if report_present else 0
-            total_points_sum += s_inc + a_inc + r_inc
+            total_points_sum += s_inc + p_inc + r_inc + p_mpi + p_seq
             proc_r_values.append(r_inc)
         else:
             proc_group_headers.append({"type": "mpi", "task_label": f"task_{n}"})
@@ -564,25 +823,28 @@ def main():
             name = "<br/>".join(name_parts)
             row_label = name or row_label
 
-    # Choose variant from the first available task (1..3)
-    def _load_variant(dir_name: str):
-        import json
-
-        info_path = tasks_dir / dir_name / "info.json"
-        if not info_path.exists():
-            return "?"
-        try:
-            with open(info_path, "r") as f:
-                data = json.load(f)
-            return str(data.get("student", {}).get("variant_number", "?"))
-        except Exception:
-            return "?"
-
-    for n in expected_numbers:
-        ent = num_to_dir.get(n)
-        if ent:
-            row_variant = _load_variant(ent[0])
-            break
+    # Build three variants (one per task) based on student identity
+    row_variant = "?"
+    if target_identity:
+        parts = target_identity.split("|")
+        if len(parts) >= 4:
+            first, last, middle, group = parts[0], parts[1], parts[2], parts[3]
+            variants_render = []
+            for n in expected_numbers:
+                vmax = _find_process_variants_max(cfg, n)
+                try:
+                    v_idx = assign_variant(
+                        surname=last,
+                        name=first,
+                        patronymic=middle,
+                        group=group,
+                        repo=f"{REPO_SALT}/processes/task-{n}",
+                        num_variants=vmax,
+                    )
+                    variants_render.append(str(v_idx + 1))
+                except Exception:
+                    variants_render.append("?")
+            row_variant = "<br/>".join(variants_render)
     processes_rows = [
         {
             "task": row_label,
@@ -606,16 +868,75 @@ def main():
     # Render tables
     generated_msk = datetime.now(ZoneInfo("Europe/Moscow")).strftime("%Y-%m-%d %H:%M:%S")
     table_template = env.get_template("index.html.j2")
+    threads_vmax = int((cfg.get("threads", {}) or {}).get("variants_max", 1))
+    # Build display deadlines (use file values if present, fill missing with auto)
+    threads_order = task_types_threads
+    auto_threads_dl = _compute_display_deadlines_threads(threads_order)
+    dl_threads_out = {}
+    for t in threads_order:
+        base_date = auto_threads_dl.get(t)
+        # Default = 0 shift
+        shift_days = 0
+        label = None
+        if deadlines_display_threads and t in deadlines_display_threads:
+            val = deadlines_display_threads.get(t)
+            if isinstance(val, int):
+                shift_days = val
+            else:
+                # try int-like string, else treat as explicit label
+                try:
+                    shift_days = int(str(val).strip())
+                except Exception:
+                    label = str(val)
+        if label is None and isinstance(base_date, date):
+            vdate = base_date + timedelta(days=shift_days)
+            dl_threads_out[t] = _abbr(vdate)
+        else:
+            dl_threads_out[t] = label or ""
+
     threads_html = table_template.render(
-        task_types=task_types_threads, rows=threads_rows, generated_msk=generated_msk
+        task_types=task_types_threads,
+        rows=threads_rows,
+        generated_msk=generated_msk,
+        repo_salt=REPO_SALT,
+        threads_variants_max=threads_vmax,
+        deadlines_threads=dl_threads_out,
     )
     # Use dedicated template for processes table layout
     processes_template = env.get_template("processes.html.j2")
+    proc_vmaxes = [_find_process_variants_max(cfg, n) for n in expected_numbers]
+    # Build display deadlines for processes in task order (1..3)
+    auto_proc_dl = _compute_display_deadlines_processes(len(expected_numbers))
+    proc_deadlines_list: list[str] = []
+    for i, n in enumerate(expected_numbers):
+        base_date = auto_proc_dl[i]
+        shift_days = 0
+        label = None
+        if deadlines_display_processes:
+            key = f"task_{n}"
+            val = deadlines_display_processes.get(key) or deadlines_display_processes.get(f"mpi_task_{n}")
+            if val is not None:
+                if isinstance(val, int):
+                    shift_days = val
+                else:
+                    try:
+                        shift_days = int(str(val).strip())
+                    except Exception:
+                        label = str(val)
+        if label is None and isinstance(base_date, date):
+            vdate = base_date + timedelta(days=shift_days)
+            proc_deadlines_list.append(_abbr(vdate))
+        else:
+            proc_deadlines_list.append(label or "")
+
     processes_html = processes_template.render(
         top_task_names=proc_top_headers,
         group_headers=proc_group_headers,
         rows=processes_rows,
         generated_msk=generated_msk,
+        repo_salt=REPO_SALT,
+        processes_variants_max=proc_vmaxes,
+        deadlines_processes=proc_deadlines_list,
     )
 
     with open(output_path / "threads.html", "w") as f:
@@ -664,8 +985,35 @@ def main():
             eff_num_proc,
             deadlines_cfg,
         )
+        # Rebuild deadline labels for this page
+        auto_threads_dl_g = _compute_display_deadlines_threads(threads_order)
+        dl_threads_out_g = {}
+        for t in threads_order:
+            base_date = auto_threads_dl_g.get(t)
+            shift_days = 0
+            label = None
+            if deadlines_display_threads and t in deadlines_display_threads:
+                val = deadlines_display_threads.get(t)
+                if isinstance(val, int):
+                    shift_days = val
+                else:
+                    try:
+                        shift_days = int(str(val).strip())
+                    except Exception:
+                        label = str(val)
+            if label is None and isinstance(base_date, date):
+                vdate = base_date + timedelta(days=shift_days)
+                dl_threads_out_g[t] = _abbr(vdate)
+            else:
+                dl_threads_out_g[t] = label or ""
+
         html_g = table_template.render(
-            task_types=task_types_threads, rows=rows_g, generated_msk=generated_msk
+            task_types=task_types_threads,
+            rows=rows_g,
+            generated_msk=generated_msk,
+            repo_salt=REPO_SALT,
+            threads_variants_max=threads_vmax,
+            deadlines_threads=dl_threads_out_g,
         )
         with open(out_file, "w") as f:
             f.write(html_g)
@@ -747,7 +1095,12 @@ def main():
                     task_points = sol_points
                     is_cheated, plagiarism_points = (
                         check_plagiarism_and_calculate_penalty(
-                            d, ttype, sol_points, plagiarism_cfg, cfg
+                            d,
+                            ttype,
+                            sol_points,
+                            plagiarism_cfg,
+                            cfg,
+                            semester="processes",
                         )
                     )
                     task_points += plagiarism_points
@@ -770,15 +1123,58 @@ def main():
                             "plagiarism_points": plagiarism_points,
                         }
                     )
-                # Sum points by processes maxima with gating (+ report presence)
+                # Override displayed points to processes maxima and recompute P
                 s_mpi_g, s_seq_g, a_max_g, r_max_g = _find_process_points(cfg, n)
                 has_mpi_g = bool(directories[d].get("mpi"))
                 has_seq_g = bool(directories[d].get("seq"))
                 report_present_g = (tasks_dir / d / "report.md").exists()
+                base_idx = len(proc_groups_g) - 2
+                if base_idx >= 0:
+                    proc_groups_g[base_idx]["solution_points"] = (
+                        s_mpi_g if has_mpi_g else 0
+                    )
+                    proc_groups_g[base_idx + 1]["solution_points"] = (
+                        s_seq_g if has_seq_g else 0
+                    )
+                    # Performance for MPI cell
+                    mpi_eff_g = proc_groups_g[base_idx].get("efficiency", "N/A")
+                    perf_points_mpi_g = (
+                        _calc_perf_points_from_efficiency(mpi_eff_g, a_max_g)
+                        if (has_mpi_g and has_seq_g)
+                        else 0
+                    )
+                    if isinstance(mpi_eff_g, str) and mpi_eff_g.endswith("%"):
+                        perf_points_mpi_display_g = perf_points_mpi_g
+                    else:
+                        perf_points_mpi_display_g = "—"
+                    proc_groups_g[base_idx]["perf_points"] = perf_points_mpi_g
+                    proc_groups_g[base_idx]["perf_points_display"] = perf_points_mpi_display_g
+                    proc_groups_g[base_idx + 1]["perf_points"] = 0
+                    try:
+                        plag_coeff_g = float(
+                            (cfg.get("copying", {}) or cfg.get("plagiarism", {})).get(
+                                "coefficient", 0.0
+                            )
+                        )
+                    except Exception:
+                        plag_coeff_g = 0.0
+                    p_mpi_g = (
+                        -plag_coeff_g * s_mpi_g
+                        if (has_mpi_g and proc_groups_g[base_idx].get("plagiarised"))
+                        else 0
+                    )
+                    p_seq_g = (
+                        -plag_coeff_g * s_seq_g
+                        if (has_seq_g and proc_groups_g[base_idx + 1].get("plagiarised"))
+                        else 0
+                    )
+                    proc_groups_g[base_idx]["plagiarism_points"] = p_mpi_g
+                    proc_groups_g[base_idx + 1]["plagiarism_points"] = p_seq_g
+
+                # Sum points by processes S + P + R (and C penalties)
                 s_inc_g = (s_mpi_g if has_mpi_g else 0) + (s_seq_g if has_seq_g else 0)
-                a_inc_g = a_max_g if (has_mpi_g and has_seq_g) else 0
                 r_inc_g = r_max_g if report_present_g else 0
-                total_points_sum_g += s_inc_g + a_inc_g + r_inc_g
+                total_points_sum_g += s_inc_g + perf_points_mpi_g + r_inc_g + p_mpi_g + p_seq_g
                 proc_r_values_g.append(r_inc_g)
             else:
                 proc_top_headers_g.append(f"task-{n}")
@@ -809,26 +1205,28 @@ def main():
                 nm = "<br/>".join(nm_parts)
                 row_label_g = nm or row_label_g
 
-        # Variant for group row
-        def _load_variant_g(dir_name: str):
-            import json
-
-            info_path = tasks_dir / dir_name / "info.json"
-            if not info_path.exists():
-                return "?"
-            try:
-                with open(info_path, "r") as f:
-                    data = json.load(f)
-                return str(data.get("student", {}).get("variant_number", "?"))
-            except Exception:
-                return "?"
-
+        # Build three variants (one per task) based on student identity
         row_variant_g = "?"
-        for n in [1, 2, 3]:
-            entry2 = num_to_dir_g.get(n)
-            if entry2:
-                row_variant_g = _load_variant_g(entry2[0])
-                break
+        if target_identity_g:
+            parts = target_identity_g.split("|")
+            if len(parts) >= 4:
+                first, last, middle, group = parts[0], parts[1], parts[2], parts[3]
+                vrender = []
+                for n in [1, 2, 3]:
+                    vmax = _find_process_variants_max(cfg, n)
+                    try:
+                        v_idx = assign_variant(
+                            surname=last,
+                            name=first,
+                            patronymic=middle,
+                            group=group,
+                            repo=f"{REPO_SALT}/processes/task-{n}",
+                            num_variants=vmax,
+                        )
+                        vrender.append(str(v_idx + 1))
+                    except Exception:
+                        vrender.append("?")
+                row_variant_g = "<br/>".join(vrender)
 
         rows_g = [
             {
@@ -841,11 +1239,39 @@ def main():
             }
         ]
 
+        proc_vmaxes_g = [_find_process_variants_max(cfg, n) for n in [1, 2, 3]]
+        # Build display deadlines for processes group page
+        auto_proc_dl_g = _compute_display_deadlines_processes(3)
+        proc_deadlines_list_g: list[str] = []
+        for i, n in enumerate([1, 2, 3]):
+            base_date = auto_proc_dl_g[i]
+            shift_days = 0
+            label = None
+            if deadlines_display_processes:
+                key = f"task_{n}"
+                val = deadlines_display_processes.get(key) or deadlines_display_processes.get(f"mpi_task_{n}")
+                if val is not None:
+                    if isinstance(val, int):
+                        shift_days = val
+                    else:
+                        try:
+                            shift_days = int(str(val).strip())
+                        except Exception:
+                            label = str(val)
+            if label is None and isinstance(base_date, date):
+                vdate = base_date + timedelta(days=shift_days)
+                proc_deadlines_list_g.append(_abbr(vdate))
+            else:
+                proc_deadlines_list_g.append(label or "")
+
         html_g = processes_template.render(
             top_task_names=proc_top_headers_g,
             group_headers=proc_group_headers_g,
             rows=rows_g,
             generated_msk=generated_msk,
+            repo_salt=REPO_SALT,
+            processes_variants_max=proc_vmaxes_g,
+            deadlines_processes=proc_deadlines_list_g,
         )
         with open(out_file, "w") as f:
             f.write(html_g)

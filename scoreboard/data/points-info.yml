@@ -58,6 +58,6 @@ threads:
       Total: 21
 efficiency:
   num_proc: 4
-plagiarism:
+copying:
   coefficient: 0.5
-  note: "Penalty P = -coefficient * S (scoreboard notation)"
+  note: "Penalty C = -coefficient * S (scoreboard notation)"
