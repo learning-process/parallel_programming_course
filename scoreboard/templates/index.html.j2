@@ -8,7 +8,8 @@
     
     <table>
         <tr>
-            <th rowspan="2">Tasks</th>
+            <th rowspan="2">Name</th>
+            <th rowspan="2" style="text-align: center;">V</th>
             {% for type in task_types %}
                 <th colspan="5" style="text-align: center;">{{ type }}</th>
             {% endfor %}
@@ -24,6 +25,7 @@
         {% for row in rows %}
         <tr>
             <td>{{ row.task }}</td>
+            <td style="text-align: center;">{{ row.variant }}</td>
             {% for cell in row.types %}
                 <td style="text-align: center{% if cell.solution_style %};{{ cell.solution_style }}{% endif %}">{{ cell.solution_points }}</td>
                 <td style="text-align: center;background-color: lavender;">{{ cell.acceleration }}</td>
