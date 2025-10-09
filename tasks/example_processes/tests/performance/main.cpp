@@ -8,7 +8,7 @@
 namespace nesterov_a_test_task_processes {
 
 class ExampleRunPerfTestProcesses : public ppc::util::BaseRunPerfTests<InType, OutType> {
-  const int kCount_ = 50;
+  const int kCount_ = 100;
   InType input_data_{};
 
   void SetUp() override {
