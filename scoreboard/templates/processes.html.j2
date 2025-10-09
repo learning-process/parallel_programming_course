@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Task Directories</title>
+    <title>Processes Scoreboard</title>
     <link rel="stylesheet" type="text/css" href="static/main.css">
 </head>
 <body>
-    
     <table>
         <tr>
-            <th rowspan="2">Name</th>
-            <th rowspan="2" style="text-align: center;">V</th>
-            {% for type in task_types %}
-                <th colspan="5" style="text-align: center;">{{ type }}</th>
+            <th rowspan="3">Name</th>
+            <th rowspan="3" style="text-align: center;">V</th>
+            {% for name in top_task_names %}
+                <th colspan="10" style="text-align: center;">{{ name }}</th>
             {% endfor %}
-            <th rowspan="2">Total</th>
+            <th rowspan="3">Total</th>
         </tr>
         <tr>
-            {% for type in task_types %}
+            {% for header in group_headers %}
+                <th colspan="5" style="text-align: center;">{{ header.type }}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for _ in group_headers %}
                 {% for letter in ('S', 'A', 'E', 'D', 'P') %}
                     <th style="text-align: center;">{{ letter }}</th>
                 {% endfor %}
@@ -26,7 +30,7 @@
         <tr>
             <td>{{ row.task }}</td>
             <td style="text-align: center;">{{ row.variant }}</td>
-            {% for cell in row.types %}
+            {% for cell in row.groups %}
                 <td style="text-align: center{% if cell.solution_style %};{{ cell.solution_style }}{% endif %}">{{ cell.solution_points }}</td>
                 <td style="text-align: center;background-color: lavender;">{{ cell.acceleration }}</td>
                 <td style="text-align: center;background-color: lavender;">{{ cell.efficiency }}</td>
