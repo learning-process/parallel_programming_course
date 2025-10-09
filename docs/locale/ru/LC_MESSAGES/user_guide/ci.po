@@ -52,13 +52,16 @@ msgstr "Схема CI конвейера"
 
 #: ../../user_guide/ci.rst:18
 msgid "Running ``scripts/run_tests.py``"
-msgstr ""
+msgstr "Запуск ``scripts/run_tests.py``"
 
 #: ../../user_guide/ci.rst:20
 msgid ""
 "Automated tests are executed through the ``scripts/run_tests.py`` helper."
 "  The script requires several environment variables to be defined:"
 msgstr ""
+"Автоматические тесты запускаются с помощью вспомогательного скрипта "
+"``scripts/run_tests.py``. Для его работы следует задать несколько переменных "
+"окружения:"
 
 #: ../../user_guide/ci.rst:23
 msgid "``PPC_NUM_THREADS``"
@@ -69,6 +72,8 @@ msgid ""
 "Number of threads to use.  The value is also exported as "
 "``OMP_NUM_THREADS``."
 msgstr ""
+"Количество потоков для запуска. Это же значение экспортируется в "
+"``OMP_NUM_THREADS``."
 
 #: ../../user_guide/ci.rst:27
 msgid "``PPC_NUM_PROC``"
@@ -76,7 +81,7 @@ msgstr ""
 
 #: ../../user_guide/ci.rst:28
 msgid "Number of MPI processes to launch."
-msgstr ""
+msgstr "Количество процессов MPI, которые нужно запустить."
 
 #: ../../user_guide/ci.rst:30
 msgid "``PPC_ASAN_RUN``"
@@ -87,6 +92,8 @@ msgid ""
 "Set to ``1`` when sanitizers are enabled to skip ``valgrind`` runs "
 "(optional, default ``0``)."
 msgstr ""
+"Установите ``1``, если включены санитайзеры, чтобы пропустить запуск "
+"``valgrind`` (необязательно, по умолчанию ``0``)."
 
 #: ../../user_guide/ci.rst:34
 msgid "``PPC_IGNORE_TEST_TIME_LIMIT``"
@@ -95,6 +102,8 @@ msgstr ""
 #: ../../user_guide/ci.rst:35
 msgid "Set to ``1`` to disable test time limits (optional, default ``0``)."
 msgstr ""
+"Установите ``1``, чтобы отключить ограничение времени тестов "
+"(необязательно, по умолчанию ``0``)."
 
 #: ../../user_guide/ci.rst:37
 msgid ""
@@ -102,16 +111,22 @@ msgid ""
 "modes are ``threads`` for shared-memory backends and ``processes`` for "
 "MPI based tests.  ``performance`` mode runs performance benchmarks."
 msgstr ""
+"Режим выполнения выбирается параметром ``--running-type``. Чаще всего "
+"используются режимы ``threads`` для бекендов с общей памятью и "
+"``processes`` для тестов на основе MPI. Режим ``performance`` запускает "
+"бенчмарки производительности."
 
 #: ../../user_guide/ci.rst:41
 msgid "Example usage:"
-msgstr ""
+msgstr "Пример использования:"
 
 #: ../../user_guide/ci.rst:57
 msgid ""
 "Additional MPI arguments can be supplied with ``--additional-mpi-args`` "
 "when running in ``processes`` mode."
 msgstr ""
+"Дополнительные аргументы MPI можно передать через ``--additional-mpi-args`` "
+"при запуске в режиме ``processes``."
 
 #: ../../user_guide/ci.rst:60
 msgid ""
@@ -120,6 +135,10 @@ msgid ""
 " provided values, updating ``PPC_NUM_THREADS`` or ``PPC_NUM_PROC`` "
 "accordingly before each run."
 msgstr ""
+"Параметр ``--counts`` позволяет последовательно запускать тесты с несколькими "
+"значениями числа потоков или процессов. При его указании скрипт перебирает "
+"переданные значения, перед каждым запуском обновляя ``PPC_NUM_THREADS`` или "
+"``PPC_NUM_PROC``."
 
 #: ../../user_guide/ci.rst:65
 msgid ""
@@ -127,4 +146,6 @@ msgid ""
 "This can be helpful for debugging CI failures or verifying the exact "
 "arguments passed to the test binaries."
 msgstr ""
-
+"Используйте ``--verbose``, чтобы вывести каждую команду, выполняемую "
+"``run_tests.py``. Это помогает отлаживать сбои в CI или проверять точные "
+"аргументы, передаваемые тестовым бинарникам."
