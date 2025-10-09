@@ -13,7 +13,7 @@ class UnreadMessagesDetector : public ::testing::EmptyTestEventListener {
  public:
   UnreadMessagesDetector() = default;
   /// @brief Called by GTest after a test ends. Checks for unread messages.
-  void OnTestEnd(const ::testing::TestInfo& /*test_info*/) override;
+  void OnTestEnd(const ::testing::TestInfo & /*test_info*/) override;
 
  private:
 };
@@ -26,9 +26,9 @@ class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
   /// @param base A shared pointer to another GTest event listener.
   explicit WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener> base) : base_(std::move(base)) {}
   /// @brief Called after a test ends. Passes call base listener and print failures with rank.
-  void OnTestEnd(const ::testing::TestInfo& test_info) override;
+  void OnTestEnd(const ::testing::TestInfo &test_info) override;
   /// @brief Called when a test part fails. Prints MPI rank info along with the failure.
-  void OnTestPartResult(const ::testing::TestPartResult& test_part_result) override;
+  void OnTestPartResult(const ::testing::TestPartResult &test_part_result) override;
 
  private:
   /// @brief Prints the MPI rank of the current process to stderr.
@@ -41,12 +41,12 @@ class WorkerTestFailurePrinter : public ::testing::EmptyTestEventListener {
 /// @param argv Argument vector.
 /// @return Exit code from RUN_ALL_TESTS or MPI error code if initialization/
 ///         finalization fails.
-int Init(int argc, char** argv);
+int Init(int argc, char **argv);
 
 /// @brief Initializes the testing environment only for gtest.
 /// @param argc Argument count.
 /// @param argv Argument vector.
 /// @return Exit code from RUN_ALL_TESTS.
-int SimpleInit(int argc, char** argv);
+int SimpleInit(int argc, char **argv);
 
 }  // namespace ppc::runners

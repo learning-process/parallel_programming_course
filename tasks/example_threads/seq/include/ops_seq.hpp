@@ -10,7 +10,7 @@ class NesterovATestTaskSEQ : public BaseTask {
   static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() {
     return ppc::task::TypeOfTask::kSEQ;
   }
-  explicit NesterovATestTaskSEQ(const InType& in);
+  explicit NesterovATestTaskSEQ(const InType &in);
 
  private:
   bool ValidationImpl() override;

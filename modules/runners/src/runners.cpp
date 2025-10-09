@@ -15,7 +15,7 @@
 
 namespace ppc::runners {
 
-void UnreadMessagesDetector::OnTestEnd(const ::testing::TestInfo& /*test_info*/) {
+void UnreadMessagesDetector::OnTestEnd(const ::testing::TestInfo & /*test_info*/) {
   int rank = -1;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -42,7 +42,7 @@ void UnreadMessagesDetector::OnTestEnd(const ::testing::TestInfo& /*test_info*/)
   MPI_Barrier(MPI_COMM_WORLD);
 }
 
-void WorkerTestFailurePrinter::OnTestEnd(const ::testing::TestInfo& test_info) {
+void WorkerTestFailurePrinter::OnTestEnd(const ::testing::TestInfo &test_info) {
   if (test_info.result()->Passed()) {
     return;
   }
@@ -50,7 +50,7 @@ void WorkerTestFailurePrinter::OnTestEnd(const ::testing::TestInfo& test_info) {
   base_->OnTestEnd(test_info);
 }
 
-void WorkerTestFailurePrinter::OnTestPartResult(const ::testing::TestPartResult& test_part_result) {
+void WorkerTestFailurePrinter::OnTestPartResult(const ::testing::TestPartResult &test_part_result) {
   if (test_part_result.passed() || test_part_result.skipped()) {
     return;
   }
@@ -75,7 +75,7 @@ int RunAllTests() {
 }
 }  // namespace
 
-int Init(int argc, char** argv) {
+int Init(int argc, char **argv) {
   const int init_res = MPI_Init(&argc, &argv);
   if (init_res != MPI_SUCCESS) {
     std::cerr << std::format("[  ERROR  ] MPI_Init failed with code {}", init_res) << '\n';
@@ -88,11 +88,11 @@ int Init(int argc, char** argv) {
 
   ::testing::InitGoogleTest(&argc, argv);
 
-  auto& listeners = ::testing::UnitTest::GetInstance()->listeners();
+  auto &listeners = ::testing::UnitTest::GetInstance()->listeners();
   int rank = -1;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank != 0 && (argc < 2 || argv[1] != std::string("--print-workers"))) {
-    auto* listener = listeners.Release(listeners.default_result_printer());
+    auto *listener = listeners.Release(listeners.default_result_printer());
     listeners.Append(new WorkerTestFailurePrinter(std::shared_ptr<::testing::TestEventListener>(listener)));
   }
   listeners.Append(new UnreadMessagesDetector());
@@ -108,7 +108,7 @@ int Init(int argc, char** argv) {
   return status;
 }
 
-int SimpleInit(int argc, char** argv) {
+int SimpleInit(int argc, char **argv) {
   // Limit the number of threads in TBB
   tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
 

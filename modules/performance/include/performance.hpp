@@ -39,12 +39,12 @@ template <typename InType, typename OutType>
 class Perf {
  public:
   // Init performance analysis with an initialized task and initialized data
-  explicit Perf(const ppc::task::TaskPtr<InType, OutType>& task_ptr) : task_(task_ptr) {
+  explicit Perf(const ppc::task::TaskPtr<InType, OutType> &task_ptr) : task_(task_ptr) {
     task_ptr->GetStateOfTesting() = ppc::task::StateOfTesting::kPerf;
   }
   // Check performance of full task's pipeline:  PreProcessing() ->
   // Validation() -> Run() -> PostProcessing()
-  void PipelineRun(const PerfAttr& perf_attr) {
+  void PipelineRun(const PerfAttr &perf_attr) {
     perf_results_.type_of_running = PerfResults::TypeOfRunning::kPipeline;
 
     CommonRun(perf_attr, [&] {
@@ -55,7 +55,7 @@ class Perf {
     }, perf_results_);
   }
   // Check performance of task's Run() function
-  void TaskRun(const PerfAttr& perf_attr) {
+  void TaskRun(const PerfAttr &perf_attr) {
     perf_results_.type_of_running = PerfResults::TypeOfRunning::kTaskRun;
 
     task_->Validation();
@@ -69,7 +69,7 @@ class Perf {
     task_->PostProcessing();
   }
   // Print results for automation checkers
-  void PrintPerfStatistic(const std::string& test_id) const {
+  void PrintPerfStatistic(const std::string &test_id) const {
     std::string type_test_name;
     if (perf_results_.type_of_running == PerfResults::TypeOfRunning::kTaskRun) {
       type_test_name = "task_run";
@@ -106,7 +106,7 @@ class Perf {
  private:
   PerfResults perf_results_;
   std::shared_ptr<ppc::task::Task<InType, OutType>> task_;
-  static void CommonRun(const PerfAttr& perf_attr, const std::function<void()>& pipeline, PerfResults& perf_results) {
+  static void CommonRun(const PerfAttr &perf_attr, const std::function<void()> &pipeline, PerfResults &perf_results) {
     auto begin = perf_attr.current_timer();
     for (uint64_t i = 0; i < perf_attr.num_running; i++) {
       pipeline();

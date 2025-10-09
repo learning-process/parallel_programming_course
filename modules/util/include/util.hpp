@@ -55,7 +55,7 @@ class DestructorFailureFlag {
 
 enum class GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
 
-std::string GetAbsoluteTaskPath(const std::string& id_path, const std::string& relative_path);
+std::string GetAbsoluteTaskPath(const std::string &id_path, const std::string &relative_path);
 int GetNumThreads();
 int GetNumProc();
 double GetTaskMaxTime();
@@ -66,13 +66,13 @@ std::string GetNamespace() {
   std::string name = typeid(T).name();
 #ifdef __GNUC__
   int status = 0;
-  std::unique_ptr<char, void (*)(void*)> demangled{abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status),
-                                                   std::free};
+  std::unique_ptr<char, void (*)(void *)> demangled{abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status),
+                                                    std::free};
   name = (status == 0) ? demangled.get() : name;
 #endif
 #ifdef _MSC_VER
   const std::string prefixes[] = {"class ", "struct ", "enum ", "union "};
-  for (const auto& prefix : prefixes) {
+  for (const auto &prefix : prefixes) {
     if (name.starts_with(prefix)) {
       name = name.substr(prefix.size());
       break;

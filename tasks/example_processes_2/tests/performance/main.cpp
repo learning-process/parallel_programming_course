@@ -7,7 +7,7 @@
 
 namespace nesterov_a_test_task_processes {
 
-class ExampleRunPerfTestProcesses : public ppc::util::BaseRunPerfTests<InType, OutType> {
+class ExampleRunPerfTestProcesses2 : public ppc::util::BaseRunPerfTests<InType, OutType> {
   const int kCount_ = 50;
   InType input_data_{};
 
@@ -24,7 +24,7 @@ class ExampleRunPerfTestProcesses : public ppc::util::BaseRunPerfTests<InType, O
   }
 };
 
-TEST_P(ExampleRunPerfTestProcesses, RunPerfModes) {
+TEST_P(ExampleRunPerfTestProcesses2, RunPerfModes) {
   ExecuteTest(GetParam());
 }
 
@@ -33,8 +33,8 @@ const auto kAllPerfTasks =
 
 const auto kGtestValues = ppc::util::TupleToGTestValues(kAllPerfTasks);
 
-const auto kPerfTestName = ExampleRunPerfTestProcesses::CustomPerfTestName;
+const auto kPerfTestName = ExampleRunPerfTestProcesses2::CustomPerfTestName;
 
-INSTANTIATE_TEST_SUITE_P(RunModeTests, ExampleRunPerfTestProcesses, kGtestValues, kPerfTestName);
+INSTANTIATE_TEST_SUITE_P(RunModeTests, ExampleRunPerfTestProcesses2, kGtestValues, kPerfTestName);
 
 }  // namespace nesterov_a_test_task_processes

@@ -9,7 +9,7 @@
 
 namespace nesterov_a_test_task_threads {
 
-NesterovATestTaskOMP::NesterovATestTaskOMP(const InType& in) {
+NesterovATestTaskOMP::NesterovATestTaskOMP(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
   GetInput() = in;
   GetOutput() = 0;

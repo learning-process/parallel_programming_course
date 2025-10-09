@@ -10,7 +10,7 @@ class NesterovATestTaskTBB : public BaseTask {
   static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() {
     return ppc::task::TypeOfTask::kTBB;
   }
-  explicit NesterovATestTaskTBB(const InType& in);
+  explicit NesterovATestTaskTBB(const InType &in);
 
  private:
   bool ValidationImpl() override;

@@ -36,7 +36,7 @@ template <typename InType, typename OutType, typename TestType = void>
 /// @tparam TestType Type of the test case or parameter.
 class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, OutType, TestType>> {
  public:
-  virtual bool CheckTestOutputData(OutType& output_data) = 0;
+  virtual bool CheckTestOutputData(OutType &output_data) = 0;
   /// @brief Provides input data for the task.
   /// @return Initialized input data.
   virtual InType GetTestInputData() = 0;
@@ -48,7 +48,7 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   }
 
   template <typename Derived>
-  static std::string PrintFuncTestName(const GTestFuncParam<InType, OutType, TestType>& info) {
+  static std::string PrintFuncTestName(const GTestFuncParam<InType, OutType, TestType> &info) {
     RequireStaticInterface<Derived>();
     TestType test_param = std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kTestParams)>(info.param);
     return std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(info.param) + "_" +
@@ -57,7 +57,7 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
 
  protected:
   void ExecuteTest(FuncTestParam<InType, OutType, TestType> test_param) {
-    const std::string& test_name = std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(test_param);
+    const std::string &test_name = std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(test_param);
 
     ValidateTestName(test_name);
 
@@ -73,16 +73,16 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
     InitializeAndRunTask(test_param);
   }
 
-  void ValidateTestName(const std::string& test_name) {
+  void ValidateTestName(const std::string &test_name) {
     EXPECT_FALSE(test_name.find("unknown") != std::string::npos);
   }
 
-  bool IsTestDisabled(const std::string& test_name) {
+  bool IsTestDisabled(const std::string &test_name) {
     return test_name.find("disabled") != std::string::npos;
   }
 
-  bool ShouldSkipNonMpiTask(const std::string& test_name) {
-    auto contains_substring = [&](const std::string& substring) {
+  bool ShouldSkipNonMpiTask(const std::string &test_name) {
+    auto contains_substring = [&](const std::string &substring) {
       return test_name.find(substring) != std::string::npos;
     };
 
@@ -90,7 +90,7 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   }
 
   /// @brief Initializes task instance and runs it through the full pipeline.
-  void InitializeAndRunTask(const FuncTestParam<InType, OutType, TestType>& test_param) {
+  void InitializeAndRunTask(const FuncTestParam<InType, OutType, TestType> &test_param) {
     task_ = std::get<static_cast<std::size_t>(GTestParamIndex::kTaskGetter)>(test_param)(GetTestInputData());
     ExecuteTaskPipeline();
   }
@@ -110,18 +110,18 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
 };
 
 template <typename Tuple, std::size_t... Is>
-auto ExpandToValuesImpl(const Tuple& t, std::index_sequence<Is...> /*unused*/) {
+auto ExpandToValuesImpl(const Tuple &t, std::index_sequence<Is...> /*unused*/) {
   return ::testing::Values(std::get<Is>(t)...);
 }
 
 template <typename Tuple>
-auto ExpandToValues(const Tuple& t) {
+auto ExpandToValues(const Tuple &t) {
   constexpr std::size_t kN = std::tuple_size_v<Tuple>;
   return ExpandToValuesImpl(t, std::make_index_sequence<kN>{});
 }
 
 template <typename Task, typename InType, typename SizesContainer, std::size_t... Is>
-auto GenTaskTuplesImpl(const SizesContainer& sizes, const std::string& settings_path,
+auto GenTaskTuplesImpl(const SizesContainer &sizes, const std::string &settings_path,
                        std::index_sequence<Is...> /*unused*/) {
   return std::make_tuple(std::make_tuple(ppc::task::TaskGetter<Task, InType>,
                                          std::string(GetNamespace<Task>()) + "_" +
@@ -130,13 +130,13 @@ auto GenTaskTuplesImpl(const SizesContainer& sizes, const std::string& settings_
 }
 
 template <typename Task, typename InType, typename SizesContainer>
-auto TaskListGenerator(const SizesContainer& sizes, const std::string& settings_path) {
+auto TaskListGenerator(const SizesContainer &sizes, const std::string &settings_path) {
   return GenTaskTuplesImpl<Task, InType>(sizes, settings_path,
                                          std::make_index_sequence<std::tuple_size_v<std::decay_t<SizesContainer>>>{});
 }
 
 template <typename Task, typename InType, typename SizesContainer>
-constexpr auto AddFuncTask(const SizesContainer& sizes, const std::string& settings_path) {
+constexpr auto AddFuncTask(const SizesContainer &sizes, const std::string &settings_path) {
   return TaskListGenerator<Task, InType>(sizes, settings_path);
 }
 

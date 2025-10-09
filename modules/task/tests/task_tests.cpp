@@ -41,7 +41,7 @@ namespace ppc::test {
 template <typename InType, typename OutType>
 class TestTask : public ppc::task::Task<InType, OutType> {
  public:
-  explicit TestTask(const InType& in) {
+  explicit TestTask(const InType &in) {
     this->GetInput() = in;
   }
 
@@ -69,7 +69,7 @@ class TestTask : public ppc::task::Task<InType, OutType> {
 template <typename InType, typename OutType>
 class FakeSlowTask : public TestTask<InType, OutType> {
  public:
-  explicit FakeSlowTask(const InType& in) : TestTask<InType, OutType>(in) {}
+  explicit FakeSlowTask(const InType &in) : TestTask<InType, OutType>(in) {}
 
   bool RunImpl() override {
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -230,7 +230,7 @@ TEST(TaskTest, TaskDestructorThrowsIfStageIncomplete) {
   {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : Task<std::vector<int32_t>, int32_t> {
-      explicit LocalTask(const std::vector<int32_t>& in) {
+      explicit LocalTask(const std::vector<int32_t> &in) {
         this->GetInput() = in;
       }
       bool ValidationImpl() override {
@@ -256,7 +256,7 @@ TEST(TaskTest, TaskDestructorThrowsIfEmpty) {
   {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : Task<std::vector<int32_t>, int32_t> {
-      explicit LocalTask(const std::vector<int32_t>& in) {
+      explicit LocalTask(const std::vector<int32_t> &in) {
         this->GetInput() = in;
       }
       bool ValidationImpl() override {
@@ -279,7 +279,7 @@ TEST(TaskTest, TaskDestructorThrowsIfEmpty) {
 
 TEST(TaskTest, InternalTimeTestThrowsIfTimeoutExceeded) {
   struct SlowTask : Task<std::vector<int32_t>, int32_t> {
-    explicit SlowTask(const std::vector<int32_t>& in) {
+    explicit SlowTask(const std::vector<int32_t> &in) {
       this->GetInput() = in;
     }
     bool ValidationImpl() override {
@@ -346,6 +346,6 @@ TEST(TaskTest, PostProcessingThrowsIfCalledBeforeRun) {
   EXPECT_THROW(task->PostProcessing(), std::runtime_error);
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   return ppc::runners::SimpleInit(argc, argv);
 }
