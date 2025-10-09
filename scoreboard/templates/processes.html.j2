@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Processes Scoreboard</title>
+    <link rel="stylesheet" type="text/css" href="static/main.css">
+</head>
+<body>
+    <table>
+        <tr>
+            <th rowspan="3">Name</th>
+            <th rowspan="3" style="text-align: center;">V</th>
+            {% for name in top_task_names %}
+                <th colspan="10" style="text-align: center;">{{ name }}</th>
+            {% endfor %}
+            <th rowspan="3">Total</th>
+        </tr>
+        <tr>
+            {% for header in group_headers %}
+                <th colspan="5" style="text-align: center;">{{ header.type }}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for _ in group_headers %}
+                {% for letter in ('S', 'A', 'E', 'D', 'P') %}
+                    <th style="text-align: center;">{{ letter }}</th>
+                {% endfor %}
+            {% endfor %}
+        </tr>
+        {% for row in rows %}
+        <tr>
+            <td>{{ row.task }}</td>
+            <td style="text-align: center;">{{ row.variant }}</td>
+            {% for cell in row.groups %}
+                <td style="text-align: center{% if cell.solution_style %};{{ cell.solution_style }}{% endif %}">{{ cell.solution_points }}</td>
+                <td style="text-align: center;background-color: lavender;">{{ cell.acceleration }}</td>
+                <td style="text-align: center;background-color: lavender;">{{ cell.efficiency }}</td>
+                <td style="text-align: center;">{{ cell.deadline_points }}</td>
+                <td style="text-align: center{% if cell.plagiarised %}; background-color: pink{% endif %}">{{ cell.plagiarism_points }}</td>
+            {% endfor %}
+            <td style="text-align: center;">{{ row.total }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
