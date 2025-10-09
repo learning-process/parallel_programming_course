@@ -5,19 +5,21 @@
     <link rel="stylesheet" type="text/css" href="static/main.css">
 </head>
 <body>
-    
+    <div style="margin: 4px 0 12px 0; color: #666;">
+        Generated (MSK): {{ generated_msk }}
+    </div>
     <table>
         <tr>
             <th rowspan="2">Name</th>
             <th rowspan="2" style="text-align: center;">V</th>
             {% for type in task_types %}
-                <th colspan="5" style="text-align: center;">{{ type }}</th>
+                <th colspan="6" style="text-align: center;">{{ type }}</th>
             {% endfor %}
             <th rowspan="2">Total</th>
         </tr>
         <tr>
             {% for type in task_types %}
-                {% for letter in ('S', 'A', 'E', 'D', 'P') %}
+                {% for letter in ('S', 'A', 'E', 'D', 'P', 'R') %}
                     <th style="text-align: center;">{{ letter }}</th>
                 {% endfor %}
             {% endfor %}
@@ -32,6 +34,7 @@
                 <td style="text-align: center;background-color: lavender;">{{ cell.efficiency }}</td>
                 <td style="text-align: center;">{{ cell.deadline_points }}</td>
                 <td style="text-align: center{% if cell.plagiarised %}; background-color: pink{% endif %}">{{ cell.plagiarism_points }}</td>
+                <td style="text-align: center{% if (cell.report | int) > 0 %}; background-color: lightgreen{% endif %}">{{ cell.report }}</td>
             {% endfor %}
             <td style="text-align: center;">{{ row.total }}</td>
         </tr>

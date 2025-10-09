@@ -16,7 +16,7 @@ Generates `output_directory/index.html` with the scoreboard.
 
 ## Configuration
 
-- `data/threads-config.yml` - Task points, deadlines, penalties
+- `data/points-info.yml` - Task points, deadlines, penalties
 - `data/plagiarism.yml` - Flagged submissions
 
 ## Testing

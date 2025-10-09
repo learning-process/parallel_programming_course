@@ -7,6 +7,7 @@ import subprocess
 import yaml
 import shutil
 from jinja2 import Environment, FileSystemLoader
+from zoneinfo import ZoneInfo
 import logging
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -112,9 +113,83 @@ def calculate_performance_metrics(perf_val, eff_num_proc, task_type):
     return acceleration, efficiency
 
 
+def _find_max_solution(points_info, task_type: str) -> int:
+    """Resolve max S for a given task type from points-info (threads list)."""
+    threads_tasks = (points_info.get("threads", {}) or {}).get("tasks", [])
+    for t in threads_tasks:
+        if str(t.get("name")) == task_type:
+            try:
+                return int(t.get("S", 0))
+            except Exception:
+                return 0
+    if task_type == "mpi":
+        return 0
+    return 0
+
+
+def _find_report_max(points_info, task_type: str) -> int:
+    """Resolve max Report (R) points for a given task type from points-info (threads).
+    Returns 0 if not found.
+    """
+    threads_tasks = (points_info.get("threads", {}) or {}).get("tasks", [])
+    for t in threads_tasks:
+        if str(t.get("name")) == task_type:
+            try:
+                return int(t.get("R", 0))
+            except Exception:
+                return 0
+    return 0
+
+
+def _find_process_report_max(points_info, task_number: int) -> int:
+    """Get max report (R) points for process task by ordinal (1..3).
+    Looks up processes.tasks with names like 'mpi_task_1'.
+    """
+    proc = (points_info.get("processes", {}) or {}).get("tasks", [])
+    key = f"mpi_task_{task_number}"
+    for t in proc:
+        if str(t.get("name")) == key:
+            try:
+                return int(t.get("R", 0))
+            except Exception:
+                return 0
+    return 0
+
+def _find_process_points(points_info, task_number: int) -> tuple[int, int, int, int]:
+    """Return (S_mpi, S_seq, A_mpi, R) maxima for a given process task ordinal (1..3).
+    Supports both mapping and list-of-maps (per user's YAML example).
+    """
+    proc_tasks = (points_info.get("processes", {}) or {}).get("tasks", [])
+    key = f"mpi_task_{task_number}"
+    for t in proc_tasks:
+        if str(t.get("name")) == key:
+            def _extract(obj, k):
+                if isinstance(obj, dict):
+                    return int(obj.get(k, 0))
+                if isinstance(obj, list):
+                    for it in obj:
+                        if isinstance(it, dict) and k in it:
+                            try:
+                                return int(it.get(k, 0))
+                            except Exception:
+                                return 0
+                return 0
+
+            mpi_blk = t.get("mpi", {})
+            seq_blk = t.get("seq", {})
+            s_mpi = _extract(mpi_blk, "S")
+            a_mpi = _extract(mpi_blk, "A")
+            s_seq = _extract(seq_blk, "S")
+            try:
+                r = int(t.get("R", 0))
+            except Exception:
+                r = 0
+            return s_mpi, s_seq, a_mpi, r
+    return 0, 0, 0, 0
+
 def get_solution_points_and_style(task_type, status, cfg):
     """Get solution points and CSS style based on task type and status."""
-    max_sol_points = int(cfg["scoreboard"]["task"][task_type]["solution"]["max"])
+    max_sol_points = _find_max_solution(cfg, task_type)
     sol_points = max_sol_points if status in ("done", "disabled") else 0
     solution_style = ""
     if status == "done":
@@ -135,7 +210,7 @@ def check_plagiarism_and_calculate_penalty(
     )
     plagiarism_points = 0
     if is_cheated:
-        plag_coeff = float(cfg["scoreboard"]["plagiarism"]["coefficient"])
+        plag_coeff = float(cfg.get("plagiarism", {}).get("coefficient", 0.0))
         plagiarism_points = -plag_coeff * sol_points
     return is_cheated, plagiarism_points
 
@@ -170,22 +245,22 @@ def calculate_deadline_penalty(dir, task_type, status, deadlines_cfg, tasks_dir)
 
 
 def load_configurations():
-    """Load all configuration files and return parsed data."""
-    config_path = Path(__file__).parent / "data" / "threads-config.yml"
-    assert config_path.exists(), f"Config file not found: {config_path}"
-    with open(config_path, "r") as file:
-        cfg = yaml.safe_load(file)
-    assert cfg, "Configuration is empty"
+    """Load points-info (max points, deadlines, efficiency) and plagiarism lists."""
+    points_info_path = Path(__file__).parent / "data" / "points-info.yml"
+    assert points_info_path.exists(), f"Points info file not found: {points_info_path}"
+    with open(points_info_path, "r") as f:
+        points_info = yaml.safe_load(f)
+    assert points_info, "Points info is empty"
 
-    eff_num_proc = int(cfg["scoreboard"].get("efficiency", {}).get("num_proc", 1))
-    deadlines_cfg = cfg["scoreboard"].get("deadlines", {})
+    eff_num_proc = int(points_info.get("efficiency", {}).get("num_proc", 1))
+    deadlines_cfg = points_info.get("deadlines", {})
 
     plagiarism_config_path = Path(__file__).parent / "data" / "plagiarism.yml"
     with open(plagiarism_config_path, "r") as file:
         plagiarism_cfg = yaml.safe_load(file)
     assert plagiarism_cfg, "Plagiarism configuration is empty"
 
-    return cfg, eff_num_proc, deadlines_cfg, plagiarism_cfg
+    return points_info, eff_num_proc, deadlines_cfg, plagiarism_cfg
 
 
 def _build_rows_for_task_types(
@@ -258,6 +333,10 @@ def _build_rows_for_task_types(
                 dir, task_type, status, deadlines_cfg, tasks_dir
             )
 
+            # Report presence: award R only if report.md exists inside the task directory
+            report_present = (tasks_dir / dir / "report.md").exists()
+            report_points = _find_report_max(cfg, task_type) if report_present else 0
+
             row_types.append(
                 {
                     "solution_points": sol_points,
@@ -268,6 +347,7 @@ def _build_rows_for_task_types(
                     "deadline_points": deadline_points,
                     "plagiarised": is_cheated,
                     "plagiarism_points": plagiarism_points,
+                    "report": report_points,
                 }
             )
             total_count += task_points
@@ -422,6 +502,7 @@ def main():
     proc_group_headers = []
     proc_top_headers = []
     proc_groups = []
+    proc_r_values = []
     total_points_sum = 0
     for n in expected_numbers:
         entry = num_to_dir.get(n)
@@ -432,10 +513,26 @@ def main():
             # Second header row shows only mpi/seq
             proc_group_headers.append({"type": "mpi"})
             proc_group_headers.append({"type": "seq"})
+            group_cells = []
             for ttype in ["mpi", "seq"]:
-                cell, pts = _build_cell(d, ttype)
-                proc_groups.append(cell)
-                total_points_sum += pts
+                cell, _ = _build_cell(d, ttype)
+                group_cells.append(cell)
+            # Override displayed points for processes: S under MPI/SEQ from points-info; A points under MPI only
+            s_mpi, s_seq, a_mpi, r_max = _find_process_points(cfg, n)
+            has_mpi = bool(directories[d].get("mpi"))
+            has_seq = bool(directories[d].get("seq"))
+            report_present = (tasks_dir / d / "report.md").exists()
+            group_cells[0]["solution_points"] = s_mpi if has_mpi else 0
+            group_cells[1]["solution_points"] = s_seq if has_seq else 0
+            group_cells[0]["a_points"] = a_mpi if (has_mpi and has_seq) else 0
+            group_cells[1]["a_points"] = 0
+            proc_groups.extend(group_cells)
+            # Sum points S + A + R with gating
+            s_inc = (s_mpi if has_mpi else 0) + (s_seq if has_seq else 0)
+            a_inc = a_mpi if (has_mpi and has_seq) else 0
+            r_inc = r_max if report_present else 0
+            total_points_sum += s_inc + a_inc + r_inc
+            proc_r_values.append(r_inc)
         else:
             proc_group_headers.append({"type": "mpi", "task_label": f"task_{n}"})
             proc_group_headers.append({"type": "seq", "task_label": f"task_{n}"})
@@ -453,7 +550,8 @@ def main():
                         "plagiarism_points": "?",
                     }
                 )
-            # Do not affect total; sum only existing tasks
+            # Do not affect total; sum only existing tasks; report points 0
+            proc_r_values.append(0)
 
     # Label for processes row: show Last, First, Middle on separate lines; no group number
     row_label = "processes"
@@ -490,6 +588,8 @@ def main():
             "task": row_label,
             "variant": row_variant,
             "groups": proc_groups,
+            "r_values": proc_r_values,
+            "r_total": sum(proc_r_values),
             "total": total_points_sum,
         }
     ]
@@ -504,9 +604,10 @@ def main():
     output_path.mkdir(parents=True, exist_ok=True)
 
     # Render tables
+    generated_msk = datetime.now(ZoneInfo("Europe/Moscow")).strftime("%Y-%m-%d %H:%M:%S")
     table_template = env.get_template("index.html.j2")
     threads_html = table_template.render(
-        task_types=task_types_threads, rows=threads_rows
+        task_types=task_types_threads, rows=threads_rows, generated_msk=generated_msk
     )
     # Use dedicated template for processes table layout
     processes_template = env.get_template("processes.html.j2")
@@ -514,6 +615,7 @@ def main():
         top_task_names=proc_top_headers,
         group_headers=proc_group_headers,
         rows=processes_rows,
+        generated_msk=generated_msk,
     )
 
     with open(output_path / "threads.html", "w") as f:
@@ -562,7 +664,9 @@ def main():
             eff_num_proc,
             deadlines_cfg,
         )
-        html_g = table_template.render(task_types=task_types_threads, rows=rows_g)
+        html_g = table_template.render(
+            task_types=task_types_threads, rows=rows_g, generated_msk=generated_msk
+        )
         with open(out_file, "w") as f:
             f.write(html_g)
         threads_groups_menu.append({"href": out_file.name, "title": g})
@@ -626,6 +730,7 @@ def main():
         proc_top_headers_g = []
         proc_group_headers_g = []
         proc_groups_g = []
+        proc_r_values_g = []
         total_points_sum_g = 0
         for n in [1, 2, 3]:
             entry = num_to_dir_g.get(n)
@@ -665,7 +770,16 @@ def main():
                             "plagiarism_points": plagiarism_points,
                         }
                     )
-                    total_points_sum_g += task_points
+                # Sum points by processes maxima with gating (+ report presence)
+                s_mpi_g, s_seq_g, a_max_g, r_max_g = _find_process_points(cfg, n)
+                has_mpi_g = bool(directories[d].get("mpi"))
+                has_seq_g = bool(directories[d].get("seq"))
+                report_present_g = (tasks_dir / d / "report.md").exists()
+                s_inc_g = (s_mpi_g if has_mpi_g else 0) + (s_seq_g if has_seq_g else 0)
+                a_inc_g = a_max_g if (has_mpi_g and has_seq_g) else 0
+                r_inc_g = r_max_g if report_present_g else 0
+                total_points_sum_g += s_inc_g + a_inc_g + r_inc_g
+                proc_r_values_g.append(r_inc_g)
             else:
                 proc_top_headers_g.append(f"task-{n}")
                 for ttype in ["mpi", "seq"]:
@@ -682,7 +796,8 @@ def main():
                             "plagiarism_points": "?",
                         }
                     )
-                # Missing task: do not affect total; sum only existing
+                # Missing task: do not affect total; sum only existing; report=0
+                proc_r_values_g.append(0)
 
         # Row label for group page: name without group (three lines max)
         row_label_g = f"group {g}"
@@ -720,6 +835,8 @@ def main():
                 "task": row_label_g,
                 "variant": row_variant_g,
                 "groups": proc_groups_g,
+                "r_values": proc_r_values_g,
+                "r_total": sum(proc_r_values_g),
                 "total": total_points_sum_g,
             }
         ]
@@ -728,6 +845,7 @@ def main():
             top_task_names=proc_top_headers_g,
             group_headers=proc_group_headers_g,
             rows=rows_g,
+            generated_msk=generated_msk,
         )
         with open(out_file, "w") as f:
             f.write(html_g)
@@ -755,6 +873,7 @@ def main():
             ],
             groups_threads=threads_groups_menu,
             groups_processes=processes_groups_menu,
+            generated_msk=generated_msk,
         )
 
     with open(output_path / "index.html", "w") as f:
