@@ -1,0 +1,13 @@
+InheritParentConfig: true
+
+Checks: >
+  -modernize-loop-convert,
+  -cppcoreguidelines-avoid-goto,
+  -cppcoreguidelines-avoid-non-const-global-variables,
+  -misc-use-anonymous-namespace,
+  -modernize-use-std-print,
+  -modernize-type-traits
+
+CheckOptions:
+  - key: readability-function-cognitive-complexity.Threshold
+    value: 50  # Relaxed for tests

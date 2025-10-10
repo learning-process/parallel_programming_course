@@ -34,18 +34,18 @@ template <typename InType, typename OutType>
 class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, OutType>> {
  public:
   /// @brief Generates a readable name for the performance test case.
-  static std::string CustomPerfTestName(const ::testing::TestParamInfo<PerfTestParam<InType, OutType>>& info) {
+  static std::string CustomPerfTestName(const ::testing::TestParamInfo<PerfTestParam<InType, OutType>> &info) {
     return ppc::performance::GetStringParamName(
                std::get<static_cast<std::size_t>(GTestParamIndex::kTestParams)>(info.param)) +
            "_" + std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(info.param);
   }
 
  protected:
-  virtual bool CheckTestOutputData(OutType& output_data) = 0;
+  virtual bool CheckTestOutputData(OutType &output_data) = 0;
   /// @brief Supplies input data for performance testing.
   virtual InType GetTestInputData() = 0;
 
-  virtual void SetPerfAttributes(ppc::performance::PerfAttr& perf_attrs) {
+  virtual void SetPerfAttributes(ppc::performance::PerfAttr &perf_attrs) {
     if (task_->GetDynamicTypeOfTask() == ppc::task::TypeOfTask::kMPI ||
         task_->GetDynamicTypeOfTask() == ppc::task::TypeOfTask::kALL) {
       const double t0 = GetTimeMPI();
@@ -67,7 +67,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
     }
   }
 
-  void ExecuteTest(const PerfTestParam<InType, OutType>& perf_test_param) {
+  void ExecuteTest(const PerfTestParam<InType, OutType> &perf_test_param) {
     auto task_getter = std::get<static_cast<std::size_t>(GTestParamIndex::kTaskGetter)>(perf_test_param);
     auto test_name = std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(perf_test_param);
     auto mode = std::get<static_cast<std::size_t>(GTestParamIndex::kTestParams)>(perf_test_param);
@@ -105,7 +105,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 };
 
 template <typename TaskType, typename InputType>
-auto MakePerfTaskTuples(const std::string& settings_path) {
+auto MakePerfTaskTuples(const std::string &settings_path) {
   const auto name = std::string(GetNamespace<TaskType>()) + "_" +
                     ppc::task::GetStringTaskType(TaskType::GetStaticTypeOfTask(), settings_path);
 
@@ -116,18 +116,18 @@ auto MakePerfTaskTuples(const std::string& settings_path) {
 }
 
 template <typename Tuple, std::size_t... I>
-auto TupleToGTestValuesImpl(const Tuple& tup, std::index_sequence<I...> /*unused*/) {
+auto TupleToGTestValuesImpl(const Tuple &tup, std::index_sequence<I...> /*unused*/) {
   return ::testing::Values(std::get<I>(tup)...);
 }
 
 template <typename Tuple>
-auto TupleToGTestValues(Tuple&& tup) {
+auto TupleToGTestValues(Tuple &&tup) {
   constexpr size_t kSize = std::tuple_size_v<std::decay_t<Tuple>>;
   return TupleToGTestValuesImpl(std::forward<Tuple>(tup), std::make_index_sequence<kSize>{});
 }
 
 template <typename InputType, typename... TaskTypes>
-auto MakeAllPerfTasks(const std::string& settings_path) {
+auto MakeAllPerfTasks(const std::string &settings_path) {
   return std::tuple_cat(MakePerfTaskTuples<TaskTypes, InputType>(settings_path)...);
 }
 

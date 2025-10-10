@@ -10,7 +10,7 @@ class NesterovATestTaskOMP : public BaseTask {
   static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() {
     return ppc::task::TypeOfTask::kOMP;
   }
-  explicit NesterovATestTaskOMP(const InType& in);
+  explicit NesterovATestTaskOMP(const InType &in);
 
  private:
   bool ValidationImpl() override;

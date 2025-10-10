@@ -1,0 +1,63 @@
+processes:
+  semester_total: 70
+  tasks:
+    - name: mpi_task_1
+      mpi:
+        - S: 8
+        - A: 0
+      seq:
+        - S: 2
+      R: 2
+      variants_max: 27
+      Total: 12
+    - name: mpi_task_2
+      mpi:
+        - S: 12
+        - A: 5
+      seq:
+        - S: 3
+      R: 3
+      variants_max: 23
+      Total: 23
+    - name: mpi_task_3
+      mpi:
+        - S: 16
+        - A: 10
+      seq:
+        - S: 4
+      R: 5
+      variants_max: 32
+      Total: 35
+threads:
+  semester_total: 64
+  variants_max: 30
+  tasks:
+    - name: seq
+      S: 4
+      R: 1
+      Total: 5
+    - name: omp
+      S: 6
+      A: 3
+      R: 2
+      Total: 11
+    - name: tbb
+      S: 6
+      A: 3
+      R: 2
+      Total: 11
+    - name: stl
+      S: 8
+      A: 6
+      R: 2
+      Total: 16
+    - name: all
+      S: 10
+      A: 8
+      R: 3
+      Total: 21
+efficiency:
+  num_proc: 4
+copying:
+  coefficient: 0.5
+  note: "Penalty C = -coefficient * S (scoreboard notation)"

@@ -5,23 +5,97 @@
     <link rel="stylesheet" type="text/css" href="static/main.css">
 </head>
 <body>
+    <div style="margin: 4px 0 12px 0; color: #666;">
+        Generated (MSK): {{ generated_msk }}
+    </div>
+    <div id="variant-calc-proc" style="margin: 8px 0 14px; padding: 8px; border: 1px solid #ddd; background: #fafafa;">
+        <div style="font-weight: bold; margin-bottom: 6px;">Variant Calculator (Processes)</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            <label>Last: <input id="vcp_last" type="text" style="width: 140px;"></label>
+            <label>First: <input id="vcp_first" type="text" style="width: 140px;"></label>
+            <label>Middle: <input id="vcp_middle" type="text" style="width: 140px;"></label>
+            <label>Group: <input id="vcp_group" type="text" style="width: 140px;"></label>
+            <button id="vcp_calc_btn">Compute</button>
+            <span id="vcp_result" style="margin-left: 8px; color: #333;"></span>
+        </div>
+        <script>
+        (function(){
+            const repoSalt = {{ repo_salt | tojson | safe }};
+            const vmax = {{ processes_variants_max | tojson | safe }}; // [v1,v2,v3]
+            function norm(s){
+                if(!s) return '';
+                s = s.normalize('NFKC').trim().toLowerCase();
+                s = s.replaceAll('ё','е');
+                s = s.replace(/\s+/g,' ');
+                return s;
+            }
+            async function sha256Bytes(str){
+                const enc = new TextEncoder();
+                const buf = enc.encode(str);
+                const hash = await crypto.subtle.digest('SHA-256', buf);
+                return new Uint8Array(hash);
+            }
+            async function modHash(key, m){
+                const bytes = await sha256Bytes(key);
+                let r = 0;
+                for(const b of bytes){ r = (r*256 + b) % m; }
+                return r;
+            }
+            async function compute(){
+                const last = norm(document.getElementById('vcp_last').value);
+                const first = norm(document.getElementById('vcp_first').value);
+                const middle = norm(document.getElementById('vcp_middle').value);
+                const group = norm(document.getElementById('vcp_group').value);
+                if(!last || !first || !group || vmax.length !== 3){
+                    document.getElementById('vcp_result').textContent = 'Fill Last, First, Group';
+                    return;
+                }
+                const results = [];
+                for(let n=1;n<=3;n++){
+                    const m = vmax[n-1] || 1;
+                    const salt = norm(repoSalt + '/processes/task-' + n);
+                    const key = [last, first, middle, group, salt].join('|');
+                    const idx = await modHash(key, m);
+                    results.push(`${idx+1} of ${m}`);
+                }
+                document.getElementById('vcp_result').innerHTML = `task-1: ${results[0]} &nbsp; task-2: ${results[1]} &nbsp; task-3: ${results[2]}`;
+            }
+            document.getElementById('vcp_calc_btn').addEventListener('click', compute);
+        })();
+        </script>
+    </div>
     <table>
         <tr>
             <th rowspan="3">Name</th>
             <th rowspan="3" style="text-align: center;">V</th>
             {% for name in top_task_names %}
-                <th colspan="10" style="text-align: center;">{{ name }}</th>
+                {# For each task: seq (3) + mpi (6) + R (1) = 10 #}
+                <th colspan="10">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                        <span>{{ name }}</span>
+                        {% if deadlines_processes %}
+                        <span style="color: red; font-weight: bold;">{{ deadlines_processes[loop.index0] }}</span>
+                        {% endif %}
+                    </div>
+                </th>
             {% endfor %}
             <th rowspan="3">Total</th>
         </tr>
         <tr>
-            {% for header in group_headers %}
-                <th colspan="5" style="text-align: center;">{{ header.type }}</th>
+            {% for _ in top_task_names %}
+                <th colspan="3" style="text-align: center;">seq</th>
+                <th colspan="6" style="text-align: center;">mpi</th>
+                <th rowspan="2" style="text-align: center;">R</th>
             {% endfor %}
         </tr>
         <tr>
-            {% for _ in group_headers %}
-                {% for letter in ('S', 'A', 'E', 'D', 'P') %}
+            {% for _ in top_task_names %}
+                {# seq sub-columns (no A/E) #}
+                {% for letter in ('S', 'D', 'C') %}
+                    <th style="text-align: center;">{{ letter }}</th>
+                {% endfor %}
+                {# mpi sub-columns include P (points) + A/E metrics #}
+                {% for letter in ('S', 'P', 'A', 'E', 'D', 'C') %}
                     <th style="text-align: center;">{{ letter }}</th>
                 {% endfor %}
             {% endfor %}
@@ -30,12 +104,26 @@
         <tr>
             <td>{{ row.task }}</td>
             <td style="text-align: center;">{{ row.variant }}</td>
-            {% for cell in row.groups %}
-                <td style="text-align: center{% if cell.solution_style %};{{ cell.solution_style }}{% endif %}">{{ cell.solution_points }}</td>
-                <td style="text-align: center;background-color: lavender;">{{ cell.acceleration }}</td>
-                <td style="text-align: center;background-color: lavender;">{{ cell.efficiency }}</td>
-                <td style="text-align: center;">{{ cell.deadline_points }}</td>
-                <td style="text-align: center{% if cell.plagiarised %}; background-color: pink{% endif %}">{{ cell.plagiarism_points }}</td>
+            {% set ns = namespace(idx=0, gi=0) %}
+            {% for _ in top_task_names %}
+                {# cells are stored as [mpi, seq] per task; render seq first #}
+                {% set cell_mpi = row.groups[ns.idx] %}
+                {% set cell_seq = row.groups[ns.idx + 1] %}
+                {# seq: S, D, P #}
+                <td style="text-align: center{% if cell_seq.solution_style %};{{ cell_seq.solution_style }}{% endif %}">{{ cell_seq.solution_points }}</td>
+                <td style="text-align: center;">{{ cell_seq.deadline_points }}</td>
+                <td style="text-align: center{% if cell_seq.plagiarised %}; background-color: pink{% endif %}">{{ cell_seq.plagiarism_points }}</td>
+                {# mpi: S, P, A, E, D, C #}
+                <td style="text-align: center{% if cell_mpi.solution_style %};{{ cell_mpi.solution_style }}{% endif %}">{{ cell_mpi.solution_points }}</td>
+                <td style="text-align: center;background-color: lavender;">{{ (cell_mpi.perf_points_display if cell_mpi.perf_points_display is defined else cell_mpi.perf_points) }}</td>
+                <td style="text-align: center;background-color: lavender;">{{ cell_mpi.acceleration }}</td>
+                <td style="text-align: center;background-color: lavender;">{{ cell_mpi.efficiency }}</td>
+                <td style="text-align: center;">{{ cell_mpi.deadline_points }}</td>
+                <td style="text-align: center{% if cell_mpi.plagiarised %}; background-color: pink{% endif %}">{{ cell_mpi.plagiarism_points }}</td>
+                {% set ns.idx = ns.idx + 2 %}
+                {# R value for this task group #}
+                <td style="text-align: center{% if (row.r_values[ns.gi] if row.r_values is defined else 0) > 0 %}; background-color: lightgreen{% endif %}">{{ row.r_values[ns.gi] if row.r_values is defined else 0 }}</td>
+                {% set ns.gi = ns.gi + 1 %}
             {% endfor %}
             <td style="text-align: center;">{{ row.total }}</td>
         </tr>

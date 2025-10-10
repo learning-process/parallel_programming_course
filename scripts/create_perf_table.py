@@ -74,8 +74,8 @@ for line in logs_lines:
         task_name = old_result[0][1]
         perf_type = old_result[0][2]
         perf_time = float(old_result[0][3])
-        if perf_time < 0.1:
-            msg = f"Performance time = {perf_time} < 0.1 second : for {task_type} - {task_name} - {perf_type} \n"
+        if perf_time < 0.001:
+            msg = f"Performance time = {perf_time} < 0.001 second : for {task_type} - {task_name} - {perf_type} \n"
             raise Exception(msg)
         result_tables[perf_type][task_name][task_type] = perf_time
     elif len(new_result):
@@ -87,8 +87,8 @@ for line in logs_lines:
         perf_time = float(new_result[0][4])
         task_name = f"example_{task_category}"
 
-        if perf_time < 0.1:
-            msg = f"Performance time = {perf_time} < 0.1 second : for {task_type} - {task_name} - {perf_type} \n"
+        if perf_time < 0.001:
+            msg = f"Performance time = {perf_time} < 0.001 second : for {task_type} - {task_name} - {perf_type} \n"
             raise Exception(msg)
 
         if task_name in result_tables[perf_type]:

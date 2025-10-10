@@ -1,8 +1,0 @@
-plagiarism:
-  mpi: []
-  omp: []
-  seq:
-    - broken_example
-  stl: []
-  tbb: []
-  all: []

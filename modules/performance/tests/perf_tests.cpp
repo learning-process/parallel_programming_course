@@ -25,7 +25,7 @@ namespace ppc::test {
 template <typename InType, typename OutType>
 class TestPerfTask : public ppc::task::Task<InType, OutType> {
  public:
-  explicit TestPerfTask(const InType& in) {
+  explicit TestPerfTask(const InType &in) {
     this->GetInput() = in;
   }
 
@@ -53,7 +53,7 @@ class TestPerfTask : public ppc::task::Task<InType, OutType> {
 template <typename InType, typename OutType>
 class FakePerfTask : public TestPerfTask<InType, OutType> {
  public:
-  explicit FakePerfTask(const InType& in) : TestPerfTask<InType, OutType>(in) {}
+  explicit FakePerfTask(const InType &in) : TestPerfTask<InType, OutType>(in) {}
 
   bool RunImpl() override {
     std::this_thread::sleep_for(std::chrono::seconds(11));
@@ -164,7 +164,7 @@ TEST(PerfTests, CheckPerfTaskFloat) {
 struct ParamTestCase {
   PerfResults::TypeOfRunning input;
   std::string expected_output;
-  friend void PrintTo(const ParamTestCase& param, std::ostream* os) {
+  friend void PrintTo(const ParamTestCase &param, std::ostream *os) {
     *os << "{ input = " << static_cast<int>(param.input) << ", expected = " << param.expected_output << " }";
   }
 };
@@ -172,7 +172,7 @@ struct ParamTestCase {
 class GetStringParamNameParamTest : public ::testing::TestWithParam<ParamTestCase> {};
 
 TEST_P(GetStringParamNameParamTest, ReturnsExpectedString) {
-  const auto& param = GetParam();
+  const auto &param = GetParam();
   EXPECT_EQ(GetStringParamName(param.input), param.expected_output);
 }
 
@@ -180,7 +180,7 @@ INSTANTIATE_TEST_SUITE_P(ParamTests, GetStringParamNameParamTest,
                          ::testing::Values(ParamTestCase{PerfResults::TypeOfRunning::kTaskRun, "task_run"},
                                            ParamTestCase{PerfResults::TypeOfRunning::kPipeline, "pipeline"},
                                            ParamTestCase{PerfResults::TypeOfRunning::kNone, "none"}),
-                         [](const ::testing::TestParamInfo<ParamTestCase>& info) {
+                         [](const ::testing::TestParamInfo<ParamTestCase> &info) {
                            return info.param.expected_output;
                          });
 
@@ -188,7 +188,7 @@ struct TaskTypeTestCase {
   TypeOfTask type;
   std::string expected;
   std::string label;
-  friend void PrintTo(const TaskTypeTestCase& param, std::ostream* os) {
+  friend void PrintTo(const TaskTypeTestCase &param, std::ostream *os) {
     *os << "{ type = " << static_cast<int>(param.type) << ", expected = " << param.expected
         << ", label = " << param.label << " }";
   }
@@ -217,7 +217,7 @@ class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> 
 };
 
 TEST_P(GetStringTaskTypeTest, ReturnsExpectedString) {
-  const auto& param = GetParam();
+  const auto &param = GetParam();
   EXPECT_EQ(GetStringTaskType(param.type, temp_path), param.expected) << "Failed on: " << param.label;
 }
 
@@ -236,7 +236,7 @@ TEST(GetStringTaskTypeStandaloneTest, ThrowsIfFileMissing) {
 
 TEST(GetStringTaskTypeStandaloneTest, ExceptionMessageContainsPath) {
   const std::string missing_path = "non_existent_settings.json";
-  EXPECT_THROW(try { GetStringTaskType(TypeOfTask::kSEQ, missing_path); } catch (const std::runtime_error& e) {
+  EXPECT_THROW(try { GetStringTaskType(TypeOfTask::kSEQ, missing_path); } catch (const std::runtime_error &e) {
     EXPECT_NE(std::string(e.what()).find(missing_path), std::string::npos);
     throw;
   },

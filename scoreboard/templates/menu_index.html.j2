@@ -30,7 +30,7 @@
         }
         box.innerHTML = html || '<span style="color:#777">No groups</span>';
       }
-      window.addEventListener('DOMContentLoaded', () => setGroups('threads'));
+      window.addEventListener('DOMContentLoaded', () => setGroups('processes'));
     </script>
 </head>
 <body>
@@ -43,12 +43,14 @@
     <div id="group-links" style="margin-bottom: 8px;"></div>
     <p>
         <b>(V)ariant</b> - Task variant number assigned to the student.<br/>
+        <b>(R)eport</b> - Task report in Markdown (.md), required.<br/>
         <b>(S)olution</b> - The correctness and completeness of the implemented solution.<br/>
         <b>(A)cceleration</b> - The process of speeding up software to improve performance. Speedup = T(seq) / T(parallel)<br/>
         <b>(E)fficiency</b> - Optimizing software speed-up by improving CPU utilization and resource management. Efficiency = Speedup / NumProcs * 100%<br/>
-        <b>(D)eadline</b> - The timeliness of the submission in relation to the given deadline.<br/>
-        <b>(P)lagiarism</b> - The originality of the work, ensuring no copied content from external sources.
+        <b>(P)erformance</b> - Points awarded based on efficiency thresholds (see docs).<br/>
+        <b>(D)eadline</b> - The timeliness of the submission in relation to the given deadline (due at 23:59 MSK on the shown date).<br/>
+        <b>(C)opying</b> - Penalty for detected copying cases.
     </p>
-    <iframe id="content" src="threads.html" style="width: 100%; height: 85vh; border: 1px solid #ddd;"></iframe>
+    <iframe id="content" src="processes.html" style="width: 100%; height: 85vh; border: 1px solid #ddd;"></iframe>
 </body>
 </html>

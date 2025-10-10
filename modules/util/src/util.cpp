@@ -8,14 +8,14 @@
 
 namespace {
 
-std::string GetAbsolutePath(const std::string& relative_path) {
+std::string GetAbsolutePath(const std::string &relative_path) {
   std::filesystem::path path = std::filesystem::path(PPC_PATH_TO_PROJECT) / "tasks" / relative_path;
   return path.string();
 }
 
 }  // namespace
 
-std::string ppc::util::GetAbsoluteTaskPath(const std::string& id_path, const std::string& relative_path) {
+std::string ppc::util::GetAbsoluteTaskPath(const std::string &id_path, const std::string &relative_path) {
   std::filesystem::path task_relative = std::filesystem::path(id_path) / "data" / relative_path;
   return GetAbsolutePath(task_relative.string());
 }
@@ -60,7 +60,7 @@ constexpr std::array<std::string_view, 10> kMpiEnvVars = {
     "HYDRA_CONTROL_FD",     "PMIX_RANK",          "SLURM_PROCID", "MSMPI_RANK", "MSMPI_LOCALRANK"};
 
 bool ppc::util::IsUnderMpirun() {
-  return std::ranges::any_of(kMpiEnvVars, [&](const auto& env_var) {
+  return std::ranges::any_of(kMpiEnvVars, [&](const auto &env_var) {
     const auto mpi_env = env::get<int>(env_var);
     return static_cast<bool>(mpi_env.has_value());
   });

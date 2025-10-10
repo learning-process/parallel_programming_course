@@ -5,33 +5,109 @@
     <link rel="stylesheet" type="text/css" href="static/main.css">
 </head>
 <body>
-    
+    <div style="margin: 4px 0 12px 0; color: #666;">
+        Generated (MSK): {{ generated_msk }}
+    </div>
+    <div id="variant-calc" style="margin: 8px 0 14px; padding: 8px; border: 1px solid #ddd; background: #fafafa;">
+        <div style="font-weight: bold; margin-bottom: 6px;">Variant Calculator (Threads)</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            <label>Last: <input id="vc_last" type="text" style="width: 140px;"></label>
+            <label>First: <input id="vc_first" type="text" style="width: 140px;"></label>
+            <label>Middle: <input id="vc_middle" type="text" style="width: 140px;"></label>
+            <label>Group: <input id="vc_group" type="text" style="width: 140px;"></label>
+            <button id="vc_calc_btn">Compute</button>
+            <span id="vc_result" style="margin-left: 8px; color: #333;"></span>
+        </div>
+        <script>
+        (function(){
+            const repoSalt = {{ repo_salt | tojson | safe }};
+            const vmax = {{ threads_variants_max | int }};
+            function norm(s){
+                if(!s) return '';
+                s = s.normalize('NFKC').trim().toLowerCase();
+                s = s.replaceAll('ё','е');
+                s = s.replace(/\s+/g,' ');
+                return s;
+            }
+            async function sha256Bytes(str){
+                const enc = new TextEncoder();
+                const buf = enc.encode(str);
+                const hash = await crypto.subtle.digest('SHA-256', buf);
+                return new Uint8Array(hash);
+            }
+            async function modHash(key, m){
+                const bytes = await sha256Bytes(key);
+                let r = 0;
+                for(const b of bytes){ r = (r*256 + b) % m; }
+                return r;
+            }
+            async function compute(){
+                const last = norm(document.getElementById('vc_last').value);
+                const first = norm(document.getElementById('vc_first').value);
+                const middle = norm(document.getElementById('vc_middle').value);
+                const group = norm(document.getElementById('vc_group').value);
+                if(!last || !first || !group || vmax < 1){
+                    document.getElementById('vc_result').textContent = 'Fill Last, First, Group';
+                    return;
+                }
+                const key = [last, first, middle, group, norm(repoSalt)].join('|');
+                const idx = await modHash(key, vmax);
+                document.getElementById('vc_result').textContent = `Your variant: ${idx+1} of ${vmax}`;
+            }
+            document.getElementById('vc_calc_btn').addEventListener('click', compute);
+        })();
+        </script>
+    </div>
     <table>
         <tr>
             <th rowspan="2">Name</th>
             <th rowspan="2" style="text-align: center;">V</th>
             {% for type in task_types %}
-                <th colspan="5" style="text-align: center;">{{ type }}</th>
+                {% set span = 4 if type == 'seq' else 7 %}
+                <th colspan="{{ span }}">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                        <span>{{ type }}</span>
+                        {% if deadlines_threads %}
+                        <span style="color: red; font-weight: bold;">{{ deadlines_threads.get(type, '') }}</span>
+                        {% endif %}
+                    </div>
+                </th>
             {% endfor %}
             <th rowspan="2">Total</th>
         </tr>
         <tr>
             {% for type in task_types %}
-                {% for letter in ('S', 'A', 'E', 'D', 'P') %}
-                    <th style="text-align: center;">{{ letter }}</th>
-                {% endfor %}
+                {% if type == 'seq' %}
+                    {% for letter in ('S', 'D', 'C', 'R') %}
+                        <th style="text-align: center;">{{ letter }}</th>
+                    {% endfor %}
+                {% else %}
+                    {% for letter in ('S', 'P', 'A', 'E', 'D', 'C', 'R') %}
+                        <th style="text-align: center;">{{ letter }}</th>
+                    {% endfor %}
+                {% endif %}
             {% endfor %}
         </tr>
         {% for row in rows %}
         <tr>
             <td>{{ row.task }}</td>
             <td style="text-align: center;">{{ row.variant }}</td>
-            {% for cell in row.types %}
-                <td style="text-align: center{% if cell.solution_style %};{{ cell.solution_style }}{% endif %}">{{ cell.solution_points }}</td>
-                <td style="text-align: center;background-color: lavender;">{{ cell.acceleration }}</td>
-                <td style="text-align: center;background-color: lavender;">{{ cell.efficiency }}</td>
-                <td style="text-align: center;">{{ cell.deadline_points }}</td>
-                <td style="text-align: center{% if cell.plagiarised %}; background-color: pink{% endif %}">{{ cell.plagiarism_points }}</td>
+            {% for type in task_types %}
+                {% set cell = row.types[loop.index0] %}
+                {% if type == 'seq' %}
+                    <td style="text-align: center{% if cell.solution_style %};{{ cell.solution_style }}{% endif %}">{{ cell.solution_points }}</td>
+                    <td style="text-align: center;">{{ cell.deadline_points }}</td>
+                    <td style="text-align: center{% if cell.plagiarised %}; background-color: pink{% endif %}">{{ cell.plagiarism_points }}</td>
+                    <td style="text-align: center{% if (cell.report | int) > 0 %}; background-color: lightgreen{% endif %}">{{ cell.report }}</td>
+                {% else %}
+                    <td style="text-align: center{% if cell.solution_style %};{{ cell.solution_style }}{% endif %}">{{ cell.solution_points }}</td>
+                    <td style="text-align: center;background-color: lavender;">{{ cell.perf_points_display }}</td>
+                    <td style="text-align: center;background-color: lavender;">{{ cell.acceleration }}</td>
+                    <td style="text-align: center;background-color: lavender;">{{ cell.efficiency }}</td>
+                    <td style="text-align: center;">{{ cell.deadline_points }}</td>
+                    <td style="text-align: center{% if cell.plagiarised %}; background-color: pink{% endif %}">{{ cell.plagiarism_points }}</td>
+                    <td style="text-align: center{% if (cell.report | int) > 0 %}; background-color: lightgreen{% endif %}">{{ cell.report }}</td>
+                {% endif %}
             {% endfor %}
             <td style="text-align: center;">{{ row.total }}</td>
         </tr>
