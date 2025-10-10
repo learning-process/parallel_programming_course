@@ -1,9 +1,9 @@
 #pragma once
 
-#include "example_processes/common/include/common.hpp"
+#include "example_processes_3/common/include/common.hpp"
 #include "task/include/task.hpp"
 
-namespace nesterov_a_test_task_processes {
+namespace nesterov_a_test_task_processes_3 {
 
 class NesterovATestTaskSEQ : public BaseTask {
  public:
@@ -19,4 +19,4 @@ class NesterovATestTaskSEQ : public BaseTask {
   bool PostProcessingImpl() override;
 };
 
-}  // namespace nesterov_a_test_task_processes
+}  // namespace nesterov_a_test_task_processes_3
