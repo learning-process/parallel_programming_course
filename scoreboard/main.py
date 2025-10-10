@@ -108,26 +108,48 @@ def discover_tasks(tasks_dir, task_types):
 directories, tasks_type_map = discover_tasks(tasks_dir, task_types)
 
 
-def load_performance_data(perf_stat_file_path):
-    """Load and parse performance statistics from CSV file."""
-
-    perf_stats = dict()
+def load_performance_data_threads(perf_stat_file_path: Path) -> dict:
+    """Load threads performance ratios (T_x/T_seq) from CSV.
+    Expected header: Task, SEQ, OMP, TBB, STL, ALL
+    """
+    perf_stats: dict[str, dict] = {}
     if perf_stat_file_path.exists():
         with open(perf_stat_file_path, "r", newline="") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 task_name = row.get("Task")
-                if task_name:
-                    perf_stats[task_name] = {
-                        "seq": row.get("SEQ", "?"),
-                        "omp": row.get("OMP", "?"),
-                        "tbb": row.get("TBB", "?"),
-                        "stl": row.get("STL", "?"),
-                        "all": row.get("ALL", "?"),
-                        "mpi": "N/A",
-                    }
+                if not task_name:
+                    continue
+                perf_stats[task_name] = {
+                    "seq": row.get("SEQ", "?"),
+                    "omp": row.get("OMP", "?"),
+                    "tbb": row.get("TBB", "?"),
+                    "stl": row.get("STL", "?"),
+                    "all": row.get("ALL", "?"),
+                }
     else:
-        logger.warning("Performance stats CSV not found at %s", perf_stat_file_path)
+        logger.warning("Threads perf stats CSV not found at %s", perf_stat_file_path)
+    return perf_stats
+
+
+def load_performance_data_processes(perf_stat_file_path: Path) -> dict:
+    """Load processes performance ratios (T_x/T_seq) from CSV.
+    Expected header: Task, SEQ, MPI
+    """
+    perf_stats: dict[str, dict] = {}
+    if perf_stat_file_path.exists():
+        with open(perf_stat_file_path, "r", newline="") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                task_name = row.get("Task")
+                if not task_name:
+                    continue
+                perf_stats[task_name] = {
+                    "seq": row.get("SEQ", "?"),
+                    "mpi": row.get("MPI", "?"),
+                }
+    else:
+        logger.warning("Processes perf stats CSV not found at %s", perf_stat_file_path)
     return perf_stats
 
 
@@ -652,15 +674,29 @@ def main():
         ds = _evenly_spaced_dates(n_items, s, e)
         return ds
 
-    # Locate perf CSV from CI or local runs
-    candidates = [
+    # Locate perf CSVs from CI or local runs (threads and processes)
+    candidates_threads = [
+        script_dir.parent / "build" / "perf_stat_dir" / "threads_task_run_perf_table.csv",
+        script_dir.parent / "perf_stat_dir" / "threads_task_run_perf_table.csv",
+        # Fallback to old single-file name
         script_dir.parent / "build" / "perf_stat_dir" / "task_run_perf_table.csv",
         script_dir.parent / "perf_stat_dir" / "task_run_perf_table.csv",
     ]
-    perf_stat_file_path = next((p for p in candidates if p.exists()), candidates[0])
+    threads_csv = next((p for p in candidates_threads if p.exists()), candidates_threads[0])
 
-    # Read and parse performance statistics CSV
-    perf_stats = load_performance_data(perf_stat_file_path)
+    candidates_processes = [
+        script_dir.parent / "build" / "perf_stat_dir" / "processes_task_run_perf_table.csv",
+        script_dir.parent / "perf_stat_dir" / "processes_task_run_perf_table.csv",
+    ]
+    processes_csv = next((p for p in candidates_processes if p.exists()), candidates_processes[0])
+
+    # Read and merge performance statistics CSVs
+    perf_stats_threads = load_performance_data_threads(threads_csv)
+    perf_stats_processes = load_performance_data_processes(processes_csv)
+    perf_stats: dict[str, dict] = {}
+    perf_stats.update(perf_stats_threads)
+    for k, v in perf_stats_processes.items():
+        perf_stats[k] = {**perf_stats.get(k, {}), **v}
 
     # Partition tasks by tasks_type from settings.json
     threads_task_dirs = [
