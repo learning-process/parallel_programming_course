@@ -35,7 +35,7 @@ jobs:
           create-symlink: true
           max-size: 1G
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
       - name: CMake configure
@@ -57,4 +57,4 @@ jobs:
         if: matrix.language == 'cpp'
         run: ccache --show-stats
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
