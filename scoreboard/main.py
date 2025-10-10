@@ -676,19 +676,29 @@ def main():
 
     # Locate perf CSVs from CI or local runs (threads and processes)
     candidates_threads = [
-        script_dir.parent / "build" / "perf_stat_dir" / "threads_task_run_perf_table.csv",
+        script_dir.parent
+        / "build"
+        / "perf_stat_dir"
+        / "threads_task_run_perf_table.csv",
         script_dir.parent / "perf_stat_dir" / "threads_task_run_perf_table.csv",
         # Fallback to old single-file name
         script_dir.parent / "build" / "perf_stat_dir" / "task_run_perf_table.csv",
         script_dir.parent / "perf_stat_dir" / "task_run_perf_table.csv",
     ]
-    threads_csv = next((p for p in candidates_threads if p.exists()), candidates_threads[0])
+    threads_csv = next(
+        (p for p in candidates_threads if p.exists()), candidates_threads[0]
+    )
 
     candidates_processes = [
-        script_dir.parent / "build" / "perf_stat_dir" / "processes_task_run_perf_table.csv",
+        script_dir.parent
+        / "build"
+        / "perf_stat_dir"
+        / "processes_task_run_perf_table.csv",
         script_dir.parent / "perf_stat_dir" / "processes_task_run_perf_table.csv",
     ]
-    processes_csv = next((p for p in candidates_processes if p.exists()), candidates_processes[0])
+    processes_csv = next(
+        (p for p in candidates_processes if p.exists()), candidates_processes[0]
+    )
 
     # Read and merge performance statistics CSVs
     perf_stats_threads = load_performance_data_threads(threads_csv)

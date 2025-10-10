@@ -36,10 +36,19 @@ def _infer_category(task_name: str) -> str:
 
 
 def _columns_for_category(category: str) -> list[str]:
-    return ["seq", "omp", "tbb", "stl", "all"] if category == "threads" else ["seq", "mpi"]
+    return (
+        ["seq", "omp", "tbb", "stl", "all"] if category == "threads" else ["seq", "mpi"]
+    )
 
 
-def _write_excel_sheet(workbook, worksheet, cpu_num: int, tasks_list: list[str], cols: list[str], table: dict):
+def _write_excel_sheet(
+    workbook,
+    worksheet,
+    cpu_num: int,
+    tasks_list: list[str],
+    cols: list[str],
+    table: dict,
+):
     worksheet.set_column("A:Z", 23)
     right_bold_border = workbook.add_format({"bold": True, "right": 2, "bottom": 2})
     bottom_bold_border = workbook.add_format({"bold": True, "bottom": 2})
@@ -59,13 +68,17 @@ def _write_excel_sheet(workbook, worksheet, cpu_num: int, tasks_list: list[str],
             bottom_bold_border,
         )
         col += 1
-        worksheet.write(0, col, f"Eff({cpu_num}) = S({cpu_num}) / {cpu_num}", right_bold_border)
+        worksheet.write(
+            0, col, f"Eff({cpu_num}) = S({cpu_num}) / {cpu_num}", right_bold_border
+        )
         col += 1
 
     # Task rows
     row = 1
     for task_name in tasks_list:
-        worksheet.write(row, 0, task_name, workbook.add_format({"bold": True, "right": 2}))
+        worksheet.write(
+            row, 0, task_name, workbook.add_format({"bold": True, "right": 2})
+        )
         row += 1
 
     # Values
@@ -75,9 +88,12 @@ def _write_excel_sheet(workbook, worksheet, cpu_num: int, tasks_list: list[str],
         for ttype in cols:
             if task_name not in table:
                 # no data for task at all
-                worksheet.write(row, col, "—"); col += 1
-                worksheet.write(row, col, "—"); col += 1
-                worksheet.write(row, col, "—", right_border); col += 1
+                worksheet.write(row, col, "—")
+                col += 1
+                worksheet.write(row, col, "—")
+                col += 1
+                worksheet.write(row, col, "—", right_border)
+                col += 1
                 continue
             par_time = table[task_name].get(ttype, -1.0)
             seq_time = table[task_name].get("seq", -1.0)
@@ -87,9 +103,12 @@ def _write_excel_sheet(workbook, worksheet, cpu_num: int, tasks_list: list[str],
             else:
                 speed_up = seq_time / par_time
                 efficiency = speed_up / cpu_num
-            worksheet.write(row, col, par_time if par_time != -1.0 else "?"); col += 1
-            worksheet.write(row, col, speed_up); col += 1
-            worksheet.write(row, col, efficiency, right_border); col += 1
+            worksheet.write(row, col, par_time if par_time != -1.0 else "?")
+            col += 1
+            worksheet.write(row, col, speed_up)
+            col += 1
+            worksheet.write(row, col, efficiency, right_border)
+            col += 1
         row += 1
 
 
@@ -108,6 +127,7 @@ def _write_csv(path: str, header: list[str], tasks_list: list[str], table: dict)
                 val = table[task_name].get(col_name.lower(), -1.0)
                 row.append(val / seq_time if val != -1.0 else "?")
             writer.writerow(row)
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -236,12 +256,16 @@ for table_name, table_data in result_tables.items():
 
         cpu_num_env = os.environ.get("PPC_NUM_PROC")
         if cpu_num_env is None:
-            raise EnvironmentError("Required environment variable 'PPC_NUM_PROC' is not set.")
+            raise EnvironmentError(
+                "Required environment variable 'PPC_NUM_PROC' is not set."
+            )
         cpu_num = int(cpu_num_env)
         cols = _columns_for_category(category)
 
         # Excel
-        wb_path = os.path.join(xlsx_path, f"{category}_" + table_name + "_perf_table.xlsx")
+        wb_path = os.path.join(
+            xlsx_path, f"{category}_" + table_name + "_perf_table.xlsx"
+        )
         workbook = xlsxwriter.Workbook(wb_path)
         worksheet = workbook.add_worksheet()
         _write_excel_sheet(workbook, worksheet, cpu_num, tasks_list, cols, table_data)
@@ -249,5 +273,7 @@ for table_name, table_data in result_tables.items():
 
         # CSV
         header = ["Task", "SEQ"] + [c.upper() for c in cols[1:]]
-        csv_path = os.path.join(xlsx_path, f"{category}_" + table_name + "_perf_table.csv")
+        csv_path = os.path.join(
+            xlsx_path, f"{category}_" + table_name + "_perf_table.csv"
+        )
         _write_csv(csv_path, header, tasks_list, table_data)
