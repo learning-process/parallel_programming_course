@@ -385,6 +385,7 @@ jobs:
         uses: codecov/codecov-action@v5.5.1
         with:
           files: coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Upload coverage report artifact
         id: upload-cov
         uses: actions/upload-artifact@v4
