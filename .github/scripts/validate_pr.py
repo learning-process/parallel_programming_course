@@ -13,7 +13,6 @@ Rules:
 
 from __future__ import annotations
 
-import argparse
 import json
 import os
 import re
@@ -55,12 +54,8 @@ def validate_title(title: str) -> List[str]:
     if re.match(TITLE_TASK_REGEX, title, flags=re.UNICODE | re.VERBOSE):
         return []
 
-    example_task_ru = (
-        "[TASK] 2-12. Иванов Иван Иванович. 2341-а234. Вычисление суммы элементов вектора."
-    )
-    example_task_en = (
-        "[TASK] 2-12. Ivanov Ivan Ivanovich. 2341-a234. Vector elements sum calculation."
-    )
+    example_task_ru = "[TASK] 2-12. Иванов Иван Иванович. 2341-а234. Вычисление суммы элементов вектора."
+    example_task_en = "[TASK] 2-12. Ivanov Ivan Ivanovich. 2341-a234. Vector elements sum calculation."
     example_dev = "[DEV] Update docs for lab 2"
     return [
         "Invalid PR title.",

@@ -26,6 +26,6 @@ jobs:
           git config --global --add safe.directory '*'
       - name: Run pre-commit checks
         run: |
-          FROM_REF="${{ github.base_ref || 'HEAD~1' }}"
-          git fetch origin $FROM_REF:$FROM_REF || true
-          pre-commit run --from-ref $FROM_REF --to-ref HEAD
+          git remote add upstream https://github.com/learning-process/parallel_programming_course.git || true
+          git fetch --no-tags upstream master:upstream/master
+          pre-commit run --from-ref upstream/master --to-ref HEAD
