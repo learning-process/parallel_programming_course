@@ -140,8 +140,6 @@ args = parser.parse_args()
 logs_path = os.path.abspath(args.input)
 xlsx_path = os.path.abspath(args.output)
 
-list_of_type_of_tasks = ["all", "mpi", "omp", "seq", "stl", "tbb"]
-
 # For each perf_type (pipeline/task_run) store times per task
 result_tables = {"pipeline": {}, "task_run": {}}
 # Map task name -> category (threads|processes)
@@ -149,8 +147,8 @@ task_categories = {}
 # Track tasks per category to split output
 tasks_by_category = {"threads": set(), "processes": set()}
 
-logs_file = open(logs_path, "r")
-logs_lines = logs_file.readlines()
+with open(logs_path, "r") as logs_file:
+    logs_lines = logs_file.readlines()
 for line in logs_lines:
     # Handle both old format: tasks/task_type/task_name:perf_type:time
     # and new format: namespace_task_type_enabled:perf_type:time
@@ -254,11 +252,19 @@ for table_name, table_data in result_tables.items():
         if not tasks_list:
             continue
 
-        cpu_num_env = os.environ.get("PPC_NUM_PROC")
-        if cpu_num_env is None:
-            raise EnvironmentError(
-                "Required environment variable 'PPC_NUM_PROC' is not set."
-            )
+        # Use appropriate env var per category
+        if category == "threads":
+            cpu_num_env = os.environ.get("PPC_NUM_THREADS")
+            if cpu_num_env is None:
+                raise EnvironmentError(
+                    "Required environment variable 'PPC_NUM_THREADS' is not set."
+                )
+        else:
+            cpu_num_env = os.environ.get("PPC_NUM_PROC")
+            if cpu_num_env is None:
+                raise EnvironmentError(
+                    "Required environment variable 'PPC_NUM_PROC' is not set."
+                )
         cpu_num = int(cpu_num_env)
         cols = _columns_for_category(category)
 
