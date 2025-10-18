@@ -1,8 +1,6 @@
 name: PR Title Gate
-
 on:
   workflow_call:
-
 jobs:
   pr_title:
     name: Validate PR Title
@@ -11,18 +9,14 @@ jobs:
       - name: Skip on non-PR events
         if: ${{ github.event_name != 'pull_request' }}
         run: echo "Not a PR event; skipping title check"
-
       - name: Checkout
         if: ${{ github.event_name == 'pull_request' }}
         uses: actions/checkout@v4
-
       - name: Set up Python
         if: ${{ github.event_name == 'pull_request' }}
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: Validate PR title
         if: ${{ github.event_name == 'pull_request' }}
         run: python .github/scripts/validate_pr.py
-

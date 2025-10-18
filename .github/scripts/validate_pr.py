@@ -21,7 +21,7 @@ from typing import List, Optional, Tuple
 
 
 DEFAULT_TITLE_TASK_REGEX = None  # No built-in defaults — must come from file
-DEFAULT_TITLE_DEV_REGEX = None   # No built-in defaults — must come from file
+DEFAULT_TITLE_DEV_REGEX = None  # No built-in defaults — must come from file
 
 
 def _trim(s: Optional[str]) -> str:
@@ -86,9 +86,9 @@ def validate_title(title: str) -> List[str]:
     return [
         "Invalid PR title.",
         "Allowed formats (see policy config):",
-        *( [f"- Task (RU): {example_task_ru}"] if example_task_ru else [] ),
-        *( [f"- Task (EN): {example_task_en}"] if example_task_en else [] ),
-        *( [f"- Dev: {example_dev}"] if example_dev else [] ),
+        *([f"- Task (RU): {example_task_ru}"] if example_task_ru else []),
+        *([f"- Task (EN): {example_task_en}"] if example_task_en else []),
+        *([f"- Dev: {example_dev}"] if example_dev else []),
     ]
 
 
