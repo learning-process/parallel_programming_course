@@ -28,23 +28,17 @@ class TestValidateTitle(TestCase):
             cls.policy = json.load(f)
 
     def test_valid_task_ru(self) -> None:
-        title = (
-            "[TASK] 2-12. Иванов Иван Иванович. 2341-а234. OMP. Вычисление суммы элементов вектора."
-        )
+        title = "[TASK] 2-12. Иванов Иван Иванович. 2341-а234. OMP. Вычисление суммы элементов вектора."
         errs = self.validator.validate_title(title)
         self.assertEqual(errs, [])
 
     def test_valid_task_en(self) -> None:
-        title = (
-            "[TASK] 3-4. Ivanov Ivan Ivanovich. 2341-a234. MPI. Vector elements sum calculation."
-        )
+        title = "[TASK] 3-4. Ivanov Ivan Ivanovich. 2341-a234. MPI. Vector elements sum calculation."
         errs = self.validator.validate_title(title)
         self.assertEqual(errs, [])
 
     def test_invalid_task_number_out_of_range(self) -> None:
-        title = (
-            "[TASK] 6-1. Иванов Иван Иванович. 2341-а234. SEQ. Вычисление суммы элементов вектора."
-        )
+        title = "[TASK] 6-1. Иванов Иван Иванович. 2341-а234. SEQ. Вычисление суммы элементов вектора."
         errs = self.validator.validate_title(title)
         self.assertTrue(errs, "Expected errors for out-of-range task number")
 
@@ -60,7 +54,9 @@ class TestValidateTitle(TestCase):
         def fake_load_title_config() -> Tuple[dict, list]:
             return cfg, [str(POLICY_PATH)]
 
-        with mock.patch.object(self.validator, "_load_title_config", fake_load_title_config):
+        with mock.patch.object(
+            self.validator, "_load_title_config", fake_load_title_config
+        ):
             errs = self.validator.validate_title("[DEV] Working WIP")
             self.assertTrue(errs, "Expected errors when allow_dev is False")
 
@@ -68,22 +64,19 @@ class TestValidateTitle(TestCase):
         def fake_load_title_config_missing():
             return None, [str(POLICY_PATH)]
 
-        with mock.patch.object(self.validator, "_load_title_config", fake_load_title_config_missing):
+        with mock.patch.object(
+            self.validator, "_load_title_config", fake_load_title_config_missing
+        ):
             errs = self.validator.validate_title("[TASK] 2-1. X Y Z. G. OMP. Title.")
             self.assertTrue(errs, "Expected error for missing policy config")
             self.assertIn("policy config not found", " ".join(errs).lower())
 
     def test_missing_technology_block(self) -> None:
-        title = (
-            "[TASK] 2-12. Иванов Иван Иванович. 2341-а234. Вычисление суммы элементов вектора."
-        )
+        title = "[TASK] 2-12. Иванов Иван Иванович. 2341-а234. Вычисление суммы элементов вектора."
         errs = self.validator.validate_title(title)
         self.assertTrue(errs, "Expected error when technology block is missing")
 
     def test_invalid_technology_token(self) -> None:
-        title = (
-            "[TASK] 2-12. Иванов Иван Иванович. 2341-а234. CUDA. Вычисление суммы элементов вектора."
-        )
+        title = "[TASK] 2-12. Иванов Иван Иванович. 2341-а234. CUDA. Вычисление суммы элементов вектора."
         errs = self.validator.validate_title(title)
         self.assertTrue(errs, "Expected error for unsupported technology token")
-

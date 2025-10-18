@@ -48,4 +48,3 @@ class TestMainIntegration(TestCase):
         self._with_event("Bad title format")
         rc = self.validator.main()
         self.assertEqual(rc, 1)
-

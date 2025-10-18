@@ -12,4 +12,6 @@ jobs:
           python-version: '3.11'
       - name: Run unit tests
         run: |
-          python -m unittest -v scripts/tests/pr_title/test_validate_title.py scripts/tests/pr_title/test_main_integration.py
+          python -m unittest -v \
+            scripts/tests/pr_title/test_validate_title.py \
+            scripts/tests/pr_title/test_main_integration.py
