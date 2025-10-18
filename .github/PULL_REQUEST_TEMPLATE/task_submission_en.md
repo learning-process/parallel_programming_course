@@ -1,3 +1,7 @@
+PR Title (CI enforced):
+- Tasks: `[TASK] <Task>-<Variant>. <Last Name> <First Name> <Middle Name>. <Group>. <Task name>.`
+- Development: `[DEV] <any descriptive title>`
+
 <!--
 Pull request title requirement:
 
