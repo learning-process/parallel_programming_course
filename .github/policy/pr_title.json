@@ -1,10 +1,10 @@
 {
   "allow_dev": true,
-  "task_regex": "^\\[TASK\\]\\s+(?P<task>\\d+)-(?P<variant>\\d+)\\.\\s+(?P<lastname>[А-ЯA-ZЁ][а-яa-zё]+)\\s+(?P<firstname>[А-ЯA-ZЁ][а-яa-zё]+)\\s+(?P<middlename>[А-ЯA-ZЁ][а-яa-zё]+)\\.\\s+(?P<group>.+?)\\.\\s+(?P<taskname>\\S.*)$",
+  "task_regex": "^\\[TASK\\]\\s+(?P<task>[1-5])-(?P<variant>\\d+)\\.\\s+(?P<lastname>[А-ЯA-ZЁ][а-яa-zё]+)\\s+(?P<firstname>[А-ЯA-ZЁ][а-яa-zё]+)\\s+(?P<middlename>[А-ЯA-ZЁ][а-яa-zё]+)\\.\\s+(?P<group>.+?)\\.\\s+(?P<technology>SEQ|MPI|ALL|OMP|STL|TBB)\\.\\s+(?P<taskname>\\S.*)$",
   "dev_regex": "^\\[DEV\\]\\s+\\S.*$",
   "examples": {
-    "task_ru": "[TASK] 2-12. Иванов Иван Иванович. 2341-а234. Вычисление суммы элементов вектора.",
-    "task_en": "[TASK] 2-12. Ivanov Ivan Ivanovich. 2341-a234. Vector elements sum calculation.",
+    "task_ru": "[TASK] 2-12. Иванов Иван Иванович. 2341-а234. OMP. Вычисление суммы элементов вектора.",
+    "task_en": "[TASK] 2-12. Ivanov Ivan Ivanovich. 2341-a234. OMP. Vector elements sum calculation.",
     "dev": "[DEV] Update docs for lab 2"
   }
 }

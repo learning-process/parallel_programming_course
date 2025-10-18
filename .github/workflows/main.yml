@@ -22,10 +22,17 @@ jobs:
   pr_title:
     uses: ./.github/workflows/pr-title.yml
 
+  pr_title_tests:
+    needs:
+      - pr_title
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
+    uses: ./.github/workflows/pr-title-tests.yml
+
   pre-commit:
     if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - pr_title
+      - pr_title_tests
     uses: ./.github/workflows/pre-commit.yml
   ubuntu:
     if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
