@@ -17,25 +17,27 @@ import json
 import os
 import re
 import sys
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 
-TITLE_TASK_REGEX = r"""
-^\[TASK\]\s+
-(?P<task>\d+)-(?P<variant>\d+)\.\s+
-(?P<lastname>[А-ЯA-ZЁ][а-яa-zё]+)\s+
-(?P<firstname>[А-ЯA-ZЁ][а-яa-zё]+)\s+
-(?P<middlename>[А-ЯA-ZЁ][а-яa-zё]+)\.\s+
-(?P<group>.+?)\.\s+
-(?P<taskname>\S.*)
-$
-"""
-
-TITLE_DEV_REGEX = r"^\[DEV\]\s+\S.*$"
+DEFAULT_TITLE_TASK_REGEX = None  # No built-in defaults — must come from file
+DEFAULT_TITLE_DEV_REGEX = None   # No built-in defaults — must come from file
 
 
 def _trim(s: Optional[str]) -> str:
     return (s or "").strip()
+
+
+def _load_title_config() -> Tuple[Optional[dict], List[str]]:
+    policy_path = os.path.join(".github", "policy", "pr_title.json")
+    if os.path.exists(policy_path):
+        try:
+            with open(policy_path, "r", encoding="utf-8") as f:
+                return json.load(f), [policy_path]
+        except Exception:
+            # Invalid JSON — treat as error (no defaults)
+            return None, [policy_path]
+    return None, [policy_path]
 
 
 def validate_title(title: str) -> List[str]:
@@ -46,23 +48,47 @@ def validate_title(title: str) -> List[str]:
             "Empty PR title. Use '[TASK] …' for tasks or '[DEV] …' for development.",
         ]
 
+    # Load policy config (required)
+    cfg, candidates = _load_title_config()
+    if not cfg:
+        return [
+            "PR title policy config not found or invalid.",
+            f"Expected one of: {', '.join(candidates)}",
+        ]
+
+    # Validate required keys (no built-in defaults)
+    errors: List[str] = []
+    task_regex = cfg.get("task_regex")
+    dev_regex = cfg.get("dev_regex")
+    allow_dev = cfg.get("allow_dev")
+    examples = cfg.get("examples") if isinstance(cfg.get("examples"), dict) else {}
+
+    if not isinstance(task_regex, str) or not task_regex.strip():
+        errors.append("Missing or empty 'task_regex' in policy config.")
+    if not isinstance(dev_regex, str) or not dev_regex.strip():
+        errors.append("Missing or empty 'dev_regex' in policy config.")
+    if not isinstance(allow_dev, bool):
+        errors.append("Missing or non-boolean 'allow_dev' in policy config.")
+    if errors:
+        return errors
+
     # Accept development titles with a simple rule
-    if re.match(TITLE_DEV_REGEX, title, flags=re.UNICODE):
+    if allow_dev and re.match(dev_regex, title, flags=re.UNICODE | re.VERBOSE):
         return []
 
     # Accept strict course task titles
-    if re.match(TITLE_TASK_REGEX, title, flags=re.UNICODE | re.VERBOSE):
+    if re.match(task_regex, title, flags=re.UNICODE | re.VERBOSE):
         return []
 
-    example_task_ru = "[TASK] 2-12. Иванов Иван Иванович. 2341-а234. Вычисление суммы элементов вектора."
-    example_task_en = "[TASK] 2-12. Ivanov Ivan Ivanovich. 2341-a234. Vector elements sum calculation."
-    example_dev = "[DEV] Update docs for lab 2"
+    example_task_ru = examples.get("task_ru")
+    example_task_en = examples.get("task_en")
+    example_dev = examples.get("dev")
     return [
         "Invalid PR title.",
-        "Allowed formats:",
-        f"- Task: {example_task_ru}",
-        f"- Task: {example_task_en}",
-        f"- Dev:  {example_dev}",
+        "Allowed formats (see policy config):",
+        *( [f"- Task (RU): {example_task_ru}"] if example_task_ru else [] ),
+        *( [f"- Task (EN): {example_task_en}"] if example_task_en else [] ),
+        *( [f"- Dev: {example_dev}"] if example_dev else [] ),
     ]
 
 
