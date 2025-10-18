@@ -2,7 +2,10 @@ name: Build application
 
 on:
   push:
+    branches:
+      - master
   pull_request:
+    types: [opened, edited, synchronize, reopened]
   merge_group:
   schedule:
     - cron: '0 0 * * *'
@@ -39,22 +42,27 @@ jobs:
         run: python .github/scripts/validate_pr.py
 
   pre-commit:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - pr_title
     uses: ./.github/workflows/pre-commit.yml
   ubuntu:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - pre-commit
     uses: ./.github/workflows/ubuntu.yml
   mac:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - pre-commit
     uses: ./.github/workflows/mac.yml
   windows:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - pre-commit
     uses: ./.github/workflows/windows.yml
   perf:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - ubuntu
       - mac
@@ -62,6 +70,7 @@ jobs:
     uses: ./.github/workflows/perf.yml
 
   pages:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - perf
     uses: ./.github/workflows/pages.yml
