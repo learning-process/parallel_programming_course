@@ -84,7 +84,13 @@ jobs:
       - name: Extract performance data
         run: |
           mkdir -p build/perf_stat_dir
+          # The uploaded artifact contains a nested perf-stat.zip inside.
+          # First unzip extracts the inner archive; the second extracts perf_stat_dir/*.
           unzip -o perf-stat.zip -d .
+          if [ -f "perf-stat.zip" ]; then
+            mv -f perf-stat.zip perf-stat-inner.zip
+            unzip -o perf-stat-inner.zip -d .
+          fi
       - name: CMake configure
         run: |
           cmake -S . -B build -DUSE_SCOREBOARD=ON
