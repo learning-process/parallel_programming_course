@@ -5,6 +5,10 @@ on:
   pull_request:
   workflow_call:
 
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   pre-commit:
     runs-on: ubuntu-24.04
