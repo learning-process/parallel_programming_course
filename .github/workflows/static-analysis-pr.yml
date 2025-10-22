@@ -19,6 +19,10 @@ concurrency:
         github.event_name != 'merge_group' &&
         !startsWith(github.ref, 'refs/heads/gh-readonly-queue') }}
 
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   clang-tidy:
     runs-on: ubuntu-24.04
