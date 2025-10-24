@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-24 14:15+0200\n"
+"POT-Creation-Date: 2025-10-24 18:03+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: en\n"
@@ -142,62 +142,84 @@ msgid ""
 msgstr ""
 
 #: ../../../../docs/user_guide/environment.rst:61
-msgid "Parallel Programming Technologies"
+msgid "Optional tools (clang-tidy, gcovr)"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:62
+msgid ""
+"Install these to match the CI toolchain for static analysis and coverage "
+"reports."
 msgstr ""
 
 #: ../../../../docs/user_guide/environment.rst:64
+msgid "Linux (Ubuntu/Debian):"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:75
+msgid "macOS (Homebrew):"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:83
+msgid "Windows:"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:92
+msgid "Parallel Programming Technologies"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:95
 msgid "``MPI``"
 msgstr ""
 
-#: ../../../../docs/user_guide/environment.rst:65
+#: ../../../../docs/user_guide/environment.rst:96
 msgid "**Windows (MSVC)**:"
 msgstr ""
 
-#: ../../../../docs/user_guide/environment.rst:67
+#: ../../../../docs/user_guide/environment.rst:98
 msgid ""
 "`Installers link <https://www.microsoft.com/en-"
 "us/download/details.aspx?id=105289>`_. You have to install "
 "``msmpisdk.msi`` and ``msmpisetup.exe``."
 msgstr ""
 
-#: ../../../../docs/user_guide/environment.rst:69
-#: ../../../../docs/user_guide/environment.rst:85
+#: ../../../../docs/user_guide/environment.rst:100
+#: ../../../../docs/user_guide/environment.rst:116
 msgid "**Linux (gcc and clang)**:"
 msgstr ""
 
-#: ../../../../docs/user_guide/environment.rst:75
+#: ../../../../docs/user_guide/environment.rst:106
 msgid "**MacOS (apple clang)**:"
 msgstr ""
 
-#: ../../../../docs/user_guide/environment.rst:82
+#: ../../../../docs/user_guide/environment.rst:113
 msgid "``OpenMP``"
 msgstr ""
 
-#: ../../../../docs/user_guide/environment.rst:83
+#: ../../../../docs/user_guide/environment.rst:114
 msgid ""
 "``OpenMP`` is included in ``gcc`` and ``msvc``, but some components "
 "should be installed additionally:"
 msgstr ""
 
-#: ../../../../docs/user_guide/environment.rst:91
+#: ../../../../docs/user_guide/environment.rst:122
 msgid "**MacOS (llvm)**:"
 msgstr ""
 
-#: ../../../../docs/user_guide/environment.rst:99
+#: ../../../../docs/user_guide/environment.rst:130
 msgid "``TBB``"
 msgstr ""
 
-#: ../../../../docs/user_guide/environment.rst:100
+#: ../../../../docs/user_guide/environment.rst:131
 msgid ""
 "**Windows (MSVC)**, **Linux (gcc and clang)**, **MacOS (apple clang)**: "
 "Build as 3rdparty in the current project."
 msgstr ""
 
-#: ../../../../docs/user_guide/environment.rst:104
+#: ../../../../docs/user_guide/environment.rst:135
 msgid "``std::thread``"
 msgstr ""
 
-#: ../../../../docs/user_guide/environment.rst:105
+#: ../../../../docs/user_guide/environment.rst:136
 msgid "``std::thread`` is included in STL libraries."
 msgstr ""
 

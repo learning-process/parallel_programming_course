@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-24 14:15+0200\n"
+"POT-Creation-Date: 2025-10-24 18:02+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: ru\n"
@@ -26,133 +26,409 @@ msgstr ""
 msgid "Continuous Integration (CI)"
 msgstr "Непрерывная интеграция"
 
-#: ../../../../docs/user_guide/ci.rst:4
+#: ../../../../docs/user_guide/ci.rst:5
+msgid "Overview"
+msgstr "Общие сведения"
+
+#: ../../../../docs/user_guide/ci.rst:6
 msgid ""
-"Students need to pass all the checks in the CI pipeline before their work"
-" can be considered for submission. This includes successful code "
-"checkout, build ans testing stages. Each integration is verified by an "
-"automated build and automated tests."
+"Your pull request must pass all required CI checks before review/merge. "
+"The pipeline validates formatting and static analysis, builds on all "
+"platforms, runs functional tests (threads and MPI), measures performance,"
+" builds docs, and publishes artifacts (coverage report, docs, "
+"scoreboard)."
 msgstr ""
-"Студенты должны пройти все проверки в конвейере CI, прежде чем начнется "
-"проверка работы студентами и преподавателями. Это включает в себя "
-"успешную проверку кода,  а также стадии построения и тестирования. Каждая"
-" интеграция проверяется автоматизированной сборкой и автоматизированными "
-"тестами."
+"Ваш pull request должен пройти все обязательные проверки CI перед "
+"ревью/слиянием. Конвейер проверяет форматирование и статический анализ, "
+"собирает проект на всех платформах, запускает функциональные тесты "
+"(потоки и MPI), измеряет производительность, собирает документацию и "
+"публикует артефакты (отчёт по покрытию, документация, табло)."
 
 #: ../../../../docs/user_guide/ci.rst:9
-msgid "CI Pipeline"
-msgstr "CI конвейер"
+msgid "High‑level pipeline"
+msgstr "Общая схема конвейера"
 
 #: ../../../../docs/user_guide/ci.rst:11
-msgid "The CI pipeline for this project is illustrated in the following diagram:"
-msgstr "CI конвейер для данного проекта выражается с помощью наглядной схемы:"
+msgid ""
+"Pre-commit checks (fast) — runs repository hooks on changed files; fix "
+"locally via ``pre-commit run -a``."
+msgstr ""
+"Проверки pre-commit (быстро) — запускает хуки репозитория на изменённых "
+"файлах; исправляйте локально командой ``pre-commit run -a``."
 
 #: ../../../../docs/user_guide/ci.rst:13
-msgid "CI Pipeline Diagram"
-msgstr "Схема CI конвейера"
-
-#: ../../../../docs/user_guide/ci.rst:18
-msgid "Running ``scripts/run_tests.py``"
-msgstr "Запуск ``scripts/run_tests.py``"
-
-#: ../../../../docs/user_guide/ci.rst:20
 msgid ""
-"Automated tests are executed through the ``scripts/run_tests.py`` helper."
-"  The script requires several environment variables to be defined:"
+"Platform builds and tests (Ubuntu, macOS, Windows) — Ubuntu (GCC/Clang, "
+"amd64+arm), macOS (Clang), Windows (MSVC/Clang‑CL); functional tests via "
+"``scripts/run_tests.py`` for threads (``--counts 1 2 3 4``; extended ``5 "
+"7 11 13``) and processes (MPI, ``--counts 1 2 3 4``)."
 msgstr ""
-"Автоматические тесты запускаются с помощью вспомогательного скрипта "
-"``scripts/run_tests.py``. Для его работы следует задать несколько "
-"переменных окружения:"
+"Сборки и тесты на платформах (Ubuntu, macOS, Windows) — Ubuntu "
+"(GCC/Clang, amd64+arm), macOS (Clang), Windows (MSVC/Clang‑CL); "
+"функциональные тесты через ``scripts/run_tests.py`` для потоков "
+"(``--counts 1 2 3 4``; расширенно ``5 7 11 13``) и процессов (MPI, "
+"``--counts 1 2 3 4``)."
+
+#: ../../../../docs/user_guide/ci.rst:15
+msgid ""
+"Sanitizers (Ubuntu/Clang) — Address/UB/Leak; tests use ``PPC_ASAN_RUN=1``"
+" to skip valgrind."
+msgstr ""
+"Санитайзеры (Ubuntu/Clang) — Address/UB/Leak; тесты запускаются с "
+"``PPC_ASAN_RUN=1`` для пропуска valgrind."
+
+#: ../../../../docs/user_guide/ci.rst:17
+msgid ""
+"Coverage (Ubuntu/GCC) — ``-D USE_COVERAGE=ON`` + gcovr; publishes to "
+"Codecov and uploads ``cov-report`` (HTML)."
+msgstr ""
+"Покрытие (Ubuntu/GCC) — ``-D USE_COVERAGE=ON`` + gcovr; публикация в "
+"Codecov и загрузка артефакта ``cov-report`` (HTML)."
+
+#: ../../../../docs/user_guide/ci.rst:19
+msgid ""
+"Performance (perf) — ``scripts/generate_perf_results.sh`` produces "
+"``build/perf_stat_dir``; uploads ``perf-stat`` (Linux) and ``perf-stat-"
+"macos`` (macOS)."
+msgstr ""
+"Производительность (perf) — ``scripts/generate_perf_results.sh`` "
+"формирует ``build/perf_stat_dir``; загружаются артефакты ``perf-stat`` "
+"(Linux) и ``perf-stat-macos`` (macOS)."
+
+#: ../../../../docs/user_guide/ci.rst:21
+msgid ""
+"Pages (docs and scoreboard) — builds Doxygen XML and Sphinx (EN+RU) + "
+"scoreboard; on ``master`` deploys with coverage to GitHub Pages."
+msgstr ""
+"Pages (документация и табло) — сборка Doxygen XML и Sphinx (EN+RU) + "
+"табло; в ветке ``master`` деплой вместе с покрытием на GitHub Pages."
 
 #: ../../../../docs/user_guide/ci.rst:23
+msgid ""
+"Security and static analysis — clang‑tidy on PRs (avoid ``NOLINT``/``IWYU"
+" pragma``), scheduled CodeQL (C++/Python) and OpenSSF Scorecard."
+msgstr ""
+"Безопасность и статический анализ — clang‑tidy в PR (избегайте "
+"``NOLINT``/``IWYU pragma``), плановые CodeQL (C++/Python) и OpenSSF "
+"Scorecard."
+
+#: ../../../../docs/user_guide/ci.rst:26
+msgid "Diagram"
+msgstr "Схема"
+
+#: ../../../../docs/user_guide/ci.rst:27
+msgid "The pipeline is illustrated below (blocks may be collapsed in GitHub UI):"
+msgstr "Схема конвейера приведена ниже (в UI GitHub блоки могут сворачиваться):"
+
+#: ../../../../docs/user_guide/ci.rst:29
+msgid "CI pipeline (pre-commit → OS builds/tests → perf → pages)"
+msgstr "Конвейер CI (pre-commit → сборки/тесты на ОС → perf → pages)"
+
+#: ../../../../docs/user_guide/ci.rst:34
+msgid "Running tests locally"
+msgstr "Локальный запуск тестов"
+
+#: ../../../../docs/user_guide/ci.rst:36
+msgid "Use the ``scripts/run_tests.py`` helper. Common environment variables:"
+msgstr ""
+"Используйте вспомогательный скрипт ``scripts/run_tests.py``. Основные "
+"переменные окружения:"
+
+#: ../../../../docs/user_guide/ci.rst:38
 msgid "``PPC_NUM_THREADS``"
 msgstr "``PPC_NUM_THREADS``"
 
-#: ../../../../docs/user_guide/ci.rst:24
-msgid ""
-"Number of threads to use.  The value is also exported as "
-"``OMP_NUM_THREADS``."
-msgstr ""
-"Количество потоков для запуска. Это же значение экспортируется в "
-"``OMP_NUM_THREADS``."
+#: ../../../../docs/user_guide/ci.rst:39
+msgid "Number of threads (also exported as ``OMP_NUM_THREADS``)."
+msgstr "Количество потоков (также экспортируется в ``OMP_NUM_THREADS``)."
 
-#: ../../../../docs/user_guide/ci.rst:27
+#: ../../../../docs/user_guide/ci.rst:41
 msgid "``PPC_NUM_PROC``"
 msgstr "``PPC_NUM_PROC``"
 
-#: ../../../../docs/user_guide/ci.rst:28
+#: ../../../../docs/user_guide/ci.rst:42
 msgid "Number of MPI processes to launch."
 msgstr "Количество процессов MPI, которые нужно запустить."
 
-#: ../../../../docs/user_guide/ci.rst:30
+#: ../../../../docs/user_guide/ci.rst:44
 msgid "``PPC_ASAN_RUN``"
 msgstr "``PPC_ASAN_RUN``"
 
-#: ../../../../docs/user_guide/ci.rst:31
+#: ../../../../docs/user_guide/ci.rst:45
 msgid ""
 "Set to ``1`` when sanitizers are enabled to skip ``valgrind`` runs "
-"(optional, default ``0``)."
+"(default ``0``)."
 msgstr ""
-"Установите ``1``, если включены санитайзеры, чтобы пропустить запуск "
-"``valgrind`` (необязательно, по умолчанию ``0``)."
+"Установите ``1``, если включены санитайзеры, чтобы пропустить запуск под "
+"``valgrind`` (по умолчанию ``0``)."
 
-#: ../../../../docs/user_guide/ci.rst:34
+#: ../../../../docs/user_guide/ci.rst:47
 msgid "``PPC_IGNORE_TEST_TIME_LIMIT``"
 msgstr "``PPC_IGNORE_TEST_TIME_LIMIT``"
 
-#: ../../../../docs/user_guide/ci.rst:35
-msgid "Set to ``1`` to disable test time limits (optional, default ``0``)."
+#: ../../../../docs/user_guide/ci.rst:48
+msgid "Set to ``1`` to disable test time limits (default ``0``)."
 msgstr ""
-"Установите ``1``, чтобы отключить ограничение времени тестов "
-"(необязательно, по умолчанию ``0``)."
+"Установите ``1``, чтобы отключить ограничение времени тестов (по "
+"умолчанию ``0``)."
 
-#: ../../../../docs/user_guide/ci.rst:37
+#: ../../../../docs/user_guide/ci.rst:50
 msgid ""
-"The execution mode is selected with ``--running-type``.  The most common "
-"modes are ``threads`` for shared-memory backends and ``processes`` for "
-"MPI based tests.  ``performance`` mode runs performance benchmarks."
+"Execution modes: - ``--running-type=threads`` — shared-memory backends "
+"(OpenMP/TBB/std::thread) - ``--running-type=processes`` — MPI tests - "
+"``--running-type=performance`` — performance benchmarks (mirrors CI perf "
+"job)"
 msgstr ""
-"Режим выполнения выбирается параметром ``--running-type``. Чаще всего "
-"используются режимы ``threads`` для бекендов с общей памятью и "
-"``processes`` для тестов на основе MPI. Режим ``performance`` запускает "
-"бенчмарки производительности."
+"Режимы запуска: — ``--running-type=threads`` — backends с общей памятью "
+"(OpenMP/TBB/std::thread); — ``--running-type=processes`` — MPI‑тесты; — "
+"``--running-type=performance`` — бенчмарки производительности (как в CI "
+"perf)."
 
-#: ../../../../docs/user_guide/ci.rst:41
+#: ../../../../docs/user_guide/ci.rst:55
+msgid "Examples:"
+msgstr "Примеры:"
+
+#: ../../../../docs/user_guide/ci.rst:71
 msgid ""
-"Note: In ``threads`` and ``processes`` modes the runner also executes "
-"core library tests (``core_func_tests``) before the task tests."
-msgstr "Примечание: в режимах ``threads`` и ``processes`` runner сначала запускает тесты ядра (``core_func_tests``), а затем тесты задач."
-
-#: ../../../../docs/user_guide/ci.rst:43
-msgid "Example usage:"
-msgstr "Пример использования:"
-
-#: ../../../../docs/user_guide/ci.rst:59
-msgid ""
-"Additional MPI arguments can be supplied with ``--additional-mpi-args`` "
-"when running in ``processes`` mode."
+"Options: - ``--counts`` runs tests for multiple thread/process counts "
+"sequentially. - ``--additional-mpi-args`` passes extra launcher flags "
+"(e.g., ``--oversubscribe``). - ``--verbose`` prints every executed "
+"command."
 msgstr ""
-"Дополнительные аргументы MPI можно передать через ``--additional-mpi-"
-"args`` при запуске в режиме ``processes``."
+"Опции: — ``--counts`` запускает тесты последовательно для нескольких "
+"значений потоков/процессов; — ``--additional-mpi-args`` передаёт "
+"дополнительные флаги MPI‑ланчеру (например, ``--oversubscribe``); — "
+"``--verbose`` печатает каждую выполняемую команду."
 
-#: ../../../../docs/user_guide/ci.rst:62
-msgid ""
-"The ``--counts`` option allows sequential execution of tests with several"
-" thread/process counts.  When specified, the script will iterate over the"
-" provided values, updating ``PPC_NUM_THREADS`` or ``PPC_NUM_PROC`` "
-"accordingly before each run."
-msgstr ""
-"Параметр ``--counts`` позволяет последовательно запускать тесты с "
-"несколькими значениями числа потоков или процессов. При его указании "
-"скрипт перебирает переданные значения, перед каждым запуском обновляя "
-"``PPC_NUM_THREADS`` или ``PPC_NUM_PROC``."
+#: ../../../../docs/user_guide/ci.rst:77
+msgid "Coverage and sanitizers locally"
+msgstr "Санитайзеры и покрытие локально"
 
-#: ../../../../docs/user_guide/ci.rst:67
+#: ../../../../docs/user_guide/ci.rst:78
 msgid ""
-"Use ``--verbose`` to print every command executed by ``run_tests.py``.  "
-"This can be helpful for debugging CI failures or verifying the exact "
-"arguments passed to the test binaries."
+"Sanitizers (Linux): configure with ``-D ENABLE_ADDRESS_SANITIZER=ON`` "
+"(and optional UB/Leak), run tests with ``PPC_ASAN_RUN=1``."
 msgstr ""
-"Используйте ``--verbose``, чтобы вывести каждую команду, выполняемую "
-"``run_tests.py``. Это помогает отлаживать сбои в CI или проверять точные "
-"аргументы, передаваемые тестовым бинарникам."
+"Санитайзеры (Linux): конфигурация с ``-D ENABLE_ADDRESS_SANITIZER=ON`` (и"
+" опционально UB/Leak), запуск тестов с ``PPC_ASAN_RUN=1``."
+
+#: ../../../../docs/user_guide/ci.rst:79
+msgid ""
+"Coverage (Linux/GCC): configure with ``-D USE_COVERAGE=ON``, run tests, "
+"then generate HTML via ``gcovr`` (see CI ``gcc-build-codecov`` for "
+"command line)."
+msgstr ""
+"Покрытие (Linux/GCC): конфигурация с ``-D USE_COVERAGE=ON``, запуск "
+"тестов, затем генерация HTML через ``gcovr`` (см. команду в CI job ``gcc-"
+"build-codecov``)."
+
+#: ../../../../docs/user_guide/ci.rst:82
+msgid "Docs and scoreboard artifacts"
+msgstr "Артефакты: документация и табло"
+
+#: ../../../../docs/user_guide/ci.rst:83
+msgid ""
+"Docs: run Doxygen first (``doxygen Doxyfile``), then Sphinx EN/RU via "
+"CMake targets ``docs_gettext``, ``docs_update``, ``docs_html``."
+msgstr ""
+"Документация: сначала запустите Doxygen (``doxygen Doxyfile``), затем "
+"Sphinx (EN/RU) через цели CMake ``docs_gettext``, ``docs_update``, "
+"``docs_html``."
+
+#: ../../../../docs/user_guide/ci.rst:84
+msgid ""
+"Scoreboard: generate perf stats (``scripts/generate_perf_results.sh``) "
+"and build scoreboard target or use ``python3 scoreboard/main.py`` "
+"locally."
+msgstr ""
+"Табло: сформируйте статистику (``scripts/generate_perf_results.sh``) и "
+"соберите цель табло или воспользуйтесь локально ``python3 "
+"scoreboard/main.py``."
+
+#: ../../../../docs/user_guide/ci.rst:87
+msgid "Troubleshooting"
+msgstr "Диагностика и решения"
+
+#: ../../../../docs/user_guide/ci.rst:88
+msgid ""
+"Pre-commit fails: run ``pre-commit run -a`` locally (install with ``pre-"
+"commit install``) and commit fixes."
+msgstr ""
+"Падает pre-commit: запустите локально ``pre-commit run -a`` "
+"(предварительно ``pre-commit install``) и закоммитьте исправления."
+
+#: ../../../../docs/user_guide/ci.rst:89
+msgid ""
+"Static analysis (clang-tidy) fails: address comments; do not use "
+"``NOLINT``/``IWYU pragma`` in task code."
+msgstr ""
+"Падает статический анализ (clang-tidy): поправьте замечания; не "
+"используйте ``NOLINT``/``IWYU pragma`` в коде задач."
+
+#: ../../../../docs/user_guide/ci.rst:90
+msgid ""
+"Tests not found/not running: verify ``settings.json`` enables required "
+"technologies and tests exist; see :doc:`submit_work`."
+msgstr ""
+"Тесты не находятся/не запускаются: проверьте, что в ``settings.json`` "
+"включены нужные технологии и тесты существуют; см. :doc:`submit_work`."
+
+#: ../../../../docs/user_guide/ci.rst:91
+msgid ""
+"Time limits exceeded: reduce data sizes; prefer env vars "
+"(:doc:`environment_variables`) like "
+"``PPC_TASK_MAX_TIME``/``PPC_PERF_MAX_TIME``; avoid sleeps/randomness."
+msgstr ""
+"Превышены лимиты времени: уменьшите объёмы данных; используйте переменные"
+" окружения (:doc:`environment_variables`) вроде "
+"``PPC_TASK_MAX_TIME``/``PPC_PERF_MAX_TIME``; избегайте "
+"задержек/случайностей."
+
+#: ../../../../docs/user_guide/ci.rst:92
+msgid ""
+"MPI runs fail locally: set ``PPC_NUM_PROC`` and try ``--additional-mpi-"
+"args=\\\"--oversubscribe\\\"``."
+msgstr ""
+"Проблемы с локальным запуском MPI: задайте ``PPC_NUM_PROC`` и попробуйте "
+"``--additional-mpi-args=\"--oversubscribe\"``."
+
+#: ../../../../docs/user_guide/ci.rst:93
+msgid ""
+"Docs build fails: fix RST warnings; run ``doxygen Doxyfile`` before "
+"Sphinx targets."
+msgstr ""
+"Проблемы со сборкой документации: исправьте предупреждения RST; перед "
+"целями Sphinx выполните ``doxygen Doxyfile``."
+
+#: ../../../../docs/user_guide/ci.rst:94
+msgid ""
+"Performance job fails: ensure exactly two perf tests (``task`` and "
+"``pipeline``) and keep durations within limits."
+msgstr ""
+"Падает job производительности: убедитесь, что ровно два перфтеста "
+"(``task`` и ``pipeline``) и длительность в пределах лимитов."
+
+#: ../../../../docs/user_guide/ci.rst:97
+msgid "Local clang-tidy and gcovr examples"
+msgstr "Примеры локального clang-tidy и gcovr"
+
+#: ../../../../docs/user_guide/ci.rst:99
+msgid "clang-tidy (static analysis):"
+msgstr "clang-tidy (статический анализ):"
+
+#: ../../../../docs/user_guide/ci.rst:113
+msgid "gcovr (coverage, GCC):"
+msgstr "gcovr (покрытие, GCC):"
+
+#: ../../../../docs/user_guide/ci.rst:141
+msgid "Tooling tips (versions and install)"
+msgstr "Подсказки по инструментам (версии и установка)"
+
+#: ../../../../docs/user_guide/ci.rst:143
+msgid ""
+"clang-tidy version - CI uses clang-tidy 21. Prefer the same locally to "
+"avoid mismatches. - The helper may be named ``clang-tidy-21`` or ``run-"
+"clang-tidy-21`` on some systems."
+msgstr "Версия clang-tidy — в CI используется clang-tidy 21. Локально лучше использовать ту же версию, чтобы избежать расхождений. На некоторых системах помощник может называться ``clang-tidy-21`` или ``run-clang-tidy-21``."
+
+#: ../../../../docs/user_guide/ci.rst:147
+msgid ""
+"Linux - clang-tidy: install from your distro (e.g., ``apt install clang-"
+"tidy-21``) or use the course Docker image. - gcovr: ``python3 -m pip "
+"install gcovr`` or a distro package. - GCC version: use ``gcov-14`` when "
+"building with GCC 14 (as in CI)."
+msgstr "Linux — clang-tidy: установите из репозитория дистрибутива (например, ``apt install clang-tidy-21``) или используйте Docker‑образ курса. gcovr: ``python3 -m pip install gcovr`` либо пакет дистрибутива. GCC: при сборке с GCC 14 используйте ``gcov-14`` (как в CI)."
+
+#: ../../../../docs/user_guide/ci.rst:152
+msgid ""
+"macOS - clang-tidy: ``brew install llvm``; binary at ``$(brew "
+"--prefix)/opt/llvm/bin/clang-tidy``. - Optionally add LLVM to PATH or "
+"invoke with full path. - gcovr: ``python3 -m pip install gcovr`` or "
+"``brew install gcovr``."
+msgstr "macOS — clang-tidy: ``brew install llvm``; бинарник: ``$(brew --prefix)/opt/llvm/bin/clang-tidy``. При необходимости добавьте LLVM в PATH или вызывайте по полному пути. gcovr: ``python3 -m pip install gcovr`` или ``brew install gcovr``."
+
+#: ../../../../docs/user_guide/ci.rst:157
+msgid ""
+"Windows - clang-tidy: install LLVM (Clang) or use ``choco install llvm``;"
+" ensure ``clang-tidy.exe`` is in PATH. - gcovr: ``py -m pip install "
+"gcovr``. - Coverage is primarily supported in our CI on Linux/GCC; prefer"
+" generating reports on Linux."
+msgstr "Windows — clang-tidy: установите LLVM (Clang) или ``choco install llvm``; убедитесь, что ``clang-tidy.exe`` доступен в PATH. gcovr: ``py -m pip install gcovr``. Покрытие в основном поддерживается нашим CI на Linux/GCC — предпочтительнее генерировать отчёты на Linux."
+
+#~ msgid ""
+#~ "Students need to pass all the "
+#~ "checks in the CI pipeline before "
+#~ "their work can be considered for "
+#~ "submission. This includes successful code "
+#~ "checkout, build ans testing stages. Each"
+#~ " integration is verified by an "
+#~ "automated build and automated tests."
+#~ msgstr ""
+#~ "Студенты должны пройти все проверки в"
+#~ " конвейере CI, прежде чем начнется "
+#~ "проверка работы студентами и преподавателями."
+#~ " Это включает в себя успешную "
+#~ "проверку кода,  а также стадии "
+#~ "построения и тестирования. Каждая интеграция"
+#~ " проверяется автоматизированной сборкой и "
+#~ "автоматизированными тестами."
+
+#~ msgid ""
+#~ "The CI pipeline for this project "
+#~ "is illustrated in the following diagram:"
+#~ msgstr "CI конвейер для данного проекта выражается с помощью наглядной схемы:"
+
+#~ msgid "CI Pipeline Diagram"
+#~ msgstr "Схема CI конвейера"
+
+#~ msgid "Running ``scripts/run_tests.py``"
+#~ msgstr "Запуск ``scripts/run_tests.py``"
+
+#~ msgid ""
+#~ "Note: In ``threads`` and ``processes`` "
+#~ "modes the runner also executes core "
+#~ "library tests (``core_func_tests``) before the"
+#~ " task tests."
+#~ msgstr ""
+#~ "Примечание: в режимах ``threads`` и "
+#~ "``processes`` runner сначала запускает тесты"
+#~ " ядра (``core_func_tests``), а затем тесты"
+#~ " задач."
+
+#~ msgid ""
+#~ "Additional MPI arguments can be supplied"
+#~ " with ``--additional-mpi-args`` when "
+#~ "running in ``processes`` mode."
+#~ msgstr ""
+#~ "Дополнительные аргументы MPI можно передать"
+#~ " через ``--additional-mpi-args`` при "
+#~ "запуске в режиме ``processes``."
+
+#~ msgid ""
+#~ "The ``--counts`` option allows sequential "
+#~ "execution of tests with several "
+#~ "thread/process counts.  When specified, the"
+#~ " script will iterate over the "
+#~ "provided values, updating ``PPC_NUM_THREADS`` "
+#~ "or ``PPC_NUM_PROC`` accordingly before each"
+#~ " run."
+#~ msgstr ""
+#~ "Параметр ``--counts`` позволяет последовательно "
+#~ "запускать тесты с несколькими значениями "
+#~ "числа потоков или процессов. При его "
+#~ "указании скрипт перебирает переданные "
+#~ "значения, перед каждым запуском обновляя "
+#~ "``PPC_NUM_THREADS`` или ``PPC_NUM_PROC``."
+
+#~ msgid ""
+#~ "Use ``--verbose`` to print every command"
+#~ " executed by ``run_tests.py``.  This can"
+#~ " be helpful for debugging CI failures"
+#~ " or verifying the exact arguments "
+#~ "passed to the test binaries."
+#~ msgstr ""
+#~ "Используйте ``--verbose``, чтобы вывести "
+#~ "каждую команду, выполняемую ``run_tests.py``. "
+#~ "Это помогает отлаживать сбои в CI "
+#~ "или проверять точные аргументы, передаваемые"
+#~ " тестовым бинарникам."
