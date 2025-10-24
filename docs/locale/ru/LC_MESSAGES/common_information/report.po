@@ -2,18 +2,19 @@
 # Copyright (C) 2025, Learning Process
 # This file is distributed under the same license as the Parallel
 # Programming Course package.
-# Learning Process Team <gooddoog@student.su, nesterov.alexander@outlook.com>, 2025.
+# Learning Process Team <gooddoog@student.su,
+# nesterov.alexander@outlook.com>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-08 23:43+0100\n"
+"POT-Creation-Date: 2025-10-24 15:06+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: ru\n"
-"Language-Team: Learning Process Team (gooddoog@student.su, nesterov.alexander@outlook.com)\n"
+"Language-Team: Learning Process Team (gooddoog@student.su, "
+"nesterov.alexander@outlook.com)\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
@@ -21,163 +22,278 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ../../common_information/report.rst:2
+#: ../../../../docs/common_information/report.rst:2
 msgid "Report"
-msgstr "Отчет"
+msgstr "Отчёт"
 
-#: ../../common_information/report.rst:4
+#: ../../../../docs/common_information/report.rst:5
+msgid "Overview and placement"
+msgstr "Общее и размещение"
+
+#: ../../../../docs/common_information/report.rst:6
+msgid ""
+"The report is a Markdown file placed inside your task directory: "
+"``tasks/<last>_<initial>_<short>/report.md``."
+msgstr "Отчёт — это Markdown‑файл в папке вашей задачи: ``tasks/<фамилия>_<инициал>_<краткое>/report.md``."
+
+#: ../../../../docs/common_information/report.rst:8
+msgid ""
+"Presence of ``report.md`` is required to receive report (R) points for "
+"that task (see ``Points``)."
+msgstr "Наличие ``report.md`` обязательно для получения отчётных (R) баллов по этой задаче (см. «Баллы»)."
+
+#: ../../../../docs/common_information/report.rst:9
+msgid ""
+"Write the report in a concise, reproducible manner. Use English or "
+"Russian consistently."
+msgstr "Пишите отчёт кратко и воспроизводимо. Используйте один язык последовательно (русский или английский)."
+
+#: ../../../../docs/common_information/report.rst:12
 msgid "Report points"
-msgstr "Баллы за отчет"
+msgstr "Баллы за отчёт"
 
-#: ../../common_information/report.rst:7 ../../common_information/report.rst:14
+#: ../../../../docs/common_information/report.rst:15
 msgid "Completeness"
 msgstr "Наличие всех требуемых пунктов"
 
-#: ../../common_information/report.rst:7 ../../common_information/report.rst:27
+#: ../../../../docs/common_information/report.rst:15
 msgid "Text Quality"
 msgstr "Качество текста"
 
-#: ../../common_information/report.rst:7 ../../common_information/report.rst:34
+#: ../../../../docs/common_information/report.rst:15
 msgid "Formatting Quality"
 msgstr "Качество оформления"
 
-#: ../../common_information/report.rst:7
+#: ../../../../docs/common_information/report.rst:15
 msgid "Total"
 msgstr "Всего"
 
-#: ../../common_information/report.rst:9
+#: ../../../../docs/common_information/report.rst:17
 msgid "5"
-msgstr ""
+msgstr "5"
 
-#: ../../common_information/report.rst:9
+#: ../../../../docs/common_information/report.rst:17
 msgid "2.5"
-msgstr ""
+msgstr "2.5"
 
-#: ../../common_information/report.rst:9
+#: ../../../../docs/common_information/report.rst:17
 msgid "10"
-msgstr ""
+msgstr "10"
 
-#: ../../common_information/report.rst:12
-msgid "Requirements for Criteria"
-msgstr "Требования к критериям"
+#: ../../../../docs/common_information/report.rst:21
+msgid "Recommended structure"
+msgstr "Рекомендуемая структура"
 
-#: ../../common_information/report.rst:16
-msgid "Introduction (can be a short paragraph)"
-msgstr "Введение (допустимо на абзац)"
+#: ../../../../docs/common_information/report.rst:22
+msgid "Introduction (short context and goal)"
+msgstr "Введение (краткий контекст и цель)"
 
-#: ../../common_information/report.rst:17
-msgid "Problem Statement (descriptive)"
-msgstr "Постановка задачи (содержательная)"
+#: ../../../../docs/common_information/report.rst:23
+msgid "Problem Statement (task definition and constraints)"
+msgstr "Постановка задачи (определение и ограничения)"
 
-#: ../../common_information/report.rst:18
-msgid "Algorithm Description"
-msgstr "Описание алгоритма"
+#: ../../../../docs/common_information/report.rst:24
+msgid "Algorithm Description (baseline/sequential)"
+msgstr "Описание алгоритма (базового/последовательного)"
 
-#: ../../common_information/report.rst:19
-msgid "Description of the Parallel Algorithm Scheme"
-msgstr "Описание схемы параллельного алгоритма"
+#: ../../../../docs/common_information/report.rst:25
+msgid "Parallelization Scheme (MPI topology/data flow or threads scheduling)"
+msgstr "Схема распараллеливания (для MPI — топология/обмены, для потоков — декомпозиция и планирование)"
 
-#: ../../common_information/report.rst:20
+#: ../../../../docs/common_information/report.rst:26
+msgid "Implementation Details per technology used (only those in your semester)"
+msgstr "Детали реализации по используемым технологиям (только требуемые в семестре)"
+
+#: ../../../../docs/common_information/report.rst:27
 msgid ""
-"Description of the MPI, OpenMP, TBB, std::threads, all versions "
-"(depending on the semester) – part of the software implementation "
-"description"
-msgstr "Описание OpenMP-версии и TBB-версии или MPI-версии (смотря какой семестр) - пункт описания программной реализации"
+"Experimental Results - Environment (CPU, OS, compiler, build type; "
+"thread/process counts) - Execution time tables/plots; performance metrics"
+" (speedup/efficiency) - Correctness checks description"
+msgstr "Экспериментальные результаты — Окружение (CPU/OS/компилятор/тип сборки; числа потоков/процессов) — Таблицы/графики времени; метрики ускорения/эффективности — Описание проверки корректности"
 
-#: ../../common_information/report.rst:21
+#: ../../../../docs/common_information/report.rst:31
+msgid "Conclusions (what worked, what didn’t, further work)"
+msgstr "Выводы (что получилось, ограничения, дальнейшие работы)"
+
+#: ../../../../docs/common_information/report.rst:32
+msgid "References (articles, docs; provide links)"
+msgstr "Источники (статьи, документация; ссылки)"
+
+#: ../../../../docs/common_information/report.rst:33
+msgid "Appendix (optional code snippets; keep readable)"
+msgstr "Приложение (небольшие фрагменты кода; сохраняйте читаемость)"
+
+#: ../../../../docs/common_information/report.rst:36
+msgid "Evaluation criteria"
+msgstr "Критерии оценки"
+
+#: ../../../../docs/common_information/report.rst:37
 msgid ""
-"Experimental Results (execution time and algorithm quality assessment), "
-"description of correctness verification"
-msgstr "Результаты экспериментов (по времени работы и оценке качества работы алогритма), описание подтверждения корректности"
+"Completeness - All items from the recommended structure are present and "
+"meaningful - Results include both correctness and performance evidence"
+msgstr "Полнота — все пункты из рекомендуемой структуры присутствуют и осмысленны — есть подтверждение корректности и результатов производительности"
 
-#: ../../common_information/report.rst:22
-msgid "Conclusions from the Results"
-msgstr "Выводы из результатов"
-
-#: ../../common_information/report.rst:23
-msgid "Conclusion"
-msgstr "Заключение"
-
-#: ../../common_information/report.rst:24
-msgid "References"
-msgstr "Список литературы"
-
-#: ../../common_information/report.rst:25
-msgid "Appendix (include code, ensuring readability)"
-msgstr "Приложение (вставить код, сохранить его читаемость)"
-
-#: ../../common_information/report.rst:29
-msgid "Meaningfulness"
-msgstr "Осмысленность"
-
-#: ../../common_information/report.rst:30
-msgid "Coherence"
-msgstr "Связность"
-
-#: ../../common_information/report.rst:31
-msgid "Clarity"
-msgstr "Понятность"
-
-#: ../../common_information/report.rst:32
-msgid "Quality of language (only the most obvious mistakes are considered)"
-msgstr "Качество языка (рассматриваются только самые очевидные ошибки)"
-
-#: ../../common_information/report.rst:36
-msgid "Requirements for Headings"
-msgstr "Требования к заголовкам"
-
-#: ../../common_information/report.rst:37
-msgid "Requirements for Text Alignment"
-msgstr "Требования к выравниванию текста"
-
-#: ../../common_information/report.rst:38
-msgid "Requirements for Paragraph Indentation"
-msgstr "Требования к абзацным отступам"
-
-#: ../../common_information/report.rst:39
-msgid "Requirements for the Formatting of Figures, Graphs, and Tables"
-msgstr "Требования к оформлению рисунков, графиков и таблиц"
-
-#: ../../common_information/report.rst:40
+#: ../../../../docs/common_information/report.rst:40
 msgid ""
-"The “Teacher” field must include the full name, position, and title of "
-"the lecturer"
-msgstr "В графе преподаватель должны стоять ФИО, должность и звание лектора"
+"Text Quality - Clarity, coherence, correct terminology; acceptable "
+"language quality"
+msgstr "Качество текста — ясность, связность, корректная терминология; приемлемое качество языка"
 
-#: ../../common_information/report.rst:42
-msgid "Comments"
-msgstr "Комментарии"
-
-#: ../../common_information/report.rst:44
-msgid "Failure to meet the requirements will result in a deduction of points."
-msgstr "За невыполнение требований следует снижение баллов."
-
-#: ../../common_information/report.rst:45
+#: ../../../../docs/common_information/report.rst:42
 msgid ""
-"The request will include points and comments regarding any requirement "
-"violations (if applicable)."
-msgstr "В реквесте будут писаться баллы и комментарии по поводу нарушения требований (если таковые имеются)"
+"Formatting Quality - Proper Markdown headings, lists, tables, fenced code"
+" blocks - Figures/plots with captions and relative paths; readable "
+"formatting"
+msgstr "Качество оформления — корректные Markdown‑заголовки, списки, таблицы, блоки кода — рисунки/графики с подписями и относительными путями; читаемое форматирование"
 
-#: ../../common_information/report.rst:46
-msgid ""
-"The report will be checked only once, and the grade will be assigned "
-"based on the submitted version according to the requirements."
-msgstr "Отчет будет проверяться один раз, по версии отчета будет выставлена оценка согласно требованиям"
+#: ../../../../docs/common_information/report.rst:47
+msgid "Notes"
+msgstr "Примечания"
 
-#: ../../common_information/report.rst:47
+#: ../../../../docs/common_information/report.rst:48
 msgid ""
-"The report is reviewed online; the entire review process takes place in "
-"the request."
-msgstr "Отчет проверяется заочно, вся проверка проходит в реквесте, очно отчет НЕ сдается."
+"Reports are reviewed online in the Pull Request. The final grade is based"
+" on the submitted version that passes the review."
+msgstr "Отчёты проверяются онлайн в Pull Request. Итоговая оценка ставится по версии, прошедшей ревью."
 
-#: ../../common_information/report.rst:48
+#: ../../../../docs/common_information/report.rst:49
 msgid ""
-"If a student falls into the **blue zone** for the task, the report points"
-" will also be nullified at the end of the semester. The report will be "
-"finally accepted and merged into the master branch only after both the "
-"**online** parts of the corresponding lab work are fully completed."
-msgstr "Если студент попал в синюю зону по задаче, баллы за отчет также "
-"обнуляются в конце семестра. Отчет окончательно будет "
-"принят и попадет в мастер, когда будет полностью сдана "
-"очно и заочно лабораторная работа, "
-"по которой был сделан отчет."
+"If the task is disabled at the end of semester (e.g., fails in master; "
+"see scoreboard “blue zone”), report points for that task are nullified."
+msgstr "Если задача окажется в «синей зоне» к концу семестра (например, падение в master), отчётные баллы по этой задаче обнуляются."
+
+#: ../../../../docs/common_information/report.rst:50
+msgid ""
+"Plagiarism is prohibited; identical or near‑duplicate reports will be "
+"rejected."
+msgstr "Плагиат запрещён; совпадающие или почти совпадающие отчёты будут отклонены."
+
+#: ../../../../docs/common_information/report.rst:55
+msgid "Markdown template (report.md)"
+msgstr "Шаблон Markdown (report.md)"
+
+#: ../../../../docs/common_information/report.rst:57
+msgid ""
+"Use the following skeleton as a starting point for your ``report.md``. "
+"Keep file paths relative to the task directory (for images/data)."
+msgstr "Используйте следующий скелет для вашего ``report.md``. Пути к файлам указывайте относительно папки задачи (для изображений/данных)."
+
+#~ msgid "Requirements for Criteria"
+#~ msgstr "Требования к критериям"
+
+#~ msgid "Description of the Parallel Algorithm Scheme"
+#~ msgstr "Описание схемы параллельного алгоритма"
+
+#~ msgid ""
+#~ "Description of the MPI, OpenMP, TBB, "
+#~ "std::threads, all versions (depending on "
+#~ "the semester) – part of the "
+#~ "software implementation description"
+#~ msgstr ""
+#~ "Описание OpenMP-версии и TBB-версии или "
+#~ "MPI-версии (смотря какой семестр) - "
+#~ "пункт описания программной реализации"
+
+#~ msgid ""
+#~ "Experimental Results (execution time and "
+#~ "algorithm quality assessment), description of"
+#~ " correctness verification"
+#~ msgstr ""
+#~ "Результаты экспериментов (по времени работы"
+#~ " и оценке качества работы алогритма), "
+#~ "описание подтверждения корректности"
+
+#~ msgid "Conclusions from the Results"
+#~ msgstr "Выводы из результатов"
+
+#~ msgid "Conclusion"
+#~ msgstr "Заключение"
+
+#~ msgid "References"
+#~ msgstr "Список литературы"
+
+#~ msgid "Meaningfulness"
+#~ msgstr "Осмысленность"
+
+#~ msgid "Coherence"
+#~ msgstr "Связность"
+
+#~ msgid "Clarity"
+#~ msgstr "Понятность"
+
+#~ msgid "Quality of language (only the most obvious mistakes are considered)"
+#~ msgstr "Качество языка (рассматриваются только самые очевидные ошибки)"
+
+#~ msgid "Requirements for Headings"
+#~ msgstr "Требования к заголовкам"
+
+#~ msgid "Requirements for Text Alignment"
+#~ msgstr "Требования к выравниванию текста"
+
+#~ msgid "Requirements for Paragraph Indentation"
+#~ msgstr "Требования к абзацным отступам"
+
+#~ msgid "Requirements for the Formatting of Figures, Graphs, and Tables"
+#~ msgstr "Требования к оформлению рисунков, графиков и таблиц"
+
+#~ msgid ""
+#~ "The “Teacher” field must include the "
+#~ "full name, position, and title of "
+#~ "the lecturer"
+#~ msgstr "В графе преподаватель должны стоять ФИО, должность и звание лектора"
+
+#~ msgid "Comments"
+#~ msgstr "Комментарии"
+
+#~ msgid "Failure to meet the requirements will result in a deduction of points."
+#~ msgstr "За невыполнение требований следует снижение баллов."
+
+#~ msgid ""
+#~ "The request will include points and "
+#~ "comments regarding any requirement violations"
+#~ " (if applicable)."
+#~ msgstr ""
+#~ "В реквесте будут писаться баллы и "
+#~ "комментарии по поводу нарушения требований "
+#~ "(если таковые имеются)"
+
+#~ msgid ""
+#~ "The report will be checked only "
+#~ "once, and the grade will be "
+#~ "assigned based on the submitted version"
+#~ " according to the requirements."
+#~ msgstr ""
+#~ "Отчет будет проверяться один раз, по "
+#~ "версии отчета будет выставлена оценка "
+#~ "согласно требованиям"
+
+#~ msgid ""
+#~ "The report is reviewed online; the "
+#~ "entire review process takes place in "
+#~ "the request."
+#~ msgstr ""
+#~ "Отчет проверяется заочно, вся проверка "
+#~ "проходит в реквесте, очно отчет НЕ "
+#~ "сдается."
+
+#~ msgid ""
+#~ "If a student falls into the **blue"
+#~ " zone** for the task, the report "
+#~ "points will also be nullified at "
+#~ "the end of the semester. The "
+#~ "report will be finally accepted and "
+#~ "merged into the master branch only "
+#~ "after both the **online** parts of "
+#~ "the corresponding lab work are fully "
+#~ "completed."
+#~ msgstr ""
+#~ "Если студент попал в синюю зону по"
+#~ " задаче, баллы за отчет также "
+#~ "обнуляются в конце семестра. Отчет "
+#~ "окончательно будет принят и попадет в"
+#~ " мастер, когда будет полностью сдана "
+#~ "очно и заочно лабораторная работа, по"
+#~ " которой был сделан отчет."
+
+#~ msgid "Russian template (report.md)"
+#~ msgstr ""

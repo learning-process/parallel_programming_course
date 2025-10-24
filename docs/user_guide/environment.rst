@@ -57,6 +57,37 @@ Please follow the `Google C++ Style Guide <https://google.github.io/styleguide/c
 
 Code style is checked using the `clang-format <https://clang.llvm.org/docs/ClangFormat.html>`_ tool.
 
+Optional tools (clang-tidy, gcovr)
+----------------------------------
+Install these to match the CI toolchain for static analysis and coverage reports.
+
+- Linux (Ubuntu/Debian):
+
+  .. code-block:: bash
+
+     # clang-tidy 21 (recommended)
+     sudo apt update && sudo apt install -y clang-tidy-21
+     # gcovr via pip (or use your distro package)
+     python3 -m pip install gcovr
+     # GCC 14 coverage helper (used in CI)
+     which gcov-14 || echo "Install GCC 14 to use gcov-14"
+
+- macOS (Homebrew):
+
+  .. code-block:: bash
+
+     brew install llvm gcovr
+     # clang-tidy path (if not on PATH):
+     echo "$(brew --prefix)/opt/llvm/bin/clang-tidy"
+
+- Windows:
+
+  .. code-block:: powershell
+
+     choco install llvm
+     py -m pip install gcovr
+     # Ensure clang-tidy.exe is available in PATH
+
 Parallel Programming Technologies
 ---------------------------------
 

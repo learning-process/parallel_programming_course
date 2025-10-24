@@ -17,6 +17,7 @@ author = "Learning Process"
 
 extensions = [
     "breathe",
+    "sphinx.ext.ifconfig",
 ]
 
 breathe_projects = {
@@ -44,6 +45,7 @@ html_static_path = ["_static"]
 html_sidebars = {
     "**": [
         "globaltoc.html",
+        "localtoc.html",
         "sourcelink.html",
         "searchbox.html",
         "language_switcher.html",

@@ -2,18 +2,19 @@
 # Copyright (C) 2025, Learning Process
 # This file is distributed under the same license as the Parallel
 # Programming Course package.
-# Learning Process Team <gooddoog@student.su, nesterov.alexander@outlook.com>, 2025.
+# Learning Process Team <gooddoog@student.su,
+# nesterov.alexander@outlook.com>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-09 00:58+0100\n"
+"POT-Creation-Date: 2025-10-24 14:15+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: ru\n"
-"Language-Team: Learning Process Team (gooddoog@student.su, nesterov.alexander@outlook.com)\n"
+"Language-Team: Learning Process Team (gooddoog@student.su, "
+"nesterov.alexander@outlook.com)\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
@@ -21,393 +22,422 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ../../common_information/points.rst:2
+#: ../../../../docs/common_information/points.rst:2
 msgid "Points"
 msgstr "Балльно-рейтинговая система"
 
-#: ../../common_information/points.rst:4
-msgid "For “process parallelism” semester"
-msgstr "Для семестра, где студенты изучают параллелизм на процессах"
+#: ../../../../docs/common_information/points.rst:5
+msgid "Overview"
+msgstr "Общие положения"
 
-#: ../../common_information/points.rst:6
-msgid "1st MPI task"
-msgstr "Первая MPI задача"
+#: ../../../../docs/common_information/points.rst:7
+msgid "Total per semester (Practice): 70 points"
+msgstr "Итого за семестр (практика): 70 баллов"
 
-#: ../../common_information/points.rst:9 ../../common_information/points.rst:17
-#: ../../common_information/points.rst:25
-#: ../../common_information/points.rst:37
-#: ../../common_information/points.rst:45
-#: ../../common_information/points.rst:53
-#: ../../common_information/points.rst:61
-#: ../../common_information/points.rst:70
-msgid "Solution"
-msgstr "Решение"
+#: ../../../../docs/common_information/points.rst:8
+msgid "Report points are distributed per task and sum to 10"
+msgstr "Баллы за отчёт распределяются по задачам и суммарно равны 10"
 
-#: ../../common_information/points.rst:11
-#: ../../common_information/points.rst:27
-#: ../../common_information/points.rst:72
-#: ../../common_information/points.rst:114
-msgid "10"
-msgstr ""
+#: ../../../../docs/common_information/points.rst:11
+msgid "Processes semester (MPI)"
+msgstr "Семестр процессов (MPI)"
 
-#: ../../common_information/points.rst:14
-msgid "2nd MPI task"
-msgstr "Вторая MPI задача"
-
-#: ../../common_information/points.rst:17
-#: ../../common_information/points.rst:25
-#: ../../common_information/points.rst:45
-#: ../../common_information/points.rst:53
-#: ../../common_information/points.rst:61
-#: ../../common_information/points.rst:70
-msgid "Performance"
-msgstr "Производительность"
-
-#: ../../common_information/points.rst:19
-msgid "15"
-msgstr ""
-
-#: ../../common_information/points.rst:19
-#: ../../common_information/points.rst:114
-#: ../../common_information/points.rst:124
-#: ../../common_information/points.rst:136
-msgid "5"
-msgstr ""
-
-#: ../../common_information/points.rst:22
-msgid "3rd MPI task"
-msgstr "Третья MPI задача"
-
-#: ../../common_information/points.rst:27
-msgid "20"
-msgstr ""
-
-#: ../../common_information/points.rst:30
-msgid "**Total : 60 points**"
-msgstr "**Всего : 60 баллов**"
-
-#: ../../common_information/points.rst:32
-msgid "For “thread parallelism” semester"
-msgstr "Для семестра, где студенты изучают параллелизм на потоках"
-
-#: ../../common_information/points.rst:34
-msgid "Sequential version"
-msgstr "Последовательная версия"
-
-#: ../../common_information/points.rst:39
-#: ../../common_information/points.rst:125
-#: ../../common_information/points.rst:138
-msgid "4"
-msgstr ""
-
-#: ../../common_information/points.rst:42
-msgid "OpenMP version"
-msgstr "OpenMP версия"
-
-#: ../../common_information/points.rst:47
-#: ../../common_information/points.rst:55
-#: ../../common_information/points.rst:63
-msgid "6"
-msgstr ""
-
-#: ../../common_information/points.rst:47
-#: ../../common_information/points.rst:55
-#: ../../common_information/points.rst:126
-#: ../../common_information/points.rst:139
-msgid "3"
-msgstr ""
-
-#: ../../common_information/points.rst:50
-msgid "TBB version"
-msgstr "TBB версия"
-
-#: ../../common_information/points.rst:58
-msgid "std::thread version"
-msgstr "std::thread версия"
-
-#: ../../common_information/points.rst:63
-#: ../../common_information/points.rst:72
-msgid "8"
-msgstr ""
-
-#: ../../common_information/points.rst:66
-msgid "“MPI + threads” version (The threading technology is chosen randomly)"
-msgstr ""
-"“MPI + threads” версия (Технология параллелизма на потоках будет выбрана "
-"случайным образом)"
-
-#: ../../common_information/points.rst:75
-msgid "**Total : 54 points**"
-msgstr "**Всего : 54 балла**"
-
-#: ../../common_information/points.rst:77
-msgid "The rule for earning performance points."
-msgstr "Правило получения баллов за производительность"
-
-#: ../../common_information/points.rst:79
+#: ../../../../docs/common_information/points.rst:13
 msgid ""
-"The ratio of efficiency percentage to points percentage, where the "
-"maximum points is 100% and the minimum points is 0%."
-msgstr ""
-"Соотношение процента эффективности к проценту баллов за "
-"производительность, где максимум баллов - 100%, а минимум баллов - 0% "
+"Task 1 — Total: 12 - Implementation: MPI 8 + Seq 2 - Performance: 0 - "
+"Report: 2"
+msgstr "Задача 1 — Итого: 12 — Реализация: MPI 8 + Seq 2 — Производительность: 0 — Отчёт: 2"
 
-#: ../../common_information/points.rst:81
+#: ../../../../docs/common_information/points.rst:18
+msgid ""
+"Task 2 — Total: 23 - Implementation: MPI 12 + Seq 3 - Performance: 5 - "
+"Report: 3"
+msgstr "Задача 2 — Итого: 23 — Реализация: MPI 12 + Seq 3 — Производительность: 5 — Отчёт: 3"
+
+#: ../../../../docs/common_information/points.rst:23
+msgid ""
+"Task 3 — Total: 35 - Implementation: MPI 16 + Seq 4 - Performance: 10 - "
+"Report: 5"
+msgstr "Задача 3 — Итого: 35 — Реализация: MPI 16 + Seq 4 — Производительность: 10 — Отчёт: 5"
+
+#: ../../../../docs/common_information/points.rst:28
+msgid "Semester total: 70"
+msgstr "Итого за семестр: 70"
+
+#: ../../../../docs/common_information/points.rst:31
+msgid "Threads semester (OpenMP/TBB/std::thread)"
+msgstr "Семестр потоков (OpenMP/TBB/std::thread)"
+
+#: ../../../../docs/common_information/points.rst:33
+msgid "seq — Total: 5 (S 4, R 1)"
+msgstr "seq — Итого: 5 (S 4, R 1)"
+
+#: ../../../../docs/common_information/points.rst:34
+msgid "omp — Total: 11 (S 6, A 3, R 2)"
+msgstr "omp — Итого: 11 (S 6, A 3, R 2)"
+
+#: ../../../../docs/common_information/points.rst:35
+msgid "tbb — Total: 11 (S 6, A 3, R 2)"
+msgstr "tbb — Итого: 11 (S 6, A 3, R 2)"
+
+#: ../../../../docs/common_information/points.rst:36
+msgid "stl — Total: 16 (S 8, A 6, R 2)"
+msgstr "stl — Итого: 16 (S 8, A 6, R 2)"
+
+#: ../../../../docs/common_information/points.rst:37
+msgid "all — Total: 21 (S 10, A 8, R 3)"
+msgstr "all — Итого: 21 (S 10, A 8, R 3)"
+
+#: ../../../../docs/common_information/points.rst:39
+msgid "Semester total: 64"
+msgstr "Итого за семестр: 64"
+
+#: ../../../../docs/common_information/points.rst:42
+msgid "Performance points mapping"
+msgstr "Маппинг баллов за производительность"
+
+#: ../../../../docs/common_information/points.rst:44
+msgid ""
+"The ratio of efficiency percentage to points percentage (max 100%, min "
+"0%):"
+msgstr "Соотношение процента эффективности к проценту баллов (макс. 100%, мин. 0%):"
+
+#: ../../../../docs/common_information/points.rst:46
 msgid "If the score is not an integer, it is rounded up."
-msgstr "Если получается не целочисленное значение баллов, то баллы округляются в большую сторону"
+msgstr "Если значение не целое, округляется в большую сторону."
 
-#: ../../common_information/points.rst:84
+#: ../../../../docs/common_information/points.rst:49
 msgid "Efficiency (%)"
 msgstr "Эффективность"
 
-#: ../../common_information/points.rst:84
+#: ../../../../docs/common_information/points.rst:49
 msgid "Points percentage"
 msgstr "Процент баллов за производительность"
 
-#: ../../common_information/points.rst:86
+#: ../../../../docs/common_information/points.rst:51
 msgid ">= 50%"
-msgstr ""
+msgstr ">= 50%"
 
-#: ../../common_information/points.rst:86
+#: ../../../../docs/common_information/points.rst:51
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
-#: ../../common_information/points.rst:88
+#: ../../../../docs/common_information/points.rst:53
 msgid "[45, 50)"
-msgstr ""
+msgstr "[45, 50)"
 
-#: ../../common_information/points.rst:88
+#: ../../../../docs/common_information/points.rst:53
 msgid "90%"
-msgstr ""
+msgstr "90%"
 
-#: ../../common_information/points.rst:90
+#: ../../../../docs/common_information/points.rst:55
 msgid "[42, 45)"
-msgstr ""
+msgstr "[42, 45)"
 
-#: ../../common_information/points.rst:90
+#: ../../../../docs/common_information/points.rst:55
 msgid "80%"
-msgstr ""
+msgstr "80%"
 
-#: ../../common_information/points.rst:92
+#: ../../../../docs/common_information/points.rst:57
 msgid "[40, 42)"
-msgstr ""
+msgstr "[40, 42)"
 
-#: ../../common_information/points.rst:92
+#: ../../../../docs/common_information/points.rst:57
 msgid "70%"
-msgstr ""
+msgstr "70%"
 
-#: ../../common_information/points.rst:94
+#: ../../../../docs/common_information/points.rst:59
 msgid "[37, 40)"
-msgstr ""
+msgstr "[37, 40)"
 
-#: ../../common_information/points.rst:94
+#: ../../../../docs/common_information/points.rst:59
 msgid "60%"
-msgstr ""
+msgstr "60%"
 
-#: ../../common_information/points.rst:96
+#: ../../../../docs/common_information/points.rst:61
 msgid "[35, 37)"
-msgstr ""
+msgstr "[35, 37)"
 
-#: ../../common_information/points.rst:96
+#: ../../../../docs/common_information/points.rst:61
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
-#: ../../common_information/points.rst:98
+#: ../../../../docs/common_information/points.rst:63
 msgid "[32, 35)"
-msgstr ""
+msgstr "[32, 35)"
 
-#: ../../common_information/points.rst:98
+#: ../../../../docs/common_information/points.rst:63
 msgid "40%"
-msgstr ""
+msgstr "40%"
 
-#: ../../common_information/points.rst:100
+#: ../../../../docs/common_information/points.rst:65
 msgid "[30, 32)"
-msgstr ""
+msgstr "[30, 32)"
 
-#: ../../common_information/points.rst:100
+#: ../../../../docs/common_information/points.rst:65
 msgid "30%"
-msgstr ""
+msgstr "30%"
 
-#: ../../common_information/points.rst:102
+#: ../../../../docs/common_information/points.rst:67
 msgid "[27, 30)"
-msgstr ""
+msgstr "[27, 30)"
 
-#: ../../common_information/points.rst:102
+#: ../../../../docs/common_information/points.rst:67
 msgid "20%"
-msgstr ""
+msgstr "20%"
 
-#: ../../common_information/points.rst:104
+#: ../../../../docs/common_information/points.rst:69
 msgid "[25, 27)"
-msgstr ""
+msgstr "[25, 27)"
 
-#: ../../common_information/points.rst:104
+#: ../../../../docs/common_information/points.rst:69
 msgid "10%"
-msgstr ""
+msgstr "10%"
 
-#: ../../common_information/points.rst:106
+#: ../../../../docs/common_information/points.rst:71
 msgid "< 25%"
-msgstr ""
+msgstr "< 25%"
 
-#: ../../common_information/points.rst:106
+#: ../../../../docs/common_information/points.rst:71
 msgid "0%"
-msgstr ""
+msgstr "0%"
 
-#: ../../common_information/points.rst:109
+#: ../../../../docs/common_information/points.rst:75
 msgid "Report"
-msgstr "Отчет"
+msgstr "Отчёт"
 
-#: ../../common_information/points.rst:112
+#: ../../../../docs/common_information/points.rst:78
 msgid "Completeness"
 msgstr "Наличие всех требуемых пунктов"
 
-#: ../../common_information/points.rst:112
+#: ../../../../docs/common_information/points.rst:78
 msgid "Text Quality"
 msgstr "Качество текста"
 
-#: ../../common_information/points.rst:112
+#: ../../../../docs/common_information/points.rst:78
 msgid "Formatting Quality"
 msgstr "Качество оформления"
 
-#: ../../common_information/points.rst:112
+#: ../../../../docs/common_information/points.rst:78
 msgid "Total"
 msgstr "Итог"
 
-#: ../../common_information/points.rst:114
+#: ../../../../docs/common_information/points.rst:80
+#: ../../../../docs/common_information/points.rst:91
+#: ../../../../docs/common_information/points.rst:103
+msgid "5"
+msgstr "5"
+
+#: ../../../../docs/common_information/points.rst:80
 msgid "2.5"
-msgstr ""
+msgstr "2.5"
 
-#: ../../common_information/points.rst:117
-msgid "Conversion of points into exam assessment or pass/fail"
-msgstr "Перевод баллов в экзаменационную оценку или зачет/незачет"
+#: ../../../../docs/common_information/points.rst:80
+msgid "10"
+msgstr "10"
 
-#: ../../common_information/points.rst:119
-msgid "For 5-point grading system"
-msgstr "5-ти балльная система оценки"
+#: ../../../../docs/common_information/points.rst:84
+msgid "Conversion to grade"
+msgstr "Перевод в оценку"
 
-#: ../../common_information/points.rst:122
-#: ../../common_information/points.rst:133
+#: ../../../../docs/common_information/points.rst:86
+msgid "5-point scale"
+msgstr "5-балльная шкала"
+
+#: ../../../../docs/common_information/points.rst:89
+#: ../../../../docs/common_information/points.rst:100
 msgid "Points range"
 msgstr "Диапозон баллов"
 
-#: ../../common_information/points.rst:122
-#: ../../common_information/points.rst:133
+#: ../../../../docs/common_information/points.rst:89
+#: ../../../../docs/common_information/points.rst:100
 msgid "Exam Assessment"
 msgstr "Экзаменационная оценка"
 
-#: ../../common_information/points.rst:122
-#: ../../common_information/points.rst:133
+#: ../../../../docs/common_information/points.rst:89
+#: ../../../../docs/common_information/points.rst:100
 msgid "Student Pass"
 msgstr "Зачет"
 
-#: ../../common_information/points.rst:124
+#: ../../../../docs/common_information/points.rst:91
 msgid "[87, 100]"
-msgstr ""
+msgstr "[87, 100]"
 
-#: ../../common_information/points.rst:124
-#: ../../common_information/points.rst:125
-#: ../../common_information/points.rst:126
-#: ../../common_information/points.rst:135
-#: ../../common_information/points.rst:136
-#: ../../common_information/points.rst:137
-#: ../../common_information/points.rst:138
-#: ../../common_information/points.rst:139
+#: ../../../../docs/common_information/points.rst:91
+#: ../../../../docs/common_information/points.rst:92
+#: ../../../../docs/common_information/points.rst:93
+#: ../../../../docs/common_information/points.rst:102
+#: ../../../../docs/common_information/points.rst:103
+#: ../../../../docs/common_information/points.rst:104
+#: ../../../../docs/common_information/points.rst:105
+#: ../../../../docs/common_information/points.rst:106
 msgid "Passed"
 msgstr "Зачет"
 
-#: ../../common_information/points.rst:125
+#: ../../../../docs/common_information/points.rst:92
 msgid "[70, 87)"
-msgstr ""
+msgstr "[70, 87)"
 
-#: ../../common_information/points.rst:126
-#: ../../common_information/points.rst:139
+#: ../../../../docs/common_information/points.rst:92
+#: ../../../../docs/common_information/points.rst:105
+msgid "4"
+msgstr "4"
+
+#: ../../../../docs/common_information/points.rst:93
+#: ../../../../docs/common_information/points.rst:106
 msgid "[50, 70)"
-msgstr ""
+msgstr "[50, 70)"
 
-#: ../../common_information/points.rst:127
-#: ../../common_information/points.rst:140
+#: ../../../../docs/common_information/points.rst:93
+#: ../../../../docs/common_information/points.rst:106
+msgid "3"
+msgstr "3"
+
+#: ../../../../docs/common_information/points.rst:94
+#: ../../../../docs/common_information/points.rst:107
 msgid "< 50"
-msgstr ""
+msgstr "< 50"
 
-#: ../../common_information/points.rst:127
-#: ../../common_information/points.rst:140
+#: ../../../../docs/common_information/points.rst:94
+#: ../../../../docs/common_information/points.rst:107
 msgid "2"
-msgstr ""
+msgstr "2"
 
-#: ../../common_information/points.rst:127
-#: ../../common_information/points.rst:140
+#: ../../../../docs/common_information/points.rst:94
+#: ../../../../docs/common_information/points.rst:107
 msgid "Not Passed"
 msgstr "Незачет"
 
-#: ../../common_information/points.rst:130
-msgid "For 7-point grading system **(our current system)**"
-msgstr "7-ми балльная система оценки **(наша текущая система)**"
+#: ../../../../docs/common_information/points.rst:97
+msgid "7-point scale (current)"
+msgstr "7-балльная шкала (текущая)"
 
-#: ../../common_information/points.rst:135
+#: ../../../../docs/common_information/points.rst:102
 msgid "[99, 100]"
-msgstr ""
+msgstr "[99, 100]"
 
-#: ../../common_information/points.rst:135
+#: ../../../../docs/common_information/points.rst:102
 msgid "5.5"
-msgstr ""
+msgstr "5.5"
 
-#: ../../common_information/points.rst:136
+#: ../../../../docs/common_information/points.rst:103
 msgid "[92, 99)"
-msgstr ""
+msgstr "[92, 99)"
 
-#: ../../common_information/points.rst:137
+#: ../../../../docs/common_information/points.rst:104
 msgid "[82, 92)"
-msgstr ""
+msgstr "[82, 92)"
 
-#: ../../common_information/points.rst:137
+#: ../../../../docs/common_information/points.rst:104
 msgid "4.5"
-msgstr ""
+msgstr "4.5"
 
-#: ../../common_information/points.rst:138
+#: ../../../../docs/common_information/points.rst:105
 msgid "[70, 82)"
-msgstr ""
+msgstr "[70, 82)"
 
-#: ../../common_information/points.rst:143
-msgid "Penalties:"
-msgstr "Штрафные санкции:"
+#: ../../../../docs/common_information/points.rst:111
+msgid "Penalties"
+msgstr "Штрафные санкции"
 
-#: ../../common_information/points.rst:145
+#: ../../../../docs/common_information/points.rst:113
 msgid "A deadline will be set for each version."
 msgstr "Для каждой версии будет установлен свой крайний срок сдачи."
 
-#: ../../common_information/points.rst:146
-msgid ""
-"1 point is deducted from the version’s score for each day of delay in "
-"submission."
-msgstr "За каждый день просрочки из оценки версии вычитается 1 балл"
+#: ../../../../docs/common_information/points.rst:114
+msgid "1 point is deducted from the version’s score for each day of delay."
+msgstr "За каждый день просрочки из оценки версии вычитается 1 балл."
 
-#: ../../common_information/points.rst:147
+#: ../../../../docs/common_information/points.rst:115
 msgid ""
-"The task is considered submitted when it is merged into the master/main "
-"branch."
-msgstr "Задание считается выполненным, когда оно попал в master/main ветку."
+"A task is considered submitted when it is merged into the default branch "
+"after a successful CI pipeline."
+msgstr "Задание считается сданным, когда оно влито в ветку по умолчанию после успешного прохождения CI."
 
-#: ../../common_information/points.rst:148
+#: ../../../../docs/common_information/points.rst:116
 msgid ""
-"The submission time is defined as the timestamp of the last commit that "
-"successfully passes the CI pipeline."
-msgstr ""
-"Фиксированное время сдачи работы определяется как время последнего "
-"коммита, который успешно прошел CI."
+"The submission time is defined as the timestamp of the last successful CI"
+" commit."
+msgstr "Время сдачи — это метка времени последнего коммита, успешно прошедшего CI."
 
-#: ../../common_information/points.rst:150
-msgid "Comments:"
+#: ../../../../docs/common_information/points.rst:119
+msgid "Comments"
 msgstr "Комментарии"
 
-#: ../../common_information/points.rst:152
+#: ../../../../docs/common_information/points.rst:121
 msgid "It is forbidden to write the report if all tasks are not completed."
 msgstr ""
 "Запрещено писать отчет, если не выполнены все задания, которые связаны с "
 "этим отчетом."
 
-#: ../../common_information/points.rst:153
+#: ../../../../docs/common_information/points.rst:122
 msgid ""
-"Please keep in mind that one week before the end of the semester, the "
-"repository will be closed for final assessment."
-msgstr ""
-"Просьба иметь ввиду, что за неделю до конца семестра репозиторий будет "
-"закрыт для подведения окончательных итогов."
+"One week before the end of the semester, the repository is closed for "
+"final assessment."
+msgstr "За неделю до конца семестра репозиторий закрывается для подведения итогов."
+
+#~ msgid "1st MPI task"
+#~ msgstr "Первая MPI задача"
+
+#~ msgid "Solution"
+#~ msgstr "Решение"
+
+#~ msgid "2nd MPI task"
+#~ msgstr "Вторая MPI задача"
+
+#~ msgid "Performance"
+#~ msgstr "Производительность"
+
+#~ msgid "15"
+#~ msgstr ""
+
+#~ msgid "3rd MPI task"
+#~ msgstr "Третья MPI задача"
+
+#~ msgid "20"
+#~ msgstr ""
+
+#~ msgid "**Total : 60 points**"
+#~ msgstr "**Всего : 60 баллов**"
+
+#~ msgid "For “thread parallelism” semester"
+#~ msgstr "Для семестра, где студенты изучают параллелизм на потоках"
+
+#~ msgid "Sequential version"
+#~ msgstr "Последовательная версия"
+
+#~ msgid "OpenMP version"
+#~ msgstr "OpenMP версия"
+
+#~ msgid "6"
+#~ msgstr ""
+
+#~ msgid "TBB version"
+#~ msgstr "TBB версия"
+
+#~ msgid "std::thread version"
+#~ msgstr "std::thread версия"
+
+#~ msgid "8"
+#~ msgstr ""
+
+#~ msgid "“MPI + threads” version (The threading technology is chosen randomly)"
+#~ msgstr ""
+#~ "“MPI + threads” версия (Технология "
+#~ "параллелизма на потоках будет выбрана "
+#~ "случайным образом)"
+
+#~ msgid "**Total : 54 points**"
+#~ msgstr "**Всего : 54 балла**"
+
+#~ msgid "The rule for earning performance points."
+#~ msgstr "Правило получения баллов за производительность"
+
+#~ msgid "Conversion of points into exam assessment or pass/fail"
+#~ msgstr "Перевод баллов в экзаменационную оценку или зачет/незачет"
+
+#~ msgid "For 5-point grading system"
+#~ msgstr "5-ти балльная система оценки"
+
+#~ msgid "For 7-point grading system **(our current system)**"
+#~ msgstr "7-ми балльная система оценки **(наша текущая система)**"

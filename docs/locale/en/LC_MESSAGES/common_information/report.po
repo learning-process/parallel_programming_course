@@ -2,177 +2,289 @@
 # Copyright (C) 2025, Learning Process
 # This file is distributed under the same license as the Parallel
 # Programming Course package.
-# Learning Process Team <gooddoog@student.su, nesterov.alexander@outlook.com>, 2025.
+# Learning Process Team <gooddoog@student.su,
+# nesterov.alexander@outlook.com>, 2025.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-08 23:43+0100\n"
+"POT-Creation-Date: 2025-10-24 15:06+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: en\n"
-"Language-Team: Learning Process Team (gooddoog@student.su, nesterov.alexander@outlook.com)\n"
+"Language-Team: Learning Process Team (gooddoog@student.su, "
+"nesterov.alexander@outlook.com)\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ../../common_information/report.rst:2
+#: ../../../../docs/common_information/report.rst:2
 msgid "Report"
 msgstr ""
 
-#: ../../common_information/report.rst:4
+#: ../../../../docs/common_information/report.rst:5
+msgid "Overview and placement"
+msgstr ""
+
+#: ../../../../docs/common_information/report.rst:6
+msgid ""
+"The report is a Markdown file placed inside your task directory: "
+"``tasks/<last>_<initial>_<short>/report.md``."
+msgstr ""
+
+#: ../../../../docs/common_information/report.rst:8
+msgid ""
+"Presence of ``report.md`` is required to receive report (R) points for "
+"that task (see ``Points``)."
+msgstr ""
+
+#: ../../../../docs/common_information/report.rst:9
+msgid ""
+"Write the report in a concise, reproducible manner. Use English or "
+"Russian consistently."
+msgstr ""
+
+#: ../../../../docs/common_information/report.rst:12
 msgid "Report points"
 msgstr ""
 
-#: ../../common_information/report.rst:7 ../../common_information/report.rst:14
+#: ../../../../docs/common_information/report.rst:15
 msgid "Completeness"
 msgstr ""
 
-#: ../../common_information/report.rst:7 ../../common_information/report.rst:27
+#: ../../../../docs/common_information/report.rst:15
 msgid "Text Quality"
 msgstr ""
 
-#: ../../common_information/report.rst:7 ../../common_information/report.rst:34
+#: ../../../../docs/common_information/report.rst:15
 msgid "Formatting Quality"
 msgstr ""
 
-#: ../../common_information/report.rst:7
+#: ../../../../docs/common_information/report.rst:15
 msgid "Total"
 msgstr ""
 
-#: ../../common_information/report.rst:9
+#: ../../../../docs/common_information/report.rst:17
 msgid "5"
 msgstr ""
 
-#: ../../common_information/report.rst:9
+#: ../../../../docs/common_information/report.rst:17
 msgid "2.5"
 msgstr ""
 
-#: ../../common_information/report.rst:9
+#: ../../../../docs/common_information/report.rst:17
 msgid "10"
 msgstr ""
 
-#: ../../common_information/report.rst:12
-msgid "Requirements for Criteria"
+#: ../../../../docs/common_information/report.rst:21
+msgid "Recommended structure"
 msgstr ""
 
-#: ../../common_information/report.rst:16
-msgid "Introduction (can be a short paragraph)"
+#: ../../../../docs/common_information/report.rst:22
+msgid "Introduction (short context and goal)"
 msgstr ""
 
-#: ../../common_information/report.rst:17
-msgid "Problem Statement (descriptive)"
+#: ../../../../docs/common_information/report.rst:23
+msgid "Problem Statement (task definition and constraints)"
 msgstr ""
 
-#: ../../common_information/report.rst:18
-msgid "Algorithm Description"
+#: ../../../../docs/common_information/report.rst:24
+msgid "Algorithm Description (baseline/sequential)"
 msgstr ""
 
-#: ../../common_information/report.rst:19
-msgid "Description of the Parallel Algorithm Scheme"
+#: ../../../../docs/common_information/report.rst:25
+msgid "Parallelization Scheme (MPI topology/data flow or threads scheduling)"
 msgstr ""
 
-#: ../../common_information/report.rst:20
+#: ../../../../docs/common_information/report.rst:26
+msgid "Implementation Details per technology used (only those in your semester)"
+msgstr ""
+
+#: ../../../../docs/common_information/report.rst:27
 msgid ""
-"Description of the MPI, OpenMP, TBB, std::threads, all versions "
-"(depending on the semester) – part of the software implementation "
-"description"
+"Experimental Results - Environment (CPU, OS, compiler, build type; "
+"thread/process counts) - Execution time tables/plots; performance metrics"
+" (speedup/efficiency) - Correctness checks description"
 msgstr ""
 
-#: ../../common_information/report.rst:21
+#: ../../../../docs/common_information/report.rst:31
+msgid "Conclusions (what worked, what didn’t, further work)"
+msgstr ""
+
+#: ../../../../docs/common_information/report.rst:32
+msgid "References (articles, docs; provide links)"
+msgstr ""
+
+#: ../../../../docs/common_information/report.rst:33
+msgid "Appendix (optional code snippets; keep readable)"
+msgstr ""
+
+#: ../../../../docs/common_information/report.rst:36
+msgid "Evaluation criteria"
+msgstr ""
+
+#: ../../../../docs/common_information/report.rst:37
 msgid ""
-"Experimental Results (execution time and algorithm quality assessment), "
-"description of correctness verification"
+"Completeness - All items from the recommended structure are present and "
+"meaningful - Results include both correctness and performance evidence"
 msgstr ""
 
-#: ../../common_information/report.rst:22
-msgid "Conclusions from the Results"
-msgstr ""
-
-#: ../../common_information/report.rst:23
-msgid "Conclusion"
-msgstr ""
-
-#: ../../common_information/report.rst:24
-msgid "References"
-msgstr ""
-
-#: ../../common_information/report.rst:25
-msgid "Appendix (include code, ensuring readability)"
-msgstr ""
-
-#: ../../common_information/report.rst:29
-msgid "Meaningfulness"
-msgstr ""
-
-#: ../../common_information/report.rst:30
-msgid "Coherence"
-msgstr ""
-
-#: ../../common_information/report.rst:31
-msgid "Clarity"
-msgstr ""
-
-#: ../../common_information/report.rst:32
-msgid "Quality of language (only the most obvious mistakes are considered)"
-msgstr ""
-
-#: ../../common_information/report.rst:36
-msgid "Requirements for Headings"
-msgstr ""
-
-#: ../../common_information/report.rst:37
-msgid "Requirements for Text Alignment"
-msgstr ""
-
-#: ../../common_information/report.rst:38
-msgid "Requirements for Paragraph Indentation"
-msgstr ""
-
-#: ../../common_information/report.rst:39
-msgid "Requirements for the Formatting of Figures, Graphs, and Tables"
-msgstr ""
-
-#: ../../common_information/report.rst:40
+#: ../../../../docs/common_information/report.rst:40
 msgid ""
-"The “Teacher” field must include the full name, position, and title of "
-"the lecturer"
+"Text Quality - Clarity, coherence, correct terminology; acceptable "
+"language quality"
 msgstr ""
 
-#: ../../common_information/report.rst:42
-msgid "Comments"
-msgstr ""
-
-#: ../../common_information/report.rst:44
-msgid "Failure to meet the requirements will result in a deduction of points."
-msgstr ""
-
-#: ../../common_information/report.rst:45
+#: ../../../../docs/common_information/report.rst:42
 msgid ""
-"The request will include points and comments regarding any requirement "
-"violations (if applicable)."
+"Formatting Quality - Proper Markdown headings, lists, tables, fenced code"
+" blocks - Figures/plots with captions and relative paths; readable "
+"formatting"
 msgstr ""
 
-#: ../../common_information/report.rst:46
-msgid ""
-"The report will be checked only once, and the grade will be assigned "
-"based on the submitted version according to the requirements."
+#: ../../../../docs/common_information/report.rst:47
+msgid "Notes"
 msgstr ""
 
-#: ../../common_information/report.rst:47
+#: ../../../../docs/common_information/report.rst:48
 msgid ""
-"The report is reviewed online; the entire review process takes place in "
-"the request."
+"Reports are reviewed online in the Pull Request. The final grade is based"
+" on the submitted version that passes the review."
 msgstr ""
 
-#: ../../common_information/report.rst:48
+#: ../../../../docs/common_information/report.rst:49
 msgid ""
-"If a student falls into the **blue zone** for the task, the report points"
-" will also be nullified at the end of the semester. The report will be "
-"finally accepted and merged into the master branch only after both the "
-"**online** parts of the corresponding lab work are fully completed."
+"If the task is disabled at the end of semester (e.g., fails in master; "
+"see scoreboard “blue zone”), report points for that task are nullified."
 msgstr ""
+
+#: ../../../../docs/common_information/report.rst:50
+msgid ""
+"Plagiarism is prohibited; identical or near‑duplicate reports will be "
+"rejected."
+msgstr ""
+
+#: ../../../../docs/common_information/report.rst:55
+msgid "Markdown template (report.md)"
+msgstr ""
+
+#: ../../../../docs/common_information/report.rst:57
+msgid ""
+"Use the following skeleton as a starting point for your ``report.md``. "
+"Keep file paths relative to the task directory (for images/data)."
+msgstr ""
+
+#~ msgid "Requirements for Criteria"
+#~ msgstr ""
+
+#~ msgid "Introduction (can be a short paragraph)"
+#~ msgstr ""
+
+#~ msgid "Problem Statement (descriptive)"
+#~ msgstr ""
+
+#~ msgid "Algorithm Description"
+#~ msgstr ""
+
+#~ msgid "Description of the Parallel Algorithm Scheme"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Description of the MPI, OpenMP, TBB, "
+#~ "std::threads, all versions (depending on "
+#~ "the semester) – part of the "
+#~ "software implementation description"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Experimental Results (execution time and "
+#~ "algorithm quality assessment), description of"
+#~ " correctness verification"
+#~ msgstr ""
+
+#~ msgid "Conclusions from the Results"
+#~ msgstr ""
+
+#~ msgid "Conclusion"
+#~ msgstr ""
+
+#~ msgid "References"
+#~ msgstr ""
+
+#~ msgid "Appendix (include code, ensuring readability)"
+#~ msgstr ""
+
+#~ msgid "Meaningfulness"
+#~ msgstr ""
+
+#~ msgid "Coherence"
+#~ msgstr ""
+
+#~ msgid "Clarity"
+#~ msgstr ""
+
+#~ msgid "Quality of language (only the most obvious mistakes are considered)"
+#~ msgstr ""
+
+#~ msgid "Requirements for Headings"
+#~ msgstr ""
+
+#~ msgid "Requirements for Text Alignment"
+#~ msgstr ""
+
+#~ msgid "Requirements for Paragraph Indentation"
+#~ msgstr ""
+
+#~ msgid "Requirements for the Formatting of Figures, Graphs, and Tables"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The “Teacher” field must include the "
+#~ "full name, position, and title of "
+#~ "the lecturer"
+#~ msgstr ""
+
+#~ msgid "Comments"
+#~ msgstr ""
+
+#~ msgid "Failure to meet the requirements will result in a deduction of points."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The request will include points and "
+#~ "comments regarding any requirement violations"
+#~ " (if applicable)."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The report will be checked only "
+#~ "once, and the grade will be "
+#~ "assigned based on the submitted version"
+#~ " according to the requirements."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The report is reviewed online; the "
+#~ "entire review process takes place in "
+#~ "the request."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "If a student falls into the **blue"
+#~ " zone** for the task, the report "
+#~ "points will also be nullified at "
+#~ "the end of the semester. The "
+#~ "report will be finally accepted and "
+#~ "merged into the master branch only "
+#~ "after both the **online** parts of "
+#~ "the corresponding lab work are fully "
+#~ "completed."
+#~ msgstr ""
+
+#~ msgid "Russian template (report.md)"
+#~ msgstr ""
+
