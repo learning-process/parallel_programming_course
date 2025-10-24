@@ -9,6 +9,7 @@
       .label { font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 15px; fill: #0f172a; }
       .small { font-size: 13px; fill: #111827; }
       .legend { font-size: 16px; fill: #374151; font-weight: 600; }
+      .group-bg { fill: #eef2ff; opacity: 0.45; stroke: none; }
       .arrow { stroke: #111827; stroke-width: 1.8; fill: none; marker-end: url(#arrowHead); }
     </style>
     <marker id="arrowHead" markerWidth="12" markerHeight="12" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
@@ -101,6 +102,8 @@
   <path class="arrow" d="M 730 398 C 660 450, 590 490, 490 500" />
 
   <!-- Additional workflows column -->
+  <!-- Additional background (soft tint) -->
+  <rect class="group-bg" x="950" y="30" width="230" height="440" rx="12" ry="12" />
   <rect class="group" x="960" y="40" width="210" height="420" rx="10" ry="10" />
   <text class="legend" x="1065" y="60" text-anchor="middle">Additional</text>
 
