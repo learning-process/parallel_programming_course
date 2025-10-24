@@ -1,6 +1,10 @@
 on:
   workflow_call:
 
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   ubuntu-gcc-build-perf-stats:
     runs-on: ubuntu-24.04

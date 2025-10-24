@@ -1,9 +1,11 @@
 name: Pre-commit checks
 
 on:
-  push:
-  pull_request:
   workflow_call:
+
+permissions:
+  contents: read
+  packages: read
 
 jobs:
   pre-commit:

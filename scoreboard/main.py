@@ -108,26 +108,48 @@ def discover_tasks(tasks_dir, task_types):
 directories, tasks_type_map = discover_tasks(tasks_dir, task_types)
 
 
-def load_performance_data(perf_stat_file_path):
-    """Load and parse performance statistics from CSV file."""
-
-    perf_stats = dict()
+def load_performance_data_threads(perf_stat_file_path: Path) -> dict:
+    """Load threads performance ratios (T_x/T_seq) from CSV.
+    Expected header: Task, SEQ, OMP, TBB, STL, ALL
+    """
+    perf_stats: dict[str, dict] = {}
     if perf_stat_file_path.exists():
         with open(perf_stat_file_path, "r", newline="") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 task_name = row.get("Task")
-                if task_name:
-                    perf_stats[task_name] = {
-                        "seq": row.get("SEQ", "?"),
-                        "omp": row.get("OMP", "?"),
-                        "tbb": row.get("TBB", "?"),
-                        "stl": row.get("STL", "?"),
-                        "all": row.get("ALL", "?"),
-                        "mpi": "N/A",
-                    }
+                if not task_name:
+                    continue
+                perf_stats[task_name] = {
+                    "seq": row.get("SEQ", "?"),
+                    "omp": row.get("OMP", "?"),
+                    "tbb": row.get("TBB", "?"),
+                    "stl": row.get("STL", "?"),
+                    "all": row.get("ALL", "?"),
+                }
     else:
-        logger.warning("Performance stats CSV not found at %s", perf_stat_file_path)
+        logger.warning("Threads perf stats CSV not found at %s", perf_stat_file_path)
+    return perf_stats
+
+
+def load_performance_data_processes(perf_stat_file_path: Path) -> dict:
+    """Load processes performance ratios (T_x/T_seq) from CSV.
+    Expected header: Task, SEQ, MPI
+    """
+    perf_stats: dict[str, dict] = {}
+    if perf_stat_file_path.exists():
+        with open(perf_stat_file_path, "r", newline="") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                task_name = row.get("Task")
+                if not task_name:
+                    continue
+                perf_stats[task_name] = {
+                    "seq": row.get("SEQ", "?"),
+                    "mpi": row.get("MPI", "?"),
+                }
+    else:
+        logger.warning("Processes perf stats CSV not found at %s", perf_stat_file_path)
     return perf_stats
 
 
@@ -652,15 +674,39 @@ def main():
         ds = _evenly_spaced_dates(n_items, s, e)
         return ds
 
-    # Locate perf CSV from CI or local runs
-    candidates = [
+    # Locate perf CSVs from CI or local runs (threads and processes)
+    candidates_threads = [
+        script_dir.parent
+        / "build"
+        / "perf_stat_dir"
+        / "threads_task_run_perf_table.csv",
+        script_dir.parent / "perf_stat_dir" / "threads_task_run_perf_table.csv",
+        # Fallback to old single-file name
         script_dir.parent / "build" / "perf_stat_dir" / "task_run_perf_table.csv",
         script_dir.parent / "perf_stat_dir" / "task_run_perf_table.csv",
     ]
-    perf_stat_file_path = next((p for p in candidates if p.exists()), candidates[0])
+    threads_csv = next(
+        (p for p in candidates_threads if p.exists()), candidates_threads[0]
+    )
 
-    # Read and parse performance statistics CSV
-    perf_stats = load_performance_data(perf_stat_file_path)
+    candidates_processes = [
+        script_dir.parent
+        / "build"
+        / "perf_stat_dir"
+        / "processes_task_run_perf_table.csv",
+        script_dir.parent / "perf_stat_dir" / "processes_task_run_perf_table.csv",
+    ]
+    processes_csv = next(
+        (p for p in candidates_processes if p.exists()), candidates_processes[0]
+    )
+
+    # Read and merge performance statistics CSVs (keys = CSV Task column)
+    perf_stats_threads = load_performance_data_threads(threads_csv)
+    perf_stats_processes = load_performance_data_processes(processes_csv)
+    perf_stats_raw: dict[str, dict] = {}
+    perf_stats_raw.update(perf_stats_threads)
+    for k, v in perf_stats_processes.items():
+        perf_stats_raw[k] = {**perf_stats_raw.get(k, {}), **v}
 
     # Partition tasks by tasks_type from settings.json
     threads_task_dirs = [
@@ -677,6 +723,73 @@ def main():
                 threads_task_dirs.append(name)
             elif "processes" in name:
                 processes_task_dirs.append(name)
+
+    # Resolve performance stats keys (from CSV Task names) to actual task directories
+    import re as _re
+
+    def _family_from_name(name: str) -> tuple[str, int]:
+        # Infer family from CSV Task value, using only structural markers
+        # threads -> ("threads", 0); processes[_N] -> ("processes", N|1)
+        if "threads" in name:
+            return "threads", 0
+        if "processes" in name:
+            m = _re.search(r"processes(?:_(\d+))?", name)
+            if m:
+                try:
+                    idx = int(m.group(1)) if m.group(1) else 1
+                except Exception:
+                    idx = 1
+            else:
+                idx = 1
+            return "processes", idx
+        # Fallback: treat as threads family
+        return "threads", 0
+
+    def _family_from_dir(dir_name: str) -> tuple[str, int]:
+        # Prefer explicit tasks_type from settings.json and task_number from info.json
+        kind_guess = tasks_type_map.get(dir_name) or (
+            "threads" if "threads" in dir_name else "processes"
+        )
+        idx = 0
+        if kind_guess == "processes":
+            # Lightweight reader to avoid dependency on later-scoped helpers
+            try:
+                import json as _json
+
+                info_path = tasks_dir / dir_name / "info.json"
+                if info_path.exists():
+                    with open(info_path, "r") as _f:
+                        data = _json.load(_f)
+                    s = data.get("student", {}) if isinstance(data, dict) else {}
+                    try:
+                        idx = int(str(s.get("task_number", "0")))
+                    except Exception:
+                        idx = 0
+            except Exception:
+                idx = 0
+        return kind_guess, idx
+
+    # Build map family -> list of dir names in this repo
+    family_to_dirs: dict[tuple[str, int], list[str]] = {}
+    for d in sorted(directories.keys()):
+        fam = _family_from_dir(d)
+        family_to_dirs.setdefault(fam, []).append(d)
+
+    # Aggregate perf by family (CSV keys may not match dir names)
+    perf_by_family: dict[tuple[str, int], dict] = {}
+    for key, vals in perf_stats_raw.items():
+        fam = _family_from_name(key)
+        perf_by_family[fam] = {**perf_by_family.get(fam, {}), **vals}
+
+    # Project family perf onto actual directories (prefer exact one per family)
+    perf_stats: dict[str, dict] = {}
+    for fam, vals in perf_by_family.items():
+        dirs_for_family = family_to_dirs.get(fam, [])
+        if not dirs_for_family:
+            continue
+        # Assign same perf to all dirs in the family (usually one)
+        for d in dirs_for_family:
+            perf_stats[d] = vals.copy()
 
     # Build rows for each page
     threads_rows = _build_rows_for_task_types(
@@ -712,7 +825,7 @@ def main():
             ]
         )
 
-    def _build_cell(dir_name: str, ttype: str):
+    def _build_cell(dir_name: str, ttype: str, perf_map: dict[str, dict]):
         status = directories[dir_name].get(ttype)
         sol_points, solution_style = get_solution_points_and_style(ttype, status, cfg)
         task_points = sol_points
@@ -720,7 +833,7 @@ def main():
             dir_name, ttype, sol_points, plagiarism_cfg, cfg, semester="processes"
         )
         task_points += plagiarism_points
-        perf_val = perf_stats.get(dir_name, {}).get(ttype, "?")
+        perf_val = perf_map.get(dir_name, {}).get(ttype, "?")
         acceleration, efficiency = calculate_performance_metrics(
             perf_val, eff_num_proc, ttype
         )
@@ -786,7 +899,7 @@ def main():
             proc_group_headers.append({"type": "seq"})
             group_cells = []
             for ttype in ["mpi", "seq"]:
-                cell, _ = _build_cell(d, ttype)
+                cell, _ = _build_cell(d, ttype, perf_stats)
                 group_cells.append(cell)
             # Override displayed points for processes: S under MPI/SEQ from points-info; A points under MPI only
             s_mpi, s_seq, a_mpi, r_max = _find_process_points(cfg, n)
@@ -901,6 +1014,16 @@ def main():
             "total": total_points_sum,
         }
     ]
+
+    # Rebuild threads rows with resolved perf stats
+    threads_rows = _build_rows_for_task_types(
+        task_types_threads,
+        threads_task_dirs,
+        perf_stats,
+        cfg,
+        eff_num_proc,
+        deadlines_cfg,
+    )
 
     parser = argparse.ArgumentParser(description="Generate HTML scoreboard.")
     parser.add_argument(

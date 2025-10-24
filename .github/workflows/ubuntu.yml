@@ -1,6 +1,10 @@
 on:
   workflow_call:
 
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   gcc-build:
     runs-on: ${{ matrix.os }}
@@ -330,6 +334,11 @@ jobs:
       - gcc-test-extended
       - clang-test-extended
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+      issues: write
+      pull-requests: write
     container:
       image: ghcr.io/learning-process/ppc-ubuntu:1.1
       credentials:
