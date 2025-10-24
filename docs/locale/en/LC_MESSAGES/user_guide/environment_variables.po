@@ -2,23 +2,25 @@
 # Copyright (C) 2025, Learning Process
 # This file is distributed under the same license as the Parallel
 # Programming Course package.
-# Learning Process Team <gooddoog@student.su, nesterov.alexander@outlook.com>, 2025.
+# Learning Process Team <gooddoog@student.su,
+# nesterov.alexander@outlook.com>, 2025.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-29 19:31+0200\n"
+"POT-Creation-Date: 2025-10-24 14:15+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: en\n"
-"Language-Team: Learning Process Team (gooddoog@student.su, nesterov.alexander@outlook.com)\n"
+"Language-Team: Learning Process Team (gooddoog@student.su, "
+"nesterov.alexander@outlook.com)\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: ../../../../docs/user_guide/environment_variables.rst:2
 msgid "Environment Variables"
@@ -33,26 +35,43 @@ msgstr ""
 #: ../../../../docs/user_guide/environment_variables.rst:6
 msgid ""
 "``PPC_NUM_PROC``: Specifies the number of processes to launch. Default: "
-"``1``"
+"``1`` Can be queried from C++ with ``ppc::util::GetNumProc()``."
 msgstr ""
 
-#: ../../../../docs/user_guide/environment_variables.rst:9
+#: ../../../../docs/user_guide/environment_variables.rst:10
 msgid ""
 "``PPC_NUM_THREADS``: Specifies the number of threads to use. Default: "
 "``1``"
 msgstr ""
 
-#: ../../../../docs/user_guide/environment_variables.rst:12
+#: ../../../../docs/user_guide/environment_variables.rst:13
 msgid ""
 "``PPC_ASAN_RUN``: Specifies that application is compiler with sanitizers."
 " Used by ``scripts/run_tests.py`` to skip ``valgrind`` runs. Default: "
 "``0``"
 msgstr ""
 
-#: ../../../../docs/user_guide/environment_variables.rst:15
+#: ../../../../docs/user_guide/environment_variables.rst:16
 msgid ""
 "``PPC_IGNORE_TEST_TIME_LIMIT``: Specifies that test time limits are "
 "ignored. Used by ``scripts/run_tests.py`` to disable time limit "
 "enforcement. Default: ``0``"
 msgstr ""
+
+#: ../../../../docs/user_guide/environment_variables.rst:18
+msgid ""
+"``PPC_TASK_MAX_TIME``: Maximum allowed execution time in seconds for "
+"functional tests. Default: ``1.0``"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment_variables.rst:20
+msgid ""
+"``PPC_PERF_MAX_TIME``: Maximum allowed execution time in seconds for "
+"performance tests. Default: ``10.0``"
+msgstr ""
+
+#~ msgid ""
+#~ "``PPC_NUM_PROC``: Specifies the number of "
+#~ "processes to launch. Default: ``1``"
+#~ msgstr ""
 

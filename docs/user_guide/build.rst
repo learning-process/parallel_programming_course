@@ -1,14 +1,19 @@
 Build the Project with ``CMake``
 ================================
 
-Navigate to a source code folder.
+Navigate to the project root.
 
 1. **Configure the build**: ``Makefile``, ``.sln``, etc.
 
    .. code-block:: bash
 
-      mkdir build && cd build
-      cmake -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=Release ..
+      cmake -S . -B build -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=Release
+
+   Optional: enable sanitizers for local debugging
+
+   .. code-block:: bash
+
+      cmake -S . -B build -D ENABLE_ADDRESS_SANITIZER=ON -D CMAKE_BUILD_TYPE=RelWithDebInfo
 
    *Help on CMake keys:*
 
@@ -26,8 +31,8 @@ Navigate to a source code folder.
 
    .. code-block:: bash
 
-      cmake --build . --config Release --parallel
+      cmake --build build --config Release --parallel
 
-3. **Check the task**:
-   
-   * Run ``<project's folder>/build/bin``
+3. **Run tests**:
+
+   Prefer the helper runner described in ``User Guide → CI``.

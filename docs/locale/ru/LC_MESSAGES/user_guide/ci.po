@@ -2,18 +2,19 @@
 # Copyright (C) 2025, Learning Process
 # This file is distributed under the same license as the Parallel
 # Programming Course package.
-# Learning Process Team <gooddoog@student.su, nesterov.alexander@outlook.com>, 2025.
+# Learning Process Team <gooddoog@student.su,
+# nesterov.alexander@outlook.com>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-27 12:32+0200\n"
+"POT-Creation-Date: 2025-10-24 14:15+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: ru\n"
-"Language-Team: Learning Process Team (gooddoog@student.su, nesterov.alexander@outlook.com)\n"
+"Language-Team: Learning Process Team (gooddoog@student.su, "
+"nesterov.alexander@outlook.com)\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
@@ -21,11 +22,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ../../user_guide/ci.rst:2
+#: ../../../../docs/user_guide/ci.rst:2
 msgid "Continuous Integration (CI)"
 msgstr "Непрерывная интеграция"
 
-#: ../../user_guide/ci.rst:4
+#: ../../../../docs/user_guide/ci.rst:4
 msgid ""
 "Students need to pass all the checks in the CI pipeline before their work"
 " can be considered for submission. This includes successful code "
@@ -38,36 +39,36 @@ msgstr ""
 " интеграция проверяется автоматизированной сборкой и автоматизированными "
 "тестами."
 
-#: ../../user_guide/ci.rst:9
+#: ../../../../docs/user_guide/ci.rst:9
 msgid "CI Pipeline"
 msgstr "CI конвейер"
 
-#: ../../user_guide/ci.rst:11
+#: ../../../../docs/user_guide/ci.rst:11
 msgid "The CI pipeline for this project is illustrated in the following diagram:"
 msgstr "CI конвейер для данного проекта выражается с помощью наглядной схемы:"
 
-#: ../../user_guide/ci.rst:13
+#: ../../../../docs/user_guide/ci.rst:13
 msgid "CI Pipeline Diagram"
 msgstr "Схема CI конвейера"
 
-#: ../../user_guide/ci.rst:18
+#: ../../../../docs/user_guide/ci.rst:18
 msgid "Running ``scripts/run_tests.py``"
 msgstr "Запуск ``scripts/run_tests.py``"
 
-#: ../../user_guide/ci.rst:20
+#: ../../../../docs/user_guide/ci.rst:20
 msgid ""
 "Automated tests are executed through the ``scripts/run_tests.py`` helper."
 "  The script requires several environment variables to be defined:"
 msgstr ""
 "Автоматические тесты запускаются с помощью вспомогательного скрипта "
-"``scripts/run_tests.py``. Для его работы следует задать несколько переменных "
-"окружения:"
+"``scripts/run_tests.py``. Для его работы следует задать несколько "
+"переменных окружения:"
 
-#: ../../user_guide/ci.rst:23
+#: ../../../../docs/user_guide/ci.rst:23
 msgid "``PPC_NUM_THREADS``"
-msgstr ""
+msgstr "``PPC_NUM_THREADS``"
 
-#: ../../user_guide/ci.rst:24
+#: ../../../../docs/user_guide/ci.rst:24
 msgid ""
 "Number of threads to use.  The value is also exported as "
 "``OMP_NUM_THREADS``."
@@ -75,19 +76,19 @@ msgstr ""
 "Количество потоков для запуска. Это же значение экспортируется в "
 "``OMP_NUM_THREADS``."
 
-#: ../../user_guide/ci.rst:27
+#: ../../../../docs/user_guide/ci.rst:27
 msgid "``PPC_NUM_PROC``"
-msgstr ""
+msgstr "``PPC_NUM_PROC``"
 
-#: ../../user_guide/ci.rst:28
+#: ../../../../docs/user_guide/ci.rst:28
 msgid "Number of MPI processes to launch."
 msgstr "Количество процессов MPI, которые нужно запустить."
 
-#: ../../user_guide/ci.rst:30
+#: ../../../../docs/user_guide/ci.rst:30
 msgid "``PPC_ASAN_RUN``"
-msgstr ""
+msgstr "``PPC_ASAN_RUN``"
 
-#: ../../user_guide/ci.rst:31
+#: ../../../../docs/user_guide/ci.rst:31
 msgid ""
 "Set to ``1`` when sanitizers are enabled to skip ``valgrind`` runs "
 "(optional, default ``0``)."
@@ -95,17 +96,17 @@ msgstr ""
 "Установите ``1``, если включены санитайзеры, чтобы пропустить запуск "
 "``valgrind`` (необязательно, по умолчанию ``0``)."
 
-#: ../../user_guide/ci.rst:34
+#: ../../../../docs/user_guide/ci.rst:34
 msgid "``PPC_IGNORE_TEST_TIME_LIMIT``"
-msgstr ""
+msgstr "``PPC_IGNORE_TEST_TIME_LIMIT``"
 
-#: ../../user_guide/ci.rst:35
+#: ../../../../docs/user_guide/ci.rst:35
 msgid "Set to ``1`` to disable test time limits (optional, default ``0``)."
 msgstr ""
 "Установите ``1``, чтобы отключить ограничение времени тестов "
 "(необязательно, по умолчанию ``0``)."
 
-#: ../../user_guide/ci.rst:37
+#: ../../../../docs/user_guide/ci.rst:37
 msgid ""
 "The execution mode is selected with ``--running-type``.  The most common "
 "modes are ``threads`` for shared-memory backends and ``processes`` for "
@@ -116,31 +117,37 @@ msgstr ""
 "``processes`` для тестов на основе MPI. Режим ``performance`` запускает "
 "бенчмарки производительности."
 
-#: ../../user_guide/ci.rst:41
+#: ../../../../docs/user_guide/ci.rst:41
+msgid ""
+"Note: In ``threads`` and ``processes`` modes the runner also executes "
+"core library tests (``core_func_tests``) before the task tests."
+msgstr "Примечание: в режимах ``threads`` и ``processes`` runner сначала запускает тесты ядра (``core_func_tests``), а затем тесты задач."
+
+#: ../../../../docs/user_guide/ci.rst:43
 msgid "Example usage:"
 msgstr "Пример использования:"
 
-#: ../../user_guide/ci.rst:57
+#: ../../../../docs/user_guide/ci.rst:59
 msgid ""
 "Additional MPI arguments can be supplied with ``--additional-mpi-args`` "
 "when running in ``processes`` mode."
 msgstr ""
-"Дополнительные аргументы MPI можно передать через ``--additional-mpi-args`` "
-"при запуске в режиме ``processes``."
+"Дополнительные аргументы MPI можно передать через ``--additional-mpi-"
+"args`` при запуске в режиме ``processes``."
 
-#: ../../user_guide/ci.rst:60
+#: ../../../../docs/user_guide/ci.rst:62
 msgid ""
 "The ``--counts`` option allows sequential execution of tests with several"
 " thread/process counts.  When specified, the script will iterate over the"
 " provided values, updating ``PPC_NUM_THREADS`` or ``PPC_NUM_PROC`` "
 "accordingly before each run."
 msgstr ""
-"Параметр ``--counts`` позволяет последовательно запускать тесты с несколькими "
-"значениями числа потоков или процессов. При его указании скрипт перебирает "
-"переданные значения, перед каждым запуском обновляя ``PPC_NUM_THREADS`` или "
-"``PPC_NUM_PROC``."
+"Параметр ``--counts`` позволяет последовательно запускать тесты с "
+"несколькими значениями числа потоков или процессов. При его указании "
+"скрипт перебирает переданные значения, перед каждым запуском обновляя "
+"``PPC_NUM_THREADS`` или ``PPC_NUM_PROC``."
 
-#: ../../user_guide/ci.rst:65
+#: ../../../../docs/user_guide/ci.rst:67
 msgid ""
 "Use ``--verbose`` to print every command executed by ``run_tests.py``.  "
 "This can be helpful for debugging CI failures or verifying the exact "

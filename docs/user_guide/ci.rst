@@ -38,6 +38,8 @@ The execution mode is selected with ``--running-type``.  The most common modes
 are ``threads`` for shared-memory backends and ``processes`` for MPI based
 tests.  ``performance`` mode runs performance benchmarks.
 
+Note: In ``threads`` and ``processes`` modes the runner also executes core library tests (``core_func_tests``) before the task tests.
+
 Example usage:
 
 .. code-block:: bash

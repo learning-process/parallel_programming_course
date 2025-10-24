@@ -4,7 +4,6 @@
 # Programming Course package.
 # Learning Process Team <gooddoog@student.su, nesterov.alexander@outlook.com>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"

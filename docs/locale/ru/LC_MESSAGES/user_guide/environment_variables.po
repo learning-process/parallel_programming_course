@@ -4,7 +4,6 @@
 # Programming Course package.
 # Learning Process Team <gooddoog@student.su, nesterov.alexander@outlook.com>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
@@ -34,13 +33,12 @@ msgstr ""
 "поведения программы во время выполнения:"
 
 #: ../../user_guide/environment_variables.rst:6
-#, fuzzy
 msgid ""
 "``PPC_NUM_PROC``: Specifies the number of processes to launch. Default: "
 "``1`` Can be queried from C++ with ``ppc::util::GetNumProc()``."
 msgstr ""
 "``PPC_NUM_PROC``: задаёт количество запускаемых процессов. По умолчанию: "
-"``1``"
+"``1``. Можно получить в C++ через ``ppc::util::GetNumProc()``."
 
 #: ../../user_guide/environment_variables.rst:10
 msgid ""
@@ -61,7 +59,6 @@ msgstr ""
 "``valgrind``. По умолчанию: ``0``"
 
 #: ../../user_guide/environment_variables.rst:16
-#, fuzzy
 msgid ""
 "``PPC_IGNORE_TEST_TIME_LIMIT``: Specifies that test time limits are "
 "ignored. Used by ``scripts/run_tests.py`` to disable time limit "
@@ -75,11 +72,10 @@ msgstr ""
 msgid ""
 "``PPC_TASK_MAX_TIME``: Maximum allowed execution time in seconds for "
 "functional tests. Default: ``1.0``"
-msgstr ""
+msgstr "``PPC_TASK_MAX_TIME``: максимальное допустимое время выполнения (секунды) для функциональных тестов. По умолчанию: ``1.0``"
 
 #: ../../user_guide/environment_variables.rst:20
 msgid ""
 "``PPC_PERF_MAX_TIME``: Maximum allowed execution time in seconds for "
 "performance tests. Default: ``10.0``"
-msgstr ""
-
+msgstr "``PPC_PERF_MAX_TIME``: максимальное допустимое время выполнения (секунды) для тестов производительности. По умолчанию: ``10.0``"
