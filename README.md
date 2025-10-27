@@ -8,7 +8,7 @@
 
 Welcome to the Parallel Programming Course!
 
-For more detailed documentation and resources, please visit documentation pages: [en](https://learning-process.github.io/parallel_programming_course/en/), [ru](https://learning-process.github.io/parallel_programming_course/ru/).
+For more detailed documentation and resources, please visit documentation pages: [en](https://learning-process.github.io/parallel_programming_course/en/), [ru](https://learning-process.github.io/parallel_programming_course/ru/). Course slides are available [here](https://learning-process.github.io/parallel_programming_slides/).
 
 Course scoreboard is available [here](https://learning-process.github.io/parallel_programming_course/scoreboard/).
 
