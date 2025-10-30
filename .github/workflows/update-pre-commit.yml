@@ -14,6 +14,7 @@ permissions:
 
 jobs:
   update-pre-commit:
+    if: ${{ github.repository == 'learning-process/parallel_programming_course' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
