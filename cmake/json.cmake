@@ -16,10 +16,10 @@ ExternalProject_Add(
              -DJSON_BuildTests=OFF
   BUILD_COMMAND
     "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_json/build"
-    --config ${CMAKE_BUILD_TYPE} --parallel
+    --config $<CONFIG> --parallel
   INSTALL_COMMAND
     "${CMAKE_COMMAND}" --install "${CMAKE_CURRENT_BINARY_DIR}/ppc_json/build"
-    --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_json/install")
+    --config $<CONFIG> --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_json/install")
 
 function(ppc_link_json exec_func_lib)
   # Add external project include directories
