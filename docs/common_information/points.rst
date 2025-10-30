@@ -38,6 +38,8 @@ Threads semester (OpenMP/TBB/std::thread)
 
 - Semester total: 64
 
+Legend: S — Solution (implementation), A — Acceleration (performance), R — Report
+
 Performance points mapping
 --------------------------
 
@@ -88,8 +90,8 @@ Conversion to grade
   ============ =============== ============
   Points range Exam Assessment Student Pass
   ============ =============== ============
-  [87, 100]    5               Passed
-  [70, 87)     4               Passed
+  [92, 100]    5               Passed
+  [70, 92)     4               Passed
   [50, 70)     3               Passed
   < 50         2               Not Passed
   ============ =============== ============
@@ -110,13 +112,12 @@ Conversion to grade
 Penalties
 ---------
 
-- A deadline will be set for each version.
+- A deadline will be set for each task.
 - 1 point is deducted from the version’s score for each day of delay.
-- A task is considered submitted when it is merged into the default branch after a successful CI pipeline.
-- The submission time is defined as the timestamp of the last successful CI commit.
+- A task is considered accepted when it is merged into the default branch after a successful CI pipeline.
+- The submission time is defined as the timestamp of the last meaningful commit (not an empty commit to re-trigger CI jobs).
 
 Comments
 --------
 
-- It is forbidden to write the report if all tasks are not completed.
 - One week before the end of the semester, the repository is closed for final assessment.

@@ -154,58 +154,28 @@ Pull Request
   - Краткое описание реализации и отчёта
   - Чек-лист (CI зелёный в форке, clang-format/clang-tidy пройдены, функциональные/перф тесты ок, ветка названа как директория задачи, достоверность сведений).
 
-.. ifconfig:: language == 'en'
+PR checklist template (body)
+----------------------------
 
-   PR checklist template (body)
-   ----------------------------
+.. code-block:: markdown
 
-   .. code-block:: markdown
+   ## Description
+   - Task: <Full task name>
+   - Variant: <N>
+   - Technology: <SEQ | MPI | OMP | TBB | STL | ALL>
+   - Summary: Brief description of your implementation and report
 
-      ## Description
-      - Task: <Full task name>
-      - Variant: <N>
-      - Technology: <SEQ | MPI | OMP | TBB | STL | ALL>
-      - Summary: Brief description of your implementation and report
+   ---
 
-      ---
-
-      ## Checklist
-      - [ ] CI is green in my fork (build, tests, docs)
-      - [ ] Task folder is named `<last>_<initial>_<short>` and matches branch name
-      - [ ] clang-format passed locally
-      - [ ] clang-tidy passed locally (no warnings/errors introduced)
-      - [ ] Functional tests pass locally
-      - [ ] Performance tests pass locally
-      - [ ] Report (`report.md`) is added and follows the template
-      - [ ] I confirm that provided information is truthful
-
-.. ifconfig:: language == 'ru'
-
-   Шаблон PR (чек‑лист)
-   --------------------
-
-   .. code-block:: markdown
-
-      ## Описание
-      - Задача: <Полное название задачи>
-      - Вариант: <N>
-      - Технология: <SEQ | MPI | OMP | TBB | STL | ALL>
-      - Кратко: Описание реализованного решения и отчёта
-
-      ---
-
-      ## Чек‑лист
-      - [ ] CI зелёный в моём форке (сборка, тесты, документация)
-      - [ ] Папка задачи названа `<фамилия>_<инициал>_<краткое>` и совпадает с именем ветки
-      - [ ] Заголовок PR соответствует формату: «<Фамилия Имя>. Технология <SEQ/MPI/...>. <Название задачи>. Вариант <N>.»
-      - [ ] Локально пройден clang-format
-      - [ ] Локально пройден clang-tidy (нет новых предупреждений/ошибок)
-      - [ ] Функциональные тесты проходят локально
-      - [ ] Тесты производительности проходят локально
-      - [ ] Отчёт (`report.md`) добавлен и оформлен по шаблону (см. раздел «Отчёт → Шаблон Markdown»)
-      - [ ] Подтверждаю достоверность сведений
-
-   См. также шаблон отчёта: :ref:`report_template_ru`.
+   ## Checklist
+   - [ ] CI is green in my fork (build, tests, docs)
+   - [ ] Task folder is named `<last>_<initial>_<short>` and matches branch name
+   - [ ] clang-format passed locally
+   - [ ] clang-tidy passed locally (no warnings/errors introduced)
+   - [ ] Functional tests pass locally
+   - [ ] Performance tests pass locally
+   - [ ] Report (`report.md`) is added and follows the template
+   - [ ] I confirm that provided information is truthful
 
 Common pitfalls (read before pushing)
 -------------------------------------

@@ -17,7 +17,6 @@ author = "Learning Process"
 
 extensions = [
     "breathe",
-    "sphinx.ext.ifconfig",
 ]
 
 breathe_projects = {

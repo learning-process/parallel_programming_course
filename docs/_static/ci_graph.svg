@@ -1,141 +1,93 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
-  <defs>
-    <style>
-      .primary { fill: #eaf2ff; stroke: #1b4f9c; stroke-width: 2.2; }
-      .secondary { fill: #f6f7f9; stroke: #6b7280; stroke-width: 1.8; }
-      .artifact { fill: #e8f5e9; stroke: #2e7d32; stroke-width: 1.8; }
-      .group { fill: none; stroke: #9ca3af; stroke-dasharray: 6 4; }
-      .label { font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 18px; fill: #0f172a; }
-      .small { font-size: 18px; fill: #111827; }
-      .legend { font-size: 20px; fill: #374151; font-weight: 600; }
-      .legend-big { font-size: 26px; fill: #374151; font-weight: 700; }
-      .group-bg { fill: #eef2ff; opacity: 0.45; stroke: none; }
-      .group-bg-main { fill: #f8fafc; opacity: 0.6; stroke: none; }
-      .arrow { stroke: #111827; stroke-width: 2.2; fill: none; marker-end: url(#arrowHead); }
-    </style>
-    <marker id="arrowHead" markerWidth="12" markerHeight="12" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L10,3 L0,6 Z" fill="#111827" />
-    </marker>
-  </defs>
-
-  <!-- Main pipeline title -->
-  <text class="legend" x="70" y="24">Main pipeline</text>
-  <!-- Main pipeline background (soft gray tint) -->
-  <rect class="group-bg-main" x="30" y="40" width="900" height="540" rx="12" ry="12" />
-
-  <!-- pre-commit -->
-  <rect class="primary" x="70" y="50" rx="8" ry="8" width="260" height="54" />
-  <text class="label" x="200" y="78" text-anchor="middle">pre-commit (format + lint)</text>
-
-  <!-- OS builds/tests row -->
-  <rect class="primary" x="40" y="150" rx="8" ry="8" width="260" height="54" />
-  <text class="label" x="170" y="178" text-anchor="middle">
-    <tspan x="170" dy="-8">Ubuntu (GCC+Clang)</tspan>
-    <tspan x="170" dy="18">build + tests</tspan>
-  </text>
-
-  <rect class="primary" x="340" y="150" rx="8" ry="8" width="220" height="54" />
-  <text class="label" x="450" y="178" text-anchor="middle">
-    <tspan x="450" dy="-8">macOS (Clang)</tspan>
-    <tspan x="450" dy="18">build + tests</tspan>
-  </text>
-
-  <rect class="primary" x="600" y="150" rx="8" ry="8" width="260" height="54" />
-  <text class="label" x="730" y="178" text-anchor="middle">
-    <tspan x="730" dy="-8">Windows (MSVC/Clang‑CL)</tspan>
-    <tspan x="730" dy="18">build + tests</tspan>
-  </text>
-
-  <!-- Coverage (from Ubuntu) -->
-  <rect class="artifact" x="40" y="280" rx="8" ry="8" width="260" height="50" />
-  <text class="label" x="170" y="305" text-anchor="middle">Coverage (gcovr → Codecov)</text>
-
-  <!-- Performance stats (Linux + macOS) -->
-  <rect class="artifact" x="340" y="280" rx="8" ry="8" width="220" height="50" />
-  <text class="label" x="450" y="305" text-anchor="middle">
-    <tspan x="450" dy="-8">Performance stats</tspan>
-    <tspan x="450" dy="18">(Linux + macOS)</tspan>
-  </text>
-
-  <!-- Scoreboard build (uses perf) -->
-  <rect class="artifact" x="340" y="370" rx="8" ry="8" width="220" height="50" />
-  <text class="label" x="450" y="395" text-anchor="middle">
-    <tspan x="450" dy="-8">Scoreboard build</tspan>
-    <tspan x="450" dy="18">(from perf artifacts)</tspan>
-  </text>
-
-  <!-- Docs (Doxygen -> Sphinx) group with tinted background like Additional -->
-  <rect class="group-bg" x="590" y="250" width="280" height="260" rx="12" ry="12" />
-  <rect class="group" x="600" y="255" width="260" height="235" rx="10" ry="10" />
-  <text class="legend legend-big" x="730" y="290" text-anchor="middle">Docs</text>
-  <rect class="secondary" x="625" y="312" rx="6" ry="6" width="210" height="50" />
-  <text class="small" x="730" y="338" text-anchor="middle">Doxygen XML</text>
-  <rect class="secondary" x="625" y="372" rx="6" ry="6" width="210" height="50" />
-  <text class="small" x="730" y="398" text-anchor="middle">Sphinx (EN / RU)</text>
-
-  <!-- Pages deploy -->
-  <rect class="primary" x="340" y="500" rx="8" ry="8" width="300" height="60" />
-  <text class="label" x="490" y="530" text-anchor="middle">
-    <tspan x="490" dy="-8">Pages deploy</tspan>
-    <tspan x="490" dy="18">(Docs + Scoreboard + Coverage)</tspan>
-  </text>
-
-  <!-- Arrows main flow -->
-  <!-- Arrows from pre-commit bottom center to OS top centers (straight) -->
-  <path class="arrow" d="M 200 104 L 170 150" />
-  <path class="arrow" d="M 200 104 L 450 150" />
-  <path class="arrow" d="M 200 104 L 730 150" />
-
-  <!-- Ubuntu -> Coverage (straight) -->
-  <path class="arrow" d="M 170 204 L 170 280" />
-  <!-- Ubuntu -> Perf (straight) -->
-  <path class="arrow" d="M 170 204 L 450 280" />
-  <!-- macOS -> Perf (straight) -->
-  <path class="arrow" d="M 450 204 L 450 280" />
-  <!-- windows (no direct to perf) intentionally omitted -->
-
-  <!-- Perf -> Scoreboard (straight) -->
-  <path class="arrow" d="M 450 330 L 450 370" />
-
-  <!-- Docs arrows: (removed by request) -->
-
-
-  <!-- Inputs to Pages: Coverage, Scoreboard (straight) -->
-  <path class="arrow" d="M 170 330 L 490 500" />
-  <path class="arrow" d="M 450 420 L 490 500" />
-
-  <!-- Additional workflows column -->
-  <!-- Additional background (soft tint) -->
-  <rect class="group-bg" x="940" y="20" width="250" height="500" rx="12" ry="12" />
-  <rect class="group" x="950" y="30" width="230" height="480" rx="10" ry="10" />
-  <text class="legend legend-big" x="1065" y="56" text-anchor="middle">Additional</text>
-
-  <!-- Additional micro-legend (compact, two lines) -->
-  <text class="small" x="1065" y="90" text-anchor="middle">Legend: PR / schedule</text>
-  <text class="small" x="1065" y="114" text-anchor="middle">weekly / master</text>
-
-  <rect class="secondary" x="960" y="150" rx="6" ry="6" width="210" height="40" />
-  <text class="small" x="1065" y="174" text-anchor="middle">clang-tidy (PR)</text>
-
-  <rect class="secondary" x="960" y="202" rx="6" ry="6" width="210" height="40" />
-  <text class="small" x="1065" y="226" text-anchor="middle">CodeQL (schedule)</text>
-
-  <rect class="secondary" x="960" y="254" rx="6" ry="6" width="210" height="40" />
-  <text class="small" x="1065" y="278" text-anchor="middle">OpenSSF Scorecard</text>
-
-  <rect class="secondary" x="960" y="306" rx="6" ry="6" width="210" height="40" />
-  <text class="small" x="1065" y="330" text-anchor="middle">Docker image</text>
-
-  <rect class="secondary" x="960" y="358" rx="6" ry="6" width="210" height="40" />
-  <text class="small" x="1065" y="382" text-anchor="middle">Nightly (stale PRs)</text>
-
-  <rect class="secondary" x="960" y="410" rx="6" ry="6" width="210" height="40" />
-  <text class="small" x="1065" y="434" text-anchor="middle">Labeler (PR)</text>
-
-  <rect class="secondary" x="960" y="462" rx="6" ry="6" width="210" height="40" />
-  <text class="small" x="1065" y="486" text-anchor="middle">Update pre-commit</text>
-
-  <!-- Legend -->
-  <text class="legend" x="70" y="585">Flow: pre-commit → Ubuntu/macOS/Windows → Coverage/Perf → Docs/Scoreboard → Pages</text>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 13.0.1 (20250615.1724)
+ -->
+<!-- Title: CI_Overview Pages: 1 -->
+<svg width="485pt" height="202pt"
+ viewBox="0.00 0.00 485.00 202.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 198)">
+<title>CI_Overview</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-198 480.75,-198 480.75,4 -4,4"/>
+<!-- pre_commit -->
+<g id="node1" class="node">
+<title>pre_commit</title>
+<path fill="none" stroke="black" d="M73,-115C73,-115 12,-115 12,-115 6,-115 0,-109 0,-103 0,-103 0,-91 0,-91 0,-85 6,-79 12,-79 12,-79 73,-79 73,-79 79,-79 85,-85 85,-91 85,-91 85,-103 85,-103 85,-109 79,-115 73,-115"/>
+<text xml:space="preserve" text-anchor="middle" x="42.5" y="-91.2" font-family="Helvetica,sans-Serif" font-size="14.00">pre&#45;commit</text>
+</g>
+<!-- ubuntu -->
+<g id="node2" class="node">
+<title>ubuntu</title>
+<path fill="none" stroke="black" d="M207.5,-194C207.5,-194 174.25,-194 174.25,-194 168.25,-194 162.25,-188 162.25,-182 162.25,-182 162.25,-170 162.25,-170 162.25,-164 168.25,-158 174.25,-158 174.25,-158 207.5,-158 207.5,-158 213.5,-158 219.5,-164 219.5,-170 219.5,-170 219.5,-182 219.5,-182 219.5,-188 213.5,-194 207.5,-194"/>
+<text xml:space="preserve" text-anchor="middle" x="190.88" y="-170.2" font-family="Helvetica,sans-Serif" font-size="14.00">ubuntu</text>
+</g>
+<!-- pre_commit&#45;&gt;ubuntu -->
+<g id="edge1" class="edge">
+<title>pre_commit&#45;&gt;ubuntu</title>
+<path fill="none" stroke="#333333" d="M42.75,-115.32C42.75,-138.66 42.75,-176 42.75,-176 42.75,-176 150.45,-176 150.45,-176"/>
+<polygon fill="#333333" stroke="#333333" points="150.45,-179.5 160.45,-176 150.45,-172.5 150.45,-179.5"/>
+</g>
+<!-- mac -->
+<g id="node3" class="node">
+<title>mac</title>
+<path fill="none" stroke="black" d="M205.88,-115C205.88,-115 175.88,-115 175.88,-115 169.88,-115 163.88,-109 163.88,-103 163.88,-103 163.88,-91 163.88,-91 163.88,-85 169.88,-79 175.88,-79 175.88,-79 205.88,-79 205.88,-79 211.88,-79 217.88,-85 217.88,-91 217.88,-91 217.88,-103 217.88,-103 217.88,-109 211.88,-115 205.88,-115"/>
+<text xml:space="preserve" text-anchor="middle" x="190.88" y="-91.2" font-family="Helvetica,sans-Serif" font-size="14.00">mac</text>
+</g>
+<!-- pre_commit&#45;&gt;mac -->
+<g id="edge2" class="edge">
+<title>pre_commit&#45;&gt;mac</title>
+<path fill="none" stroke="#333333" d="M85.42,-97C85.42,-97 151.97,-97 151.97,-97"/>
+<polygon fill="#333333" stroke="#333333" points="151.97,-100.5 161.97,-97 151.97,-93.5 151.97,-100.5"/>
+</g>
+<!-- windows -->
+<g id="node4" class="node">
+<title>windows</title>
+<path fill="none" stroke="black" d="M212.75,-36C212.75,-36 169,-36 169,-36 163,-36 157,-30 157,-24 157,-24 157,-12 157,-12 157,-6 163,0 169,0 169,0 212.75,0 212.75,0 218.75,0 224.75,-6 224.75,-12 224.75,-12 224.75,-24 224.75,-24 224.75,-30 218.75,-36 212.75,-36"/>
+<text xml:space="preserve" text-anchor="middle" x="190.88" y="-12.2" font-family="Helvetica,sans-Serif" font-size="14.00">windows</text>
+</g>
+<!-- pre_commit&#45;&gt;windows -->
+<g id="edge3" class="edge">
+<title>pre_commit&#45;&gt;windows</title>
+<path fill="none" stroke="#333333" d="M42.75,-78.68C42.75,-55.34 42.75,-18 42.75,-18 42.75,-18 145.01,-18 145.01,-18"/>
+<polygon fill="#333333" stroke="#333333" points="145.01,-21.5 155.01,-18 145.01,-14.5 145.01,-21.5"/>
+</g>
+<!-- ubuntu&#45;&gt;mac -->
+<!-- perf -->
+<g id="node5" class="node">
+<title>perf</title>
+<path fill="none" stroke="black" d="M338.75,-115C338.75,-115 308.75,-115 308.75,-115 302.75,-115 296.75,-109 296.75,-103 296.75,-103 296.75,-91 296.75,-91 296.75,-85 302.75,-79 308.75,-79 308.75,-79 338.75,-79 338.75,-79 344.75,-79 350.75,-85 350.75,-91 350.75,-91 350.75,-103 350.75,-103 350.75,-109 344.75,-115 338.75,-115"/>
+<text xml:space="preserve" text-anchor="middle" x="323.75" y="-91.2" font-family="Helvetica,sans-Serif" font-size="14.00">perf</text>
+</g>
+<!-- ubuntu&#45;&gt;perf -->
+<g id="edge4" class="edge">
+<title>ubuntu&#45;&gt;perf</title>
+<path fill="none" stroke="#333333" d="M219.71,-176C258.79,-176 323.75,-176 323.75,-176 323.75,-176 323.75,-126.84 323.75,-126.84"/>
+<polygon fill="#333333" stroke="#333333" points="327.25,-126.84 323.75,-116.84 320.25,-126.84 327.25,-126.84"/>
+</g>
+<!-- mac&#45;&gt;windows -->
+<!-- mac&#45;&gt;perf -->
+<g id="edge5" class="edge">
+<title>mac&#45;&gt;perf</title>
+<path fill="none" stroke="#333333" d="M218.08,-97C218.08,-97 285.06,-97 285.06,-97"/>
+<polygon fill="#333333" stroke="#333333" points="285.06,-100.5 295.06,-97 285.06,-93.5 285.06,-100.5"/>
+</g>
+<!-- windows&#45;&gt;perf -->
+<g id="edge6" class="edge">
+<title>windows&#45;&gt;perf</title>
+<path fill="none" stroke="#333333" d="M225.09,-18C264.46,-18 323.75,-18 323.75,-18 323.75,-18 323.75,-67.16 323.75,-67.16"/>
+<polygon fill="#333333" stroke="#333333" points="320.25,-67.16 323.75,-77.16 327.25,-67.16 320.25,-67.16"/>
+</g>
+<!-- pages -->
+<g id="node6" class="node">
+<title>pages</title>
+<path fill="none" stroke="black" d="M464.75,-115C464.75,-115 434.75,-115 434.75,-115 428.75,-115 422.75,-109 422.75,-103 422.75,-103 422.75,-91 422.75,-91 422.75,-85 428.75,-79 434.75,-79 434.75,-79 464.75,-79 464.75,-79 470.75,-79 476.75,-85 476.75,-91 476.75,-91 476.75,-103 476.75,-103 476.75,-109 470.75,-115 464.75,-115"/>
+<text xml:space="preserve" text-anchor="middle" x="449.75" y="-91.2" font-family="Helvetica,sans-Serif" font-size="14.00">pages</text>
+</g>
+<!-- perf&#45;&gt;pages -->
+<g id="edge7" class="edge">
+<title>perf&#45;&gt;pages</title>
+<path fill="none" stroke="#333333" d="M351.09,-97C351.09,-97 410.95,-97 410.95,-97"/>
+<polygon fill="#333333" stroke="#333333" points="410.95,-100.5 420.95,-97 410.95,-93.5 410.95,-100.5"/>
+</g>
+</g>
 </svg>

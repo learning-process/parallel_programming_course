@@ -23,43 +23,7 @@ Coverage report is available [here](https://learning-process.github.io/parallel_
 
 ## Quickstart
 
-Build
------
-- Configure: `cmake -S . -B build [-DENABLE_ADDRESS_SANITIZER=ON]`
-- Build: `cmake --build build -j`
-- Optional install: `cmake --install build --prefix install`
-
-Run tests locally (preferred)
------------------------------
-Set environment and use the helper runner:
-
-```
-export PPC_NUM_THREADS=4
-export PPC_NUM_PROC=2
-
-# Shared-memory tests
-python3 scripts/run_tests.py --running-type threads --counts 1 2 4
-
-# MPI tests
-python3 scripts/run_tests.py --running-type processes --counts 2 4
-
-# Performance
-python3 scripts/run_tests.py --running-type performance
-```
-
-Scoreboard generation
----------------------
-- `pip install -r scoreboard/requirements.txt`
-- `python3 scoreboard/main.py -o scoreboard/out`
-
-Docs
-----
-- `cmake -S . -B build -DUSE_DOCS=ON`
-- `cmake --build build -t docs_html`
-
-Pre-commit
-----------
-- `pre-commit install && pre-commit run -a`
+See the full user guide for build, tests, docs, and tooling instructions: [documentation en](https://learning-process.github.io/parallel_programming_course/en/), [documentation ru](https://learning-process.github.io/parallel_programming_course/ru/).
 
 ### Rules for submissions:
 1. You are not supposed to trigger CI jobs by frequent updates of your pull request. First you should test you work locally with all the scripts (code style).

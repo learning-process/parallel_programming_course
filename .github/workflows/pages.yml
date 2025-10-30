@@ -37,18 +37,22 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.13'
-      - name: Install Doxygen
+      - name: Install Doxygen and Graphviz
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y doxygen
+          sudo apt-get install --no-install-recommends -y doxygen graphviz
       - name: Install dependencies
         run: |
           python3 -m pip install -r docs/requirements.txt
+          python3 -m pip install graphviz pyyaml
       - name: Download artifact
         uses: actions/download-artifact@v5
         with:
           name: doxygen-documentation-xml
           path: xml
+      - name: Generate CI jobs graph
+        run: |
+          python3 scripts/jobs_graph.py --out docs/_static/ci_graph --format svg
       - name: Configure project
         run: >
           cmake -S . -B build -D USE_DOCS=ON
