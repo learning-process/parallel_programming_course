@@ -9,6 +9,7 @@ permissions: read-all
 
 jobs:
   analysis:
+    if: ${{ github.repository == 'learning-process/parallel_programming_course' }}
     name: Scorecard analysis
     runs-on: ubuntu-latest
     permissions:

@@ -19,12 +19,12 @@ ExternalProject_Add(
              $<$<BOOL:MSVC>:-Dgtest_force_shared_crt=ON>
   BUILD_COMMAND
     "${CMAKE_COMMAND}" --build
-    "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build" --config
-    ${CMAKE_BUILD_TYPE} --parallel
+    "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build" --config $<CONFIG>
+    --parallel
   INSTALL_COMMAND
     "${CMAKE_COMMAND}" --install
-    "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build" --prefix
-    "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/install")
+    "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build" --config $<CONFIG>
+    --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/install")
 
 function(ppc_link_gtest exec_func_lib)
   # Add external project include directories
