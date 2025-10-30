@@ -18,8 +18,8 @@ ExternalProject_Add(
     --config $<CONFIG> --parallel
   INSTALL_COMMAND
     "${CMAKE_COMMAND}" --install
-    "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/build" --config $<CONFIG> --prefix
-    "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/install")
+    "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/build" --config $<CONFIG>
+    --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/install")
 
 string(TOLOWER "${CMAKE_BUILD_TYPE}" cmake_build_type_lower)
 if(cmake_build_type_lower STREQUAL "debug")
@@ -48,7 +48,6 @@ function(ppc_link_envpp exec_func_lib)
   target_link_directories(${exec_func_lib} PUBLIC
                           "${CMAKE_BINARY_DIR}/ppc_libenvpp/build")
   target_link_libraries(${exec_func_lib} PUBLIC ${PPC_ENVPP_LIB_NAME})
-  target_link_libraries(${exec_func_lib} PUBLIC
-                        $<$<CONFIG:Debug>:fmtd>
-                        $<$<NOT:$<CONFIG:Debug>>:fmt>)
+  target_link_libraries(${exec_func_lib} PUBLIC $<$<CONFIG:Debug>:fmtd>
+                                                $<$<NOT:$<CONFIG:Debug>>:fmt>)
 endfunction()
