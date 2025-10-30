@@ -103,7 +103,7 @@ jobs:
           name: scoreboard
           path: ./build/scoreboard/html/
   deploy-pages:
-    if: github.ref == 'refs/heads/master'
+    if: ${{ !github.event.repository.fork && github.ref == 'refs/heads/master' }}
     needs:
       - build-sphinx
       - build-scoreboard
