@@ -45,7 +45,7 @@ jobs:
         run: |
           python3 -m pip install -r docs/requirements.txt
       - name: Download artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: doxygen-documentation-xml
           path: xml
@@ -78,7 +78,7 @@ jobs:
           python3 -m pip install -r requirements.txt
           python3 -m pip install -r scoreboard/requirements.txt
       - name: Download performance data
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: perf-stat
       - name: Extract performance data
@@ -115,17 +115,17 @@ jobs:
       cancel-in-progress: false
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: sphinx-documentation
           path: ./
       - name: Download artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: scoreboard
           path: ./scoreboard/
       - name: Download coverage artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: cov-report
           path: ./coverage/

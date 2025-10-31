@@ -64,7 +64,7 @@ jobs:
           brew install ninja mpich llvm libomp openssl
           brew link libomp --overwrite --force
       - name: Download installed package
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: macos-clang-install
       - name: Extract installed package
@@ -95,7 +95,7 @@ jobs:
           brew install ninja mpich llvm libomp openssl
           brew link libomp --overwrite --force
       - name: Download installed package
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: macos-clang-install
       - name: Extract installed package
