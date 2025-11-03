@@ -64,7 +64,7 @@ class DestructorFailureFlag {
 
 enum class GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
 
-std::string GetAbsoluteTaskPath(const std::string& id_path, const std::string& relative_path);
+std::string GetAbsoluteTaskPath(const std::string &id_path, const std::string &relative_path);
 int GetNumThreads();
 int GetNumProc();
 double GetTaskMaxTime();
@@ -75,13 +75,13 @@ std::string GetNamespace() {
   std::string name = typeid(T).name();
 #ifdef __GNUC__
   int status = 0;
-  std::unique_ptr<char, void (*)(void*)> demangled{abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status),
-                                                   std::free};
+  std::unique_ptr<char, void (*)(void *)> demangled{abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status),
+                                                    std::free};
   name = (status == 0) ? demangled.get() : name;
 #endif
 #ifdef _MSC_VER
   const std::string prefixes[] = {"class ", "struct ", "enum ", "union "};
-  for (const auto& prefix : prefixes) {
+  for (const auto &prefix : prefixes) {
     if (name.starts_with(prefix)) {
       name = name.substr(prefix.size());
       break;
@@ -107,7 +107,7 @@ namespace test {
     return std::isalnum(static_cast<unsigned char>(c)) || c == '_' || c == '-' || c == '.';
   };
   std::ranges::replace(token, ' ', '_');
-  for (char& ch : token) {
+  for (char &ch : token) {
     if (!is_allowed(ch)) {
       ch = '_';
     }
@@ -117,11 +117,11 @@ namespace test {
 
 class ScopedPerTestEnv {
  public:
-  explicit ScopedPerTestEnv(const std::string& token)
+  explicit ScopedPerTestEnv(const std::string &token)
       : set_uid_("PPC_TEST_UID", token), set_tmp_("PPC_TEST_TMPDIR", CreateTmpDir(token)) {}
 
  private:
-  static std::string CreateTmpDir(const std::string& token) {
+  static std::string CreateTmpDir(const std::string &token) {
     namespace fs = std::filesystem;
     const fs::path tmp = fs::temp_directory_path() / (std::string("ppc_test_") + token);
     std::error_code ec;
@@ -135,8 +135,8 @@ class ScopedPerTestEnv {
 };
 
 [[nodiscard]] inline std::string MakeCurrentGTestToken(std::string_view fallback_name) {
-  const auto* unit = ::testing::UnitTest::GetInstance();
-  const auto* info = (unit != nullptr) ? unit->current_test_info() : nullptr;
+  const auto *unit = ::testing::UnitTest::GetInstance();
+  const auto *info = (unit != nullptr) ? unit->current_test_info() : nullptr;
   std::ostringstream os;
   if (info != nullptr) {
     os << info->test_suite_name() << "." << info->name();
