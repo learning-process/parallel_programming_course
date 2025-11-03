@@ -8,11 +8,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 21:38+0200\n"
+"POT-Creation-Date: 2025-10-24 15:06+0200\n"
 "PO-Revision-Date: 2025-08-22 21:45+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: ru\n"
-"Language-Team: Learning Process Team (gooddoog@student.su, nesterov.alexander@outlook.com)\n"
+"Language-Team: Learning Process Team (gooddoog@student.su, "
+"nesterov.alexander@outlook.com)\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
@@ -72,3 +73,26 @@ msgstr "Вспомогательный модуль (модуль с утили�
 msgid "Performance Module"
 msgstr "Модуль измерения производительности"
 
+#~ msgid "Functions"
+#~ msgstr "Функции"
+
+#~ msgid "Parameters"
+#~ msgstr "Параметры"
+
+#~ msgid "Returns"
+#~ msgstr "Возвращаемые значения"
+
+#~ msgid "Typedefs"
+#~ msgstr "Псевдонимы типов"
+
+#~ msgid "Template Parameters"
+#~ msgstr "Параметры шаблона"
+
+#~ msgid "Enums"
+#~ msgstr "Перечисления"
+
+#~ msgid "Throws"
+#~ msgstr "Исключения"
+
+#~ msgid "Variables"
+#~ msgstr "Переменные"

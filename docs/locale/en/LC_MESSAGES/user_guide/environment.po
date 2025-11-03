@@ -2,119 +2,224 @@
 # Copyright (C) 2025, Learning Process
 # This file is distributed under the same license as the Parallel
 # Programming Course package.
-# Learning Process Team <gooddoog@student.su, nesterov.alexander@outlook.com>, 2025.
+# Learning Process Team <gooddoog@student.su,
+# nesterov.alexander@outlook.com>, 2025.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-19 16:44+0200\n"
+"POT-Creation-Date: 2025-10-24 18:03+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: en\n"
-"Language-Team: Learning Process Team (gooddoog@student.su, nesterov.alexander@outlook.com)\n"
+"Language-Team: Learning Process Team (gooddoog@student.su, "
+"nesterov.alexander@outlook.com)\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../user_guide/environment.rst:2
+#: ../../../../docs/user_guide/environment.rst:2
 msgid "Set Up Your Environment"
 msgstr ""
 
-#: ../../user_guide/environment.rst:5
+#: ../../../../docs/user_guide/environment.rst:5
+msgid "Development Container (Recommended)"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:6
+msgid ""
+"The easiest way to set up your development environment is using the "
+"provided ``.devcontainer`` configuration with VS Code and Docker."
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:8
+msgid "**Prerequisites:**"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:10
+msgid "`Visual Studio Code <https://code.visualstudio.com/>`_"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:11
+msgid "`Docker Desktop <https://www.docker.com/products/docker-desktop/>`_"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:12
+msgid ""
+"`Dev Containers extension "
+"<https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote"
+".remote-containers>`_"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:14
+msgid "**Setup:**"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:16
+msgid "Clone the repository and open it in VS Code"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:17
+msgid ""
+"When prompted, click \"Reopen in Container\" or use Command Palette: "
+"``Dev Containers: Reopen in Container``"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:18
+msgid ""
+"VS Code will automatically build the container with all dependencies pre-"
+"installed"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:19
+msgid "The container includes:"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:21
+msgid "Ubuntu environment with gcc-14, CMake, MPI, OpenMP"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:22
+msgid "Pre-configured C++ and Python development tools"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:23
+msgid "All project dependencies ready to use"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:25
+msgid ""
+"This provides a consistent development environment across all platforms "
+"without manual dependency installation."
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:28
+msgid "Manual Setup"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:30
+msgid ""
+"If you prefer manual setup or cannot use containers, follow the "
+"instructions below."
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:33
 msgid "Build prerequisites"
 msgstr ""
 
-#: ../../user_guide/environment.rst:6
+#: ../../../../docs/user_guide/environment.rst:34
 msgid ""
 "**Windows**: Download and install CMake from https://cmake.org/download "
 "(select the Windows installer) or install using Chocolatey:"
 msgstr ""
 
-#: ../../user_guide/environment.rst:12
+#: ../../../../docs/user_guide/environment.rst:40
 msgid "**Linux (Ubuntu/Debian)**: Install using package manager:"
 msgstr ""
 
-#: ../../user_guide/environment.rst:19
+#: ../../../../docs/user_guide/environment.rst:47
 msgid "**macOS**: Install using Homebrew:"
 msgstr ""
 
-#: ../../user_guide/environment.rst:27
+#: ../../../../docs/user_guide/environment.rst:55
 msgid "Code Style Analysis"
 msgstr ""
 
-#: ../../user_guide/environment.rst:28
+#: ../../../../docs/user_guide/environment.rst:56
 msgid ""
 "Please follow the `Google C++ Style Guide "
 "<https://google.github.io/styleguide/cppguide.html>`_."
 msgstr ""
 
-#: ../../user_guide/environment.rst:30
+#: ../../../../docs/user_guide/environment.rst:58
 msgid ""
 "Code style is checked using the `clang-format "
 "<https://clang.llvm.org/docs/ClangFormat.html>`_ tool."
 msgstr ""
 
-#: ../../user_guide/environment.rst:33
+#: ../../../../docs/user_guide/environment.rst:61
+msgid "Optional tools (clang-tidy, gcovr)"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:62
+msgid ""
+"Install these to match the CI toolchain for static analysis and coverage "
+"reports."
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:64
+msgid "Linux (Ubuntu/Debian):"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:75
+msgid "macOS (Homebrew):"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:83
+msgid "Windows:"
+msgstr ""
+
+#: ../../../../docs/user_guide/environment.rst:92
 msgid "Parallel Programming Technologies"
 msgstr ""
 
-#: ../../user_guide/environment.rst:36
+#: ../../../../docs/user_guide/environment.rst:95
 msgid "``MPI``"
 msgstr ""
 
-#: ../../user_guide/environment.rst:37
+#: ../../../../docs/user_guide/environment.rst:96
 msgid "**Windows (MSVC)**:"
 msgstr ""
 
-#: ../../user_guide/environment.rst:39
+#: ../../../../docs/user_guide/environment.rst:98
 msgid ""
 "`Installers link <https://www.microsoft.com/en-"
 "us/download/details.aspx?id=105289>`_. You have to install "
 "``msmpisdk.msi`` and ``msmpisetup.exe``."
 msgstr ""
 
-#: ../../user_guide/environment.rst:41
-#: ../../user_guide/environment.rst:57
+#: ../../../../docs/user_guide/environment.rst:100
+#: ../../../../docs/user_guide/environment.rst:116
 msgid "**Linux (gcc and clang)**:"
 msgstr ""
 
-#: ../../user_guide/environment.rst:47
+#: ../../../../docs/user_guide/environment.rst:106
 msgid "**MacOS (apple clang)**:"
 msgstr ""
 
-#: ../../user_guide/environment.rst:54
+#: ../../../../docs/user_guide/environment.rst:113
 msgid "``OpenMP``"
 msgstr ""
 
-#: ../../user_guide/environment.rst:55
+#: ../../../../docs/user_guide/environment.rst:114
 msgid ""
 "``OpenMP`` is included in ``gcc`` and ``msvc``, but some components "
 "should be installed additionally:"
 msgstr ""
 
-#: ../../user_guide/environment.rst:63
+#: ../../../../docs/user_guide/environment.rst:122
 msgid "**MacOS (llvm)**:"
 msgstr ""
 
-#: ../../user_guide/environment.rst:71
+#: ../../../../docs/user_guide/environment.rst:130
 msgid "``TBB``"
 msgstr ""
 
-#: ../../user_guide/environment.rst:72
+#: ../../../../docs/user_guide/environment.rst:131
 msgid ""
 "**Windows (MSVC)**, **Linux (gcc and clang)**, **MacOS (apple clang)**: "
 "Build as 3rdparty in the current project."
 msgstr ""
 
-#: ../../user_guide/environment.rst:76
+#: ../../../../docs/user_guide/environment.rst:135
 msgid "``std::thread``"
 msgstr ""
 
-#: ../../user_guide/environment.rst:77
+#: ../../../../docs/user_guide/environment.rst:136
 msgid "``std::thread`` is included in STL libraries."
 msgstr ""
 

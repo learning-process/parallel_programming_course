@@ -2,18 +2,19 @@
 # Copyright (C) 2025, Learning Process
 # This file is distributed under the same license as the Parallel
 # Programming Course package.
-# Learning Process Team <gooddoog@student.su, nesterov.alexander@outlook.com>, 2025.
+# Learning Process Team <gooddoog@student.su,
+# nesterov.alexander@outlook.com>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-27 12:55+0200\n"
+"POT-Creation-Date: 2025-10-24 18:03+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: ru\n"
-"Language-Team: Learning Process Team (gooddoog@student.su, nesterov.alexander@outlook.com)\n"
+"Language-Team: Learning Process Team (gooddoog@student.su, "
+"nesterov.alexander@outlook.com)\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
@@ -21,15 +22,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ../../user_guide/environment.rst:2
+#: ../../../../docs/user_guide/environment.rst:2
 msgid "Set Up Your Environment"
 msgstr "Настройка окружения"
 
-#: ../../user_guide/environment.rst:5
+#: ../../../../docs/user_guide/environment.rst:5
 msgid "Development Container (Recommended)"
 msgstr "Контейнер разработки (Рекомендуется)"
 
-#: ../../user_guide/environment.rst:6
+#: ../../../../docs/user_guide/environment.rst:6
 msgid ""
 "The easiest way to set up your development environment is using the "
 "provided ``.devcontainer`` configuration with VS Code and Docker."
@@ -37,19 +38,19 @@ msgstr ""
 "Самый простой способ настроить среду разработки - использовать "
 "предоставленную конфигурацию ``.devcontainer`` с VS Code и Docker."
 
-#: ../../user_guide/environment.rst:8
+#: ../../../../docs/user_guide/environment.rst:8
 msgid "**Prerequisites:**"
 msgstr "**Требования:**"
 
-#: ../../user_guide/environment.rst:10
+#: ../../../../docs/user_guide/environment.rst:10
 msgid "`Visual Studio Code <https://code.visualstudio.com/>`_"
 msgstr "`Visual Studio Code <https://code.visualstudio.com/>`_"
 
-#: ../../user_guide/environment.rst:11
+#: ../../../../docs/user_guide/environment.rst:11
 msgid "`Docker Desktop <https://www.docker.com/products/docker-desktop/>`_"
 msgstr "`Docker Desktop <https://www.docker.com/products/docker-desktop/>`_"
 
-#: ../../user_guide/environment.rst:12
+#: ../../../../docs/user_guide/environment.rst:12
 msgid ""
 "`Dev Containers extension "
 "<https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote"
@@ -59,15 +60,15 @@ msgstr ""
 "<https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote"
 ".remote-containers>`_"
 
-#: ../../user_guide/environment.rst:14
+#: ../../../../docs/user_guide/environment.rst:14
 msgid "**Setup:**"
 msgstr "**Настройка:**"
 
-#: ../../user_guide/environment.rst:16
+#: ../../../../docs/user_guide/environment.rst:16
 msgid "Clone the repository and open it in VS Code"
 msgstr "Клонируйте репозиторий и откройте его в VS Code"
 
-#: ../../user_guide/environment.rst:17
+#: ../../../../docs/user_guide/environment.rst:17
 msgid ""
 "When prompted, click \"Reopen in Container\" or use Command Palette: "
 "``Dev Containers: Reopen in Container``"
@@ -75,7 +76,7 @@ msgstr ""
 "При появлении запроса нажмите \"Reopen in Container\" или используйте "
 "палитру команд: ``Dev Containers: Reopen in Container``"
 
-#: ../../user_guide/environment.rst:18
+#: ../../../../docs/user_guide/environment.rst:18
 msgid ""
 "VS Code will automatically build the container with all dependencies pre-"
 "installed"
@@ -83,23 +84,23 @@ msgstr ""
 "VS Code автоматически соберет контейнер со всеми предустановленными "
 "зависимостями"
 
-#: ../../user_guide/environment.rst:19
+#: ../../../../docs/user_guide/environment.rst:19
 msgid "The container includes:"
 msgstr "Контейнер включает:"
 
-#: ../../user_guide/environment.rst:21
+#: ../../../../docs/user_guide/environment.rst:21
 msgid "Ubuntu environment with gcc-14, CMake, MPI, OpenMP"
 msgstr "Окружение Ubuntu с gcc-14, CMake, MPI, OpenMP"
 
-#: ../../user_guide/environment.rst:22
+#: ../../../../docs/user_guide/environment.rst:22
 msgid "Pre-configured C++ and Python development tools"
 msgstr "Предварительно настроенные инструменты разработки C++ и Python"
 
-#: ../../user_guide/environment.rst:23
+#: ../../../../docs/user_guide/environment.rst:23
 msgid "All project dependencies ready to use"
 msgstr "Все зависимости проекта готовы к использованию"
 
-#: ../../user_guide/environment.rst:25
+#: ../../../../docs/user_guide/environment.rst:25
 msgid ""
 "This provides a consistent development environment across all platforms "
 "without manual dependency installation."
@@ -107,11 +108,11 @@ msgstr ""
 "Это обеспечивает единообразную среду разработки на всех платформах без "
 "ручной установки зависимостей."
 
-#: ../../user_guide/environment.rst:28
+#: ../../../../docs/user_guide/environment.rst:28
 msgid "Manual Setup"
 msgstr "Ручная настройка"
 
-#: ../../user_guide/environment.rst:30
+#: ../../../../docs/user_guide/environment.rst:30
 msgid ""
 "If you prefer manual setup or cannot use containers, follow the "
 "instructions below."
@@ -119,11 +120,11 @@ msgstr ""
 "Если вы предпочитаете ручную настройку или не можете использовать "
 "контейнеры, следуйте инструкциям ниже."
 
-#: ../../user_guide/environment.rst:33
+#: ../../../../docs/user_guide/environment.rst:33
 msgid "Build prerequisites"
 msgstr "Требования к сборке"
 
-#: ../../user_guide/environment.rst:34
+#: ../../../../docs/user_guide/environment.rst:34
 msgid ""
 "**Windows**: Download and install CMake from https://cmake.org/download "
 "(select the Windows installer) or install using Chocolatey:"
@@ -131,19 +132,19 @@ msgstr ""
 "**Windows**: Загрузите и установите CMake с https://cmake.org/download "
 "(выберите установщик для Windows) или установите с помощью Chocolatey:"
 
-#: ../../user_guide/environment.rst:40
+#: ../../../../docs/user_guide/environment.rst:40
 msgid "**Linux (Ubuntu/Debian)**: Install using package manager:"
 msgstr "**Linux (Ubuntu/Debian)**: Установите с помощью менеджера пакетов:"
 
-#: ../../user_guide/environment.rst:47
+#: ../../../../docs/user_guide/environment.rst:47
 msgid "**macOS**: Install using Homebrew:"
 msgstr "**macOS**: Установите с помощью Homebrew:"
 
-#: ../../user_guide/environment.rst:55
+#: ../../../../docs/user_guide/environment.rst:55
 msgid "Code Style Analysis"
 msgstr "Анализ стиля кодирования"
 
-#: ../../user_guide/environment.rst:56
+#: ../../../../docs/user_guide/environment.rst:56
 msgid ""
 "Please follow the `Google C++ Style Guide "
 "<https://google.github.io/styleguide/cppguide.html>`_."
@@ -151,7 +152,7 @@ msgstr ""
 "Пожалуйста пройдите по ссылке для изучения стиля кодирования - `Google "
 "C++ Style Guide <https://google.github.io/styleguide/cppguide.html>`_."
 
-#: ../../user_guide/environment.rst:58
+#: ../../../../docs/user_guide/environment.rst:58
 msgid ""
 "Code style is checked using the `clang-format "
 "<https://clang.llvm.org/docs/ClangFormat.html>`_ tool."
@@ -159,19 +160,41 @@ msgstr ""
 "Проверка стиля кода выполняется с помощью инструмента `clang-format "
 "<https://clang.llvm.org/docs/ClangFormat.html>`_."
 
-#: ../../user_guide/environment.rst:61
+#: ../../../../docs/user_guide/environment.rst:61
+msgid "Optional tools (clang-tidy, gcovr)"
+msgstr "Дополнительные инструменты (clang-tidy, gcovr)"
+
+#: ../../../../docs/user_guide/environment.rst:62
+msgid ""
+"Install these to match the CI toolchain for static analysis and coverage "
+"reports."
+msgstr "Установите их, чтобы соответствовать инструментам CI для статического анализа и отчётов по покрытию."
+
+#: ../../../../docs/user_guide/environment.rst:64
+msgid "Linux (Ubuntu/Debian):"
+msgstr "Linux (Ubuntu/Debian):"
+
+#: ../../../../docs/user_guide/environment.rst:75
+msgid "macOS (Homebrew):"
+msgstr "macOS (Homebrew):"
+
+#: ../../../../docs/user_guide/environment.rst:83
+msgid "Windows:"
+msgstr "Windows:"
+
+#: ../../../../docs/user_guide/environment.rst:92
 msgid "Parallel Programming Technologies"
 msgstr "Технологии параллельного программирования"
 
-#: ../../user_guide/environment.rst:64
+#: ../../../../docs/user_guide/environment.rst:95
 msgid "``MPI``"
 msgstr "``MPI``"
 
-#: ../../user_guide/environment.rst:65
+#: ../../../../docs/user_guide/environment.rst:96
 msgid "**Windows (MSVC)**:"
 msgstr "**Windows (MSVC)**:"
 
-#: ../../user_guide/environment.rst:67
+#: ../../../../docs/user_guide/environment.rst:98
 msgid ""
 "`Installers link <https://www.microsoft.com/en-"
 "us/download/details.aspx?id=105289>`_. You have to install "
@@ -181,19 +204,20 @@ msgstr ""
 "us/download/details.aspx?id=105289>`_. Вы должны установить 2 файла - "
 "``msmpisdk.msi`` и ``msmpisetup.exe``."
 
-#: ../../user_guide/environment.rst:69 ../../user_guide/environment.rst:85
+#: ../../../../docs/user_guide/environment.rst:100
+#: ../../../../docs/user_guide/environment.rst:116
 msgid "**Linux (gcc and clang)**:"
 msgstr "**Linux (gcc and clang)**:"
 
-#: ../../user_guide/environment.rst:75
+#: ../../../../docs/user_guide/environment.rst:106
 msgid "**MacOS (apple clang)**:"
 msgstr "**MacOS (apple clang)**:"
 
-#: ../../user_guide/environment.rst:82
+#: ../../../../docs/user_guide/environment.rst:113
 msgid "``OpenMP``"
 msgstr "``OpenMP``"
 
-#: ../../user_guide/environment.rst:83
+#: ../../../../docs/user_guide/environment.rst:114
 msgid ""
 "``OpenMP`` is included in ``gcc`` and ``msvc``, but some components "
 "should be installed additionally:"
@@ -202,15 +226,15 @@ msgstr ""
 "``msvc``, но ряд компонент все равно должны быть установлены "
 "дополнительно:"
 
-#: ../../user_guide/environment.rst:91
+#: ../../../../docs/user_guide/environment.rst:122
 msgid "**MacOS (llvm)**:"
 msgstr "**MacOS (llvm)**:"
 
-#: ../../user_guide/environment.rst:99
+#: ../../../../docs/user_guide/environment.rst:130
 msgid "``TBB``"
 msgstr "``TBB``"
 
-#: ../../user_guide/environment.rst:100
+#: ../../../../docs/user_guide/environment.rst:131
 msgid ""
 "**Windows (MSVC)**, **Linux (gcc and clang)**, **MacOS (apple clang)**: "
 "Build as 3rdparty in the current project."
@@ -219,10 +243,10 @@ msgstr ""
 "Данная библиотека строится как внешняя в составе текущего проекта и не "
 "требует дополнительных операций."
 
-#: ../../user_guide/environment.rst:104
+#: ../../../../docs/user_guide/environment.rst:135
 msgid "``std::thread``"
 msgstr "``std::thread``"
 
-#: ../../user_guide/environment.rst:105
+#: ../../../../docs/user_guide/environment.rst:136
 msgid "``std::thread`` is included in STL libraries."
 msgstr "``std::thread`` включена в состав STL библиотек."

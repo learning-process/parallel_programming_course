@@ -21,6 +21,10 @@ Coverage report is available [here](https://learning-process.github.io/parallel_
   * `oneAPI Threading Building Blocks (oneTBB)`
   * `Multithreading in C++ (std::thread)`
 
+## Quickstart
+
+See the full user guide for build, tests, docs, and tooling instructions: [documentation en](https://learning-process.github.io/parallel_programming_course/en/), [documentation ru](https://learning-process.github.io/parallel_programming_course/ru/).
+
 ### Rules for submissions:
 1. You are not supposed to trigger CI jobs by frequent updates of your pull request. First you should test you work locally with all the scripts (code style).
     * Respect others time and don't slow down the job queue

@@ -4,7 +4,6 @@
 # Programming Course package.
 # Learning Process Team <gooddoog@student.su, nesterov.alexander@outlook.com>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
@@ -45,7 +44,7 @@ msgstr "Задача"
 #: ../../common_information/processes_tasks.rst:71
 #: ../../common_information/processes_tasks.rst:124
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: ../../common_information/processes_tasks.rst:10
 msgid "Sum of vector elements"
@@ -55,7 +54,7 @@ msgstr "Сумма элементов вектора"
 #: ../../common_information/processes_tasks.rst:73
 #: ../../common_information/processes_tasks.rst:126
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: ../../common_information/processes_tasks.rst:12
 msgid "Calculating the average value of vector elements"
@@ -65,7 +64,7 @@ msgstr "Вычисление среднего значения элементо�
 #: ../../common_information/processes_tasks.rst:75
 #: ../../common_information/processes_tasks.rst:128
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: ../../common_information/processes_tasks.rst:14
 msgid "Maximum value of vector elements"
@@ -75,7 +74,7 @@ msgstr "Максимальное значение элементов векто�
 #: ../../common_information/processes_tasks.rst:77
 #: ../../common_information/processes_tasks.rst:130
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: ../../common_information/processes_tasks.rst:16
 msgid "Minimum value of vector elements"
@@ -85,7 +84,7 @@ msgstr "Минимальное значение элементов вектор�
 #: ../../common_information/processes_tasks.rst:79
 #: ../../common_information/processes_tasks.rst:132
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: ../../common_information/processes_tasks.rst:18
 msgid ""
@@ -98,7 +97,7 @@ msgstr "Нахождение числа чередований знаков зн
 #: ../../common_information/processes_tasks.rst:134
 #: ../../common_information/processes_tasks.rst:258
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: ../../common_information/processes_tasks.rst:20
 msgid ""
@@ -110,7 +109,7 @@ msgstr "Нахождение числа нарушений упорядочен�
 #: ../../common_information/processes_tasks.rst:83
 #: ../../common_information/processes_tasks.rst:136
 msgid "7"
-msgstr ""
+msgstr "7"
 
 #: ../../common_information/processes_tasks.rst:22
 msgid "Finding the most similar adjacent elements of the vector"
@@ -120,7 +119,7 @@ msgstr "Нахождение наиболее близких соседних э
 #: ../../common_information/processes_tasks.rst:85
 #: ../../common_information/processes_tasks.rst:138
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: ../../common_information/processes_tasks.rst:24
 msgid "Finding the most different adjacent elements of the vector"
@@ -130,7 +129,7 @@ msgstr "Нахождение наиболее отличающихся по зн
 #: ../../common_information/processes_tasks.rst:87
 #: ../../common_information/processes_tasks.rst:140
 msgid "9"
-msgstr ""
+msgstr "9"
 
 #: ../../common_information/processes_tasks.rst:26
 msgid "Scalar product of vectors"
@@ -140,7 +139,7 @@ msgstr "Скалярное произведение векторов"
 #: ../../common_information/processes_tasks.rst:89
 #: ../../common_information/processes_tasks.rst:142
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: ../../common_information/processes_tasks.rst:28
 msgid "Sum of matrix elements"
@@ -150,7 +149,7 @@ msgstr "Сумма элементов матрицы"
 #: ../../common_information/processes_tasks.rst:91
 #: ../../common_information/processes_tasks.rst:144
 msgid "11"
-msgstr ""
+msgstr "11"
 
 #: ../../common_information/processes_tasks.rst:30
 msgid "Sum of values by rows in the matrix"
@@ -160,7 +159,7 @@ msgstr "Сумма значений по строкам матрицы"
 #: ../../common_information/processes_tasks.rst:93
 #: ../../common_information/processes_tasks.rst:147
 msgid "12"
-msgstr ""
+msgstr "12"
 
 #: ../../common_information/processes_tasks.rst:32
 msgid "Sum of values by columns in the matrix"
@@ -170,7 +169,7 @@ msgstr "Сумма значений по столбцам матрицы"
 #: ../../common_information/processes_tasks.rst:95
 #: ../../common_information/processes_tasks.rst:150
 msgid "13"
-msgstr ""
+msgstr "13"
 
 #: ../../common_information/processes_tasks.rst:34
 msgid "Maximum value of matrix elements"
@@ -180,7 +179,7 @@ msgstr "Максимальное значение элементов матри�
 #: ../../common_information/processes_tasks.rst:97
 #: ../../common_information/processes_tasks.rst:153
 msgid "14"
-msgstr ""
+msgstr "14"
 
 #: ../../common_information/processes_tasks.rst:36
 msgid "Minimum value of matrix elements"
@@ -190,7 +189,7 @@ msgstr "Минимальное значение элементов матриц�
 #: ../../common_information/processes_tasks.rst:99
 #: ../../common_information/processes_tasks.rst:155
 msgid "15"
-msgstr ""
+msgstr "15"
 
 #: ../../common_information/processes_tasks.rst:38
 msgid "Finding maximum values by rows in the matrix"
@@ -200,7 +199,7 @@ msgstr "Нахождение максимальных значений по ст
 #: ../../common_information/processes_tasks.rst:101
 #: ../../common_information/processes_tasks.rst:157
 msgid "16"
-msgstr ""
+msgstr "16"
 
 #: ../../common_information/processes_tasks.rst:40
 msgid "Finding maximum values by columns in the matrix"
@@ -210,7 +209,7 @@ msgstr "Нахождение максимальных значений по ст
 #: ../../common_information/processes_tasks.rst:103
 #: ../../common_information/processes_tasks.rst:159
 msgid "17"
-msgstr ""
+msgstr "17"
 
 #: ../../common_information/processes_tasks.rst:42
 msgid "Finding minimum values by rows in the matrix"
@@ -220,7 +219,7 @@ msgstr "Нахождение минимальных значений по стр
 #: ../../common_information/processes_tasks.rst:105
 #: ../../common_information/processes_tasks.rst:161
 msgid "18"
-msgstr ""
+msgstr "18"
 
 #: ../../common_information/processes_tasks.rst:44
 msgid "Finding minimum values by columns in the matrix"
@@ -230,7 +229,7 @@ msgstr "Нахождение минимальных значений по сто
 #: ../../common_information/processes_tasks.rst:107
 #: ../../common_information/processes_tasks.rst:163
 msgid "19"
-msgstr ""
+msgstr "19"
 
 #: ../../common_information/processes_tasks.rst:46
 msgid "Integration – rectangle method"
@@ -240,7 +239,7 @@ msgstr "Интегрирование – метод прямоугольнико
 #: ../../common_information/processes_tasks.rst:109
 #: ../../common_information/processes_tasks.rst:165
 msgid "20"
-msgstr ""
+msgstr "20"
 
 #: ../../common_information/processes_tasks.rst:48
 msgid "Integration – trapezoidal method"
@@ -251,7 +250,7 @@ msgstr "Интегрирование – метод трапеций"
 #: ../../common_information/processes_tasks.rst:167
 #: ../../common_information/processes_tasks.rst:268
 msgid "21"
-msgstr ""
+msgstr "21"
 
 #: ../../common_information/processes_tasks.rst:50
 msgid "Integration – Monte Carlo method"
@@ -261,7 +260,7 @@ msgstr "Интегрирование – метод Монте-Карло"
 #: ../../common_information/processes_tasks.rst:113
 #: ../../common_information/processes_tasks.rst:169
 msgid "22"
-msgstr ""
+msgstr "22"
 
 #: ../../common_information/processes_tasks.rst:52
 msgid "Counting the number of alphabetical characters in a string"
@@ -271,7 +270,7 @@ msgstr "Подсчет числа буквенных символов в стр�
 #: ../../common_information/processes_tasks.rst:115
 #: ../../common_information/processes_tasks.rst:171
 msgid "23"
-msgstr ""
+msgstr "23"
 
 #: ../../common_information/processes_tasks.rst:54
 msgid "Counting the frequency of a character in a string"
@@ -280,7 +279,7 @@ msgstr "Подсчет частоты символа в строке"
 #: ../../common_information/processes_tasks.rst:56
 #: ../../common_information/processes_tasks.rst:173
 msgid "24"
-msgstr ""
+msgstr "24"
 
 #: ../../common_information/processes_tasks.rst:56
 msgid "Counting the number of words in a string"
@@ -289,7 +288,7 @@ msgstr "Подсчет числа слов в строке"
 #: ../../common_information/processes_tasks.rst:58
 #: ../../common_information/processes_tasks.rst:175
 msgid "25"
-msgstr ""
+msgstr "25"
 
 #: ../../common_information/processes_tasks.rst:58
 msgid "Counting the number of sentences in a string"
@@ -298,7 +297,7 @@ msgstr "Подсчет числа предложений в строке"
 #: ../../common_information/processes_tasks.rst:60
 #: ../../common_information/processes_tasks.rst:177
 msgid "26"
-msgstr ""
+msgstr "26"
 
 #: ../../common_information/processes_tasks.rst:60
 msgid "Checking lexicographical order of two strings"
@@ -307,7 +306,7 @@ msgstr "Проверка лексикографической упорядоче
 #: ../../common_information/processes_tasks.rst:62
 #: ../../common_information/processes_tasks.rst:179
 msgid "27"
-msgstr ""
+msgstr "27"
 
 #: ../../common_information/processes_tasks.rst:62
 msgid "Counting the number of differing characters between two strings"
@@ -555,7 +554,7 @@ msgstr "Линейная фильтрация изображений (верти
 
 #: ../../common_information/processes_tasks.rst:181
 msgid "28"
-msgstr ""
+msgstr "28"
 
 #: ../../common_information/processes_tasks.rst:181
 msgid "Linear image filtering (block partition). Gaussian kernel 3x3."
@@ -563,7 +562,7 @@ msgstr "Линейная фильтрация изображений (блочн
 
 #: ../../common_information/processes_tasks.rst:183
 msgid "29"
-msgstr ""
+msgstr "29"
 
 #: ../../common_information/processes_tasks.rst:183
 msgid "Edge detection in an image using the Sobel operator."
@@ -571,7 +570,7 @@ msgstr "Выделение ребер на изображении с испол�
 
 #: ../../common_information/processes_tasks.rst:185
 msgid "30"
-msgstr ""
+msgstr "30"
 
 #: ../../common_information/processes_tasks.rst:185
 msgid "Contrast enhancement of grayscale image using linear histogram stretching."
@@ -579,7 +578,7 @@ msgstr "Повышение контраста полутонового изоб�
 
 #: ../../common_information/processes_tasks.rst:187
 msgid "31"
-msgstr ""
+msgstr "31"
 
 #: ../../common_information/processes_tasks.rst:187
 msgid ""
@@ -589,7 +588,7 @@ msgstr "Маркировка компонент на бинарном изобр
 
 #: ../../common_information/processes_tasks.rst:189
 msgid "32"
-msgstr ""
+msgstr "32"
 
 #: ../../common_information/processes_tasks.rst:189
 msgid "Convex hull construction for components of a binary image."
@@ -626,22 +625,22 @@ msgstr "Комментарии относятся к:"
 
 #: ../../common_information/processes_tasks.rst:206
 msgid "Variants for task 2"
-msgstr "Варинты для второй задачи"
+msgstr "Варианты для второй задачи"
 
 #: ../../common_information/processes_tasks.rst:206
 msgid "Variants for task 3"
-msgstr "Варинты для третьей задачи"
+msgstr "Варианты для третьей задачи"
 
 #: ../../common_information/processes_tasks.rst:208
 #: ../../common_information/processes_tasks.rst:235
 msgid "1 - 5"
-msgstr ""
+msgstr "1 - 5"
 
 #: ../../common_information/processes_tasks.rst:208
 #: ../../common_information/processes_tasks.rst:222
 #: ../../common_information/processes_tasks.rst:278
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: ../../common_information/processes_tasks.rst:211
 msgid ""
@@ -662,7 +661,7 @@ msgstr "ТОПОЛОГИИ СЕТЕЙ ПЕРЕДАЧИ ДАННЫХ. Нужно 
 #: ../../common_information/processes_tasks.rst:266
 #: ../../common_information/processes_tasks.rst:276
 msgid "Varinats for task 2"
-msgstr "Варинты для второй задачи"
+msgstr "Варианты для второй задачи"
 
 #: ../../common_information/processes_tasks.rst:220
 #: ../../common_information/processes_tasks.rst:233
@@ -671,11 +670,11 @@ msgstr "Варинты для второй задачи"
 #: ../../common_information/processes_tasks.rst:266
 #: ../../common_information/processes_tasks.rst:276
 msgid "Varinats for task 3"
-msgstr "Варинты для третьей задачи"
+msgstr "Варианты для третьей задачи"
 
 #: ../../common_information/processes_tasks.rst:222
 msgid "6 - 10"
-msgstr ""
+msgstr "6 - 10"
 
 #: ../../common_information/processes_tasks.rst:225
 msgid ""
@@ -687,7 +686,7 @@ msgstr "МАТРИЧНЫЕ ВЫЧИСЛЕНИЯ. В горизонтальной
 
 #: ../../common_information/processes_tasks.rst:235
 msgid "11 - 14"
-msgstr ""
+msgstr "11 - 14"
 
 #: ../../common_information/processes_tasks.rst:238
 msgid ""
@@ -700,11 +699,11 @@ msgstr "МАШИННАЯ ГРАФИКА И ОБРАБОТКА ИЗОБРАЖЕН
 
 #: ../../common_information/processes_tasks.rst:248
 msgid "26 - 27"
-msgstr ""
+msgstr "26 - 27"
 
 #: ../../common_information/processes_tasks.rst:248
 msgid "24 - 32"
-msgstr ""
+msgstr "24 - 32"
 
 #: ../../common_information/processes_tasks.rst:251
 msgid "SOLUTION OF A SYSTEM OF LINEAR ALGEBRAIC EQUATIONS"
@@ -712,7 +711,7 @@ msgstr "РЕШЕНИЕ СИСТЕМЫ ЛИНЕЙНЫХ АЛГЕБРАИЧЕСК�
 
 #: ../../common_information/processes_tasks.rst:258
 msgid "15 - 20"
-msgstr ""
+msgstr "15 - 20"
 
 #: ../../common_information/processes_tasks.rst:261
 msgid "SORT ALGORITHMS"
@@ -720,7 +719,7 @@ msgstr "АЛГОРИТМЫ СОРТИРОВКИ"
 
 #: ../../common_information/processes_tasks.rst:268
 msgid "14 - 21"
-msgstr ""
+msgstr "14 - 21"
 
 #: ../../common_information/processes_tasks.rst:271
 msgid "GRAPH PROCESSING ALGORITHMS"
@@ -728,4 +727,4 @@ msgstr "АЛГОРИТМЫ НА ГРАФАХ"
 
 #: ../../common_information/processes_tasks.rst:278
 msgid "22 - 23"
-msgstr ""
+msgstr "22 - 23"

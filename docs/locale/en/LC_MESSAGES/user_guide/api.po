@@ -8,11 +8,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 21:38+0200\n"
+"POT-Creation-Date: 2025-10-24 15:06+0200\n"
 "PO-Revision-Date: 2025-08-22 21:45+0200\n"
 "Last-Translator: Learning Process Team <nesterov.alexander@outlook.com>\n"
 "Language: en\n"
-"Language-Team: Learning Process Team (gooddoog@student.su, nesterov.alexander@outlook.com)\n"
+"Language-Team: Learning Process Team (gooddoog@student.su, "
+"nesterov.alexander@outlook.com)\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -70,4 +71,28 @@ msgstr ""
 #: ../../../../docs/user_guide/api.rst:26
 msgid "Performance Module"
 msgstr ""
+
+#~ msgid "Functions"
+#~ msgstr ""
+
+#~ msgid "Parameters"
+#~ msgstr ""
+
+#~ msgid "Returns"
+#~ msgstr ""
+
+#~ msgid "Typedefs"
+#~ msgstr ""
+
+#~ msgid "Template Parameters"
+#~ msgstr ""
+
+#~ msgid "Enums"
+#~ msgstr ""
+
+#~ msgid "Throws"
+#~ msgstr ""
+
+#~ msgid "Variables"
+#~ msgstr ""
 

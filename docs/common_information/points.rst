@@ -1,153 +1,123 @@
 Points
 ======
 
-- For “process parallelism” semester
+Overview
+--------
 
-  - 1st MPI task
+- Total per semester (Practice): 70 points
+- Report points are distributed per task and sum to 10
 
-    +----------+
-    | Solution |
-    +==========+
-    | 10       |
-    +----------+
+Processes semester (MPI)
+------------------------
 
-  - 2nd MPI task
+- Task 1 — Total: 12
+  - Implementation: MPI 8 + Seq 2
+  - Performance: 0
+  - Report: 2
 
-    ======== ===========
-    Solution Performance
-    ======== ===========
-    15       5
-    ======== ===========
+- Task 2 — Total: 23
+  - Implementation: MPI 12 + Seq 3
+  - Performance: 5
+  - Report: 3
 
-  - 3rd MPI task
+- Task 3 — Total: 35
+  - Implementation: MPI 16 + Seq 4
+  - Performance: 10
+  - Report: 5
 
-    ======== ===========
-    Solution Performance
-    ======== ===========
-    20       10
-    ======== ===========
+- Semester total: 70
 
-  - **Total : 60 points**
+Threads semester (OpenMP/TBB/std::thread)
+-----------------------------------------
 
-- For “thread parallelism” semester
+- seq — Total: 5 (S 4, R 1)
+- omp — Total: 11 (S 6, A 3, R 2)
+- tbb — Total: 11 (S 6, A 3, R 2)
+- stl — Total: 16 (S 8, A 6, R 2)
+- all — Total: 21 (S 10, A 8, R 3)
 
-  - Sequential version
+- Semester total: 64
 
-    +----------+
-    | Solution |
-    +==========+
-    | 4        |
-    +----------+
+Legend: S — Solution (implementation), A — Acceleration (performance), R — Report
 
-  - OpenMP version
+Performance points mapping
+--------------------------
 
-    ======== ===========
-    Solution Performance
-    ======== ===========
-    6        3
-    ======== ===========
+The ratio of efficiency percentage to points percentage (max 100%, min 0%):
 
-  - TBB version
+If the score is not an integer, it is rounded up.
 
-    ======== ===========
-    Solution Performance
-    ======== ===========
-    6        3
-    ======== ===========
+  +----------------+-------------------+
+  | Efficiency (%) | Points percentage |
+  +================+===================+
+  | >= 50%         | 100%              |
+  +----------------+-------------------+
+  | [45, 50)       | 90%               |
+  +----------------+-------------------+
+  | [42, 45)       | 80%               |
+  +----------------+-------------------+
+  | [40, 42)       | 70%               |
+  +----------------+-------------------+
+  | [37, 40)       | 60%               |
+  +----------------+-------------------+
+  | [35, 37)       | 50%               |
+  +----------------+-------------------+
+  | [32, 35)       | 40%               |
+  +----------------+-------------------+
+  | [30, 32)       | 30%               |
+  +----------------+-------------------+
+  | [27, 30)       | 20%               |
+  +----------------+-------------------+
+  | [25, 27)       | 10%               |
+  +----------------+-------------------+
+  | < 25%          | 0%                |
+  +----------------+-------------------+
 
-  - std::thread version
+Report
+------
 
-    ======== ===========
-    Solution Performance
-    ======== ===========
-    8        6
-    ======== ===========
++--------------+--------------+--------------------+-------+
+| Completeness | Text Quality | Formatting Quality | Total |
++==============+==============+====================+=======+
+| 5            | 2.5          | 2.5                | 10    |
++--------------+--------------+--------------------+-------+
 
-  - “MPI + threads” version (The threading technology is chosen
-    randomly)
+Conversion to grade
+-------------------
 
-    ======== ===========
-    Solution Performance
-    ======== ===========
-    10       8
-    ======== ===========
+- 5-point scale
 
-  - **Total : 54 points**
+  ============ =============== ============
+  Points range Exam Assessment Student Pass
+  ============ =============== ============
+  [92, 100]    5               Passed
+  [70, 92)     4               Passed
+  [50, 70)     3               Passed
+  < 50         2               Not Passed
+  ============ =============== ============
 
-- The rule for earning performance points.
+- 7-point scale (current)
 
-  The ratio of efficiency percentage to points percentage, where the maximum points is 100% and the minimum points is 0%.
+  ============ =============== ============
+  Points range Exam Assessment Student Pass
+  ============ =============== ============
+  [99, 100]    5.5             Passed
+  [92, 99)     5               Passed
+  [82, 92)     4.5             Passed
+  [70, 82)     4               Passed
+  [50, 70)     3               Passed
+  < 50         2               Not Passed
+  ============ =============== ============
 
-  If the score is not an integer, it is rounded up.
+Penalties
+---------
 
-    +----------------+-------------------+
-    | Efficiency (%) | Points percentage |
-    +================+===================+
-    | >= 50%         | 100%              |
-    +----------------+-------------------+
-    | [45, 50)       | 90%               |
-    +----------------+-------------------+
-    | [42, 45)       | 80%               |
-    +----------------+-------------------+
-    | [40, 42)       | 70%               |
-    +----------------+-------------------+
-    | [37, 40)       | 60%               |
-    +----------------+-------------------+
-    | [35, 37)       | 50%               |
-    +----------------+-------------------+
-    | [32, 35)       | 40%               |
-    +----------------+-------------------+
-    | [30, 32)       | 30%               |
-    +----------------+-------------------+
-    | [27, 30)       | 20%               |
-    +----------------+-------------------+
-    | [25, 27)       | 10%               |
-    +----------------+-------------------+
-    | < 25%          | 0%                |
-    +----------------+-------------------+
+- A deadline will be set for each task.
+- 1 point is deducted from the version’s score for each day of delay.
+- A task is considered accepted when it is merged into the default branch after a successful CI pipeline.
+- The submission time is defined as the timestamp of the last meaningful commit (not an empty commit to re-trigger CI jobs).
 
-- Report
+Comments
+--------
 
-  +--------------+--------------+--------------------+-------+
-  | Completeness | Text Quality | Formatting Quality | Total |
-  +==============+==============+====================+=======+
-  | 5            | 2.5          | 2.5                | 10    |
-  +--------------+--------------+--------------------+-------+
-
-- Conversion of points into exam assessment or pass/fail
-
-  - For 5-point grading system
-
-    ============ =============== ============
-    Points range Exam Assessment Student Pass
-    ============ =============== ============
-    [87, 100]    5               Passed
-    [70, 87)     4               Passed
-    [50, 70)     3               Passed
-    < 50         2               Not Passed
-    ============ =============== ============
-
-  - For 7-point grading system **(our current system)**
-
-    ============ =============== ============
-    Points range Exam Assessment Student Pass
-    ============ =============== ============
-    [99, 100]    5.5             Passed
-    [92, 99)     5               Passed
-    [82, 92)     4.5             Passed
-    [70, 82)     4               Passed
-    [50, 70)     3               Passed
-    < 50         2               Not Passed
-    ============ =============== ============
-
-- Penalties:
-
-  - A deadline will be set for each version.
-  - 1 point is deducted from the version’s score for each day of delay in submission.
-  - The task is considered submitted when it is merged into the master/main branch.
-  - The submission time is defined as the timestamp of the last commit that successfully passes the CI pipeline.
-
-- Comments:
-
-  - It is forbidden to write the report if all tasks are not completed.
-  - Please keep in mind that one week before the end of the semester, the repository will be closed for final assessment.
+- One week before the end of the semester, the repository is closed for final assessment.
