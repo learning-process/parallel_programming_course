@@ -47,6 +47,7 @@ Notes
 - Reports are reviewed online in the Pull Request. The final grade is based on the submitted version that passes the review.
 - If the task is disabled by the end of semester (e.g., fails in master; see scoreboard “blue zone”), report points for that task are nullified.
 - Plagiarism is prohibited; identical or near‑duplicate reports will be rejected.
+
 Markdown template (report.md)
 -----------------------------
 
