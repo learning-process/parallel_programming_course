@@ -19,7 +19,7 @@ jobs:
         run: |
           python3 -m pip install -r requirements.txt --break-system-packages --ignore-installed
       - name: Download installed package
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: ubuntu-gcc-install-ubuntu-24.04
       - name: Extract installed package
@@ -38,7 +38,7 @@ jobs:
         working-directory: build
         run: zip -r ../perf-stat.zip perf_stat_dir
       - name: Upload results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: perf-stat
           path: perf-stat.zip
@@ -57,7 +57,7 @@ jobs:
           brew link libomp --overwrite --force
           python3 -m pip install -r requirements.txt --break-system-packages
       - name: Download installed package
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: macos-clang-install
       - name: Extract installed package
@@ -74,7 +74,7 @@ jobs:
         working-directory: build
         run: zip -r perf-stat-macos.zip perf_stat_dir
       - name: Upload results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: perf-stat-macos
           path: perf-stat-macos.zip

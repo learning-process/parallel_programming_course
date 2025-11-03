@@ -29,10 +29,10 @@ if(NOT ENABLE_SYSTEM_TBB)
                -DTBB_TEST=OFF
     BUILD_COMMAND
       "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build"
-      --config ${CMAKE_BUILD_TYPE} --parallel
+      --config $<CONFIG> --parallel
     INSTALL_COMMAND
       "${CMAKE_COMMAND}" --install
-      "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --prefix
+      "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --config $<CONFIG> --prefix
       "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install"
     TEST_COMMAND ${ppc_onetbb_TEST_COMMAND})
 

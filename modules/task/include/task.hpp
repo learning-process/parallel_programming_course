@@ -283,7 +283,7 @@ using TaskPtr = std::shared_ptr<Task<InType, OutType>>;
 /// @param in Input to pass to the task constructor.
 /// @return Shared a pointer to the newly created task.
 template <typename TaskType, typename InType>
-std::shared_ptr<TaskType> TaskGetter(InType in) {
+std::shared_ptr<TaskType> TaskGetter(const InType &in) {
   return std::make_shared<TaskType>(in);
 }
 

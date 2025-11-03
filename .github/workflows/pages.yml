@@ -22,7 +22,7 @@ jobs:
       - name: Run Doxygen
         run: doxygen Doxyfile
       - name: Upload Doxygen documentation
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: doxygen-documentation-xml
           path: xml
@@ -46,7 +46,7 @@ jobs:
           python3 -m pip install -r docs/requirements.txt
           python3 -m pip install graphviz pyyaml
       - name: Download artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: doxygen-documentation-xml
           path: xml
@@ -64,7 +64,7 @@ jobs:
         run: |
           cmake --build build -t docs_html -- --quiet
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: sphinx-documentation
           path: ./build/docs/_build/html
@@ -82,7 +82,7 @@ jobs:
           python3 -m pip install -r requirements.txt
           python3 -m pip install -r scoreboard/requirements.txt
       - name: Download performance data
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: perf-stat
       - name: Extract performance data
@@ -102,12 +102,12 @@ jobs:
         run: |
           cmake --build build --parallel -- --quiet
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: scoreboard
           path: ./build/scoreboard/html/
   deploy-pages:
-    if: github.ref == 'refs/heads/master'
+    if: ${{ !github.event.repository.fork && github.ref == 'refs/heads/master' }}
     needs:
       - build-sphinx
       - build-scoreboard
@@ -119,17 +119,17 @@ jobs:
       cancel-in-progress: false
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: sphinx-documentation
           path: ./
       - name: Download artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: scoreboard
           path: ./scoreboard/
       - name: Download coverage artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: cov-report
           path: ./coverage/
