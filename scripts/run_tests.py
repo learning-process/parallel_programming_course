@@ -135,12 +135,7 @@ class PPCRunner:
             )
 
         mpi_running = (
-            [self.mpi_exec]
-            + shlex.split(additional_mpi_args)
-            + [
-                "-np",
-                ppc_num_proc,
-            ]
+            [self.mpi_exec] + shlex.split(additional_mpi_args) + ["-np", ppc_num_proc]
         )
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
             for task_type in ["all", "mpi"]:
