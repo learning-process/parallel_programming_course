@@ -138,10 +138,6 @@ class PPCRunner:
             [self.mpi_exec]
             + shlex.split(additional_mpi_args)
             + [
-                "-x",
-                "PPC_NUM_THREADS",
-                "-x",
-                "OMP_NUM_THREADS",
                 "-np",
                 ppc_num_proc,
             ]
@@ -156,15 +152,7 @@ class PPCRunner:
 
     def run_performance(self):
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
-            mpi_running = [
-                self.mpi_exec,
-                "-x",
-                "PPC_NUM_THREADS",
-                "-x",
-                "OMP_NUM_THREADS",
-                "-np",
-                self.__ppc_num_proc,
-            ]
+            mpi_running = [self.mpi_exec, "-np", self.__ppc_num_proc]
             for task_type in ["all", "mpi"]:
                 self.__run_exec(
                     mpi_running
