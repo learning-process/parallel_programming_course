@@ -77,6 +77,8 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
       GTEST_SKIP();
     }
 
+    const auto test_env_scope = ppc::util::test::MakePerTestEnvForCurrentGTest(test_name);
+
     task_ = task_getter(GetTestInputData());
     ppc::performance::Perf perf(task_);
     ppc::performance::PerfAttr perf_attr;

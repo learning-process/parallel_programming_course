@@ -135,30 +135,47 @@ class PPCRunner:
             )
 
         mpi_running = (
-            [self.mpi_exec] + shlex.split(additional_mpi_args) + ["-np", ppc_num_proc]
+            [self.mpi_exec]
+            + shlex.split(additional_mpi_args)
+            + [
+                "-x",
+                "PPC_NUM_THREADS",
+                "-x",
+                "OMP_NUM_THREADS",
+                "-np",
+                ppc_num_proc,
+            ]
         )
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
             for task_type in ["all", "mpi"]:
                 self.__run_exec(
                     mpi_running
                     + [str(self.work_dir / "ppc_func_tests")]
-                    + self.__get_gtest_settings(1, "_" + task_type)
+                    + self.__get_gtest_settings(1, "_" + task_type + "_")
                 )
 
     def run_performance(self):
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
-            mpi_running = [self.mpi_exec, "-np", self.__ppc_num_proc]
+            mpi_running = [
+                self.mpi_exec,
+                "-x",
+                "PPC_NUM_THREADS",
+                "-x",
+                "OMP_NUM_THREADS",
+                "-np",
+                self.__ppc_num_proc,
+            ]
             for task_type in ["all", "mpi"]:
                 self.__run_exec(
                     mpi_running
                     + [str(self.work_dir / "ppc_perf_tests")]
-                    + self.__get_gtest_settings(1, "_" + task_type)
+                    + self.__get_gtest_settings(1, "_" + task_type + "_")
                 )
 
         for task_type in ["omp", "seq", "stl", "tbb"]:
             self.__run_exec(
                 [str(self.work_dir / "ppc_perf_tests")]
-                + self.__get_gtest_settings(1, "_" + task_type)
+                + self.__get_gtest_settings(1, "_" + task_type + "_")
             )
 
 
