@@ -20,10 +20,8 @@ endfunction()
 
 function(ppc_link_openmp exec_func_lib)
   find_package(OpenMP REQUIRED)
-  # Link the canonical imported target if available
-  if(TARGET OpenMP::OpenMP_CXX)
-    target_link_libraries(${exec_func_lib} PUBLIC OpenMP::OpenMP_CXX)
-  endif()
+  target_link_libraries(${exec_func_lib} PUBLIC ${OpenMP_libomp_LIBRARY}
+                                                OpenMP::OpenMP_CXX)
 
   if(APPLE)
     # Homebrew libomp common paths
