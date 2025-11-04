@@ -142,7 +142,7 @@ class PPCRunner:
                 self.__run_exec(
                     mpi_running
                     + [str(self.work_dir / "ppc_func_tests")]
-                    + self.__get_gtest_settings(1, "_" + task_type)
+                    + self.__get_gtest_settings(1, "_" + task_type + "_")
                 )
 
     def run_performance(self):
@@ -152,13 +152,13 @@ class PPCRunner:
                 self.__run_exec(
                     mpi_running
                     + [str(self.work_dir / "ppc_perf_tests")]
-                    + self.__get_gtest_settings(1, "_" + task_type)
+                    + self.__get_gtest_settings(1, "_" + task_type + "_")
                 )
 
         for task_type in ["omp", "seq", "stl", "tbb"]:
             self.__run_exec(
                 [str(self.work_dir / "ppc_perf_tests")]
-                + self.__get_gtest_settings(1, "_" + task_type)
+                + self.__get_gtest_settings(1, "_" + task_type + "_")
             )
 
 
