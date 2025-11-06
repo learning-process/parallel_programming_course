@@ -3,10 +3,13 @@
 #include <gtest/gtest.h>
 #include <mpi.h>
 
+#include <chrono>
+#include <cstdint>
 #include <cstdlib>
 #include <format>
 #include <iostream>
 #include <memory>
+#include <random>
 #include <stdexcept>
 #include <string>
 
@@ -87,6 +90,26 @@ int Init(int argc, char **argv) {
   tbb::global_control control(tbb::global_control::max_allowed_parallelism, ppc::util::GetNumThreads());
 
   ::testing::InitGoogleTest(&argc, argv);
+
+  // Ensure consistent GoogleTest shuffle order across all MPI ranks.
+  unsigned int seed = 0;
+  int rank_for_seed = -1;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank_for_seed);
+
+  if (rank_for_seed == 0) {
+    try {
+      seed = std::random_device{}();
+    } catch (...) {
+      seed = 0;
+    }
+    if (seed == 0) {
+      const auto now = static_cast<std::uint64_t>(std::chrono::steady_clock::now().time_since_epoch().count());
+      seed = static_cast<unsigned int>(((now & 0x7fffffffULL) | 1ULL));
+    }
+  }
+
+  MPI_Bcast(&seed, 1, MPI_UNSIGNED, 0, MPI_COMM_WORLD);
+  ::testing::GTEST_FLAG(random_seed) = static_cast<int>(seed);
 
   auto &listeners = ::testing::UnitTest::GetInstance()->listeners();
   int rank = -1;
