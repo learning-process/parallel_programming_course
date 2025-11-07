@@ -53,6 +53,17 @@ class PPCRunner:
             self.mpi_exec = "mpiexec"
         else:
             self.mpi_exec = "mpirun"
+        self.platform = platform.system()
+
+        # Detect MPI implementation to choose compatible flags
+        self.mpi_env_mode = "unknown"  # one of: openmpi, mpich, unknown
+        self.mpi_np_flag = "-np"
+        if self.platform == "Windows":
+            # MSMPI uses -env and -n
+            self.mpi_env_mode = "mpich"
+            self.mpi_np_flag = "-n"
+        else:
+            self.mpi_env_mode, self.mpi_np_flag = self.__detect_mpi_impl()
 
     @staticmethod
     def __get_project_path():
@@ -87,6 +98,81 @@ class PPCRunner:
         result = subprocess.run(command, shell=False, env=self.__ppc_env)
         if result.returncode != 0:
             raise Exception(f"Subprocess return {result.returncode}.")
+
+    def __detect_mpi_impl(self):
+        """Detect MPI implementation and return (env_mode, np_flag).
+        env_mode: 'openmpi' -> use '-x VAR', 'mpich' -> use '-genvlist VAR1,VAR2', 'unknown' -> pass no env flags.
+        np_flag: '-np' for OpenMPI/unknown, '-n' for MPICH-family.
+        """
+        probes = (["--version"], ["-V"], ["-v"], ["--help"], ["-help"])
+        out = ""
+        for args in probes:
+            try:
+                proc = subprocess.run(
+                    [self.mpi_exec] + list(args),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                )
+                out = (proc.stdout or "").lower()
+                if out:
+                    break
+            except Exception:
+                continue
+
+        if "open mpi" in out or "ompi" in out:
+            return "openmpi", "-np"
+        if (
+            "hydra" in out
+            or "mpich" in out
+            or "intel(r) mpi" in out
+            or "intel mpi" in out
+        ):
+            return "mpich", "-n"
+        return "unknown", "-np"
+
+    def __build_mpi_cmd(self, ppc_num_proc, additional_mpi_args):
+        base = [self.mpi_exec] + shlex.split(additional_mpi_args)
+
+        if self.platform == "Windows":
+            # MS-MPI style
+            env_args = [
+                "-env",
+                "PPC_NUM_THREADS",
+                self.__ppc_env["PPC_NUM_THREADS"],
+                "-env",
+                "OMP_NUM_THREADS",
+                self.__ppc_env["OMP_NUM_THREADS"],
+            ]
+            np_args = ["-n", ppc_num_proc]
+            return base + env_args + np_args
+
+        # Non-Windows
+        if self.mpi_env_mode == "openmpi":
+            env_args = [
+                "-x",
+                "PPC_NUM_THREADS",
+                "-x",
+                "OMP_NUM_THREADS",
+            ]
+            np_flag = "-np"
+        elif self.mpi_env_mode == "mpich":
+            # Explicitly set env variables for all ranks
+            env_args = [
+                "-env",
+                "PPC_NUM_THREADS",
+                self.__ppc_env["PPC_NUM_THREADS"],
+                "-env",
+                "OMP_NUM_THREADS",
+                self.__ppc_env["OMP_NUM_THREADS"],
+            ]
+            np_flag = "-n"
+        else:
+            # Unknown MPI flavor: rely on environment inheritance and default to -np
+            env_args = []
+            np_flag = "-np"
+
+        return base + env_args + [np_flag, ppc_num_proc]
 
     @staticmethod
     def __get_gtest_settings(repeats_count, type_task):
@@ -133,10 +219,7 @@ class PPCRunner:
             raise EnvironmentError(
                 "Required environment variable 'PPC_NUM_PROC' is not set."
             )
-
-        mpi_running = (
-            [self.mpi_exec] + shlex.split(additional_mpi_args) + ["-np", ppc_num_proc]
-        )
+        mpi_running = self.__build_mpi_cmd(ppc_num_proc, additional_mpi_args)
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
             for task_type in ["all", "mpi"]:
                 self.__run_exec(
@@ -147,7 +230,7 @@ class PPCRunner:
 
     def run_performance(self):
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
-            mpi_running = [self.mpi_exec, "-np", self.__ppc_num_proc]
+            mpi_running = self.__build_mpi_cmd(self.__ppc_num_proc, "")
             for task_type in ["all", "mpi"]:
                 self.__run_exec(
                     mpi_running

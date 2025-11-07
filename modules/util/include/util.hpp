@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <array>
 #include <atomic>
 #include <cctype>
 #include <cstdint>
@@ -26,6 +27,7 @@
 #include <gtest/gtest.h>
 
 #include <libenvpp/detail/environment.hpp>
+#include <libenvpp/detail/get.hpp>
 #include <nlohmann/json.hpp>
 
 /// @brief JSON namespace used for settings and config parsing.
@@ -123,7 +125,19 @@ class ScopedPerTestEnv {
  private:
   static std::string CreateTmpDir(const std::string &token) {
     namespace fs = std::filesystem;
-    const fs::path tmp = fs::temp_directory_path() / (std::string("ppc_test_") + token);
+    auto make_rank_suffix = []() -> std::string {
+      // Derive rank from common MPI env vars without including MPI headers
+      constexpr std::array<std::string_view, 5> kRankVars = {"OMPI_COMM_WORLD_RANK", "PMI_RANK", "PMIX_RANK",
+                                                             "SLURM_PROCID", "MSMPI_RANK"};
+      for (auto name : kRankVars) {
+        if (auto r = env::get<int>(name); r.has_value() && r.value() >= 0) {
+          return std::string("_rank_") + std::to_string(r.value());
+        }
+      }
+      return std::string{};
+    };
+    const std::string rank_suffix = IsUnderMpirun() ? make_rank_suffix() : std::string{};
+    const fs::path tmp = fs::temp_directory_path() / (std::string("ppc_test_") + token + rank_suffix);
     std::error_code ec;
     fs::create_directories(tmp, ec);
     (void)ec;
