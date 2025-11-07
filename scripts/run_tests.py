@@ -53,6 +53,7 @@ class PPCRunner:
             self.mpi_exec = "mpiexec"
         else:
             self.mpi_exec = "mpirun"
+        self.platform = platform.system()
 
     @staticmethod
     def __get_project_path():
@@ -133,10 +134,34 @@ class PPCRunner:
             raise EnvironmentError(
                 "Required environment variable 'PPC_NUM_PROC' is not set."
             )
-
-        mpi_running = (
-            [self.mpi_exec] + shlex.split(additional_mpi_args) + ["-np", ppc_num_proc]
-        )
+        if self.platform == "Windows":
+            mpi_running = (
+                [self.mpi_exec]
+                + shlex.split(additional_mpi_args)
+                + [
+                    "-env",
+                    "PPC_NUM_THREADS",
+                    self.__ppc_env["PPC_NUM_THREADS"],
+                    "-env",
+                    "OMP_NUM_THREADS",
+                    self.__ppc_env["OMP_NUM_THREADS"],
+                    "-n",
+                    ppc_num_proc,
+                ]
+            )
+        else:
+            mpi_running = (
+                [self.mpi_exec]
+                + shlex.split(additional_mpi_args)
+                + [
+                    "-x",
+                    "PPC_NUM_THREADS",
+                    "-x",
+                    "OMP_NUM_THREADS",
+                    "-np",
+                    ppc_num_proc,
+                ]
+            )
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
             for task_type in ["all", "mpi"]:
                 self.__run_exec(
@@ -147,7 +172,28 @@ class PPCRunner:
 
     def run_performance(self):
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
-            mpi_running = [self.mpi_exec, "-np", self.__ppc_num_proc]
+            if self.platform == "Windows":
+                mpi_running = [
+                    self.mpi_exec,
+                    "-env",
+                    "PPC_NUM_THREADS",
+                    self.__ppc_env["PPC_NUM_THREADS"],
+                    "-env",
+                    "OMP_NUM_THREADS",
+                    self.__ppc_env["OMP_NUM_THREADS"],
+                    "-n",
+                    self.__ppc_num_proc,
+                ]
+            else:
+                mpi_running = [
+                    self.mpi_exec,
+                    "-x",
+                    "PPC_NUM_THREADS",
+                    "-x",
+                    "OMP_NUM_THREADS",
+                    "-np",
+                    self.__ppc_num_proc,
+                ]
             for task_type in ["all", "mpi"]:
                 self.__run_exec(
                     mpi_running
