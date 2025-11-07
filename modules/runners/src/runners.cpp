@@ -18,51 +18,6 @@
 #include "oneapi/tbb/global_control.h"
 #include "util/include/util.hpp"
 
-namespace {
-[[maybe_unused]] void SyncGTestSeed() {
-  unsigned int seed = 0;
-  int rank = -1;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  if (rank == 0) {
-    try {
-      seed = std::random_device{}();
-    } catch (...) {
-      seed = 0;
-    }
-    if (seed == 0) {
-      const auto now = static_cast<std::uint64_t>(std::chrono::steady_clock::now().time_since_epoch().count());
-      seed = static_cast<unsigned int>(((now & 0x7fffffffULL) | 1ULL));
-    }
-  }
-  MPI_Bcast(&seed, 1, MPI_UNSIGNED, 0, MPI_COMM_WORLD);
-  ::testing::GTEST_FLAG(random_seed) = static_cast<int>(seed);
-}
-
-[[maybe_unused]] void SyncGTestFilter() {
-  int rank = -1;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  std::string filter = (rank == 0) ? ::testing::GTEST_FLAG(filter) : std::string{};
-  int len = static_cast<int>(filter.size());
-  MPI_Bcast(&len, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  if (rank != 0) {
-    filter.resize(static_cast<std::size_t>(len));
-  }
-  if (len > 0) {
-    MPI_Bcast(filter.data(), len, MPI_CHAR, 0, MPI_COMM_WORLD);
-  }
-  ::testing::GTEST_FLAG(filter) = filter;
-}
-
-[[maybe_unused]] bool HasFlag(int argc, char **argv, std::string_view flag) {
-  for (int i = 1; i < argc; ++i) {
-    if (argv[i] != nullptr && std::string_view(argv[i]) == flag) {
-      return true;
-    }
-  }
-  return false;
-}
-}  // namespace
-
 namespace ppc::runners {
 
 void UnreadMessagesDetector::OnTestEnd(const ::testing::TestInfo & /*test_info*/) {
