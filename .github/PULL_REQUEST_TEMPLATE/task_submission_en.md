@@ -1,3 +1,7 @@
+PR Title (CI enforced):
+- Tasks: `[TASK] <Task>-<Variant>. <Last Name> <First Name> <Middle Name>. <Group>. <Technology: SEQ|MPI|ALL|OMP|STL|TBB>. <Task name>.`
+- Development: `[DEV] <any descriptive title>`
+
 <!--
 Pull request title requirement:
 

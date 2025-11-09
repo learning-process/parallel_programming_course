@@ -2,7 +2,10 @@ name: Build application
 
 on:
   push:
+    branches:
+      - master
   pull_request:
+    types: [opened, edited, synchronize, reopened]
   merge_group:
   schedule:
     - cron: '0 0 * * *'
@@ -16,21 +19,38 @@ concurrency:
         !startsWith(github.ref, 'refs/heads/gh-readonly-queue') }}
 
 jobs:
+  pr_title:
+    uses: ./.github/workflows/pr-title.yml
+
+  pr_title_tests:
+    needs:
+      - pr_title
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
+    uses: ./.github/workflows/pr-title-tests.yml
+
   pre-commit:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
+    needs:
+      - pr_title
+      - pr_title_tests
     uses: ./.github/workflows/pre-commit.yml
   ubuntu:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - pre-commit
     uses: ./.github/workflows/ubuntu.yml
   mac:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - pre-commit
     uses: ./.github/workflows/mac.yml
   windows:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - pre-commit
     uses: ./.github/workflows/windows.yml
   perf:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - ubuntu
       - mac
@@ -38,6 +58,7 @@ jobs:
     uses: ./.github/workflows/perf.yml
 
   pages:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.title }}
     needs:
       - perf
     uses: ./.github/workflows/pages.yml
