@@ -124,22 +124,31 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - name: Search for linter suppression markers
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.sha }}
         run: |
-          export BASE_REF=${{ github.event.pull_request.base.ref }}
-          export CHANGED_FILES="$(git diff --name-only origin/$BASE_REF HEAD | grep '^tasks/')"
+          set -euo pipefail
+
+          CHANGED_FILES="$(git diff --name-only "$BASE_SHA"..."$HEAD_SHA" -- 'tasks/')"
+
           if [ -z "$CHANGED_FILES" ]; then
             echo "No changed files in tasks directory."
             exit 0
           fi
+
           for file in $CHANGED_FILES; do
-            if grep -n "NOLINT" "$file"; then
+            if grep -q "NOLINT" "$file"; then
               echo "::error::Found 'NOLINT' in $file."
               exit 1
             fi
-            if grep -En 'IWYU[[:space:]]+pragma' "$file"; then
+            if grep -Eq 'IWYU[[:space:]]+pragma' "$file"; then
               echo "::error::Found 'IWYU pragma' in $file."
               exit 1
             fi
           done
+
           echo "No linter suppression markers found in changed files."
