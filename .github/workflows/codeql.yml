@@ -23,7 +23,7 @@ jobs:
           - cpp
           - python
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - name: Setup environment
