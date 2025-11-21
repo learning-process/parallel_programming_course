@@ -18,7 +18,7 @@ jobs:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
         build_type: [Release, Debug]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - name: ccache
@@ -71,7 +71,7 @@ jobs:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download installed package
         uses: actions/download-artifact@v6
         with:
@@ -103,7 +103,7 @@ jobs:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download installed package
         uses: actions/download-artifact@v6
         with:
@@ -127,7 +127,7 @@ jobs:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - name: ccache
@@ -172,7 +172,7 @@ jobs:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download installed package
         uses: actions/download-artifact@v6
         with:
@@ -204,7 +204,7 @@ jobs:
       matrix:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download installed package
         uses: actions/download-artifact@v6
         with:
@@ -230,7 +230,7 @@ jobs:
       matrix:
         os: ["ubuntu-24.04"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - name: ccache
@@ -277,7 +277,7 @@ jobs:
       matrix:
         os: ["ubuntu-24.04"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download installed package
         uses: actions/download-artifact@v6
         with:
@@ -315,7 +315,7 @@ jobs:
       matrix:
         os: ["ubuntu-24.04"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download installed package
         uses: actions/download-artifact@v6
         with:
@@ -345,7 +345,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - name: ccache
