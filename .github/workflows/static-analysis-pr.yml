@@ -149,6 +149,14 @@ jobs:
               echo "::error::Found 'IWYU pragma' in $file."
               exit 1
             fi
+            if grep -q "LCOV_EXCL_START" "$file"; then
+              echo "::error::Found 'LCOV_EXCL_START' in $file."
+              exit 1
+            fi
+            if grep -q "LCOV_EXCL_STOP" "$file"; then
+              echo "::error::Found 'LCOV_EXCL_STOP' in $file."
+              exit 1
+            fi
           done
 
           echo "No linter suppression markers found in changed files."
