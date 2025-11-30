@@ -1,3 +1,5 @@
+include_guard()
+
 option(USE_DOCS OFF)
 if(USE_DOCS)
   set(SPHINXBUILD "sphinx-build")

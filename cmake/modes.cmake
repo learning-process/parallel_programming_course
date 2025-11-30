@@ -1,3 +1,5 @@
+include_guard()
+
 add_compile_definitions(PPC_PATH_TO_PROJECT="${CMAKE_CURRENT_SOURCE_DIR}")
 
 macro(SUBDIRLIST result curdir)

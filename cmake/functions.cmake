@@ -1,4 +1,6 @@
 # ——— Helper function to add & register tests —————————————————————————
+include_guard()
+
 function(ppc_add_test test_name test_src USE_FLAG)
   if(${USE_FLAG})
     add_executable(${test_name} "${PROJECT_SOURCE_DIR}/${test_src}")
