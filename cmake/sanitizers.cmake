@@ -1,8 +1,8 @@
 include_guard()
 
-option(ENABLE_ADDRESS_SANITIZER OFF)
-option(ENABLE_UB_SANITIZER OFF)
-option(ENABLE_LEAK_SANITIZER OFF)
+option(ENABLE_ADDRESS_SANITIZER "Enable -fsanitize=address" OFF)
+option(ENABLE_UB_SANITIZER "Enable -fsanitize=undefined" OFF)
+option(ENABLE_LEAK_SANITIZER "Enable -fsanitize=leak" OFF)
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   if(ENABLE_ADDRESS_SANITIZER)
     add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
