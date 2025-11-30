@@ -140,23 +140,25 @@ jobs:
             exit 0
           fi
 
+          markers=(
+            "NOLINT::Found 'NOLINT'"
+            "IWYU[[:space:]]+pragma::Found 'IWYU pragma'"
+            "LCOV_EXCL_START::Found 'LCOV_EXCL_START'"
+            "LCOV_EXCL_STOP::Found 'LCOV_EXCL_STOP'"
+            "GCOVR_EXCL_LINE::Found 'GCOVR_EXCL_LINE'"
+            "GCOVR_EXCL_START::Found 'GCOVR_EXCL_START'"
+            "GCOVR_EXCL_STOP::Found 'GCOVR_EXCL_STOP'"
+          )
+
           for file in $CHANGED_FILES; do
-            if grep -q "NOLINT" "$file"; then
-              echo "::error::Found 'NOLINT' in $file."
-              exit 1
-            fi
-            if grep -Eq 'IWYU[[:space:]]+pragma' "$file"; then
-              echo "::error::Found 'IWYU pragma' in $file."
-              exit 1
-            fi
-            if grep -q "LCOV_EXCL_START" "$file"; then
-              echo "::error::Found 'LCOV_EXCL_START' in $file."
-              exit 1
-            fi
-            if grep -q "LCOV_EXCL_STOP" "$file"; then
-              echo "::error::Found 'LCOV_EXCL_STOP' in $file."
-              exit 1
-            fi
+            for marker in "${markers[@]}"; do
+              pattern="${marker%%::*}"
+              message="${marker#*::}"
+              if grep -Eq "$pattern" "$file"; then
+                echo "::error::${message} in $file."
+                exit 1
+              fi
+            done
           done
 
           echo "No linter suppression markers found in changed files."
