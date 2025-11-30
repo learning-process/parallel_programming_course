@@ -1,3 +1,5 @@
+include_guard()
+
 include(ExternalProject)
 
 option(ENABLE_SYSTEM_TBB "Use system TBB instead of bundled version" OFF)

@@ -1,3 +1,5 @@
+include_guard()
+
 find_package(MPI REQUIRED COMPONENTS CXX)
 if(NOT MPI_FOUND)
   message(FATAL_ERROR "MPI NOT FOUND")

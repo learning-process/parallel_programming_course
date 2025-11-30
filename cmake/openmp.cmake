@@ -1,3 +1,5 @@
+include_guard()
+
 if(MSVC AND NOT (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
   set(OpenMP_C_FLAGS
       "/openmp:llvm"
