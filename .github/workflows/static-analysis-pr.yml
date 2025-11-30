@@ -62,15 +62,10 @@ jobs:
       - name: Show ccache stats
         run: ccache --show-stats
       - name: Run clang-tidy
-        uses: ./.github/actions/clang-tidy-native
-        id: review
+        uses: aobolensk/clang-tidy-action@1685ada95cfee180d12944c3401ea33580d1d4e9
         with:
           exclude: "3rdparty build"
           clang_tidy_version: "21"
-      - if: steps.review.outputs.total_comments > 0
-        run: |
-          echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
-          exit 1
   clang-tidy-for-gcc-build:
     needs:
       - clang-tidy
@@ -111,15 +106,10 @@ jobs:
       - name: Show ccache stats
         run: ccache --show-stats
       - name: Run clang-tidy
-        uses: ./.github/actions/clang-tidy-native
-        id: review
+        uses: aobolensk/clang-tidy-action@1685ada95cfee180d12944c3401ea33580d1d4e9
         with:
           exclude: "3rdparty build docs_venv .git .pytest_cache .ruff_cache xml"
           clang_tidy_version: "21"
-      - if: steps.review.outputs.total_comments > 0
-        run: |
-          echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
-          exit 1
   nolint-check:
     runs-on: ubuntu-24.04
     steps:
