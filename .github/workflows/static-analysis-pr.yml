@@ -47,7 +47,7 @@ jobs:
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
-          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
         env:
           CC: clang-21
           CXX: clang++-21
@@ -96,7 +96,7 @@ jobs:
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
-          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
         env:
           CC: gcc-14
           CXX: g++-14
