@@ -228,7 +228,7 @@ class Task {
       const auto max_time = ppc::util::GetTaskMaxTime();
       std::stringstream err_msg;
       if (diff < max_time) {
-        err_msg << "Test time:" << std::fixed << std::setprecision(10) << diff << '\n';
+        err_msg << "Test time:" << std::fixed << std::setprecision(10) << diff << std::endl;
       } else {
         err_msg << "\nTask execute time need to be: ";
         err_msg << "time < " << max_time << " secs.\n";
