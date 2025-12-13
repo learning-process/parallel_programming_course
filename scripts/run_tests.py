@@ -231,7 +231,6 @@ class PPCRunner:
     def run_performance(self):
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
             mpi_running = self.__build_mpi_cmd(self.__ppc_num_proc, "")
-            # Collect perf stats for all implementations, including seq as baseline.
             for task_type in ["all", "mpi", "seq"]:
                 self.__run_exec(
                     mpi_running
