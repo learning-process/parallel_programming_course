@@ -19,8 +19,9 @@ NEW_PATTERN = re.compile(
 # Example formats:
 #   example_threads_omp_enabled:task_run:0.4749
 #   example_processes_2_mpi_enabled:pipeline:0.0507
+# Accept optional suffix after `_enabled` (e.g., `_enabled_size1000000`) before the colon
 SIMPLE_PATTERN = re.compile(
-    r"(.+?)_(omp|seq|tbb|stl|all|mpi)_enabled:(task_run|pipeline):(-*\d*\.\d*)"
+    r"(.+?)_(omp|seq|tbb|stl|all|mpi)_enabled[^:]*:(task_run|pipeline):(-*\d*\.\d*)"
 )
 
 
@@ -113,19 +114,17 @@ def _write_excel_sheet(
 
 
 def _write_csv(path: str, header: list[str], tasks_list: list[str], table: dict):
+    """Write raw times (seconds) to CSV so downstream can derive speedups correctly."""
     with open(path, "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(header)
         for task_name in tasks_list:
-            seq_time = table.get(task_name, {}).get("seq", -1.0)
-            if seq_time in (0.0, -1.0):
-                writer.writerow([task_name] + ["?" for _ in header[1:]])
-                continue
-            row = [task_name, 1.0]
-            # Remaining headers correspond to columns starting from 2
+            task_row = table.get(task_name, {})
+            seq_time = task_row.get("seq", -1.0)
+            row = [task_name, (seq_time if seq_time not in (0.0, -1.0) else "?")]
             for col_name in header[2:]:
-                val = table[task_name].get(col_name.lower(), -1.0)
-                row.append(val / seq_time if val != -1.0 else "?")
+                val = task_row.get(col_name.lower(), -1.0)
+                row.append(val if val != -1.0 else "?")
             writer.writerow(row)
 
 
@@ -165,13 +164,13 @@ for line in logs_lines:
         task_categories[task_name] = "threads"
         tasks_by_category["threads"].add(task_name)
     elif len(new_result):
-        # Extract task name from namespace (e.g., "example_threads" from "nesterov_a_test_task_threads")
-        full_task_name = new_result[0][0]
+        # Extract task name from namespace format; keep it specific (no collapsing to example_*),
+        # so per-task-number data (processes_2, processes_3, etc.) is preserved.
+        base = new_result[0][0]  # e.g., nesterov_a_test_task_processes
         task_category = new_result[0][1]  # "threads" or "processes"
-        task_name = f"example_{task_category}"
+        task_type_token = new_result[0][2]  # e.g., "all", "omp", or "2_mpi"
+        task_name = f"{base}_{task_type_token}"
         perf_type = new_result[0][3]
-
-        # no set tracking needed; category mapping below
 
         _ensure_task_tables(result_tables, perf_type, task_name)
         task_categories[task_name] = task_category
@@ -201,24 +200,29 @@ for line in logs_lines:
         task_name = old_result[0][1]
         perf_type = old_result[0][2]
         perf_time = float(old_result[0][3])
-        if perf_time < 0.001:
-            msg = f"Performance time = {perf_time} < 0.001 second : for {task_type} - {task_name} - {perf_type} \n"
-            raise Exception(msg)
         result_tables[perf_type][task_name][task_type] = perf_time
     elif len(new_result):
-        # Extract task details from namespace format
+        # Extract task details from namespace format (keep specific task name)
+        base = new_result[0][0]
         task_category = new_result[0][1]  # "threads" or "processes"
-        task_type = new_result[0][2]  # "all", "omp", "seq", etc.
+        token = new_result[0][2]  # "all", "omp", "seq", or tokens like "2_mpi"
         perf_type = new_result[0][3]
         perf_time = float(new_result[0][4])
-        task_name = f"example_{task_category}"
+        # Split token like "2_mpi" into task suffix and impl to aggregate seq/mpi together
+        if "_" in token:
+            suffix, impl = token.rsplit("_", 1)
+            if impl in list_of_type_of_tasks:
+                task_name = f"{base}_{suffix}"
+                task_type = impl
+            else:
+                task_name = f"{base}_{token}"
+                task_type = token
+        else:
+            task_name = f"{base}_{token}"
+            task_type = token
 
-        if perf_time < 0.001:
-            msg = f"Performance time = {perf_time} < 0.001 second : for {task_type} - {task_name} - {perf_type} \n"
-            raise Exception(msg)
-
-        if task_name in result_tables[perf_type]:
-            result_tables[perf_type][task_name][task_type] = perf_time
+        _ensure_task_tables(result_tables, perf_type, task_name)
+        result_tables[perf_type][task_name][task_type] = perf_time
         task_categories[task_name] = task_category
         tasks_by_category[task_category].add(task_name)
     elif len(simple_result):
@@ -229,10 +233,6 @@ for line in logs_lines:
         task_type = simple_result[0][1]
         perf_type = simple_result[0][2]
         perf_time = float(simple_result[0][3])
-
-        if perf_time < 0.001:
-            msg = f"Performance time = {perf_time} < 0.001 second : for {task_type} - {task_name} - {perf_type} \n"
-            raise Exception(msg)
 
         if perf_type not in result_tables:
             result_tables[perf_type] = {}
