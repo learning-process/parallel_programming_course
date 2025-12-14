@@ -5,7 +5,7 @@
 repos:
   # C++ formatting with clang-format
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v21.1.2
+    rev: v21.1.7
     hooks:
       - id: clang-format
         files: \.(cpp|hpp|c|h)$
@@ -22,7 +22,7 @@ repos:
 
   # Ruff Python linter
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.14.2
+    rev: v0.14.9
     hooks:
       - id: ruff
         args: [--fix]
