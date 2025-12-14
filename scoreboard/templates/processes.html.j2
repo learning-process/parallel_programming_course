@@ -110,22 +110,24 @@
                 {% set cell_mpi = row.groups[ns.idx] %}
                 {% set cell_seq = row.groups[ns.idx + 1] %}
                 {# seq: S, D, P #}
-                <td style="text-align: center{% if cell_seq.solution_style %};{{ cell_seq.solution_style }}{% endif %}">{{ cell_seq.solution_points }}</td>
-                <td style="text-align: center;">{{ cell_seq.deadline_points }}</td>
-                <td style="text-align: center{% if cell_seq.plagiarised %}; background-color: pink{% endif %}">{{ cell_seq.plagiarism_points }}</td>
+                <td style="text-align: center{% if cell_seq.solution_style %};{{ cell_seq.solution_style }}{% elif cell_seq.disabled %}; background-color: pink{% endif %}">{{ cell_seq.solution_points }}</td>
+                <td style="text-align: center{% if cell_seq.disabled %}; background-color: pink{% endif %}">{{ cell_seq.deadline_points }}</td>
+                <td style="text-align: center{% if cell_seq.plagiarised or cell_seq.disabled %}; background-color: pink{% endif %}">{{ cell_seq.plagiarism_points }}</td>
                 {# mpi: S, P, A, E, D, C #}
-                <td style="text-align: center{% if cell_mpi.solution_style %};{{ cell_mpi.solution_style }}{% endif %}">{{ cell_mpi.solution_points }}</td>
-                <td style="text-align: center;background-color: lavender;">{{ (cell_mpi.perf_points_display if cell_mpi.perf_points_display is defined else cell_mpi.perf_points) }}</td>
-                <td style="text-align: center;background-color: lavender;">{{ cell_mpi.acceleration }}</td>
-                <td style="text-align: center;background-color: lavender;">{{ cell_mpi.efficiency }}</td>
-                <td style="text-align: center;">{{ cell_mpi.deadline_points }}</td>
-                <td style="text-align: center{% if cell_mpi.plagiarised %}; background-color: pink{% endif %}">{{ cell_mpi.plagiarism_points }}</td>
+                <td style="text-align: center{% if cell_mpi.solution_style %};{{ cell_mpi.solution_style }}{% elif cell_mpi.disabled %}; background-color: pink{% endif %}">{{ cell_mpi.solution_points }}</td>
+                <td style="text-align: center;{% if cell_mpi.disabled %}background-color: pink{% else %}background-color: lavender{% endif %}">{{ (cell_mpi.perf_points_display if cell_mpi.perf_points_display is defined else cell_mpi.perf_points) }}</td>
+                <td style="text-align: center;{% if cell_mpi.disabled %}background-color: pink{% else %}background-color: lavender{% endif %}">{{ cell_mpi.acceleration }}</td>
+                <td style="text-align: center;{% if cell_mpi.disabled %}background-color: pink{% else %}background-color: lavender{% endif %}">{{ cell_mpi.efficiency }}</td>
+                <td style="text-align: center{% if cell_mpi.disabled %}; background-color: pink{% endif %}">{{ cell_mpi.deadline_points }}</td>
+                <td style="text-align: center{% if cell_mpi.plagiarised or cell_mpi.disabled %}; background-color: pink{% endif %}">{{ cell_mpi.plagiarism_points }}</td>
                 {% set ns.idx = ns.idx + 2 %}
                 {# R value for this task group #}
-                <td style="text-align: center{% if (row.r_values[ns.gi] if row.r_values is defined else 0) > 0 %}; background-color: lightgreen{% endif %}">{{ row.r_values[ns.gi] if row.r_values is defined else 0 }}</td>
+                {% set r_val = row.r_values[ns.gi] if row.r_values is defined else 0 %}
+                {% set r_disabled = cell_mpi.disabled and cell_seq.disabled %}
+                <td style="text-align: center{% if r_disabled %}; background-color: pink{% elif r_val > 0 %}; background-color: lightgreen{% endif %}">{{ r_val }}</td>
                 {% set ns.gi = ns.gi + 1 %}
             {% endfor %}
-            <td style="text-align: center;">{{ row.total }}</td>
+            <td style="text-align: center;">{{ "%.2f"|format(row.total) }}</td>
         </tr>
         {% endfor %}
     </table>

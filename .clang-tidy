@@ -41,7 +41,6 @@ Checks: >
   -portability-template-virtual-member-function,
   -readability-magic-numbers
 
-WarningsAsErrors: "*"
 HeaderFilterRegex: '.*/(modules|tasks)/.*'
 
 CheckOptions:

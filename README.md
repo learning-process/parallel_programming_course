@@ -8,11 +8,11 @@
 
 Welcome to the Parallel Programming Course!
 
-For more detailed documentation and resources, please visit documentation pages: [en](https://learning-process.github.io/parallel_programming_course/en/), [ru](https://learning-process.github.io/parallel_programming_course/ru/). Course slides are available [here](https://learning-process.github.io/parallel_programming_slides/).
-
-Course scoreboard is available [here](https://learning-process.github.io/parallel_programming_course/scoreboard/).
-
-Coverage report is available [here](https://learning-process.github.io/parallel_programming_course/coverage/).
+Resources:
+- Documentation (full instructions and quick start): [English](https://learning-process.github.io/parallel_programming_course/en/), [Russian](https://learning-process.github.io/parallel_programming_course/ru/)
+- [Parallel Programming Course Slides](https://learning-process.github.io/parallel_programming_slides/)
+- [Course Scoreboard](https://learning-process.github.io/parallel_programming_course/scoreboard/)
+- [Code Coverage Report](https://learning-process.github.io/parallel_programming_course/coverage/)
 
 ### Parallel programming technologies:
   The following parallel programming technologies are considered in practice:
@@ -20,10 +20,6 @@ Coverage report is available [here](https://learning-process.github.io/parallel_
   * `OpenMP (Open Multi-Processing)`
   * `oneAPI Threading Building Blocks (oneTBB)`
   * `Multithreading in C++ (std::thread)`
-
-## Quickstart
-
-See the full user guide for build, tests, docs, and tooling instructions: [documentation en](https://learning-process.github.io/parallel_programming_course/en/), [documentation ru](https://learning-process.github.io/parallel_programming_course/ru/).
 
 ### Rules for submissions:
 1. You are not supposed to trigger CI jobs by frequent updates of your pull request. First you should test you work locally with all the scripts (code style).

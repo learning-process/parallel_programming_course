@@ -48,7 +48,7 @@ void UnreadMessagesDetector::OnTestEnd(const ::testing::TestInfo & /*test_info*/
 }
 
 void WorkerTestFailurePrinter::OnTestEnd(const ::testing::TestInfo &test_info) {
-  if (test_info.result()->Passed()) {
+  if (test_info.result()->Passed() || test_info.result()->Skipped()) {
     return;
   }
   PrintProcessRank();

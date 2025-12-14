@@ -1,11 +1,12 @@
 from pathlib import Path
-from collections import defaultdict, Counter
+from collections import defaultdict
 from datetime import datetime
 import csv
 import argparse
 import subprocess
 import yaml
 import shutil
+import json
 from jinja2 import Environment, FileSystemLoader
 import logging
 import sys
@@ -77,6 +78,23 @@ def _read_tasks_type(task_dir: Path) -> str | None:
     return None
 
 
+def _read_task_statuses(task_dir: Path) -> dict[str, str]:
+    """Read per-task-type statuses (enabled/disabled) from settings.json if present."""
+    settings_path = task_dir / "settings.json"
+    if settings_path.exists():
+        try:
+            import json
+
+            with open(settings_path, "r") as f:
+                data = json.load(f)
+            tasks_block = data.get("tasks", {})
+            if isinstance(tasks_block, dict):
+                return {k: str(v) for k, v in tasks_block.items()}
+        except Exception as e:
+            logger.warning("Failed to parse task statuses in %s: %s", settings_path, e)
+    return {}
+
+
 def discover_tasks(tasks_dir, task_types):
     """Discover tasks and their implementation status from the filesystem.
 
@@ -93,12 +111,15 @@ def discover_tasks(tasks_dir, task_types):
                 task_name = task_name_dir.name
                 # Save tasks_type from settings.json if present
                 tasks_type_map[task_name] = _read_tasks_type(task_name_dir)
+                status_overrides = _read_task_statuses(task_name_dir)
                 for task_type in task_types:
                     task_type_dir = task_name_dir / task_type
                     if task_type_dir.exists() and task_type_dir.is_dir():
                         if task_name.endswith("_disabled"):
                             clean_task_name = task_name[: -len("_disabled")]
                             directories[clean_task_name][task_type] = "disabled"
+                        elif status_overrides.get(task_type) == "disabled":
+                            directories[task_name][task_type] = "disabled"
                         else:
                             directories[task_name][task_type] = "done"
 
@@ -132,45 +153,130 @@ def load_performance_data_threads(perf_stat_file_path: Path) -> dict:
     return perf_stats
 
 
-def load_performance_data_processes(perf_stat_file_path: Path) -> dict:
-    """Load processes performance ratios (T_x/T_seq) from CSV.
-    Expected header: Task, SEQ, MPI
+def load_performance_data(perf_stat_file_path: Path) -> dict:
+    """Compatibility helper for legacy tests: load perf data with optional MPI column.
+
+    Always returns a mapping: task -> {seq, omp, stl, tbb, all, mpi}
+    Missing columns are filled with ``"N/A"``; empty cells stay empty strings.
     """
     perf_stats: dict[str, dict] = {}
-    if perf_stat_file_path.exists():
-        with open(perf_stat_file_path, "r", newline="") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                task_name = row.get("Task")
-                if not task_name:
-                    continue
-                perf_stats[task_name] = {
-                    "seq": row.get("SEQ", "?"),
-                    "mpi": row.get("MPI", "?"),
-                }
-    else:
-        logger.warning("Processes perf stats CSV not found at %s", perf_stat_file_path)
+    if not perf_stat_file_path.exists():
+        return perf_stats
+
+    with open(perf_stat_file_path, "r", newline="") as csvfile:
+        reader = csv.DictReader(csvfile)
+        # Normalize column names we care about
+        for row in reader:
+            task_name = row.get("Task")
+            if not task_name:
+                continue
+
+            def _get(col: str) -> str:
+                if col in row:
+                    return row.get(col, "N/A")
+                return "N/A"
+
+            perf_stats[task_name] = {
+                "seq": _get("SEQ"),
+                "omp": _get("OMP"),
+                "stl": _get("STL"),
+                "tbb": _get("TBB"),
+                "all": _get("ALL"),
+                "mpi": _get("MPI"),
+            }
     return perf_stats
 
 
-def calculate_performance_metrics(perf_val, eff_num_proc, task_type):
-    """Calculate acceleration and efficiency from performance value."""
+def load_performance_data_processes(perf_stat_file_path: Path) -> dict:
+    """Load processes performance data (raw times, seconds) and merge *_seq/_mpi rows.
+
+    Expected header: Task, SEQ, MPI with absolute times. If the CSV contains
+    split rows like <task>_seq and <task>_mpi, they are combined into one entry.
+    """
+    perf_stats: dict[str, dict] = {}
+    if not perf_stat_file_path.exists():
+        logger.warning("Processes perf stats CSV not found at %s", perf_stat_file_path)
+        return perf_stats
+
+    with open(perf_stat_file_path, "r", newline="") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            task_name = row.get("Task")
+            if not task_name:
+                continue
+            seq_val = row.get("SEQ", "?")
+            mpi_val = row.get("MPI", "?")
+
+            base_name = task_name
+            mode = None
+            for suff, lbl in (("_seq", "seq"), ("_mpi", "mpi")):
+                if task_name.endswith(suff):
+                    base_name = task_name[: -len(suff)]
+                    mode = lbl
+                    break
+
+            # Normalize example perf task names to example_processes[_N]
+            def _norm(name: str) -> str:
+                import re
+
+                m = re.match(r".*test_task_processes(?P<suffix>(_\\d+)?)$", name)
+                if m:
+                    return f"example_processes{m.group('suffix') or ''}"
+                return name
+
+            base_name_norm = _norm(base_name)
+
+            entry = perf_stats.setdefault(base_name_norm, {"seq": "?", "mpi": "?"})
+            if mode == "seq":
+                if seq_val and seq_val != "?":
+                    entry["seq"] = seq_val
+            elif mode == "mpi":
+                if mpi_val and mpi_val != "?":
+                    entry["mpi"] = mpi_val
+            else:
+                if seq_val and seq_val != "?":
+                    entry["seq"] = seq_val
+                if mpi_val and mpi_val != "?":
+                    entry["mpi"] = mpi_val
+
+    return perf_stats
+
+
+def calculate_performance_metrics(perf_val, eff_num_proc, task_type, seq_val=None):
+    """Calculate acceleration and efficiency.
+
+    For processes table we pass raw times; for threads legacy ratios we keep old behavior.
+    """
     acceleration = "?"
     efficiency = "?"
     try:
-        perf_float = float(perf_val)
-        if perf_float > 0 and not (
-            perf_float == float("inf") or perf_float != perf_float
-        ):
-            speedup = 1.0 / perf_float
-            # For sequential code, acceleration and efficiency don't make sense
-            # as it should be the baseline (speedup = 1.0 by definition)
-            if task_type == "seq":
-                acceleration = "1.00"  # Sequential is the baseline
-                efficiency = "N/A"
-            else:
-                acceleration = f"{speedup:.2f}"
-                efficiency = f"{speedup / eff_num_proc * 100:.2f}%"
+        if seq_val is None:
+            perf_float = float(perf_val)
+            if perf_float > 0 and not (
+                perf_float == float("inf") or perf_float != perf_float
+            ):
+                speedup = 1.0 / perf_float
+                if task_type == "seq":
+                    acceleration = "1.00"
+                    efficiency = "N/A"
+                else:
+                    acceleration = f"{speedup:.2f}"
+                    efficiency = f"{speedup / eff_num_proc * 100:.2f}%"
+        else:
+            seq_t = float(seq_val)
+            par_t = float(perf_val)
+            # If times are too small, metrics are unstable -> mark N/A
+            if min(seq_t, par_t) < 0.001:
+                tiny_mark = "t &lt;<br/>1e-3"
+                return tiny_mark, tiny_mark
+            if seq_t > 0 and par_t > 0:
+                speedup = seq_t / par_t
+                if task_type == "seq":
+                    acceleration = "1.00"
+                    efficiency = "N/A"
+                else:
+                    acceleration = f"{speedup:.2f}"
+                    efficiency = f"{speedup / eff_num_proc * 100:.2f}%"
     except (ValueError, TypeError):
         pass
     return acceleration, efficiency
@@ -327,7 +433,8 @@ def get_solution_points_and_style(task_type, status, cfg):
     if status == "done":
         solution_style = "background-color: lightgreen;"
     elif status == "disabled":
-        solution_style = "background-color: #6495ED;"
+        # Same color as plagiarism highlighting (pink)
+        solution_style = "background-color: pink;"
     return sol_points, solution_style
 
 
@@ -703,6 +810,75 @@ def main():
     # Read and merge performance statistics CSVs (keys = CSV Task column)
     perf_stats_threads = load_performance_data_threads(threads_csv)
     perf_stats_processes = load_performance_data_processes(processes_csv)
+
+    def _aggregate_process_csv(
+        perf_stat_file_path: Path, base: dict[str, dict]
+    ) -> dict:
+        """Parse CSV again to ensure merged entries (handles example*_2, _3, etc.)."""
+        import csv
+        import re
+
+        perf_stats_local = dict(base)
+        if not perf_stat_file_path.exists():
+            return perf_stats_local
+        with open(perf_stat_file_path, "r", newline="") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                task_name = row.get("Task")
+                if not task_name:
+                    continue
+                seq_val = row.get("SEQ", "?")
+                mpi_val = row.get("MPI", "?")
+                base_name = task_name
+                mode = None
+                for suff, lbl in (("_seq", "seq"), ("_mpi", "mpi")):
+                    if task_name.endswith(suff):
+                        base_name = task_name[: -len(suff)]
+                        mode = lbl
+                        break
+                m = re.match(r".*test_task_processes(?P<suffix>_\\d+)?$", base_name)
+                base_norm = (
+                    f"example_processes{m.group('suffix') or ''}" if m else base_name
+                )
+                entry = perf_stats_local.setdefault(base_norm, {"seq": "?", "mpi": "?"})
+                if mode == "seq":
+                    if seq_val and seq_val != "?":
+                        entry["seq"] = seq_val
+                elif mode == "mpi":
+                    if mpi_val and mpi_val != "?":
+                        entry["mpi"] = mpi_val
+                else:
+                    if seq_val and seq_val != "?":
+                        entry["seq"] = seq_val
+                    if mpi_val and mpi_val != "?":
+                        entry["mpi"] = mpi_val
+        return perf_stats_local
+
+    perf_stats_processes = _aggregate_process_csv(processes_csv, perf_stats_processes)
+
+    # Generic aliasing for example process tasks: normalize any *test_task_processes* keys
+    def _normalize_example_proc_name(name: str) -> str:
+        import re
+
+        m = re.match(r".*test_task_processes(?P<suffix>(_\\d+)?)$", name)
+        if m:
+            suffix = m.group("suffix") or ""
+            return f"example_processes{suffix}"
+        return name
+
+    perf_stats_processes = {
+        _normalize_example_proc_name(k): v for k, v in perf_stats_processes.items()
+    }
+
+    # Map example process tasks (nesterov_a_test_task_processes[_2|_3]) to dir names
+    example_aliases = {
+        "nesterov_a_test_task_processes": "example_processes",
+        "nesterov_a_test_task_processes_2": "example_processes_2",
+        "nesterov_a_test_task_processes_3": "example_processes_3",
+    }
+    for src, dst in example_aliases.items():
+        if src in perf_stats_processes and dst not in perf_stats_processes:
+            perf_stats_processes[dst] = perf_stats_processes[src]
     perf_stats_raw: dict[str, dict] = {}
     perf_stats_raw.update(perf_stats_threads)
     for k, v in perf_stats_processes.items():
@@ -724,72 +900,71 @@ def main():
             elif "processes" in name:
                 processes_task_dirs.append(name)
 
-    # Resolve performance stats keys (from CSV Task names) to actual task directories
+    # Resolve performance stats keys (from CSV Task names) to actual task directories.
+    # Old logic grouped by "family", which made all tasks share the same numbers.
+    # New logic: map each CSV key to the best-matching directory name by substring.
+    perf_stats: dict[str, dict] = {}
     import re as _re
 
-    def _family_from_name(name: str) -> tuple[str, int]:
-        # Infer family from CSV Task value, using only structural markers
-        # threads -> ("threads", 0); processes[_N] -> ("processes", N|1)
-        if "threads" in name:
-            return "threads", 0
-        if "processes" in name:
-            m = _re.search(r"processes(?:_(\d+))?", name)
-            if m:
-                try:
-                    idx = int(m.group(1)) if m.group(1) else 1
-                except Exception:
-                    idx = 1
-            else:
-                idx = 1
-            return "processes", idx
-        # Fallback: treat as threads family
-        return "threads", 0
+    dir_names_sorted = sorted(directories.keys(), key=len, reverse=True)
 
-    def _family_from_dir(dir_name: str) -> tuple[str, int]:
-        # Prefer explicit tasks_type from settings.json and task_number from info.json
-        kind_guess = tasks_type_map.get(dir_name) or (
-            "threads" if "threads" in dir_name else "processes"
-        )
-        idx = 0
-        if kind_guess == "processes":
-            # Lightweight reader to avoid dependency on later-scoped helpers
-            try:
-                import json as _json
+    def _merge_perf_maps(existing: dict, updates: dict) -> dict:
+        """Merge perf values without losing known numbers to '?' placeholders."""
+        merged = dict(existing)
+        for k, v in (updates or {}).items():
+            if v in (None, "", "?"):
+                if k not in merged:
+                    merged[k] = v
+                continue
+            merged[k] = v
+        return merged
 
-                info_path = tasks_dir / dir_name / "info.json"
-                if info_path.exists():
-                    with open(info_path, "r") as _f:
-                        data = _json.load(_f)
-                    s = data.get("student", {}) if isinstance(data, dict) else {}
-                    try:
-                        idx = int(str(s.get("task_number", "0")))
-                    except Exception:
-                        idx = 0
-            except Exception:
-                idx = 0
-        return kind_guess, idx
-
-    # Build map family -> list of dir names in this repo
-    family_to_dirs: dict[tuple[str, int], list[str]] = {}
-    for d in sorted(directories.keys()):
-        fam = _family_from_dir(d)
-        family_to_dirs.setdefault(fam, []).append(d)
-
-    # Aggregate perf by family (CSV keys may not match dir names)
-    perf_by_family: dict[tuple[str, int], dict] = {}
-    for key, vals in perf_stats_raw.items():
-        fam = _family_from_name(key)
-        perf_by_family[fam] = {**perf_by_family.get(fam, {}), **vals}
-
-    # Project family perf onto actual directories (prefer exact one per family)
-    perf_stats: dict[str, dict] = {}
-    for fam, vals in perf_by_family.items():
-        dirs_for_family = family_to_dirs.get(fam, [])
-        if not dirs_for_family:
+    # Precompute mapping: task_number (processes tasks) -> list of directories
+    process_tasknum_map: dict[int, list[str]] = {}
+    for d in directories.keys():
+        info_path = tasks_dir / d / "info.json"
+        if not info_path.exists():
             continue
-        # Assign same perf to all dirs in the family (usually one)
-        for d in dirs_for_family:
-            perf_stats[d] = vals.copy()
+        try:
+            with open(info_path, "r") as _f:
+                data = json.load(_f)
+            num = data.get("student", {}).get("task_number")
+            if num is None:
+                continue
+            num = int(str(num))
+            process_tasknum_map.setdefault(num, []).append(d)
+        except Exception:
+            continue
+
+    def _match_dir(csv_key: str) -> str | None:
+        # Strip common suffixes like "_mpi_enabled" etc. to improve matching
+        base = _re.sub(r"_(mpi|omp|tbb|stl|all|seq)_enabled.*", "", csv_key)
+        for d in dir_names_sorted:
+            if base.startswith(d) or d in base or csv_key.startswith(d):
+                return d
+        return None
+
+    for key, vals in perf_stats_raw.items():
+        targets: set[str] = set()
+        # 1) Direct / substring match
+        target = _match_dir(key)
+        if target:
+            targets.add(target)
+        # 2) If key encodes processes_N, spread to all dirs with that task_number
+        m_num = _re.search(r"processes_(\d+)", key)
+        if m_num:
+            try:
+                num = int(m_num.group(1))
+                targets.update(process_tasknum_map.get(num, []))
+            except Exception:
+                pass
+        # 3) Fallback: if nothing matched and "threads" in key, apply to example_threads only
+        if not targets and "threads" in key:
+            if "example_threads" in directories:
+                targets.add("example_threads")
+        # Apply merged values to all targets
+        for t in targets:
+            perf_stats[t] = _merge_perf_maps(perf_stats.get(t, {}), vals)
 
     # Build rows for each page
     threads_rows = _build_rows_for_task_types(
@@ -800,9 +975,8 @@ def main():
         eff_num_proc,
         deadlines_cfg,
     )
-    # Processes page: build 3 tasks as columns for a single student
-    import json
 
+    # Processes page: build 3 tasks as columns for a single student
     def _load_student_info(dir_name: str):
         info_path = tasks_dir / dir_name / "info.json"
         if not info_path.exists():
@@ -826,19 +1000,42 @@ def main():
         )
 
     def _build_cell(dir_name: str, ttype: str, perf_map: dict[str, dict]):
-        status = directories[dir_name].get(ttype)
-        sol_points, solution_style = get_solution_points_and_style(ttype, status, cfg)
+        """Build one MPI/SEQ cell; respects disabled suffix and missing perf."""
+        clean_name = (
+            dir_name[: -len("_disabled")]
+            if dir_name.endswith("_disabled")
+            else dir_name
+        )
+        status = directories[clean_name].get(ttype)
+
+        # Disabled tasks: show gray style, zero points, skip perf calculations
+        is_disabled = status == "disabled"
+        if is_disabled:
+            sol_points = 0
+            # Same pink as plagiarism highlighting
+            solution_style = "background-color: pink;"
+            perf_val = "—"
+            acceleration, efficiency = ("—", "—")
+        else:
+            sol_points, solution_style = get_solution_points_and_style(
+                ttype, status, cfg
+            )
+            perf_val = perf_map.get(clean_name, {}).get(ttype, "—")
+            # If we have raw times, compute speedup against seq time when available
+            seq_val = None
+            if isinstance(perf_map.get(clean_name, {}), dict):
+                seq_val = perf_map.get(clean_name, {}).get("seq")
+            acceleration, efficiency = calculate_performance_metrics(
+                perf_val, eff_num_proc, ttype, seq_val=seq_val
+            )
+
         task_points = sol_points
         is_cheated, plagiarism_points = check_plagiarism_and_calculate_penalty(
-            dir_name, ttype, sol_points, plagiarism_cfg, cfg, semester="processes"
+            clean_name, ttype, sol_points, plagiarism_cfg, cfg, semester="processes"
         )
         task_points += plagiarism_points
-        perf_val = perf_map.get(dir_name, {}).get(ttype, "?")
-        acceleration, efficiency = calculate_performance_metrics(
-            perf_val, eff_num_proc, ttype
-        )
         deadline_points = calculate_deadline_penalty(
-            dir_name, ttype, status, deadlines_cfg, tasks_dir
+            clean_name, ttype, status, deadlines_cfg, tasks_dir
         )
         return (
             {
@@ -850,153 +1047,163 @@ def main():
                 "deadline_points": deadline_points,
                 "plagiarised": is_cheated,
                 "plagiarism_points": plagiarism_points,
+                "disabled": is_disabled,
             },
             task_points,
         )
 
-    proc_infos = []
-    for d in processes_task_dirs:
-        s = _load_student_info(d)
-        if s:
-            proc_infos.append((d, s))
-
-    # Choose target identity: prefer example_processes; otherwise most common
-    target_identity = None
-    if "example_processes" in processes_task_dirs:
-        s0 = _load_student_info("example_processes")
-        if s0:
-            target_identity = _identity_key(s0)
-    if not target_identity and proc_infos:
-        cnt = Counter(_identity_key(s) for _, s in proc_infos)
-        target_identity = cnt.most_common(1)[0][0]
-
-    # Map task_number -> (dir_name, display_label)
-    num_to_dir: dict[int, tuple[str, str]] = {}
-    if target_identity:
-        for d, s in proc_infos:
-            if _identity_key(s) == target_identity:
-                try:
-                    tn = int(str(s.get("task_number", "0")))
-                except Exception:
-                    continue
-                display = d
-                num_to_dir[tn] = (d, display)
-
     expected_numbers = [1, 2, 3]
-    proc_group_headers = []
-    proc_top_headers = []
-    proc_groups = []
-    proc_r_values = []
-    total_points_sum = 0
-    for n in expected_numbers:
-        entry = num_to_dir.get(n)
-        if entry:
-            d, display_label = entry
-            # Top header shows task name (directory)
-            proc_top_headers.append(f"task-{n}")
-            # Second header row shows only mpi/seq
-            proc_group_headers.append({"type": "mpi"})
-            proc_group_headers.append({"type": "seq"})
-            group_cells = []
-            for ttype in ["mpi", "seq"]:
-                cell, _ = _build_cell(d, ttype, perf_stats)
-                group_cells.append(cell)
-            # Override displayed points for processes: S under MPI/SEQ from points-info; A points under MPI only
-            s_mpi, s_seq, a_mpi, r_max = _find_process_points(cfg, n)
-            has_mpi = bool(directories[d].get("mpi"))
-            has_seq = bool(directories[d].get("seq"))
-            report_present = (tasks_dir / d / "report.md").exists()
-            group_cells[0]["solution_points"] = s_mpi if has_mpi else 0
-            group_cells[1]["solution_points"] = s_seq if has_seq else 0
-            # Calculate Performance P for MPI based on efficiency and max a_mpi
-            mpi_eff = group_cells[0].get("efficiency", "N/A")
-            perf_points_mpi = (
-                _calc_perf_points_from_efficiency(mpi_eff, a_mpi)
-                if (has_mpi and has_seq)
-                else 0
-            )
-            # Display '—' instead of 0 when metrics are absent (efficiency not a percent)
-            if isinstance(mpi_eff, str) and mpi_eff.endswith("%"):
-                perf_points_mpi_display = perf_points_mpi
-            else:
-                perf_points_mpi_display = "—"
-            group_cells[0]["perf_points"] = perf_points_mpi
-            group_cells[0]["perf_points_display"] = perf_points_mpi_display
-            group_cells[1]["perf_points"] = 0
-            # Recompute plagiarism penalty based on processes S maxima
+    fallback_process_tasknum = expected_numbers[0]
+    proc_top_headers = [f"task-{n}" for n in expected_numbers]
+
+    def _sort_identity(student: dict):
+        return (
+            str(student.get("last_name", "")),
+            str(student.get("first_name", "")),
+            str(student.get("middle_name", "")),
+            str(student.get("group_number", "")),
+        )
+
+    def _build_process_rows(processes_dirs: list[str]):
+        """Build rows for all unique students found in processes dirs."""
+        identity_map: dict[str, dict] = {}
+        for d in processes_dirs:
+            s = _load_student_info(d)
+            if not s:
+                continue
+            key = _identity_key(s)
+            entry = identity_map.setdefault(key, {"student": s, "dir_map": {}})
             try:
-                plag_coeff = float(
-                    (cfg.get("copying", {}) or cfg.get("plagiarism", {})).get(
-                        "coefficient", 0.0
-                    )
-                )
+                tn = int(str(s.get("task_number", "0")))
             except Exception:
-                plag_coeff = 0.0
-            p_mpi = (
-                -plag_coeff * s_mpi
-                if (has_mpi and group_cells[0].get("plagiarised"))
-                else 0
-            )
-            p_seq = (
-                -plag_coeff * s_seq
-                if (has_seq and group_cells[1].get("plagiarised"))
-                else 0
-            )
-            group_cells[0]["plagiarism_points"] = p_mpi
-            group_cells[1]["plagiarism_points"] = p_seq
-            proc_groups.extend(group_cells)
-            # Sum points S + P + R + C (penalty negative) with gating
-            s_inc = (s_mpi if has_mpi else 0) + (s_seq if has_seq else 0)
-            p_inc = perf_points_mpi
-            r_inc = r_max if report_present else 0
-            total_points_sum += s_inc + p_inc + r_inc + p_mpi + p_seq
-            proc_r_values.append(r_inc)
-        else:
-            proc_group_headers.append({"type": "mpi", "task_label": f"task_{n}"})
-            proc_group_headers.append({"type": "seq", "task_label": f"task_{n}"})
-            proc_top_headers.append(f"task-{n}")
-            for _ in ["mpi", "seq"]:
-                proc_groups.append(
-                    {
-                        "solution_points": "?",
-                        "solution_style": "",
-                        "perf": "?",
-                        "acceleration": "?",
-                        "efficiency": "?",
-                        "deadline_points": "?",
-                        "plagiarised": False,
-                        "plagiarism_points": "?",
-                    }
-                )
-            # Do not affect total; sum only existing tasks; report points 0
-            proc_r_values.append(0)
+                tn = 0
+            # If task_number is outside expected range (1..3), map to fallback (task-1)
+            if tn not in expected_numbers:
+                tn = fallback_process_tasknum
+            entry["dir_map"][tn] = d
 
-    # Label for processes row: show Last, First, Middle on separate lines; no group number
-    row_label = "processes"
-    row_variant = "?"
-    if target_identity:
-        parts = target_identity.split("|")
-        if len(parts) >= 3:
-            first, last, middle = parts[0], parts[1], parts[2]
-            name_parts = [p for p in [last, first, middle] if p]
-            name = "<br/>".join(name_parts)
-            row_label = name or row_label
+        rows_local = []
+        for key, entry in sorted(
+            identity_map.items(), key=lambda kv: _sort_identity(kv[1]["student"])
+        ):
+            student = entry["student"]
+            dir_map: dict[int, str] = entry["dir_map"]
+            proc_groups: list[dict] = []
+            proc_r_values: list[int] = []
+            total_points_sum = 0
 
-    # Build three variants (one per task) based on student identity
-    row_variant = "?"
-    if target_identity:
-        parts = target_identity.split("|")
-        if len(parts) >= 4:
-            first, last, middle, group = parts[0], parts[1], parts[2], parts[3]
+            for n in expected_numbers:
+                d = dir_map.get(n)
+                if d:
+                    group_cells = []
+                    for ttype in ["mpi", "seq"]:
+                        cell, _ = _build_cell(d, ttype, perf_stats)
+                        group_cells.append(cell)
+
+                    s_mpi, s_seq, a_mpi, r_max = _find_process_points(cfg, n)
+                    # Use clean name to check status and disable cells properly
+                    clean_d = d[: -len("_disabled")] if d.endswith("_disabled") else d
+                    status_mpi = directories[clean_d].get("mpi")
+                    status_seq = directories[clean_d].get("seq")
+                    has_mpi = status_mpi in ("done", "disabled")
+                    has_seq = status_seq in ("done", "disabled")
+                    report_present = (tasks_dir / d / "report.md").exists()
+
+                    mpi_eff = group_cells[0].get("efficiency", "N/A")
+                    perf_points_mpi = (
+                        _calc_perf_points_from_efficiency(mpi_eff, a_mpi)
+                        if (status_mpi == "done" and status_seq == "done")
+                        else 0
+                    )
+                    perf_points_mpi_display = (
+                        perf_points_mpi
+                        if isinstance(mpi_eff, str) and mpi_eff.endswith("%")
+                        else "—"
+                    )
+
+                    display_mpi_pts = (
+                        s_mpi if status_mpi == "disabled" else (s_mpi if has_mpi else 0)
+                    )
+                    display_seq_pts = (
+                        s_seq if status_seq == "disabled" else (s_seq if has_seq else 0)
+                    )
+                    group_cells[0]["solution_points"] = display_mpi_pts
+                    group_cells[1]["solution_points"] = display_seq_pts
+                    group_cells[0]["perf_points"] = perf_points_mpi
+                    group_cells[0]["perf_points_display"] = perf_points_mpi_display
+                    group_cells[1]["perf_points"] = 0
+
+                    try:
+                        plag_coeff = float(
+                            (cfg.get("copying", {}) or cfg.get("plagiarism", {})).get(
+                                "coefficient", 0.0
+                            )
+                        )
+                    except Exception:
+                        plag_coeff = 0.0
+                    p_mpi = (
+                        -plag_coeff * s_mpi
+                        if (has_mpi and group_cells[0].get("plagiarised"))
+                        else 0
+                    )
+                    p_seq = (
+                        -plag_coeff * s_seq
+                        if (has_seq and group_cells[1].get("plagiarised"))
+                        else 0
+                    )
+                    group_cells[0]["plagiarism_points"] = p_mpi
+                    group_cells[1]["plagiarism_points"] = p_seq
+
+                    s_inc = (s_mpi if has_mpi else 0) + (s_seq if has_seq else 0)
+                    p_inc = perf_points_mpi
+                    r_inc = r_max if report_present else 0
+                    total_points_sum += s_inc + p_inc + r_inc + p_mpi + p_seq
+
+                    proc_groups.extend(group_cells)
+                    proc_r_values.append(r_inc)
+                else:
+                    proc_groups.extend(
+                        [
+                            {
+                                "solution_points": 0,
+                                "solution_style": "background-color: #f5f5f5;",
+                                "perf": "—",
+                                "acceleration": "—",
+                                "efficiency": "—",
+                                "deadline_points": 0,
+                                "plagiarised": False,
+                                "plagiarism_points": 0,
+                            },
+                            {
+                                "solution_points": 0,
+                                "solution_style": "background-color: #f5f5f5;",
+                                "perf": "—",
+                                "acceleration": "—",
+                                "efficiency": "—",
+                                "deadline_points": 0,
+                                "plagiarised": False,
+                                "plagiarism_points": 0,
+                            },
+                        ]
+                    )
+                    proc_r_values.append(0)
+
+            name_parts = [
+                str(student.get("last_name", "")),
+                str(student.get("first_name", "")),
+                str(student.get("middle_name", "")),
+            ]
+            name_html = "<br/>".join([p for p in name_parts if p]) or "processes"
+
             variants_render = []
             for n in expected_numbers:
                 vmax = _find_process_variants_max(cfg, n)
                 try:
                     v_idx = assign_variant(
-                        surname=last,
-                        name=first,
-                        patronymic=middle,
-                        group=group,
+                        surname=str(student.get("last_name", "")),
+                        name=str(student.get("first_name", "")),
+                        patronymic=str(student.get("middle_name", "")),
+                        group=str(student.get("group_number", "")),
                         repo=f"{REPO_SALT}/processes/task-{n}",
                         num_variants=vmax,
                     )
@@ -1004,16 +1211,26 @@ def main():
                 except Exception:
                     variants_render.append("?")
             row_variant = "<br/>".join(variants_render)
-    processes_rows = [
-        {
-            "task": row_label,
-            "variant": row_variant,
-            "groups": proc_groups,
-            "r_values": proc_r_values,
-            "r_total": sum(proc_r_values),
-            "total": total_points_sum,
-        }
-    ]
+
+            rows_local.append(
+                {
+                    "task": name_html,
+                    "variant": row_variant,
+                    "groups": proc_groups,
+                    "r_values": proc_r_values,
+                    "r_total": sum(proc_r_values),
+                    "total": total_points_sum,
+                }
+            )
+        return rows_local
+
+    processes_rows = _build_process_rows(processes_task_dirs)
+
+    # Group headers (not currently rendered in template, kept for compatibility)
+    proc_group_headers = []
+    for _ in expected_numbers:
+        proc_group_headers.append({"type": "mpi"})
+        proc_group_headers.append({"type": "seq"})
 
     # Rebuild threads rows with resolved perf stats
     threads_rows = _build_rows_for_task_types(
@@ -1198,15 +1415,13 @@ def main():
         filtered_dirs = [d for d in processes_task_dirs if _load_group_number(d) == g]
 
         # Reuse earlier logic but limited to filtered_dirs
-        import json as _json
-
         def _load_student_info_group(dir_name: str):
             info_path = tasks_dir / dir_name / "info.json"
             if not info_path.exists():
                 return None
             try:
                 with open(info_path, "r") as f:
-                    data = _json.load(f)
+                    data = json.load(f)
                 return data.get("student", {})
             except Exception:
                 return None
@@ -1221,200 +1436,13 @@ def main():
                 ]
             )
 
-        proc_infos_g = []
-        for d in filtered_dirs:
-            s = _load_student_info_group(d)
-            if s:
-                proc_infos_g.append((d, s))
-
-        target_identity_g = None
-        if "example_processes" in filtered_dirs:
-            s0 = _load_student_info_group("example_processes")
-            if s0 and s0.get("group_number") == g:
-                target_identity_g = _id_key(s0)
-        if not target_identity_g and proc_infos_g:
-            cnt = Counter(_id_key(s) for _, s in proc_infos_g)
-            target_identity_g = cnt.most_common(1)[0][0]
-
-        num_to_dir_g: dict[int, tuple[str, str]] = {}
-        if target_identity_g:
-            for d, s in proc_infos_g:
-                if _id_key(s) == target_identity_g:
-                    try:
-                        tn = int(str(s.get("task_number", "0")))
-                    except Exception:
-                        continue
-                    num_to_dir_g[tn] = (d, d)
-
-        proc_top_headers_g = []
+        proc_top_headers_g = [f"task-{n}" for n in [1, 2, 3]]
         proc_group_headers_g = []
-        proc_groups_g = []
-        proc_r_values_g = []
-        total_points_sum_g = 0
-        for n in [1, 2, 3]:
-            entry = num_to_dir_g.get(n)
-            if entry:
-                d, display_label = entry
-                proc_top_headers_g.append(f"task-{n}")
-                for ttype in ["mpi", "seq"]:
-                    proc_group_headers_g.append({"type": ttype})
-                    # build cell
-                    status = directories[d].get(ttype)
-                    sol_points, solution_style = get_solution_points_and_style(
-                        ttype, status, cfg
-                    )
-                    task_points = sol_points
-                    is_cheated, plagiarism_points = (
-                        check_plagiarism_and_calculate_penalty(
-                            d,
-                            ttype,
-                            sol_points,
-                            plagiarism_cfg,
-                            cfg,
-                            semester="processes",
-                        )
-                    )
-                    task_points += plagiarism_points
-                    perf_val = perf_stats.get(d, {}).get(ttype, "?")
-                    acceleration, efficiency = calculate_performance_metrics(
-                        perf_val, eff_num_proc, ttype
-                    )
-                    deadline_points = calculate_deadline_penalty(
-                        d, ttype, status, deadlines_cfg, tasks_dir
-                    )
-                    proc_groups_g.append(
-                        {
-                            "solution_points": sol_points,
-                            "solution_style": solution_style,
-                            "perf": perf_val,
-                            "acceleration": acceleration,
-                            "efficiency": efficiency,
-                            "deadline_points": deadline_points,
-                            "plagiarised": is_cheated,
-                            "plagiarism_points": plagiarism_points,
-                        }
-                    )
-                # Override displayed points to processes maxima and recompute P
-                s_mpi_g, s_seq_g, a_max_g, r_max_g = _find_process_points(cfg, n)
-                has_mpi_g = bool(directories[d].get("mpi"))
-                has_seq_g = bool(directories[d].get("seq"))
-                report_present_g = (tasks_dir / d / "report.md").exists()
-                base_idx = len(proc_groups_g) - 2
-                if base_idx >= 0:
-                    proc_groups_g[base_idx]["solution_points"] = (
-                        s_mpi_g if has_mpi_g else 0
-                    )
-                    proc_groups_g[base_idx + 1]["solution_points"] = (
-                        s_seq_g if has_seq_g else 0
-                    )
-                    # Performance for MPI cell
-                    mpi_eff_g = proc_groups_g[base_idx].get("efficiency", "N/A")
-                    perf_points_mpi_g = (
-                        _calc_perf_points_from_efficiency(mpi_eff_g, a_max_g)
-                        if (has_mpi_g and has_seq_g)
-                        else 0
-                    )
-                    if isinstance(mpi_eff_g, str) and mpi_eff_g.endswith("%"):
-                        perf_points_mpi_display_g = perf_points_mpi_g
-                    else:
-                        perf_points_mpi_display_g = "—"
-                    proc_groups_g[base_idx]["perf_points"] = perf_points_mpi_g
-                    proc_groups_g[base_idx]["perf_points_display"] = (
-                        perf_points_mpi_display_g
-                    )
-                    proc_groups_g[base_idx + 1]["perf_points"] = 0
-                    try:
-                        plag_coeff_g = float(
-                            (cfg.get("copying", {}) or cfg.get("plagiarism", {})).get(
-                                "coefficient", 0.0
-                            )
-                        )
-                    except Exception:
-                        plag_coeff_g = 0.0
-                    p_mpi_g = (
-                        -plag_coeff_g * s_mpi_g
-                        if (has_mpi_g and proc_groups_g[base_idx].get("plagiarised"))
-                        else 0
-                    )
-                    p_seq_g = (
-                        -plag_coeff_g * s_seq_g
-                        if (
-                            has_seq_g and proc_groups_g[base_idx + 1].get("plagiarised")
-                        )
-                        else 0
-                    )
-                    proc_groups_g[base_idx]["plagiarism_points"] = p_mpi_g
-                    proc_groups_g[base_idx + 1]["plagiarism_points"] = p_seq_g
+        for _ in [1, 2, 3]:
+            proc_group_headers_g.append({"type": "mpi"})
+            proc_group_headers_g.append({"type": "seq"})
 
-                # Sum points by processes S + P + R (and C penalties)
-                s_inc_g = (s_mpi_g if has_mpi_g else 0) + (s_seq_g if has_seq_g else 0)
-                r_inc_g = r_max_g if report_present_g else 0
-                total_points_sum_g += (
-                    s_inc_g + perf_points_mpi_g + r_inc_g + p_mpi_g + p_seq_g
-                )
-                proc_r_values_g.append(r_inc_g)
-            else:
-                proc_top_headers_g.append(f"task-{n}")
-                for ttype in ["mpi", "seq"]:
-                    proc_group_headers_g.append({"type": ttype})
-                    proc_groups_g.append(
-                        {
-                            "solution_points": "?",
-                            "solution_style": "",
-                            "perf": "?",
-                            "acceleration": "?",
-                            "efficiency": "?",
-                            "deadline_points": "?",
-                            "plagiarised": False,
-                            "plagiarism_points": "?",
-                        }
-                    )
-                # Missing task: do not affect total; sum only existing; report=0
-                proc_r_values_g.append(0)
-
-        # Row label for group page: name without group (three lines max)
-        row_label_g = f"group {g}"
-        if target_identity_g:
-            parts = target_identity_g.split("|")
-            if len(parts) >= 3:
-                first, last, middle = parts[0], parts[1], parts[2]
-                nm_parts = [p for p in [last, first, middle] if p]
-                nm = "<br/>".join(nm_parts)
-                row_label_g = nm or row_label_g
-
-        # Build three variants (one per task) based on student identity
-        row_variant_g = "?"
-        if target_identity_g:
-            parts = target_identity_g.split("|")
-            if len(parts) >= 4:
-                first, last, middle, group = parts[0], parts[1], parts[2], parts[3]
-                vrender = []
-                for n in [1, 2, 3]:
-                    vmax = _find_process_variants_max(cfg, n)
-                    try:
-                        v_idx = assign_variant(
-                            surname=last,
-                            name=first,
-                            patronymic=middle,
-                            group=group,
-                            repo=f"{REPO_SALT}/processes/task-{n}",
-                            num_variants=vmax,
-                        )
-                        vrender.append(str(v_idx + 1))
-                    except Exception:
-                        vrender.append("?")
-                row_variant_g = "<br/>".join(vrender)
-
-        rows_g = [
-            {
-                "task": row_label_g,
-                "variant": row_variant_g,
-                "groups": proc_groups_g,
-                "r_values": proc_r_values_g,
-                "r_total": sum(proc_r_values_g),
-                "total": total_points_sum_g,
-            }
-        ]
+        rows_g = _build_process_rows(filtered_dirs)
 
         proc_vmaxes_g = [_find_process_variants_max(cfg, n) for n in [1, 2, 3]]
         # Build display deadlines for processes group page
