@@ -16,10 +16,10 @@ Resources:
 
 ### Parallel programming technologies:
   The following parallel programming technologies are considered in practice:
-  * `Message Passing Interface (MPI)` 
-  * `OpenMP (Open Multi-Processing)`
-  * `oneAPI Threading Building Blocks (oneTBB)`
-  * `Multithreading in C++ (std::thread)`
+  * [Message Passing Interface (MPI)](https://www.mpi-forum.org/)
+  * [OpenMP (Open Multi-Processing)](https://www.openmp.org/)
+  * [oneAPI Threading Building Blocks (oneTBB)](https://github.com/oneapi-src/oneTBB)
+  * [Multithreading in C++ (`std::thread`)](https://en.cppreference.com/w/cpp/thread/thread)
 
 ### Rules for submissions:
 1. You are not supposed to trigger CI jobs by frequent updates of your pull request. First you should test you work locally with all the scripts (code style).
