@@ -15,6 +15,7 @@ SortUsingDeclarations: LexicographicNumeric
 InsertNewlineAtEOF: true
 LambdaBodyIndentation: OuterScope
 MaxEmptyLinesToKeep: 1
+EnumTrailingComma: Insert
 KeepEmptyLines:
   AtStartOfFile: false
   AtStartOfBlock: false
