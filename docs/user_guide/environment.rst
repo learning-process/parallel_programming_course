@@ -125,6 +125,7 @@ Parallel Programming Technologies
 
      brew install llvm
      brew install libomp
+     brew link libomp --overwrite --force
 
 ``TBB``
 ~~~~~~~
