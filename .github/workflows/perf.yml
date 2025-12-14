@@ -1,3 +1,5 @@
+name: Performance
+
 on:
   workflow_call:
 
