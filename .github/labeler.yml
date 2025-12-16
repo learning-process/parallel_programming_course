@@ -72,9 +72,12 @@ infrastructure:
           - "cmake/**"
           - ".clang-format"
           - ".clang-tidy"
+          - ".editorconfig"
           - ".gitignore"
           - ".gitmodules"
-          - "codecov.yml"
+          - ".pre-commit-config.yaml"
+          - ".yamllint"
+          - "LICENSE"
           - "setup.cfg"
 
 python:
@@ -82,10 +85,17 @@ python:
       - any-glob-to-any-file:
           - "**/requirements.txt"
 
+docker:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docker/**"
+          - ".devcontainer/**"
+
 docs:
   - changed-files:
       - any-glob-to-any-file:
           - "docs/**"
+          - "Doxyfile"
           - "README.md"
 
 scoreboard:

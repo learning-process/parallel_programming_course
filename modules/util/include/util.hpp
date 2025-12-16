@@ -64,7 +64,11 @@ class DestructorFailureFlag {
   inline static std::atomic<bool> failure_flag{false};
 };
 
-enum class GTestParamIndex : uint8_t { kTaskGetter, kNameTest, kTestParams };
+enum class GTestParamIndex : uint8_t {
+  kTaskGetter,
+  kNameTest,
+  kTestParams,
+};
 
 std::string GetAbsoluteTaskPath(const std::string &id_path, const std::string &relative_path);
 int GetNumThreads();

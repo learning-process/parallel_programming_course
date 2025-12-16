@@ -8,7 +8,19 @@ permissions:
   packages: read
 
 jobs:
+  check-file-sizes:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check file sizes (max 1 MB)
+        uses: freenet-actions/check-file-size@v1.1.5
+        with:
+          max_size: 1024
+          post_comment: false
+          fail_on_find: true
+
   pre-commit:
+    needs: check-file-sizes
     runs-on: ubuntu-24.04
     container:
       image: ghcr.io/learning-process/ppc-ubuntu:1.1

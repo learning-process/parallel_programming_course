@@ -34,7 +34,7 @@ enum class TypeOfTask : uint8_t {
   /// Intel Threading Building Blocks (TBB)
   kTBB,
   /// Unknown task type
-  kUnknown
+  kUnknown,
 };
 
 using TaskMapping = std::pair<TypeOfTask, std::string>;
@@ -61,7 +61,7 @@ enum class StatusOfTask : uint8_t {
   /// Task is enabled and should be executed
   kEnabled,
   /// Task is disabled and will be skipped
-  kDisabled
+  kDisabled,
 };
 
 /// @brief Returns a string representation of the task status.
@@ -96,7 +96,10 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
   return type_str + "_" + std::string((*list_settings)["tasks"][type_str]);
 }
 
-enum class StateOfTesting : uint8_t { kFunc, kPerf };
+enum class StateOfTesting : uint8_t {
+  kFunc,
+  kPerf,
+};
 
 template <typename InType, typename OutType>
 /// @brief Base abstract class representing a generic task with a defined pipeline.
@@ -267,7 +270,7 @@ class Task {
     kPreProcessing,
     kRun,
     kDone,
-    kException
+    kException,
   } stage_ = PipelineStage::kNone;
 };
 

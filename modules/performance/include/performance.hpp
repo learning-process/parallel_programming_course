@@ -30,7 +30,11 @@ struct PerfAttr {
 struct PerfResults {
   /// @brief Measured execution time in seconds.
   double time_sec = 0.0;
-  enum class TypeOfRunning : uint8_t { kPipeline, kTaskRun, kNone };
+  enum class TypeOfRunning : uint8_t {
+    kPipeline,
+    kTaskRun,
+    kNone,
+  };
   TypeOfRunning type_of_running = TypeOfRunning::kNone;
   constexpr static double kMaxTime = 10.0;
 };

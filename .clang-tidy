@@ -12,6 +12,7 @@ Checks: >
   cert-msc51-cpp,
   cert-oop57-cpp,
   cert-oop58-cpp,
+  clang-*,
   concurrency-*,
   cppcoreguidelines-*,
   google-*,

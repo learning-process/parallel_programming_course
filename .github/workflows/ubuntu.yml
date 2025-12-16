@@ -1,3 +1,5 @@
+name: Ubuntu
+
 on:
   workflow_call:
 
@@ -391,7 +393,7 @@ jobs:
                 --xml --output ../coverage.xml \
                 --html=../cov-report/index.html --html-details
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5.5.1
+        uses: codecov/codecov-action@v5.5.2
         with:
           files: coverage.xml
           token: ${{ secrets.CODECOV_TOKEN }}
