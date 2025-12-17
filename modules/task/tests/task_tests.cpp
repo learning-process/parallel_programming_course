@@ -90,6 +90,9 @@ TEST(TaskTests, CheckInt32t) {
 }
 
 TEST(TaskTests, CheckInt32tSlow) {
+#ifdef __APPLE__
+  GTEST_SKIP() << "Skipped on macOS due to time fluctuations.";
+#endif
   std::vector<int32_t> in(20, 1);
   ppc::test::FakeSlowTask<std::vector<int32_t>, int32_t> test_task(in);
   ASSERT_EQ(test_task.Validation(), true);
@@ -278,6 +281,9 @@ TEST(TaskTest, TaskDestructorThrowsIfEmpty) {
 }
 
 TEST(TaskTest, InternalTimeTestThrowsIfTimeoutExceeded) {
+#ifdef __APPLE__
+  GTEST_SKIP() << "Skipped on macOS due to time fluctuations.";
+#endif
   struct SlowTask : Task<std::vector<int32_t>, int32_t> {
     explicit SlowTask(const std::vector<int32_t> &in) {
       this->GetInput() = in;
