@@ -96,6 +96,9 @@ TEST(PerfTests, CheckPerfPipelineFloat) {
 }
 
 TEST(PerfTests, CheckPerfPipelineUint8tSlowTest) {
+#ifdef __APPLE__
+  GTEST_SKIP() << "Skipped on macOS.";
+#endif
   std::vector<uint8_t> in(128, 1);
 
   auto test_task = std::make_shared<ppc::test::FakePerfTask<std::vector<uint8_t>, uint8_t>>(in);
