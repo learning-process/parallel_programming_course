@@ -77,7 +77,7 @@ jobs:
         run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
         env:
           PPC_NUM_THREADS: 1
-          PPC_PERF_MAX_TIME: 30
+          PPC_TASK_MAX_TIME: 30
       - name: Run tests (threads)
         run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
