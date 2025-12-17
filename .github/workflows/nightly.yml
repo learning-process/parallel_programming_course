@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   close-stale-prs:
+    if: ${{ github.repository == 'learning-process/parallel_programming_course' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/stale@v10
