@@ -10,15 +10,7 @@ import json
 from jinja2 import Environment, FileSystemLoader
 import logging
 import sys
-
-# Try ZoneInfo from stdlib, then from backports, else fall back to naive time
-try:
-    from zoneinfo import ZoneInfo  # type: ignore
-except Exception:  # pragma: no cover - fallback for Python < 3.9
-    try:
-        from backports.zoneinfo import ZoneInfo  # type: ignore
-    except Exception:  # Last resort: define a stub
-        ZoneInfo = None  # type: ignore
+from zoneinfo import ZoneInfo  # type: ignore
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
