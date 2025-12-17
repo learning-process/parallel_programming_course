@@ -20,6 +20,13 @@ repos:
         files: \.(cmake|CMakeLists\.txt)$
         exclude: ^(3rdparty/|build.*/|install/)
 
+  # Python import sorting
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: [--settings-path, setup.cfg]
+
   # Ruff Python linter
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.14.9
