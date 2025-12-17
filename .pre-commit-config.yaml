@@ -47,6 +47,15 @@ repos:
       - id: shellcheck
         files: \.sh$
 
+  # Dockerfile linting with hadolint
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.14.0
+    hooks:
+      - id: hadolint-docker
+        types: [file]
+        files: (^|/)(Dockerfile|.*\.Dockerfile)$
+        args: [--config, .hadolint.yaml]
+
 # Configuration
 default_stages: [pre-commit]
 fail_fast: false
