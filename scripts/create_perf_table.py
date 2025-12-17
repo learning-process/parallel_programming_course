@@ -1,8 +1,9 @@
 import argparse
+import csv
 import os
 import re
+
 import xlsxwriter
-import csv
 
 # -------------------------------
 # Helpers and configuration

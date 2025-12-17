@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import os
+import platform
 import shlex
 import subprocess
-import platform
 from pathlib import Path
 
 
