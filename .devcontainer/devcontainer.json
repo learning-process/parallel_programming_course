@@ -1,18 +1,18 @@
 {
-	"name": "Parallel Programming Course",
-	"image": "ghcr.io/learning-process/ppc-ubuntu:1.1",
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"ms-vscode.cpptools-extension-pack",
-				"ms-vscode.cmake-tools",
-				"ms-python.python"
-			],
-			"settings": {
-				"cmake.configureOnOpen": true,
-				"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
-			}
-		}
-	},
-	"postCreateCommand": "python3 -m pip install -r requirements.txt"
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools-extension-pack",
+        "ms-vscode.cmake-tools",
+        "ms-python.python"
+      ],
+      "settings": {
+        "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+        "cmake.configureOnOpen": true
+      }
+    }
+  },
+  "image": "ghcr.io/learning-process/ppc-ubuntu:1.1",
+  "name": "Parallel Programming Course",
+  "postCreateCommand": "python3 -m pip install -r requirements.txt"
 }
