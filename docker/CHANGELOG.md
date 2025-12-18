@@ -8,3 +8,8 @@ Changelog
 
 ### [1.0] - 2025-07-28
 - Initial Ubuntu-based image
+
+## ppc-alpine
+
+### [1.0] - 2025-12-17
+- Initial Alpine-based image (Alpine 3.23)
