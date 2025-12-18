@@ -47,6 +47,17 @@ repos:
     hooks:
       - id: yamllint
 
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-json
+        files: \.json$
+        exclude: ^(3rdparty/|build.*/|install/)
+      - id: pretty-format-json
+        files: \.json$
+        exclude: ^(3rdparty/|build.*/|install/)
+        args: [--autofix, --indent=2]
+
   # Shell script linting with shellcheck (no docker dependency)
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
