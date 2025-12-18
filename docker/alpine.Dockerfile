@@ -12,10 +12,13 @@ RUN set -eux; \
     curl \
     git \
     gnupg \
+    linux-headers \
     lld \
     llvm \
     make \
     ninja \
+    openmp \
+    openmp-dev \
     openmpi \
     openmpi-dev \
     python3 \

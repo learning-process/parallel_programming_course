@@ -43,11 +43,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Build and push multi-arch image
+      - name: Build and push multi-arch image (Ubuntu)
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./docker/ubuntu.Dockerfile
           platforms: linux/amd64,linux/arm64
           push: ${{ github.ref == 'refs/heads/master' }}
-          tags: ghcr.io/learning-process/ppc-ubuntu:1.1
+          tags: ghcr.io/learning-process/ppc-alpine:1.0
+
+      - name: Build and push multi-arch image (Alpine)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./docker/alpine.Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.ref == 'refs/heads/master' }}
+          tags: ghcr.io/learning-process/ppc-alpine:1.0
