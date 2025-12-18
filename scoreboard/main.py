@@ -1,16 +1,17 @@
-from pathlib import Path
+import argparse
+import csv
+import json
+import logging
+import shutil
+import subprocess
+import sys
 from collections import defaultdict
 from datetime import datetime
-import csv
-import argparse
-import subprocess
-import yaml
-import shutil
-import json
-from jinja2 import Environment, FileSystemLoader
-import logging
-import sys
+from pathlib import Path
 from zoneinfo import ZoneInfo  # type: ignore
+
+import yaml
+from jinja2 import Environment, FileSystemLoader
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -699,8 +700,8 @@ def main():
         pass
 
     # Helper: compute evenly spaced dates for current semester (MSK)
-    from datetime import date, timedelta
     import calendar
+    from datetime import date, timedelta
 
     def _abbr(day: date) -> str:
         return f"{day.day} {calendar.month_abbr[day.month]}"

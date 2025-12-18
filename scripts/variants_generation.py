@@ -1,7 +1,8 @@
 import csv
+from pathlib import Path
+
 import numpy as np
 from xlsxwriter.workbook import Workbook
-from pathlib import Path
 
 
 def get_project_path():

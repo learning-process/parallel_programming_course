@@ -2,12 +2,13 @@
 Pytest configuration and shared fixtures for scoreboard tests.
 """
 
-import pytest
-import tempfile
-import shutil
-from pathlib import Path
-import yaml
 import csv
+import shutil
+import tempfile
+from pathlib import Path
+
+import pytest
+import yaml
 
 
 @pytest.fixture
