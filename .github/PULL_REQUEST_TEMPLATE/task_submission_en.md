@@ -31,8 +31,10 @@ Please ensure the following items are completed **before** submitting your pull 
 - [ ] **clang-tidy**: My changes pass `clang-tidy` locally in my fork (no warnings/errors)
 - [ ] **Functional Tests**: All functional tests are passing locally on my machine
 - [ ] **Performance Tests**: All performance tests are passing locally on my machine
-- [ ] **Branch**: I am working on a branch named exactly as my task directory (e.g., `nesterov_a_vector_sum`), not on `master`.
-- [ ] **Truthful Content**: I confirm that every detail provided in this pull request is accurate and truthful to the best of my knowledge.
+- [ ] **Branch**: I am working on a branch named exactly as my task directory (e.g., `nesterov_a_vector_sum`),
+  not on `master`.
+- [ ] **Truthful Content**: I confirm that every detail provided in this pull request is accurate and truthful to the
+  best of my knowledge.
 
 <!--
 NOTE: Untruthful entries in this checklist may result in PR rejection and zero points for the associated task.
