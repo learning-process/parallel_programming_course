@@ -30,6 +30,15 @@ def init_cmd_args():
         help="List of process/thread counts to run sequentially",
     )
     parser.add_argument(
+        "--build-dir",
+        default="build",
+        help=(
+            "Path to the CMake build directory (or its 'bin' subdirectory). "
+            "Relative paths are resolved from the project root. "
+            "Default: 'build'."
+        ),
+    )
+    parser.add_argument(
         "--verbose", action="store_true", help="Print commands executed by the script"
     )
     args = parser.parse_args()
@@ -38,11 +47,12 @@ def init_cmd_args():
 
 
 class PPCRunner:
-    def __init__(self, verbose=False):
+    def __init__(self, build_dir="build", verbose=False):
         self.__ppc_num_threads = None
         self.__ppc_num_proc = None
         self.__ppc_env = None
         self.work_dir = None
+        self.build_dir = build_dir
         self.verbose = verbose
 
         self.valgrind_cmd = (
@@ -87,10 +97,22 @@ class PPCRunner:
                 "Required environment variable 'PPC_NUM_PROC' is not set."
             )
 
-        if (Path(self.__get_project_path()) / "install").exists():
-            self.work_dir = Path(self.__get_project_path()) / "install" / "bin"
-        else:
-            self.work_dir = Path(self.__get_project_path()) / "build" / "bin"
+        project_path = Path(self.__get_project_path())
+        install_bin_dir = project_path / "install" / "bin"
+        if install_bin_dir.exists():
+            self.work_dir = install_bin_dir
+            return
+
+        build_dir = Path(self.build_dir)
+        if not build_dir.is_absolute():
+            build_dir = project_path / build_dir
+        bin_dir = build_dir if build_dir.name == "bin" else build_dir / "bin"
+        if not bin_dir.exists():
+            raise FileNotFoundError(
+                f"Test binaries directory not found: '{bin_dir}'. "
+                "Build the project or pass a correct '--build-dir' (e.g. 'build', 'build_seq', or 'build/bin')."
+            )
+        self.work_dir = bin_dir
 
     def __run_exec(self, command):
         if self.verbose:
@@ -246,7 +268,10 @@ class PPCRunner:
 
 
 def _execute(args_dict, env):
-    runner = PPCRunner(verbose=args_dict.get("verbose", False))
+    runner = PPCRunner(
+        build_dir=args_dict.get("build_dir", "build"),
+        verbose=args_dict.get("verbose", False),
+    )
     runner.setup_env(env)
 
     if args_dict["running_type"] in ["threads", "processes"]:
