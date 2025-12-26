@@ -41,7 +41,7 @@ HTML table with columns: S (solution), A (acceleration), E (efficiency), D (dead
 - Due time is 23:59 MSK on the shown date.
 - File `data/deadlines.yml` can shift dates per item by integer day offsets (default 0). Example:
 
-```
+```yaml
 threads:
   seq: 0     # no shift
   omp: -2    # 2 days earlier
