@@ -1,5 +1,20 @@
 include_guard()
 
+if(WIN32 AND CMAKE_GENERATOR MATCHES "Ninja")
+  set(CMAKE_NINJA_FORCE_RESPONSE_FILE
+      ON
+      CACHE BOOL "Force Ninja to use response files" FORCE)
+  set(CMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES
+      ON
+      CACHE BOOL "Use response files for includes" FORCE)
+  set(CMAKE_CXX_USE_RESPONSE_FILE_FOR_OBJECTS
+      ON
+      CACHE BOOL "Use response files for objects" FORCE)
+  set(CMAKE_CXX_USE_RESPONSE_FILE_FOR_LIBRARIES
+      ON
+      CACHE BOOL "Use response files for libraries" FORCE)
+endif()
+
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
 endif(NOT CMAKE_BUILD_TYPE)
