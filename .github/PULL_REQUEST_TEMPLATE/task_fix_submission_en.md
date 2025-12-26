@@ -12,6 +12,7 @@ Please provide:
 -->
 
 ### Original task details
+
 - **Task**: _Enter the full task name here_
 - **Variant**: _Enter the variant number here_
 - **Technology**: _Enter technology (e.g., SEQ, OMP, TBB, STL, MPI)_
@@ -20,6 +21,7 @@ Please provide:
 - **Original task definition**: _Paste the full task statement here_
 
 ### Fix details
+
 - **Problem**: _What is broken / incorrect? Include symptoms and expected behavior._
 - **Root cause**: _Why did it happen?_
 - **Fix summary**: _What exactly did you change?_
@@ -33,8 +35,10 @@ Please ensure the following items are completed **before** submitting your pull 
 -->
 
 - [ ] **CI Status**: All CI jobs (build, tests, report generation) are passing on my branch in my fork
-- [ ] **Task Directory & Naming**: I did not rename the existing task directory and did not introduce extra task directories
-- [ ] **Full Task Definition**: I have provided the complete original task description and the fix details in the pull request body
+- [ ] **Task Directory & Naming**: I did not rename the existing task directory and did not introduce extra task
+  directories
+- [ ] **Full Task Definition**: I have provided the complete original task description and the fix details in the pull
+  request body
 - [ ] **clang-format**: My changes pass `clang-format` locally in my fork (no formatting errors)
 - [ ] **clang-tidy**: My changes pass `clang-tidy` locally in my fork (no warnings/errors)
 - [ ] **Functional Tests**: All functional tests are passing locally on my machine
