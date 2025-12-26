@@ -22,6 +22,8 @@ jobs:
     needs:
       - pre-commit
     uses: ./.github/workflows/ubuntu.yml
+    with:
+      is_nightly: ${{ github.event_name == 'schedule' }}
   mac:
     needs:
       - pre-commit
