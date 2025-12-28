@@ -12,6 +12,7 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-24.04
+    if: ${{ github.repository == 'learning-process/parallel_programming_course' }}
     permissions:
       actions: read
       contents: read
