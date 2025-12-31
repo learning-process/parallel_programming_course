@@ -32,6 +32,9 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
       - name: Setup environment
         run: |
           python3 -m pip install -r requirements.txt --break-system-packages --ignore-installed
