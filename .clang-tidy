@@ -102,8 +102,6 @@ CheckOptions:
     value: 1
   - key: misc-include-cleaner.IgnoreHeaders
     value: '(__chrono/.*|stdlib\.h|3rdparty/.*)'
-  - key: misc-use-anonymous-namespace.IgnoreMacros
-    value: 1
   - key: cppcoreguidelines-avoid-non-const-global-variables.AllowInternalLinkage
     value: 1
   - key: modernize-type-traits.IgnoreMacros
