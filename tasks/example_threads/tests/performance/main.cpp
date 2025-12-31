@@ -31,6 +31,8 @@ TEST_P(ExampleRunPerfTestThreads, RunPerfModes) {
   ExecuteTest(GetParam());
 }
 
+namespace {
+
 const auto kAllPerfTasks =
     ppc::util::MakeAllPerfTasks<InType, NesterovATestTaskALL, NesterovATestTaskOMP, NesterovATestTaskSEQ,
                                 NesterovATestTaskSTL, NesterovATestTaskTBB>(PPC_SETTINGS_example_threads);
@@ -40,5 +42,7 @@ const auto kGtestValues = ppc::util::TupleToGTestValues(kAllPerfTasks);
 const auto kPerfTestName = ExampleRunPerfTestThreads::CustomPerfTestName;
 
 INSTANTIATE_TEST_SUITE_P(RunModeTests, ExampleRunPerfTestThreads, kGtestValues, kPerfTestName);
+
+}  // namespace
 
 }  // namespace nesterov_a_test_task_threads
