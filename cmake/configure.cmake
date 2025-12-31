@@ -43,11 +43,7 @@ set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 
 option(USE_COVERAGE "Enable coverage instrumentation" OFF)
 
-if(USE_COVERAGE)
-  set(CMAKE_INSTALL_RPATH "${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib")
-else()
-  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-endif()
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set(CMAKE_BUILD_RPATH "${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib")
 
 set(CMAKE_BUILD_WITH_INSTALL_RPATH OFF)

@@ -367,9 +367,13 @@ jobs:
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
+          -DCMAKE_INSTALL_PREFIX=install
       - name: Build project
         run: |
           cmake --build build --parallel -- --quiet
+      - name: Install project
+        run: |
+          cmake --build build --target install -- --quiet
       - name: Run tests (MPI)
         run: scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
         env:
