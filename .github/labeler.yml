@@ -1,32 +1,32 @@
 "task:all":
   - changed-files:
       - any-glob-to-any-file:
-          - "tasks/**/all"
+          - "tasks/**/all/**"
 
 "task:mpi":
   - changed-files:
       - any-glob-to-any-file:
-          - "tasks/**/mpi"
+          - "tasks/**/mpi/**"
 
 "task:omp":
   - changed-files:
       - any-glob-to-any-file:
-          - "tasks/**/omp"
+          - "tasks/**/omp/**"
 
 "task:seq":
   - changed-files:
       - any-glob-to-any-file:
-          - "tasks/**/seq"
+          - "tasks/**/seq/**"
 
 "task:stl":
   - changed-files:
       - any-glob-to-any-file:
-          - "tasks/**/stl"
+          - "tasks/**/stl/**"
 
 "task:tbb":
   - changed-files:
       - any-glob-to-any-file:
-          - "tasks/**/tbb"
+          - "tasks/**/tbb/**"
 
 task:
   - changed-files:
