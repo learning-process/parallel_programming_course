@@ -22,14 +22,14 @@ repos:
 
   # Python import sorting
   - repo: https://github.com/pycqa/isort
-    rev: 7.0.0
+    rev: 8.0.0
     hooks:
       - id: isort
         args: [--settings-path, setup.cfg]
 
   # Ruff Python linter
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.15.0
+    rev: v0.15.2
     hooks:
       - id: ruff
         args: [--fix]
@@ -75,7 +75,7 @@ repos:
         args: [--config, .hadolint.yaml]
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.20.0
+    rev: v0.21.0
     hooks:
       - id: markdownlint-cli2
         exclude: ^(3rdparty/|build.*/|install/)
