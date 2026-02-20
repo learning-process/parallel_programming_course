@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Check file sizes (max 1 MB)
-        uses: freenet-actions/check-file-size@v1.1.5
+        uses: freenet-actions/check-file-size@v2.0.0
         with:
           max_size: 1024
           post_comment: false
