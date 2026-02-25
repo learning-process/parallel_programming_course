@@ -326,10 +326,10 @@ msgstr "Подсказки по инструментам (версии и уст
 
 #: ../../../../docs/user_guide/ci.rst:143
 msgid ""
-"clang-tidy version - CI uses clang-tidy 21. Prefer the same locally to "
-"avoid mismatches. - The helper may be named ``clang-tidy-21`` or ``run-"
-"clang-tidy-21`` on some systems."
-msgstr "Версия clang-tidy — в CI используется clang-tidy 21. Локально лучше использовать ту же версию, чтобы избежать расхождений. На некоторых системах помощник может называться ``clang-tidy-21`` или ``run-clang-tidy-21``."
+"clang-tidy version - CI uses clang-tidy 22. Prefer the same locally to "
+"avoid mismatches. - The helper may be named ``clang-tidy-22`` or ``run-"
+"clang-tidy-22`` on some systems."
+msgstr "Версия clang-tidy — в CI используется clang-tidy 22. Локально лучше использовать ту же версию, чтобы избежать расхождений. На некоторых системах помощник может называться ``clang-tidy-22`` или ``run-clang-tidy-22``."
 
 #: ../../../../docs/user_guide/ci.rst:147
 msgid ""
@@ -337,7 +337,7 @@ msgid ""
 "tidy-21``) or use the course Docker image. - gcovr: ``python3 -m pip "
 "install gcovr`` or a distro package. - GCC version: use ``gcov-14`` when "
 "building with GCC 14 (as in CI)."
-msgstr "Linux — clang-tidy: установите из репозитория дистрибутива (например, ``apt install clang-tidy-21``) или используйте Docker‑образ курса. gcovr: ``python3 -m pip install gcovr`` либо пакет дистрибутива. GCC: при сборке с GCC 14 используйте ``gcov-14`` (как в CI)."
+msgstr "Linux — clang-tidy: установите из репозитория дистрибутива (например, ``apt install clang-tidy-22``) или используйте Docker‑образ курса. gcovr: ``python3 -m pip install gcovr`` либо пакет дистрибутива. GCC: при сборке с GCC 14 используйте ``gcov-14`` (как в CI)."
 
 #: ../../../../docs/user_guide/ci.rst:152
 msgid ""

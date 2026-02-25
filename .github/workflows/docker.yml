@@ -50,4 +50,4 @@ jobs:
           file: ./docker/ubuntu.Dockerfile
           platforms: linux/amd64,linux/arm64
           push: ${{ github.ref == 'refs/heads/master' }}
-          tags: ghcr.io/learning-process/ppc-ubuntu:1.1
+          tags: ghcr.io/learning-process/ppc-ubuntu:1.2

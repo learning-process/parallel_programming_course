@@ -21,7 +21,10 @@ function(ppc_link_threads exec_func_lib)
 endfunction()
 
 function(ppc_link_openmp exec_func_lib)
-  find_package(OpenMP REQUIRED)
+  find_package(
+    OpenMP
+    COMPONENTS CXX
+    REQUIRED)
   target_link_libraries(${exec_func_lib} PUBLIC ${OpenMP_libomp_LIBRARY}
                                                 OpenMP::OpenMP_CXX)
 endfunction()

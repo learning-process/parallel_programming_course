@@ -34,7 +34,7 @@ jobs:
     needs: check-file-sizes
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -49,6 +49,11 @@ jobs:
       - name: Setup environment
         run: |
           python3 -m pip install -r requirements.txt --break-system-packages --ignore-installed
+      - name: Install Docker CLI
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends docker.io
+          rm -rf /var/lib/apt/lists/*
       - name: Configure git safe directory
         run: |
           git config --global --add safe.directory '*'

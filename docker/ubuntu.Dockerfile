@@ -1,5 +1,7 @@
 FROM ubuntu:24.04
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN set -e \
@@ -14,13 +16,16 @@ RUN set -e \
     valgrind \
     libmpich-dev mpich \
     openmpi-bin openmpi-common libopenmpi-dev \
-    libomp-dev \
     gcc-14 g++-14 \
     gcovr zip \
- && wget -q https://apt.llvm.org/llvm.sh \
- && chmod +x llvm.sh \
- && ./llvm.sh 21 all \
- && rm llvm.sh \
+ && wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor > /usr/share/keyrings/llvm-archive-keyring.gpg \
+ && echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] http://apt.llvm.org/noble/ llvm-toolchain-noble-22 main" \
+    > /etc/apt/sources.list.d/llvm.list \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends \
+    clang-22 clang-tools-22 clang-tidy-22 clang-format-22 \
+    lldb-22 lld-22 llvm-22 llvm-22-dev \
+    libomp5-22 libomp-22-dev \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
