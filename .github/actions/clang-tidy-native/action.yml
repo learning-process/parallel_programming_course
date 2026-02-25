@@ -12,7 +12,7 @@ inputs:
   clang_tidy_version:
     description: 'Clang-tidy version to use'
     required: false
-    default: '21'
+    default: '22'
 outputs:
   total_comments:
     description: 'Total number of clang-tidy issues found'
