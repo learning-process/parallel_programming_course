@@ -36,11 +36,9 @@ try:
 except Exception:
 
     def assign_variant(
-        surname: str,
-        name: str,
+        full_name: str,
         group: str,
         repo: str,
-        patronymic: str = "",
         num_variants: int = 1,
     ) -> int:
         return 0
@@ -549,10 +547,7 @@ def _build_rows_for_task_types(
             with open(info_path, "r") as f:
                 data = json.load(f)
             s = data.get("student", {})
-            last = s.get("last_name", "")
-            first = s.get("first_name", "")
-            middle = s.get("middle_name", "")
-            parts = [p for p in [last, first, middle] if p]
+            parts = [p for p in str(s.get("full_name", "")).strip().split() if p]
             label = "<br/>".join(parts)
             return label if label else None
         except Exception:
@@ -568,12 +563,7 @@ def _build_rows_for_task_types(
             with open(info_path, "r") as f:
                 data = json.load(f)
             s = data.get("student", {})
-            return (
-                str(s.get("last_name", "")),
-                str(s.get("first_name", "")),
-                str(s.get("middle_name", "")),
-                str(s.get("group_number", "")),
-            )
+            return str(s.get("full_name", "")).strip(), str(s.get("group_number", ""))
         except Exception:
             return None
 
@@ -644,14 +634,12 @@ def _build_rows_for_task_types(
         threads_vmax = int((cfg.get("threads", {}) or {}).get("variants_max", 1))
         fields = _load_student_fields(dir)
         if fields:
-            last, first, middle, group = fields
+            full_name, group = fields
             try:
                 v_idx = assign_variant(
-                    last,
-                    first,
-                    group,
-                    REPO_SALT,
-                    patronymic=middle,
+                    full_name=full_name,
+                    group=group,
+                    repo=REPO_SALT,
                     num_variants=threads_vmax,
                 )
                 variant = str(v_idx + 1)
@@ -985,9 +973,7 @@ def main():
     def _identity_key(student: dict) -> str:
         return "|".join(
             [
-                str(student.get("first_name", "")),
-                str(student.get("last_name", "")),
-                str(student.get("middle_name", "")),
+                str(student.get("full_name", "")).strip(),
                 str(student.get("group_number", "")),
             ]
         )
@@ -1051,9 +1037,7 @@ def main():
 
     def _sort_identity(student: dict):
         return (
-            str(student.get("last_name", "")),
-            str(student.get("first_name", "")),
-            str(student.get("middle_name", "")),
+            str(student.get("full_name", "")).strip(),
             str(student.get("group_number", "")),
         )
 
@@ -1182,9 +1166,7 @@ def main():
                     proc_r_values.append(0)
 
             name_parts = [
-                str(student.get("last_name", "")),
-                str(student.get("first_name", "")),
-                str(student.get("middle_name", "")),
+                p for p in str(student.get("full_name", "")).strip().split() if p
             ]
             name_html = "<br/>".join([p for p in name_parts if p]) or "processes"
 
@@ -1193,9 +1175,7 @@ def main():
                 vmax = _find_process_variants_max(cfg, n)
                 try:
                     v_idx = assign_variant(
-                        surname=str(student.get("last_name", "")),
-                        name=str(student.get("first_name", "")),
-                        patronymic=str(student.get("middle_name", "")),
+                        full_name=str(student.get("full_name", "")).strip(),
                         group=str(student.get("group_number", "")),
                         repo=f"{REPO_SALT}/processes/task-{n}",
                         num_variants=vmax,
@@ -1422,9 +1402,7 @@ def main():
         def _id_key(stud: dict) -> str:
             return "|".join(
                 [
-                    str(stud.get("first_name", "")),
-                    str(stud.get("last_name", "")),
-                    str(stud.get("middle_name", "")),
+                    str(stud.get("full_name", "")).strip(),
                     str(stud.get("group_number", "")),
                 ]
             )

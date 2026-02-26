@@ -5,7 +5,7 @@ with the repository name as the ONLY salt.
 
 Algorithm:
   1) Normalize strings (NFKC, trim, lowercase, map 'ё'->'е', collapse spaces).
-  2) Build a key: "surname|name|patronymic|group|repo".
+  2) Build a key: "full_name|group|repo".
   3) SHA-256(key) -> big integer -> modulo `num_variants`.
 
 Properties:
@@ -17,9 +17,7 @@ Properties:
 Usage:
     from assign_variant import assign_variant
     v = assign_variant(
-        surname="Petrov",
-        name="Pyotr",
-        patronymic="Petrovich",
+        full_name="Petrov Pyotr Petrovich",
         group="MEN-201",
         repo="learning-process/parallel_programming_course",
         num_variants=31,  # produces values in 0..30
@@ -62,23 +60,19 @@ def _hash_int(key: str) -> int:
 
 
 def assign_variant(
-    surname: str,
-    name: str,
+    full_name: str,
     group: str,
     repo: str,
-    patronymic: Optional[str] = "",
     num_variants: int = 31,
 ) -> int:
     """
     Deterministically returns a variant index in [0 .. num_variants-1]
-    based on (surname, name, patronymic, group) and the repository name (repo)
+    based on (full_name, group) and the repository name (repo)
     as the sole salt.
 
-    :param surname: Last name
-    :param name: First name
+    :param full_name: Full name (e.g., "Petrov Pyotr Petrovich")
     :param group: Group identifier (e.g., "MEN-201")
     :param repo: Repository name used as salt (e.g., "org/repo" or just "repo")
-    :param patronymic: Middle name / patronymic (optional)
     :param num_variants: Total number of variants (> 0). Output range: 0..num_variants-1
     :return: int — the variant index
     """
@@ -89,9 +83,7 @@ def assign_variant(
 
     key = "|".join(
         (
-            normalize(surname),
-            normalize(name),
-            normalize(patronymic),
+            normalize(full_name),
             normalize(group),
             normalize(repo),
         )
@@ -107,18 +99,14 @@ if __name__ == "__main__":
         print("Demo: deterministic assignment\n")
 
         v1 = assign_variant(
-            surname="Петров",
-            name="Пётр",
-            patronymic="Петрович",
+            full_name="Петров Пётр Петрович",
             group="МЕН-201",
             repo="learning-process/parallel_programming_course",
             num_variants=31,
         )
         # Different casing/spacing/ё→е should not change the result:
         v2 = assign_variant(
-            surname="ПЕТРОВ",
-            name="петр ",
-            patronymic="пЕТРОВИЧ",
+            full_name="ПЕТРОВ   петр  пЕТРОВИЧ",
             group="  мен-201 ",
             repo="learning-process/parallel_programming_course",
             num_variants=31,
@@ -126,9 +114,7 @@ if __name__ == "__main__":
         assert v1 == v2, "Normalization should make results identical"
 
         v_other_repo = assign_variant(
-            surname="Petrov",
-            name="Pyotr",
-            patronymic="Petrovich",
+            full_name="Petrov Pyotr Petrovich",
             group="MEN-201",
             repo="learning-process/ppc_2025_fall",  # different salt → likely different value
             num_variants=31,

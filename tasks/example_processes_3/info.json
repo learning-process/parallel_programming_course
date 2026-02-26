@@ -1,9 +1,7 @@
 {
   "student": {
-    "first_name": "first_name_p",
+    "full_name": "full_name_p",
     "group_number": "2222222_p",
-    "last_name": "last_name_p",
-    "middle_name": "middle_name_p",
     "task_number": "3"
   }
 }
