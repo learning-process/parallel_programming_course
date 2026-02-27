@@ -22,7 +22,7 @@ jobs:
       - name: Run Doxygen
         run: doxygen Doxyfile
       - name: Upload Doxygen documentation
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: doxygen-documentation-xml
           path: xml
@@ -64,7 +64,7 @@ jobs:
         run: |
           cmake --build build -t docs_html -- --quiet
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: sphinx-documentation
           path: ./build/docs/_build/html
@@ -102,7 +102,7 @@ jobs:
         run: |
           cmake --build build --parallel -- --quiet
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: scoreboard
           path: ./build/scoreboard/html/
