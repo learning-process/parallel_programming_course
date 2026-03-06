@@ -179,6 +179,8 @@ jobs:
     strategy:
       matrix:
         os: ${{ fromJSON(inputs.is_nightly && '["ubuntu-24.04","ubuntu-24.04-arm"]' || '["ubuntu-24.04"]') }}
+    env:
+      LD_LIBRARY_PATH: /opt/llvm/lib
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -211,6 +213,8 @@ jobs:
     strategy:
       matrix:
         os: ${{ fromJSON(inputs.is_nightly && '["ubuntu-24.04","ubuntu-24.04-arm"]' || '["ubuntu-24.04"]') }}
+    env:
+      LD_LIBRARY_PATH: /opt/llvm/lib
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -284,6 +288,8 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-24.04"]
+    env:
+      LD_LIBRARY_PATH: /opt/llvm/lib
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -322,6 +328,8 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-24.04"]
+    env:
+      LD_LIBRARY_PATH: /opt/llvm/lib
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
