@@ -1,34 +1,46 @@
 FROM ubuntu:24.04
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
 ENV DEBIAN_FRONTEND=noninteractive
+ARG LLVM_VER=22.1.0
+ARG TARGETARCH
 
 RUN set -e \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
     build-essential \
     git \
-    ca-certificates curl wget gnupg lsb-release software-properties-common \
+    ca-certificates curl gnupg lsb-release software-properties-common \
     python3 python3-pip \
     ninja-build cmake make \
     ccache \
     valgrind \
     libmpich-dev mpich \
     openmpi-bin openmpi-common libopenmpi-dev \
+    libomp-dev \
     gcc-14 g++-14 \
     gcovr zip \
- && wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor > /usr/share/keyrings/llvm-archive-keyring.gpg \
- && echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] http://apt.llvm.org/noble/ llvm-toolchain-noble-22 main" \
-    > /etc/apt/sources.list.d/llvm.list \
- && apt-get update \
- && apt-get install -y --no-install-recommends \
-    clang-22 clang-tools-22 clang-tidy-22 clang-format-22 \
-    lldb-22 lld-22 llvm-22 llvm-22-dev \
-    libomp5-22 libomp-22-dev \
+    xz-utils \
+ && case "${TARGETARCH}" in \
+      amd64) llvm_pkg_arch="X64" ;; \
+      arm64) llvm_pkg_arch="ARM64" ;; \
+      *) echo "Unsupported TARGETARCH: ${TARGETARCH}" >&2; exit 1 ;; \
+    esac \
+ && llvm_major="${LLVM_VER%%.*}" \
+ && llvm_pkg="LLVM-${LLVM_VER}-Linux-${llvm_pkg_arch}" \
+ && curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors \
+      -o "${llvm_pkg}.tar.xz" \
+      "https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VER}/${llvm_pkg}.tar.xz" \
+ && tar -xf "${llvm_pkg}.tar.xz" -C /opt \
+ && ln -s "/opt/${llvm_pkg}" "/opt/llvm-${llvm_major}" \
+ && ln -s "/opt/llvm-${llvm_major}" /opt/llvm \
+ && ln -s /opt/llvm/bin/clang++ /opt/llvm/bin/clang++-"${llvm_major}" \
+ && ln -s /opt/llvm/bin/clang-tidy /opt/llvm/bin/clang-tidy-"${llvm_major}" \
+ && ln -s /opt/llvm/bin/clang-format /opt/llvm/bin/clang-format-"${llvm_major}" \
+ && rm "${llvm_pkg}.tar.xz" \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
 ENV CC=gcc-14 CXX=g++-14
+ENV PATH="/opt/llvm/bin:${PATH}"
 
 CMD ["bash"]
