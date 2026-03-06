@@ -65,8 +65,8 @@ Install these to match the CI toolchain for static analysis and coverage reports
 
   .. code-block:: bash
 
-     # clang-tidy 21 (recommended)
-     sudo apt update && sudo apt install -y clang-tidy-21
+     # clang-tidy 22 (recommended)
+     sudo apt update && sudo apt install -y clang-tidy-22
      # gcovr via pip (or use your distro package)
      python3 -m pip install gcovr
      # GCC 14 coverage helper (used in CI)
