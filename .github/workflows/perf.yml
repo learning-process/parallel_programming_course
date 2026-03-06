@@ -21,7 +21,7 @@ jobs:
         run: |
           python3 -m pip install -r requirements.txt --break-system-packages --ignore-installed
       - name: Download installed package
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: ubuntu-gcc-install-ubuntu-24.04
       - name: Extract installed package
@@ -59,7 +59,7 @@ jobs:
           brew link libomp --overwrite --force
           python3 -m pip install -r requirements.txt --break-system-packages
       - name: Download installed package
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: macos-clang-install
       - name: Extract installed package
