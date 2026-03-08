@@ -15,6 +15,7 @@ ExternalProject_Add(
              -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
              -DCMAKE_CXX_STANDARD_REQUIRED=${CMAKE_CXX_STANDARD_REQUIRED}
              -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+             ${PPC_EXTERNAL_PROJECT_CMAKE_ARGS}
              -DCMAKE_C_FLAGS=-w
              -DCMAKE_CXX_FLAGS=-w
              -DBUILD_GMOCK=OFF
@@ -26,7 +27,8 @@ ExternalProject_Add(
   INSTALL_COMMAND
     "${CMAKE_COMMAND}" --install
     "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/build" --config $<CONFIG>
-    --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/install")
+    --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_googletest/install"
+    ${PPC_EXTERNAL_PROJECT_LOG_ARGS})
 
 function(ppc_link_gtest exec_func_lib)
   # Add external project include directories
