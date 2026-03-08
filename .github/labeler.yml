@@ -102,3 +102,8 @@ scoreboard:
   - changed-files:
       - any-glob-to-any-file:
           - "scoreboard/**"
+
+report:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/report.md"
