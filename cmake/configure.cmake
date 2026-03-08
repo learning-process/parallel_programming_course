@@ -42,6 +42,25 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 
 option(USE_COVERAGE "Enable coverage instrumentation" OFF)
+option(PPC_EXTERNAL_PROJECTS_VERBOSE
+       "Show full configure/build/install logs for ExternalProject dependencies"
+       OFF)
+
+if(PPC_EXTERNAL_PROJECTS_VERBOSE)
+  set(PPC_EXTERNAL_PROJECT_LOG_ARGS "")
+  set(PPC_EXTERNAL_PROJECT_CMAKE_ARGS "")
+else()
+  set(PPC_EXTERNAL_PROJECT_LOG_ARGS
+      LOG_CONFIGURE
+      ON
+      LOG_BUILD
+      ON
+      LOG_INSTALL
+      ON
+      LOG_OUTPUT_ON_FAILURE
+      ON)
+  set(PPC_EXTERNAL_PROJECT_CMAKE_ARGS -DCMAKE_INSTALL_MESSAGE=NEVER)
+endif()
 
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set(CMAKE_BUILD_RPATH "${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib")

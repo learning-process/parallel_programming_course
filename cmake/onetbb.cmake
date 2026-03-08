@@ -27,6 +27,7 @@ if(NOT ENABLE_SYSTEM_TBB)
                -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
                -DCMAKE_CXX_STANDARD_REQUIRED=ON
                -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+               ${PPC_EXTERNAL_PROJECT_CMAKE_ARGS}
                -DTBB_STRICT=OFF
                -DTBB_TEST=OFF
     BUILD_COMMAND
@@ -36,6 +37,7 @@ if(NOT ENABLE_SYSTEM_TBB)
       "${CMAKE_COMMAND}" --install
       "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --config $<CONFIG> --prefix
       "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install"
+      ${PPC_EXTERNAL_PROJECT_LOG_ARGS}
     TEST_COMMAND ${ppc_onetbb_TEST_COMMAND})
 
   install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install/"
