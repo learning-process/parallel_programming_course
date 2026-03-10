@@ -18,6 +18,15 @@ jobs:
         with:
           fail: true
           failIfEmpty: false
+          args: >-
+            --max-retries 5
+            --retry-wait-time 2
+            --timeout 30
+            --host-concurrency 3
+            --host-request-interval 200ms
+            './**/*.md'
+            './**/*.html'
+            './**/*.rst'
 
   pre-commit:
     runs-on: ubuntu-24.04
