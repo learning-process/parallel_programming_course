@@ -141,11 +141,11 @@ Tooling tips (versions and install)
 -----------------------------------
 
 - clang-tidy version
-  - CI uses clang-tidy 21. Prefer the same locally to avoid mismatches.
-  - The helper may be named ``clang-tidy-21`` or ``run-clang-tidy-21`` on some systems.
+  - CI uses clang-tidy 22. Prefer the same locally to avoid mismatches.
+  - The helper may be named ``clang-tidy-22`` or ``run-clang-tidy-22`` on some systems.
 
 - Linux
-  - clang-tidy: install from your distro (e.g., ``apt install clang-tidy-21``) or use the course Docker image.
+  - clang-tidy: install from your distro (e.g., ``apt install clang-tidy-22``) or use the course Docker image.
   - gcovr: ``python3 -m pip install gcovr`` or a distro package.
   - GCC version: use ``gcov-14`` when building with GCC 14 (as in CI).
 

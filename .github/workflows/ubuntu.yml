@@ -17,7 +17,7 @@ jobs:
   gcc-build:
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -71,7 +71,7 @@ jobs:
       - gcc-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -103,7 +103,7 @@ jobs:
       - gcc-test
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -127,7 +127,7 @@ jobs:
   clang-build:
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -149,14 +149,14 @@ jobs:
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
         env:
-          CC: clang-21
-          CXX: clang++-21
+          CC: clang-22
+          CXX: clang++-22
       - name: Build project
         run: |
           cmake --build build --parallel -- --quiet
         env:
-          CC: clang-21
-          CXX: clang++-21
+          CC: clang-22
+          CXX: clang++-22
       - name: Install project
         run: |
           cmake --build build --target install -- --quiet
@@ -172,13 +172,15 @@ jobs:
       - clang-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ${{ fromJSON(inputs.is_nightly && '["ubuntu-24.04","ubuntu-24.04-arm"]' || '["ubuntu-24.04"]') }}
+    env:
+      LD_LIBRARY_PATH: /opt/llvm/lib
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -204,13 +206,15 @@ jobs:
       - clang-test
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ${{ fromJSON(inputs.is_nightly && '["ubuntu-24.04","ubuntu-24.04-arm"]' || '["ubuntu-24.04"]') }}
+    env:
+      LD_LIBRARY_PATH: /opt/llvm/lib
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -230,7 +234,7 @@ jobs:
       - clang-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -254,14 +258,14 @@ jobs:
           -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON -D ENABLE_LEAK_SANITIZER=ON
           -D CMAKE_INSTALL_PREFIX=install
         env:
-          CC: clang-21
-          CXX: clang++-21
+          CC: clang-22
+          CXX: clang++-22
       - name: Build project
         run: |
           cmake --build build --parallel -- --quiet
         env:
-          CC: clang-21
-          CXX: clang++-21
+          CC: clang-22
+          CXX: clang++-22
       - name: Install project
         run: |
           cmake --build build --target install -- --quiet
@@ -277,13 +281,15 @@ jobs:
       - clang-sanitizer-build
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ["ubuntu-24.04"]
+    env:
+      LD_LIBRARY_PATH: /opt/llvm/lib
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -315,13 +321,15 @@ jobs:
       - clang-sanitizer-test
     runs-on: ${{ matrix.os }}
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: ["ubuntu-24.04"]
+    env:
+      LD_LIBRARY_PATH: /opt/llvm/lib
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -348,7 +356,7 @@ jobs:
       issues: write
       pull-requests: write
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}

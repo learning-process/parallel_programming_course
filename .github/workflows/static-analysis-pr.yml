@@ -27,7 +27,7 @@ jobs:
   clang-tidy:
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -49,15 +49,15 @@ jobs:
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
         env:
-          CC: clang-21
-          CXX: clang++-21
+          CC: clang-22
+          CXX: clang++-22
 
       - name: Build project
         run: |
           cmake --build build --parallel -- --quiet
         env:
-          CC: clang-21
-          CXX: clang++-21
+          CC: clang-22
+          CXX: clang++-22
 
       - name: Show ccache stats
         run: ccache --show-stats
@@ -66,7 +66,7 @@ jobs:
         id: review
         with:
           exclude: "3rdparty build"
-          clang_tidy_version: "21"
+          clang_tidy_version: "22"
       - if: steps.review.outputs.total_comments > 0
         run: |
           echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
@@ -76,7 +76,7 @@ jobs:
       - clang-tidy
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.1
+      image: ghcr.io/learning-process/ppc-ubuntu:1.2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -115,7 +115,7 @@ jobs:
         id: review
         with:
           exclude: "3rdparty build docs_venv .git .pytest_cache .ruff_cache xml"
-          clang_tidy_version: "21"
+          clang_tidy_version: "22"
       - if: steps.review.outputs.total_comments > 0
         run: |
           echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
