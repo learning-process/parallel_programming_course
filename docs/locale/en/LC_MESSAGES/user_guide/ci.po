@@ -261,9 +261,9 @@ msgstr ""
 
 #: ../../../../docs/user_guide/ci.rst:143
 msgid ""
-"clang-tidy version - CI uses clang-tidy 21. Prefer the same locally to "
-"avoid mismatches. - The helper may be named ``clang-tidy-21`` or ``run-"
-"clang-tidy-21`` on some systems."
+"clang-tidy version - CI uses clang-tidy 22. Prefer the same locally to "
+"avoid mismatches. - The helper may be named ``clang-tidy-22`` or ``run-"
+"clang-tidy-22`` on some systems."
 msgstr ""
 
 #: ../../../../docs/user_guide/ci.rst:147
