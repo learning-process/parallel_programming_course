@@ -26,14 +26,14 @@ using ppc::task::TypeOfTask;
 
 class ScopedFile {
  public:
-  explicit ScopedFile(std::string path) : path_(std::move(path)) {}
-  ~ScopedFile() {
+  explicit ScopedFile(std::filesystem::path path) : path_(std::move(path)) {}
+  ~ScopedFile() noexcept {
     std::error_code ec;
     std::filesystem::remove(path_, ec);
   }
 
  private:
-  std::string path_;
+  std::filesystem::path path_;
 };
 
 namespace ppc::test {
@@ -55,8 +55,8 @@ class TestTask : public ppc::task::Task<InType, OutType> {
   }
 
   bool RunImpl() override {
-    for (unsigned i = 0; i < this->GetInput().size(); i++) {
-      this->GetOutput() += this->GetInput()[i];
+    for (const auto &value : this->GetInput()) {
+      this->GetOutput() += value;
     }
     return true;
   }

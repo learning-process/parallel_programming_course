@@ -13,6 +13,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <util/include/util.hpp>
 #include <utility>
 
@@ -37,17 +38,17 @@ enum class TypeOfTask : uint8_t {
   kUnknown,
 };
 
-using TaskMapping = std::pair<TypeOfTask, std::string>;
+using TaskMapping = std::pair<TypeOfTask, std::string_view>;
 using TaskMappingArray = std::array<TaskMapping, 6>;
 
-const TaskMappingArray kTaskTypeMappings = {{{TypeOfTask::kALL, "all"},
-                                             {TypeOfTask::kMPI, "mpi"},
-                                             {TypeOfTask::kOMP, "omp"},
-                                             {TypeOfTask::kSEQ, "seq"},
-                                             {TypeOfTask::kSTL, "stl"},
-                                             {TypeOfTask::kTBB, "tbb"}}};
+inline constexpr TaskMappingArray kTaskTypeMappings = {{{TypeOfTask::kALL, "all"},
+                                                        {TypeOfTask::kMPI, "mpi"},
+                                                        {TypeOfTask::kOMP, "omp"},
+                                                        {TypeOfTask::kSEQ, "seq"},
+                                                        {TypeOfTask::kSTL, "stl"},
+                                                        {TypeOfTask::kTBB, "tbb"}}};
 
-inline std::string TypeOfTaskToString(TypeOfTask type) {
+constexpr std::string_view TypeOfTaskToString(TypeOfTask type) {
   for (const auto &[key, value] : kTaskTypeMappings) {
     if (key == type) {
       return value;
@@ -88,12 +89,13 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
   auto list_settings = ppc::util::InitJSONPtr();
   file >> *list_settings;
 
-  std::string type_str = TypeOfTaskToString(type_of_task);
+  const std::string_view type_str = TypeOfTaskToString(type_of_task);
   if (type_str == "unknown") {
-    return type_str;
+    return std::string(type_str);
   }
 
-  return type_str + "_" + std::string((*list_settings)["tasks"][type_str]);
+  const auto &tasks = list_settings->at("tasks");
+  return std::string(type_str) + "_" + std::string(tasks.at(std::string(type_str)));
 }
 
 enum class StateOfTesting : uint8_t {

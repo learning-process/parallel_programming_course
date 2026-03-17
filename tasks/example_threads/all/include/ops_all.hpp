@@ -12,7 +12,7 @@ class NesterovATestTaskALL : public BaseTask {
   }
   explicit NesterovATestTaskALL(const InType &in);
 
- private:
+ protected:
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;

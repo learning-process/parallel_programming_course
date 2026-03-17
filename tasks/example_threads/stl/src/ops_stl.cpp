@@ -41,9 +41,9 @@ bool NesterovATestTaskSTL::RunImpl() {
   GetOutput() *= num_threads;
 
   std::atomic<int> counter(0);
-  for (int i = 0; i < num_threads; i++) {
-    threads[i] = std::thread([&]() { counter++; });
-    threads[i].join();
+  for (std::thread &thread : threads) {
+    thread = std::thread([&counter]() { counter++; });
+    thread.join();
   }
 
   GetOutput() /= counter;

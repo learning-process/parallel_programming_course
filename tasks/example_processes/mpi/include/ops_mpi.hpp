@@ -12,7 +12,7 @@ class NesterovATestTaskMPI : public BaseTask {
   }
   explicit NesterovATestTaskMPI(const InType &in);
 
- private:
+ protected:
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;

@@ -12,7 +12,7 @@ class NesterovATestTaskTBB : public BaseTask {
   }
   explicit NesterovATestTaskTBB(const InType &in);
 
- private:
+ protected:
   bool ValidationImpl() override;
   bool PreProcessingImpl() override;
   bool RunImpl() override;
