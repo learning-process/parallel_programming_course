@@ -76,17 +76,15 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   }
 
   void ValidateTestName(const std::string &test_name) {
-    EXPECT_FALSE(test_name.find("unknown") != std::string::npos);
+    EXPECT_FALSE(test_name.contains("unknown"));
   }
 
   bool IsTestDisabled(const std::string &test_name) {
-    return test_name.find("disabled") != std::string::npos;
+    return test_name.contains("disabled");
   }
 
   bool ShouldSkipNonMpiTask(const std::string &test_name) {
-    auto contains_substring = [&](const std::string &substring) {
-      return test_name.find(substring) != std::string::npos;
-    };
+    auto contains_substring = [&](const std::string &substring) { return test_name.contains(substring); };
 
     return !ppc::util::IsUnderMpirun() && (contains_substring("_all") || contains_substring("_mpi"));
   }
@@ -128,7 +126,7 @@ auto GenTaskTuplesImpl(const SizesContainer &sizes, const std::string &settings_
   return std::make_tuple(std::make_tuple(ppc::task::TaskGetter<Task, InType>,
                                          std::string(GetNamespace<Task>()) + "_" +
                                              ppc::task::GetStringTaskType(Task::GetStaticTypeOfTask(), settings_path),
-                                         sizes[Is])...);
+                                         std::get<Is>(sizes))...);
 }
 
 template <typename Task, typename InType, typename SizesContainer>

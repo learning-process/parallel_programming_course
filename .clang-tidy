@@ -27,6 +27,7 @@ Checks: >
   readability-*,
   -bugprone-casting-through-void,
   -bugprone-easily-swappable-parameters,
+  -bugprone-throwing-static-initialization,
   -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-non-private-member-variables-in-classes,
   -cppcoreguidelines-owning-memory,
@@ -37,9 +38,12 @@ Checks: >
   -misc-const-correctness,
   -misc-non-private-member-variables-in-classes,
   -modernize-avoid-c-arrays,
+  -misc-override-with-different-visibility,
+  -misc-use-internal-linkage,
   -modernize-use-trailing-return-type,
   -portability-avoid-pragma-once,
   -portability-template-virtual-member-function,
+  -readability-inconsistent-ifelse-braces,
   -readability-magic-numbers
 
 HeaderFilterRegex: '.*/(modules|tasks)/.*'

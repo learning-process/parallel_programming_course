@@ -39,8 +39,8 @@ class TestPerfTask : public ppc::task::Task<InType, OutType> {
   }
 
   bool RunImpl() override {
-    for (unsigned i = 0; i < this->GetInput().size(); i++) {
-      this->GetOutput() += this->GetInput()[i];
+    for (const auto &value : this->GetInput()) {
+      this->GetOutput() += value;
     }
     return true;
   }
@@ -201,12 +201,7 @@ class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> 
   void SetUp() override {
     temp_path = (std::filesystem::temp_directory_path() / "test_settings.json").string();
     auto j = ppc::util::InitJSONPtr();
-    (*j)["tasks"]["all"] = "ALL";
-    (*j)["tasks"]["stl"] = "STL";
-    (*j)["tasks"]["omp"] = "OMP";
-    (*j)["tasks"]["mpi"] = "MPI";
-    (*j)["tasks"]["tbb"] = "TBB";
-    (*j)["tasks"]["seq"] = "SEQ";
+    *j = {{"tasks", {{"all", "ALL"}, {"stl", "STL"}, {"omp", "OMP"}, {"mpi", "MPI"}, {"tbb", "TBB"}, {"seq", "SEQ"}}}};
 
     std::ofstream(temp_path) << j->dump();
   }
