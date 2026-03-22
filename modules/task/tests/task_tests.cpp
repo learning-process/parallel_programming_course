@@ -45,6 +45,7 @@ class TestTask : public ppc::task::Task<InType, OutType> {
     this->GetInput() = in;
   }
 
+ protected:
   bool ValidationImpl() override {
     return !this->GetInput().empty();
   }
@@ -71,6 +72,7 @@ class FakeSlowTask : public TestTask<InType, OutType> {
  public:
   explicit FakeSlowTask(const InType &in) : TestTask<InType, OutType>(in) {}
 
+ protected:
   bool RunImpl() override {
     std::this_thread::sleep_for(std::chrono::seconds(2));
     return TestTask<InType, OutType>::RunImpl();
@@ -233,9 +235,12 @@ TEST(TaskTest, TaskDestructorThrowsIfStageIncomplete) {
   {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : Task<std::vector<int32_t>, int32_t> {
+     public:
       explicit LocalTask(const std::vector<int32_t> &in) {
         this->GetInput() = in;
       }
+
+     protected:
       bool ValidationImpl() override {
         return true;
       }
@@ -259,9 +264,12 @@ TEST(TaskTest, TaskDestructorThrowsIfEmpty) {
   {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : Task<std::vector<int32_t>, int32_t> {
+     public:
       explicit LocalTask(const std::vector<int32_t> &in) {
         this->GetInput() = in;
       }
+
+     protected:
       bool ValidationImpl() override {
         return true;
       }
@@ -285,9 +293,12 @@ TEST(TaskTest, InternalTimeTestThrowsIfTimeoutExceeded) {
   GTEST_SKIP() << "Skipped on macOS due to time fluctuations.";
 #endif
   struct SlowTask : Task<std::vector<int32_t>, int32_t> {
+   public:
     explicit SlowTask(const std::vector<int32_t> &in) {
       this->GetInput() = in;
     }
+
+   protected:
     bool ValidationImpl() override {
       return true;
     }
@@ -315,6 +326,8 @@ TEST(TaskTest, InternalTimeTestThrowsIfTimeoutExceeded) {
 class DummyTask : public Task<int, int> {
  public:
   using Task::Task;
+
+ protected:
   bool ValidationImpl() override {
     return true;
   }

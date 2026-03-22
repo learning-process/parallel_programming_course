@@ -38,7 +38,6 @@ Checks: >
   -misc-const-correctness,
   -misc-non-private-member-variables-in-classes,
   -modernize-avoid-c-arrays,
-  -misc-override-with-different-visibility,
   -misc-use-internal-linkage,
   -modernize-use-trailing-return-type,
   -portability-avoid-pragma-once,
