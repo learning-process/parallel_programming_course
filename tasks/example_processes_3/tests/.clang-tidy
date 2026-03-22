@@ -4,6 +4,7 @@ Checks: >
   -modernize-loop-convert,
   -cppcoreguidelines-avoid-goto,
   -cppcoreguidelines-avoid-non-const-global-variables,
+  -misc-override-with-different-visibility,
   -misc-use-anonymous-namespace,
   -modernize-use-std-print,
   -modernize-type-traits

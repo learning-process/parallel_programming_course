@@ -36,11 +36,6 @@ template <typename InType, typename OutType, typename TestType = void>
 /// @tparam TestType Type of the test case or parameter.
 class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, OutType, TestType>> {
  public:
-  virtual bool CheckTestOutputData(OutType &output_data) = 0;
-  /// @brief Provides input data for the task.
-  /// @return Initialized input data.
-  virtual InType GetTestInputData() = 0;
-
   template <typename Derived>
   static void RequireStaticInterface() {
     static_assert(HasPrintTestParam<Derived, TestType>,
@@ -56,6 +51,11 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   }
 
  protected:
+  virtual bool CheckTestOutputData(OutType &output_data) = 0;
+  /// @brief Provides input data for the task.
+  /// @return Initialized input data.
+  virtual InType GetTestInputData() = 0;
+
   void ExecuteTest(FuncTestParam<InType, OutType, TestType> test_param) {
     const std::string &test_name = std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(test_param);
 
@@ -95,13 +95,23 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
     ExecuteTaskPipeline();
   }
 
-  /// @brief Executes the full task pipeline with validation.
-  // NOLINTNEXTLINE(readability-function-cognitive-complexity)
   void ExecuteTaskPipeline() {
+    ValidateTask();
+    RunTask();
+    CheckTaskOutput();
+  }
+
+  void ValidateTask() {
     EXPECT_TRUE(task_->Validation());
     EXPECT_TRUE(task_->PreProcessing());
+  }
+
+  void RunTask() {
     EXPECT_TRUE(task_->Run());
     EXPECT_TRUE(task_->PostProcessing());
+  }
+
+  void CheckTaskOutput() {
     EXPECT_TRUE(CheckTestOutputData(task_->GetOutput()));
   }
 
