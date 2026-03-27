@@ -5,7 +5,7 @@
 repos:
   # C++ formatting with clang-format
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v21.1.8
+    rev: v22.1.1
     hooks:
       - id: clang-format
         files: \.(cpp|hpp|c|h)$
@@ -22,14 +22,14 @@ repos:
 
   # Python import sorting
   - repo: https://github.com/pycqa/isort
-    rev: 8.0.0
+    rev: 8.0.1
     hooks:
       - id: isort
         args: [--settings-path, setup.cfg]
 
   # Ruff Python linter
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.15.2
+    rev: v0.15.8
     hooks:
       - id: ruff
         args: [--fix]
@@ -77,7 +77,7 @@ repos:
         args: [--config, .hadolint.yaml]
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.21.0
+    rev: v0.22.0
     hooks:
       - id: markdownlint-cli2
         exclude: ^(3rdparty/|build.*/|install/)
