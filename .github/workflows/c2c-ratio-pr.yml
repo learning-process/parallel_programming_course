@@ -1,0 +1,51 @@
+name: Comment-to-code (C2C) ratio
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: >-
+    ${{ github.ref != 'refs/heads/master' &&
+        github.event_name != 'merge_group' &&
+        !startsWith(github.ref, 'refs/heads/gh-readonly-queue') }}
+
+permissions:
+  contents: read
+
+jobs:
+  comment-to-code-ratio:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install cloc
+        run: npm install --global cloc
+
+      - name: Generate report
+        continue-on-error: true
+        uses: deep5050/comment-to-code-ratio-action@v1.0.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          issue_number: ${{ github.event.pull_request.number }}
+          options: >-
+            --quiet
+            --git
+            --diff
+            ${{ github.event.pull_request.base.sha }}
+            ${{ github.event.pull_request.head.sha }}
+            --md
+            --out=report.md
+            --exclude-dir=.git,3rdparty,build
+
+      - name: Check ratio
+        id: ratio
+        run: python3 scripts/check_comment_to_code_ratio.py report.md --limit 10
+
+      - name: Print final percentage
+        if: always()
+        run: |
+          echo "Comment percentage for PR changes: ${{ steps.ratio.outputs.comment_percentage || 'N/A' }}%"
