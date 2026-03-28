@@ -22,4 +22,4 @@ jobs:
       - name: Update pre-commit hooks
         uses: ./.github/actions/update-precommit
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PRECOMMIT_UPDATE_TOKEN }}
