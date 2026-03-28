@@ -104,11 +104,11 @@ clang-tidy (static analysis):
    cmake -S . -B build -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
    cmake --build build -j
 
-   # Single file analysis
-   clang-tidy -p build tasks/<last>_<initial>_<short>/src/<file>.cpp
-
-   # Optional: analyze all sources (if run-clang-tidy is available)
-   run-clang-tidy -p build -j $(nproc) || true
+   # clang-tidy run:
+   ### analyze all sources
+   run-clang-tidy -p build
+   ### apply available automatic fixes
+   run-clang-tidy -p build -fix
 
 gcovr (coverage, GCC):
 
