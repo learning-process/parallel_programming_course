@@ -35,26 +35,49 @@ msgid "**Configure the build**: ``Makefile``, ``.sln``, etc."
 msgstr "**Конфигурация проекта**: ``Makefile``, ``.sln``, и т.д."
 
 #: ../../../../docs/user_guide/build.rst:12
+msgid "To configure only selected tasks:"
+msgstr "Чтобы сконфигурировать только выбранные задачи:"
+
+#: ../../../../docs/user_guide/build.rst:18
 msgid "Optional: enable sanitizers for local debugging"
 msgstr "Дополнительно: включите санитайзеры для локальной отладки"
 
-#: ../../../../docs/user_guide/build.rst:18
+#: ../../../../docs/user_guide/build.rst:24
 msgid "*Help on CMake keys:*"
 msgstr "*Важные CMake ключи для конфигурации проекта:*"
 
-#: ../../../../docs/user_guide/build.rst:21
+#: ../../../../docs/user_guide/build.rst:27
 msgid "``-D USE_FUNC_TESTS=ON`` enable functional tests."
 msgstr "``-D USE_FUNC_TESTS=ON`` включает функциональные тесты."
 
-#: ../../../../docs/user_guide/build.rst:22
+#: ../../../../docs/user_guide/build.rst:28
 msgid "``-D USE_PERF_TESTS=ON`` enable performance tests."
 msgstr "``-D USE_PERF_TESTS=ON`` включает тесты на производительность."
 
-#: ../../../../docs/user_guide/build.rst:23
+#: ../../../../docs/user_guide/build.rst:29
+msgid ""
+"``-D PPC_TASKS=all`` builds every task (default). Pass one task or a "
+"semicolon list, for example ``-D PPC_TASKS=\"example_threads;example_processes\"``, "
+"to limit the build."
+msgstr ""
+"``-D PPC_TASKS=all`` собирает все задачи (по умолчанию). Укажите одну "
+"задачу или список через точку с запятой, например "
+"``-D PPC_TASKS=\"example_threads;example_processes\"``, чтобы ограничить "
+"сборку."
+
+#: ../../../../docs/user_guide/build.rst:32
+msgid ""
+"``-D PPC_IMPLEMENTATIONS=\"seq;omp\"`` select implementation folders to "
+"configure."
+msgstr ""
+"``-D PPC_IMPLEMENTATIONS=\"seq;omp\"`` выбирает папки реализаций для "
+"конфигурации."
+
+#: ../../../../docs/user_guide/build.rst:34
 msgid "``-D CMAKE_BUILD_TYPE=Release`` normal build (default)."
 msgstr "``-D CMAKE_BUILD_TYPE=Release`` нормальная сборка (по умолчанию)."
 
-#: ../../../../docs/user_guide/build.rst:24
+#: ../../../../docs/user_guide/build.rst:35
 msgid ""
 "``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers "
 "or running ``valgrind`` to keep debug information."
@@ -63,25 +86,25 @@ msgstr ""
 "санитайзеров или запуске ``valgrind`` для сохранения отладочной "
 "информации."
 
-#: ../../../../docs/user_guide/build.rst:26
+#: ../../../../docs/user_guide/build.rst:37
 msgid "``-D CMAKE_BUILD_TYPE=Debug`` for debugging sessions."
 msgstr "``-D CMAKE_BUILD_TYPE=Debug`` используется при отладке."
 
-#: ../../../../docs/user_guide/build.rst:28
+#: ../../../../docs/user_guide/build.rst:39
 msgid "*A corresponding flag can be omitted if it's not needed.*"
 msgstr ""
 "*Ряд CMake флагов может быть выключен, если они не требуются для "
 "выполнения работы.*"
 
-#: ../../../../docs/user_guide/build.rst:30
+#: ../../../../docs/user_guide/build.rst:41
 msgid "**Build the project**:"
 msgstr "**Построение проекта**:"
 
-#: ../../../../docs/user_guide/build.rst:36
+#: ../../../../docs/user_guide/build.rst:47
 msgid "**Run tests**:"
 msgstr "**Запуск тестов**:"
 
-#: ../../../../docs/user_guide/build.rst:38
+#: ../../../../docs/user_guide/build.rst:49
 msgid "Prefer the helper runner described in ``User Guide → CI``."
 msgstr "Рекомендуется использовать вспомогательный раннер, описанный в «Инструкция → CI»."
 

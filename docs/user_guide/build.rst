@@ -9,6 +9,12 @@ Navigate to the project root.
 
       cmake -S . -B build -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=Release
 
+   To configure only selected tasks:
+
+   .. code-block:: bash
+
+      cmake -S . -B build -DPPC_TASKS="example_threads;example_processes" -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=Release
+
    Optional: enable sanitizers for local debugging
 
    .. code-block:: bash
@@ -20,6 +26,11 @@ Navigate to the project root.
 
    - ``-D USE_FUNC_TESTS=ON`` enable functional tests.
    - ``-D USE_PERF_TESTS=ON`` enable performance tests.
+   - ``-D PPC_TASKS=all`` builds every task (default). Pass one task or a semicolon list,
+     for example ``-D PPC_TASKS="example_threads;example_processes"``, to limit
+     the build.
+   - ``-D PPC_IMPLEMENTATIONS="seq;omp"`` select implementation folders to
+     configure.
    - ``-D CMAKE_BUILD_TYPE=Release`` normal build (default).
    - ``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers or
      running ``valgrind`` to keep debug information.
