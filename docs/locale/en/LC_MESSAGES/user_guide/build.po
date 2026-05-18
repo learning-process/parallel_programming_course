@@ -35,48 +35,65 @@ msgid "**Configure the build**: ``Makefile``, ``.sln``, etc."
 msgstr ""
 
 #: ../../../../docs/user_guide/build.rst:12
-msgid "Optional: enable sanitizers for local debugging"
+msgid "To configure only selected tasks:"
 msgstr ""
 
 #: ../../../../docs/user_guide/build.rst:18
-msgid "*Help on CMake keys:*"
-msgstr ""
-
-#: ../../../../docs/user_guide/build.rst:21
-msgid "``-D USE_FUNC_TESTS=ON`` enable functional tests."
-msgstr ""
-
-#: ../../../../docs/user_guide/build.rst:22
-msgid "``-D USE_PERF_TESTS=ON`` enable performance tests."
-msgstr ""
-
-#: ../../../../docs/user_guide/build.rst:23
-msgid "``-D CMAKE_BUILD_TYPE=Release`` normal build (default)."
+msgid "Optional: enable sanitizers for local debugging"
 msgstr ""
 
 #: ../../../../docs/user_guide/build.rst:24
+msgid "*Help on CMake keys:*"
+msgstr ""
+
+#: ../../../../docs/user_guide/build.rst:27
+msgid "``-D USE_FUNC_TESTS=ON`` enable functional tests."
+msgstr ""
+
+#: ../../../../docs/user_guide/build.rst:28
+msgid "``-D USE_PERF_TESTS=ON`` enable performance tests."
+msgstr ""
+
+#: ../../../../docs/user_guide/build.rst:29
+msgid ""
+"``-D PPC_TASKS=all`` builds every task (default). Pass one task or a "
+"semicolon list, for example ``-D PPC_TASKS=\"example_threads;example_processes\"``, "
+"to limit the build."
+msgstr ""
+
+#: ../../../../docs/user_guide/build.rst:32
+msgid ""
+"``-D PPC_IMPLEMENTATIONS=\"seq;omp\"`` select implementation folders to "
+"configure."
+msgstr ""
+
+#: ../../../../docs/user_guide/build.rst:34
+msgid "``-D CMAKE_BUILD_TYPE=Release`` normal build (default)."
+msgstr ""
+
+#: ../../../../docs/user_guide/build.rst:35
 msgid ""
 "``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers "
 "or running ``valgrind`` to keep debug information."
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:26
+#: ../../../../docs/user_guide/build.rst:37
 msgid "``-D CMAKE_BUILD_TYPE=Debug`` for debugging sessions."
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:28
+#: ../../../../docs/user_guide/build.rst:39
 msgid "*A corresponding flag can be omitted if it's not needed.*"
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:30
+#: ../../../../docs/user_guide/build.rst:41
 msgid "**Build the project**:"
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:36
+#: ../../../../docs/user_guide/build.rst:47
 msgid "**Run tests**:"
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:38
+#: ../../../../docs/user_guide/build.rst:49
 msgid "Prefer the helper runner described in ``User Guide → CI``."
 msgstr ""
 
@@ -88,4 +105,3 @@ msgstr ""
 
 #~ msgid "Run ``<project's folder>/build/bin``"
 #~ msgstr ""
-
