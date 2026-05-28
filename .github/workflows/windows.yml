@@ -2,6 +2,12 @@ name: Windows
 
 on:
   workflow_call:
+    inputs:
+      ppc_tasks:
+        description: 'Tasks to build'
+        required: false
+        type: string
+        default: all
 
 permissions:
   contents: read
@@ -26,6 +32,7 @@ jobs:
           cmake -S . -B build -G Ninja -D CMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
+          -D PPC_TASKS="${{ inputs.ppc_tasks }}"
       - name: Build project
         shell: bash
         run: |
@@ -108,6 +115,7 @@ jobs:
           -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
           -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=install
           -D CMAKE_PREFIX_PATH="C:/Program Files/LLVM"
+          -D PPC_TASKS="${{ inputs.ppc_tasks }}"
         env:
           CC: clang-cl
           CXX: clang-cl

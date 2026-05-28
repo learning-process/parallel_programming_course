@@ -24,7 +24,28 @@ permissions:
   packages: read
 
 jobs:
+  ci-scope:
+    runs-on: ubuntu-24.04
+    outputs:
+      ppc_tasks: ${{ steps.detect.outputs.ppc_tasks }}
+      task_scoped: ${{ steps.detect.outputs.task_scoped }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Detect CI task scope
+        id: detect
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python3 scripts/detect_ci_task_scope.py \
+            --base-sha "$BASE_SHA" \
+            --head-sha "$HEAD_SHA" \
+            --github-output "$GITHUB_OUTPUT"
   clang-tidy:
+    needs:
+      - ci-scope
     runs-on: ubuntu-24.04
     container:
       image: ghcr.io/learning-process/ppc-ubuntu:1.2
@@ -48,6 +69,7 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
+          -D PPC_TASKS="${{ needs.ci-scope.outputs.ppc_tasks || 'all' }}"
         env:
           CC: clang-22
           CXX: clang++-22
@@ -73,6 +95,7 @@ jobs:
           exit 1
   clang-tidy-for-gcc-build:
     needs:
+      - ci-scope
       - clang-tidy
     runs-on: ubuntu-24.04
     container:
@@ -97,6 +120,7 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
+          -D PPC_TASKS="${{ needs.ci-scope.outputs.ppc_tasks || 'all' }}"
         env:
           CC: gcc-14
           CXX: g++-14

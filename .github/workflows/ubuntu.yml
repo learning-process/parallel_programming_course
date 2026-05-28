@@ -8,6 +8,11 @@ on:
         required: false
         type: boolean
         default: false
+      ppc_tasks:
+        description: 'Tasks to build'
+        required: false
+        type: string
+        default: all
 
 permissions:
   contents: read
@@ -39,6 +44,7 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
+          -D PPC_TASKS="${{ inputs.ppc_tasks }}"
         env:
           CC: gcc-14
           CXX: g++-14
@@ -148,6 +154,7 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+          -D PPC_TASKS="${{ inputs.ppc_tasks }}"
         env:
           CC: clang-22
           CXX: clang++-22
@@ -253,6 +260,7 @@ jobs:
           -D CMAKE_BUILD_TYPE=RelWithDebInfo
           -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON -D ENABLE_LEAK_SANITIZER=ON
           -D CMAKE_INSTALL_PREFIX=install
+          -D PPC_TASKS="${{ inputs.ppc_tasks }}"
         env:
           CC: clang-22
           CXX: clang++-22
@@ -368,6 +376,7 @@ jobs:
           -D CMAKE_BUILD_TYPE=RELEASE
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
           -DCMAKE_INSTALL_PREFIX=install
+          -D PPC_TASKS="${{ inputs.ppc_tasks }}"
       - name: Build project
         run: |
           cmake --build build --parallel -- --quiet
