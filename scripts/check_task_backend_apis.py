@@ -141,6 +141,7 @@ BACKEND_RULES = {
     "tbb": {"openmp", "mpi", "cpp_thread"},
     "mpi": {"openmp", "tbb", "cpp_thread"},
     "stl": {"openmp", "tbb", "mpi"},
+    "common": set(API_ORDER),
 }
 
 
@@ -291,10 +292,12 @@ def get_backend(path: Path) -> str | None:
     except ValueError:
         return None
 
-    for part in parts[tasks_index:]:
-        if part in BACKEND_RULES:
-            return part
-    return None
+    backend_index = tasks_index + 1
+    if backend_index >= len(parts) or parts[tasks_index] == "common":
+        return None
+
+    backend = parts[backend_index]
+    return backend if backend in BACKEND_RULES else None
 
 
 def is_source_file(path: Path) -> bool:
@@ -376,9 +379,13 @@ def github_escape(value: str) -> str:
 
 
 def print_violation(violation: Violation) -> None:
+    scope = (
+        "tasks/<task>/common shared files"
+        if violation.backend == "common"
+        else f"tasks/<task>/{violation.backend} implementation files"
+    )
     message = (
-        f"{violation.category} usage ({violation.matched_api}) is forbidden in "
-        f"tasks/{violation.backend} implementation files."
+        f"{violation.category} usage ({violation.matched_api}) is forbidden in {scope}."
     )
     print(
         f"::error file={github_escape(str(violation.path))},line={violation.line_number},"
