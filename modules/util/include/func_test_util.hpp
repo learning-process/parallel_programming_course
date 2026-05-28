@@ -103,6 +103,7 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
 
   void ValidateTask() {
     EXPECT_TRUE(task_->Validation());
+    SynchronizeMpiRanks();
     EXPECT_TRUE(task_->PreProcessing());
   }
 

@@ -1,5 +1,7 @@
 #include "util/include/util.hpp"
 
+#include <mpi.h>
+
 #include <algorithm>
 #include <array>
 #include <filesystem>
@@ -64,4 +66,21 @@ bool ppc::util::IsUnderMpirun() {
     const auto mpi_env = env::get<int>(env_var);
     return static_cast<bool>(mpi_env.has_value());
   });
+}
+
+void ppc::util::SynchronizeMpiRanks() {
+  int initialized = 0;
+  if (MPI_Initialized(&initialized) != MPI_SUCCESS || initialized == 0) {
+    return;
+  }
+
+  int finalized = 0;
+  if (MPI_Finalized(&finalized) != MPI_SUCCESS || finalized != 0) {
+    return;
+  }
+
+  const int barrier_res = MPI_Barrier(MPI_COMM_WORLD);
+  if (barrier_res != MPI_SUCCESS) {
+    MPI_Abort(MPI_COMM_WORLD, barrier_res);
+  }
 }

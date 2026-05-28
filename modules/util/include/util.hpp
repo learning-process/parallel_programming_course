@@ -75,6 +75,7 @@ int GetNumThreads();
 int GetNumProc();
 double GetTaskMaxTime();
 double GetPerfMaxTime();
+void SynchronizeMpiRanks();
 
 template <typename T>
 std::string GetNamespace() {
