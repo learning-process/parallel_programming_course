@@ -20,7 +20,7 @@ High‑level pipeline
 
 - Pages (docs and scoreboard) — builds Doxygen XML and Sphinx (EN+RU) + scoreboard; on ``master`` deploys with coverage to GitHub Pages.
 
-- Security and static analysis — clang‑tidy on PRs (avoid ``NOLINT``/``IWYU pragma``), scheduled CodeQL (C++/Python) and OpenSSF Scorecard.
+- Security and static analysis — clang‑tidy on PRs (avoid ``NOLINT``/``IWYU pragma``), task backend API checks, scheduled CodeQL (C++/Python) and OpenSSF Scorecard.
 
 Diagram
 -------
@@ -86,7 +86,7 @@ Docs and scoreboard artifacts
 Troubleshooting
 ---------------
 - Pre-commit fails: run ``pre-commit run -a`` locally (install with ``pre-commit install``) and commit fixes.
-- Static analysis (clang-tidy) fails: address comments; do not use ``NOLINT``/``IWYU pragma`` in task code.
+- Static analysis fails: address clang-tidy comments; do not use ``NOLINT``/``IWYU pragma`` in task code; keep OpenMP/TBB/MPI/std::thread APIs in their matching task backend directories.
 - Tests not found/not running: verify ``settings.json`` enables required technologies and tests exist; see :doc:`submit_work`.
 - Time limits exceeded: reduce data sizes; prefer env vars (:doc:`environment_variables`) like ``PPC_TASK_MAX_TIME``/``PPC_PERF_MAX_TIME``; avoid sleeps/randomness.
 - MPI runs fail locally: set ``PPC_NUM_PROC`` and try ``--additional-mpi-args=\"--oversubscribe\"``.

@@ -106,11 +106,12 @@ msgstr ""
 #: ../../../../docs/user_guide/ci.rst:23
 msgid ""
 "Security and static analysis — clang‑tidy on PRs (avoid ``NOLINT``/``IWYU"
-" pragma``), scheduled CodeQL (C++/Python) and OpenSSF Scorecard."
+" pragma``), task backend API checks, scheduled CodeQL (C++/Python) and "
+"OpenSSF Scorecard."
 msgstr ""
 "Безопасность и статический анализ — clang‑tidy в PR (избегайте "
-"``NOLINT``/``IWYU pragma``), плановые CodeQL (C++/Python) и OpenSSF "
-"Scorecard."
+"``NOLINT``/``IWYU pragma``), проверки API для backend'ов задач, плановые "
+"CodeQL (C++/Python) и OpenSSF Scorecard."
 
 #: ../../../../docs/user_guide/ci.rst:26
 msgid "Diagram"
@@ -259,11 +260,13 @@ msgstr ""
 
 #: ../../../../docs/user_guide/ci.rst:89
 msgid ""
-"Static analysis (clang-tidy) fails: address comments; do not use "
-"``NOLINT``/``IWYU pragma`` in task code."
+"Static analysis fails: address clang-tidy comments; do not use "
+"``NOLINT``/``IWYU pragma`` in task code; keep OpenMP/TBB/MPI/std::thread APIs "
+"in their matching task backend directories."
 msgstr ""
-"Падает статический анализ (clang-tidy): поправьте замечания; не "
-"используйте ``NOLINT``/``IWYU pragma`` в коде задач."
+"Падает статический анализ: поправьте замечания clang-tidy; не используйте "
+"``NOLINT``/``IWYU pragma`` в коде задач; держите API OpenMP/TBB/MPI/"
+"std::thread в соответствующих backend-директориях задач."
 
 #: ../../../../docs/user_guide/ci.rst:90
 msgid ""

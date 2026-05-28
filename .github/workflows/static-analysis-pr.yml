@@ -11,6 +11,7 @@ on:
       - '**/*.cmake'
       - '**/.clang-tidy'
       - '.github/workflows/static-analysis-pr.yml'
+      - 'scripts/check_task_backend_apis.py'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -162,3 +163,17 @@ jobs:
           done
 
           echo "No linter suppression markers found in changed files."
+  task-backend-api-check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Check task backend API usage
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          python3 scripts/check_task_backend_apis.py --base "$BASE_SHA" --head "$HEAD_SHA"
