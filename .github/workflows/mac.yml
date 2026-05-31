@@ -2,6 +2,12 @@ name: macOS
 
 on:
   workflow_call:
+    inputs:
+      ppc_tasks:
+        description: 'Tasks to build'
+        required: false
+        type: string
+        default: all
 
 permissions:
   contents: read
@@ -37,6 +43,7 @@ jobs:
           -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
           -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
           -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
+          -D PPC_TASKS="${{ inputs.ppc_tasks }}"
       - name: Build project
         run: |
           cmake --build build --parallel -- --quiet

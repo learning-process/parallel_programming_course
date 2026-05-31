@@ -16,22 +16,58 @@ concurrency:
         !startsWith(github.ref, 'refs/heads/gh-readonly-queue') }}
 
 jobs:
+  ci-scope:
+    runs-on: ubuntu-24.04
+    outputs:
+      ppc_tasks: ${{ steps.detect.outputs.ppc_tasks }}
+      task_scoped: ${{ steps.detect.outputs.task_scoped }}
+    steps:
+      - uses: actions/checkout@v6
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          fetch-depth: 0
+      - name: Detect CI task scope
+        id: detect
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            echo "ppc_tasks=all" >> "$GITHUB_OUTPUT"
+            echo "task_scoped=false" >> "$GITHUB_OUTPUT"
+            echo "PPC_TASKS=all"
+            exit 0
+          fi
+
+          python3 scripts/detect_ci_task_scope.py \
+            --base-sha "$BASE_SHA" \
+            --head-sha "$HEAD_SHA" \
+            --github-output "$GITHUB_OUTPUT"
   pre-commit:
     uses: ./.github/workflows/pre-commit.yml
   ubuntu:
     needs:
+      - ci-scope
       - pre-commit
     uses: ./.github/workflows/ubuntu.yml
     with:
       is_nightly: ${{ github.event_name == 'schedule' }}
+      ppc_tasks: ${{ needs.ci-scope.outputs.ppc_tasks || 'all' }}
   mac:
     needs:
+      - ci-scope
       - pre-commit
     uses: ./.github/workflows/mac.yml
+    with:
+      ppc_tasks: ${{ needs.ci-scope.outputs.ppc_tasks || 'all' }}
   windows:
     needs:
+      - ci-scope
       - pre-commit
     uses: ./.github/workflows/windows.yml
+    with:
+      ppc_tasks: ${{ needs.ci-scope.outputs.ppc_tasks || 'all' }}
   perf:
     needs:
       - ubuntu
