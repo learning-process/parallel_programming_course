@@ -27,7 +27,18 @@ class NesterovARunFuncTestsProcesses3 : public ppc::util::BaseRunFuncTests<InTyp
   }
 
  protected:
-  void SetUp() override {
+  void RunTestCase(const ppc::util::FuncTestParam<InType, OutType, TestType> &test_param) {
+    const std::string &test_name =
+        std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kNameTest)>(test_param);
+    if (IsTestDisabled(test_name) || ShouldSkipNonMpiTask(test_name)) {
+      return;
+    }
+
+    SetInputData();
+    ExecuteTest(test_param);
+  }
+
+  void SetInputData() {
     int width = -1;
     int height = -1;
     int channels = -1;
@@ -47,7 +58,6 @@ class NesterovARunFuncTestsProcesses3 : public ppc::util::BaseRunFuncTests<InTyp
       }
     }
 
-    TestType params = std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kTestParams)>(GetParam());
     input_data_ = width - height + std::min(std::accumulate(img.begin(), img.end(), 0), channels);
   }
 
@@ -65,22 +75,16 @@ class NesterovARunFuncTestsProcesses3 : public ppc::util::BaseRunFuncTests<InTyp
 
 namespace {
 
-TEST_P(NesterovARunFuncTestsProcesses3, MatmulFromPic) {
-  ExecuteTest(GetParam());
-}
-
 const std::array<TestType, 3> kTestParam = {std::make_tuple(3, "3"), std::make_tuple(5, "5"), std::make_tuple(7, "7")};
 
 const auto kTestTasksList =
     std::tuple_cat(ppc::util::AddFuncTask<NesterovATestTaskMPI, InType>(kTestParam, PPC_SETTINGS_example_processes_3),
                    ppc::util::AddFuncTask<NesterovATestTaskSEQ, InType>(kTestParam, PPC_SETTINGS_example_processes_3));
 
-const auto kGtestValues = ppc::util::ExpandToValues(kTestTasksList);
-
-const auto kPerfTestName = NesterovARunFuncTestsProcesses3::PrintFuncTestName<NesterovARunFuncTestsProcesses3>;
-
-INSTANTIATE_TEST_SUITE_P(PicMatrixTests, NesterovARunFuncTestsProcesses3, kGtestValues, kPerfTestName);
-
 }  // namespace
+
+TEST_F(NesterovARunFuncTestsProcesses3, MatmulFromPic) {
+  std::apply([this](const auto &...test_params) { (RunTestCase(test_params), ...); }, kTestTasksList);
+}
 
 }  // namespace nesterov_a_test_task_processes_3
