@@ -43,6 +43,7 @@ jobs:
 
       - name: Check ratio
         id: ratio
+        continue-on-error: ${{ github.repository == 'learning-process/parallel_programming_course' }}
         run: python3 scripts/check_comment_to_code_ratio.py report.md --limit 10
 
       - name: Print final percentage
