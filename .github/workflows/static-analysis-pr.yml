@@ -49,7 +49,7 @@ jobs:
       - ci-scope
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.2
+      image: ghcr.io/learning-process/ppc-ubuntu:1.3
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -100,7 +100,7 @@ jobs:
       - clang-tidy
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/learning-process/ppc-ubuntu:1.2
+      image: ghcr.io/learning-process/ppc-ubuntu:1.3
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}

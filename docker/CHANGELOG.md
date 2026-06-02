@@ -2,6 +2,10 @@
 
 ## ppc-ubuntu
 
+### [1.3] - 2026-06-01
+
+- Update base image to Ubuntu 26.04
+
 ### [1.2] - 2026-02-25
 
 - Update LLVM version to 22
