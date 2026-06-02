@@ -80,10 +80,10 @@ msgstr "Дедлайны задаются на каждую задачу. Под
 
 #: ../../../../docs/common_information/introduction.rst:23
 msgid ""
-"Examples are provided in ``tasks/example_threads`` and "
-"``tasks/example_processes`` (and extended variations "
-"``tasks/example_processes_2`` / ``tasks/example_processes_3``)."
-msgstr "Примеры размещены в ``tasks/example_threads`` и ``tasks/example_processes`` (а также расширенные варианты: ``tasks/example_processes_2`` / ``tasks/example_processes_3``)."
+"Examples are provided in ``tasks/example/threads`` and "
+"``tasks/example/processes/t1`` (and extended variations "
+"``tasks/example/processes/t2`` / ``tasks/example/processes/t3``)."
+msgstr "Примеры размещены в ``tasks/example/threads`` и ``tasks/example/processes/t1`` (а также расширенные варианты: ``tasks/example/processes/t2`` / ``tasks/example/processes/t3``)."
 
 #: ../../../../docs/common_information/introduction.rst:24
 msgid ""

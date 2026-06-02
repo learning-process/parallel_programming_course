@@ -80,7 +80,8 @@ inline std::string GetStringTaskStatus(StatusOfTask status_of_task) {
 /// @param settings_file_path Path to the JSON file containing task type strings.
 /// @return Formatted string combining the task type and its corresponding value from the file.
 /// @throws std::runtime_error If the file cannot be opened.
-inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string &settings_file_path) {
+inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string &settings_file_path,
+                                     std::string_view settings_task_path = {}) {
   std::ifstream file(settings_file_path);
   if (!file.is_open()) {
     throw std::runtime_error("Failed to open " + settings_file_path);
@@ -94,8 +95,19 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
     return std::string(type_str);
   }
 
-  const auto &tasks = list_settings->at("tasks");
-  return std::string(type_str) + "_" + std::string(tasks.at(std::string(type_str)));
+  const auto *settings_node = &list_settings->at("tasks");
+  for (size_t start = 0; start < settings_task_path.size();) {
+    const size_t separator = settings_task_path.find('.', start);
+    const size_t key_size =
+        separator == std::string_view::npos ? settings_task_path.size() - start : separator - start;
+    settings_node = &settings_node->at(std::string(settings_task_path.substr(start, key_size)));
+    if (separator == std::string_view::npos) {
+      break;
+    }
+    start = separator + 1;
+  }
+
+  return std::string(type_str) + "_" + std::string(settings_node->at(std::string(type_str)));
 }
 
 enum class StateOfTesting : uint8_t {

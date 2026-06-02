@@ -9,6 +9,7 @@
 #include <functional>
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -133,22 +134,26 @@ auto ExpandToValues(const Tuple &t) {
 
 template <typename Task, typename InType, typename SizesContainer, std::size_t... Is>
 auto GenTaskTuplesImpl(const SizesContainer &sizes, const std::string &settings_path,
+                       std::string_view settings_task_path,
                        std::index_sequence<Is...> /*unused*/) {
   return std::make_tuple(std::make_tuple(ppc::task::TaskGetter<Task, InType>,
                                          std::string(GetNamespace<Task>()) + "_" +
-                                             ppc::task::GetStringTaskType(Task::GetStaticTypeOfTask(), settings_path),
+                                             ppc::task::GetStringTaskType(Task::GetStaticTypeOfTask(), settings_path,
+                                                                         settings_task_path),
                                          std::get<Is>(sizes))...);
 }
 
 template <typename Task, typename InType, typename SizesContainer>
-auto TaskListGenerator(const SizesContainer &sizes, const std::string &settings_path) {
-  return GenTaskTuplesImpl<Task, InType>(sizes, settings_path,
+auto TaskListGenerator(const SizesContainer &sizes, const std::string &settings_path,
+                       std::string_view settings_task_path = {}) {
+  return GenTaskTuplesImpl<Task, InType>(sizes, settings_path, settings_task_path,
                                          std::make_index_sequence<std::tuple_size_v<std::decay_t<SizesContainer>>>{});
 }
 
 template <typename Task, typename InType, typename SizesContainer>
-constexpr auto AddFuncTask(const SizesContainer &sizes, const std::string &settings_path) {
-  return TaskListGenerator<Task, InType>(sizes, settings_path);
+constexpr auto AddFuncTask(const SizesContainer &sizes, const std::string &settings_path,
+                           std::string_view settings_task_path = {}) {
+  return TaskListGenerator<Task, InType>(sizes, settings_path, settings_task_path);
 }
 
 }  // namespace ppc::util

@@ -1,0 +1,25 @@
+{
+  "tasks": {
+    "threads": {
+      "seq": "enabled",
+      "omp": "enabled",
+      "tbb": "enabled",
+      "stl": "enabled",
+      "all": "enabled"
+    },
+    "processes": {
+      "t1": {
+        "seq": "enabled",
+        "mpi": "enabled"
+      },
+      "t2": {
+        "seq": "enabled",
+        "mpi": "enabled"
+      },
+      "t3": {
+        "seq": "enabled",
+        "mpi": "enabled"
+      }
+    }
+  }
+}

@@ -97,3 +97,55 @@ function(ppc_configure_subproject SUBDIR)
       "${CMAKE_CURRENT_SOURCE_DIR}/${SUBDIR}")
   endforeach()
 endfunction()
+
+function(ppc_configure_meta_part PROJ_NAME BASE_DIR)
+  set(TEST_DIR "${BASE_DIR}/tests")
+  set(TEST_EXECUTABLES "")
+
+  add_tests(USE_FUNC_TESTS ${FUNC_TEST_EXEC} functional)
+  add_tests(USE_PERF_TESTS ${PERF_TEST_EXEC} performance)
+
+  message(STATUS "  -- ${PROJ_NAME}")
+
+  foreach(IMPL IN LISTS PPC_IMPLEMENTATIONS)
+    setup_implementation(
+      NAME
+      ${IMPL}
+      PROJ_NAME
+      ${PROJ_NAME}
+      TESTS
+      "${TEST_EXECUTABLES}"
+      BASE_DIR
+      "${BASE_DIR}")
+  endforeach()
+endfunction()
+
+function(ppc_configure_meta_project SUBDIR)
+  add_compile_definitions(
+    PPC_SETTINGS_${SUBDIR}="${CMAKE_CURRENT_SOURCE_DIR}/${SUBDIR}/settings.json"
+    PPC_ID_${SUBDIR}="${SUBDIR}")
+
+  project(${SUBDIR})
+  message(STATUS "${SUBDIR}")
+
+  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${SUBDIR}/threads")
+    ppc_configure_meta_part(
+      ${SUBDIR}_threads
+      "${CMAKE_CURRENT_SOURCE_DIR}/${SUBDIR}/threads")
+  endif()
+
+  file(
+    GLOB process_task_dirs
+    RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/${SUBDIR}/processes"
+    "${CMAKE_CURRENT_SOURCE_DIR}/${SUBDIR}/processes/*")
+  list(SORT process_task_dirs)
+  foreach(PROCESS_TASK IN LISTS process_task_dirs)
+    if(NOT IS_DIRECTORY
+       "${CMAKE_CURRENT_SOURCE_DIR}/${SUBDIR}/processes/${PROCESS_TASK}")
+      continue()
+    endif()
+    ppc_configure_meta_part(
+      ${SUBDIR}_processes_${PROCESS_TASK}
+      "${CMAKE_CURRENT_SOURCE_DIR}/${SUBDIR}/processes/${PROCESS_TASK}")
+  endforeach()
+endfunction()

@@ -57,12 +57,12 @@ msgstr "``-D USE_PERF_TESTS=ON`` включает тесты на произво
 #: ../../../../docs/user_guide/build.rst:29
 msgid ""
 "``-D PPC_TASKS=all`` builds every task (default). Pass one task or a "
-"semicolon list, for example ``-D PPC_TASKS=\"example_threads;example_processes\"``, "
+"semicolon list, for example ``-D PPC_TASKS=\"example\"``, "
 "to limit the build."
 msgstr ""
 "``-D PPC_TASKS=all`` собирает все задачи (по умолчанию). Укажите одну "
 "задачу или список через точку с запятой, например "
-"``-D PPC_TASKS=\"example_threads;example_processes\"``, чтобы ограничить "
+"``-D PPC_TASKS=\"example\"``, чтобы ограничить "
 "сборку."
 
 #: ../../../../docs/user_guide/build.rst:32
