@@ -1,13 +1,14 @@
 #include <gtest/gtest.h>
 
+#include <array>
 #include <chrono>
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <libenvpp/detail/environment.hpp>
 #include <memory>
-#include <ostream>
 #include <stdexcept>
+#include <string>
 #include <string_view>
 #include <thread>
 #include <vector>
@@ -29,6 +30,7 @@ class TestPerfTask : public ppc::task::Task<InType, OutType> {
     this->GetInput() = in;
   }
 
+ protected:
   bool ValidationImpl() override {
     return !this->GetInput().empty();
   }
@@ -55,6 +57,7 @@ class FakePerfTask : public TestPerfTask<InType, OutType> {
  public:
   explicit FakePerfTask(const InType &in) : TestPerfTask<InType, OutType>(in) {}
 
+ protected:
   bool RunImpl() override {
     std::this_thread::sleep_for(std::chrono::seconds(11));
     return TestPerfTask<InType, OutType>::RunImpl();
@@ -163,38 +166,31 @@ TEST(PerfTests, CheckPerfTaskFloat) {
 
 struct ParamTestCase {
   PerfResults::TypeOfRunning input;
-  std::string expected_output;
-  friend void PrintTo(const ParamTestCase &param, std::ostream *os) {
-    *os << "{ input = " << static_cast<int>(param.input) << ", expected = " << param.expected_output << " }";
-  }
+  std::string_view expected_output;
 };
 
-class GetStringParamNameParamTest : public ::testing::TestWithParam<ParamTestCase> {};
+namespace {
 
-TEST_P(GetStringParamNameParamTest, ReturnsExpectedString) {
-  const auto &param = GetParam();
-  EXPECT_EQ(GetStringParamName(param.input), param.expected_output);
+constexpr std::array<ParamTestCase, 3> kParamTestCases = {
+    {{.input = PerfResults::TypeOfRunning::kTaskRun, .expected_output = "task_run"},
+     {.input = PerfResults::TypeOfRunning::kPipeline, .expected_output = "pipeline"},
+     {.input = PerfResults::TypeOfRunning::kNone, .expected_output = "none"}}};
+
+}  // namespace
+
+TEST(GetStringParamNameParamTest, ReturnsExpectedString) {
+  for (const auto &param : kParamTestCases) {
+    EXPECT_EQ(GetStringParamName(param.input), std::string(param.expected_output));
+  }
 }
-
-INSTANTIATE_TEST_SUITE_P(ParamTests, GetStringParamNameParamTest,
-                         ::testing::Values(ParamTestCase{PerfResults::TypeOfRunning::kTaskRun, "task_run"},
-                                           ParamTestCase{PerfResults::TypeOfRunning::kPipeline, "pipeline"},
-                                           ParamTestCase{PerfResults::TypeOfRunning::kNone, "none"}),
-                         [](const ::testing::TestParamInfo<ParamTestCase> &info) {
-                           return info.param.expected_output;
-                         });
 
 struct TaskTypeTestCase {
   TypeOfTask type;
-  std::string expected;
-  std::string label;
-  friend void PrintTo(const TaskTypeTestCase &param, std::ostream *os) {
-    *os << "{ type = " << static_cast<int>(param.type) << ", expected = " << param.expected
-        << ", label = " << param.label << " }";
-  }
+  std::string_view expected;
+  std::string_view label;
 };
 
-class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> {
+class GetStringTaskTypeTest : public ::testing::Test {
  protected:
   std::string temp_path;
 
@@ -211,18 +207,23 @@ class GetStringTaskTypeTest : public ::testing::TestWithParam<TaskTypeTestCase> 
   }
 };
 
-TEST_P(GetStringTaskTypeTest, ReturnsExpectedString) {
-  const auto &param = GetParam();
-  EXPECT_EQ(GetStringTaskType(param.type, temp_path), param.expected) << "Failed on: " << param.label;
-}
+namespace {
 
-INSTANTIATE_TEST_SUITE_P(AllTypeCases, GetStringTaskTypeTest,
-                         ::testing::Values(TaskTypeTestCase{TypeOfTask::kALL, "all_ALL", "kALL"},
-                                           TaskTypeTestCase{TypeOfTask::kSTL, "stl_STL", "kSTL"},
-                                           TaskTypeTestCase{TypeOfTask::kOMP, "omp_OMP", "kOMP"},
-                                           TaskTypeTestCase{TypeOfTask::kMPI, "mpi_MPI", "kMPI"},
-                                           TaskTypeTestCase{TypeOfTask::kTBB, "tbb_TBB", "kTBB"},
-                                           TaskTypeTestCase{TypeOfTask::kSEQ, "seq_SEQ", "kSEQ"}));
+constexpr std::array<TaskTypeTestCase, 6> kTaskTypeTestCases = {
+    {{.type = TypeOfTask::kALL, .expected = "all_ALL", .label = "kALL"},
+     {.type = TypeOfTask::kSTL, .expected = "stl_STL", .label = "kSTL"},
+     {.type = TypeOfTask::kOMP, .expected = "omp_OMP", .label = "kOMP"},
+     {.type = TypeOfTask::kMPI, .expected = "mpi_MPI", .label = "kMPI"},
+     {.type = TypeOfTask::kTBB, .expected = "tbb_TBB", .label = "kTBB"},
+     {.type = TypeOfTask::kSEQ, .expected = "seq_SEQ", .label = "kSEQ"}}};
+
+}  // namespace
+
+TEST_F(GetStringTaskTypeTest, ReturnsExpectedString) {
+  for (const auto &param : kTaskTypeTestCases) {
+    EXPECT_EQ(GetStringTaskType(param.type, temp_path), std::string(param.expected)) << "Failed on: " << param.label;
+  }
+}
 
 TEST(GetStringTaskTypeStandaloneTest, ThrowsIfFileMissing) {
   std::string missing_path = "non_existent_settings.json";
@@ -284,6 +285,8 @@ TEST(GetStringTaskStatusTest, HandlesEnabledAndDisabled) {
 class DummyTask : public Task<int, int> {
  public:
   using Task::Task;
+
+ protected:
   bool ValidationImpl() override {
     return true;
   }
@@ -321,25 +324,16 @@ struct Type {};
 class Another {};
 }  // namespace my
 
-template <typename T>
-class GetNamespaceTest : public ::testing::Test {};
+TEST(GetNamespaceTest, ExtractsNestedNamespaceCorrectly) {
+  EXPECT_EQ(ppc::util::GetNamespace<my::nested::Type>(), "ppc::performance::my::nested");
+}
 
-using TestTypes = ::testing::Types<my::nested::Type, my::Another, int>;
+TEST(GetNamespaceTest, ExtractsParentNamespaceCorrectly) {
+  EXPECT_EQ(ppc::util::GetNamespace<my::Another>(), "ppc::performance::my");
+}
 
-TYPED_TEST_SUITE(GetNamespaceTest, TestTypes);
-
-TYPED_TEST(GetNamespaceTest, ExtractsNamespaceCorrectly) {
-  std::string k_ns = ppc::util::GetNamespace<TypeParam>();
-
-  if constexpr (std::is_same_v<TypeParam, my::nested::Type>) {
-    EXPECT_EQ(k_ns, "ppc::performance::my::nested");
-  } else if constexpr (std::is_same_v<TypeParam, my::Another>) {
-    EXPECT_EQ(k_ns, "ppc::performance::my");
-  } else if constexpr (std::is_same_v<TypeParam, int>) {
-    EXPECT_EQ(k_ns, "");
-  } else {
-    FAIL() << "Unhandled type in test";
-  }
+TEST(GetNamespaceTest, ReturnsEmptyStringForGlobalNamespaceType) {
+  EXPECT_EQ(ppc::util::GetNamespace<int>(), "");
 }
 
 TEST(PerfTest, PipelineRunAndTaskRun) {
@@ -385,6 +379,7 @@ TEST(PerfTest, GetStringParamNameTest) {
 TEST(TaskTest, DestructorInvalidPipelineOrderTerminatesPartialPipeline) {
   {
     struct BadTask : Task<int, int> {
+     protected:
       bool ValidationImpl() override {
         return true;
       }

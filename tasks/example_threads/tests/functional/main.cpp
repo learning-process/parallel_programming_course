@@ -30,7 +30,18 @@ class NesterovARunFuncTestsThreads : public ppc::util::BaseRunFuncTests<InType, 
   }
 
  protected:
-  void SetUp() override {
+  void RunTestCase(const ppc::util::FuncTestParam<InType, OutType, TestType> &test_param) {
+    const std::string &test_name =
+        std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kNameTest)>(test_param);
+    if (IsTestDisabled(test_name) || ShouldSkipNonMpiTask(test_name)) {
+      return;
+    }
+
+    SetInputData();
+    ExecuteTest(test_param);
+  }
+
+  void SetInputData() {
     int width = -1;
     int height = -1;
     int channels = -1;
@@ -50,7 +61,6 @@ class NesterovARunFuncTestsThreads : public ppc::util::BaseRunFuncTests<InType, 
       }
     }
 
-    TestType params = std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kTestParams)>(GetParam());
     input_data_ = width - height + std::min(std::accumulate(img.begin(), img.end(), 0), channels);
   }
 
@@ -68,10 +78,6 @@ class NesterovARunFuncTestsThreads : public ppc::util::BaseRunFuncTests<InType, 
 
 namespace {
 
-TEST_P(NesterovARunFuncTestsThreads, MatmulFromPic) {
-  ExecuteTest(GetParam());
-}
-
 const std::array<TestType, 3> kTestParam = {std::make_tuple(3, "3"), std::make_tuple(5, "5"), std::make_tuple(7, "7")};
 
 const auto kTestTasksList =
@@ -81,12 +87,10 @@ const auto kTestTasksList =
                    ppc::util::AddFuncTask<NesterovATestTaskSTL, InType>(kTestParam, PPC_SETTINGS_example_threads),
                    ppc::util::AddFuncTask<NesterovATestTaskTBB, InType>(kTestParam, PPC_SETTINGS_example_threads));
 
-const auto kGtestValues = ppc::util::ExpandToValues(kTestTasksList);
-
-const auto kPerfTestName = NesterovARunFuncTestsThreads::PrintFuncTestName<NesterovARunFuncTestsThreads>;
-
-INSTANTIATE_TEST_SUITE_P(PicMatrixTests, NesterovARunFuncTestsThreads, kGtestValues, kPerfTestName);
-
 }  // namespace
+
+TEST_F(NesterovARunFuncTestsThreads, MatmulFromPic) {
+  std::apply([this](const auto &...test_params) { (RunTestCase(test_params), ...); }, kTestTasksList);
+}
 
 }  // namespace nesterov_a_test_task_threads

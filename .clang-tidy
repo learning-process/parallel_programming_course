@@ -46,6 +46,7 @@ Checks: >
   -readability-magic-numbers
 
 HeaderFilterRegex: '.*/(modules|tasks)/.*'
+ExcludeHeaderFilterRegex: '.*/3rdparty/.*'
 
 CheckOptions:
   - key: readability-identifier-naming.ClassCase
