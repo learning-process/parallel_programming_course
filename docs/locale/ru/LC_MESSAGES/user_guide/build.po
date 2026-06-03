@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-03 16:19+0200\n"
+"POT-Creation-Date: 2025-10-24 14:15+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: ru\n"
@@ -20,7 +20,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.18.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: ../../../../docs/user_guide/build.rst:2
 msgid "Build the Project with ``CMake``"
@@ -57,14 +57,13 @@ msgstr "``-D USE_PERF_TESTS=ON`` включает тесты на произво
 #: ../../../../docs/user_guide/build.rst:29
 msgid ""
 "``-D PPC_TASKS=all`` builds every task (default). Pass one task or a "
-"semicolon list, for example ``-D PPC_TASKS=example``, to limit the build. "
-"Meta-layout tasks with ``threads`` and ``processes`` subtrees are built as "
-"one selected task."
+"semicolon list, for example ``-D PPC_TASKS=\"example_threads;example_processes\"``, "
+"to limit the build."
 msgstr ""
-"``-D PPC_TASKS=all`` собирает все задачи (по умолчанию). Укажите одну задачу "
-"или список через точку с запятой, например ``-D PPC_TASKS=example``, чтобы "
-"ограничить сборку. Задачи с meta-layout и поддеревьями ``threads`` и "
-"``processes`` собираются как одна выбранная задача."
+"``-D PPC_TASKS=all`` собирает все задачи (по умолчанию). Укажите одну "
+"задачу или список через точку с запятой, например "
+"``-D PPC_TASKS=\"example_threads;example_processes\"``, чтобы ограничить "
+"сборку."
 
 #: ../../../../docs/user_guide/build.rst:32
 msgid ""
@@ -80,11 +79,12 @@ msgstr "``-D CMAKE_BUILD_TYPE=Release`` нормальная сборка (по 
 
 #: ../../../../docs/user_guide/build.rst:35
 msgid ""
-"``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers or "
-"running ``valgrind`` to keep debug information."
+"``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers "
+"or running ``valgrind`` to keep debug information."
 msgstr ""
 "``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` рекомендуется при использовании "
-"санитайзеров или запуске ``valgrind`` для сохранения отладочной информации."
+"санитайзеров или запуске ``valgrind`` для сохранения отладочной "
+"информации."
 
 #: ../../../../docs/user_guide/build.rst:37
 msgid "``-D CMAKE_BUILD_TYPE=Debug`` for debugging sessions."
@@ -93,8 +93,8 @@ msgstr "``-D CMAKE_BUILD_TYPE=Debug`` используется при отлад
 #: ../../../../docs/user_guide/build.rst:39
 msgid "*A corresponding flag can be omitted if it's not needed.*"
 msgstr ""
-"*Ряд CMake флагов может быть выключен, если они не требуются для выполнения "
-"работы.*"
+"*Ряд CMake флагов может быть выключен, если они не требуются для "
+"выполнения работы.*"
 
 #: ../../../../docs/user_guide/build.rst:41
 msgid "**Build the project**:"
@@ -106,6 +106,10 @@ msgstr "**Запуск тестов**:"
 
 #: ../../../../docs/user_guide/build.rst:49
 msgid "Prefer the helper runner described in ``User Guide → CI``."
-msgstr ""
-"Рекомендуется использовать вспомогательный раннер, описанный в «Инструкция → "
-"CI»."
+msgstr "Рекомендуется использовать вспомогательный раннер, описанный в «Инструкция → CI»."
+
+#~ msgid "Navigate to a source code folder."
+#~ msgstr "Перейдите в корень директории проекта"
+
+#~ msgid "Run ``<project's folder>/build/bin``"
+#~ msgstr "Запустите ``<project's folder>/build/bin``"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-03 16:19+0200\n"
+"POT-Creation-Date: 2025-10-24 15:07+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: en\n"
@@ -20,7 +20,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.18.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: ../../../../docs/user_guide/submit_work.rst:2
 msgid "How to create, open, and submit your work"
@@ -38,8 +38,7 @@ msgid "Repository and branch"
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:8
-msgid ""
-"Fork the semester repository for your group (processes/threads, program)."
+msgid "Fork the semester repository for your group (processes/threads, program)."
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:9
@@ -62,7 +61,8 @@ msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:16
 msgid ""
-"If you work from a fork, clone your fork and set the course repo as upstream."
+"If you work from a fork, clone your fork and set the course repo as "
+"upstream."
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:19
@@ -82,14 +82,15 @@ msgstr ""
 #: ../../../../docs/user_guide/submit_work.rst:31
 msgid ""
 "Technology implementations (add only those required by the semester): - "
-"Processes (MPI/SEQ): ``seq/include``, ``seq/src``, ``mpi/include``, ``mpi/"
-"src`` - Threads: ``seq``, ``omp``, ``tbb``, ``stl`` (same include/src split)"
+"Processes (MPI/SEQ): ``seq/include``, ``seq/src``, ``mpi/include``, "
+"``mpi/src`` - Threads: ``seq``, ``omp``, ``tbb``, ``stl`` (same "
+"include/src split)"
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:35
 msgid ""
-"Each implementation defines a class derived from ``BaseTask`` and overrides "
-"``ValidationImpl``, ``PreProcessingImpl``, ``RunImpl``, "
+"Each implementation defines a class derived from ``BaseTask`` and "
+"overrides ``ValidationImpl``, ``PreProcessingImpl``, ``RunImpl``, "
 "``PostProcessingImpl``. Also add:"
 msgstr ""
 
@@ -99,10 +100,10 @@ msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:76
 msgid ""
-"Tests (unified location): - ``tests/functional/main.cpp`` — functional tests "
-"built on ``ppc::util::BaseRunFuncTests`` and helpers. - ``tests/performance/"
-"main.cpp`` — performance tests built on ``ppc::util::BaseRunPerfTests`` + "
-"``MakeAllPerfTasks``."
+"Tests (unified location): - ``tests/functional/main.cpp`` — functional "
+"tests built on ``ppc::util::BaseRunFuncTests`` and helpers. - "
+"``tests/performance/main.cpp`` — performance tests built on "
+"``ppc::util::BaseRunPerfTests`` + ``MakeAllPerfTasks``."
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:80
@@ -110,8 +111,7 @@ msgid "Functional tests example:"
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:90
-msgid ""
-"Use ``PPC_ID_<task_id>`` to resolve resources from ``data/`` when needed."
+msgid "Use ``PPC_ID_<task_id>`` to resolve resources from ``data/`` when needed."
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:92
@@ -124,8 +124,8 @@ msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:101
 msgid ""
-"Keep tests deterministic and under time limits; prefer env vars (see ``User "
-"Guide → Environment Variables``) over sleeps."
+"Keep tests deterministic and under time limits; prefer env vars (see "
+"``User Guide → Environment Variables``) over sleeps."
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:102
@@ -143,13 +143,11 @@ msgid "``data/`` — optional input files for tests (e.g., images)."
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:106
-msgid ""
-"``settings.json`` — enable required technologies for your semester, e.g.:"
+msgid "``settings.json`` — enable required technologies for your semester, e.g.:"
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:112
-msgid ""
-"``info.json`` — student metadata used in automation (scoreboard, macros):"
+msgid "``info.json`` — student metadata used in automation (scoreboard, macros):"
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:119
@@ -171,14 +169,15 @@ msgstr ""
 #: ../../../../docs/user_guide/submit_work.rst:139
 msgid ""
 "``build/bin`` (or ``install/bin``): - ``core_func_tests`` — core library "
-"tests first - ``ppc_func_tests`` — functional tests for all tasks/"
-"technologies - ``ppc_perf_tests`` — performance tests for all tasks/"
-"technologies"
+"tests first - ``ppc_func_tests`` — functional tests for all "
+"tasks/technologies - ``ppc_perf_tests`` — performance tests for all "
+"tasks/technologies"
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:144
 msgid ""
-"The runner applies gtest filters automatically to select technology suites."
+"The runner applies gtest filters automatically to select technology "
+"suites."
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:147
@@ -191,111 +190,245 @@ msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:150
 msgid ""
-"``<Фамилия Имя>. Технология <SEQ/MPI/...>. <Название задачи>. Вариант <N>.``"
+"``<Фамилия Имя>. Технология <SEQ/MPI/...>. <Название задачи>. Вариант "
+"<N>.``"
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:152
 msgid ""
 "Description should include: - Полное описание задачи; номер варианта; "
-"используемая технология - Краткое описание реализации и отчёта - Чек-лист "
-"(CI зелёный в форке, clang-format/clang-tidy пройдены, функциональные/перф "
-"тесты ок, ветка названа как директория задачи, достоверность сведений)."
+"используемая технология - Краткое описание реализации и отчёта - Чек-лист"
+" (CI зелёный в форке, clang-format/clang-tidy пройдены, "
+"функциональные/перф тесты ок, ветка названа как директория задачи, "
+"достоверность сведений)."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:158
+#: ../../../../docs/user_guide/submit_work.rst:160
 msgid "PR checklist template (body)"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:181
+#: ../../../../docs/user_guide/submit_work.rst:208
 msgid "Common pitfalls (read before pushing)"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:182
-msgid ""
-"Wrong folder/branch name. Must be ``<last>_<initial>_<short>`` everywhere."
+#: ../../../../docs/user_guide/submit_work.rst:209
+msgid "Wrong folder/branch name. Must be ``<last>_<initial>_<short>`` everywhere."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:183
+#: ../../../../docs/user_guide/submit_work.rst:210
 msgid "Missing or wrong ``GetStaticTypeOfTask`` value for a technology."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:184
+#: ../../../../docs/user_guide/submit_work.rst:211
 msgid "Tests rely on randomness or sleeps instead of env time limits."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:185
-msgid ""
-"``settings.json`` doesn’t enable a required technology — tests won’t run."
+#: ../../../../docs/user_guide/submit_work.rst:212
+msgid "``settings.json`` doesn’t enable a required technology — tests won’t run."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:186
+#: ../../../../docs/user_guide/submit_work.rst:213
 msgid "Namespace doesn’t match the folder name and collides with others."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:187
+#: ../../../../docs/user_guide/submit_work.rst:214
 msgid "Performance tests count or naming deviates from the required patterns."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:190
+#: ../../../../docs/user_guide/submit_work.rst:217
 msgid "Useful examples to reference"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:191
-msgid "Unified example: ``tasks/example``"
-msgstr ""
-
-#: ../../../../docs/user_guide/submit_work.rst:192
+#: ../../../../docs/user_guide/submit_work.rst:218
 msgid ""
-"Shared example files: ``tasks/example/settings.json``, ``tasks/example/"
-"info.json``, ``tasks/example/common``, ``tasks/example/data``"
+"Processes: ``tasks/example_processes``, ``tasks/example_processes_2``, "
+"``tasks/example_processes_3``"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:193
-#, python-brace-format
-msgid "Threads: ``tasks/example/threads/{seq,omp,tbb,stl,all}``"
+#: ../../../../docs/user_guide/submit_work.rst:219
+msgid "Threads: ``tasks/example_threads``"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:194
+#: ../../../../docs/user_guide/submit_work.rst:221
 msgid ""
-"Processes: ``tasks/example/processes/t1``, ``tasks/example/processes/t2``, "
-"``tasks/example/processes/t3``"
+"Work from your fork in a dedicated branch (not ``master``). Branch name "
+"must match your task folder."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:195
-msgid ""
-"Process tasks keep independent ``seq`` and ``mpi`` implementations under "
-"each ``tN`` directory."
-msgstr ""
-
-#: ../../../../docs/user_guide/submit_work.rst:196
-msgid ""
-"Example reports are tree-shaped: the root report links to section reports "
-"and each implementation directory has its own ``report.md``."
-msgstr ""
-
-#: ../../../../docs/user_guide/submit_work.rst:198
-msgid ""
-"Work from your fork in a dedicated branch (not ``master``). Branch name must "
-"match your task folder."
-msgstr ""
-
-#: ../../../../docs/user_guide/submit_work.rst:201
+#: ../../../../docs/user_guide/submit_work.rst:224
 msgid "Notes"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:202
+#: ../../../../docs/user_guide/submit_work.rst:225
 msgid ""
 "All classes should live in a unique namespace (e.g., "
 "``<last>_<initial>_<short>``)."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:203
+#: ../../../../docs/user_guide/submit_work.rst:226
 msgid ""
-"Keep tests deterministic and within time limits; prefer env vars over sleeps."
+"Keep tests deterministic and within time limits; prefer env vars over "
+"sleeps."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:204
+#: ../../../../docs/user_guide/submit_work.rst:227
 msgid ""
 "Follow code style (clang-format/clang-tidy), and run pre-commit hooks "
 "locally."
 msgstr ""
+
+#~ msgid ""
+#~ "Navigate into the newly created folder"
+#~ " and begin your work on the "
+#~ "task. The folder must contain only "
+#~ "4 directories with files:"
+#~ msgstr ""
+
+#~ msgid "There must be 10 executable files for running:"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "``<all, mpi, omp, seq, stl, tbb>_<func,"
+#~ " perf>_tests``. For example, ``omp_perf_tests``"
+#~ " - an executable file for performance"
+#~ " tests of OpenMP practice tasks."
+#~ msgstr ""
+
+#~ msgid "How to submit your work"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "There are ``all``, ``mpi``, ``omp``, "
+#~ "``seq``, ``stl``, ``tbb`` folders in the"
+#~ " ``tasks`` directory. Move to a "
+#~ "folder of your task. Create a "
+#~ "directory named ``<last name>_<first letter"
+#~ " of name>_<short task name>``."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Example: ``seq/nesterov_a_vector_sum``. Please name"
+#~ " all tasks **with the same** name "
+#~ "directory. If the ``seq`` task is "
+#~ "named ``seq/nesterov_a_vector_sum``, then the "
+#~ "``omp`` task must be named "
+#~ "``omp/nesterov_a_vector_sum``."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Navigate into the newly created folder"
+#~ " and begin your work on the "
+#~ "task. The folder must contain the "
+#~ "following directories:"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "``data``       - Directory with own data"
+#~ " files for functional testing of the"
+#~ " task."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "``func_tests`` - Directory with Google "
+#~ "tests for functional testing of the "
+#~ "task."
+#~ msgstr ""
+
+#~ msgid "``include``    - Directory for header files with function prototypes."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "``perf_tests`` - Directory with Google "
+#~ "tests for performance testing. The "
+#~ "number of tests must be 2: "
+#~ "``run_task`` and ``run_pipeline``."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "``src``        - Directory with source "
+#~ "files containing the function implementations."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Executables are generated in ``build/bin`` "
+#~ "(or ``install/bin`` if installed): - "
+#~ "``core_func_tests`` — core library tests "
+#~ "- ``ppc_func_tests`` — functional tests "
+#~ "for all tasks/technologies - "
+#~ "``ppc_perf_tests`` — performance tests for "
+#~ "all tasks/technologies"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Use gtest filters (the test runner "
+#~ "applies them automatically) to select "
+#~ "technology-specific suites, e.g. ``*_omp_*``, "
+#~ "``*_mpi*``, ``*_seq_*``, ``*_tbb_*``, ``*_stl_*``,"
+#~ " ``*_all*``."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "All prototypes and classes in the "
+#~ "``include`` directory must be namespace-"
+#~ "escaped. Name your namespace as follows:"
+#~ msgstr ""
+
+#~ msgid "Name your group of tests and individual test cases as follows:"
+#~ msgstr ""
+
+#~ msgid "For functional tests (for maximum coverage):"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "For performance tests (only 2 tests "
+#~ "- ``pipeline`` and ``task`` - no "
+#~ "more no less):"
+#~ msgstr ""
+
+#~ msgid "Name your pull request as follows:"
+#~ msgstr ""
+
+#~ msgid "For tasks:"
+#~ msgstr ""
+
+#~ msgid "Provide the full task definition in the pull request's description."
+#~ msgstr ""
+
+#~ msgid "Example pull request can be found in the repository's pull requests."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Work on your forked repository. Keep "
+#~ "your work on a separate branch "
+#~ "(not on ``master``)!!! Name your branch"
+#~ " the same as your task's folder. "
+#~ "To create a branch, run:"
+#~ msgstr ""
+
+#~ msgid "**Failing to follow the rules will result in a red project build.**"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "This section reflects the current "
+#~ "integration flow used in semester "
+#~ "repositories (see example PR: ppc-2025"
+#~ "-processes-informatics #6)."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Description should include: - Полное "
+#~ "описание задачи; номер варианта; используемая"
+#~ " технология - Краткое описание реализации"
+#~ " и отчёта - Чек-лист (CI зелёный "
+#~ "в форке, clang-format/clang-tidy "
+#~ "пройдены, функциональные/перф тесты ок, ветка"
+#~ " названа как директория задачи, "
+#~ "достоверность сведений). См. пример PR."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "This section reflects the current "
+#~ "integration flow used in semester "
+#~ "repositories."
+#~ msgstr ""
+

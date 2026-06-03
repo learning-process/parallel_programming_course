@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-03 17:17+0200\n"
+"POT-Creation-Date: 2025-10-24 15:06+0200\n"
 "PO-Revision-Date: 2025-08-22 21:45+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: ru\n"
@@ -19,7 +19,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.18.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: ../../../../docs/user_guide/api.rst:2
 msgid "API Reference"
@@ -72,3 +72,27 @@ msgstr "Вспомогательный модуль (модуль с утили�
 #: ../../../../docs/user_guide/api.rst:26
 msgid "Performance Module"
 msgstr "Модуль измерения производительности"
+
+#~ msgid "Functions"
+#~ msgstr "Функции"
+
+#~ msgid "Parameters"
+#~ msgstr "Параметры"
+
+#~ msgid "Returns"
+#~ msgstr "Возвращаемые значения"
+
+#~ msgid "Typedefs"
+#~ msgstr "Псевдонимы типов"
+
+#~ msgid "Template Parameters"
+#~ msgstr "Параметры шаблона"
+
+#~ msgid "Enums"
+#~ msgstr "Перечисления"
+
+#~ msgid "Throws"
+#~ msgstr "Исключения"
+
+#~ msgid "Variables"
+#~ msgstr "Переменные"

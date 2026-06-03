@@ -107,13 +107,13 @@ Tips for tests
   
   .. code-block:: json
 
-     { "tasks": { "mpi": "enabled", "seq": "enabled" } }
+     { "tasks_type": "processes", "tasks": { "mpi": "enabled", "seq": "enabled" } }
 
 - ``info.json`` — student metadata used in automation (scoreboard, macros):
   
   .. code-block:: json
 
-     { "student": { "full_name": "Фамилия Имя Отчество", "group_number": "Группа" } }
+     { "student": { "full_name": "Фамилия Имя Отчество", "group_number": "Группа", "task_number": "1" } }
 
 Build and local run
 -------------------
@@ -188,12 +188,8 @@ Common pitfalls (read before pushing)
 
 Useful examples to reference
 ----------------------------
-- Unified example: ``tasks/example``
-- Shared example files: ``tasks/example/settings.json``, ``tasks/example/info.json``, ``tasks/example/common``, ``tasks/example/data``
-- Threads: ``tasks/example/threads/{seq,omp,tbb,stl,all}``
-- Processes: ``tasks/example/processes/t1``, ``tasks/example/processes/t2``, ``tasks/example/processes/t3``
-- Process tasks keep independent ``seq`` and ``mpi`` implementations under each ``tN`` directory.
-- Example reports are tree-shaped: the root report links to section reports and each implementation directory has its own ``report.md``.
+- Processes: ``tasks/example_processes``, ``tasks/example_processes_2``, ``tasks/example_processes_3``
+- Threads: ``tasks/example_threads``
 
 - Work from your fork in a dedicated branch (not ``master``). Branch name must match your task folder.
 

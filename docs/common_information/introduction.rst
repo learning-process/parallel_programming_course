@@ -14,7 +14,7 @@ Practice
 - Task distribution is random for each student.
 - Full automation of quality and performance checks; plagiarism checks are applied.
 - Deadlines are set per task. See the penalties and grading rules in ``Points``.
-- Examples are provided in ``tasks/example`` tree with ``threads`` and ``processes/t1``..``processes/t3`` sections.
+- Examples are provided in ``tasks/example_threads`` and ``tasks/example_processes`` (and extended variations ``tasks/example_processes_2`` / ``tasks/example_processes_3``).
 - In each repository, the README.md contains a link to the course documentation.
 - Each repository includes an example of a properly formatted PULL REQUEST.
 - Submission of all tasks is mandatory to pass the course.
