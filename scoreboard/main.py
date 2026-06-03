@@ -458,7 +458,9 @@ def _find_process_report_max(points_info, process_task_index: int) -> int:
     return 0
 
 
-def _find_process_points(points_info, process_task_index: int) -> tuple[int, int, int, int]:
+def _find_process_points(
+    points_info, process_task_index: int
+) -> tuple[int, int, int, int]:
     """Return (S_mpi, S_seq, A_mpi, R) maxima for a given process task ordinal (1..3).
     Supports both mapping and list-of-maps (per user's YAML example).
     """
@@ -1103,7 +1105,9 @@ def main():
                     status_seq = directories[clean_d].get("seq")
                     has_mpi = status_mpi in ("done", "disabled")
                     has_seq = status_seq in ("done", "disabled")
-                    report_present = _task_report_exists(d, "seq") or _task_report_exists(d, "mpi")
+                    report_present = _task_report_exists(
+                        d, "seq"
+                    ) or _task_report_exists(d, "mpi")
 
                     mpi_eff = group_cells[0].get("efficiency", "N/A")
                     perf_points_mpi = (

@@ -30,8 +30,8 @@ class ExampleRunPerfTestProcesses2 : public ppc::util::BaseRunPerfTests<InType, 
 
 namespace {
 
-const auto kAllPerfTasks =
-    ppc::util::MakeAllPerfTasks<InType, NesterovATestTaskMPI, NesterovATestTaskSEQ>(PPC_SETTINGS_example, "processes.t2");
+const auto kAllPerfTasks = ppc::util::MakeAllPerfTasks<InType, NesterovATestTaskMPI, NesterovATestTaskSEQ>(
+    PPC_SETTINGS_example, "processes.t2");
 
 }  // namespace
 

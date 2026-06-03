@@ -129,9 +129,8 @@ function(ppc_configure_meta_project SUBDIR)
   message(STATUS "${SUBDIR}")
 
   if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${SUBDIR}/threads")
-    ppc_configure_meta_part(
-      ${SUBDIR}_threads
-      "${CMAKE_CURRENT_SOURCE_DIR}/${SUBDIR}/threads")
+    ppc_configure_meta_part(${SUBDIR}_threads
+                            "${CMAKE_CURRENT_SOURCE_DIR}/${SUBDIR}/threads")
   endif()
 
   file(

@@ -2,8 +2,8 @@
 
 #include <tuple>
 
-#include "example/threads/all/include/ops_all.hpp"
 #include "example/common/include/common.hpp"
+#include "example/threads/all/include/ops_all.hpp"
 #include "example/threads/omp/include/ops_omp.hpp"
 #include "example/threads/seq/include/ops_seq.hpp"
 #include "example/threads/stl/include/ops_stl.hpp"

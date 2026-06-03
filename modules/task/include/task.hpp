@@ -98,8 +98,7 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
   const auto *settings_node = &list_settings->at("tasks");
   for (size_t start = 0; start < settings_task_path.size();) {
     const size_t separator = settings_task_path.find('.', start);
-    const size_t key_size =
-        separator == std::string_view::npos ? settings_task_path.size() - start : separator - start;
+    const size_t key_size = separator == std::string_view::npos ? settings_task_path.size() - start : separator - start;
     settings_node = &settings_node->at(std::string(settings_task_path.substr(start, key_size)));
     if (separator == std::string_view::npos) {
       break;
