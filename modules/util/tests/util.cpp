@@ -1,12 +1,17 @@
 #include "util/include/util.hpp"
 
+#include <gtest/gtest-spi.h>
 #include <gtest/gtest.h>
 
+#include <cstddef>
 #include <libenvpp/detail/environment.hpp>
 #include <libenvpp/detail/get.hpp>
 #include <string>
+#include <tuple>
+#include <vector>
 
 #include "omp.h"
+#include "util/include/func_test_util.hpp"
 
 namespace my::nested {
 struct Type {};
@@ -123,4 +128,47 @@ TEST(GetNumProc, ReturnsDefaultWhenUnset) {
 TEST(GetNumProc, ReadsFromEnvironment) {
   env::detail::set_scoped_environment_variable scoped("PPC_NUM_PROC", "4");
   EXPECT_EQ(ppc::util::GetNumProc(), 4);
+}
+
+namespace {
+
+using FuncTestUtilParam = ppc::util::FuncTestParam<int, int, int>;
+
+FuncTestUtilParam MakeFuncTestUtilParam(const std::string &test_name, int value) {
+  return FuncTestUtilParam{[](int) -> ppc::task::TaskPtr<int, int> { return {}; }, test_name, value};
+}
+
+}  // namespace
+
+TEST(FuncTestUtil, RunTestCasesWithTagAcceptsBareTags) {
+  const auto test_tasks = std::make_tuple(MakeFuncTestUtilParam("example_threads_seq_enabled", 1),
+                                          MakeFuncTestUtilParam("example_threads_tbb_enabled", 2),
+                                          MakeFuncTestUtilParam("example_threads_tbb_disabled", 3));
+
+  std::vector<int> visited_params;
+  ppc::util::RunTestCasesWithTag(test_tasks, "tbb", [&](const auto &test_param) {
+    visited_params.push_back(std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kTestParams)>(test_param));
+  });
+
+  ASSERT_EQ(visited_params.size(), std::size_t{2});
+  EXPECT_EQ(visited_params[0], 2);
+  EXPECT_EQ(visited_params[1], 3);
+}
+
+TEST(FuncTestUtil, RunTestCasesWithTagFailsWhenTagIsMissing) {
+  const auto test_tasks = std::make_tuple(MakeFuncTestUtilParam("example_threads_seq_enabled", 1));
+
+  bool callback_was_called = false;
+  ::testing::TestPartResultArray failures;
+  {
+    ::testing::ScopedFakeTestPartResultReporter reporter(
+        ::testing::ScopedFakeTestPartResultReporter::INTERCEPT_ONLY_CURRENT_THREAD, &failures);
+    ppc::util::RunTestCasesWithTag(test_tasks, "omp", [&](const auto & /*test_param*/) { callback_was_called = true; });
+  }
+
+  ASSERT_EQ(failures.size(), 1);
+  EXPECT_EQ(failures.GetTestPartResult(0).type(), ::testing::TestPartResult::kNonFatalFailure);
+  EXPECT_NE(std::string(failures.GetTestPartResult(0).message()).find("No functional test cases matched tag: omp"),
+            std::string::npos);
+  EXPECT_FALSE(callback_was_called);
 }

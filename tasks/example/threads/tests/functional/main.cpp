@@ -30,7 +30,7 @@ class NesterovARunFuncTestsThreads : public ppc::util::BaseRunFuncTests<InType, 
   }
 
  protected:
-  void RunTestCase(const ppc::util::FuncTestParam<InType, OutType, TestType> &test_param) {
+  void RunTestCase(const ppc::util::FuncTestParam<InType, OutType, TestType> &test_param) override {
     const std::string &test_name =
         std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kNameTest)>(test_param);
     if (IsTestDisabled(test_name) || ShouldSkipNonMpiTask(test_name)) {
@@ -39,19 +39,6 @@ class NesterovARunFuncTestsThreads : public ppc::util::BaseRunFuncTests<InType, 
 
     SetInputData();
     ExecuteTest(test_param);
-  }
-
-  void RunTestCasesWithTag(const auto &test_tasks_list, const std::string &task_tag) {
-    std::apply([this, &task_tag](const auto &...test_params) {
-      auto run_if_tagged = [this, &task_tag](const auto &test_param) {
-        const std::string &test_name =
-            std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kNameTest)>(test_param);
-        if (test_name.contains(task_tag)) {
-          RunTestCase(test_param);
-        }
-      };
-      (run_if_tagged(test_params), ...);
-    }, test_tasks_list);
   }
 
   void SetInputData() {
@@ -103,23 +90,23 @@ const auto kTestTasksList =
 }  // namespace
 
 TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicAllEnabled) {
-  RunTestCasesWithTag(kTestTasksList, "_all_");
+  RunTestCasesWithTag(kTestTasksList, "all");
 }
 
 TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicOmpEnabled) {
-  RunTestCasesWithTag(kTestTasksList, "_omp_");
+  RunTestCasesWithTag(kTestTasksList, "omp");
 }
 
 TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicSeqEnabled) {
-  RunTestCasesWithTag(kTestTasksList, "_seq_");
+  RunTestCasesWithTag(kTestTasksList, "seq");
 }
 
 TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicStlEnabled) {
-  RunTestCasesWithTag(kTestTasksList, "_stl_");
+  RunTestCasesWithTag(kTestTasksList, "stl");
 }
 
 TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicTbbEnabled) {
-  RunTestCasesWithTag(kTestTasksList, "_tbb_");
+  RunTestCasesWithTag(kTestTasksList, "tbb");
 }
 
 }  // namespace example_threads
