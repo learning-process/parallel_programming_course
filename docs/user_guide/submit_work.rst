@@ -113,7 +113,7 @@ Tips for tests
   
   .. code-block:: json
 
-     { "student": { "full_name": "Фамилия Имя Отчество", "group_number": "Группа" } }
+     { "student": { "last_name": "last_name", "first_name": "first_name", "middle_name": "middle_name", "group_number": "group_number" } }
 
 Build and local run
 -------------------
