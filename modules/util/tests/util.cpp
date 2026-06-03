@@ -7,10 +7,12 @@
 #include <libenvpp/detail/environment.hpp>
 #include <libenvpp/detail/get.hpp>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <vector>
 
 #include "omp.h"
+#include "task/include/task.hpp"
 #include "util/include/func_test_util.hpp"
 
 namespace my::nested {
@@ -138,6 +140,13 @@ FuncTestUtilParam MakeFuncTestUtilParam(const std::string &test_name, int value)
   return FuncTestUtilParam{[](int) -> ppc::task::TaskPtr<int, int> { return {}; }, test_name, value};
 }
 
+void ExpectSingleNonFatalFailureContains(const ::testing::TestPartResultArray &failures, std::string_view message) {
+  ASSERT_EQ(failures.size(), 1);
+  const ::testing::TestPartResult &failure = failures.GetTestPartResult(0);
+  EXPECT_EQ(failure.type(), ::testing::TestPartResult::kNonFatalFailure);
+  EXPECT_NE(std::string_view(failure.message()).find(message), std::string_view::npos);
+}
+
 }  // namespace
 
 TEST(FuncTestUtil, RunTestCasesWithTagAcceptsBareTags) {
@@ -150,9 +159,8 @@ TEST(FuncTestUtil, RunTestCasesWithTagAcceptsBareTags) {
     visited_params.push_back(std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kTestParams)>(test_param));
   });
 
-  ASSERT_EQ(visited_params.size(), std::size_t{2});
-  EXPECT_EQ(visited_params[0], 2);
-  EXPECT_EQ(visited_params[1], 3);
+  const std::vector<int> expected_params{2, 3};
+  EXPECT_EQ(visited_params, expected_params);
 }
 
 TEST(FuncTestUtil, RunTestCasesWithTagFailsWhenTagIsMissing) {
@@ -166,9 +174,6 @@ TEST(FuncTestUtil, RunTestCasesWithTagFailsWhenTagIsMissing) {
     ppc::util::RunTestCasesWithTag(test_tasks, "omp", [&](const auto & /*test_param*/) { callback_was_called = true; });
   }
 
-  ASSERT_EQ(failures.size(), 1);
-  EXPECT_EQ(failures.GetTestPartResult(0).type(), ::testing::TestPartResult::kNonFatalFailure);
-  EXPECT_NE(std::string(failures.GetTestPartResult(0).message()).find("No functional test cases matched tag: omp"),
-            std::string::npos);
+  ExpectSingleNonFatalFailureContains(failures, "No functional test cases matched tag: omp");
   EXPECT_FALSE(callback_was_called);
 }
