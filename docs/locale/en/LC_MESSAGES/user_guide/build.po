@@ -57,9 +57,9 @@ msgstr ""
 #: ../../../../docs/user_guide/build.rst:29
 msgid ""
 "``-D PPC_TASKS=all`` builds every task (default). Pass one task or a "
-"semicolon list, for example ``-D PPC_TASKS=example``, to limit the build."
-" Meta-layout tasks with ``threads`` and ``processes`` subtrees are built "
-"as one selected task."
+"semicolon list, for example ``-D PPC_TASKS=example``, to limit the build. "
+"Meta-layout tasks with ``threads`` and ``processes`` subtrees are built as "
+"one selected task."
 msgstr ""
 
 #: ../../../../docs/user_guide/build.rst:32
@@ -74,8 +74,8 @@ msgstr ""
 
 #: ../../../../docs/user_guide/build.rst:35
 msgid ""
-"``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers "
-"or running ``valgrind`` to keep debug information."
+"``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers or "
+"running ``valgrind`` to keep debug information."
 msgstr ""
 
 #: ../../../../docs/user_guide/build.rst:37
@@ -97,20 +97,3 @@ msgstr ""
 #: ../../../../docs/user_guide/build.rst:49
 msgid "Prefer the helper runner described in ``User Guide → CI``."
 msgstr ""
-
-#~ msgid "Navigate to a source code folder."
-#~ msgstr ""
-
-#~ msgid "**Check the task**:"
-#~ msgstr ""
-
-#~ msgid "Run ``<project's folder>/build/bin``"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "``-D PPC_TASKS=all`` builds every task "
-#~ "(default). Pass one task or a "
-#~ "semicolon list, for example ``-D "
-#~ "PPC_TASKS=\"example\"``, to limit the build."
-#~ msgstr ""
-

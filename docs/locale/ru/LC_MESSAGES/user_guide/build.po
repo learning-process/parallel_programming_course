@@ -57,13 +57,13 @@ msgstr "``-D USE_PERF_TESTS=ON`` включает тесты на произво
 #: ../../../../docs/user_guide/build.rst:29
 msgid ""
 "``-D PPC_TASKS=all`` builds every task (default). Pass one task or a "
-"semicolon list, for example ``-D PPC_TASKS=example``, to limit the build."
-" Meta-layout tasks with ``threads`` and ``processes`` subtrees are built "
-"as one selected task."
+"semicolon list, for example ``-D PPC_TASKS=example``, to limit the build. "
+"Meta-layout tasks with ``threads`` and ``processes`` subtrees are built as "
+"one selected task."
 msgstr ""
-"``-D PPC_TASKS=all`` собирает все задачи (по умолчанию). Укажите одну "
-"задачу или список через точку с запятой, например ``-D PPC_TASKS=example``, "
-"чтобы ограничить сборку. Задачи с meta-layout и поддеревьями ``threads`` и "
+"``-D PPC_TASKS=all`` собирает все задачи (по умолчанию). Укажите одну задачу "
+"или список через точку с запятой, например ``-D PPC_TASKS=example``, чтобы "
+"ограничить сборку. Задачи с meta-layout и поддеревьями ``threads`` и "
 "``processes`` собираются как одна выбранная задача."
 
 #: ../../../../docs/user_guide/build.rst:32
@@ -80,12 +80,11 @@ msgstr "``-D CMAKE_BUILD_TYPE=Release`` нормальная сборка (по 
 
 #: ../../../../docs/user_guide/build.rst:35
 msgid ""
-"``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers "
-"or running ``valgrind`` to keep debug information."
+"``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers or "
+"running ``valgrind`` to keep debug information."
 msgstr ""
 "``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` рекомендуется при использовании "
-"санитайзеров или запуске ``valgrind`` для сохранения отладочной "
-"информации."
+"санитайзеров или запуске ``valgrind`` для сохранения отладочной информации."
 
 #: ../../../../docs/user_guide/build.rst:37
 msgid "``-D CMAKE_BUILD_TYPE=Debug`` for debugging sessions."
@@ -94,8 +93,8 @@ msgstr "``-D CMAKE_BUILD_TYPE=Debug`` используется при отлад
 #: ../../../../docs/user_guide/build.rst:39
 msgid "*A corresponding flag can be omitted if it's not needed.*"
 msgstr ""
-"*Ряд CMake флагов может быть выключен, если они не требуются для "
-"выполнения работы.*"
+"*Ряд CMake флагов может быть выключен, если они не требуются для выполнения "
+"работы.*"
 
 #: ../../../../docs/user_guide/build.rst:41
 msgid "**Build the project**:"
@@ -108,11 +107,5 @@ msgstr "**Запуск тестов**:"
 #: ../../../../docs/user_guide/build.rst:49
 msgid "Prefer the helper runner described in ``User Guide → CI``."
 msgstr ""
-"Рекомендуется использовать вспомогательный раннер, описанный в "
-"«Инструкция → CI»."
-
-#~ msgid "Navigate to a source code folder."
-#~ msgstr "Перейдите в корень директории проекта"
-
-#~ msgid "Run ``<project's folder>/build/bin``"
-#~ msgstr "Запустите ``<project's folder>/build/bin``"
+"Рекомендуется использовать вспомогательный раннер, описанный в «Инструкция → "
+"CI»."

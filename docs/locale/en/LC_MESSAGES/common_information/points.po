@@ -94,8 +94,8 @@ msgstr ""
 
 #: ../../../../docs/common_information/points.rst:41
 msgid ""
-"Legend: S — Solution (implementation), A — Acceleration (performance), R "
-"— Report"
+"Legend: S — Solution (implementation), A — Acceleration (performance), R — "
+"Report"
 msgstr ""
 
 #: ../../../../docs/common_information/points.rst:44
@@ -104,8 +104,7 @@ msgstr ""
 
 #: ../../../../docs/common_information/points.rst:46
 msgid ""
-"The ratio of efficiency percentage to points percentage (max 100%, min "
-"0%):"
+"The ratio of efficiency percentage to points percentage (max 100%, min 0%):"
 msgstr ""
 
 #: ../../../../docs/common_information/points.rst:48
@@ -372,94 +371,6 @@ msgstr ""
 
 #: ../../../../docs/common_information/points.rst:123
 msgid ""
-"One week before the end of the semester, the repository is closed for "
-"final assessment."
+"One week before the end of the semester, the repository is closed for final "
+"assessment."
 msgstr ""
-
-#~ msgid "For “process parallelism” semester"
-#~ msgstr ""
-
-#~ msgid "1st MPI task"
-#~ msgstr ""
-
-#~ msgid "Performance"
-#~ msgstr ""
-
-#~ msgid "0"
-#~ msgstr ""
-
-#~ msgid "MPI"
-#~ msgstr ""
-
-#~ msgid "8"
-#~ msgstr ""
-
-#~ msgid "Seq"
-#~ msgstr ""
-
-#~ msgid "12"
-#~ msgstr ""
-
-#~ msgid "Task"
-#~ msgstr ""
-
-#~ msgid "2nd MPI task"
-#~ msgstr ""
-
-#~ msgid "23"
-#~ msgstr ""
-
-#~ msgid "3rd MPI task"
-#~ msgstr ""
-
-#~ msgid "16"
-#~ msgstr ""
-
-#~ msgid "35"
-#~ msgstr ""
-
-#~ msgid "For “thread parallelism” semester"
-#~ msgstr ""
-
-#~ msgid "OpenMP"
-#~ msgstr ""
-
-#~ msgid "S"
-#~ msgstr ""
-
-#~ msgid "A"
-#~ msgstr ""
-
-#~ msgid "R"
-#~ msgstr ""
-
-#~ msgid "6"
-#~ msgstr ""
-
-#~ msgid "1"
-#~ msgstr ""
-
-#~ msgid "11"
-#~ msgstr ""
-
-#~ msgid "TBB"
-#~ msgstr ""
-
-#~ msgid "C++ STL"
-#~ msgstr ""
-
-#~ msgid "All"
-#~ msgstr ""
-
-#~ msgid "21"
-#~ msgstr ""
-
-#~ msgid "Grading"
-#~ msgstr ""
-
-#~ msgid "5-point (4-grade) scale"
-#~ msgstr ""
-
-#~ msgid "Exam"
-#~ msgstr ""
-

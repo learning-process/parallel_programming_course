@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-03 16:19+0200\n"
+"POT-Creation-Date: 2026-06-03 17:17+0200\n"
 "PO-Revision-Date: 2025-08-22 21:45+0200\n"
 "Last-Translator: Learning Process Team <nesterov.alexander@outlook.com>\n"
 "Language: en\n"
@@ -28,8 +28,40 @@ msgstr ""
 msgid "Runners Module"
 msgstr ""
 
+#: ../../../../docs/user_guide/api.rst
+msgid "Functions"
+msgstr ""
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Parameters"
+msgstr ""
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Returns"
+msgstr ""
+
 #: ../../../../docs/user_guide/api.rst:14
 msgid "Task Module"
+msgstr ""
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Typedefs"
+msgstr ""
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Template Parameters"
+msgstr ""
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Enums"
+msgstr ""
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Throws"
+msgstr ""
+
+#: ../../../../docs/user_guide/api.rst
+msgid "Variables"
 msgstr ""
 
 #: ../../../../docs/user_guide/api.rst:20
@@ -39,28 +71,4 @@ msgstr ""
 #: ../../../../docs/user_guide/api.rst:26
 msgid "Performance Module"
 msgstr ""
-
-#~ msgid "Functions"
-#~ msgstr ""
-
-#~ msgid "Parameters"
-#~ msgstr ""
-
-#~ msgid "Returns"
-#~ msgstr ""
-
-#~ msgid "Typedefs"
-#~ msgstr ""
-
-#~ msgid "Template Parameters"
-#~ msgstr ""
-
-#~ msgid "Enums"
-#~ msgstr ""
-
-#~ msgid "Throws"
-#~ msgstr ""
-
-#~ msgid "Variables"
-#~ msgstr ""
 

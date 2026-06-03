@@ -28,8 +28,8 @@ msgstr ""
 
 #: ../../../../docs/user_guide/environment_variables.rst:4
 msgid ""
-"The following environment variables can be used to configure the "
-"project's runtime behavior:"
+"The following environment variables can be used to configure the project's "
+"runtime behavior:"
 msgstr ""
 
 #: ../../../../docs/user_guide/environment_variables.rst:6
@@ -40,22 +40,20 @@ msgstr ""
 
 #: ../../../../docs/user_guide/environment_variables.rst:10
 msgid ""
-"``PPC_NUM_THREADS``: Specifies the number of threads to use. Default: "
-"``1``"
+"``PPC_NUM_THREADS``: Specifies the number of threads to use. Default: ``1``"
 msgstr ""
 
 #: ../../../../docs/user_guide/environment_variables.rst:13
 msgid ""
-"``PPC_ASAN_RUN``: Specifies that application is compiler with sanitizers."
-" Used by ``scripts/run_tests.py`` to skip ``valgrind`` runs. Default: "
-"``0``"
+"``PPC_ASAN_RUN``: Specifies that application is compiler with sanitizers. "
+"Used by ``scripts/run_tests.py`` to skip ``valgrind`` runs. Default: ``0``"
 msgstr ""
 
 #: ../../../../docs/user_guide/environment_variables.rst:16
 msgid ""
-"``PPC_IGNORE_TEST_TIME_LIMIT``: Specifies that test time limits are "
-"ignored. Used by ``scripts/run_tests.py`` to disable time limit "
-"enforcement. Default: ``0``"
+"``PPC_IGNORE_TEST_TIME_LIMIT``: Specifies that test time limits are ignored. "
+"Used by ``scripts/run_tests.py`` to disable time limit enforcement. Default: "
+"``0``"
 msgstr ""
 
 #: ../../../../docs/user_guide/environment_variables.rst:18
@@ -69,9 +67,3 @@ msgid ""
 "``PPC_PERF_MAX_TIME``: Maximum allowed execution time in seconds for "
 "performance tests. Default: ``10.0``"
 msgstr ""
-
-#~ msgid ""
-#~ "``PPC_NUM_PROC``: Specifies the number of "
-#~ "processes to launch. Default: ``1``"
-#~ msgstr ""
-
