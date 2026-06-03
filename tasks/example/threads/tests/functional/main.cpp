@@ -41,6 +41,19 @@ class NesterovARunFuncTestsThreads : public ppc::util::BaseRunFuncTests<InType, 
     ExecuteTest(test_param);
   }
 
+  void RunTestCasesWithTag(const auto &test_tasks_list, const std::string &task_tag) {
+    std::apply([this, &task_tag](const auto &...test_params) {
+      auto run_if_tagged = [this, &task_tag](const auto &test_param) {
+        const std::string &test_name =
+            std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kNameTest)>(test_param);
+        if (test_name.contains(task_tag)) {
+          RunTestCase(test_param);
+        }
+      };
+      (run_if_tagged(test_params), ...);
+    }, test_tasks_list);
+  }
+
   void SetInputData() {
     int width = -1;
     int height = -1;
@@ -89,8 +102,24 @@ const auto kTestTasksList =
 
 }  // namespace
 
-TEST_F(NesterovARunFuncTestsThreads, MatmulFromPic) {
-  std::apply([this](const auto &...test_params) { (RunTestCase(test_params), ...); }, kTestTasksList);
+TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicAllEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "_all_");
+}
+
+TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicOmpEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "_omp_");
+}
+
+TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicSeqEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "_seq_");
+}
+
+TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicStlEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "_stl_");
+}
+
+TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicTbbEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "_tbb_");
 }
 
 }  // namespace example_threads

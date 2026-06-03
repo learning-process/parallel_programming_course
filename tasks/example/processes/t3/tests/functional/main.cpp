@@ -38,6 +38,19 @@ class NesterovARunFuncTestsProcesses3 : public ppc::util::BaseRunFuncTests<InTyp
     ExecuteTest(test_param);
   }
 
+  void RunTestCasesWithTag(const auto &test_tasks_list, const std::string &task_tag) {
+    std::apply([this, &task_tag](const auto &...test_params) {
+      auto run_if_tagged = [this, &task_tag](const auto &test_param) {
+        const std::string &test_name =
+            std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kNameTest)>(test_param);
+        if (test_name.contains(task_tag)) {
+          RunTestCase(test_param);
+        }
+      };
+      (run_if_tagged(test_params), ...);
+    }, test_tasks_list);
+  }
+
   void SetInputData() {
     int width = -1;
     int height = -1;
@@ -83,8 +96,12 @@ const auto kTestTasksList = std::tuple_cat(
 
 }  // namespace
 
-TEST_F(NesterovARunFuncTestsProcesses3, MatmulFromPic) {
-  std::apply([this](const auto &...test_params) { (RunTestCase(test_params), ...); }, kTestTasksList);
+TEST_F(NesterovARunFuncTestsProcesses3, MatmulFromPicMpiEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "_mpi_");
+}
+
+TEST_F(NesterovARunFuncTestsProcesses3, MatmulFromPicSeqEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "_seq_");
 }
 
 }  // namespace example_processes_t3
