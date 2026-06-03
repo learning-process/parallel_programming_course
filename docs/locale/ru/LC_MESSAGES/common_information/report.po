@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-24 15:06+0200\n"
+"POT-Creation-Date: 2026-06-03 16:19+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: ru\n"
@@ -20,7 +20,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../../../docs/common_information/report.rst:2
 msgid "Report"
@@ -34,19 +34,27 @@ msgstr "Общее и размещение"
 msgid ""
 "The report is a Markdown file placed inside your task directory: "
 "``tasks/<last>_<initial>_<short>/report.md``."
-msgstr "Отчёт — это Markdown‑файл в папке вашей задачи: ``tasks/<фамилия>_<инициал>_<краткое>/report.md``."
+msgstr ""
+"Отчёт — это Markdown‑файл в папке вашей задачи: "
+"``tasks/<фамилия>_<инициал>_<краткое>/report.md``."
 
 #: ../../../../docs/common_information/report.rst:8
 msgid ""
 "Presence of ``report.md`` is required to receive report (R) points for "
 "that task (see ``Points``)."
-msgstr "Наличие ``report.md`` обязательно для получения отчётных (R) баллов по этой задаче (см. «Баллы»)."
+msgstr ""
+"Наличие ``report.md`` обязательно для получения отчётных (R) баллов по "
+"этой задаче (см. «Баллы»)."
 
 #: ../../../../docs/common_information/report.rst:9
+#, fuzzy
 msgid ""
-"Write the report in a concise, reproducible manner. Use English or "
-"Russian consistently."
-msgstr "Пишите отчёт кратко и воспроизводимо. Используйте один язык последовательно (русский или английский)."
+"Write the report concisely with enough detail to reproduce the results "
+"(environment, commands, data generation). Use English or Russian "
+"consistently."
+msgstr ""
+"Пишите отчёт кратко и воспроизводимо. Используйте один язык "
+"последовательно (русский или английский)."
 
 #: ../../../../docs/common_information/report.rst:12
 msgid "Report points"
@@ -98,85 +106,104 @@ msgstr "Описание алгоритма (базового/последова
 
 #: ../../../../docs/common_information/report.rst:25
 msgid "Parallelization Scheme (MPI topology/data flow or threads scheduling)"
-msgstr "Схема распараллеливания (для MPI — топология/обмены, для потоков — декомпозиция и планирование)"
+msgstr ""
+"Схема распараллеливания (для MPI — топология/обмены, для потоков — "
+"декомпозиция и планирование)"
 
 #: ../../../../docs/common_information/report.rst:26
-msgid "Implementation Details per technology used (only those in your semester)"
-msgstr "Детали реализации по используемым технологиям (только требуемые в семестре)"
-
-#: ../../../../docs/common_information/report.rst:27
 msgid ""
 "Experimental Results - Environment (CPU, OS, compiler, build type; "
 "thread/process counts) - Execution time tables/plots; performance metrics"
 " (speedup/efficiency) - Correctness checks description"
-msgstr "Экспериментальные результаты — Окружение (CPU/OS/компилятор/тип сборки; числа потоков/процессов) — Таблицы/графики времени; метрики ускорения/эффективности — Описание проверки корректности"
+msgstr ""
+"Экспериментальные результаты — Окружение (CPU/OS/компилятор/тип сборки; "
+"числа потоков/процессов) — Таблицы/графики времени; метрики "
+"ускорения/эффективности — Описание проверки корректности"
 
-#: ../../../../docs/common_information/report.rst:31
-msgid "Conclusions (what worked, what didn’t, further work)"
+#: ../../../../docs/common_information/report.rst:30
+#, fuzzy
+msgid "Conclusions (what worked, what didn’t)"
 msgstr "Выводы (что получилось, ограничения, дальнейшие работы)"
 
-#: ../../../../docs/common_information/report.rst:32
+#: ../../../../docs/common_information/report.rst:31
 msgid "References (articles, docs; provide links)"
 msgstr "Источники (статьи, документация; ссылки)"
 
-#: ../../../../docs/common_information/report.rst:33
-msgid "Appendix (optional code snippets; keep readable)"
+#: ../../../../docs/common_information/report.rst:32
+#, fuzzy
+msgid "Appendix (optional code snippets)"
 msgstr "Приложение (небольшие фрагменты кода; сохраняйте читаемость)"
 
-#: ../../../../docs/common_information/report.rst:36
+#: ../../../../docs/common_information/report.rst:35
 msgid "Evaluation criteria"
 msgstr "Критерии оценки"
 
-#: ../../../../docs/common_information/report.rst:37
+#: ../../../../docs/common_information/report.rst:36
 msgid ""
 "Completeness - All items from the recommended structure are present and "
 "meaningful - Results include both correctness and performance evidence"
-msgstr "Полнота — все пункты из рекомендуемой структуры присутствуют и осмысленны — есть подтверждение корректности и результатов производительности"
+msgstr ""
+"Полнота — все пункты из рекомендуемой структуры присутствуют и осмысленны"
+" — есть подтверждение корректности и результатов производительности"
 
-#: ../../../../docs/common_information/report.rst:40
+#: ../../../../docs/common_information/report.rst:39
 msgid ""
 "Text Quality - Clarity, coherence, correct terminology; acceptable "
 "language quality"
-msgstr "Качество текста — ясность, связность, корректная терминология; приемлемое качество языка"
+msgstr ""
+"Качество текста — ясность, связность, корректная терминология; приемлемое"
+" качество языка"
 
-#: ../../../../docs/common_information/report.rst:42
+#: ../../../../docs/common_information/report.rst:41
 msgid ""
 "Formatting Quality - Proper Markdown headings, lists, tables, fenced code"
 " blocks - Figures/plots with captions and relative paths; readable "
 "formatting"
-msgstr "Качество оформления — корректные Markdown‑заголовки, списки, таблицы, блоки кода — рисунки/графики с подписями и относительными путями; читаемое форматирование"
+msgstr ""
+"Качество оформления — корректные Markdown‑заголовки, списки, таблицы, "
+"блоки кода — рисунки/графики с подписями и относительными путями; "
+"читаемое форматирование"
 
-#: ../../../../docs/common_information/report.rst:47
+#: ../../../../docs/common_information/report.rst:46
 msgid "Notes"
 msgstr "Примечания"
 
-#: ../../../../docs/common_information/report.rst:48
+#: ../../../../docs/common_information/report.rst:47
 msgid ""
 "Reports are reviewed online in the Pull Request. The final grade is based"
 " on the submitted version that passes the review."
-msgstr "Отчёты проверяются онлайн в Pull Request. Итоговая оценка ставится по версии, прошедшей ревью."
+msgstr ""
+"Отчёты проверяются онлайн в Pull Request. Итоговая оценка ставится по "
+"версии, прошедшей ревью."
+
+#: ../../../../docs/common_information/report.rst:48
+#, fuzzy
+msgid ""
+"If the task is disabled by the end of semester (e.g., fails in master; "
+"see scoreboard “blue zone”), report points for that task are nullified."
+msgstr ""
+"Если задача окажется в «синей зоне» к концу семестра (например, падение в"
+" master), отчётные баллы по этой задаче обнуляются."
 
 #: ../../../../docs/common_information/report.rst:49
 msgid ""
-"If the task is disabled at the end of semester (e.g., fails in master; "
-"see scoreboard “blue zone”), report points for that task are nullified."
-msgstr "Если задача окажется в «синей зоне» к концу семестра (например, падение в master), отчётные баллы по этой задаче обнуляются."
-
-#: ../../../../docs/common_information/report.rst:50
-msgid ""
 "Plagiarism is prohibited; identical or near‑duplicate reports will be "
 "rejected."
-msgstr "Плагиат запрещён; совпадающие или почти совпадающие отчёты будут отклонены."
+msgstr ""
+"Плагиат запрещён; совпадающие или почти совпадающие отчёты будут "
+"отклонены."
 
-#: ../../../../docs/common_information/report.rst:55
+#: ../../../../docs/common_information/report.rst:52
 msgid "Markdown template (report.md)"
 msgstr "Шаблон Markdown (report.md)"
 
-#: ../../../../docs/common_information/report.rst:57
+#: ../../../../docs/common_information/report.rst:54
 msgid ""
 "Use the following skeleton as a starting point for your ``report.md``. "
 "Keep file paths relative to the task directory (for images/data)."
-msgstr "Используйте следующий скелет для вашего ``report.md``. Пути к файлам указывайте относительно папки задачи (для изображений/данных)."
+msgstr ""
+"Используйте следующий скелет для вашего ``report.md``. Пути к файлам "
+"указывайте относительно папки задачи (для изображений/данных)."
 
 #~ msgid "Requirements for Criteria"
 #~ msgstr "Требования к критериям"
@@ -297,3 +324,11 @@ msgstr "Используйте следующий скелет для вашег
 
 #~ msgid "Russian template (report.md)"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "Implementation Details per technology used "
+#~ "(only those in your semester)"
+#~ msgstr ""
+#~ "Детали реализации по используемым технологиям"
+#~ " (только требуемые в семестре)"
+

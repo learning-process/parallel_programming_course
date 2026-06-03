@@ -77,6 +77,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 
     ASSERT_FALSE(test_name.find("unknown") != std::string::npos);
     if (test_name.find("disabled") != std::string::npos) {
+      // A single perf test body may execute several implementations; do not abort the enabled ones.
       return;
     }
 

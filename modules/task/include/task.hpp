@@ -78,8 +78,9 @@ inline std::string GetStringTaskStatus(StatusOfTask status_of_task) {
 /// @brief Returns a string representation of the task type based on the JSON settings file.
 /// @param type_of_task Type of the task.
 /// @param settings_file_path Path to the JSON file containing task type strings.
+/// @param settings_task_path Optional dot-separated nested path inside the `tasks` object.
 /// @return Formatted string combining the task type and its corresponding value from the file.
-/// @throws std::runtime_error If the file cannot be opened.
+/// @throws std::runtime_error If the file cannot be opened or the requested settings key is missing.
 inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string &settings_file_path,
                                      std::string_view settings_task_path = {}) {
   std::ifstream file(settings_file_path);
@@ -95,18 +96,36 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
     return std::string(type_str);
   }
 
-  const auto *settings_node = &list_settings->at("tasks");
+  auto get_required_node = [&settings_file_path](const nlohmann::json &node, const std::string &key,
+                                                 const std::string &settings_key_path) -> const nlohmann::json & {
+    if (!node.is_object() || !node.contains(key)) {
+      throw std::runtime_error("Missing settings key '" + settings_key_path + "' in " + settings_file_path);
+    }
+    return *node.find(key);
+  };
+
+  std::string settings_key_path = "tasks";
+  const auto *settings_node = &get_required_node(*list_settings, "tasks", settings_key_path);
   for (size_t start = 0; start < settings_task_path.size();) {
     const size_t separator = settings_task_path.find('.', start);
     const size_t key_size = separator == std::string_view::npos ? settings_task_path.size() - start : separator - start;
-    settings_node = &settings_node->at(std::string(settings_task_path.substr(start, key_size)));
+    if (key_size == 0) {
+      throw std::runtime_error("Empty settings key in '" + std::string(settings_task_path) + "' from " +
+                               settings_file_path);
+    }
+    const std::string key(settings_task_path.substr(start, key_size));
+    settings_key_path += "." + key;
+    settings_node = &get_required_node(*settings_node, key, settings_key_path);
     if (separator == std::string_view::npos) {
       break;
     }
     start = separator + 1;
   }
 
-  return std::string(type_str) + "_" + std::string(settings_node->at(std::string(type_str)));
+  const std::string type_key(type_str);
+  settings_key_path += "." + type_key;
+  const auto &type_node = get_required_node(*settings_node, type_key, settings_key_path);
+  return type_key + "_" + type_node.get<std::string>();
 }
 
 enum class StateOfTesting : uint8_t {

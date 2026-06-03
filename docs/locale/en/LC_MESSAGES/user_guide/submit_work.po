@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Parallel Programming Course \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-24 15:07+0200\n"
+"POT-Creation-Date: 2026-06-03 16:19+0200\n"
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: en\n"
@@ -20,7 +20,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../../../docs/user_guide/submit_work.rst:2
 msgid "How to create, open, and submit your work"
@@ -203,75 +203,99 @@ msgid ""
 "достоверность сведений)."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:160
+#: ../../../../docs/user_guide/submit_work.rst:158
 msgid "PR checklist template (body)"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:208
+#: ../../../../docs/user_guide/submit_work.rst:181
 msgid "Common pitfalls (read before pushing)"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:209
+#: ../../../../docs/user_guide/submit_work.rst:182
 msgid "Wrong folder/branch name. Must be ``<last>_<initial>_<short>`` everywhere."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:210
+#: ../../../../docs/user_guide/submit_work.rst:183
 msgid "Missing or wrong ``GetStaticTypeOfTask`` value for a technology."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:211
+#: ../../../../docs/user_guide/submit_work.rst:184
 msgid "Tests rely on randomness or sleeps instead of env time limits."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:212
+#: ../../../../docs/user_guide/submit_work.rst:185
 msgid "``settings.json`` doesn’t enable a required technology — tests won’t run."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:213
+#: ../../../../docs/user_guide/submit_work.rst:186
 msgid "Namespace doesn’t match the folder name and collides with others."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:214
+#: ../../../../docs/user_guide/submit_work.rst:187
 msgid "Performance tests count or naming deviates from the required patterns."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:217
+#: ../../../../docs/user_guide/submit_work.rst:190
 msgid "Useful examples to reference"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:218
+#: ../../../../docs/user_guide/submit_work.rst:191
+msgid "Unified example: ``tasks/example``"
+msgstr ""
+
+#: ../../../../docs/user_guide/submit_work.rst:192
 msgid ""
-"Processes: ``tasks/example/processes/t1``, ``tasks/example/processes/t2``, "
-"``tasks/example/processes/t3``"
+"Shared example files: ``tasks/example/settings.json``, "
+"``tasks/example/info.json``, ``tasks/example/common``, "
+"``tasks/example/data``"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:219
-msgid "Threads: ``tasks/example/threads``"
+#: ../../../../docs/user_guide/submit_work.rst:193
+#, python-brace-format
+msgid "Threads: ``tasks/example/threads/{seq,omp,tbb,stl,all}``"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:221
+#: ../../../../docs/user_guide/submit_work.rst:194
+msgid ""
+"Processes: ``tasks/example/processes/t1``, "
+"``tasks/example/processes/t2``, ``tasks/example/processes/t3``"
+msgstr ""
+
+#: ../../../../docs/user_guide/submit_work.rst:195
+msgid ""
+"Process tasks keep independent ``seq`` and ``mpi`` implementations under "
+"each ``tN`` directory."
+msgstr ""
+
+#: ../../../../docs/user_guide/submit_work.rst:196
+msgid ""
+"Example reports are tree-shaped: the root report links to section reports"
+" and each implementation directory has its own ``report.md``."
+msgstr ""
+
+#: ../../../../docs/user_guide/submit_work.rst:198
 msgid ""
 "Work from your fork in a dedicated branch (not ``master``). Branch name "
 "must match your task folder."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:224
+#: ../../../../docs/user_guide/submit_work.rst:201
 msgid "Notes"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:225
+#: ../../../../docs/user_guide/submit_work.rst:202
 msgid ""
 "All classes should live in a unique namespace (e.g., "
 "``<last>_<initial>_<short>``)."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:226
+#: ../../../../docs/user_guide/submit_work.rst:203
 msgid ""
 "Keep tests deterministic and within time limits; prefer env vars over "
 "sleeps."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:227
+#: ../../../../docs/user_guide/submit_work.rst:204
 msgid ""
 "Follow code style (clang-format/clang-tidy), and run pre-commit hooks "
 "locally."
@@ -430,5 +454,8 @@ msgstr ""
 #~ "This section reflects the current "
 #~ "integration flow used in semester "
 #~ "repositories."
+#~ msgstr ""
+
+#~ msgid "Threads: ``tasks/example/threads``"
 #~ msgstr ""
 
