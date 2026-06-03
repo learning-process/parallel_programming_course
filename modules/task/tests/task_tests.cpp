@@ -228,11 +228,12 @@ TEST(TaskTest, GetStringTaskTypeReportsMissingNestedTaskPath) {
   file << R"({"tasks": {"processes": {"t1": {"mpi": "enabled"}}}})";
   file.close();
 
-  EXPECT_THROW(try { GetStringTaskType(TypeOfTask::kMPI, path, "processes.t2"); } catch (const std::runtime_error &e) {
+  try {
+    GetStringTaskType(TypeOfTask::kMPI, path, "processes.t2");
+    FAIL() << "Expected std::runtime_error";
+  } catch (const std::runtime_error &e) {
     EXPECT_NE(std::string(e.what()).find("tasks.processes.t2"), std::string::npos);
-    throw;
-  },
-               std::runtime_error);
+  }
 }
 
 TEST(TaskTest, GetStringTaskTypeReturnsUnknownOnDefault) {
