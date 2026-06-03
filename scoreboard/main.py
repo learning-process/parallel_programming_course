@@ -102,18 +102,7 @@ def _student_info_for_dir(dir_name: str) -> dict:
 
 
 def _student_full_name(student: dict) -> str:
-    full_name = str(student.get("full_name", "")).strip()
-    if full_name:
-        return full_name
-    return " ".join(
-        part
-        for part in [
-            str(student.get("last_name", "")).strip(),
-            str(student.get("first_name", "")).strip(),
-            str(student.get("middle_name", "")).strip(),
-        ]
-        if part
-    )
+    return str(student.get("full_name", "")).strip()
 
 
 def _task_physical_dir(dir_name: str) -> Path:
