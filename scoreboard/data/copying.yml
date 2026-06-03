@@ -9,6 +9,6 @@ threads:
 processes:
   copying:
     mpi:
-      - example_processes
+      - example_processes_t1
     seq:
-      - example_processes
+      - example_processes_t1

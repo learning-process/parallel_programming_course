@@ -5,12 +5,12 @@
 #include <tbb/tick_count.h>
 
 #include <chrono>
-#include <csignal>
 #include <cstddef>
 #include <functional>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -77,7 +77,8 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 
     ASSERT_FALSE(test_name.find("unknown") != std::string::npos);
     if (test_name.find("disabled") != std::string::npos) {
-      GTEST_SKIP();
+      // A single perf test body may execute several implementations; do not abort the enabled ones.
+      return;
     }
 
     const auto test_env_scope = ppc::util::test::MakePerTestEnvForCurrentGTest(test_name);
@@ -111,9 +112,9 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 };
 
 template <typename TaskType, typename InputType>
-auto MakePerfTaskTuples(const std::string &settings_path) {
+auto MakePerfTaskTuples(const std::string &settings_path, std::string_view settings_task_path = {}) {
   const auto name = std::string(GetNamespace<TaskType>()) + "_" +
-                    ppc::task::GetStringTaskType(TaskType::GetStaticTypeOfTask(), settings_path);
+                    ppc::task::GetStringTaskType(TaskType::GetStaticTypeOfTask(), settings_path, settings_task_path);
 
   return std::make_tuple(std::make_tuple(ppc::task::TaskGetter<TaskType, InputType>, name,
                                          ppc::performance::PerfResults::TypeOfRunning::kPipeline),
@@ -133,8 +134,8 @@ auto TupleToGTestValues(Tuple &&tup) {
 }
 
 template <typename InputType, typename... TaskTypes>
-auto MakeAllPerfTasks(const std::string &settings_path) {
-  return std::tuple_cat(MakePerfTaskTuples<TaskTypes, InputType>(settings_path)...);
+auto MakeAllPerfTasks(const std::string &settings_path, std::string_view settings_task_path = {}) {
+  return std::tuple_cat(MakePerfTaskTuples<TaskTypes, InputType>(settings_path, settings_task_path)...);
 }
 
 }  // namespace ppc::util

@@ -210,6 +210,32 @@ TEST(TaskTest, GetStringTaskTypeEachTypeWithValidFile) {
   EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kSEQ, path));
 }
 
+TEST(TaskTest, GetStringTaskTypeReadsNestedTaskPath) {
+  std::string path = "settings_nested.json";
+  ScopedFile cleaner(path);
+  std::ofstream file(path);
+  file << R"({"tasks": {"processes": {"t2": {"mpi": "disabled", "seq": "enabled"}}}})";
+  file.close();
+
+  EXPECT_EQ(GetStringTaskType(TypeOfTask::kMPI, path, "processes.t2"), "mpi_disabled");
+  EXPECT_EQ(GetStringTaskType(TypeOfTask::kSEQ, path, "processes.t2"), "seq_enabled");
+}
+
+TEST(TaskTest, GetStringTaskTypeReportsMissingNestedTaskPath) {
+  std::string path = "settings_missing_nested.json";
+  ScopedFile cleaner(path);
+  std::ofstream file(path);
+  file << R"({"tasks": {"processes": {"t1": {"mpi": "enabled"}}}})";
+  file.close();
+
+  try {
+    GetStringTaskType(TypeOfTask::kMPI, path, "processes.t2");
+    FAIL() << "Expected std::runtime_error";
+  } catch (const std::runtime_error &e) {
+    EXPECT_NE(std::string(e.what()).find("tasks.processes.t2"), std::string::npos);
+  }
+}
+
 TEST(TaskTest, GetStringTaskTypeReturnsUnknownOnDefault) {
   std::string path = "settings_valid_unknown.json";
   ScopedFile cleaner(path);

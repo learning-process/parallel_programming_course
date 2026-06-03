@@ -18,8 +18,8 @@ NEW_PATTERN = re.compile(
     r"(\w+_test_task_(threads|processes))_(\w+)_enabled:(\w*):(-*\d*\.\d*)"
 )
 # Example formats:
-#   example_threads_omp_enabled:task_run:0.4749
-#   example_processes_2_mpi_enabled:pipeline:0.0507
+#   <task>_threads_omp_enabled:task_run:0.4749
+#   <task>_processes_t2_mpi_enabled:pipeline:0.0507
 # Accept optional suffix after `_enabled` (e.g., `_enabled_size1000000`) before the colon
 SIMPLE_PATTERN = re.compile(
     r"(.+?)_(omp|seq|tbb|stl|all|mpi)_enabled[^:]*:(task_run|pipeline):(-*\d*\.\d*)"
@@ -165,12 +165,15 @@ for line in logs_lines:
         task_categories[task_name] = "threads"
         tasks_by_category["threads"].add(task_name)
     elif len(new_result):
-        # Extract task name from namespace format; keep it specific (no collapsing to example_*),
-        # so per-task-number data (processes_2, processes_3, etc.) is preserved.
-        base = new_result[0][0]  # e.g., nesterov_a_test_task_processes
+        # Extract task name from namespace format and keep it specific.
+        base = new_result[0][0]  # e.g., task_namespace_processes
         task_category = new_result[0][1]  # "threads" or "processes"
         task_type_token = new_result[0][2]  # e.g., "all", "omp", or "2_mpi"
         task_name = f"{base}_{task_type_token}"
+        if "_" in task_type_token:
+            suffix, impl = task_type_token.rsplit("_", 1)
+            if impl in list_of_type_of_tasks:
+                task_name = f"{base}_{suffix}"
         perf_type = new_result[0][3]
 
         _ensure_task_tables(result_tables, perf_type, task_name)

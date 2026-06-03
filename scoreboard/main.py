@@ -23,6 +23,9 @@ task_types_processes = ["mpi", "seq"]
 
 script_dir = Path(__file__).parent
 tasks_dir = script_dir.parent / "tasks"
+task_physical_dirs: dict[str, Path] = {}
+task_info_paths: dict[str, Path] = {}
+process_task_indices: dict[str, int] = {}
 # Salt is derived from the repository root directory name (dynamic)
 REPO_ROOT = script_dir.parent.resolve()
 # Salt format: "learning_process/<repo_name>"
@@ -54,22 +57,7 @@ def _now_msk():
     return datetime.now()
 
 
-def _read_tasks_type(task_dir: Path) -> str | None:
-    """Read tasks_type from settings.json in the task directory (if present)."""
-    settings_path = task_dir / "settings.json"
-    if settings_path.exists():
-        try:
-            import json
-
-            with open(settings_path, "r") as f:
-                data = json.load(f)
-            return data.get("tasks_type")  # "threads" or "processes"
-        except Exception as e:
-            logger.warning("Failed to parse %s: %s", settings_path, e)
-    return None
-
-
-def _read_task_statuses(task_dir: Path) -> dict[str, str]:
+def _read_task_statuses(task_dir: Path) -> dict:
     """Read per-task-type statuses (enabled/disabled) from settings.json if present."""
     settings_path = task_dir / "settings.json"
     if settings_path.exists():
@@ -80,10 +68,60 @@ def _read_task_statuses(task_dir: Path) -> dict[str, str]:
                 data = json.load(f)
             tasks_block = data.get("tasks", {})
             if isinstance(tasks_block, dict):
-                return {k: str(v) for k, v in tasks_block.items()}
+                return tasks_block
         except Exception as e:
             logger.warning("Failed to parse task statuses in %s: %s", settings_path, e)
     return {}
+
+
+def _read_status_at(status_tree: dict, keys: list[str]) -> str | None:
+    node = status_tree
+    for key in keys:
+        if not isinstance(node, dict) or key not in node:
+            return None
+        node = node[key]
+    return str(node) if isinstance(node, str) else None
+
+
+def _task_info_path(dir_name: str) -> Path:
+    return task_info_paths.get(dir_name, tasks_dir / dir_name / "info.json")
+
+
+def _student_info_for_dir(dir_name: str) -> dict:
+    info_path = _task_info_path(dir_name)
+    if not info_path.exists():
+        return {}
+    try:
+        with open(info_path, "r") as f:
+            data = json.load(f)
+        if isinstance(data.get("student"), dict):
+            return data.get("student", {})
+    except Exception as e:
+        logger.warning("Failed to parse %s: %s", info_path, e)
+    return {}
+
+
+def _student_full_name(student: dict) -> str:
+    return str(student.get("full_name", "")).strip()
+
+
+def _task_physical_dir(dir_name: str) -> Path:
+    return task_physical_dirs.get(dir_name, tasks_dir / dir_name)
+
+
+def _task_report_exists(dir_name: str, task_type: str) -> bool:
+    base_dir = _task_physical_dir(dir_name)
+    typed_report = base_dir / task_type / "report.md"
+    return typed_report.exists() or (base_dir / "report.md").exists()
+
+
+def _process_task_index_from_name(name: str, fallback: int) -> int:
+    import re
+
+    match = re.fullmatch(r"t(\d+)", name)
+    if match:
+        return int(match.group(1))
+    return fallback
 
 
 def discover_tasks(tasks_dir, task_types):
@@ -91,18 +129,68 @@ def discover_tasks(tasks_dir, task_types):
 
     Returns:
         directories: dict[task_name][task_type] -> status
-        tasks_type_map: dict[task_name] -> "threads" | "processes" | None
+        task_category_map: dict[task_name] -> "threads" | "processes" | None
     """
     directories = defaultdict(dict)
-    tasks_type_map: dict[str, str | None] = {}
+    task_category_map: dict[str, str | None] = {}
 
     if tasks_dir.exists() and tasks_dir.is_dir():
         for task_name_dir in tasks_dir.iterdir():
             if task_name_dir.is_dir() and task_name_dir.name not in ["common"]:
                 task_name = task_name_dir.name
-                # Save tasks_type from settings.json if present
-                tasks_type_map[task_name] = _read_tasks_type(task_name_dir)
                 status_overrides = _read_task_statuses(task_name_dir)
+                task_info_paths[task_name] = task_name_dir / "info.json"
+                task_physical_dirs[task_name] = task_name_dir
+
+                threads_dir = task_name_dir / "threads"
+                processes_dir = task_name_dir / "processes"
+                is_meta_task = threads_dir.is_dir() or processes_dir.is_dir()
+                if is_meta_task:
+                    if threads_dir.is_dir():
+                        logical_name = f"{task_name}_threads"
+                        task_category_map[logical_name] = "threads"
+                        task_info_paths[logical_name] = task_name_dir / "info.json"
+                        task_physical_dirs[logical_name] = threads_dir
+                        for task_type in task_types:
+                            task_type_dir = threads_dir / task_type
+                            if task_type_dir.exists() and task_type_dir.is_dir():
+                                status = _read_status_at(
+                                    status_overrides, ["threads", task_type]
+                                )
+                                directories[logical_name][task_type] = (
+                                    "disabled" if status == "disabled" else "done"
+                                )
+
+                    if processes_dir.is_dir():
+                        process_task_dirs = sorted(
+                            p for p in processes_dir.iterdir() if p.is_dir()
+                        )
+                        for index, process_task_dir in enumerate(
+                            process_task_dirs, start=1
+                        ):
+                            process_task_name = process_task_dir.name
+                            logical_name = f"{task_name}_processes_{process_task_name}"
+                            task_category_map[logical_name] = "processes"
+                            task_info_paths[logical_name] = task_name_dir / "info.json"
+                            task_physical_dirs[logical_name] = process_task_dir
+                            process_task_indices[logical_name] = (
+                                _process_task_index_from_name(process_task_name, index)
+                            )
+                            for task_type in task_types:
+                                task_type_dir = process_task_dir / task_type
+                                if task_type_dir.exists() and task_type_dir.is_dir():
+                                    status = _read_status_at(
+                                        status_overrides,
+                                        ["processes", process_task_name, task_type],
+                                    )
+                                    directories[logical_name][task_type] = (
+                                        "disabled" if status == "disabled" else "done"
+                                    )
+                    continue
+
+                task_category_map[task_name] = (
+                    "processes" if (task_name_dir / "mpi").is_dir() else "threads"
+                )
                 for task_type in task_types:
                     task_type_dir = task_name_dir / task_type
                     if task_type_dir.exists() and task_type_dir.is_dir():
@@ -114,10 +202,10 @@ def discover_tasks(tasks_dir, task_types):
                         else:
                             directories[task_name][task_type] = "done"
 
-    return directories, tasks_type_map
+    return directories, task_category_map
 
 
-directories, tasks_type_map = discover_tasks(tasks_dir, task_types)
+directories, task_category_map = discover_tasks(tasks_dir, task_types)
 
 
 def load_performance_data_threads(perf_stat_file_path: Path) -> dict:
@@ -206,18 +294,7 @@ def load_performance_data_processes(perf_stat_file_path: Path) -> dict:
                     mode = lbl
                     break
 
-            # Normalize example perf task names to example_processes[_N]
-            def _norm(name: str) -> str:
-                import re
-
-                m = re.match(r".*test_task_processes(?P<suffix>(_\\d+)?)$", name)
-                if m:
-                    return f"example_processes{m.group('suffix') or ''}"
-                return name
-
-            base_name_norm = _norm(base_name)
-
-            entry = perf_stats.setdefault(base_name_norm, {"seq": "?", "mpi": "?"})
+            entry = perf_stats.setdefault(base_name, {"seq": "?", "mpi": "?"})
             if mode == "seq":
                 if seq_val and seq_val != "?":
                     entry["seq"] = seq_val
@@ -355,12 +432,12 @@ def _calc_perf_points_from_efficiency(efficiency_str: str, max_points: int) -> f
     return round(pts, 2)
 
 
-def _find_process_report_max(points_info, task_number: int) -> int:
+def _find_process_report_max(points_info, process_task_index: int) -> int:
     """Get max report (R) points for process task by ordinal (1..3).
     Looks up processes.tasks with names like 'mpi_task_1'.
     """
     proc = (points_info.get("processes", {}) or {}).get("tasks", [])
-    key = f"mpi_task_{task_number}"
+    key = f"mpi_task_{process_task_index}"
     for t in proc:
         if str(t.get("name")) == key:
             try:
@@ -370,12 +447,14 @@ def _find_process_report_max(points_info, task_number: int) -> int:
     return 0
 
 
-def _find_process_points(points_info, task_number: int) -> tuple[int, int, int, int]:
+def _find_process_points(
+    points_info, process_task_index: int
+) -> tuple[int, int, int, int]:
     """Return (S_mpi, S_seq, A_mpi, R) maxima for a given process task ordinal (1..3).
     Supports both mapping and list-of-maps (per user's YAML example).
     """
     proc_tasks = (points_info.get("processes", {}) or {}).get("tasks", [])
-    key = f"mpi_task_{task_number}"
+    key = f"mpi_task_{process_task_index}"
     for t in proc_tasks:
         if str(t.get("name")) == key:
 
@@ -404,9 +483,9 @@ def _find_process_points(points_info, task_number: int) -> tuple[int, int, int, 
     return 0, 0, 0, 0
 
 
-def _find_process_variants_max(points_info, task_number: int) -> int:
+def _find_process_variants_max(points_info, process_task_index: int) -> int:
     proc_tasks = (points_info.get("processes", {}) or {}).get("tasks", [])
-    key = f"mpi_task_{task_number}"
+    key = f"mpi_task_{process_task_index}"
     for t in proc_tasks:
         if str(t.get("name")) == key:
             try:
@@ -491,8 +570,9 @@ def calculate_deadline_penalty(dir, task_type, status, deadlines_cfg, tasks_dir)
                 "-1",
                 "--format=%ct",
                 str(
-                    tasks_dir
-                    / (dir + ("_disabled" if status == "disabled" else ""))
+                    _task_physical_dir(
+                        dir[: -len("_disabled")] if dir.endswith("_disabled") else dir
+                    )
                     / task_type
                 ),
             ]
@@ -538,34 +618,16 @@ def _build_rows_for_task_types(
     rows = []
 
     def _load_student_info_label(dir_name: str):
-        import json
-
-        info_path = tasks_dir / dir_name / "info.json"
-        if not info_path.exists():
-            return None
-        try:
-            with open(info_path, "r") as f:
-                data = json.load(f)
-            s = data.get("student", {})
-            parts = [p for p in str(s.get("full_name", "")).strip().split() if p]
-            label = "<br/>".join(parts)
-            return label if label else None
-        except Exception:
-            return None
+        s = _student_info_for_dir(dir_name)
+        parts = [p for p in _student_full_name(s).split() if p]
+        label = "<br/>".join(parts)
+        return label if label else None
 
     def _load_student_fields(dir_name: str):
-        import json
-
-        info_path = tasks_dir / dir_name / "info.json"
-        if not info_path.exists():
+        s = _student_info_for_dir(dir_name)
+        if not s:
             return None
-        try:
-            with open(info_path, "r") as f:
-                data = json.load(f)
-            s = data.get("student", {})
-            return str(s.get("full_name", "")).strip(), str(s.get("group_number", ""))
-        except Exception:
-            return None
+        return _student_full_name(s), str(s.get("group_number", ""))
 
     for dir in sorted(dir_names):
         row_types = []
@@ -595,7 +657,7 @@ def _build_rows_for_task_types(
             )
 
             # Report presence: award R only if report.md exists inside the task directory
-            report_present = (tasks_dir / dir / "report.md").exists()
+            report_present = _task_report_exists(dir, task_type)
             report_points = _find_report_max(cfg, task_type) if report_present else 0
 
             # Performance points P for non-seq types, based on efficiency
@@ -795,9 +857,8 @@ def main():
     def _aggregate_process_csv(
         perf_stat_file_path: Path, base: dict[str, dict]
     ) -> dict:
-        """Parse CSV again to ensure merged entries (handles example*_2, _3, etc.)."""
+        """Parse CSV again to ensure merged seq/mpi entries."""
         import csv
-        import re
 
         perf_stats_local = dict(base)
         if not perf_stat_file_path.exists():
@@ -817,11 +878,7 @@ def main():
                         base_name = task_name[: -len(suff)]
                         mode = lbl
                         break
-                m = re.match(r".*test_task_processes(?P<suffix>_\\d+)?$", base_name)
-                base_norm = (
-                    f"example_processes{m.group('suffix') or ''}" if m else base_name
-                )
-                entry = perf_stats_local.setdefault(base_norm, {"seq": "?", "mpi": "?"})
+                entry = perf_stats_local.setdefault(base_name, {"seq": "?", "mpi": "?"})
                 if mode == "seq":
                     if seq_val and seq_val != "?":
                         entry["seq"] = seq_val
@@ -837,45 +894,22 @@ def main():
 
     perf_stats_processes = _aggregate_process_csv(processes_csv, perf_stats_processes)
 
-    # Generic aliasing for example process tasks: normalize any *test_task_processes* keys
-    def _normalize_example_proc_name(name: str) -> str:
-        import re
-
-        m = re.match(r".*test_task_processes(?P<suffix>(_\\d+)?)$", name)
-        if m:
-            suffix = m.group("suffix") or ""
-            return f"example_processes{suffix}"
-        return name
-
-    perf_stats_processes = {
-        _normalize_example_proc_name(k): v for k, v in perf_stats_processes.items()
-    }
-
-    # Map example process tasks (nesterov_a_test_task_processes[_2|_3]) to dir names
-    example_aliases = {
-        "nesterov_a_test_task_processes": "example_processes",
-        "nesterov_a_test_task_processes_2": "example_processes_2",
-        "nesterov_a_test_task_processes_3": "example_processes_3",
-    }
-    for src, dst in example_aliases.items():
-        if src in perf_stats_processes and dst not in perf_stats_processes:
-            perf_stats_processes[dst] = perf_stats_processes[src]
     perf_stats_raw: dict[str, dict] = {}
     perf_stats_raw.update(perf_stats_threads)
     for k, v in perf_stats_processes.items():
         perf_stats_raw[k] = {**perf_stats_raw.get(k, {}), **v}
 
-    # Partition tasks by tasks_type from settings.json
+    # Partition tasks by category derived from the filesystem layout.
     threads_task_dirs = [
-        name for name, ttype in tasks_type_map.items() if ttype == "threads"
+        name for name, category in task_category_map.items() if category == "threads"
     ]
     processes_task_dirs = [
-        name for name, ttype in tasks_type_map.items() if ttype == "processes"
+        name for name, category in task_category_map.items() if category == "processes"
     ]
 
-    # Fallback: if settings.json is missing, guess by directory name heuristic
+    # Fallback for directories discovered before category assignment.
     for name in directories.keys():
-        if name not in tasks_type_map or tasks_type_map[name] is None:
+        if name not in task_category_map or task_category_map[name] is None:
             if "threads" in name:
                 threads_task_dirs.append(name)
             elif "processes" in name:
@@ -900,22 +934,11 @@ def main():
             merged[k] = v
         return merged
 
-    # Precompute mapping: task_number (processes tasks) -> list of directories
+    # Precompute mapping: process task number -> list of directories. Meta-layout
+    # tasks derive this from processes/t1, processes/t2, etc.
     process_tasknum_map: dict[int, list[str]] = {}
-    for d in directories.keys():
-        info_path = tasks_dir / d / "info.json"
-        if not info_path.exists():
-            continue
-        try:
-            with open(info_path, "r") as _f:
-                data = json.load(_f)
-            num = data.get("student", {}).get("task_number")
-            if num is None:
-                continue
-            num = int(str(num))
-            process_tasknum_map.setdefault(num, []).append(d)
-        except Exception:
-            continue
+    for d, num in process_task_indices.items():
+        process_tasknum_map.setdefault(num, []).append(d)
 
     def _match_dir(csv_key: str) -> str | None:
         # Strip common suffixes like "_mpi_enabled" etc. to improve matching
@@ -931,7 +954,7 @@ def main():
         target = _match_dir(key)
         if target:
             targets.add(target)
-        # 2) If key encodes processes_N, spread to all dirs with that task_number
+        # 2) If a legacy key encodes processes_N, spread to dirs with that task number
         m_num = _re.search(r"processes_(\d+)", key)
         if m_num:
             try:
@@ -939,10 +962,6 @@ def main():
                 targets.update(process_tasknum_map.get(num, []))
             except Exception:
                 pass
-        # 3) Fallback: if nothing matched and "threads" in key, apply to example_threads only
-        if not targets and "threads" in key:
-            if "example_threads" in directories:
-                targets.add("example_threads")
         # Apply merged values to all targets
         for t in targets:
             perf_stats[t] = _merge_perf_maps(perf_stats.get(t, {}), vals)
@@ -959,21 +978,12 @@ def main():
 
     # Processes page: build 3 tasks as columns for a single student
     def _load_student_info(dir_name: str):
-        info_path = tasks_dir / dir_name / "info.json"
-        if not info_path.exists():
-            return None
-        try:
-            with open(info_path, "r") as f:
-                data = json.load(f)
-            return data.get("student", {})
-        except Exception as e:
-            logger.warning("Failed to parse %s: %s", info_path, e)
-            return None
+        return _student_info_for_dir(dir_name) or None
 
     def _identity_key(student: dict) -> str:
         return "|".join(
             [
-                str(student.get("full_name", "")).strip(),
+                _student_full_name(student),
                 str(student.get("group_number", "")),
             ]
         )
@@ -1037,7 +1047,7 @@ def main():
 
     def _sort_identity(student: dict):
         return (
-            str(student.get("full_name", "")).strip(),
+            _student_full_name(student),
             str(student.get("group_number", "")),
         )
 
@@ -1050,11 +1060,11 @@ def main():
                 continue
             key = _identity_key(s)
             entry = identity_map.setdefault(key, {"student": s, "dir_map": {}})
-            try:
-                tn = int(str(s.get("task_number", "0")))
-            except Exception:
-                tn = 0
-            # If task_number is outside expected range (1..3), map to fallback (task-1)
+            if d in process_task_indices:
+                tn = process_task_indices[d]
+            else:
+                tn = fallback_process_tasknum
+            # If ordinal is outside expected range (1..3), map to fallback (task-1)
             if tn not in expected_numbers:
                 tn = fallback_process_tasknum
             entry["dir_map"][tn] = d
@@ -1084,7 +1094,9 @@ def main():
                     status_seq = directories[clean_d].get("seq")
                     has_mpi = status_mpi in ("done", "disabled")
                     has_seq = status_seq in ("done", "disabled")
-                    report_present = (tasks_dir / d / "report.md").exists()
+                    report_present = _task_report_exists(
+                        d, "seq"
+                    ) or _task_report_exists(d, "mpi")
 
                     mpi_eff = group_cells[0].get("efficiency", "N/A")
                     perf_points_mpi = (
@@ -1165,9 +1177,8 @@ def main():
                     )
                     proc_r_values.append(0)
 
-            name_parts = [
-                p for p in str(student.get("full_name", "")).strip().split() if p
-            ]
+            student_full_name = _student_full_name(student)
+            name_parts = [p for p in student_full_name.split() if p]
             name_html = "<br/>".join([p for p in name_parts if p]) or "processes"
 
             variants_render = []
@@ -1175,7 +1186,7 @@ def main():
                 vmax = _find_process_variants_max(cfg, n)
                 try:
                     v_idx = assign_variant(
-                        full_name=str(student.get("full_name", "")).strip(),
+                        full_name=student_full_name,
                         group=str(student.get("group_number", "")),
                         repo=f"{REPO_SALT}/processes/task-{n}",
                         num_variants=vmax,
@@ -1309,7 +1320,7 @@ def main():
     def _load_group_number(dir_name: str):
         import json
 
-        info_path = tasks_dir / dir_name / "info.json"
+        info_path = _task_info_path(dir_name)
         if not info_path.exists():
             return None
         try:
@@ -1389,7 +1400,7 @@ def main():
 
         # Reuse earlier logic but limited to filtered_dirs
         def _load_student_info_group(dir_name: str):
-            info_path = tasks_dir / dir_name / "info.json"
+            info_path = _task_info_path(dir_name)
             if not info_path.exists():
                 return None
             try:
@@ -1402,7 +1413,7 @@ def main():
         def _id_key(stud: dict) -> str:
             return "|".join(
                 [
-                    str(stud.get("full_name", "")).strip(),
+                    _student_full_name(stud),
                     str(stud.get("group_number", "")),
                 ]
             )
