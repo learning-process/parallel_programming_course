@@ -4,7 +4,6 @@
 #include <tbb/tick_count.h>
 
 #include <concepts>
-#include <csignal>
 #include <cstddef>
 #include <functional>
 #include <iostream>

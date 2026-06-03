@@ -5,7 +5,6 @@
 #include <tbb/tick_count.h>
 
 #include <chrono>
-#include <csignal>
 #include <cstddef>
 #include <functional>
 #include <sstream>
