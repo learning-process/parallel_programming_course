@@ -30,7 +30,7 @@ class NesterovARunFuncTestsThreads : public ppc::util::BaseRunFuncTests<InType, 
   }
 
  protected:
-  void RunTestCase(const ppc::util::FuncTestParam<InType, OutType, TestType> &test_param) {
+  void RunTestCase(const ppc::util::FuncTestParam<InType, OutType, TestType> &test_param) override {
     const std::string &test_name =
         std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kNameTest)>(test_param);
     if (IsTestDisabled(test_name) || ShouldSkipNonMpiTask(test_name)) {
@@ -89,8 +89,24 @@ const auto kTestTasksList =
 
 }  // namespace
 
-TEST_F(NesterovARunFuncTestsThreads, MatmulFromPic) {
-  std::apply([this](const auto &...test_params) { (RunTestCase(test_params), ...); }, kTestTasksList);
+TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicAllEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "all");
+}
+
+TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicOmpEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "omp");
+}
+
+TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicSeqEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "seq");
+}
+
+TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicStlEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "stl");
+}
+
+TEST_F(NesterovARunFuncTestsThreads, MatmulFromPicTbbEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "tbb");
 }
 
 }  // namespace example_threads

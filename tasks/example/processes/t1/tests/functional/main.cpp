@@ -27,7 +27,7 @@ class NesterovARunFuncTestsProcesses : public ppc::util::BaseRunFuncTests<InType
   }
 
  protected:
-  void RunTestCase(const ppc::util::FuncTestParam<InType, OutType, TestType> &test_param) {
+  void RunTestCase(const ppc::util::FuncTestParam<InType, OutType, TestType> &test_param) override {
     const std::string &test_name =
         std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kNameTest)>(test_param);
     if (IsTestDisabled(test_name) || ShouldSkipNonMpiTask(test_name)) {
@@ -83,8 +83,12 @@ const auto kTestTasksList = std::tuple_cat(
 
 }  // namespace
 
-TEST_F(NesterovARunFuncTestsProcesses, MatmulFromPic) {
-  std::apply([this](const auto &...test_params) { (RunTestCase(test_params), ...); }, kTestTasksList);
+TEST_F(NesterovARunFuncTestsProcesses, MatmulFromPicMpiEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "mpi");
+}
+
+TEST_F(NesterovARunFuncTestsProcesses, MatmulFromPicSeqEnabled) {
+  RunTestCasesWithTag(kTestTasksList, "seq");
 }
 
 }  // namespace example_processes_t1

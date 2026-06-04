@@ -198,12 +198,21 @@ class PPCRunner:
 
     @staticmethod
     def __get_gtest_settings(repeats_count, type_task):
+        type_task_patterns = {
+            "_all_": ["_all_", "AllEnabled"],
+            "_mpi_": ["_mpi_", "MpiEnabled"],
+            "_omp_": ["_omp_", "OmpEnabled"],
+            "_seq_": ["_seq_", "SeqEnabled"],
+            "_stl_": ["_stl_", "StlEnabled"],
+            "_tbb_": ["_tbb_", "TbbEnabled"],
+        }
+        filter_patterns = type_task_patterns.get(type_task, [type_task])
         command = [
             f"--gtest_repeat={repeats_count}",
             "--gtest_recreate_environments_when_repeating",
             "--gtest_color=0",
             "--gtest_shuffle",
-            f"--gtest_filter=*{type_task}*",
+            "--gtest_filter=" + ":".join(f"*{pattern}*" for pattern in filter_patterns),
         ]
         return command
 

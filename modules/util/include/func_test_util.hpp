@@ -29,6 +29,9 @@ concept HasPrintTestParam = requires(TestType value) {
   { T::PrintTestParam(value) } -> std::same_as<std::string>;
 };
 
+template <typename TestTasksList, typename RunTestCase>
+void RunTestCasesWithTag(const TestTasksList &test_tasks_list, std::string_view task_tag, RunTestCase run_test_case);
+
 template <typename InType, typename OutType, typename TestType = void>
 /// @brief Base class for running functional tests on parallel tasks.
 /// @tparam InType Type of input data.
@@ -55,6 +58,16 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   /// @brief Provides input data for the task.
   /// @return Initialized input data.
   virtual InType GetTestInputData() = 0;
+
+  virtual void RunTestCase(const FuncTestParam<InType, OutType, TestType> &test_param) {
+    ExecuteTest(test_param);
+  }
+
+  template <typename TestTasksList>
+  void RunTestCasesWithTag(const TestTasksList &test_tasks_list, std::string_view task_tag) {
+    ppc::util::RunTestCasesWithTag(test_tasks_list, task_tag,
+                                   [this](const auto &test_param) { RunTestCase(test_param); });
+  }
 
   void ExecuteTest(FuncTestParam<InType, OutType, TestType> test_param) {
     const std::string &test_name = std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(test_param);
@@ -119,6 +132,43 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
  private:
   ppc::task::TaskPtr<InType, OutType> task_;
 };
+
+namespace detail {
+
+[[nodiscard]] inline std::string MakeFuncTestTaskTagPattern(std::string_view task_tag) {
+  std::string tag_pattern{task_tag};
+  if (!tag_pattern.starts_with('_')) {
+    tag_pattern.insert(0, 1, '_');
+  }
+  if (!tag_pattern.ends_with('_')) {
+    tag_pattern.push_back('_');
+  }
+  return tag_pattern;
+}
+
+}  // namespace detail
+
+template <typename TestTasksList, typename RunTestCase>
+void RunTestCasesWithTag(const TestTasksList &test_tasks_list, std::string_view task_tag, RunTestCase run_test_case) {
+  if (task_tag.empty()) {
+    ADD_FAILURE() << "Functional test task tag must not be empty";
+    return;
+  }
+
+  const std::string task_tag_pattern = detail::MakeFuncTestTaskTagPattern(task_tag);
+  bool has_matching_task = false;
+  std::apply([&](const auto &...test_params) {
+    auto run_if_tagged = [&](const auto &test_param) {
+      const std::string &test_name = std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(test_param);
+      if (test_name.contains(task_tag_pattern)) {
+        has_matching_task = true;
+        std::invoke(run_test_case, test_param);
+      }
+    };
+    (run_if_tagged(test_params), ...);
+  }, test_tasks_list);
+  EXPECT_TRUE(has_matching_task) << "No functional test cases matched tag: " << std::string(task_tag);
+}
 
 template <typename Tuple, std::size_t... Is>
 auto ExpandToValuesImpl(const Tuple &t, std::index_sequence<Is...> /*unused*/) {
