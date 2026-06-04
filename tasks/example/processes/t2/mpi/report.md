@@ -3,8 +3,6 @@
 Fill in this report with the MPI implementation for process task T2. Compare it only with
 `../seq/report.md`.
 
-## 4.2 MPI / Processes Implementation
-
 - Source files: `<T2 MPI source files>`
 - Source files to describe: `include/ops_mpi.hpp`, `src/ops_mpi.cpp`
 - Task class to describe: `NesterovATestTaskMPI`

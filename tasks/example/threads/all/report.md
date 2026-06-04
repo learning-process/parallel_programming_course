@@ -3,8 +3,6 @@
 Fill in this report with the combined or `all` implementation. Use it only when the assignment requires combined
 process/thread or multi-technology parallelism.
 
-## 4.6 Combined Implementation
-
 - Source files: `<Combined implementation source files>`
 - Source files to describe: `include/ops_all.hpp`, `src/ops_all.cpp`
 - Task class to describe: `NesterovATestTaskALL`

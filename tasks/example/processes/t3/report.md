@@ -8,7 +8,7 @@ Child reports:
 - `seq/report.md`
 - `mpi/report.md`
 
-## 2. Problem Statement
+## Problem Statement
 
 - What must be implemented: `<T3 required computation>`
 - Input data: `<T3 input data>`
@@ -17,7 +17,7 @@ Child reports:
 - Correctness criteria: `<T3 correctness criteria>`
 - Expected behavior: `<T3 expected behavior>`
 
-## 3. Algorithm Description
+## Algorithm Description
 
 - General idea of the algorithm: `<T3 algorithm overview>`
 - Sequential algorithm: `<T3 sequential baseline>`
@@ -28,7 +28,7 @@ Child reports:
 - Possible data races and how they are avoided: `N/A for separate MPI process memory unless threads are used`
 - Complexity, if applicable: `<T3 time and memory complexity>`
 
-## 6. Correctness Verification
+## Correctness Verification
 
 - Implemented tests: `<T3 tests>`
 - Normal cases: `<T3 normal cases>`
@@ -46,7 +46,7 @@ Child reports:
 | ------------- | ----------------------: | --------------- | ------------- | ----------------- |
 | `<Test name>` | `<Input>`               | `<Expected>`    | `<Actual>`    | `<Passed/Failed>` |
 
-## 8. Performance Results
+## Performance Results
 
 | Implementation | Input size | Processes | Threads | Time, ms | Notes     |
 | -------------- | ---------: | --------: | ------: | -------: | --------- |

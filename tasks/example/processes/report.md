@@ -30,7 +30,7 @@ Child reports:
 Each `t1`, `t2`, and `t3` report owns its own correctness and performance baseline. Do not compare an MPI task
 with a sequential implementation from another process task or from the thread branch.
 
-## 2. Problem Statement
+## Problem Statement
 
 Describe the process-based assignment scope.
 
@@ -41,7 +41,7 @@ Describe the process-based assignment scope.
 - Correctness criteria: `<Rules used to decide that the output is correct>`
 - Expected behavior: `<Expected behavior for normal, edge, and invalid inputs>`
 
-## 5. Build and Run Instructions
+## Build and Run Instructions
 
 Provide the commands used for process-based tasks.
 
@@ -54,7 +54,7 @@ Provide the commands used for process-based tasks.
 
 - Command-line arguments: `<Command-line arguments>`
 
-## 7. Experiment Setup
+## Experiment Setup
 
 Describe the environment used for MPI/process performance measurements.
 
@@ -71,11 +71,11 @@ Describe the environment used for MPI/process performance measurements.
 | Number of processes     | `<Process counts>`       |
 | Time measurement method | `<Method>`               |
 
-## 8. Performance Results
+## Performance Results
 
 Use a separate sequential baseline for each process task.
 
-### 8.1 Execution Time
+### Execution Time
 
 | Task   | Implementation | Input size | Processes | Threads | Time, ms | Notes     |
 | ------ | -------------- | ---------: | --------: | ------: | -------: | --------- |
@@ -86,19 +86,19 @@ Use a separate sequential baseline for each process task.
 | `<T3>` | Sequential     | `<N>`      | 1         | 1       | `<Time>` | `<Notes>` |
 | `<T3>` | MPI            | `<N>`      | `<P>`     | 1       | `<Time>` | `<Notes>` |
 
-### 8.2 Speedup
+### Speedup
 
 | Task     | Input size | Processes | Sequential time, ms | Parallel time, ms | Speedup     |
 | -------- | ---------: | --------: | ------------------: | ----------------: | ----------: |
 | `<Task>` | `<N>`      | `<P>`     | `<Seq time>`        | `<Par time>`      | `<Speedup>` |
 
-### 8.3 Efficiency
+### Efficiency
 
 | Task     | Input size | Processes | Speedup     | Efficiency     |
 | -------- | ---------: | --------: | ----------: | -------------: |
 | `<Task>` | `<N>`      | `<P>`     | `<Speedup>` | `<Efficiency>` |
 
-### 8.4 Best Result Summary
+### Best Result Summary
 
 | Task     | Best configuration | Best time, ms | Speedup     | Comment     |
 | -------- | ------------------ | ------------: | ----------: | ----------- |
@@ -111,7 +111,7 @@ Efficiency = Speedup / Number of workers
 
 For process-based implementations, workers usually mean the number of MPI processes.
 
-## 9. Results Analysis
+## Results Analysis
 
 - Which process task showed the best MPI speedup?
 - Why did this task perform better?
@@ -121,7 +121,7 @@ For process-based implementations, workers usually mean the number of MPI proces
 - Were there any anomalous results?
 - How can the implementation be improved?
 
-## 10. Conclusion
+## Conclusion
 
 - Short summary: `<Summary of completed process tasks>`
 - Best implementation: `<Best task and configuration>`

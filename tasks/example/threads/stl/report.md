@@ -3,8 +3,6 @@
 Fill in this report with the STL or `std::thread` implementation for the thread-based task. Compare it with
 `../seq/report.md`.
 
-## 4.5 STL / std::thread Implementation
-
 - Source files: `<STL or std::thread source files>`
 - Source files to describe: `include/ops_stl.hpp`, `src/ops_stl.cpp`
 - Task class to describe: `NesterovATestTaskSTL`

@@ -3,8 +3,6 @@
 Fill in this report with the sequential baseline for process task T2. Use it as the only baseline for
 `../mpi/report.md`.
 
-## 4.1 Sequential Implementation
-
 - Source files: `<T2 sequential source files>`
 - Source files to describe: `include/ops_seq.hpp`, `src/ops_seq.cpp`
 - Short description: `<T2 sequential implementation description>`

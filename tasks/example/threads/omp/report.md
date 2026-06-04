@@ -3,8 +3,6 @@
 Fill in this report with the OpenMP implementation for the thread-based task. Compare it with
 `../seq/report.md`.
 
-## 4.3 OpenMP Implementation
-
 - Source files: `<OpenMP source files>`
 - Source files to describe: `include/ops_omp.hpp`, `src/ops_omp.cpp`
 - Task class to describe: `NesterovATestTaskOMP`

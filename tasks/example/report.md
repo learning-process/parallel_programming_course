@@ -10,7 +10,7 @@ Fill in only the branch that matches your semester or assignment:
 Students normally complete either the thread-based semester or the process/MPI semester. Do not describe both
 groups unless the assignment explicitly requires both.
 
-## 1. General Information
+## General Information
 
 Fill in this table for the whole task report.
 
@@ -27,6 +27,35 @@ Fill in this table for the whole task report.
 ## How to Use the Report Tree
 
 Use the existing reports below instead of creating new Markdown files.
+
+For a single PDF report, assemble `report.md` first, then exactly one semester branch unless the assignment
+explicitly requires both branches. Include only the implementation-level reports that match the completed work.
+A full course template PDF may include both branches for reference, but a student submission should normally keep
+only the branch assigned for the semester.
+
+Recommended PDF order for a thread-based semester:
+
+1. `report.md`
+2. `threads/report.md`
+3. `threads/seq/report.md`
+4. `threads/omp/report.md`
+5. `threads/tbb/report.md`
+6. `threads/stl/report.md`
+7. `threads/all/report.md`
+
+Recommended PDF order for an MPI/process semester:
+
+1. `report.md`
+2. `processes/report.md`
+3. `processes/t1/report.md`
+4. `processes/t1/seq/report.md`
+5. `processes/t1/mpi/report.md`
+6. `processes/t2/report.md`
+7. `processes/t2/seq/report.md`
+8. `processes/t2/mpi/report.md`
+9. `processes/t3/report.md`
+10. `processes/t3/seq/report.md`
+11. `processes/t3/mpi/report.md`
 
 | Report file                     | What to fill in                                     |
 | ------------------------------- | --------------------------------------------------- |
@@ -62,16 +91,16 @@ Mention these shared files when they affect your task, tests, or measurements.
 | `processes/t*/tests/functional`    | Functional tests for each process task                     |
 | `processes/t*/tests/performance`   | Performance tests for each process task                    |
 
-## 4. Where to Describe Implementations
+## Where to Describe Implementations
 
 Write implementation details in the file that matches the implementation you completed.
 
-- Section 4.1 Sequential Implementation: `threads/seq/report.md` or `processes/t*/seq/report.md`
-- Section 4.2 MPI / Processes Implementation: `processes/t*/mpi/report.md`
-- Section 4.3 OpenMP Implementation: `threads/omp/report.md`
-- Section 4.4 oneTBB Implementation: `threads/tbb/report.md`
-- Section 4.5 STL / std::thread Implementation: `threads/stl/report.md`
-- Section 4.6 Combined Implementation: `threads/all/report.md`
+- Sequential implementation: `threads/seq/report.md` or `processes/t*/seq/report.md`
+- MPI / processes implementation: `processes/t*/mpi/report.md`
+- OpenMP implementation: `threads/omp/report.md`
+- oneTBB implementation: `threads/tbb/report.md`
+- STL / `std::thread` implementation: `threads/stl/report.md`
+- Combined implementation: `threads/all/report.md`
 
 ## Performance Formulas
 
@@ -85,7 +114,7 @@ Efficiency = Speedup / Number of workers
 Workers can mean the number of threads, the number of processes, or a combined process/thread configuration
 depending on the implementation.
 
-## 11. Appendix
+## Appendix
 
 Use this root appendix for shared material that applies to the whole task.
 
@@ -94,7 +123,7 @@ Use this root appendix for shared material that applies to the whole task.
 - Links to source files: `<Links to source files>`
 - Screenshots, if needed: `<Screenshots>`
 
-## 12. How to Fill in This Report
+## How to Fill in This Report
 
 - Do not write only "it became faster" without measurements.
 - Always compare parallel implementations with the sequential implementation.

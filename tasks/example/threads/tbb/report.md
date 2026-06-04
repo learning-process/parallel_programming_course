@@ -3,8 +3,6 @@
 Fill in this report with the oneTBB implementation for the thread-based task. Compare it with
 `../seq/report.md`.
 
-## 4.4 oneTBB Implementation
-
 - Source files: `<oneTBB source files>`
 - Source files to describe: `include/ops_tbb.hpp`, `src/ops_tbb.cpp`
 - Task class to describe: `NesterovATestTaskTBB`

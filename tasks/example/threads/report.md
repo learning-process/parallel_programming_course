@@ -23,7 +23,7 @@ Child reports:
 | `tests/functional/main.cpp`   | Functional tests using `data/pic.ppm`          |
 | `tests/performance/main.cpp`  | Performance tests for all thread variants      |
 
-## 2. Problem Statement
+## Problem Statement
 
 Describe the thread-based task.
 
@@ -34,7 +34,7 @@ Describe the thread-based task.
 - Correctness criteria: `<Rules used to decide that the output is correct>`
 - Expected behavior: `<Expected behavior for normal, edge, and invalid inputs>`
 
-## 3. Algorithm Description
+## Algorithm Description
 
 Explain the algorithm used by the thread-based implementations.
 
@@ -47,7 +47,7 @@ Explain the algorithm used by the thread-based implementations.
 - Possible data races and how they are avoided: `<Race risks and prevention strategy>`
 - Complexity, if applicable: `<Time and memory complexity>`
 
-## 5. Build and Run Instructions
+## Build and Run Instructions
 
 Provide the commands used for the thread-based task.
 
@@ -60,7 +60,7 @@ Provide the commands used for the thread-based task.
 
 - Command-line arguments: `<Command-line arguments>`
 
-## 6. Correctness Verification
+## Correctness Verification
 
 Explain how thread implementations were checked against the sequential baseline.
 
@@ -81,7 +81,7 @@ Explain how thread implementations were checked against the sequential baseline.
 | ------------- | ----------------------: | --------------- | ------------- | ----------------- |
 | `<Test name>` | `<Input>`               | `<Expected>`    | `<Actual>`    | `<Passed/Failed>` |
 
-## 7. Experiment Setup
+## Experiment Setup
 
 Describe the environment used for thread performance measurements.
 
@@ -98,11 +98,11 @@ Describe the environment used for thread performance measurements.
 | Number of threads       | `<Thread counts>`        |
 | Time measurement method | `<Method>`               |
 
-## 8. Performance Results
+## Performance Results
 
 Use the same input data for every implementation.
 
-### 8.1 Execution Time
+### Execution Time
 
 | Implementation | Input size | Processes | Threads | Time, ms | Notes     |
 | -------------- | ---------: | --------: | ------: | -------: | --------- |
@@ -112,19 +112,19 @@ Use the same input data for every implementation.
 | STL            | `<N>`      | 1         | `<T>`   | `<Time>` | `<Notes>` |
 | Combined       | `<N>`      | `<P>`     | `<T>`   | `<Time>` | `<Notes>` |
 
-### 8.2 Speedup
+### Speedup
 
 | Implementation     | Input size | Threads | Sequential time, ms | Parallel time, ms | Speedup     |
 | ------------------ | ---------: | ------: | ------------------: | ----------------: | ----------: |
 | `<Implementation>` | `<N>`      | `<T>`   | `<Seq time>`        | `<Par time>`      | `<Speedup>` |
 
-### 8.3 Efficiency
+### Efficiency
 
 | Implementation     | Input size | Threads | Speedup     | Efficiency     |
 | ------------------ | ---------: | ------: | ----------: | -------------: |
 | `<Implementation>` | `<N>`      | `<T>`   | `<Speedup>` | `<Efficiency>` |
 
-### 8.4 Best Result Summary
+### Best Result Summary
 
 | Implementation     | Best configuration | Best time, ms | Speedup     | Comment     |
 | ------------------ | ------------------ | ------------: | ----------: | ----------- |
@@ -137,7 +137,7 @@ Efficiency = Speedup / Number of workers
 
 For thread-based implementations, workers usually mean the number of threads.
 
-## 9. Results Analysis
+## Results Analysis
 
 - Which thread implementation showed the best performance?
 - Why did this implementation perform better?
@@ -147,7 +147,7 @@ For thread-based implementations, workers usually mean the number of threads.
 - Were there any anomalous results?
 - How can the implementation be improved?
 
-## 10. Conclusion
+## Conclusion
 
 - Short summary: `<Summary of completed work>`
 - Best implementation: `<Best implementation>`
