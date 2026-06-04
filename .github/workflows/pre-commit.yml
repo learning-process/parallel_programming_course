@@ -36,6 +36,13 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Check pull request description
+        if: >-
+          github.event_name == 'pull_request' &&
+          contains(
+            github.event.pull_request.body,
+            'Please go to the `Preview` tab and select the appropriate template:')
+        run: exit 1
       - uses: actions/checkout@v6
         with:
           submodules: recursive
