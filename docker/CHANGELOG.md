@@ -4,7 +4,7 @@
 
 ### [1.3] - 2026-06-01
 
-- Update base image to Ubuntu 26.04
+- Update base image to Ubuntu 26.04 and switch to gcc-15
 
 ### [1.2] - 2026-02-25
 

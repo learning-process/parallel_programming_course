@@ -18,7 +18,7 @@ The easiest way to set up your development environment is using the provided ``.
 3. VS Code will automatically build the container with all dependencies pre-installed
 4. The container includes:
 
-   - Ubuntu environment with gcc-14, CMake, MPI, OpenMP
+   - Ubuntu environment with gcc-15, CMake, MPI, OpenMP
    - Pre-configured C++ and Python development tools
    - All project dependencies ready to use
 
@@ -69,8 +69,6 @@ Install these to match the CI toolchain for static analysis and coverage reports
      sudo apt update && sudo apt install -y clang-tidy-22
      # gcovr via pip (or use your distro package)
      python3 -m pip install gcovr
-     # GCC 14 coverage helper (used in CI)
-     which gcov-14 || echo "Install GCC 14 to use gcov-14"
 
 - macOS (Homebrew):
 

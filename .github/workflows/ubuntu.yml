@@ -46,8 +46,8 @@ jobs:
           -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
           -D PPC_TASKS="${{ inputs.ppc_tasks }}"
         env:
-          CC: gcc-14
-          CXX: g++-14
+          CC: gcc-15
+          CXX: g++-15
       - name: Archive revert list
         uses: actions/upload-artifact@v7
         if: ${{ matrix.os == 'ubuntu-24.04' && matrix.build_type == 'Release' }}
@@ -58,8 +58,8 @@ jobs:
         run: |
           cmake --build build --parallel -- --quiet
         env:
-          CC: gcc-14
-          CXX: g++-14
+          CC: gcc-15
+          CXX: g++-15
       - name: Install project
         run: |
           cmake --build build --target install -- --quiet
@@ -398,7 +398,7 @@ jobs:
         run: |
           mkdir cov-report
           cd build
-          gcovr --gcov-executable `which gcov-14` \
+          gcovr --gcov-executable `which gcov-15` \
                 -r ../ \
                 --exclude '.*3rdparty/.*' \
                 --exclude '/usr/.*' \

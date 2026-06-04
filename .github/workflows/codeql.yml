@@ -30,7 +30,7 @@ jobs:
       - name: Setup environment
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-14 g++-14 ninja-build mpich libomp-dev valgrind
+          sudo apt-get install -y gcc-15 g++-15 ninja-build mpich libomp-dev valgrind
           python3 -m pip install -r requirements.txt
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
@@ -48,15 +48,15 @@ jobs:
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE
         env:
-          CC: gcc-14
-          CXX: g++-14
+          CC: gcc-15
+          CXX: g++-15
       - name: Build project
         if: matrix.language == 'cpp'
         run: |
           cmake --build build --parallel -- --quiet
         env:
-          CC: gcc-14
-          CXX: g++-14
+          CC: gcc-15
+          CXX: g++-15
       - name: Show ccache stats
         if: matrix.language == 'cpp'
         run: ccache --show-stats

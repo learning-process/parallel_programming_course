@@ -15,7 +15,7 @@ RUN set -e \
     libmpich-dev mpich \
     openmpi-bin openmpi-common libopenmpi-dev \
     libomp-dev \
-    gcc-14 g++-14 \
+    gcc-15 g++-15 \
     gcovr zip \
  && wget -q https://apt.llvm.org/llvm.sh \
  && chmod +x llvm.sh \
@@ -24,6 +24,6 @@ RUN set -e \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-ENV CC=gcc-14 CXX=g++-14
+ENV CC=gcc-15 CXX=g++-15
 
 CMD ["bash"]

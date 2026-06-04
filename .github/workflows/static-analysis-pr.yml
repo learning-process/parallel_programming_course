@@ -123,15 +123,15 @@ jobs:
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
           -D PPC_TASKS="${{ needs.ci-scope.outputs.ppc_tasks || 'all' }}"
         env:
-          CC: gcc-14
-          CXX: g++-14
+          CC: gcc-15
+          CXX: g++-15
 
       - name: Build project
         run: |
           cmake --build build --parallel -- --quiet
         env:
-          CC: gcc-14
-          CXX: g++-14
+          CC: gcc-15
+          CXX: g++-15
 
       - name: Show ccache stats
         run: ccache --show-stats
