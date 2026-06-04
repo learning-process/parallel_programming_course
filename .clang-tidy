@@ -100,6 +100,8 @@ CheckOptions:
   # Functions with scores beyond 15 are typically flagged as potentially problematic (empirically)
   - key: readability-function-cognitive-complexity.Threshold
     value: 15  # default: 25
+  - key: readability-function-cognitive-complexity.IgnoreMacros
+    value: 1
   - key: readability-identifier-length.MinimumVariableNameLength
     value: 1
   - key: readability-identifier-length.MinimumParameterNameLength

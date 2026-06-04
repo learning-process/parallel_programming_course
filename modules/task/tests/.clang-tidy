@@ -1,5 +1,0 @@
-InheritParentConfig: true
-
-CheckOptions:
-  - key: readability-function-cognitive-complexity.Threshold
-    value: 100  # Relaxed for tests
