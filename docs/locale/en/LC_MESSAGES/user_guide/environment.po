@@ -80,7 +80,7 @@ msgid "The container includes:"
 msgstr ""
 
 #: ../../../../docs/user_guide/environment.rst:21
-msgid "Ubuntu environment with gcc-14, CMake, MPI, OpenMP"
+msgid "Ubuntu environment with gcc-15, CMake, MPI, OpenMP"
 msgstr ""
 
 #: ../../../../docs/user_guide/environment.rst:22
