@@ -102,7 +102,7 @@ clang-tidy (static analysis):
 
    # Configure with compile_commands.json
    cmake -S . -B build -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
-   cmake --build build -j
+   cmake --build build --parallel
 
    # clang-tidy run:
    ### analyze all sources
@@ -116,14 +116,14 @@ gcovr (coverage, GCC):
 
    # Configure with coverage flags (use GCC)
    cmake -S . -B build -G Ninja -D USE_COVERAGE=ON -D CMAKE_BUILD_TYPE=Release
-   cmake --build build -j
+   cmake --build build --parallel
 
    # Run tests here (threads/processes/performance)
    scripts/run_tests.py --running-type=threads --counts 1 2 4
 
    # Generate reports (install gcovr if needed: python3 -m pip install gcovr)
    mkdir -p cov-report
-   (cd build && gcovr --gcov-executable "$(which gcov-14 || which gcov)" \
+   (cd build && gcovr --gcov-executable "$(which gcov)" \
          -r ../ \
          --exclude '.*3rdparty/.*' \
          --exclude '/usr/.*' \
