@@ -736,7 +736,7 @@ def main():
 
     env = Environment(loader=FileSystemLoader(Path(__file__).parent / "templates"))
 
-    # Load optional display deadlines from deadlines.yml and/or auto-compute evenly
+    # Load optional display deadline labels from deadlines.yml.
     deadlines_display_threads: dict[str, str] | None = None
     deadlines_display_processes: dict[str, str] | None = None
     try:
@@ -749,80 +749,32 @@ def main():
     except Exception:
         pass
 
-    # Helper: compute evenly spaced dates for current semester (MSK)
-    import calendar
-    from datetime import date, timedelta
+    def _deadline_label(value) -> str:
+        if value is None or isinstance(value, (bool, int, float)):
+            return ""
+        return str(value)
 
-    def _abbr(day: date) -> str:
-        return f"{day.day} {calendar.month_abbr[day.month]}"
+    def _thread_deadline_labels(order: list[str]) -> dict[str, str]:
+        if not deadlines_display_threads:
+            return {}
+        labels = {}
+        for task_type in order:
+            label = _deadline_label(deadlines_display_threads.get(task_type))
+            if label:
+                labels[task_type] = label
+        return labels
 
-    def _spring_bounds(today: date) -> tuple[date, date]:
-        """Return [1 Feb .. 15 May] window for the appropriate year.
-        If today is past 15 May, use next year's spring; otherwise this year's.
-        """
-        y = today.year
-        start = date(y, 2, 1)
-        end = date(y, 5, 15)
-        if today > end:
-            y += 1
-            start = date(y, 2, 1)
-            end = date(y, 5, 15)
-        return start, end
-
-    def _autumn_bounds(today: date) -> tuple[date, date]:
-        """Return [15 Oct .. 14 Dec] window for the appropriate year.
-        If today is past 14 Dec, use next year's autumn; otherwise this year's.
-        """
-        y = today.year
-        start = date(y, 10, 15)
-        end = date(y, 12, 14)
-        if today > end:
-            y += 1
-            start = date(y, 10, 15)
-            end = date(y, 12, 14)
-        return start, end
-
-    def _evenly_spaced_dates(n: int, start: date, end: date) -> list[date]:
-        """
-        Return n deadlines evenly spaced across the window (start..end],
-        i.e., strictly after the start date, with the last at end.
-        Positions are at fractions (i+1)/n of the total span.
-        """
-        if n <= 1:
-            return [end]
-        total = (end - start).days
-        if total < 0:
-            start, end = end, start
-            total = -total
-        res = []
-        for i in range(n):
-            off = int(round((i + 1) * total / n))
-            if off <= 0:
-                off = 1
-            if off > total:
-                off = total
-            res.append(start + timedelta(days=off))
-        return res
-
-    def _compute_display_deadlines_threads(order: list[str]) -> dict[str, date]:
-        # Threads = Spring semester (prefer MSK; fallback to local time)
-        try:
-            today = _now_msk().date()
-        except Exception:
-            today = datetime.now().date()
-        s, e = _spring_bounds(today)
-        ds = _evenly_spaced_dates(len(order), s, e)
-        return {t: d for t, d in zip(order, ds)}
-
-    def _compute_display_deadlines_processes(n_items: int) -> list[date]:
-        # Processes = Autumn semester (prefer MSK; fallback to local time)
-        try:
-            today = _now_msk().date()
-        except Exception:
-            today = datetime.now().date()
-        s, e = _autumn_bounds(today)
-        ds = _evenly_spaced_dates(n_items, s, e)
-        return ds
+    def _process_deadline_labels(task_numbers: list[int]) -> list[str]:
+        if not deadlines_display_processes:
+            return []
+        labels = []
+        for task_number in task_numbers:
+            label = _deadline_label(
+                deadlines_display_processes.get(f"task_{task_number}")
+                or deadlines_display_processes.get(f"mpi_task_{task_number}")
+            )
+            labels.append(label)
+        return labels if any(labels) else []
 
     # Locate perf CSVs from CI or local runs (threads and processes)
     candidates_threads = [
@@ -1239,30 +1191,9 @@ def main():
     generated_msk = _now_msk().strftime("%Y-%m-%d %H:%M:%S")
     table_template = env.get_template("index.html.j2")
     threads_vmax = int((cfg.get("threads", {}) or {}).get("variants_max", 1))
-    # Build display deadlines (use file values if present, fill missing with auto)
+    # Build display deadlines from explicit file values.
     threads_order = task_types_threads
-    auto_threads_dl = _compute_display_deadlines_threads(threads_order)
-    dl_threads_out = {}
-    for t in threads_order:
-        base_date = auto_threads_dl.get(t)
-        # Default = 0 shift
-        shift_days = 0
-        label = None
-        if deadlines_display_threads and t in deadlines_display_threads:
-            val = deadlines_display_threads.get(t)
-            if isinstance(val, int):
-                shift_days = val
-            else:
-                # try int-like string, else treat as explicit label
-                try:
-                    shift_days = int(str(val).strip())
-                except Exception:
-                    label = str(val)
-        if label is None and isinstance(base_date, date):
-            vdate = base_date + timedelta(days=shift_days)
-            dl_threads_out[t] = _abbr(vdate)
-        else:
-            dl_threads_out[t] = label or ""
+    dl_threads_out = _thread_deadline_labels(threads_order)
 
     threads_html = table_template.render(
         task_types=task_types_threads,
@@ -1275,31 +1206,8 @@ def main():
     # Use dedicated template for processes table layout
     processes_template = env.get_template("processes.html.j2")
     proc_vmaxes = [_find_process_variants_max(cfg, n) for n in expected_numbers]
-    # Build display deadlines for processes in task order (1..3)
-    auto_proc_dl = _compute_display_deadlines_processes(len(expected_numbers))
-    proc_deadlines_list: list[str] = []
-    for i, n in enumerate(expected_numbers):
-        base_date = auto_proc_dl[i]
-        shift_days = 0
-        label = None
-        if deadlines_display_processes:
-            key = f"task_{n}"
-            val = deadlines_display_processes.get(
-                key
-            ) or deadlines_display_processes.get(f"mpi_task_{n}")
-            if val is not None:
-                if isinstance(val, int):
-                    shift_days = val
-                else:
-                    try:
-                        shift_days = int(str(val).strip())
-                    except Exception:
-                        label = str(val)
-        if label is None and isinstance(base_date, date):
-            vdate = base_date + timedelta(days=shift_days)
-            proc_deadlines_list.append(_abbr(vdate))
-        else:
-            proc_deadlines_list.append(label or "")
+    # Build display deadlines for processes in task order (1..3).
+    proc_deadlines_list = _process_deadline_labels(expected_numbers)
 
     processes_html = processes_template.render(
         top_task_names=proc_top_headers,
@@ -1357,27 +1265,8 @@ def main():
             eff_num_proc,
             deadlines_cfg,
         )
-        # Rebuild deadline labels for this page
-        auto_threads_dl_g = _compute_display_deadlines_threads(threads_order)
-        dl_threads_out_g = {}
-        for t in threads_order:
-            base_date = auto_threads_dl_g.get(t)
-            shift_days = 0
-            label = None
-            if deadlines_display_threads and t in deadlines_display_threads:
-                val = deadlines_display_threads.get(t)
-                if isinstance(val, int):
-                    shift_days = val
-                else:
-                    try:
-                        shift_days = int(str(val).strip())
-                    except Exception:
-                        label = str(val)
-            if label is None and isinstance(base_date, date):
-                vdate = base_date + timedelta(days=shift_days)
-                dl_threads_out_g[t] = _abbr(vdate)
-            else:
-                dl_threads_out_g[t] = label or ""
+        # Rebuild deadline labels for this page.
+        dl_threads_out_g = _thread_deadline_labels(threads_order)
 
         html_g = table_template.render(
             task_types=task_types_threads,
@@ -1427,31 +1316,8 @@ def main():
         rows_g = _build_process_rows(filtered_dirs)
 
         proc_vmaxes_g = [_find_process_variants_max(cfg, n) for n in [1, 2, 3]]
-        # Build display deadlines for processes group page
-        auto_proc_dl_g = _compute_display_deadlines_processes(3)
-        proc_deadlines_list_g: list[str] = []
-        for i, n in enumerate([1, 2, 3]):
-            base_date = auto_proc_dl_g[i]
-            shift_days = 0
-            label = None
-            if deadlines_display_processes:
-                key = f"task_{n}"
-                val = deadlines_display_processes.get(
-                    key
-                ) or deadlines_display_processes.get(f"mpi_task_{n}")
-                if val is not None:
-                    if isinstance(val, int):
-                        shift_days = val
-                    else:
-                        try:
-                            shift_days = int(str(val).strip())
-                        except Exception:
-                            label = str(val)
-            if label is None and isinstance(base_date, date):
-                vdate = base_date + timedelta(days=shift_days)
-                proc_deadlines_list_g.append(_abbr(vdate))
-            else:
-                proc_deadlines_list_g.append(label or "")
+        # Build display deadlines for processes group page.
+        proc_deadlines_list_g = _process_deadline_labels([1, 2, 3])
 
         html_g = processes_template.render(
             top_task_names=proc_top_headers_g,
