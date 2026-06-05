@@ -18,7 +18,7 @@ Generates `output_directory/index.html` with the scoreboard.
 
 - `data/points-info.yml` - Task points, deadlines, penalties
 - `data/plagiarism.yml` - Flagged submissions
-- `data/deadlines.yml` - Optional display deadlines and day offsets
+- `data/deadlines.yml` - Optional deadline display labels
 
 ## Testing
 
@@ -36,22 +36,20 @@ HTML table with columns: S (solution), A (acceleration), E (efficiency), D (dead
 
 ### Deadlines display
 
-- Threads deadlines are auto-distributed across the Spring window: 1 Feb → 15 May.
-- Processes deadlines are auto-distributed across the Autumn window: 15 Oct → 14 Dec.
+- Deadline labels are shown only when explicitly configured in `data/deadlines.yml`.
+- Missing entries are hidden.
 - Due time is 23:59 MSK on the shown date.
-- File `data/deadlines.yml` can shift dates per item by integer day offsets (default 0). Example:
+- Example:
 
 ```yaml
 threads:
-  seq: 0     # no shift
-  omp: -2    # 2 days earlier
-  tbb: 3     # 3 days later
-  stl: 0
-  all: 0
+  seq: "22 Feb"
+  omp: "14 Mar"
+  tbb: "4 Apr"
+  stl: "24 Apr"
+  all: "15 May"
 processes:
-  task_1: 0
-  task_2: 5
-  task_3: -1
+  task_1: "4 Nov"
+  task_2: "24 Nov"
+  task_3: "14 Dec"
 ```
-
-- If you put a non-integer string instead of a number, it is used as-is as the label (e.g., `"10 Nov"`).

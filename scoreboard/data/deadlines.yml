@@ -1,13 +1,11 @@
 threads:
-  # Put integer to shift auto date by N days (negative allowed). Default 0.
-  seq: 0
-  omp: 0
-  tbb: 0
-  stl: 0
-  all: 0
+  # seq: "22 Feb"
+  # omp: "14 Mar"
+  # tbb: "4 Apr"
+  # stl: "24 Apr"
+  # all: "15 May"
 
 processes:
-  # Use integer offsets for tasks; default 0.
-  task_1: 0
-  task_2: 0
-  task_3: 0
+  # task_1: "4 Nov"
+  # task_2: "24 Nov"
+  # task_3: "14 Dec"
