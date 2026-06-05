@@ -64,6 +64,24 @@ class DestructorFailureFlag {
   inline static std::atomic<bool> failure_flag{false};
 };
 
+class PerformanceFailureFlag {
+ public:
+  static void Set() {
+    failure_flag.store(true);
+  }
+
+  static void Unset() {
+    failure_flag.store(false);
+  }
+
+  static bool Get() {
+    return failure_flag.load();
+  }
+
+ private:
+  inline static std::atomic<bool> failure_flag{false};
+};
+
 enum class GTestParamIndex : uint8_t {
   kTaskGetter,
   kNameTest,
@@ -75,6 +93,8 @@ int GetNumThreads();
 int GetNumProc();
 double GetTaskMaxTime();
 double GetPerfMaxTime();
+double GetTimeMPI();
+int GetMPIRank();
 void SynchronizeMpiRanks();
 
 template <typename T>

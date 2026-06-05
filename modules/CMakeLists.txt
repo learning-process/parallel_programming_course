@@ -26,6 +26,7 @@ set_target_properties(${exec_func_lib} PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories(
   ${exec_func_lib} PUBLIC ${CMAKE_SOURCE_DIR}/3rdparty
                           ${CMAKE_SOURCE_DIR}/modules ${CMAKE_SOURCE_DIR}/tasks)
+ppc_include_benchmark(${exec_func_lib})
 
 foreach(
   link

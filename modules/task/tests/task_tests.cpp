@@ -202,12 +202,22 @@ TEST(TaskTest, GetStringTaskTypeEachTypeWithValidFile) {
       << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "tbb": "enabled", "seq": "enabled"}})";
   file.close();
 
-  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kALL, path));
-  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kSTL, path));
-  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kOMP, path));
-  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kMPI, path));
-  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kTBB, path));
-  EXPECT_NO_THROW(GetStringTaskType(TypeOfTask::kSEQ, path));
+  EXPECT_EQ(GetStringTaskType(TypeOfTask::kALL, path), "all_enabled");
+  EXPECT_EQ(GetStringTaskType(TypeOfTask::kSTL, path), "stl_enabled");
+  EXPECT_EQ(GetStringTaskType(TypeOfTask::kOMP, path), "omp_enabled");
+  EXPECT_EQ(GetStringTaskType(TypeOfTask::kMPI, path), "mpi_enabled");
+  EXPECT_EQ(GetStringTaskType(TypeOfTask::kTBB, path), "tbb_enabled");
+  EXPECT_EQ(GetStringTaskType(TypeOfTask::kSEQ, path), "seq_enabled");
+}
+
+TEST(TaskTest, GetStringTaskTypeExceptionMessageContainsPath) {
+  const std::string missing_path = "non_existent_settings.json";
+  try {
+    GetStringTaskType(TypeOfTask::kSEQ, missing_path);
+    FAIL() << "Expected std::runtime_error";
+  } catch (const std::runtime_error &e) {
+    EXPECT_NE(std::string(e.what()).find(missing_path), std::string::npos);
+  }
 }
 
 TEST(TaskTest, GetStringTaskTypeReadsNestedTaskPath) {
@@ -255,6 +265,16 @@ TEST(TaskTest, GetStringTaskTypeThrowsIfKeyMissing) {
   file.close();
 
   EXPECT_ANY_THROW(GetStringTaskType(TypeOfTask::kSTL, path));
+}
+
+TEST(TaskTest, GetStringTaskTypeThrowsIfJsonValueIsNull) {
+  std::string path = "settings_null_value.json";
+  ScopedFile cleaner(path);
+  std::ofstream file(path);
+  file << R"({"tasks": {"seq": null}})";
+  file.close();
+
+  EXPECT_THROW(GetStringTaskType(TypeOfTask::kSEQ, path), NlohmannJsonTypeError);
 }
 
 TEST(TaskTest, TaskDestructorThrowsIfStageIncomplete) {
@@ -367,6 +387,16 @@ class DummyTask : public Task<int, int> {
     return true;
   }
 };
+
+TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
+  DummyTask task;
+  task.SetTypeOfTask(TypeOfTask::kOMP);
+  task.Validation();
+  task.PreProcessing();
+  task.Run();
+  task.PostProcessing();
+  EXPECT_EQ(task.GetDynamicTypeOfTask(), TypeOfTask::kOMP);
+}
 
 TEST(TaskTest, ValidationThrowsIfCalledTwice) {
   auto task = std::make_shared<DummyTask>();

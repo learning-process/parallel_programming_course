@@ -31,7 +31,7 @@ class ExampleRunPerfTestProcesses3 : public ppc::util::BaseRunPerfTests<InType, 
 const auto kAllPerfTasks = ppc::util::MakeAllPerfTasks<InType, NesterovATestTaskMPI, NesterovATestTaskSEQ>(
     PPC_SETTINGS_example, "processes.t3");
 
-TEST_F(ExampleRunPerfTestProcesses3, RunPerfModes) {
+TEST_F(ExampleRunPerfTestProcesses3, RunPerf) {
   std::apply([this](const auto &...test_params) { (ExecuteTest(test_params), ...); }, kAllPerfTasks);
 }
 

@@ -30,7 +30,7 @@ jobs:
           tar -xzvf ubuntu-gcc-install-ubuntu-24.04.tar.gz -C install
       - name: Run perf tests
         run: |
-          bash -e scripts/generate_perf_results.sh
+          scripts/run_tests.py --running-type=performance
         env:
           PPC_NUM_PROC: 2
           PPC_NUM_THREADS: 2
@@ -68,7 +68,7 @@ jobs:
           tar -xzvf macos-clang-install.tar.gz -C install
       - name: Run perf tests
         run: |
-          bash -e scripts/generate_perf_results.sh
+          scripts/run_tests.py --running-type=performance
         env:
           PPC_NUM_PROC: 1
           PPC_NUM_THREADS: 2

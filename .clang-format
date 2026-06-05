@@ -6,6 +6,13 @@ UseTab: Never
 AllowShortFunctionsOnASingleLine: Empty
 IndentPPDirectives: AfterHash
 SortIncludes: true
+IncludeCategories:
+  - Regex: '^<gtest/.*'
+    Priority: 1
+  - Regex: '^<.*'
+    Priority: 2
+  - Regex: '.*'
+    Priority: 3
 FixNamespaceComments: true
 InsertBraces: true
 QualifierAlignment: Left

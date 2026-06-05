@@ -1,7 +1,7 @@
 import argparse
-import csv
 import json
 import logging
+import re
 import shutil
 import subprocess
 import sys
@@ -20,6 +20,8 @@ task_types = ["all", "mpi", "omp", "seq", "stl", "tbb"]
 # Threads table order: seq first, then omp, tbb, stl, all
 task_types_threads = ["seq", "omp", "tbb", "stl", "all"]
 task_types_processes = ["mpi", "seq"]
+PERF_STAT_PRIORITY = {"median": 0, "mean": 1, "": 2}
+PERF_TIME_UNIT_TO_SECONDS = {"s": 1.0, "ms": 1e-3, "us": 1e-6, "ns": 1e-9}
 
 script_dir = Path(__file__).parent
 tasks_dir = script_dir.parent / "tasks"
@@ -208,143 +210,108 @@ def discover_tasks(tasks_dir, task_types):
 directories, task_category_map = discover_tasks(tasks_dir, task_types)
 
 
-def load_performance_data_threads(perf_stat_file_path: Path) -> dict:
-    """Load threads performance ratios (T_x/T_seq) from CSV.
-    Expected header: Task, SEQ, OMP, TBB, STL, ALL
+def parse_benchmark_name(name: str) -> tuple[str, str, str] | None:
+    """Parse <task>_<impl>_enabled Google Benchmark names."""
+    base_name = name.split("/", maxsplit=1)[0]
+    match = re.match(
+        r"(.+?)_(all|mpi|omp|seq|stl|tbb)_enabled(?:_(mean|median))?$", base_name
+    )
+    if match is None:
+        return None
+    return match.group(1), match.group(2), match.group(3) or ""
+
+
+def _benchmark_time_to_seconds(value: float, unit: str) -> float:
+    return float(value) * PERF_TIME_UNIT_TO_SECONDS.get(unit, 1e-9)
+
+
+def _perf_record_priority(record: dict) -> int:
+    return PERF_STAT_PRIORITY.get(str(record.get("statistic", "")), 3)
+
+
+def load_benchmark_performance_data(benchmarks_dir: Path) -> dict[str, dict]:
+    """Load Google Benchmark JSON files written by ppc_perf_tests.
+
+    Returns raw benchmark times in seconds:
+      benchmark task name -> implementation -> seconds
     """
-    perf_stats: dict[str, dict] = {}
-    if perf_stat_file_path.exists():
-        with open(perf_stat_file_path, "r", newline="") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                task_name = row.get("Task")
-                if not task_name:
-                    continue
-                perf_stats[task_name] = {
-                    "seq": row.get("SEQ", "?"),
-                    "omp": row.get("OMP", "?"),
-                    "tbb": row.get("TBB", "?"),
-                    "stl": row.get("STL", "?"),
-                    "all": row.get("ALL", "?"),
-                }
-    else:
-        logger.warning("Threads perf stats CSV not found at %s", perf_stat_file_path)
-    return perf_stats
+    if not benchmarks_dir.exists():
+        logger.warning("Benchmark JSON directory not found at %s", benchmarks_dir)
+        return {}
 
+    selected: dict[tuple[str, str], dict] = {}
+    for json_path in sorted(benchmarks_dir.glob("*.json")):
+        try:
+            with open(json_path, "r", encoding="utf-8") as file:
+                payload = json.load(file)
+        except (OSError, json.JSONDecodeError) as e:
+            logger.warning("Failed to parse benchmark JSON %s: %s", json_path, e)
+            continue
 
-def load_performance_data(perf_stat_file_path: Path) -> dict:
-    """Compatibility helper for legacy tests: load perf data with optional MPI column.
-
-    Always returns a mapping: task -> {seq, omp, stl, tbb, all, mpi}
-    Missing columns are filled with ``"N/A"``; empty cells stay empty strings.
-    """
-    perf_stats: dict[str, dict] = {}
-    if not perf_stat_file_path.exists():
-        return perf_stats
-
-    with open(perf_stat_file_path, "r", newline="") as csvfile:
-        reader = csv.DictReader(csvfile)
-        # Normalize column names we care about
-        for row in reader:
-            task_name = row.get("Task")
-            if not task_name:
+        for entry in payload.get("benchmarks", []):
+            parsed_name = parse_benchmark_name(str(entry.get("name", "")))
+            if parsed_name is None:
                 continue
-
-            def _get(col: str) -> str:
-                if col in row:
-                    return row.get(col, "N/A")
-                return "N/A"
-
-            perf_stats[task_name] = {
-                "seq": _get("SEQ"),
-                "omp": _get("OMP"),
-                "stl": _get("STL"),
-                "tbb": _get("TBB"),
-                "all": _get("ALL"),
-                "mpi": _get("MPI"),
+            task_name, implementation, statistic = parsed_name
+            try:
+                seconds = _benchmark_time_to_seconds(
+                    float(entry["real_time"]), str(entry.get("time_unit", "ns"))
+                )
+            except (KeyError, TypeError, ValueError):
+                continue
+            record = {
+                "task": task_name,
+                "implementation": implementation,
+                "seconds": seconds,
+                "statistic": statistic or str(entry.get("aggregate_name", "")),
             }
-    return perf_stats
+            key = (task_name, implementation)
+            previous = selected.get(key)
+            if previous is None or _perf_record_priority(
+                record
+            ) < _perf_record_priority(previous):
+                selected[key] = record
 
-
-def load_performance_data_processes(perf_stat_file_path: Path) -> dict:
-    """Load processes performance data (raw times, seconds) and merge *_seq/_mpi rows.
-
-    Expected header: Task, SEQ, MPI with absolute times. If the CSV contains
-    split rows like <task>_seq and <task>_mpi, they are combined into one entry.
-    """
     perf_stats: dict[str, dict] = {}
-    if not perf_stat_file_path.exists():
-        logger.warning("Processes perf stats CSV not found at %s", perf_stat_file_path)
-        return perf_stats
-
-    with open(perf_stat_file_path, "r", newline="") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            task_name = row.get("Task")
-            if not task_name:
-                continue
-            seq_val = row.get("SEQ", "?")
-            mpi_val = row.get("MPI", "?")
-
-            base_name = task_name
-            mode = None
-            for suff, lbl in (("_seq", "seq"), ("_mpi", "mpi")):
-                if task_name.endswith(suff):
-                    base_name = task_name[: -len(suff)]
-                    mode = lbl
-                    break
-
-            entry = perf_stats.setdefault(base_name, {"seq": "?", "mpi": "?"})
-            if mode == "seq":
-                if seq_val and seq_val != "?":
-                    entry["seq"] = seq_val
-            elif mode == "mpi":
-                if mpi_val and mpi_val != "?":
-                    entry["mpi"] = mpi_val
-            else:
-                if seq_val and seq_val != "?":
-                    entry["seq"] = seq_val
-                if mpi_val and mpi_val != "?":
-                    entry["mpi"] = mpi_val
-
+    for record in selected.values():
+        perf_stats.setdefault(record["task"], {})[record["implementation"]] = (
+            f"{record['seconds']:.10g}"
+        )
     return perf_stats
 
 
 def calculate_performance_metrics(perf_val, eff_num_proc, task_type, seq_val=None):
-    """Calculate acceleration and efficiency.
-
-    For processes table we pass raw times; for threads legacy ratios we keep old behavior.
-    """
+    """Calculate acceleration and efficiency from raw times in seconds."""
     acceleration = "?"
     efficiency = "?"
     try:
         if seq_val is None:
             perf_float = float(perf_val)
-            if perf_float > 0 and not (
-                perf_float == float("inf") or perf_float != perf_float
-            ):
-                speedup = 1.0 / perf_float
-                if task_type == "seq":
-                    acceleration = "1.00"
-                    efficiency = "N/A"
-                else:
-                    acceleration = f"{speedup:.2f}"
-                    efficiency = f"{speedup / eff_num_proc * 100:.2f}%"
+            if task_type == "seq" and perf_float > 0:
+                return "1.00", "N/A"
+            return acceleration, efficiency
+
+        seq_t = float(seq_val)
+        par_t = float(perf_val)
+        if (
+            seq_t <= 0
+            or par_t <= 0
+            or seq_t == float("inf")
+            or par_t == float("inf")
+            or seq_t != seq_t
+            or par_t != par_t
+        ):
+            return acceleration, efficiency
+        if min(seq_t, par_t) < 0.001:
+            tiny_mark = "t &lt;<br/>1e-3"
+            return tiny_mark, tiny_mark
+        speedup = seq_t / par_t
+        if task_type == "seq":
+            acceleration = "1.00"
+            efficiency = "N/A"
         else:
-            seq_t = float(seq_val)
-            par_t = float(perf_val)
-            # If times are too small, metrics are unstable -> mark N/A
-            if min(seq_t, par_t) < 0.001:
-                tiny_mark = "t &lt;<br/>1e-3"
-                return tiny_mark, tiny_mark
-            if seq_t > 0 and par_t > 0:
-                speedup = seq_t / par_t
-                if task_type == "seq":
-                    acceleration = "1.00"
-                    efficiency = "N/A"
-                else:
-                    acceleration = f"{speedup:.2f}"
-                    efficiency = f"{speedup / eff_num_proc * 100:.2f}%"
+            acceleration = f"{speedup:.2f}"
+            efficiency = f"{speedup / eff_num_proc * 100:.2f}%"
     except (ValueError, TypeError):
         pass
     return acceleration, efficiency
@@ -646,9 +613,11 @@ def _build_rows_for_task_types(
 
             perf_val = perf_stats.get(dir, {}).get(task_type, "?")
 
-            # Calculate acceleration and efficiency if performance data is available
+            seq_val = None
+            if isinstance(perf_stats.get(dir, {}), dict):
+                seq_val = perf_stats.get(dir, {}).get("seq")
             acceleration, efficiency = calculate_performance_metrics(
-                perf_val, eff_num_proc, task_type
+                perf_val, eff_num_proc, task_type, seq_val=seq_val
             )
 
             # Calculate deadline penalty points
@@ -776,80 +745,12 @@ def main():
             labels.append(label)
         return labels if any(labels) else []
 
-    # Locate perf CSVs from CI or local runs (threads and processes)
-    candidates_threads = [
-        script_dir.parent
-        / "build"
-        / "perf_stat_dir"
-        / "threads_task_run_perf_table.csv",
-        script_dir.parent / "perf_stat_dir" / "threads_task_run_perf_table.csv",
-        # Fallback to old single-file name
-        script_dir.parent / "build" / "perf_stat_dir" / "task_run_perf_table.csv",
-        script_dir.parent / "perf_stat_dir" / "task_run_perf_table.csv",
+    benchmark_dirs = [
+        script_dir.parent / "build" / "perf_stat_dir" / "benchmarks",
+        script_dir.parent / "perf_stat_dir" / "benchmarks",
     ]
-    threads_csv = next(
-        (p for p in candidates_threads if p.exists()), candidates_threads[0]
-    )
-
-    candidates_processes = [
-        script_dir.parent
-        / "build"
-        / "perf_stat_dir"
-        / "processes_task_run_perf_table.csv",
-        script_dir.parent / "perf_stat_dir" / "processes_task_run_perf_table.csv",
-    ]
-    processes_csv = next(
-        (p for p in candidates_processes if p.exists()), candidates_processes[0]
-    )
-
-    # Read and merge performance statistics CSVs (keys = CSV Task column)
-    perf_stats_threads = load_performance_data_threads(threads_csv)
-    perf_stats_processes = load_performance_data_processes(processes_csv)
-
-    def _aggregate_process_csv(
-        perf_stat_file_path: Path, base: dict[str, dict]
-    ) -> dict:
-        """Parse CSV again to ensure merged seq/mpi entries."""
-        import csv
-
-        perf_stats_local = dict(base)
-        if not perf_stat_file_path.exists():
-            return perf_stats_local
-        with open(perf_stat_file_path, "r", newline="") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                task_name = row.get("Task")
-                if not task_name:
-                    continue
-                seq_val = row.get("SEQ", "?")
-                mpi_val = row.get("MPI", "?")
-                base_name = task_name
-                mode = None
-                for suff, lbl in (("_seq", "seq"), ("_mpi", "mpi")):
-                    if task_name.endswith(suff):
-                        base_name = task_name[: -len(suff)]
-                        mode = lbl
-                        break
-                entry = perf_stats_local.setdefault(base_name, {"seq": "?", "mpi": "?"})
-                if mode == "seq":
-                    if seq_val and seq_val != "?":
-                        entry["seq"] = seq_val
-                elif mode == "mpi":
-                    if mpi_val and mpi_val != "?":
-                        entry["mpi"] = mpi_val
-                else:
-                    if seq_val and seq_val != "?":
-                        entry["seq"] = seq_val
-                    if mpi_val and mpi_val != "?":
-                        entry["mpi"] = mpi_val
-        return perf_stats_local
-
-    perf_stats_processes = _aggregate_process_csv(processes_csv, perf_stats_processes)
-
-    perf_stats_raw: dict[str, dict] = {}
-    perf_stats_raw.update(perf_stats_threads)
-    for k, v in perf_stats_processes.items():
-        perf_stats_raw[k] = {**perf_stats_raw.get(k, {}), **v}
+    benchmarks_dir = next((p for p in benchmark_dirs if p.exists()), benchmark_dirs[0])
+    perf_stats_raw = load_benchmark_performance_data(benchmarks_dir)
 
     # Partition tasks by category derived from the filesystem layout.
     threads_task_dirs = [
@@ -867,11 +768,8 @@ def main():
             elif "processes" in name:
                 processes_task_dirs.append(name)
 
-    # Resolve performance stats keys (from CSV Task names) to actual task directories.
-    # Old logic grouped by "family", which made all tasks share the same numbers.
-    # New logic: map each CSV key to the best-matching directory name by substring.
+    # Resolve benchmark task names to actual task directories.
     perf_stats: dict[str, dict] = {}
-    import re as _re
 
     dir_names_sorted = sorted(directories.keys(), key=len, reverse=True)
 
@@ -886,35 +784,18 @@ def main():
             merged[k] = v
         return merged
 
-    # Precompute mapping: process task number -> list of directories. Meta-layout
-    # tasks derive this from processes/t1, processes/t2, etc.
-    process_tasknum_map: dict[int, list[str]] = {}
-    for d, num in process_task_indices.items():
-        process_tasknum_map.setdefault(num, []).append(d)
-
-    def _match_dir(csv_key: str) -> str | None:
-        # Strip common suffixes like "_mpi_enabled" etc. to improve matching
-        base = _re.sub(r"_(mpi|omp|tbb|stl|all|seq)_enabled.*", "", csv_key)
+    def _match_dir(benchmark_key: str) -> str | None:
+        base = re.sub(r"_(mpi|omp|tbb|stl|all|seq)_enabled.*", "", benchmark_key)
         for d in dir_names_sorted:
-            if base.startswith(d) or d in base or csv_key.startswith(d):
+            if base.startswith(d) or d in base or benchmark_key.startswith(d):
                 return d
         return None
 
     for key, vals in perf_stats_raw.items():
         targets: set[str] = set()
-        # 1) Direct / substring match
         target = _match_dir(key)
         if target:
             targets.add(target)
-        # 2) If a legacy key encodes processes_N, spread to dirs with that task number
-        m_num = _re.search(r"processes_(\d+)", key)
-        if m_num:
-            try:
-                num = int(m_num.group(1))
-                targets.update(process_tasknum_map.get(num, []))
-            except Exception:
-                pass
-        # Apply merged values to all targets
         for t in targets:
             perf_stats[t] = _merge_perf_maps(perf_stats.get(t, {}), vals)
 

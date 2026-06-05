@@ -3,6 +3,7 @@
 import os
 import platform
 import shlex
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -51,6 +52,7 @@ class PPCRunner:
         self.__ppc_num_threads = None
         self.__ppc_num_proc = None
         self.__ppc_env = None
+        self.__build_dir_path = None
         self.work_dir = None
         self.build_dir = build_dir
         self.verbose = verbose
@@ -98,14 +100,16 @@ class PPCRunner:
             )
 
         project_path = Path(self.__get_project_path())
+        build_dir = Path(self.build_dir)
+        if not build_dir.is_absolute():
+            build_dir = project_path / build_dir
+        self.__build_dir_path = build_dir
+
         install_bin_dir = project_path / "install" / "bin"
         if install_bin_dir.exists():
             self.work_dir = install_bin_dir
             return
 
-        build_dir = Path(self.build_dir)
-        if not build_dir.is_absolute():
-            build_dir = project_path / build_dir
         bin_dir = build_dir if build_dir.name == "bin" else build_dir / "bin"
         if not bin_dir.exists():
             raise FileNotFoundError(
@@ -114,10 +118,13 @@ class PPCRunner:
             )
         self.work_dir = bin_dir
 
-    def __run_exec(self, command):
+    def __run_exec(self, command, extra_env=None):
         if self.verbose:
             print("Executing:", " ".join(shlex.quote(part) for part in command))
-        result = subprocess.run(command, shell=False, env=self.__ppc_env)
+        run_env = self.__ppc_env.copy()
+        if extra_env:
+            run_env.update(extra_env)
+        result = subprocess.run(command, shell=False, env=run_env)
         if result.returncode != 0:
             raise Exception(f"Subprocess return {result.returncode}.")
 
@@ -153,41 +160,42 @@ class PPCRunner:
             return "mpich", "-n"
         return "unknown", "-np"
 
-    def __build_mpi_cmd(self, ppc_num_proc, additional_mpi_args):
+    def __build_mpi_cmd(self, ppc_num_proc, additional_mpi_args, extra_env=None):
+        mpi_env = self.__ppc_env.copy()
+        if extra_env:
+            mpi_env.update(extra_env)
         base = [self.mpi_exec] + shlex.split(additional_mpi_args)
+        forwarded_env = [
+            "PPC_NUM_THREADS",
+            "OMP_NUM_THREADS",
+            "PPC_BENCHMARK_OUT",
+            "PPC_BENCHMARK_FILTER",
+            "PPC_PERF_IMPL_FILTER",
+            "PPC_PERF_CATEGORY_FILTER",
+        ]
 
         if self.platform == "Windows":
             # MS-MPI style
-            env_args = [
-                "-env",
-                "PPC_NUM_THREADS",
-                self.__ppc_env["PPC_NUM_THREADS"],
-                "-env",
-                "OMP_NUM_THREADS",
-                self.__ppc_env["OMP_NUM_THREADS"],
-            ]
+            env_args = []
+            for env_name in forwarded_env:
+                if env_name in mpi_env:
+                    env_args += ["-env", env_name, mpi_env[env_name]]
             np_args = ["-n", ppc_num_proc]
             return base + env_args + np_args
 
         # Non-Windows
         if self.mpi_env_mode == "openmpi":
-            env_args = [
-                "-x",
-                "PPC_NUM_THREADS",
-                "-x",
-                "OMP_NUM_THREADS",
-            ]
+            env_args = []
+            for env_name in forwarded_env:
+                if env_name in mpi_env:
+                    env_args += ["-x", env_name]
             np_flag = "-np"
         elif self.mpi_env_mode == "mpich":
             # Explicitly set env variables for all ranks
-            env_args = [
-                "-env",
-                "PPC_NUM_THREADS",
-                self.__ppc_env["PPC_NUM_THREADS"],
-                "-env",
-                "OMP_NUM_THREADS",
-                self.__ppc_env["OMP_NUM_THREADS"],
-            ]
+            env_args = []
+            for env_name in forwarded_env:
+                if env_name in mpi_env:
+                    env_args += ["-env", env_name, mpi_env[env_name]]
             np_flag = "-n"
         else:
             # Unknown MPI flavor: rely on environment inheritance and default to -np
@@ -195,6 +203,30 @@ class PPCRunner:
             np_flag = "-np"
 
         return base + env_args + [np_flag, ppc_num_proc]
+
+    def __benchmark_output_dir(self):
+        if self.__build_dir_path is None:
+            raise RuntimeError("Build directory is not initialized.")
+        return self.__build_dir_path / "perf_stat_dir" / "benchmarks"
+
+    def __get_performance_gtest_settings(self):
+        return [
+            "--gtest_repeat=1",
+            "--gtest_recreate_environments_when_repeating",
+            "--gtest_color=0",
+            "--gtest_filter=*RunPerf*",
+        ]
+
+    def __get_benchmark_env(self, category, task_type):
+        output_dir = self.__benchmark_output_dir()
+        output_dir.mkdir(parents=True, exist_ok=True)
+        return {
+            "PPC_PERF_CATEGORY_FILTER": f"_{category}_",
+            "PPC_PERF_IMPL_FILTER": f"_{task_type}_",
+            "PPC_BENCHMARK_OUT": str(
+                output_dir / f"benchmark_{category}_{task_type}.json"
+            ),
+        }
 
     @staticmethod
     def __get_gtest_settings(repeats_count, type_task):
@@ -260,19 +292,31 @@ class PPCRunner:
                 )
 
     def run_performance(self):
+        output_dir = self.__benchmark_output_dir()
+        if output_dir.exists():
+            shutil.rmtree(output_dir)
+
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
-            mpi_running = self.__build_mpi_cmd(self.__ppc_num_proc, "")
-            for task_type in ["all", "mpi", "seq"]:
+            for category, task_type in [
+                ("threads", "all"),
+                ("processes", "mpi"),
+                ("processes", "seq"),
+            ]:
+                extra_env = self.__get_benchmark_env(category, task_type)
+                mpi_running = self.__build_mpi_cmd(self.__ppc_num_proc, "", extra_env)
                 self.__run_exec(
                     mpi_running
                     + [str(self.work_dir / "ppc_perf_tests")]
-                    + self.__get_gtest_settings(1, "_" + task_type + "_")
+                    + self.__get_performance_gtest_settings(),
+                    extra_env,
                 )
 
         for task_type in ["omp", "seq", "stl", "tbb"]:
+            extra_env = self.__get_benchmark_env("threads", task_type)
             self.__run_exec(
                 [str(self.work_dir / "ppc_perf_tests")]
-                + self.__get_gtest_settings(1, "_" + task_type + "_")
+                + self.__get_performance_gtest_settings(),
+                extra_env,
             )
 
 
