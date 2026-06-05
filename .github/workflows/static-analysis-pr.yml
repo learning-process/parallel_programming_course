@@ -85,7 +85,7 @@ jobs:
       - name: Show ccache stats
         run: ccache --show-stats
       - name: Run clang-tidy
-        uses: ./.github/actions/clang-tidy-native
+        uses: aobolensk/clang-tidy-action@v1
         id: review
         with:
           exclude: "3rdparty build"
@@ -136,7 +136,7 @@ jobs:
       - name: Show ccache stats
         run: ccache --show-stats
       - name: Run clang-tidy
-        uses: ./.github/actions/clang-tidy-native
+        uses: aobolensk/clang-tidy-action@v1
         id: review
         with:
           exclude: "3rdparty build docs_venv .git .pytest_cache .ruff_cache xml"
