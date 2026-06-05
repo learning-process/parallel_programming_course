@@ -7,13 +7,13 @@ Navigate to the project root.
 
    .. code-block:: bash
 
-      cmake -S . -B build -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=Release
+      cmake -S . -B build
 
    To configure only selected tasks:
 
    .. code-block:: bash
 
-      cmake -S . -B build -DPPC_TASKS="example_threads;example_processes" -D USE_FUNC_TESTS=ON -D USE_PERF_TESTS=ON -D CMAKE_BUILD_TYPE=Release
+      cmake -S . -B build -DPPC_TASKS="example_threads;example_processes"
 
    Optional: enable sanitizers for local debugging
 
