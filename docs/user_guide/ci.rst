@@ -16,7 +16,7 @@ High‑level pipeline
 
 - Coverage (Ubuntu/GCC) — ``-D USE_COVERAGE=ON`` + gcovr; publishes to Codecov and uploads ``cov-report`` (HTML).
 
-- Performance (perf) — ``scripts/generate_perf_results.sh`` produces ``build/perf_stat_dir``; uploads ``perf-stat`` (Linux) and ``perf-stat-macos`` (macOS).
+- Performance (perf) — ``scripts/run_tests.py --running-type=performance`` writes benchmark data to ``build/perf_stat_dir``; uploads ``perf-stat`` (Linux) and ``perf-stat-macos`` (macOS).
 
 - Pages (docs and scoreboard) — builds Doxygen XML and Sphinx (EN+RU) + scoreboard; on ``master`` deploys with coverage to GitHub Pages.
 
@@ -81,7 +81,7 @@ Coverage and sanitizers locally
 Docs and scoreboard artifacts
 -----------------------------
 - Docs: run Doxygen first (``doxygen Doxyfile``), then Sphinx EN/RU via CMake targets ``docs_gettext``, ``docs_update``, ``docs_html``.
-- Scoreboard: generate perf stats (``scripts/generate_perf_results.sh``) and build scoreboard target or use ``python3 scoreboard/main.py`` locally.
+- Scoreboard: generate perf stats (``scripts/run_tests.py --running-type=performance``) and build scoreboard target or use ``python3 scoreboard/main.py`` locally.
 
 Troubleshooting
 ---------------
@@ -91,7 +91,7 @@ Troubleshooting
 - Time limits exceeded: reduce data sizes; prefer env vars (:doc:`environment_variables`) like ``PPC_TASK_MAX_TIME``/``PPC_PERF_MAX_TIME``; avoid sleeps/randomness.
 - MPI runs fail locally: set ``PPC_NUM_PROC`` and try ``--additional-mpi-args=\"--oversubscribe\"``.
 - Docs build fails: fix RST warnings; run ``doxygen Doxyfile`` before Sphinx targets.
-- Performance job fails: ensure exactly two perf tests (``task`` and ``pipeline``) and keep durations within limits.
+- Performance job fails: ensure performance tests are enabled and keep durations within limits.
 
 Local clang-tidy and gcovr examples
 -----------------------------------

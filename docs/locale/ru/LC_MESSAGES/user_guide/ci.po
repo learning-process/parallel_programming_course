@@ -87,13 +87,14 @@ msgstr ""
 
 #: ../../../../docs/user_guide/ci.rst:19
 msgid ""
-"Performance (perf) — ``scripts/generate_perf_results.sh`` produces "
-"``build/perf_stat_dir``; uploads ``perf-stat`` (Linux) and ``perf-stat-"
-"macos`` (macOS)."
+"Performance (perf) — ``scripts/run_tests.py --running-type=performance`` "
+"writes benchmark data to ``build/perf_stat_dir``; uploads ``perf-stat`` "
+"(Linux) and ``perf-stat-macos`` (macOS)."
 msgstr ""
-"Производительность (perf) — ``scripts/generate_perf_results.sh`` "
-"формирует ``build/perf_stat_dir``; загружаются артефакты ``perf-stat`` "
-"(Linux) и ``perf-stat-macos`` (macOS)."
+"Производительность (perf) — ``scripts/run_tests.py --running-"
+"type=performance`` записывает данные бенчмарков в ``build/perf_stat_dir``;"
+" загружаются артефакты ``perf-stat`` (Linux) и ``perf-stat-macos`` "
+"(macOS)."
 
 #: ../../../../docs/user_guide/ci.rst:21
 msgid ""
@@ -238,13 +239,13 @@ msgstr ""
 
 #: ../../../../docs/user_guide/ci.rst:84
 msgid ""
-"Scoreboard: generate perf stats (``scripts/generate_perf_results.sh``) "
-"and build scoreboard target or use ``python3 scoreboard/main.py`` "
-"locally."
+"Scoreboard: generate perf stats (``scripts/run_tests.py --running-"
+"type=performance``) and build scoreboard target or use ``python3 "
+"scoreboard/main.py`` locally."
 msgstr ""
-"Табло: сформируйте статистику (``scripts/generate_perf_results.sh``) и "
-"соберите цель табло или воспользуйтесь локально ``python3 "
-"scoreboard/main.py``."
+"Табло: сформируйте статистику (``scripts/run_tests.py --running-"
+"type=performance``) и соберите цель табло или воспользуйтесь локально "
+"``python3 scoreboard/main.py``."
 
 #: ../../../../docs/user_guide/ci.rst:87
 msgid "Troubleshooting"
@@ -305,11 +306,11 @@ msgstr ""
 
 #: ../../../../docs/user_guide/ci.rst:94
 msgid ""
-"Performance job fails: ensure exactly two perf tests (``task`` and "
-"``pipeline``) and keep durations within limits."
+"Performance job fails: ensure performance tests are enabled and keep "
+"durations within limits."
 msgstr ""
-"Падает job производительности: убедитесь, что ровно два перфтеста "
-"(``task`` и ``pipeline``) и длительность в пределах лимитов."
+"Падает job производительности: убедитесь, что перфтесты включены и "
+"длительность в пределах лимитов."
 
 #: ../../../../docs/user_guide/ci.rst:97
 msgid "Local clang-tidy and gcovr examples"
