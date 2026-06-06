@@ -100,7 +100,7 @@ Tips for tests
 --------------
 - Keep tests deterministic and under time limits; prefer env vars (see ``User Guide → Environment Variables``) over sleeps.
 - Use ``PPC_ID_<task_id>`` to access files from ``data/``.
-- Cover edge cases in functional tests; add exactly two performance test styles (``task`` and ``pipeline``) inside the suite.
+- Cover edge cases in functional tests; add focused performance tests for enabled implementations.
 
 - ``data/`` — optional input files for tests (e.g., images).
 - ``settings.json`` — enable required technologies for your semester, e.g.:

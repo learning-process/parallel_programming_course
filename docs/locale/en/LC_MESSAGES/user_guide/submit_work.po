@@ -134,8 +134,8 @@ msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:103
 msgid ""
-"Cover edge cases in functional tests; add exactly two performance test "
-"styles (``task`` and ``pipeline``) inside the suite."
+"Cover edge cases in functional tests; add focused performance tests for "
+"enabled implementations."
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:105
@@ -431,4 +431,3 @@ msgstr ""
 #~ "integration flow used in semester "
 #~ "repositories."
 #~ msgstr ""
-
