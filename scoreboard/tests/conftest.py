@@ -2,7 +2,6 @@
 Pytest configuration and shared fixtures for scoreboard tests.
 """
 
-import csv
 import shutil
 import tempfile
 from pathlib import Path
@@ -82,48 +81,6 @@ def sample_task_structure(temp_dir):
         (tasks_dir / task_dir / "main.cpp").touch()
 
     return tasks_dir
-
-
-@pytest.fixture
-def sample_performance_csv(temp_dir):
-    """Create a sample performance CSV file."""
-    csv_file = temp_dir / "performance.csv"
-
-    data = [
-        {
-            "Task": "example_task",
-            "SEQ": "1.0",
-            "OMP": "0.5",
-            "STL": "0.3",
-            "TBB": "0.4",
-            "ALL": "0.2",
-        },
-        {
-            "Task": "disabled_task",
-            "SEQ": "2.0",
-            "OMP": "1.0",
-            "STL": "0.8",
-            "TBB": "0.9",
-            "ALL": "0.7",
-        },
-        {
-            "Task": "partial_task",
-            "SEQ": "1.5",
-            "OMP": "N/A",
-            "STL": "N/A",
-            "TBB": "N/A",
-            "ALL": "N/A",
-        },
-    ]
-
-    with open(csv_file, "w", newline="") as f:
-        writer = csv.DictWriter(
-            f, fieldnames=["Task", "SEQ", "OMP", "STL", "TBB", "ALL"]
-        )
-        writer.writeheader()
-        writer.writerows(data)
-
-    return csv_file
 
 
 @pytest.fixture

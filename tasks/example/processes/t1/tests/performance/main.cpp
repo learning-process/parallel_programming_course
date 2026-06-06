@@ -35,7 +35,7 @@ const auto kAllPerfTasks = ppc::util::MakeAllPerfTasks<InType, NesterovATestTask
 
 }  // namespace
 
-TEST_F(ExampleRunPerfTestProcesses, RunPerfModes) {
+TEST_F(ExampleRunPerfTestProcesses, RunPerf) {
   std::apply([this](const auto &...test_params) { (ExecuteTest(test_params), ...); }, kAllPerfTasks);
 }
 

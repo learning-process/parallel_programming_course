@@ -21,9 +21,3 @@ Utility Module
 
 .. doxygennamespace:: ppc::util
    :project: ParallelProgrammingCourse
-
-Performance Module
-------------------
-
-.. doxygennamespace:: ppc::performance
-   :project: ParallelProgrammingCourse

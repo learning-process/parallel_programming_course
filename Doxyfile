@@ -6,7 +6,6 @@ PROJECT_BRIEF          = "Parallel Programming Course"
 INPUT                  = modules/task/include \
                          modules/util/include \
                          modules/util/src \
-                         modules/performance/include \
                          modules/runners/include \
                          modules/runners/src
 FILE_PATTERNS          = *.h *.c *.hpp *.cpp

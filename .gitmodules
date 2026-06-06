@@ -13,3 +13,6 @@
 [submodule "3rdparty/libenvpp"]
 	path = 3rdparty/libenvpp
 	url = https://github.com/ph3at/libenvpp
+[submodule "3rdparty/benchmark"]
+	path = 3rdparty/benchmark
+	url = https://github.com/google/benchmark

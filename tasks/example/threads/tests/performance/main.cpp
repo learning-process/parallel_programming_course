@@ -39,7 +39,7 @@ const auto kAllPerfTasks =
 
 }  // namespace
 
-TEST_F(ExampleRunPerfTestThreads, RunPerfModes) {
+TEST_F(ExampleRunPerfTestThreads, RunPerf) {
   std::apply([this](const auto &...test_params) { (ExecuteTest(test_params), ...); }, kAllPerfTasks);
 }
 
