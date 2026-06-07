@@ -1,20 +1,20 @@
 #pragma once
 
-#include <gtest/gtest.h>
-
 #include <benchmark/benchmark.h>
+#include <gtest/gtest.h>
+#include <mpi.h>
+#include <omp.h>
+#include <tbb/tick_count.h>
+
 #include <chrono>
 #include <cstddef>
 #include <cstdint>
 #include <exception>
 #include <functional>
 #include <iostream>
-#include <mpi.h>
-#include <omp.h>
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <tbb/tick_count.h>
 #include <tuple>
 #include <type_traits>
 #include <utility>
