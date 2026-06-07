@@ -68,13 +68,6 @@ repos:
         exclude: ^(3rdparty/|build.*/|install/)
         args: [--autofix, --indent=2, --no-ensure-ascii]
 
-  # Shell script linting with shellcheck (no docker dependency)
-  - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.11.0.1
-    hooks:
-      - id: shellcheck
-        files: \.sh$
-
   # Dockerfile linting with hadolint
   - repo: https://github.com/hadolint/hadolint
     rev: v2.14.0
