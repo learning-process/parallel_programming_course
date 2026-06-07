@@ -1,6 +1,7 @@
 #include "runners/include/runners.hpp"
 
 #include <gtest/gtest.h>
+
 #include <mpi.h>
 
 #include <chrono>

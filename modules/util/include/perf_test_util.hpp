@@ -1,7 +1,8 @@
 #pragma once
 
-#include <benchmark/benchmark.h>
 #include <gtest/gtest.h>
+
+#include <benchmark/benchmark.h>
 #include <mpi.h>
 #include <omp.h>
 #include <tbb/tick_count.h>

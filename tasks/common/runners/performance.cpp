@@ -1,6 +1,7 @@
+#include <gtest/gtest.h>
+
 #include <benchmark/benchmark.h>
 #include <benchmark/reporter.h>
-#include <gtest/gtest.h>
 #include <mpi.h>
 
 #include <chrono>
