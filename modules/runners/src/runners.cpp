@@ -1,7 +1,6 @@
 #include "runners/include/runners.hpp"
 
 #include <gtest/gtest.h>
-#include <mpi.h>
 
 #include <chrono>
 #include <cstdint>
@@ -10,6 +9,7 @@
 #include <format>
 #include <iostream>
 #include <memory>
+#include <mpi.h>
 #include <random>
 #include <stdexcept>
 #include <string>
@@ -140,6 +140,7 @@ int RunAllTestsSafely() {
 }  // namespace
 
 int Init(int argc, char **argv) {
+  ppc::util::ConfigureMpiEnvironment();
   const int init_res = MPI_Init(&argc, &argv);
   if (init_res != MPI_SUCCESS) {
     std::cerr << std::format("[  ERROR  ] MPI_Init failed with code {}", init_res) << '\n';

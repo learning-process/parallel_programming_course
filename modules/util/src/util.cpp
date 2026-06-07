@@ -1,11 +1,10 @@
 #include "util/include/util.hpp"
 
-#include <mpi.h>
-
 #include <algorithm>
 #include <array>
 #include <filesystem>
 #include <libenvpp/detail/get.hpp>
+#include <mpi.h>
 #include <string>
 
 namespace {
@@ -66,6 +65,15 @@ bool ppc::util::IsUnderMpirun() {
     const auto mpi_env = env::get<int>(env_var);
     return static_cast<bool>(mpi_env.has_value());
   });
+}
+
+void ppc::util::ConfigureMpiEnvironment() {
+#ifdef __APPLE__
+  // Open MPI 5 can emit mmap backing-file probe warnings for macOS TMPDIR paths.
+  if (!env::get<std::string>("OMPI_MCA_shmem").has_value()) {
+    env::detail::set_environment_variable("OMPI_MCA_shmem", "posix");
+  }
+#endif
 }
 
 void ppc::util::SynchronizeMpiRanks() {

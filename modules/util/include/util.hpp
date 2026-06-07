@@ -95,6 +95,7 @@ double GetTaskMaxTime();
 double GetPerfMaxTime();
 double GetTimeMPI();
 int GetMPIRank();
+void ConfigureMpiEnvironment();
 void SynchronizeMpiRanks();
 
 template <typename T>
