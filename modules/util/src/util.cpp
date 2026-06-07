@@ -1,10 +1,11 @@
 #include "util/include/util.hpp"
 
+#include <mpi.h>
+
 #include <algorithm>
 #include <array>
 #include <filesystem>
 #include <libenvpp/detail/get.hpp>
-#include <mpi.h>
 #include <string>
 
 namespace {

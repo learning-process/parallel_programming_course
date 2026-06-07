@@ -1,6 +1,7 @@
 #include "runners/include/runners.hpp"
 
 #include <gtest/gtest.h>
+#include <mpi.h>
 
 #include <chrono>
 #include <cstdint>
@@ -9,7 +10,6 @@
 #include <format>
 #include <iostream>
 #include <memory>
-#include <mpi.h>
 #include <random>
 #include <stdexcept>
 #include <string>
