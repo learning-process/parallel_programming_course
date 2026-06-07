@@ -1,7 +1,8 @@
-#include <gtest/gtest.h>
-
 #include <benchmark/benchmark.h>
 #include <benchmark/reporter.h>
+#include <gtest/gtest.h>
+#include <mpi.h>
+
 #include <chrono>
 #include <cstddef>
 #include <cstdint>
@@ -12,7 +13,6 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
-#include <mpi.h>
 #include <random>
 #include <stdexcept>
 #include <string>
