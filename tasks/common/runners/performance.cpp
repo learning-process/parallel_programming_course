@@ -1,6 +1,7 @@
+#include <gtest/gtest.h>
+
 #include <benchmark/benchmark.h>
 #include <benchmark/reporter.h>
-#include <gtest/gtest.h>
 #include <mpi.h>
 
 #include <chrono>
@@ -177,6 +178,7 @@ int SynchronizeStatus(int local_status, std::string_view stage) {
 }
 
 int RunPerformanceMain(int argc, char **argv) {
+  ppc::util::ConfigureMpiEnvironment();
   const int init_res = MPI_Init(&argc, &argv);
   if (init_res != MPI_SUCCESS) {
     std::cerr << "[  ERROR  ] MPI_Init failed with code " << init_res << '\n';

@@ -68,6 +68,15 @@ bool ppc::util::IsUnderMpirun() {
   });
 }
 
+void ppc::util::ConfigureMpiEnvironment() {
+#ifdef __APPLE__
+  // Open MPI 5 can emit mmap backing-file probe warnings for macOS TMPDIR paths.
+  if (!env::get<std::string>("OMPI_MCA_shmem").has_value()) {
+    env::detail::set_environment_variable("OMPI_MCA_shmem", "posix");
+  }
+#endif
+}
+
 void ppc::util::SynchronizeMpiRanks() {
   int initialized = 0;
   if (MPI_Initialized(&initialized) != MPI_SUCCESS || initialized == 0) {
