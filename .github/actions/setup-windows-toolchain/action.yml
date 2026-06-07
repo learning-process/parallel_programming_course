@@ -11,6 +11,9 @@ runs:
       uses: mpi4py/setup-mpi@v1
       with:
         mpi: msmpi
+    - name: Create ccache directory
+      shell: pwsh
+      run: New-Item -ItemType Directory -Force -Path "$env:LOCALAPPDATA\ccache" | Out-Null
     - name: Setup ccache
       uses: Chocobo1/setup-ccache-action@v1
       with:
