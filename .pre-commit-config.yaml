@@ -67,6 +67,13 @@ repos:
         files: \.json$
         exclude: ^(3rdparty/|build.*/|install/)
         args: [--autofix, --indent=2, --no-ensure-ascii]
+      - id: check-yaml
+        files: \.(yaml|yml)$
+        exclude: ^(3rdparty/|build.*/|install/)
+      - id: check-case-conflict
+        exclude: ^(3rdparty/|build.*/|install/)
+      - id: check-merge-conflict
+        exclude: ^(3rdparty/|build.*/|install/)
 
   # Dockerfile linting with hadolint
   - repo: https://github.com/hadolint/hadolint
