@@ -73,13 +73,10 @@ jobs:
           brew install ninja mpich llvm libomp openssl
           brew link libomp --overwrite --force
       - name: Download installed package
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-install
         with:
+          path: install
           name: macos-clang-install
-      - name: Extract installed package
-        run: |
-          mkdir -p install
-          tar -xzvf macos-clang-install.tar.gz -C install
       - name: Run func tests (MPI)
         run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
         env:
@@ -105,13 +102,10 @@ jobs:
           brew install ninja mpich llvm libomp openssl
           brew link libomp --overwrite --force
       - name: Download installed package
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-install
         with:
+          path: install
           name: macos-clang-install
-      - name: Extract installed package
-        run: |
-          mkdir -p install
-          tar -xzvf macos-clang-install.tar.gz -C install
       - name: Run tests (threads extended)
         run: scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:

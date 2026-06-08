@@ -21,13 +21,10 @@ jobs:
         run: |
           python3 -m pip install -r requirements.txt --break-system-packages --ignore-installed
       - name: Download installed package
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-install
         with:
+          path: install
           name: ubuntu-gcc-install-ubuntu-24.04
-      - name: Extract installed package
-        run: |
-          mkdir -p install
-          tar -xzvf ubuntu-gcc-install-ubuntu-24.04.tar.gz -C install
       - name: Run perf tests
         run: |
           scripts/run_tests.py --running-type=performance
@@ -59,13 +56,10 @@ jobs:
           brew link libomp --overwrite --force
           python3 -m pip install -r requirements.txt --break-system-packages
       - name: Download installed package
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-install
         with:
+          path: install
           name: macos-clang-install
-      - name: Extract installed package
-        run: |
-          mkdir -p install
-          tar -xzvf macos-clang-install.tar.gz -C install
       - name: Run perf tests
         run: |
           scripts/run_tests.py --running-type=performance
