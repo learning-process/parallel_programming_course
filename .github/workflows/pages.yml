@@ -55,7 +55,7 @@ jobs:
           python3 scripts/jobs_graph.py --out docs/_static/ci_graph --format svg
       - name: Configure project
         run: >
-          cmake -S . -B build -D USE_DOCS=ON
+          cmake -S . -B build -D USE_DOCS=ON -D PPC_BUILD_COMPONENTS=OFF
       - name: Build i18n
         run: |
           cmake --build build -t docs_gettext -- --quiet
@@ -97,10 +97,10 @@ jobs:
           fi
       - name: CMake configure
         run: |
-          cmake -S . -B build -DUSE_SCOREBOARD=ON
+          cmake -S . -B build -DUSE_SCOREBOARD=ON -DPPC_BUILD_COMPONENTS=OFF
       - name: CMake build
         run: |
-          cmake --build build --parallel -- --quiet
+          cmake --build build -t generate_scoreboard -- --quiet
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
