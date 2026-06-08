@@ -10,7 +10,7 @@ High‑level pipeline
 
 - Pre-commit checks (fast) — runs repository hooks on changed files; fix locally via ``pre-commit run -a``.
 
-- Platform builds and tests (Ubuntu, macOS, Windows) — Ubuntu (GCC/Clang, amd64+arm), macOS (Clang), Windows (MSVC/Clang‑CL); functional tests via ``scripts/run_tests.py`` for threads (``--counts 1 2 3 4``; extended ``5 7 11 13``) and processes (MPI, ``--counts 1 2 3 4``).
+- Platform builds and tests (Ubuntu, macOS, Windows) — Ubuntu (GCC/Clang), macOS (Clang), Windows (MSVC/Clang‑CL); functional tests via ``scripts/run_tests.py`` for threads (``--counts 1 2 3 4``; extended ``5 7 11 13``) and processes (MPI, ``--counts 1 2 3 4``).
 
 - Sanitizers (Ubuntu/Clang) — Address/UB/Leak; tests use ``PPC_ASAN_RUN=1`` to skip valgrind.
 
