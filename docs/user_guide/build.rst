@@ -26,6 +26,8 @@ Navigate to the project root.
 
    - ``-D USE_FUNC_TESTS=ON`` enable functional tests.
    - ``-D USE_PERF_TESTS=ON`` enable performance tests.
+   - ``-D PPC_BUILD_COMPONENTS=OFF`` skip C++ modules, tasks, tests, and
+     their dependencies, useful for docs-only or scoreboard-only configurations.
    - ``-D PPC_TASKS=all`` builds every task (default). Pass one task or a semicolon list,
      for example ``-D PPC_TASKS="example"``, to limit the build.
    - ``-D PPC_IMPLEMENTATIONS="seq;omp"`` select implementation folders to

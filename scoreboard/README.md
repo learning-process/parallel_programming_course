@@ -14,6 +14,15 @@ python main.py -o output_directory
 
 Generates `output_directory/index.html` with the scoreboard.
 
+To generate it through CMake without C++ project dependencies:
+
+```bash
+cmake -S . -B build -DUSE_SCOREBOARD=ON -DPPC_BUILD_COMPONENTS=OFF
+cmake --build build -t generate_scoreboard
+```
+
+Note: `-DPPC_BUILD_COMPONENTS=OFF` could be used to configure documentation without C++ project dependencies
+
 ## Configuration
 
 - `data/points-info.yml` - Task points, deadlines, penalties

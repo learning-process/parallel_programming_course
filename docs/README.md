@@ -24,8 +24,10 @@ pip install -r docs/requirements.txt
 4. Configure the documentation build:
 
 ```bash
-cmake -S . -B build -DUSE_DOCS=ON
+cmake -S . -B build -DUSE_DOCS=ON -DPPC_BUILD_COMPONENTS=OFF
 ```
+
+Note: `-DPPC_BUILD_COMPONENTS=OFF` could be used to configure documentation without C++ project dependencies
 
 5. Generate API documentation with Doxygen:
 
