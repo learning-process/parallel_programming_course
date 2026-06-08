@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   clang-build:
-    runs-on: macOS-latest
+    runs-on: macOS-26
     strategy:
       matrix:
         build_type: [Release, Debug]
@@ -60,7 +60,7 @@ jobs:
   clang-test:
     needs:
       - clang-build
-    runs-on: macOS-latest
+    runs-on: macOS-26
     steps:
       - uses: actions/checkout@v6
       - name: Install Xcode
@@ -92,7 +92,7 @@ jobs:
   clang-test-extended:
     needs:
       - clang-test
-    runs-on: macOS-latest
+    runs-on: macOS-26
     steps:
       - uses: actions/checkout@v6
       - name: Install Xcode

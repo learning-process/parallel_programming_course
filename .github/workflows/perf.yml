@@ -45,7 +45,7 @@ jobs:
           name: perf-stat
           path: perf-stat.zip
   macos-clang-build-perf-stats:
-    runs-on: macOS-latest
+    runs-on: macOS-26
     steps:
       - uses: actions/checkout@v6
       - name: Install Xcode
