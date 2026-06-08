@@ -57,8 +57,8 @@ msgstr ""
 #: ../../../../docs/user_guide/build.rst:29
 msgid ""
 "``-D PPC_TASKS=all`` builds every task (default). Pass one task or a "
-"semicolon list, for example ``-D PPC_TASKS=\"example_threads;example_processes\"``, "
-"to limit the build."
+"semicolon list, for example ``-D PPC_TASKS=\"example\"``, to limit the "
+"build."
 msgstr ""
 
 #: ../../../../docs/user_guide/build.rst:32

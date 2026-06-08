@@ -188,8 +188,8 @@ Common pitfalls (read before pushing)
 
 Useful examples to reference
 ----------------------------
-- Processes: ``tasks/example_processes``, ``tasks/example_processes_2``, ``tasks/example_processes_3``
-- Threads: ``tasks/example_threads``
+- Processes: ``tasks/example/processes/t1``, ``tasks/example/processes/t2``, ``tasks/example/processes/t3``
+- Threads: ``tasks/example/threads``
 
 - Work from your fork in a dedicated branch (not ``master``). Branch name must match your task folder.
 

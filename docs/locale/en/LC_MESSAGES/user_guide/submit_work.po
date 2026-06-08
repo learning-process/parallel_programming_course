@@ -241,12 +241,12 @@ msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:218
 msgid ""
-"Processes: ``tasks/example_processes``, ``tasks/example_processes_2``, "
-"``tasks/example_processes_3``"
+"Processes: ``tasks/example/processes/t1``, ``tasks/example/processes/t2``, "
+"``tasks/example/processes/t3``"
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:219
-msgid "Threads: ``tasks/example_threads``"
+msgid "Threads: ``tasks/example/threads``"
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:221

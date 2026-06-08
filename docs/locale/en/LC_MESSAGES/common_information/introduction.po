@@ -52,10 +52,12 @@ msgstr ""
 msgid "Task distribution is random for each student."
 msgstr ""
 
-#: ../../common_information/introduction.rst:15
+#: ../../common_information/introduction.rst:17
 msgid ""
-"An example for each technology can be found in the corresponding "
-"directory: ``tasks/<all/omp/tbb/seq/stl/mpi>/example``."
+"Examples are provided in ``tasks/example/threads`` and "
+"``tasks/example/processes`` (with process variations in "
+"``tasks/example/processes/t1`` / ``tasks/example/processes/t2`` / "
+"``tasks/example/processes/t3``)."
 msgstr ""
 
 #: ../../common_information/introduction.rst:16
