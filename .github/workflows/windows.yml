@@ -59,12 +59,10 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-install
         with:
+          path: install
           name: windows-msvc-install
-      - name: Extract installed package
-        run: Expand-Archive -Path .\windows-msvc-install.zip -DestinationPath . -Force
-        shell: pwsh
       - name: Run func tests (MPI)
         run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
         env:
@@ -84,12 +82,10 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-install
         with:
+          path: install
           name: windows-msvc-install
-      - name: Extract installed package
-        run: Expand-Archive -Path .\windows-msvc-install.zip -DestinationPath . -Force
-        shell: pwsh
       - name: Run tests (threads extended)
         run: scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:
@@ -147,12 +143,10 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-install
         with:
+          path: install
           name: windows-clang-install
-      - name: Extract installed package
-        run: Expand-Archive -Path .\windows-clang-install.zip -DestinationPath . -Force
-        shell: pwsh
       - name: Run tests (threads)
         run: scripts/run_tests.py --running-type="threads" --counts 1 2 3 4
         env:
@@ -168,12 +162,10 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-windows-toolchain
       - name: Download installed package
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-install
         with:
+          path: install
           name: windows-clang-install
-      - name: Extract installed package
-        run: Expand-Archive -Path .\windows-clang-install.zip -DestinationPath . -Force
-        shell: pwsh
       - name: Run tests (threads extended)
         run: scripts/run_tests.py --running-type="threads" --counts 5 7 11 13
         env:

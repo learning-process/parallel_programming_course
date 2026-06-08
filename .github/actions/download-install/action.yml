@@ -1,0 +1,35 @@
+name: Download installed package
+inputs:
+  path:
+    description: Directory to extract into
+    required: true
+  name:
+    description: Artifact name
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v8
+      with:
+        name: ${{ inputs.name }}
+    - name: Extract archive (unix)
+      if: runner.os != 'Windows'
+      shell: bash
+      run: |
+        mkdir -p "${{ inputs.path }}"
+        tar -xzvf "${{ inputs.name }}.tar.gz" -C "${{ inputs.path }}"
+    - name: Extract archive (windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        $destination = '${{ inputs.path }}'
+        $parent = Split-Path -Parent $destination
+        if ([string]::IsNullOrEmpty($parent)) {
+          $parent = '.'
+        }
+        New-Item -ItemType Directory -Force -Path $parent | Out-Null
+        Expand-Archive `
+          -Path '${{ inputs.name }}.zip' `
+          -DestinationPath $parent `
+          -Force
