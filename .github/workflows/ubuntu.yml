@@ -3,11 +3,6 @@ name: Ubuntu
 on:
   workflow_call:
     inputs:
-      is_nightly:
-        description: 'Is nightly CI run'
-        required: false
-        type: boolean
-        default: false
       ppc_tasks:
         description: 'Tasks to build'
         required: false
@@ -28,7 +23,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ${{ fromJSON(inputs.is_nightly && '["ubuntu-24.04","ubuntu-24.04-arm"]' || '["ubuntu-24.04"]') }}
+        os: ["ubuntu-24.04"]
         build_type: [Release, Debug]
     steps:
       - uses: actions/checkout@v6
@@ -83,7 +78,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ${{ fromJSON(inputs.is_nightly && '["ubuntu-24.04","ubuntu-24.04-arm"]' || '["ubuntu-24.04"]') }}
+        os: ["ubuntu-24.04"]
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -115,7 +110,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ${{ fromJSON(inputs.is_nightly && '["ubuntu-24.04","ubuntu-24.04-arm"]' || '["ubuntu-24.04"]') }}
+        os: ["ubuntu-24.04"]
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -139,7 +134,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ${{ fromJSON(inputs.is_nightly && '["ubuntu-24.04","ubuntu-24.04-arm"]' || '["ubuntu-24.04"]') }}
+        os: ["ubuntu-24.04"]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -185,7 +180,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ${{ fromJSON(inputs.is_nightly && '["ubuntu-24.04","ubuntu-24.04-arm"]' || '["ubuntu-24.04"]') }}
+        os: ["ubuntu-24.04"]
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -217,7 +212,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ${{ fromJSON(inputs.is_nightly && '["ubuntu-24.04","ubuntu-24.04-arm"]' || '["ubuntu-24.04"]') }}
+        os: ["ubuntu-24.04"]
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package

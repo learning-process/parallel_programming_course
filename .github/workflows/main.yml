@@ -52,7 +52,6 @@ jobs:
       - pre-commit
     uses: ./.github/workflows/ubuntu.yml
     with:
-      is_nightly: ${{ github.event_name == 'schedule' }}
       ppc_tasks: ${{ needs.ci-scope.outputs.ppc_tasks || 'all' }}
   mac:
     needs:
