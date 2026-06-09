@@ -399,23 +399,23 @@ TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
 }
 
 TEST(TaskTest, ValidationThrowsIfCalledTwice) {
-  auto task = std::make_shared<DummyTask>();
+  auto task = std::make_unique<DummyTask>();
   task->Validation();
   EXPECT_THROW(task->Validation(), std::runtime_error);
 }
 
 TEST(TaskTest, PreProcessingThrowsIfCalledBeforeValidation) {
-  auto task = std::make_shared<DummyTask>();
+  auto task = std::make_unique<DummyTask>();
   EXPECT_THROW(task->PreProcessing(), std::runtime_error);
 }
 
 TEST(TaskTest, RunThrowsIfCalledBeforePreProcessing) {
-  auto task = std::make_shared<DummyTask>();
+  auto task = std::make_unique<DummyTask>();
   EXPECT_THROW(task->Run(), std::runtime_error);
 }
 
 TEST(TaskTest, PostProcessingThrowsIfCalledBeforeRun) {
-  auto task = std::make_shared<DummyTask>();
+  auto task = std::make_unique<DummyTask>();
   task->Validation();
   task->PreProcessing();
   EXPECT_THROW(task->PostProcessing(), std::runtime_error);

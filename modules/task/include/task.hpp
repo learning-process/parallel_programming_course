@@ -310,16 +310,16 @@ class Task {
 /// @tparam InType Input data type.
 /// @tparam OutType Output data type.
 template <typename InType, typename OutType>
-using TaskPtr = std::shared_ptr<Task<InType, OutType>>;
+using TaskPtr = std::unique_ptr<Task<InType, OutType>>;
 
-/// @brief Constructs and returns a shared pointer to a task with the given input.
+/// @brief Constructs and returns a pointer to a task with the given input.
 /// @tparam TaskType Type of the task to create.
 /// @tparam InType Type of the input.
 /// @param in Input to pass to the task constructor.
-/// @return Shared a pointer to the newly created task.
+/// @return Unique pointer to the newly created task.
 template <typename TaskType, typename InType>
-std::shared_ptr<TaskType> TaskGetter(const InType &in) {
-  return std::make_shared<TaskType>(in);
+std::unique_ptr<TaskType> TaskGetter(const InType &in) {
+  return std::make_unique<TaskType>(in);
 }
 
 }  // namespace ppc::task
