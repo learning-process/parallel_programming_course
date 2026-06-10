@@ -67,32 +67,3 @@ msgstr ""
 #: ../../../../docs/user_guide/api.rst:20
 msgid "Utility Module"
 msgstr ""
-
-#: ../../../../docs/user_guide/api.rst:26
-msgid "Performance Module"
-msgstr ""
-
-#~ msgid "Functions"
-#~ msgstr ""
-
-#~ msgid "Parameters"
-#~ msgstr ""
-
-#~ msgid "Returns"
-#~ msgstr ""
-
-#~ msgid "Typedefs"
-#~ msgstr ""
-
-#~ msgid "Template Parameters"
-#~ msgstr ""
-
-#~ msgid "Enums"
-#~ msgstr ""
-
-#~ msgid "Throws"
-#~ msgstr ""
-
-#~ msgid "Variables"
-#~ msgstr ""
-

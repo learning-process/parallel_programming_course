@@ -58,8 +58,7 @@ jobs:
           cmake -S . -B build -D USE_DOCS=ON -D PPC_BUILD_COMPONENTS=OFF
       - name: Build i18n
         run: |
-          cmake --build build -t docs_gettext -- --quiet
-          cmake --build build -t docs_update -- --quiet
+          cmake --build build -t docs_i18n_check -- --quiet
       - name: Build documentation
         run: |
           cmake --build build -t docs_html -- --quiet

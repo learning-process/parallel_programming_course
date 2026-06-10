@@ -295,4 +295,3 @@ msgstr ""
 #: ../../common_information/threading_tasks.rst:65
 msgid "Convex hull construction for components of a binary image."
 msgstr ""
-

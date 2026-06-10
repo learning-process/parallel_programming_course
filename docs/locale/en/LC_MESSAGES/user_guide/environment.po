@@ -222,4 +222,3 @@ msgstr ""
 #: ../../../../docs/user_guide/environment.rst:136
 msgid "``std::thread`` is included in STL libraries."
 msgstr ""
-

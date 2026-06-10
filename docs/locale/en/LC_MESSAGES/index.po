@@ -37,7 +37,3 @@ msgid ""
 "Below is the table of contents for the Parallel Programming Course "
 "documentation. Follow the links to learn more about each topic."
 msgstr ""
-
-#~ msgid "Common Information:"
-#~ msgstr ""
-

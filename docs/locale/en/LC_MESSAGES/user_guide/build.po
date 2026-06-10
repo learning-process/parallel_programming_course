@@ -56,52 +56,49 @@ msgstr ""
 
 #: ../../../../docs/user_guide/build.rst:29
 msgid ""
+"``-D PPC_BUILD_COMPONENTS=OFF`` skip C++ modules, tasks, tests, and their"
+" dependencies, useful for docs-only or scoreboard-only configurations."
+msgstr ""
+
+#: ../../../../docs/user_guide/build.rst:31
+msgid ""
 "``-D PPC_TASKS=all`` builds every task (default). Pass one task or a "
 "semicolon list, for example ``-D PPC_TASKS=\"example\"``, to limit the "
 "build."
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:32
+#: ../../../../docs/user_guide/build.rst:33
 msgid ""
 "``-D PPC_IMPLEMENTATIONS=\"seq;omp\"`` select implementation folders to "
 "configure."
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:34
+#: ../../../../docs/user_guide/build.rst:35
 msgid "``-D CMAKE_BUILD_TYPE=Release`` normal build (default)."
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:35
+#: ../../../../docs/user_guide/build.rst:36
 msgid ""
 "``-D CMAKE_BUILD_TYPE=RelWithDebInfo`` recommended when using sanitizers "
 "or running ``valgrind`` to keep debug information."
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:37
+#: ../../../../docs/user_guide/build.rst:38
 msgid "``-D CMAKE_BUILD_TYPE=Debug`` for debugging sessions."
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:39
+#: ../../../../docs/user_guide/build.rst:40
 msgid "*A corresponding flag can be omitted if it's not needed.*"
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:41
+#: ../../../../docs/user_guide/build.rst:42
 msgid "**Build the project**:"
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:47
+#: ../../../../docs/user_guide/build.rst:48
 msgid "**Run tests**:"
 msgstr ""
 
-#: ../../../../docs/user_guide/build.rst:49
+#: ../../../../docs/user_guide/build.rst:50
 msgid "Prefer the helper runner described in ``User Guide → CI``."
 msgstr ""
-
-#~ msgid "Navigate to a source code folder."
-#~ msgstr ""
-
-#~ msgid "**Check the task**:"
-#~ msgstr ""
-
-#~ msgid "Run ``<project's folder>/build/bin``"
-#~ msgstr ""

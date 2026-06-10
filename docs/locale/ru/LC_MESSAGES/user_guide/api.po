@@ -68,31 +68,3 @@ msgstr "Переменные"
 #: ../../../../docs/user_guide/api.rst:20
 msgid "Utility Module"
 msgstr "Вспомогательный модуль (модуль с утилитами)"
-
-#: ../../../../docs/user_guide/api.rst:26
-msgid "Performance Module"
-msgstr "Модуль измерения производительности"
-
-#~ msgid "Functions"
-#~ msgstr "Функции"
-
-#~ msgid "Parameters"
-#~ msgstr "Параметры"
-
-#~ msgid "Returns"
-#~ msgstr "Возвращаемые значения"
-
-#~ msgid "Typedefs"
-#~ msgstr "Псевдонимы типов"
-
-#~ msgid "Template Parameters"
-#~ msgstr "Параметры шаблона"
-
-#~ msgid "Enums"
-#~ msgstr "Перечисления"
-
-#~ msgid "Throws"
-#~ msgstr "Исключения"
-
-#~ msgid "Variables"
-#~ msgstr "Переменные"
