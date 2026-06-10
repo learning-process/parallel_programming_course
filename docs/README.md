@@ -49,20 +49,26 @@ cmake --build build -t docs_gettext
 cmake --build build -t docs_update
 ```
 
-8. Re-build the documentation:
+8. Check that committed translations are up to date:
+
+```bash
+cmake --build build -t docs_i18n_check
+```
+
+9. Re-build the documentation:
 
 ```bash
 cmake --build build -t docs_html
 ```
 
-9. Make local deployment of the changes:
+10. Make local deployment of the changes:
 
 ```bash
 cd docs/_build/html
 python3 -m http.server 8080
 ```
 
-10. Open the documentation in your browser.
+11. Open the documentation in your browser.
     Depending on your platform use `open` (macOS), `xdg-open` (Linux), or `start` (Windows):
 
 ```bash

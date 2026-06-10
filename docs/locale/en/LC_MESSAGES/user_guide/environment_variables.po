@@ -69,9 +69,3 @@ msgid ""
 "``PPC_PERF_MAX_TIME``: Maximum allowed execution time in seconds for "
 "performance tests. Default: ``10.0``"
 msgstr ""
-
-#~ msgid ""
-#~ "``PPC_NUM_PROC``: Specifies the number of "
-#~ "processes to launch. Default: ``1``"
-#~ msgstr ""
-
