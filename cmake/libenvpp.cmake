@@ -1,29 +1,8 @@
 include_guard()
 
-include(ExternalProject)
-ExternalProject_Add(
-  ppc_libenvpp
-  SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rdparty/libenvpp"
-  PREFIX "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp"
-  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/build"
-  INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/install"
-  CMAKE_ARGS -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-             -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-             -DCMAKE_C_COMPILER_LAUNCHER=${CMAKE_C_COMPILER_LAUNCHER}
-             -DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}
-             -DCMAKE_CXX_STANDARD_REQUIRED=ON
-             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-             ${PPC_EXTERNAL_PROJECT_CMAKE_ARGS}
-             -DLIBENVPP_TESTS=OFF
-             -DLIBENVPP_EXAMPLES=OFF
-  BUILD_COMMAND
-    "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/build"
-    --config $<CONFIG> --parallel
-  INSTALL_COMMAND
-    "${CMAKE_COMMAND}" --install
-    "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/build" --config $<CONFIG>
-    --prefix "${CMAKE_CURRENT_BINARY_DIR}/ppc_libenvpp/install"
-    ${PPC_EXTERNAL_PROJECT_LOG_ARGS})
+ppc_external_project_add(
+  ppc_libenvpp SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rdparty/libenvpp" CMAKE_ARGS
+  -DLIBENVPP_TESTS=OFF -DLIBENVPP_EXAMPLES=OFF)
 
 string(TOLOWER "${CMAKE_BUILD_TYPE}" cmake_build_type_lower)
 if(cmake_build_type_lower STREQUAL "debug")

@@ -1,44 +1,26 @@
 include_guard()
 
-include(ExternalProject)
-
 option(ENABLE_SYSTEM_TBB "Use system TBB instead of bundled version" OFF)
 
 if(NOT ENABLE_SYSTEM_TBB)
   if(WIN32)
-    set(ppc_onetbb_TEST_COMMAND
-        "${CMAKE_COMMAND}" -E copy_directory
+    set(ppc_onetbb_TEST_COMMAND_ARGS
+        TEST_COMMAND "${CMAKE_COMMAND}" -E copy_directory
         "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install/bin"
         "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
   else()
-    set(ppc_onetbb_TEST_COMMAND "")
+    set(ppc_onetbb_TEST_COMMAND_ARGS "")
   endif()
 
-  ExternalProject_Add(
+  ppc_external_project_add(
     ppc_onetbb
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rdparty/onetbb"
-    PREFIX "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb"
-    BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build"
-    INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install"
-    CMAKE_ARGS -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-               -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-               -DCMAKE_C_COMPILER_LAUNCHER=${CMAKE_C_COMPILER_LAUNCHER}
-               -DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}
-               -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
-               -DCMAKE_CXX_STANDARD_REQUIRED=ON
-               -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-               ${PPC_EXTERNAL_PROJECT_CMAKE_ARGS}
-               -DTBB_STRICT=OFF
-               -DTBB_TEST=OFF
-    BUILD_COMMAND
-      "${CMAKE_COMMAND}" --build "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build"
-      --config $<CONFIG> --parallel
-    INSTALL_COMMAND
-      "${CMAKE_COMMAND}" --install
-      "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/build" --config $<CONFIG> --prefix
-      "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install"
-      ${PPC_EXTERNAL_PROJECT_LOG_ARGS}
-    TEST_COMMAND ${ppc_onetbb_TEST_COMMAND})
+    USE_PROJECT_CXX_STANDARD
+    SOURCE_DIR
+    "${CMAKE_SOURCE_DIR}/3rdparty/onetbb"
+    CMAKE_ARGS
+    -DTBB_STRICT=OFF
+    -DTBB_TEST=OFF
+    ${ppc_onetbb_TEST_COMMAND_ARGS})
 
   install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/ppc_onetbb/install/"
           DESTINATION "${CMAKE_INSTALL_PREFIX}")
