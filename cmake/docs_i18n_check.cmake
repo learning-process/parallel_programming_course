@@ -2,8 +2,10 @@ if(NOT DEFINED PROJECT_SOURCE_DIR)
   message(FATAL_ERROR "PROJECT_SOURCE_DIR must be defined")
 endif()
 
+find_package(Git REQUIRED)
+
 execute_process(
-  COMMAND git status --porcelain -- docs/locale
+  COMMAND "${GIT_EXECUTABLE}" status --porcelain -- docs/locale
   WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
   OUTPUT_VARIABLE docs_i18n_status
   RESULT_VARIABLE docs_i18n_status_result
@@ -17,7 +19,7 @@ endif()
 
 if(docs_i18n_status)
   execute_process(
-    COMMAND git diff --stat -- docs/locale
+    COMMAND "${GIT_EXECUTABLE}" diff --stat -- docs/locale
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
     OUTPUT_VARIABLE docs_i18n_diff_stat
     ERROR_VARIABLE docs_i18n_diff_stat_error)
