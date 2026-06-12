@@ -136,8 +136,11 @@ namespace {
 
 using FuncTestUtilParam = ppc::util::FuncTestParam<int, int, int>;
 
-FuncTestUtilParam MakeFuncTestUtilParam(const std::string &test_name, int value) {
-  return FuncTestUtilParam{[](int) -> ppc::task::TaskPtr<int, int> { return {}; }, test_name, value};
+FuncTestUtilParam MakeFuncTestUtilParam(const std::string &test_name, ppc::task::TypeOfTask task_type,
+                                        ppc::task::StatusOfTask task_status, int value) {
+  return FuncTestUtilParam{[](int) -> ppc::task::TaskPtr<int, int> {
+    return {};
+  }, test_name, value, ppc::task::TaskDescriptor{task_type, task_status, ppc::task::TaskCategory::kThreads, test_name}};
 }
 
 void ExpectSingleNonFatalFailureContains(const ::testing::TestPartResultArray &failures, std::string_view message) {
@@ -150,9 +153,13 @@ void ExpectSingleNonFatalFailureContains(const ::testing::TestPartResultArray &f
 }  // namespace
 
 TEST(FuncTestUtil, RunTestCasesWithTagAcceptsBareTags) {
-  const auto test_tasks = std::make_tuple(MakeFuncTestUtilParam("example_threads_seq_enabled", 1),
-                                          MakeFuncTestUtilParam("example_threads_tbb_enabled", 2),
-                                          MakeFuncTestUtilParam("example_threads_tbb_disabled", 3));
+  const auto test_tasks =
+      std::make_tuple(MakeFuncTestUtilParam("example_threads_contains_tbb_seq_enabled", ppc::task::TypeOfTask::kSEQ,
+                                            ppc::task::StatusOfTask::kEnabled, 1),
+                      MakeFuncTestUtilParam("example_threads_tbb_enabled", ppc::task::TypeOfTask::kTBB,
+                                            ppc::task::StatusOfTask::kEnabled, 2),
+                      MakeFuncTestUtilParam("example_threads_tbb_disabled", ppc::task::TypeOfTask::kTBB,
+                                            ppc::task::StatusOfTask::kDisabled, 3));
 
   std::vector<int> visited_params;
   ppc::util::RunTestCasesWithTag(test_tasks, "tbb", [&](const auto &test_param) {
@@ -164,7 +171,8 @@ TEST(FuncTestUtil, RunTestCasesWithTagAcceptsBareTags) {
 }
 
 TEST(FuncTestUtil, RunTestCasesWithTagFailsWhenTagIsMissing) {
-  const auto test_tasks = std::make_tuple(MakeFuncTestUtilParam("example_threads_seq_enabled", 1));
+  const auto test_tasks = std::make_tuple(MakeFuncTestUtilParam(
+      "example_threads_seq_enabled", ppc::task::TypeOfTask::kSEQ, ppc::task::StatusOfTask::kEnabled, 1));
 
   bool callback_was_called = false;
   ::testing::TestPartResultArray failures;

@@ -86,6 +86,7 @@ enum class GTestParamIndex : uint8_t {
   kTaskGetter,
   kNameTest,
   kTestParams,
+  kTaskDescriptor,
 };
 
 std::string GetAbsoluteTaskPath(const std::string &id_path, const std::string &relative_path);
