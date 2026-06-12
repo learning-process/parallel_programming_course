@@ -29,9 +29,7 @@ class NesterovARunFuncTestsProcesses3 : public ppc::util::BaseRunFuncTests<InTyp
 
  protected:
   void RunTestCase(const ppc::util::FuncTestParam<InType, OutType, TestType> &test_param) override {
-    const std::string &test_name =
-        std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kNameTest)>(test_param);
-    if (IsTestDisabled(test_name) || ShouldSkipNonMpiTask(test_name)) {
+    if (ShouldSkipTestCase(test_param)) {
       return;
     }
 

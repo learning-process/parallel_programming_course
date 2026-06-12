@@ -2,8 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <tbb/tick_count.h>
-
 #include <concepts>
 #include <cstddef>
 #include <functional>
@@ -15,12 +13,14 @@
 #include <utility>
 
 #include "task/include/task.hpp"
+#include "util/include/task_descriptor_util.hpp"
 #include "util/include/util.hpp"
 
 namespace ppc::util {
 
 template <typename InType, typename OutType, typename TestType = void>
-using FuncTestParam = std::tuple<std::function<ppc::task::TaskPtr<InType, OutType>(InType)>, std::string, TestType>;
+using FuncTestParam = std::tuple<std::function<ppc::task::TaskPtr<InType, OutType>(InType)>, std::string, TestType,
+                                 ppc::task::TaskDescriptor>;
 
 template <typename InType, typename OutType, typename TestType = void>
 using GTestFuncParam = ::testing::TestParamInfo<FuncTestParam<InType, OutType, TestType>>;
@@ -50,8 +50,7 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   static std::string PrintFuncTestName(const GTestFuncParam<InType, OutType, TestType> &info) {
     RequireStaticInterface<Derived>();
     TestType test_param = std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kTestParams)>(info.param);
-    return std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(info.param) + "_" +
-           Derived::PrintTestParam(test_param);
+    return GetTaskDescriptor(info.param).display_name + "_" + Derived::PrintTestParam(test_param);
   }
 
  protected:
@@ -71,17 +70,17 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   }
 
   void ExecuteTest(FuncTestParam<InType, OutType, TestType> test_param) {
-    const std::string &test_name = std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(test_param);
+    const auto &descriptor = GetTaskDescriptor(test_param);
 
-    ValidateTestName(test_name);
+    ValidateTaskDescriptor(descriptor);
 
-    const auto test_env_scope = ppc::util::test::MakePerTestEnvForCurrentGTest(test_name);
+    const auto test_env_scope = ppc::util::test::MakePerTestEnvForCurrentGTest(descriptor.display_name);
 
-    if (IsTestDisabled(test_name)) {
+    if (IsTestDisabled(descriptor)) {
       GTEST_SKIP();
     }
 
-    if (ShouldSkipNonMpiTask(test_name)) {
+    if (ShouldSkipNonMpiTask(descriptor)) {
       std::cerr << "kALL and kMPI tasks are not under mpirun\n";
       GTEST_SKIP();
     }
@@ -89,18 +88,21 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
     InitializeAndRunTask(test_param);
   }
 
-  void ValidateTestName(const std::string &test_name) {
-    EXPECT_FALSE(test_name.contains("unknown"));
+  void ValidateTaskDescriptor(const ppc::task::TaskDescriptor &descriptor) {
+    EXPECT_NE(descriptor.type, ppc::task::TypeOfTask::kUnknown);
   }
 
-  bool IsTestDisabled(const std::string &test_name) {
-    return test_name.contains("disabled");
+  bool IsTestDisabled(const ppc::task::TaskDescriptor &descriptor) {
+    return descriptor.status == ppc::task::StatusOfTask::kDisabled;
   }
 
-  bool ShouldSkipNonMpiTask(const std::string &test_name) {
-    auto contains_substring = [&](const std::string &substring) { return test_name.contains(substring); };
+  bool ShouldSkipNonMpiTask(const ppc::task::TaskDescriptor &descriptor) {
+    return !ppc::util::IsUnderMpirun() && IsMpiTaskType(descriptor.type);
+  }
 
-    return !ppc::util::IsUnderMpirun() && (contains_substring("_all") || contains_substring("_mpi"));
+  bool ShouldSkipTestCase(const FuncTestParam<InType, OutType, TestType> &test_param) {
+    const auto &descriptor = GetTaskDescriptor(test_param);
+    return IsTestDisabled(descriptor) || ShouldSkipNonMpiTask(descriptor);
   }
 
   /// @brief Initializes task instance and runs it through the full pipeline.
@@ -136,15 +138,14 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
 
 namespace detail {
 
-[[nodiscard]] inline std::string MakeFuncTestTaskTagPattern(std::string_view task_tag) {
-  std::string tag_pattern{task_tag};
-  if (!tag_pattern.starts_with('_')) {
-    tag_pattern.insert(0, 1, '_');
+[[nodiscard]] inline ppc::task::TypeOfTask TaskTypeFromFuncTestTag(std::string_view task_tag) {
+  while (task_tag.starts_with('_')) {
+    task_tag.remove_prefix(1);
   }
-  if (!tag_pattern.ends_with('_')) {
-    tag_pattern.push_back('_');
+  while (task_tag.ends_with('_')) {
+    task_tag.remove_suffix(1);
   }
-  return tag_pattern;
+  return ppc::task::TypeOfTaskFromString(task_tag);
 }
 
 }  // namespace detail
@@ -156,12 +157,12 @@ void RunTestCasesWithTag(const TestTasksList &test_tasks_list, std::string_view 
     return;
   }
 
-  const std::string task_tag_pattern = detail::MakeFuncTestTaskTagPattern(task_tag);
+  const ppc::task::TypeOfTask task_type = detail::TaskTypeFromFuncTestTag(task_tag);
   bool has_matching_task = false;
   std::apply([&](const auto &...test_params) {
     auto run_if_tagged = [&](const auto &test_param) {
-      const std::string &test_name = std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(test_param);
-      if (test_name.contains(task_tag_pattern)) {
+      const auto &descriptor = GetTaskDescriptor(test_param);
+      if (descriptor.type == task_type) {
         has_matching_task = true;
         std::invoke(run_test_case, test_param);
       }
@@ -185,11 +186,10 @@ auto ExpandToValues(const Tuple &t) {
 template <typename Task, typename InType, typename SizesContainer, std::size_t... Is>
 auto GenTaskTuplesImpl(const SizesContainer &sizes, const std::string &settings_path,
                        std::string_view settings_task_path, std::index_sequence<Is...> /*unused*/) {
-  return std::make_tuple(
-      std::make_tuple(ppc::task::TaskGetter<Task, InType>,
-                      std::string(GetNamespace<Task>()) + "_" +
-                          ppc::task::GetStringTaskType(Task::GetStaticTypeOfTask(), settings_path, settings_task_path),
-                      std::get<Is>(sizes))...);
+  const auto descriptor =
+      MakeTaskDescriptor(GetNamespace<Task>(), Task::GetStaticTypeOfTask(), settings_path, settings_task_path);
+  return std::make_tuple(std::make_tuple(ppc::task::TaskGetter<Task, InType>, descriptor.display_name,
+                                         std::get<Is>(sizes), descriptor)...);
 }
 
 template <typename Task, typename InType, typename SizesContainer>

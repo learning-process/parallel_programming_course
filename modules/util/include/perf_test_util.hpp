@@ -21,6 +21,7 @@
 #include <utility>
 
 #include "task/include/task.hpp"
+#include "util/include/task_descriptor_util.hpp"
 #include "util/include/util.hpp"
 
 namespace ppc::util {
@@ -40,38 +41,18 @@ struct PerfAttr {
 
 namespace detail {
 
-inline bool ContainsFilterToken(std::string_view value, std::string_view filter) {
-  if (filter.empty()) {
-    return true;
-  }
-  return value.contains(filter);
+inline bool ContainsDescriptorToken(std::string_view filter, std::string_view descriptor_token) {
+  return filter.empty() || descriptor_token.empty() || filter.contains(descriptor_token);
 }
 
-inline bool MatchesCategoryFilter(std::string_view task_category, std::string_view category_filter) {
-  if (category_filter.empty() || task_category.empty()) {
-    return true;
-  }
-  return category_filter.contains(task_category);
-}
-
-inline bool ShouldRunBenchmark(std::string_view test_name, std::string_view task_category) {
+inline bool ShouldRunBenchmark(const ppc::task::TaskDescriptor &descriptor) {
   const auto impl_filter = env::get<std::string>("PPC_PERF_IMPL_FILTER");
   const auto category_filter = env::get<std::string>("PPC_PERF_CATEGORY_FILTER");
   const auto impl_filter_value = impl_filter.has_value() ? std::string_view(impl_filter.value()) : std::string_view{};
   const auto category_filter_value =
       category_filter.has_value() ? std::string_view(category_filter.value()) : std::string_view{};
-  return ContainsFilterToken(test_name, impl_filter_value) &&
-         MatchesCategoryFilter(task_category, category_filter_value);
-}
-
-inline std::string GetPerfTaskCategory(std::string_view settings_task_path) {
-  if (settings_task_path.starts_with("threads")) {
-    return "threads";
-  }
-  if (settings_task_path.starts_with("processes")) {
-    return "processes";
-  }
-  return {};
+  return ContainsDescriptorToken(impl_filter_value, ppc::task::TypeOfTaskToString(descriptor.type)) &&
+         ContainsDescriptorToken(category_filter_value, ppc::task::TaskCategoryToString(descriptor.category));
 }
 
 template <typename InType, typename OutType>
@@ -188,7 +169,8 @@ class BenchmarkTaskBody final {
 }  // namespace detail
 
 template <typename InType, typename OutType>
-using PerfTestParam = std::tuple<std::function<ppc::task::TaskPtr<InType, OutType>(InType)>, std::string, std::string>;
+using PerfTestParam = std::tuple<std::function<ppc::task::TaskPtr<InType, OutType>(InType)>, std::string,
+                                 ppc::task::TaskCategory, ppc::task::TaskDescriptor>;
 
 template <typename InType, typename OutType>
 /// @brief Base class for performance testing of parallel tasks.
@@ -198,7 +180,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
  public:
   /// @brief Generates a readable name for the performance test case.
   static std::string CustomPerfTestName(const ::testing::TestParamInfo<PerfTestParam<InType, OutType>> &info) {
-    return std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(info.param);
+    return GetTaskDescriptor(info.param).display_name;
   }
 
  protected:
@@ -212,18 +194,17 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 
   void ExecuteTest(const PerfTestParam<InType, OutType> &perf_test_param) {
     auto task_getter = std::get<static_cast<std::size_t>(GTestParamIndex::kTaskGetter)>(perf_test_param);
-    auto test_name = std::get<static_cast<std::size_t>(GTestParamIndex::kNameTest)>(perf_test_param);
-    auto task_category = std::get<static_cast<std::size_t>(GTestParamIndex::kTestParams)>(perf_test_param);
+    const auto &descriptor = GetTaskDescriptor(perf_test_param);
 
-    ASSERT_FALSE(test_name.find("unknown") != std::string::npos);
-    if (test_name.find("disabled") != std::string::npos) {
+    ASSERT_NE(descriptor.type, ppc::task::TypeOfTask::kUnknown);
+    if (descriptor.status == ppc::task::StatusOfTask::kDisabled) {
       return;
     }
-    if (!detail::ShouldRunBenchmark(test_name, task_category)) {
+    if (!detail::ShouldRunBenchmark(descriptor)) {
       return;
     }
 
-    const auto test_env_token = ppc::util::test::MakeCurrentGTestToken(test_name);
+    const auto test_env_token = ppc::util::test::MakeCurrentGTestToken(descriptor.display_name);
     const auto test_env_scope = ppc::util::test::ScopedPerTestEnv(test_env_token);
 
     const auto input_data = GetTestInputData();
@@ -243,7 +224,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
     auto benchmark_body =
         detail::BenchmarkTaskBody<decltype(task_getter), BenchmarkInputType>(task_getter, input_data, test_env_token);
 
-    benchmark::RegisterBenchmark(test_name, std::move(benchmark_body))
+    benchmark::RegisterBenchmark(descriptor.display_name, std::move(benchmark_body))
         ->UseManualTime()
         ->Unit(benchmark::kSecond)
         ->Iterations(static_cast<std::int64_t>(num_iterations));
@@ -255,11 +236,11 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 
 template <typename TaskType, typename InputType>
 auto MakePerfTaskTuples(const std::string &settings_path, std::string_view settings_task_path = {}) {
-  const auto name = std::string(GetNamespace<TaskType>()) + "_" +
-                    ppc::task::GetStringTaskType(TaskType::GetStaticTypeOfTask(), settings_path, settings_task_path);
+  const auto descriptor =
+      MakeTaskDescriptor(GetNamespace<TaskType>(), TaskType::GetStaticTypeOfTask(), settings_path, settings_task_path);
 
-  return std::make_tuple(std::make_tuple(ppc::task::TaskGetter<TaskType, InputType>, name,
-                                         detail::GetPerfTaskCategory(settings_task_path)));
+  return std::make_tuple(std::make_tuple(ppc::task::TaskGetter<TaskType, InputType>, descriptor.display_name,
+                                         descriptor.category, descriptor));
 }
 
 template <typename Tuple, std::size_t... I>

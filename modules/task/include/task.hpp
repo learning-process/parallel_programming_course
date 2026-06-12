@@ -56,6 +56,15 @@ constexpr std::string_view TypeOfTaskToString(TypeOfTask type) {
   return "unknown";
 }
 
+constexpr TypeOfTask TypeOfTaskFromString(std::string_view type) {
+  for (const auto &[key, value] : kTaskTypeMappings) {
+    if (value == type) {
+      return key;
+    }
+  }
+  return TypeOfTask::kUnknown;
+}
+
 /// @brief Indicates whether a task is enabled or disabled.
 enum class StatusOfTask : uint8_t {
   /// Task is enabled and should be executed
@@ -64,15 +73,61 @@ enum class StatusOfTask : uint8_t {
   kDisabled,
 };
 
+constexpr std::string_view StatusOfTaskToString(StatusOfTask status_of_task) {
+  return status_of_task == StatusOfTask::kDisabled ? "disabled" : "enabled";
+}
+
+inline StatusOfTask StatusOfTaskFromString(std::string_view status_of_task) {
+  if (status_of_task == "enabled") {
+    return StatusOfTask::kEnabled;
+  }
+  if (status_of_task == "disabled") {
+    return StatusOfTask::kDisabled;
+  }
+  throw std::runtime_error("Unknown task status: " + std::string(status_of_task));
+}
+
 /// @brief Returns a string representation of the task status.
 /// @param status_of_task Task status (enabled or disabled).
 /// @return "enabled" if the task is enabled, otherwise "disabled".
 inline std::string GetStringTaskStatus(StatusOfTask status_of_task) {
-  if (status_of_task == StatusOfTask::kDisabled) {
-    return "disabled";
-  }
-  return "enabled";
+  return std::string(StatusOfTaskToString(status_of_task));
 }
+
+enum class TaskCategory : uint8_t {
+  kUnknown,
+  kThreads,
+  kProcesses,
+};
+
+constexpr std::string_view TaskCategoryToString(TaskCategory category) {
+  switch (category) {
+    case TaskCategory::kThreads:
+      return "threads";
+    case TaskCategory::kProcesses:
+      return "processes";
+    case TaskCategory::kUnknown:
+      return "";
+  }
+  return "";
+}
+
+constexpr TaskCategory TaskCategoryFromSettingsPath(std::string_view settings_task_path) {
+  if (settings_task_path.starts_with("threads")) {
+    return TaskCategory::kThreads;
+  }
+  if (settings_task_path.starts_with("processes")) {
+    return TaskCategory::kProcesses;
+  }
+  return TaskCategory::kUnknown;
+}
+
+struct TaskDescriptor {
+  TypeOfTask type = TypeOfTask::kUnknown;
+  StatusOfTask status = StatusOfTask::kEnabled;
+  TaskCategory category = TaskCategory::kUnknown;
+  std::string display_name;
+};
 
 /// @brief Returns a string representation of the task type based on the JSON settings file.
 /// @param type_of_task Type of the task.
@@ -80,8 +135,8 @@ inline std::string GetStringTaskStatus(StatusOfTask status_of_task) {
 /// @param settings_task_path Optional dot-separated nested path inside the `tasks` object.
 /// @return Formatted string combining the task type and its corresponding value from the file.
 /// @throws std::runtime_error If the file cannot be opened or the requested settings key is missing.
-inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string &settings_file_path,
-                                     std::string_view settings_task_path = {}) {
+inline StatusOfTask GetTaskStatus(TypeOfTask type_of_task, const std::string &settings_file_path,
+                                  std::string_view settings_task_path = {}) {
   std::ifstream file(settings_file_path);
   if (!file.is_open()) {
     throw std::runtime_error("Failed to open " + settings_file_path);
@@ -92,7 +147,7 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
 
   const std::string_view type_str = TypeOfTaskToString(type_of_task);
   if (type_str == "unknown") {
-    return std::string(type_str);
+    return StatusOfTask::kEnabled;
   }
 
   auto get_required_node = [&settings_file_path](const nlohmann::json &node, const std::string &key,
@@ -124,7 +179,17 @@ inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string 
   const std::string type_key(type_str);
   settings_key_path += "." + type_key;
   const auto &type_node = get_required_node(*settings_node, type_key, settings_key_path);
-  return type_key + "_" + type_node.get<std::string>();
+  return StatusOfTaskFromString(type_node.get<std::string>());
+}
+
+inline std::string GetStringTaskType(TypeOfTask type_of_task, const std::string &settings_file_path,
+                                     std::string_view settings_task_path = {}) {
+  const StatusOfTask status = GetTaskStatus(type_of_task, settings_file_path, settings_task_path);
+  const std::string_view type_str = TypeOfTaskToString(type_of_task);
+  if (type_str == "unknown") {
+    return std::string(type_str);
+  }
+  return std::string(type_str) + "_" + std::string(StatusOfTaskToString(status));
 }
 
 enum class StateOfTesting : uint8_t {
