@@ -46,9 +46,16 @@ option(PPC_EXTERNAL_PROJECTS_VERBOSE
        "Show full configure/build/install logs for ExternalProject dependencies"
        OFF)
 
+set(PPC_EXTERNAL_PROJECT_CMAKE_ARGS
+    -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_C_COMPILER_LAUNCHER=${CMAKE_C_COMPILER_LAUNCHER}
+    -DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}
+    -DCMAKE_CXX_STANDARD_REQUIRED=${CMAKE_CXX_STANDARD_REQUIRED}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE})
+
 if(PPC_EXTERNAL_PROJECTS_VERBOSE)
   set(PPC_EXTERNAL_PROJECT_LOG_ARGS "")
-  set(PPC_EXTERNAL_PROJECT_CMAKE_ARGS "")
 else()
   set(PPC_EXTERNAL_PROJECT_LOG_ARGS
       LOG_CONFIGURE
@@ -59,8 +66,63 @@ else()
       ON
       LOG_OUTPUT_ON_FAILURE
       ON)
-  set(PPC_EXTERNAL_PROJECT_CMAKE_ARGS -DCMAKE_INSTALL_MESSAGE=NEVER)
+  list(APPEND PPC_EXTERNAL_PROJECT_CMAKE_ARGS -DCMAKE_INSTALL_MESSAGE=NEVER)
 endif()
+
+include(ExternalProject)
+
+function(ppc_external_project_add target_name)
+  cmake_parse_arguments(PARSE_ARGV 1 arg "USE_PROJECT_CXX_STANDARD"
+                        "EXCLUDE_FROM_ALL;SOURCE_DIR" "CMAKE_ARGS;TEST_COMMAND")
+
+  if(NOT arg_SOURCE_DIR)
+    message(FATAL_ERROR "ppc_external_project_add requires SOURCE_DIR")
+  endif()
+
+  set(project_dir "${CMAKE_CURRENT_BINARY_DIR}/${target_name}")
+  set(build_dir "${project_dir}/build")
+  set(install_dir "${project_dir}/install")
+
+  if(DEFINED arg_EXCLUDE_FROM_ALL)
+    set(exclude_from_all_args EXCLUDE_FROM_ALL "${arg_EXCLUDE_FROM_ALL}")
+  else()
+    set(exclude_from_all_args "")
+  endif()
+
+  if(arg_TEST_COMMAND)
+    set(test_command_args TEST_COMMAND ${arg_TEST_COMMAND})
+  else()
+    set(test_command_args "")
+  endif()
+
+  if(arg_USE_PROJECT_CXX_STANDARD)
+    set(cxx_standard_args -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD})
+  else()
+    set(cxx_standard_args "")
+  endif()
+
+  set(build_command_args BUILD_COMMAND "${CMAKE_COMMAND}" --build
+                         "${build_dir}" --config $<CONFIG> --parallel)
+  set(install_command_args
+      INSTALL_COMMAND "${CMAKE_COMMAND}" --install "${build_dir}" --config
+      $<CONFIG> --prefix "${install_dir}")
+
+  ExternalProject_Add(
+    ${target_name}
+    SOURCE_DIR "${arg_SOURCE_DIR}"
+    PREFIX "${project_dir}"
+    BINARY_DIR "${build_dir}"
+    INSTALL_DIR "${install_dir}"
+    ${exclude_from_all_args}
+    CMAKE_ARGS ${PPC_EXTERNAL_PROJECT_CMAKE_ARGS}
+               ${cxx_standard_args}
+               ${arg_CMAKE_ARGS}
+               ${build_command_args}
+               ${install_command_args}
+               ${test_command_args}
+               ${PPC_EXTERNAL_PROJECT_LOG_ARGS}
+               ${arg_UNPARSED_ARGUMENTS})
+endfunction()
 
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set(CMAKE_BUILD_RPATH "${CMAKE_BINARY_DIR}/ppc_onetbb/install/lib")
