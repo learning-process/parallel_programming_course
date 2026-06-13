@@ -1,4 +1,5 @@
 name: Archive installed package
+description: Archive and upload an installed package artifact
 inputs:
   path:
     description: Directory to archive
