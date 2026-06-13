@@ -138,9 +138,11 @@ using FuncTestUtilParam = ppc::util::FuncTestParam<int, int, int>;
 
 FuncTestUtilParam MakeFuncTestUtilParam(const std::string &test_name, ppc::task::TypeOfTask task_type,
                                         ppc::task::StatusOfTask task_status, int value) {
-  return FuncTestUtilParam{[](int) -> ppc::task::TaskPtr<int, int> {
-    return {};
-  }, test_name, value, ppc::task::TaskDescriptor{task_type, task_status, ppc::task::TaskCategory::kThreads, test_name}};
+  return FuncTestUtilParam{[](int) -> ppc::task::TaskPtr<int, int> { return {}; }, test_name, value,
+                           ppc::task::TaskDescriptor{.type = task_type,
+                                                     .status = task_status,
+                                                     .category = ppc::task::TaskCategory::kThreads,
+                                                     .display_name = test_name}};
 }
 
 void ExpectSingleNonFatalFailureContains(const ::testing::TestPartResultArray &failures, std::string_view message) {

@@ -17,8 +17,10 @@ inline ppc::task::TaskDescriptor MakeTaskDescriptor(std::string_view task_namesp
   const auto task_name = task_type == ppc::task::TypeOfTask::kUnknown
                              ? std::string(task_type_name)
                              : std::string(task_type_name) + "_" + std::string(ppc::task::StatusOfTaskToString(status));
-  return {task_type, status, ppc::task::TaskCategoryFromSettingsPath(settings_task_path),
-          std::string(task_namespace) + "_" + task_name};
+  return {.type = task_type,
+          .status = status,
+          .category = ppc::task::TaskCategoryFromSettingsPath(settings_task_path),
+          .display_name = std::string(task_namespace) + "_" + task_name};
 }
 
 template <typename TestParam>

@@ -69,7 +69,7 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
                                    [this](const auto &test_param) { RunTestCase(test_param); });
   }
 
-  void ExecuteTest(FuncTestParam<InType, OutType, TestType> test_param) {
+  void ExecuteTest(const FuncTestParam<InType, OutType, TestType> &test_param) {
     const auto &descriptor = GetTaskDescriptor(test_param);
 
     ValidateTaskDescriptor(descriptor);
