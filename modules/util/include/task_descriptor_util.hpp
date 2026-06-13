@@ -1,8 +1,8 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <string_view>
-#include <tuple>
 
 #include "task/include/task.hpp"
 #include "util/include/util.hpp"
