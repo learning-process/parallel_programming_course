@@ -26,7 +26,7 @@ permissions:
 
 jobs:
   ci-scope:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       ppc_tasks: ${{ steps.detect.outputs.ppc_tasks }}
       task_scoped: ${{ steps.detect.outputs.task_scoped }}
@@ -47,7 +47,7 @@ jobs:
   clang-tidy:
     needs:
       - ci-scope
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
       image: ghcr.io/learning-process/ppc-ubuntu:1.3
       credentials:
@@ -98,7 +98,7 @@ jobs:
     needs:
       - ci-scope
       - clang-tidy
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
       image: ghcr.io/learning-process/ppc-ubuntu:1.3
       credentials:
@@ -146,7 +146,7 @@ jobs:
           echo "clang-tidy run has failed. See previous 'Run clang-tidy' stage logs"
           exit 1
   nolint-check:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
         with:
@@ -188,7 +188,7 @@ jobs:
 
           echo "No linter suppression markers found in changed files."
   task-backend-api-check:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
         with:

@@ -23,7 +23,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ["ubuntu-24.04"]
+        os: ["ubuntu-26.04"]
         build_type: [Release, Debug]
     steps:
       - uses: actions/checkout@v6
@@ -45,7 +45,7 @@ jobs:
           CXX: g++-15
       - name: Archive revert list
         uses: actions/upload-artifact@v7
-        if: ${{ matrix.os == 'ubuntu-24.04' && matrix.build_type == 'Release' }}
+        if: ${{ matrix.os == 'ubuntu-26.04' && matrix.build_type == 'Release' }}
         with:
           name: revert-list
           path: build/revert-list.txt
@@ -78,7 +78,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ["ubuntu-24.04"]
+        os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -107,7 +107,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ["ubuntu-24.04"]
+        os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -128,7 +128,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ["ubuntu-24.04"]
+        os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -174,7 +174,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ["ubuntu-24.04"]
+        os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -203,7 +203,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ["ubuntu-24.04"]
+        os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -226,7 +226,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ["ubuntu-24.04"]
+        os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -274,7 +274,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ["ubuntu-24.04"]
+        os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -309,7 +309,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: ["ubuntu-24.04"]
+        os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
       - name: Download installed package
@@ -326,7 +326,7 @@ jobs:
     needs:
       - gcc-test-extended
       - clang-test-extended
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       packages: read
