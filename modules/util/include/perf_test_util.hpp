@@ -65,18 +65,18 @@ void RunTaskForValidation(const ppc::task::TaskPtr<InType, OutType> &task) {
 
 inline std::function<double()> MakeTechnologyTimer(ppc::task::TypeOfTask task_type) {
   if (task_type == ppc::task::TypeOfTask::kMPI || task_type == ppc::task::TypeOfTask::kALL) {
-    return [] { return GetTimeMPI(); };
+    return [] -> double { return GetTimeMPI(); };
   }
   if (task_type == ppc::task::TypeOfTask::kOMP) {
-    return [] { return omp_get_wtime(); };
+    return [] -> double { return omp_get_wtime(); };
   }
   if (task_type == ppc::task::TypeOfTask::kTBB) {
     const auto t0 = tbb::tick_count::now();
-    return [t0] { return (tbb::tick_count::now() - t0).seconds(); };
+    return [t0] -> double { return (tbb::tick_count::now() - t0).seconds(); };
   }
   if (task_type == ppc::task::TypeOfTask::kSEQ || task_type == ppc::task::TypeOfTask::kSTL) {
     const auto t0 = std::chrono::high_resolution_clock::now();
-    return [t0] {
+    return [t0] -> double {
       const auto now = std::chrono::high_resolution_clock::now();
       const auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(now - t0).count();
       return static_cast<double>(ns) * 1e-9;

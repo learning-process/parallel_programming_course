@@ -28,7 +28,6 @@ Checks: >
   -misc-const-correctness,
   -misc-non-private-member-variables-in-classes,
   -misc-use-internal-linkage,
-  -modernize-use-trailing-return-type,
   -portability-avoid-pragma-once,
   -readability-inconsistent-ifelse-braces,
   -readability-magic-numbers
@@ -100,6 +99,10 @@ CheckOptions:
     value: 1
   - key: modernize-type-traits.IgnoreMacros
     value: 1
+  - key: modernize-use-trailing-return-type.TransformFunctions
+    value: false
+  - key: modernize-use-trailing-return-type.TransformLambdas
+    value: all_except_auto
   - key: cppcoreguidelines-avoid-goto.IgnoreMacros
     value: 1
   - key: readability-simplify-boolean-expr.ChainedConditionalReturn

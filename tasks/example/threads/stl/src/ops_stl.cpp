@@ -42,7 +42,7 @@ bool NesterovATestTaskSTL::RunImpl() {
 
   std::atomic<int> counter(0);
   for (std::thread &thread : threads) {
-    thread = std::thread([&counter]() { counter++; });
+    thread = std::thread([&counter]() -> void { counter++; });
     thread.join();
   }
 

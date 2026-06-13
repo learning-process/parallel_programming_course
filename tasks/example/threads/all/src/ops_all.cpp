@@ -61,7 +61,7 @@ bool NesterovATestTaskALL::RunImpl() {
     std::vector<std::thread> threads(num_threads);
     std::atomic<int> counter(0);
     for (std::thread &thread : threads) {
-      thread = std::thread([&counter]() { counter++; });
+      thread = std::thread([&counter]() -> void { counter++; });
       thread.join();
     }
     GetOutput() /= counter;
@@ -70,7 +70,7 @@ bool NesterovATestTaskALL::RunImpl() {
   {
     GetOutput() *= num_threads;
     std::atomic<int> counter(0);
-    tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int /*i*/) { counter++; });
+    tbb::parallel_for(0, ppc::util::GetNumThreads(), [&](int /*i*/) -> void { counter++; });
     GetOutput() /= counter;
   }
   MPI_Barrier(MPI_COMM_WORLD);
