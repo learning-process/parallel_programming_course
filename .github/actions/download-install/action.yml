@@ -1,4 +1,5 @@
 name: Download installed package
+description: Download and extract an installed package artifact
 inputs:
   path:
     description: Directory to extract into
