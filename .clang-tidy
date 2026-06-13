@@ -29,6 +29,7 @@ Checks: >
   -misc-non-private-member-variables-in-classes,
   -misc-use-internal-linkage,
   -portability-avoid-pragma-once,
+  -portability-template-virtual-member-function,
   -readability-inconsistent-ifelse-braces,
   -readability-magic-numbers
 

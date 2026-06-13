@@ -5,11 +5,8 @@
 
 namespace example_threads {
 
-class NesterovATestTaskALL : public BaseTask {
+class NesterovATestTaskALL : public BaseTask<ppc::task::TypeOfTask::kALL> {
  public:
-  static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() {
-    return ppc::task::TypeOfTask::kALL;
-  }
   explicit NesterovATestTaskALL(const InType &in);
 
  protected:
