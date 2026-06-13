@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   ci-scope:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       ppc_tasks: ${{ steps.detect.outputs.ppc_tasks }}
       task_scoped: ${{ steps.detect.outputs.task_scoped }}

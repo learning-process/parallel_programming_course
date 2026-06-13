@@ -10,7 +10,7 @@ permissions:
 jobs:
   link-check:
     if: github.repository == 'learning-process/parallel_programming_course'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
       - name: Check links
@@ -29,7 +29,7 @@ jobs:
             './**/*.rst'
 
   pre-commit:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
       image: ghcr.io/learning-process/ppc-ubuntu:1.3
       credentials:
