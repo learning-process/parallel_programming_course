@@ -5,11 +5,8 @@
 
 namespace example_processes_t3 {
 
-class NesterovATestTaskMPI : public BaseTask {
+class NesterovATestTaskMPI : public BaseTask<ppc::task::TypeOfTask::kMPI> {
  public:
-  static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() {
-    return ppc::task::TypeOfTask::kMPI;
-  }
   explicit NesterovATestTaskMPI(const InType &in);
 
  protected:

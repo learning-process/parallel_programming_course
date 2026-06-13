@@ -10,7 +10,14 @@ namespace example_common {
 using InType = int;
 using OutType = int;
 using TestType = std::tuple<int, std::string>;
-using BaseTask = ppc::task::Task<InType, OutType>;
+
+template <ppc::task::TypeOfTask kTaskType>
+class BaseTask : public ppc::task::Task<InType, OutType> {
+ public:
+  static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() {
+    return kTaskType;
+  }
+};
 
 }  // namespace example_common
 

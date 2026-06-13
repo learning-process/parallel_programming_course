@@ -30,6 +30,7 @@ Checks: >
   -misc-use-internal-linkage,
   -modernize-use-trailing-return-type,
   -portability-avoid-pragma-once,
+  -portability-template-virtual-member-function,
   -readability-inconsistent-ifelse-braces,
   -readability-magic-numbers
 

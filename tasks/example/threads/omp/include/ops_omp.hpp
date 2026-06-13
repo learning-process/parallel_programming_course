@@ -5,11 +5,8 @@
 
 namespace example_threads {
 
-class NesterovATestTaskOMP : public BaseTask {
+class NesterovATestTaskOMP : public BaseTask<ppc::task::TypeOfTask::kOMP> {
  public:
-  static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() {
-    return ppc::task::TypeOfTask::kOMP;
-  }
   explicit NesterovATestTaskOMP(const InType &in);
 
  protected:
