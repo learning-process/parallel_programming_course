@@ -203,6 +203,12 @@ template <typename InType, typename OutType>
 /// @tparam OutType Output data type.
 class Task {
  public:
+  Task() = default;
+  Task(const Task &) = delete;
+  Task(Task &&) = delete;
+  Task &operator=(const Task &) = delete;
+  Task &operator=(Task &&) = delete;
+
   /// @brief Validates input data and task attributes before execution.
   /// @return True if validation is successful.
   virtual bool Validation() final {
