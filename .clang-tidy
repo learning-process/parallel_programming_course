@@ -25,7 +25,6 @@ Checks: >
   -cppcoreguidelines-pro-type-reinterpret-cast,
   -cppcoreguidelines-pro-type-vararg,
   -misc-const-correctness,
-  -misc-non-private-member-variables-in-classes,
   -misc-use-internal-linkage,
   -portability-avoid-pragma-once,
   -portability-template-virtual-member-function,
