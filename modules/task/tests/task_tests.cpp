@@ -27,6 +27,11 @@ using ppc::task::TypeOfTask;
 class ScopedFile {
  public:
   explicit ScopedFile(std::filesystem::path path) : path_(std::move(path)) {}
+  ScopedFile(const ScopedFile &) = delete;
+  ScopedFile(ScopedFile &&) = delete;
+  ScopedFile &operator=(const ScopedFile &) = delete;
+  ScopedFile &operator=(ScopedFile &&) = delete;
+
   ~ScopedFile() noexcept {
     std::error_code ec;
     std::filesystem::remove(path_, ec);
