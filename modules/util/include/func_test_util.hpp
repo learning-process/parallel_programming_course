@@ -13,6 +13,7 @@
 #include <utility>
 
 #include "task/include/task.hpp"
+#include "util/include/osh_runtime.hpp"
 #include "util/include/task_descriptor_util.hpp"
 #include "util/include/util.hpp"
 
@@ -80,8 +81,8 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
       GTEST_SKIP();
     }
 
-    if (ShouldSkipNonMpiTask(descriptor)) {
-      std::cerr << "kALL and kMPI tasks are not under mpirun\n";
+    if (ShouldSkipProcessTask(descriptor)) {
+      std::cerr << "Process task is not under mpirun\n";
       GTEST_SKIP();
     }
 
@@ -96,13 +97,13 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
     return descriptor.status == ppc::task::StatusOfTask::kDisabled;
   }
 
-  bool ShouldSkipNonMpiTask(const ppc::task::TaskDescriptor &descriptor) {
-    return !ppc::util::IsUnderMpirun() && IsMpiTaskType(descriptor.type);
+  bool ShouldSkipProcessTask(const ppc::task::TaskDescriptor &descriptor) {
+    return !ppc::util::IsUnderMpirun() && (IsMpiTaskType(descriptor.type) || IsOshTaskType(descriptor.type));
   }
 
   bool ShouldSkipTestCase(const FuncTestParam<InType, OutType, TestType> &test_param) {
     const auto &descriptor = GetTaskDescriptor(test_param);
-    return IsTestDisabled(descriptor) || ShouldSkipNonMpiTask(descriptor);
+    return IsTestDisabled(descriptor) || ShouldSkipProcessTask(descriptor);
   }
 
   /// @brief Initializes task instance and runs it through the full pipeline.
@@ -119,7 +120,7 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
 
   void ValidateTask() {
     EXPECT_TRUE(task_->Validation());
-    SynchronizeMpiRanks();
+    SynchronizeTaskRanks(task_->GetDynamicTypeOfTask());
     EXPECT_TRUE(task_->PreProcessing());
   }
 
@@ -134,6 +135,14 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
 
  private:
   ppc::task::TaskPtr<InType, OutType> task_;
+
+  static void SynchronizeTaskRanks(ppc::task::TypeOfTask type) {
+    if (IsOshTaskType(type)) {
+      ppc::util::OshRuntime::BarrierAll();
+      return;
+    }
+    SynchronizeMpiRanks();
+  }
 };
 
 namespace detail {

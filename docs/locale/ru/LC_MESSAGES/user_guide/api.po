@@ -19,7 +19,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../../../docs/user_guide/api.rst:2
 msgid "API Reference"
@@ -31,15 +31,15 @@ msgstr "Модуль выполнения"
 
 #: ../../../../docs/user_guide/api.rst
 msgid "Functions"
-msgstr "Функции"
+msgstr ""
 
 #: ../../../../docs/user_guide/api.rst
 msgid "Parameters"
-msgstr "Параметры"
+msgstr ""
 
 #: ../../../../docs/user_guide/api.rst
 msgid "Returns"
-msgstr "Возвращаемые значения"
+msgstr ""
 
 #: ../../../../docs/user_guide/api.rst:14
 msgid "Task Module"
@@ -47,23 +47,23 @@ msgstr "Модуль задач"
 
 #: ../../../../docs/user_guide/api.rst
 msgid "Typedefs"
-msgstr "Псевдонимы типов"
+msgstr ""
 
 #: ../../../../docs/user_guide/api.rst
 msgid "Template Parameters"
-msgstr "Параметры шаблона"
+msgstr ""
 
 #: ../../../../docs/user_guide/api.rst
 msgid "Enums"
-msgstr "Перечисления"
+msgstr ""
 
 #: ../../../../docs/user_guide/api.rst
 msgid "Throws"
-msgstr "Исключения"
+msgstr ""
 
 #: ../../../../docs/user_guide/api.rst
 msgid "Variables"
-msgstr "Переменные"
+msgstr ""
 
 #: ../../../../docs/user_guide/api.rst:20
 msgid "Utility Module"

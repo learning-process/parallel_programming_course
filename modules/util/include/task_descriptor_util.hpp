@@ -32,4 +32,8 @@ inline bool IsMpiTaskType(ppc::task::TypeOfTask type) {
   return type == ppc::task::TypeOfTask::kMPI || type == ppc::task::TypeOfTask::kALL;
 }
 
+inline bool IsOshTaskType(ppc::task::TypeOfTask type) {
+  return type == ppc::task::TypeOfTask::kOSH;
+}
+
 }  // namespace ppc::util

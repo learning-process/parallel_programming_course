@@ -38,7 +38,13 @@ if(PPC_BUILD_COMPONENTS)
   # ################ Parallel programming technologies #################
 
   message(STATUS "PPC step: Setup parallel programming technologies")
-  foreach(dep mpi openmp onetbb)
+  set(PPC_PARALLEL_TECHNOLOGIES mpi openmp onetbb)
+  set(ppc_osh_supported OFF)
+  if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(ppc_osh_supported ON)
+    list(APPEND PPC_PARALLEL_TECHNOLOGIES osh)
+  endif()
+  foreach(dep ${PPC_PARALLEL_TECHNOLOGIES})
     include(cmake/${dep}.cmake)
   endforeach()
 

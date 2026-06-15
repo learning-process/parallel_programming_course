@@ -39,6 +39,16 @@ Navigate to the project root.
 
    *A corresponding flag can be omitted if it's not needed.*
 
+   OSH is part of the process-technology set on Linux. It is built by default
+   from the shallow ``3rdparty/openmpi`` source backend together with MPI. A
+   focused example build can be configured as:
+
+   .. code-block:: bash
+
+      git submodule update --init --recursive
+      cmake -S . -B build-osh -DPPC_BUILD_COMPONENTS=ON -DPPC_TASKS=example
+      cmake --build build-osh --parallel
+
 2. **Build the project**:
 
    .. code-block:: bash
@@ -48,3 +58,10 @@ Navigate to the project root.
 3. **Run tests**:
 
    Prefer the helper runner described in ``User Guide → CI``.
+
+   OSH example on Linux:
+
+   .. code-block:: bash
+
+      PPC_NUM_THREADS=1 scripts/run_tests.py --running-type=processes --counts 2 --build-dir build-osh
+      PPC_NUM_THREADS=1 PPC_NUM_PROC=2 ./build-osh/ppc_openmpi/install/bin/oshrun -np 2 ./build-osh/bin/ppc_func_tests --gtest_filter="*_osh_*:*OSHEnabled*"

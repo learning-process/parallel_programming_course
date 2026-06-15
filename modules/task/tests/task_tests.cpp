@@ -185,7 +185,7 @@ TEST(TaskTest, GetStringTaskTypeUnknownTypeWithValidFile) {
   ScopedFile cleaner(path);
   std::ofstream file(path);
   file
-      << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "tbb": "enabled", "seq": "enabled"}})";
+      << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "osh": "enabled", "tbb": "enabled", "seq": "enabled"}})";
   file.close();
   EXPECT_NO_THROW({ GetStringTaskType(TypeOfTask::kUnknown, path); });
 }
@@ -204,13 +204,14 @@ TEST(TaskTest, GetStringTaskTypeEachTypeWithValidFile) {
   ScopedFile cleaner(path);
   std::ofstream file(path);
   file
-      << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "tbb": "enabled", "seq": "enabled"}})";
+      << R"({"tasks": {"all": "enabled", "stl": "enabled", "omp": "enabled", "mpi": "enabled", "osh": "enabled", "tbb": "enabled", "seq": "enabled"}})";
   file.close();
 
   EXPECT_EQ(GetStringTaskType(TypeOfTask::kALL, path), "all_enabled");
   EXPECT_EQ(GetStringTaskType(TypeOfTask::kSTL, path), "stl_enabled");
   EXPECT_EQ(GetStringTaskType(TypeOfTask::kOMP, path), "omp_enabled");
   EXPECT_EQ(GetStringTaskType(TypeOfTask::kMPI, path), "mpi_enabled");
+  EXPECT_EQ(GetStringTaskType(TypeOfTask::kOSH, path), "osh_enabled");
   EXPECT_EQ(GetStringTaskType(TypeOfTask::kTBB, path), "tbb_enabled");
   EXPECT_EQ(GetStringTaskType(TypeOfTask::kSEQ, path), "seq_enabled");
 }

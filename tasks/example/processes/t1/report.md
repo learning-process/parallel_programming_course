@@ -6,3 +6,4 @@ Child reports:
 
 - `seq/report.md`
 - `mpi/report.md`
+- `osh/report.md`

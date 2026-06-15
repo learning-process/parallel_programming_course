@@ -21,6 +21,7 @@
 #include <utility>
 
 #include "task/include/task.hpp"
+#include "util/include/osh_runtime.hpp"
 #include "util/include/task_descriptor_util.hpp"
 #include "util/include/util.hpp"
 
@@ -67,6 +68,14 @@ inline std::function<double()> MakeTechnologyTimer(ppc::task::TypeOfTask task_ty
   if (task_type == ppc::task::TypeOfTask::kMPI || task_type == ppc::task::TypeOfTask::kALL) {
     return [] -> double { return GetTimeMPI(); };
   }
+  if (task_type == ppc::task::TypeOfTask::kOSH) {
+    const auto t0 = std::chrono::high_resolution_clock::now();
+    return [t0] -> double {
+      const auto now = std::chrono::high_resolution_clock::now();
+      const auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(now - t0).count();
+      return static_cast<double>(ns) * 1e-9;
+    };
+  }
   if (task_type == ppc::task::TypeOfTask::kOMP) {
     return [] -> double { return omp_get_wtime(); };
   }
@@ -94,6 +103,14 @@ inline double MaxElapsedTimeAcrossMpiRanks(double elapsed, ppc::task::TypeOfTask
   return max_elapsed;
 }
 
+inline void SynchronizeTaskRanks(ppc::task::TypeOfTask task_type) {
+  if (task_type == ppc::task::TypeOfTask::kOSH) {
+    ppc::util::OshRuntime::BarrierAll();
+    return;
+  }
+  SynchronizeMpiRanks();
+}
+
 inline void SkipBenchmarkWithError(benchmark::State &state, const char *message) noexcept {
   try {
     state.SkipWithError(message);
@@ -118,7 +135,7 @@ double RunTaskForBenchmark(const ppc::task::TaskPtr<InType, OutType> &task) {
 
   task->Validation();
   task->PreProcessing();
-  SynchronizeMpiRanks();
+  SynchronizeTaskRanks(task_type);
   const double begin = timer();
   task->Run();
   const double elapsed = timer() - begin;
@@ -210,7 +227,7 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
     const auto input_data = GetTestInputData();
     task_ = task_getter(input_data);
     task_->GetStateOfTesting() = ppc::task::StateOfTesting::kPerf;
-    SynchronizeMpiRanks();
+    detail::SynchronizeTaskRanks(descriptor.type);
     detail::RunTaskForValidation(task_);
 
     OutType output_data = task_->GetOutput();

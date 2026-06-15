@@ -70,9 +70,9 @@ bool ppc::util::IsUnderMpirun() {
 
 void ppc::util::ConfigureMpiEnvironment() {
 #ifdef __APPLE__
-  // Open MPI 5 can emit mmap backing-file probe warnings for macOS TMPDIR paths.
+  // Open MPI 5's POSIX shmem component is fragile on some macOS TMPDIR paths.
   if (!env::get<std::string>("OMPI_MCA_shmem").has_value()) {
-    env::detail::set_environment_variable("OMPI_MCA_shmem", "posix");
+    env::detail::set_environment_variable("OMPI_MCA_shmem", "^posix");
   }
 #endif
 }

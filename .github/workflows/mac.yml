@@ -63,7 +63,7 @@ jobs:
         with:
           path: install
           name: macos-clang-install
-      - name: Run func tests (MPI)
+      - name: Run func tests (MPI/OSH)
         run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
         env:
           PPC_NUM_THREADS: 1

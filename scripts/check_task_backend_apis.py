@@ -107,6 +107,15 @@ API_PATTERNS = {
         ApiPattern("MPI", re.compile(r"\bMPI_[A-Za-z0-9_]*\b"), True),
         ApiPattern("MPI", re.compile(r"\bMPI::"), True),
     ],
+    "osh": [
+        ApiPattern(
+            "OSH",
+            re.compile(r"^\s*#\s*include\s*[<\"]shmem\.h[>\"]"),
+            False,
+        ),
+        ApiPattern("OSH", re.compile(r"\bshmem_[A-Za-z0-9_]*\b"), True),
+        ApiPattern("OSH", re.compile(r"\bSHMEM_[A-Za-z0-9_]*\b"), True),
+    ],
     "cpp_thread": [
         ApiPattern(
             "C++ thread API",
@@ -132,15 +141,16 @@ API_PATTERNS = {
 }
 
 
-API_ORDER = ("openmp", "tbb", "mpi", "cpp_thread")
+API_ORDER = ("openmp", "tbb", "mpi", "osh", "cpp_thread")
 
 
 BACKEND_RULES = {
-    "seq": {"openmp", "tbb", "mpi", "cpp_thread"},
-    "omp": {"tbb", "mpi", "cpp_thread"},
-    "tbb": {"openmp", "mpi", "cpp_thread"},
-    "mpi": {"openmp", "tbb", "cpp_thread"},
-    "stl": {"openmp", "tbb", "mpi"},
+    "seq": {"openmp", "tbb", "mpi", "osh", "cpp_thread"},
+    "omp": {"tbb", "mpi", "osh", "cpp_thread"},
+    "tbb": {"openmp", "mpi", "osh", "cpp_thread"},
+    "mpi": {"openmp", "tbb", "osh", "cpp_thread"},
+    "osh": {"openmp", "tbb", "mpi", "cpp_thread"},
+    "stl": {"openmp", "tbb", "mpi", "osh"},
     "common": set(API_ORDER),
 }
 
@@ -292,12 +302,15 @@ def get_backend(path: Path) -> str | None:
     except ValueError:
         return None
 
-    backend_index = tasks_index + 1
-    if backend_index >= len(parts) or parts[tasks_index] == "common":
+    if tasks_index >= len(parts) or parts[tasks_index] == "common":
         return None
 
-    backend = parts[backend_index]
-    return backend if backend in BACKEND_RULES else None
+    for backend_index, backend in enumerate(parts):
+        if backend_index <= tasks_index:
+            continue
+        if backend in BACKEND_RULES:
+            return backend
+    return None
 
 
 def is_source_file(path: Path) -> bool:

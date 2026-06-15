@@ -22,6 +22,7 @@
 
 #include "oneapi/tbb/global_control.h"
 #include "runners/include/runners.hpp"
+#include "util/include/osh_runtime.hpp"
 #include "util/include/util.hpp"
 
 namespace {
@@ -209,6 +210,15 @@ int RunPerformanceMain(int argc, char **argv) {
   if (status == EXIT_SUCCESS) {
     InitializeBenchmark(argc, argv, rank);
     status = SynchronizeStatus(RunRegisteredBenchmarks(rank), "Google Benchmark");
+  }
+
+  if (ppc::util::OshRuntime::IsInitialized()) {
+    ppc::util::OshRuntime::Finalize();
+  }
+
+  int mpi_finalized = 0;
+  if (MPI_Finalized(&mpi_finalized) == MPI_SUCCESS && mpi_finalized != 0) {
+    return status;
   }
 
   const int finalize_res = MPI_Finalize();

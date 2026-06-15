@@ -25,6 +25,8 @@ enum class TypeOfTask : uint8_t {
   kALL,
   /// MPI (Message Passing Interface)
   kMPI,
+  /// OSH (PGAS / one-sided distributed-memory communication)
+  kOSH,
   /// OpenMP (Open Multi-Processing)
   kOMP,
   /// Sequential implementation
@@ -38,10 +40,11 @@ enum class TypeOfTask : uint8_t {
 };
 
 using TaskMapping = std::pair<TypeOfTask, std::string_view>;
-using TaskMappingArray = std::array<TaskMapping, 6>;
+using TaskMappingArray = std::array<TaskMapping, 7>;
 
 inline constexpr TaskMappingArray kTaskTypeMappings = {{{TypeOfTask::kALL, "all"},
                                                         {TypeOfTask::kMPI, "mpi"},
+                                                        {TypeOfTask::kOSH, "osh"},
                                                         {TypeOfTask::kOMP, "omp"},
                                                         {TypeOfTask::kSEQ, "seq"},
                                                         {TypeOfTask::kSTL, "stl"},

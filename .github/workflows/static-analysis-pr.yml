@@ -66,6 +66,12 @@ jobs:
           create-symlink: true
           max-size: 1G
 
+      - name: Install Open MPI source build dependencies
+        run: >
+          apt-get update &&
+          apt-get install -y --no-install-recommends
+          autoconf automake flex libtool libucx-dev make perl pkg-config zlib1g-dev
+
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -116,6 +122,12 @@ jobs:
           key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
+
+      - name: Install Open MPI source build dependencies
+        run: >
+          apt-get update &&
+          apt-get install -y --no-install-recommends
+          autoconf automake flex libtool libucx-dev make perl pkg-config zlib1g-dev
 
       - name: CMake configure
         run: >

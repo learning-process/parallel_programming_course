@@ -20,7 +20,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../../../docs/common_information/points.rst:2
 msgid "Points"
@@ -39,32 +39,32 @@ msgid "Report points are distributed per task and sum to 10"
 msgstr "Баллы за отчёт распределяются по задачам и суммарно равны 10"
 
 #: ../../../../docs/common_information/points.rst:11
-msgid "Processes semester (MPI)"
-msgstr "Семестр процессов (MPI)"
+msgid "Processes semester (MPI / OSH)"
+msgstr "Семестр процессов (MPI / OSH)"
 
 #: ../../../../docs/common_information/points.rst:13
 msgid ""
-"Task 1 — Total: 12 - Implementation: MPI 8 + Seq 2 - Performance: 0 - "
-"Report: 2"
+"Task 1 — Total: 12 - Implementation: MPI or OSH 8 + Seq 2 - Performance: "
+"0 - Report: 2"
 msgstr ""
-"Задача 1 — Итого: 12 — Реализация: MPI 8 + Seq 2 — Производительность: 0 "
-"— Отчёт: 2"
+"Задача 1 — Итого: 12 — Реализация: MPI или OSH 8 + Seq 2 — "
+"Производительность: 0 — Отчёт: 2"
 
 #: ../../../../docs/common_information/points.rst:18
 msgid ""
-"Task 2 — Total: 23 - Implementation: MPI 12 + Seq 3 - Performance: 5 - "
-"Report: 3"
+"Task 2 — Total: 23 - Implementation: MPI or OSH 12 + Seq 3 - Performance:"
+" 5 - Report: 3"
 msgstr ""
-"Задача 2 — Итого: 23 — Реализация: MPI 12 + Seq 3 — Производительность: 5"
-" — Отчёт: 3"
+"Задача 2 — Итого: 23 — Реализация: MPI или OSH 12 + Seq 3 — "
+"Производительность: 5 — Отчёт: 3"
 
 #: ../../../../docs/common_information/points.rst:23
 msgid ""
-"Task 3 — Total: 35 - Implementation: MPI 16 + Seq 4 - Performance: 10 - "
-"Report: 5"
+"Task 3 — Total: 35 - Implementation: MPI or OSH 16 + Seq 4 - Performance:"
+" 10 - Report: 5"
 msgstr ""
-"Задача 3 — Итого: 35 — Реализация: MPI 16 + Seq 4 — Производительность: "
-"10 — Отчёт: 5"
+"Задача 3 — Итого: 35 — Реализация: MPI или OSH 16 + Seq 4 — "
+"Производительность: 10 — Отчёт: 5"
 
 #: ../../../../docs/common_information/points.rst:28
 msgid "Semester total: 70"

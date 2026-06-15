@@ -16,6 +16,9 @@ function(add_tests test_flag exec_target subdir)
     # Gather all source files under tests/<subdir>
     file(GLOB_RECURSE src_files "${TEST_DIR}/${subdir}/*.cpp"
          "${TEST_DIR}/${subdir}/*.cxx" "${TEST_DIR}/${subdir}/*.cc")
+    if(NOT ppc_osh_supported)
+      list(FILTER src_files EXCLUDE REGEX "(/|\\\\)osh\\.(cpp|cxx|cc)$")
+    endif()
     target_sources(${exec_target} PRIVATE ${src_files})
     list(APPEND TEST_EXECUTABLES ${exec_target})
     set(TEST_EXECUTABLES
@@ -33,6 +36,10 @@ function(setup_implementation)
   # parse named args: NAME, PROJ_NAME, BASE_DIR; multi‐value: TESTS
   cmake_parse_arguments(SETUP "" # no plain options
                         "NAME;PROJ_NAME;BASE_DIR" "TESTS" ${ARGN})
+
+  if(SETUP_NAME STREQUAL "osh" AND NOT ppc_osh_supported)
+    return()
+  endif()
 
   # skip if impl dir doesn't exist
   set(IMP_DIR "${SETUP_BASE_DIR}/${SETUP_NAME}")

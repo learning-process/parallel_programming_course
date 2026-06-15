@@ -29,7 +29,7 @@ Create a folder ``tasks/<last>_<initial>_<short>/`` with the following layout:
      using BaseTask = ppc::task::Task<InType, OutType>;
 
 - Technology implementations (add only those required by the semester):
-  - Processes (MPI/SEQ): ``seq/include``, ``seq/src``, ``mpi/include``, ``mpi/src``
+  - Processes (MPI/OSH/SEQ): ``seq/include``, ``seq/src``, ``mpi/include``, ``mpi/src``, ``osh/include``, ``osh/src``
   - Threads: ``seq``, ``omp``, ``tbb``, ``stl`` (same include/src split)
 
   Each implementation defines a class derived from ``BaseTask`` and
@@ -39,7 +39,7 @@ Create a folder ``tasks/<last>_<initial>_<short>/`` with the following layout:
   .. code-block:: cpp
 
      static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() { return ppc::task::TypeOfTask::kMPI; }
-     // or kSEQ/kOMP/kTBB/kSTL as appropriate
+     // or kOSH/kSEQ/kOMP/kTBB/kSTL as appropriate
 
   Minimal skeleton (example for SEQ):
 
@@ -83,6 +83,7 @@ Functional tests example:
 
    const auto kTasks = std::tuple_cat(
      ppc::util::AddFuncTask<MyTaskMPI, InType>(params, PPC_SETTINGS_<task_id>),
+     ppc::util::AddFuncTask<MyTaskOSH, InType>(params, PPC_SETTINGS_<task_id>),
      ppc::util::AddFuncTask<MyTaskSEQ, InType>(params, PPC_SETTINGS_<task_id>)
    );
    INSTANTIATE_TEST_SUITE_P(..., MyFuncTests, ppc::util::ExpandToValues(kTasks), ...);
@@ -93,7 +94,7 @@ Performance tests example:
 
 .. code-block:: cpp
 
-   const auto kAllPerfTasks = ppc::util::MakeAllPerfTasks<InType, MyTaskMPI, MyTaskSEQ>(PPC_SETTINGS_<task_id>);
+   const auto kAllPerfTasks = ppc::util::MakeAllPerfTasks<InType, MyTaskMPI, MyTaskOSH, MyTaskSEQ>(PPC_SETTINGS_<task_id>);
    INSTANTIATE_TEST_SUITE_P(..., MyPerfTests, ppc::util::TupleToGTestValues(kAllPerfTasks), ...);
 
 Tips for tests
@@ -107,7 +108,7 @@ Tips for tests
   
   .. code-block:: json
 
-     { "tasks_type": "processes", "tasks": { "mpi": "enabled", "seq": "enabled" } }
+     { "tasks_type": "processes", "tasks": { "mpi": "enabled", "osh": "enabled", "seq": "enabled" } }
 
 - ``info.json`` — student metadata used in automation (scoreboard, macros):
   
@@ -147,7 +148,7 @@ Pull Request
 ------------
 - Title format (example):
   
-  ``<Фамилия Имя>. Технология <SEQ/MPI/...>. <Название задачи>. Вариант <N>.``
+  ``<Фамилия Имя>. Технология <SEQ/MPI/OSH/...>. <Название задачи>. Вариант <N>.``
 
 - Description should include:
   - Полное описание задачи; номер варианта; используемая технология
@@ -162,7 +163,7 @@ PR checklist template (body)
    ## Description
    - Task: <Full task name>
    - Variant: <N>
-   - Technology: <SEQ | MPI | OMP | TBB | STL | ALL>
+   - Technology: <SEQ | MPI | OSH | OMP | TBB | STL | ALL>
    - Summary: Brief description of your implementation and report
 
    ---

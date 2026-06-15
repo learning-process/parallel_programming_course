@@ -20,7 +20,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../../../docs/user_guide/environment.rst:2
 msgid "Set Up Your Environment"
@@ -89,7 +89,8 @@ msgid "The container includes:"
 msgstr "Контейнер включает:"
 
 #: ../../../../docs/user_guide/environment.rst:21
-msgid "Ubuntu environment with gcc-15, CMake, MPI, OpenMP"
+#, fuzzy
+msgid "Ubuntu environment with gcc-15, CMake, MPI, OSH, OpenMP"
 msgstr "Окружение Ubuntu с gcc-15, CMake, MPI, OpenMP"
 
 #: ../../../../docs/user_guide/environment.rst:22
@@ -168,33 +169,46 @@ msgstr "Дополнительные инструменты (clang-tidy, gcovr)"
 msgid ""
 "Install these to match the CI toolchain for static analysis and coverage "
 "reports."
-msgstr "Установите их, чтобы соответствовать инструментам CI для статического анализа и отчётов по покрытию."
+msgstr ""
+"Установите их, чтобы соответствовать инструментам CI для статического "
+"анализа и отчётов по покрытию."
 
 #: ../../../../docs/user_guide/environment.rst:64
 msgid "Linux (Ubuntu/Debian):"
 msgstr "Linux (Ubuntu/Debian):"
 
-#: ../../../../docs/user_guide/environment.rst:75
+#: ../../../../docs/user_guide/environment.rst:73
 msgid "macOS (Homebrew):"
 msgstr "macOS (Homebrew):"
 
-#: ../../../../docs/user_guide/environment.rst:83
+#: ../../../../docs/user_guide/environment.rst:81
 msgid "Windows:"
 msgstr "Windows:"
 
-#: ../../../../docs/user_guide/environment.rst:92
+#: ../../../../docs/user_guide/environment.rst:90
 msgid "Parallel Programming Technologies"
 msgstr "Технологии параллельного программирования"
 
-#: ../../../../docs/user_guide/environment.rst:95
+#: ../../../../docs/user_guide/environment.rst:93
 msgid "``MPI``"
 msgstr "``MPI``"
 
-#: ../../../../docs/user_guide/environment.rst:96
+#: ../../../../docs/user_guide/environment.rst:94
+msgid ""
+"On Linux, MPI is built from the shallow ``3rdparty/openmpi`` source "
+"backend together with OSH. A separate system MPI installation is not "
+"required for the Linux course build."
+msgstr ""
+"На Linux MPI собирается из shallow-источникового backend "
+"``3rdparty/openmpi`` вместе с OSH. Отдельная системная установка MPI для "
+"сборки курса на Linux не требуется."
+
+#: ../../../../docs/user_guide/environment.rst:94
+#: ../../../../docs/user_guide/environment.rst:135
 msgid "**Windows (MSVC)**:"
 msgstr "**Windows (MSVC)**:"
 
-#: ../../../../docs/user_guide/environment.rst:98
+#: ../../../../docs/user_guide/environment.rst:96
 msgid ""
 "`Installers link <https://www.microsoft.com/en-"
 "us/download/details.aspx?id=105289>`_. You have to install "
@@ -204,20 +218,65 @@ msgstr ""
 "us/download/details.aspx?id=105289>`_. Вы должны установить 2 файла - "
 "``msmpisdk.msi`` и ``msmpisetup.exe``."
 
-#: ../../../../docs/user_guide/environment.rst:100
-#: ../../../../docs/user_guide/environment.rst:116
+#: ../../../../docs/user_guide/environment.rst:98
+#: ../../../../docs/user_guide/environment.rst:121
+#: ../../../../docs/user_guide/environment.rst:147
 msgid "**Linux (gcc and clang)**:"
 msgstr "**Linux (gcc and clang)**:"
 
-#: ../../../../docs/user_guide/environment.rst:106
+#: ../../../../docs/user_guide/environment.rst:104
+#: ../../../../docs/user_guide/environment.rst:128
 msgid "**MacOS (apple clang)**:"
 msgstr "**MacOS (apple clang)**:"
 
-#: ../../../../docs/user_guide/environment.rst:113
+#: ../../../../docs/user_guide/environment.rst:111
+msgid "``OSH``"
+msgstr "``OSH``"
+
+#: ../../../../docs/user_guide/environment.rst:112
+msgid ""
+"OSH is used for process tasks as a PGAS / one-sided communication model "
+"for distributed-memory systems."
+msgstr ""
+"OSH используется в задачах на процессах как PGAS / one-sided "
+"communication model для систем с распределённой памятью."
+
+#: ../../../../docs/user_guide/environment.rst:119
+msgid ""
+"The project builds MPI and OSH from the shallow ``3rdparty/openmpi`` "
+"source backend on Linux. The build installs ``mpirun``, ``libmpi``, "
+"``liboshmem``, and ``shmem.h`` into the build tree. Open MPI OSH uses the"
+" UCX SPML, so Linux needs the UCX development package. macOS and Windows "
+"use their system MPI installations; OSH implementations are not built "
+"there."
+msgstr ""
+"На Linux проект собирает MPI и OSH из shallow-источникового backend "
+"``3rdparty/openmpi``. Сборка устанавливает ``mpirun``, ``libmpi``, "
+"``liboshmem`` и ``shmem.h`` в дерево сборки. Open MPI OSH использует UCX "
+"SPML, поэтому Linux нужен development package UCX. macOS и Windows "
+"используют системные установки MPI; OSH-реализации там не собираются."
+
+#: ../../../../docs/user_guide/environment.rst:132
+msgid "OSH is skipped on macOS."
+msgstr "OSH на macOS пропускается."
+
+#: ../../../../docs/user_guide/environment.rst:137
+msgid "Install MS-MPI as described in the MPI section. OSH is skipped on Windows."
+msgstr "Установите MS-MPI, как описано в разделе MPI. OSH на Windows пропускается."
+
+#: ../../../../docs/user_guide/environment.rst:140
+msgid ""
+"No separate system ``shmem.h``/``oshcc``/``oshrun`` package is required "
+"for the Linux course build."
+msgstr ""
+"Для сборки курса на Linux не требуется отдельный системный пакет "
+"``shmem.h``/``oshcc``/``oshrun``."
+
+#: ../../../../docs/user_guide/environment.rst:144
 msgid "``OpenMP``"
 msgstr "``OpenMP``"
 
-#: ../../../../docs/user_guide/environment.rst:114
+#: ../../../../docs/user_guide/environment.rst:145
 msgid ""
 "``OpenMP`` is included in ``gcc`` and ``msvc``, but some components "
 "should be installed additionally:"
@@ -226,15 +285,15 @@ msgstr ""
 "``msvc``, но ряд компонент все равно должны быть установлены "
 "дополнительно:"
 
-#: ../../../../docs/user_guide/environment.rst:122
+#: ../../../../docs/user_guide/environment.rst:153
 msgid "**MacOS (llvm)**:"
 msgstr "**MacOS (llvm)**:"
 
-#: ../../../../docs/user_guide/environment.rst:130
+#: ../../../../docs/user_guide/environment.rst:162
 msgid "``TBB``"
 msgstr "``TBB``"
 
-#: ../../../../docs/user_guide/environment.rst:131
+#: ../../../../docs/user_guide/environment.rst:163
 msgid ""
 "**Windows (MSVC)**, **Linux (gcc and clang)**, **MacOS (apple clang)**: "
 "Build as 3rdparty in the current project."
@@ -243,10 +302,10 @@ msgstr ""
 "Данная библиотека строится как внешняя в составе текущего проекта и не "
 "требует дополнительных операций."
 
-#: ../../../../docs/user_guide/environment.rst:135
+#: ../../../../docs/user_guide/environment.rst:167
 msgid "``std::thread``"
 msgstr "``std::thread``"
 
-#: ../../../../docs/user_guide/environment.rst:136
+#: ../../../../docs/user_guide/environment.rst:168
 msgid "``std::thread`` is included in STL libraries."
 msgstr "``std::thread`` включена в состав STL библиотек."

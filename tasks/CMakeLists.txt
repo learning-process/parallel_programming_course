@@ -17,7 +17,14 @@ if(USE_PERF_TESTS)
 endif()
 
 # ——— List of implementations ————————————————————————————————————————
-set(PPC_IMPLEMENTATIONS "all;mpi;omp;seq;stl;tbb" CACHE STRING "Implementations to build (semicolon-separated)")
+if(ppc_osh_supported)
+  set(PPC_DEFAULT_IMPLEMENTATIONS "all;mpi;osh;omp;seq;stl;tbb")
+else()
+  set(PPC_DEFAULT_IMPLEMENTATIONS "all;mpi;omp;seq;stl;tbb")
+endif()
+set(PPC_IMPLEMENTATIONS
+    "${PPC_DEFAULT_IMPLEMENTATIONS}"
+    CACHE STRING "Implementations to build (semicolon-separated)")
 
 # ——— List of tasks ———————————————————————————————————————————————————
 set(PPC_TASKS "all" CACHE STRING "Tasks to build (semicolon-separated, or 'all')")

@@ -17,6 +17,7 @@
 #include <string_view>
 
 #include "oneapi/tbb/global_control.h"
+#include "util/include/osh_runtime.hpp"
 #include "util/include/util.hpp"
 
 namespace ppc::runners {
@@ -169,6 +170,15 @@ int Init(int argc, char **argv) {
   listeners.Append(new UnreadMessagesDetector());
 
   const int status = RunAllTestsSafely();
+
+  if (ppc::util::OshRuntime::IsInitialized()) {
+    ppc::util::OshRuntime::Finalize();
+  }
+
+  int mpi_finalized = 0;
+  if (MPI_Finalized(&mpi_finalized) == MPI_SUCCESS && mpi_finalized != 0) {
+    return status;
+  }
 
   const int finalize_res = MPI_Finalize();
   if (finalize_res != MPI_SUCCESS) {

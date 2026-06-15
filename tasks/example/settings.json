@@ -3,6 +3,7 @@
     "processes": {
       "t1": {
         "mpi": "enabled",
+        "osh": "enabled",
         "seq": "enabled"
       },
       "t2": {

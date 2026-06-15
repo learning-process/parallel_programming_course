@@ -35,6 +35,11 @@ jobs:
           key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
+      - name: Install Open MPI source build dependencies
+        run: >
+          apt-get update &&
+          apt-get install -y --no-install-recommends
+          autoconf automake flex libtool libucx-dev make perl pkg-config zlib1g-dev
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -86,7 +91,7 @@ jobs:
         with:
           path: install
           name: ubuntu-gcc-install-${{ matrix.os }}
-      - name: Run func tests (MPI)
+      - name: Run func tests (MPI/OSH)
         run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4 --additional-mpi-args="--oversubscribe"
         env:
           PPC_NUM_THREADS: 1
@@ -139,6 +144,11 @@ jobs:
           key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
+      - name: Install Open MPI source build dependencies
+        run: >
+          apt-get update &&
+          apt-get install -y --no-install-recommends
+          autoconf automake flex libtool libucx-dev make perl pkg-config zlib1g-dev
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -182,7 +192,7 @@ jobs:
         with:
           path: install
           name: ubuntu-clang-install-${{ matrix.os }}
-      - name: Run func tests (MPI)
+      - name: Run func tests (MPI/OSH)
         run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4 --additional-mpi-args="--oversubscribe"
         env:
           PPC_NUM_THREADS: 1
@@ -237,6 +247,11 @@ jobs:
           key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
+      - name: Install Open MPI source build dependencies
+        run: >
+          apt-get update &&
+          apt-get install -y --no-install-recommends
+          autoconf automake flex libtool libucx-dev make perl pkg-config zlib1g-dev
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -282,7 +297,7 @@ jobs:
         with:
           path: install
           name: ubuntu-clang-sanitizer-install-${{ matrix.os }}
-      - name: Run tests (MPI)
+      - name: Run tests (MPI/OSH)
         run: scripts/run_tests.py --running-type="processes" --counts 2 --additional-mpi-args="--oversubscribe"
         env:
           PPC_NUM_THREADS: 2
@@ -347,6 +362,11 @@ jobs:
           key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
+      - name: Install Open MPI source build dependencies
+        run: >
+          apt-get update &&
+          apt-get install -y --no-install-recommends
+          autoconf automake flex libtool libucx-dev make perl pkg-config zlib1g-dev
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -360,7 +380,7 @@ jobs:
       - name: Install project
         run: |
           cmake --build build --target install -- --quiet
-      - name: Run tests (MPI)
+      - name: Run tests (MPI/OSH)
         run: scripts/run_tests.py --running-type="processes" --additional-mpi-args="--oversubscribe"
         env:
           PPC_NUM_PROC: 2

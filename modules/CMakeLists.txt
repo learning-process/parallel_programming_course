@@ -18,6 +18,14 @@ foreach(subd ${subdirs})
   list(APPEND FUNC_TESTS_SOURCE_FILES ${TMP_FUNC_TESTS_SOURCE_FILES})
 endforeach()
 
+if(ppc_osh_supported)
+  list(REMOVE_ITEM LIB_SOURCE_FILES
+       "${CMAKE_CURRENT_SOURCE_DIR}/util/src/osh_runtime_disabled.cpp")
+else()
+  list(REMOVE_ITEM LIB_SOURCE_FILES
+       "${CMAKE_CURRENT_SOURCE_DIR}/util/src/osh_runtime.cpp")
+endif()
+
 project(${exec_func_lib})
 add_library(${exec_func_lib} STATIC ${LIB_SOURCE_FILES})
 set_target_properties(${exec_func_lib} PROPERTIES LINKER_LANGUAGE CXX)
@@ -40,6 +48,10 @@ foreach(
   stb)
   cmake_language(CALL "ppc_link_${link}" ${exec_func_lib})
 endforeach()
+
+if(ppc_osh_supported)
+  ppc_link_osh(${exec_func_lib})
+endif()
 
 add_executable(${exec_func_tests} ${FUNC_TESTS_SOURCE_FILES})
 

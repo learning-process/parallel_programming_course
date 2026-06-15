@@ -63,8 +63,10 @@ class PPCRunner:
 
         if platform.system() == "Windows":
             self.mpi_exec = "mpiexec"
+            self.osh_exec = "mpiexec"
         else:
             self.mpi_exec = "mpirun"
+            self.osh_exec = "oshrun"
         self.platform = platform.system()
 
         # Detect MPI implementation to choose compatible flags
@@ -108,6 +110,7 @@ class PPCRunner:
         install_bin_dir = project_path / "install" / "bin"
         if install_bin_dir.exists():
             self.work_dir = install_bin_dir
+            self.__select_mpi_launcher()
             return
 
         bin_dir = build_dir if build_dir.name == "bin" else build_dir / "bin"
@@ -117,6 +120,7 @@ class PPCRunner:
                 "Build the project or pass a correct '--build-dir' (e.g. 'build', 'build_seq', or 'build/bin')."
             )
         self.work_dir = bin_dir
+        self.__select_mpi_launcher()
 
     def __run_exec(self, command, extra_env=None):
         if self.verbose:
@@ -160,11 +164,58 @@ class PPCRunner:
             return "mpich", "-n"
         return "unknown", "-np"
 
-    def __build_mpi_cmd(self, ppc_num_proc, additional_mpi_args, extra_env=None):
+    def __select_mpi_launcher(self):
+        if self.platform == "Windows" or self.__build_dir_path is None:
+            return
+
+        project_path = Path(self.__get_project_path())
+        mpi_candidates = []
+        if self.work_dir is not None:
+            mpi_candidates.append(self.work_dir / "mpirun")
+        mpi_candidates.extend(
+            [
+                self.__build_dir_path / "ppc_openmpi" / "install" / "bin" / "mpirun",
+                project_path / "install" / "bin" / "mpirun",
+            ]
+        )
+        for launcher in mpi_candidates:
+            if launcher.exists():
+                self.mpi_exec = str(launcher)
+                self.mpi_env_mode, self.mpi_np_flag = self.__detect_mpi_impl()
+                break
+
+        osh_candidates = []
+        if self.work_dir is not None:
+            osh_candidates.append(self.work_dir / "oshrun")
+        osh_candidates.extend(
+            [
+                self.__build_dir_path / "ppc_openmpi" / "install" / "bin" / "oshrun",
+                project_path / "install" / "bin" / "oshrun",
+            ]
+        )
+        for launcher in osh_candidates:
+            if launcher.exists():
+                self.osh_exec = str(launcher)
+                return
+        self.osh_exec = self.mpi_exec
+
+    def __supports_osh(self):
+        return self.platform == "Linux"
+
+    def __build_mpi_cmd(
+        self, ppc_num_proc, additional_mpi_args, extra_env=None, launcher=None
+    ):
         mpi_env = self.__ppc_env.copy()
         if extra_env:
             mpi_env.update(extra_env)
-        base = [self.mpi_exec] + shlex.split(additional_mpi_args)
+        additional_args = shlex.split(additional_mpi_args)
+        if self.mpi_env_mode == "mpich":
+            additional_args = [
+                arg
+                for arg in additional_args
+                if arg not in ("--oversubscribe", "-oversubscribe")
+            ]
+        base = [launcher or self.mpi_exec] + additional_args
         forwarded_env = [
             "PPC_NUM_THREADS",
             "OMP_NUM_THREADS",
@@ -233,6 +284,7 @@ class PPCRunner:
         type_task_patterns = {
             "_all_": ["_all_", "AllEnabled"],
             "_mpi_": ["_mpi_", "MpiEnabled"],
+            "_osh_": ["_osh_", "OSHEnabled"],
             "_omp_": ["_omp_", "OmpEnabled"],
             "_seq_": ["_seq_", "SeqEnabled"],
             "_stl_": ["_stl_", "StlEnabled"],
@@ -290,6 +342,15 @@ class PPCRunner:
                     + [str(self.work_dir / "ppc_func_tests")]
                     + self.__get_gtest_settings(1, "_" + task_type + "_")
                 )
+            if self.__supports_osh():
+                osh_running = self.__build_mpi_cmd(
+                    ppc_num_proc, additional_mpi_args, launcher=self.osh_exec
+                )
+                self.__run_exec(
+                    osh_running
+                    + [str(self.work_dir / "ppc_func_tests")]
+                    + self.__get_gtest_settings(1, "_osh_")
+                )
 
     def run_performance(self):
         output_dir = self.__benchmark_output_dir()
@@ -297,15 +358,25 @@ class PPCRunner:
             shutil.rmtree(output_dir)
 
         if not self.__ppc_env.get("PPC_ASAN_RUN"):
-            for category, task_type in [
+            perf_jobs = [
                 ("threads", "all"),
                 ("processes", "mpi"),
                 ("processes", "seq"),
-            ]:
+            ]
+            if self.__supports_osh():
+                perf_jobs.insert(2, ("processes", "osh"))
+            for category, task_type in perf_jobs:
                 extra_env = self.__get_benchmark_env(category, task_type)
-                mpi_running = self.__build_mpi_cmd(self.__ppc_num_proc, "", extra_env)
+                launcher = (
+                    self.osh_exec
+                    if category == "processes" and task_type == "osh"
+                    else None
+                )
+                runner = self.__build_mpi_cmd(
+                    self.__ppc_num_proc, "", extra_env, launcher
+                )
                 self.__run_exec(
-                    mpi_running
+                    runner
                     + [str(self.work_dir / "ppc_perf_tests")]
                     + self.__get_performance_gtest_settings(),
                     extra_env,

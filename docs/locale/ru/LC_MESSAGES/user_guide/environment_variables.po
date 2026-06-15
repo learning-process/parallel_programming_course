@@ -2,7 +2,8 @@
 # Copyright (C) 2025, Learning Process
 # This file is distributed under the same license as the Parallel
 # Programming Course package.
-# Learning Process Team <gooddoog@student.su, nesterov.alexander@outlook.com>, 2025.
+# Learning Process Team <gooddoog@student.su,
+# nesterov.alexander@outlook.com>, 2025.
 #
 msgid ""
 msgstr ""
@@ -12,19 +13,20 @@ msgstr ""
 "PO-Revision-Date: 2025-07-27 18:21+0200\n"
 "Last-Translator: Learning Process Team <gooddoog@student.su>\n"
 "Language: ru\n"
-"Language-Team: Learning Process Team (gooddoog@student.su, nesterov.alexander@outlook.com)\n"
+"Language-Team: Learning Process Team (gooddoog@student.su, "
+"nesterov.alexander@outlook.com)\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: ../../user_guide/environment_variables.rst:2
+#: ../../../../docs/user_guide/environment_variables.rst:2
 msgid "Environment Variables"
 msgstr "Переменные окружения"
 
-#: ../../user_guide/environment_variables.rst:4
+#: ../../../../docs/user_guide/environment_variables.rst:4
 msgid ""
 "The following environment variables can be used to configure the "
 "project's runtime behavior:"
@@ -32,7 +34,7 @@ msgstr ""
 "Следующие переменные окружения могут использоваться для настройки "
 "поведения программы во время выполнения:"
 
-#: ../../user_guide/environment_variables.rst:6
+#: ../../../../docs/user_guide/environment_variables.rst:6
 msgid ""
 "``PPC_NUM_PROC``: Specifies the number of processes to launch. Default: "
 "``1`` Can be queried from C++ with ``ppc::util::GetNumProc()``."
@@ -40,7 +42,7 @@ msgstr ""
 "``PPC_NUM_PROC``: задаёт количество запускаемых процессов. По умолчанию: "
 "``1``. Можно получить в C++ через ``ppc::util::GetNumProc()``."
 
-#: ../../user_guide/environment_variables.rst:10
+#: ../../../../docs/user_guide/environment_variables.rst:10
 msgid ""
 "``PPC_NUM_THREADS``: Specifies the number of threads to use. Default: "
 "``1``"
@@ -48,7 +50,7 @@ msgstr ""
 "``PPC_NUM_THREADS``: задаёт количество используемых потоков. По "
 "умолчанию: ``1``"
 
-#: ../../user_guide/environment_variables.rst:13
+#: ../../../../docs/user_guide/environment_variables.rst:13
 msgid ""
 "``PPC_ASAN_RUN``: Specifies that application is compiler with sanitizers."
 " Used by ``scripts/run_tests.py`` to skip ``valgrind`` runs. Default: "
@@ -58,7 +60,7 @@ msgstr ""
 "Используется в ``scripts/run_tests.py`` для пропуска запусков под "
 "``valgrind``. По умолчанию: ``0``"
 
-#: ../../user_guide/environment_variables.rst:16
+#: ../../../../docs/user_guide/environment_variables.rst:16
 msgid ""
 "``PPC_IGNORE_TEST_TIME_LIMIT``: Specifies that test time limits are "
 "ignored. Used by ``scripts/run_tests.py`` to disable time limit "
@@ -68,14 +70,18 @@ msgstr ""
 "выполнения тестов игнорируются. Используется в ``scripts/run_tests.py`` "
 "для отключения контроля ограничений по времени. По умолчанию: ``0``"
 
-#: ../../user_guide/environment_variables.rst:18
+#: ../../../../docs/user_guide/environment_variables.rst:18
 msgid ""
 "``PPC_TASK_MAX_TIME``: Maximum allowed execution time in seconds for "
 "functional tests. Default: ``1.0``"
-msgstr "``PPC_TASK_MAX_TIME``: максимальное допустимое время выполнения (секунды) для функциональных тестов. По умолчанию: ``1.0``"
+msgstr ""
+"``PPC_TASK_MAX_TIME``: максимальное допустимое время выполнения (секунды)"
+" для функциональных тестов. По умолчанию: ``1.0``"
 
-#: ../../user_guide/environment_variables.rst:20
+#: ../../../../docs/user_guide/environment_variables.rst:20
 msgid ""
 "``PPC_PERF_MAX_TIME``: Maximum allowed execution time in seconds for "
 "performance tests. Default: ``10.0``"
-msgstr "``PPC_PERF_MAX_TIME``: максимальное допустимое время выполнения (секунды) для тестов производительности. По умолчанию: ``10.0``"
+msgstr ""
+"``PPC_PERF_MAX_TIME``: максимальное допустимое время выполнения (секунды)"
+" для тестов производительности. По умолчанию: ``10.0``"
