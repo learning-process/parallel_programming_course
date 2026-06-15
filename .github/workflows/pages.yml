@@ -44,15 +44,11 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install -r docs/requirements.txt
-          python3 -m pip install graphviz pyyaml
       - name: Download artifact
         uses: actions/download-artifact@v8
         with:
           name: doxygen-documentation-xml
           path: xml
-      - name: Generate CI jobs graph
-        run: |
-          python3 scripts/jobs_graph.py --out docs/_static/ci_graph --format svg
       - name: Configure project
         run: >
           cmake -S . -B build -D USE_DOCS=ON -D PPC_BUILD_COMPONENTS=OFF

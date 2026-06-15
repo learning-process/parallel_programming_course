@@ -5,8 +5,21 @@ endif()
 set(SOURCEDIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(BUILDDIR "${CMAKE_CURRENT_BINARY_DIR}/_build/html")
 set(GETTEXTDIR "${CMAKE_CURRENT_BINARY_DIR}/_build/gettext")
+set(CI_GRAPH_SOURCE "${CMAKE_SOURCE_DIR}/.github/workflows/main.yml")
+set(CI_GRAPH_OUTPUT "${SOURCEDIR}/_static/ci_graph.svg")
 
 find_package(Python REQUIRED COMPONENTS Interpreter)
+
+add_custom_command(
+  OUTPUT "${CI_GRAPH_OUTPUT}"
+  COMMAND
+    ${Python_EXECUTABLE} "${CMAKE_SOURCE_DIR}/scripts/jobs_graph.py" --workflow
+    "${CI_GRAPH_SOURCE}" --out "${SOURCEDIR}/_static/ci_graph" --format svg
+  DEPENDS "${CMAKE_SOURCE_DIR}/scripts/jobs_graph.py" "${CI_GRAPH_SOURCE}"
+  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+  COMMENT "Generating CI jobs graph")
+
+add_custom_target(docs_ci_graph DEPENDS "${CI_GRAPH_OUTPUT}")
 
 add_custom_target(
   docs_help
@@ -52,3 +65,4 @@ add_custom_target(
           ${SPHINXOPTS}
   WORKING_DIRECTORY "${SOURCEDIR}"
   COMMENT "Building HTML documentation for English and Russian")
+add_dependencies(docs_html docs_ci_graph)
