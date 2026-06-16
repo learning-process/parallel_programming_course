@@ -24,5 +24,4 @@ runs:
         --platform "${{ inputs.platform }}"
         --purge-system-mpi "${{ inputs.purge-system-mpi }}"
         --github-env "$GITHUB_ENV"
-        --github-path "$GITHUB_PATH"
         --runner-temp "${{ runner.temp }}"

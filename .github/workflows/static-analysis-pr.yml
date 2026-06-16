@@ -76,6 +76,7 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
+          -D PPC_MPI_EXTENSIONS_HOME="$PPC_MPI_EXTENSIONS_HOME"
           -D PPC_TASKS="${{ needs.ci-scope.outputs.ppc_tasks || 'all' }}"
         env:
           CC: clang-22
@@ -133,6 +134,7 @@ jobs:
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
+          -D PPC_MPI_EXTENSIONS_HOME="$PPC_MPI_EXTENSIONS_HOME"
           -D PPC_TASKS="${{ needs.ci-scope.outputs.ppc_tasks || 'all' }}"
         env:
           CC: gcc-15

@@ -102,12 +102,7 @@ Parallel Programming Technologies
 
      python3 -m pip install 'requests>=2.31,<3'
      python3 scripts/install_mpi_extensions.py --prefix "$PWD/_deps/mpi-extensions-openmpi" --force
-     export MPI_EXTENSIONS_HOME="$PWD/_deps/mpi-extensions-openmpi"
-     export MPI_HOME="$MPI_EXTENSIONS_HOME"
-     export OPAL_PREFIX="$MPI_EXTENSIONS_HOME"
-     export OMPI_MCA_shmem=mmap
-     export PATH="$MPI_EXTENSIONS_HOME/bin:$PATH"
-     export LD_LIBRARY_PATH="$MPI_EXTENSIONS_HOME/lib:$LD_LIBRARY_PATH"
+     cmake -S . -B build -D PPC_MPI_EXTENSIONS_HOME="$PWD/_deps/mpi-extensions-openmpi"
 
 - **MacOS (apple clang)**:
   
@@ -115,12 +110,7 @@ Parallel Programming Technologies
 
      python3 -m pip install 'requests>=2.31,<3'
      python3 scripts/install_mpi_extensions.py --prefix "$PWD/_deps/mpi-extensions-openmpi" --force
-     export MPI_EXTENSIONS_HOME="$PWD/_deps/mpi-extensions-openmpi"
-     export MPI_HOME="$MPI_EXTENSIONS_HOME"
-     export OPAL_PREFIX="$MPI_EXTENSIONS_HOME"
-     export OMPI_MCA_shmem=mmap
-     export PATH="$MPI_EXTENSIONS_HOME/bin:$PATH"
-     export DYLD_LIBRARY_PATH="$MPI_EXTENSIONS_HOME/lib:$DYLD_LIBRARY_PATH"
+     cmake -S . -B build -D PPC_MPI_EXTENSIONS_HOME="$PWD/_deps/mpi-extensions-openmpi"
 
 ``OpenMP``
 ~~~~~~~~~~

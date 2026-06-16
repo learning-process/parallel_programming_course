@@ -276,13 +276,8 @@ def patch_macos_install_names(prefix: Path) -> None:
 
 def print_environment(prefix: Path) -> None:
     prefix_text = str(prefix)
-    print(f"MPI_EXTENSIONS_HOME={prefix_text}")
-    print(f"MPI_HOME={prefix_text}")
-    print(f"OPAL_PREFIX={prefix_text}")
-    print("OMPI_MCA_shmem=mmap")
-    print(f"PATH={prefix_text}/bin:$PATH")
-    print(f"LD_LIBRARY_PATH={prefix_text}/lib:$LD_LIBRARY_PATH")
-    print(f"DYLD_LIBRARY_PATH={prefix_text}/lib:$DYLD_LIBRARY_PATH")
+    print(f"PPC_MPI_EXTENSIONS_HOME={prefix_text}")
+    print(f"CMake option: -DPPC_MPI_EXTENSIONS_HOME={prefix_text}")
 
 
 def main() -> int:

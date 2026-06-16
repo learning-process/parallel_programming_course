@@ -41,6 +41,7 @@ jobs:
           -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
           -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
           -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
+          -D PPC_MPI_EXTENSIONS_HOME="$PPC_MPI_EXTENSIONS_HOME"
           -D PPC_TASKS="${{ inputs.ppc_tasks }}"
       - name: Build project
         run: |

@@ -10,7 +10,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 MPI_PACKAGES_LINUX = [
     "mpich",
     "libmpich-dev",
@@ -32,7 +31,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--platform", required=True)
     parser.add_argument("--purge-system-mpi", choices=["true", "false"], required=True)
     parser.add_argument("--github-env", required=True, type=Path)
-    parser.add_argument("--github-path", required=True, type=Path)
     parser.add_argument("--runner-temp", required=True, type=Path)
     return parser.parse_args()
 
@@ -140,23 +138,9 @@ def install_openmpi(args: argparse.Namespace, python_bin: Path) -> None:
     )
 
 
-def append_github_environment(
-    prefix: Path, github_env: Path, github_path: Path
-) -> None:
-    lib_path = prefix / "lib"
-    env_lines = [
-        f"MPI_EXTENSIONS_HOME={prefix}",
-        f"MPI_HOME={prefix}",
-        f"OPAL_PREFIX={prefix}",
-        "OMPI_MCA_shmem=mmap",
-        f"LD_LIBRARY_PATH={lib_path}:{os.environ.get('LD_LIBRARY_PATH', '')}",
-        f"DYLD_LIBRARY_PATH={lib_path}:{os.environ.get('DYLD_LIBRARY_PATH', '')}",
-    ]
+def append_github_environment(prefix: Path, github_env: Path) -> None:
     with github_env.open("a", encoding="utf-8") as output:
-        for line in env_lines:
-            output.write(line + "\n")
-    with github_path.open("a", encoding="utf-8") as output:
-        output.write(str(prefix / "bin") + "\n")
+        output.write(f"PPC_MPI_EXTENSIONS_HOME={prefix}\n")
 
 
 def validate_openmpi(prefix: Path) -> None:
@@ -186,7 +170,7 @@ def main() -> int:
     purge_system_mpi(args.purge_system_mpi == "true")
     python_bin = prepare_python(args.runner_temp)
     install_openmpi(args, python_bin)
-    append_github_environment(prefix, args.github_env, args.github_path)
+    append_github_environment(prefix, args.github_env)
     validate_openmpi(prefix)
     return 0
 
