@@ -10,8 +10,12 @@ on:
       - '**/CMakeLists.txt'
       - '**/*.cmake'
       - '**/.clang-tidy'
+      - '.github/actions/setup-mpi-extensions/**'
       - '.github/workflows/static-analysis-pr.yml'
       - 'scripts/check_task_backend_apis.py'
+      - 'scripts/install_mpi_extensions.py'
+      - 'scripts/setup_mpi_extensions.py'
+      - 'scripts/write_mpi_runtime_env.py'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}

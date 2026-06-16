@@ -159,6 +159,12 @@ def archive_member_path(member: tarfile.TarInfo) -> PurePosixPath:
     return member_path
 
 
+def validate_archive_member_type(member: tarfile.TarInfo) -> None:
+    if member.isdir() or member.isfile() or member.issym() or member.islnk():
+        return
+    raise SystemExit(f"Archive contains unsupported member type: {member.name}")
+
+
 def validate_archive_link(
     member: tarfile.TarInfo,
     member_path: PurePosixPath,
@@ -198,6 +204,7 @@ def safe_extract(archive: Path, destination: Path) -> Path:
         member_paths = []
         for member in members:
             member_path = archive_member_path(member)
+            validate_archive_member_type(member)
             roots.add(member_path.parts[0])
             member_paths.append((member, member_path))
             target = (destination / Path(*member_path.parts)).resolve(strict=False)
