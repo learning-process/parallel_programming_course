@@ -39,16 +39,6 @@ Navigate to the project root.
 
    *A corresponding flag can be omitted if it's not needed.*
 
-   OSH is part of the process-technology set on Linux and macOS. Linux uses
-   Open MPI OSH from the system package. macOS builds Sandia SOS from
-   ``3rdparty/SOS`` and uses the system Open MPI launcher. A focused example
-   build can be configured as:
-
-   .. code-block:: bash
-
-      cmake -S . -B build-osh -DPPC_BUILD_COMPONENTS=ON -DPPC_TASKS=example
-      cmake --build build-osh --parallel
-
 2. **Build the project**:
 
    .. code-block:: bash
@@ -58,10 +48,3 @@ Navigate to the project root.
 3. **Run tests**:
 
    Prefer the helper runner described in ``User Guide → CI``.
-
-   OSH example on Linux or macOS:
-
-   .. code-block:: bash
-
-      PPC_NUM_THREADS=1 scripts/run_tests.py --running-type=processes --counts 2 --build-dir build-osh --additional-mpi-args="--oversubscribe"
-      PPC_NUM_THREADS=1 PPC_NUM_PROC=2 ./build-osh/ppc_sos/install/bin/oshrun -np 2 ./build-osh/bin/ppc_func_tests --gtest_filter="*_osh_*:*OSHEnabled*"

@@ -1,7 +1,7 @@
 <!--
 Pull request title requirement:
 
-"<LastName> <FirstName>. Technology <TECHNOLOGY_NAME:SEQ|OMP|TBB|STL|MPI|OSH>. <Full Task Name>. Variant <Number>"
+"<LastName> <FirstName>. Technology <TECHNOLOGY_NAME:SEQ|OMP|TBB|STL|MPI>. <Full Task Name>. Variant <Number>"
 -->
 
 ## Description
@@ -13,7 +13,7 @@ Please provide a detailed description of your implementation, including:
 
 - **Task**: _Enter the full task name here_
 - **Variant**: _Enter the variant number here_
-- **Technology**: _Enter technology (e.g., SEQ, OMP, TBB, STL, MPI, OSH)_
+- **Technology**: _Enter technology (e.g., SEQ, OMP, TBB, STL, MPI)_
 - **Description** of your implementation and report.  
   _Provide a concise summary of your implementation and report here._
 

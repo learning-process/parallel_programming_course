@@ -23,7 +23,6 @@ Resources:
 The following parallel programming technologies are considered in practice:
 
 - [Message Passing Interface (MPI)](https://www.mpi-forum.org/)
-- [OSH](https://www.openshmem.org/) — PGAS / one-sided communication model for distributed-memory systems.
 - [OpenMP (Open Multi-Processing)](https://www.openmp.org/)
 - [oneAPI Threading Building Blocks (oneTBB)](https://github.com/oneapi-src/oneTBB)
 - [Multithreading in C++ (`std::thread`)](https://en.cppreference.com/w/cpp/thread/thread)

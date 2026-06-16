@@ -18,7 +18,7 @@ The easiest way to set up your development environment is using the provided ``.
 3. VS Code will automatically build the container with all dependencies pre-installed
 4. The container includes:
 
-   - Ubuntu environment with gcc-15, CMake, MPI, OSH, OpenMP
+   - Ubuntu environment with gcc-15, CMake, MPI, OpenMP
    - Pre-configured C++ and Python development tools
    - All project dependencies ready to use
 
@@ -91,9 +91,6 @@ Parallel Programming Technologies
 
 ``MPI``
 ~~~~~~~
-On Linux and macOS, MPI is provided by the system Open MPI package. Windows
-uses MS-MPI.
-
 - **Windows (MSVC)**:
 
   `Installers link <https://www.microsoft.com/en-us/download/details.aspx?id=105289>`_. You have to install ``msmpisdk.msi`` and ``msmpisetup.exe``.
@@ -102,42 +99,13 @@ uses MS-MPI.
   
   .. code-block:: bash
 
-     sudo apt install -y openmpi-bin libopenmpi-dev
+     sudo apt install -y mpich openmpi-bin libopenmpi-dev
 
 - **MacOS (apple clang)**:
   
   .. code-block:: bash
 
      brew install open-mpi
-
-``OSH``
-~~~~~~~~~~~~~
-OSH is used for process tasks as a PGAS / one-sided communication model
-for distributed-memory systems.
-
-Linux uses the Open MPI OSH implementation from the system package. macOS
-builds Sandia SOS from ``3rdparty/SOS`` and uses Open MPI as its
-launcher/runtime. Windows keeps the existing MPI setup and skips OSH in the
-MSVC/clang-cl configurations.
-
-- **Linux (gcc and clang)**:
-
-  .. code-block:: bash
-
-     sudo apt install -y openmpi-bin libopenmpi-dev
-
-- **MacOS (apple clang)**:
-
-  .. code-block:: bash
-
-     brew install open-mpi autoconf automake libtool libfabric coreutils gnu-sed grep gawk pkgconf
-
-- **Windows (MSVC)**:
-
-  Install MS-MPI as described in the MPI section. OSH is skipped on Windows.
-
-No vendored Open MPI source tree is used. Initialize submodules before macOS
-builds so that ``3rdparty/SOS`` and its nested test submodule are available.
 
 ``OpenMP``
 ~~~~~~~~~~

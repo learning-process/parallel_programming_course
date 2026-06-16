@@ -7,21 +7,21 @@ Overview
 - Total per semester (Practice): 70 points
 - Report points are distributed per task and sum to 10
 
-Processes semester (MPI / OSH)
-------------------------------------
+Processes semester (MPI)
+------------------------
 
 - Task 1 — Total: 12
-  - Implementation: MPI or OSH 8 + Seq 2
+  - Implementation: MPI 8 + Seq 2
   - Performance: 0
   - Report: 2
 
 - Task 2 — Total: 23
-  - Implementation: MPI or OSH 12 + Seq 3
+  - Implementation: MPI 12 + Seq 3
   - Performance: 5
   - Report: 3
 
 - Task 3 — Total: 35
-  - Implementation: MPI or OSH 16 + Seq 4
+  - Implementation: MPI 16 + Seq 4
   - Performance: 10
   - Report: 5
 

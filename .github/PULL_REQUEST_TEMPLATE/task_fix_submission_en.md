@@ -1,7 +1,7 @@
 <!--
 Pull request title requirement:
 
-"Fix: <LastName> <FirstName>. Technology <TECHNOLOGY_NAME:SEQ|OMP|TBB|STL|MPI|OSH>. <Full Task Name>. Variant <Number>"
+"Fix: <LastName> <FirstName>. Technology <TECHNOLOGY_NAME:SEQ|OMP|TBB|STL|MPI>. <Full Task Name>. Variant <Number>"
 -->
 
 ## Description
@@ -15,7 +15,7 @@ Please provide:
 
 - **Task**: _Enter the full task name here_
 - **Variant**: _Enter the variant number here_
-- **Technology**: _Enter technology (e.g., SEQ, OMP, TBB, STL, MPI, OSH)_
+- **Technology**: _Enter technology (e.g., SEQ, OMP, TBB, STL, MPI)_
 - **Student directory**: _Enter the directory name (e.g., `nesterov_a_vector_sum`)_
 - **Original PR / commit / issue link**: _Paste link(s) here_
 - **Original task definition**: _Paste the full task statement here_

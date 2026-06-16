@@ -20,7 +20,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.18.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: ../../../../docs/user_guide/submit_work.rst:2
 msgid "How to create, open, and submit your work"
@@ -82,9 +82,9 @@ msgstr ""
 #: ../../../../docs/user_guide/submit_work.rst:31
 msgid ""
 "Technology implementations (add only those required by the semester): - "
-"Processes (MPI/OSH/SEQ): ``seq/include``, ``seq/src``, ``mpi/include``, "
-"``mpi/src``, ``osh/include``, ``osh/src`` - Threads: ``seq``, ``omp``, "
-"``tbb``, ``stl`` (same include/src split)"
+"Processes (MPI/SEQ): ``seq/include``, ``seq/src``, ``mpi/include``, "
+"``mpi/src`` - Threads: ``seq``, ``omp``, ``tbb``, ``stl`` (same "
+"include/src split)"
 msgstr ""
 
 #: ../../../../docs/user_guide/submit_work.rst:35
@@ -110,63 +110,63 @@ msgstr ""
 msgid "Functional tests example:"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:91
+#: ../../../../docs/user_guide/submit_work.rst:90
 msgid "Use ``PPC_ID_<task_id>`` to resolve resources from ``data/`` when needed."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:93
+#: ../../../../docs/user_guide/submit_work.rst:92
 msgid "Performance tests example:"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:101
+#: ../../../../docs/user_guide/submit_work.rst:100
 msgid "Tips for tests"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:102
+#: ../../../../docs/user_guide/submit_work.rst:101
 msgid ""
 "Keep tests deterministic and under time limits; prefer env vars (see "
 "``User Guide → Environment Variables``) over sleeps."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:103
+#: ../../../../docs/user_guide/submit_work.rst:102
 msgid "Use ``PPC_ID_<task_id>`` to access files from ``data/``."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:104
+#: ../../../../docs/user_guide/submit_work.rst:103
 msgid ""
 "Cover edge cases in functional tests; add focused performance tests for "
 "enabled implementations."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:106
+#: ../../../../docs/user_guide/submit_work.rst:105
 msgid "``data/`` — optional input files for tests (e.g., images)."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:107
+#: ../../../../docs/user_guide/submit_work.rst:106
 msgid "``settings.json`` — enable required technologies for your semester, e.g.:"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:113
+#: ../../../../docs/user_guide/submit_work.rst:112
 msgid "``info.json`` — student metadata used in automation (scoreboard, macros):"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:120
+#: ../../../../docs/user_guide/submit_work.rst:119
 msgid "Build and local run"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:121
+#: ../../../../docs/user_guide/submit_work.rst:120
 msgid "Configure and build:"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:128
+#: ../../../../docs/user_guide/submit_work.rst:127
 msgid "Run tests via helper:"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:139
+#: ../../../../docs/user_guide/submit_work.rst:138
 msgid "Executables (where to find tests)"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:140
+#: ../../../../docs/user_guide/submit_work.rst:139
 msgid ""
 "``build/bin`` (or ``install/bin``): - ``core_func_tests`` — core library "
 "tests first - ``ppc_func_tests`` — functional tests for all "
@@ -174,27 +174,27 @@ msgid ""
 "tasks/technologies"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:145
+#: ../../../../docs/user_guide/submit_work.rst:144
 msgid ""
 "The runner applies gtest filters automatically to select technology "
 "suites."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:148
+#: ../../../../docs/user_guide/submit_work.rst:147
 msgid "Pull Request"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:149
+#: ../../../../docs/user_guide/submit_work.rst:148
 msgid "Title format (example):"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:151
+#: ../../../../docs/user_guide/submit_work.rst:150
 msgid ""
-"``<Фамилия Имя>. Технология <SEQ/MPI/OSH/...>. <Название задачи>. Вариант"
-" <N>.``"
+"``<Фамилия Имя>. Технология <SEQ/MPI/...>. <Название задачи>. Вариант "
+"<N>.``"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:153
+#: ../../../../docs/user_guide/submit_work.rst:152
 msgid ""
 "Description should include: - Полное описание задачи; номер варианта; "
 "используемая технология - Краткое описание реализации и отчёта - Чек-лист"
@@ -203,75 +203,75 @@ msgid ""
 "достоверность сведений)."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:159
+#: ../../../../docs/user_guide/submit_work.rst:160
 msgid "PR checklist template (body)"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:182
+#: ../../../../docs/user_guide/submit_work.rst:208
 msgid "Common pitfalls (read before pushing)"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:183
+#: ../../../../docs/user_guide/submit_work.rst:209
 msgid "Wrong folder/branch name. Must be ``<last>_<initial>_<short>`` everywhere."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:184
+#: ../../../../docs/user_guide/submit_work.rst:210
 msgid "Missing or wrong ``GetStaticTypeOfTask`` value for a technology."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:185
+#: ../../../../docs/user_guide/submit_work.rst:211
 msgid "Tests rely on randomness or sleeps instead of env time limits."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:186
+#: ../../../../docs/user_guide/submit_work.rst:212
 msgid "``settings.json`` doesn’t enable a required technology — tests won’t run."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:187
+#: ../../../../docs/user_guide/submit_work.rst:213
 msgid "Namespace doesn’t match the folder name and collides with others."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:188
+#: ../../../../docs/user_guide/submit_work.rst:214
 msgid "Performance tests count or naming deviates from the required patterns."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:191
+#: ../../../../docs/user_guide/submit_work.rst:217
 msgid "Useful examples to reference"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:192
+#: ../../../../docs/user_guide/submit_work.rst:218
 msgid ""
-"Processes: ``tasks/example/processes/t1``, "
-"``tasks/example/processes/t2``, ``tasks/example/processes/t3``"
+"Processes: ``tasks/example/processes/t1``, ``tasks/example/processes/t2``, "
+"``tasks/example/processes/t3``"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:193
+#: ../../../../docs/user_guide/submit_work.rst:219
 msgid "Threads: ``tasks/example/threads``"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:195
+#: ../../../../docs/user_guide/submit_work.rst:221
 msgid ""
 "Work from your fork in a dedicated branch (not ``master``). Branch name "
 "must match your task folder."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:198
+#: ../../../../docs/user_guide/submit_work.rst:224
 msgid "Notes"
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:199
+#: ../../../../docs/user_guide/submit_work.rst:225
 msgid ""
 "All classes should live in a unique namespace (e.g., "
 "``<last>_<initial>_<short>``)."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:200
+#: ../../../../docs/user_guide/submit_work.rst:226
 msgid ""
 "Keep tests deterministic and within time limits; prefer env vars over "
 "sleeps."
 msgstr ""
 
-#: ../../../../docs/user_guide/submit_work.rst:201
+#: ../../../../docs/user_guide/submit_work.rst:227
 msgid ""
 "Follow code style (clang-format/clang-tidy), and run pre-commit hooks "
 "locally."

@@ -20,7 +20,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.18.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: ../../../../docs/user_guide/submit_work.rst:2
 msgid "How to create, open, and submit your work"
@@ -93,12 +93,11 @@ msgid "``common/include/common.hpp`` — shared type aliases and `BaseTask`:"
 msgstr "``common/include/common.hpp`` — общие типы и `BaseTask`:"
 
 #: ../../../../docs/user_guide/submit_work.rst:31
-#, fuzzy
 msgid ""
 "Technology implementations (add only those required by the semester): - "
-"Processes (MPI/OSH/SEQ): ``seq/include``, ``seq/src``, ``mpi/include``, "
-"``mpi/src``, ``osh/include``, ``osh/src`` - Threads: ``seq``, ``omp``, "
-"``tbb``, ``stl`` (same include/src split)"
+"Processes (MPI/SEQ): ``seq/include``, ``seq/src``, ``mpi/include``, "
+"``mpi/src`` - Threads: ``seq``, ``omp``, ``tbb``, ``stl`` (same "
+"include/src split)"
 msgstr ""
 "Реализации технологий (добавляйте только нужные в семестре): — Процессы "
 "(MPI/SEQ): ``seq/include``, ``seq/src``, ``mpi/include``, ``mpi/src`` — "
@@ -136,21 +135,21 @@ msgstr ""
 msgid "Functional tests example:"
 msgstr "Пример функциональных тестов:"
 
-#: ../../../../docs/user_guide/submit_work.rst:91
+#: ../../../../docs/user_guide/submit_work.rst:90
 msgid "Use ``PPC_ID_<task_id>`` to resolve resources from ``data/`` when needed."
 msgstr ""
 "При необходимости используйте ``PPC_ID_<task_id>`` для доступа к ресурсам"
 " из ``data/``."
 
-#: ../../../../docs/user_guide/submit_work.rst:93
+#: ../../../../docs/user_guide/submit_work.rst:92
 msgid "Performance tests example:"
 msgstr "Пример тестов производительности:"
 
-#: ../../../../docs/user_guide/submit_work.rst:101
+#: ../../../../docs/user_guide/submit_work.rst:100
 msgid "Tips for tests"
 msgstr "Советы по тестам"
 
-#: ../../../../docs/user_guide/submit_work.rst:102
+#: ../../../../docs/user_guide/submit_work.rst:101
 msgid ""
 "Keep tests deterministic and under time limits; prefer env vars (see "
 "``User Guide → Environment Variables``) over sleeps."
@@ -159,49 +158,49 @@ msgstr ""
 "используйте переменные окружения (см. «Инструкция → Переменные "
 "окружения») вместо задержек."
 
-#: ../../../../docs/user_guide/submit_work.rst:103
+#: ../../../../docs/user_guide/submit_work.rst:102
 msgid "Use ``PPC_ID_<task_id>`` to access files from ``data/``."
 msgstr "Используйте ``PPC_ID_<task_id>`` для доступа к файлам из ``data/``."
 
-#: ../../../../docs/user_guide/submit_work.rst:104
+#: ../../../../docs/user_guide/submit_work.rst:103
 msgid ""
 "Cover edge cases in functional tests; add focused performance tests for "
 "enabled implementations."
 msgstr ""
-"Покрывайте крайние случаи в функциональных тестах; добавьте "
-"сфокусированные перфтесты для включенных реализаций."
+"Покрывайте крайние случаи в функциональных тестах; добавьте сфокусированные "
+"перфтесты для включенных реализаций."
 
-#: ../../../../docs/user_guide/submit_work.rst:106
+#: ../../../../docs/user_guide/submit_work.rst:105
 msgid "``data/`` — optional input files for tests (e.g., images)."
 msgstr "``data/`` — опциональные входные файлы для тестов (например, изображения)."
 
-#: ../../../../docs/user_guide/submit_work.rst:107
+#: ../../../../docs/user_guide/submit_work.rst:106
 msgid "``settings.json`` — enable required technologies for your semester, e.g.:"
 msgstr ""
 "``settings.json`` — включение необходимых технологий для вашего семестра,"
 " например:"
 
-#: ../../../../docs/user_guide/submit_work.rst:113
+#: ../../../../docs/user_guide/submit_work.rst:112
 msgid "``info.json`` — student metadata used in automation (scoreboard, macros):"
 msgstr "``info.json`` — данные студента для автоматизации (scoreboard, макросы):"
 
-#: ../../../../docs/user_guide/submit_work.rst:120
+#: ../../../../docs/user_guide/submit_work.rst:119
 msgid "Build and local run"
 msgstr "Сборка и локальный запуск"
 
-#: ../../../../docs/user_guide/submit_work.rst:121
+#: ../../../../docs/user_guide/submit_work.rst:120
 msgid "Configure and build:"
 msgstr "Конфигурация и сборка:"
 
-#: ../../../../docs/user_guide/submit_work.rst:128
+#: ../../../../docs/user_guide/submit_work.rst:127
 msgid "Run tests via helper:"
 msgstr "Запуск тестов через вспомогательный скрипт:"
 
-#: ../../../../docs/user_guide/submit_work.rst:139
+#: ../../../../docs/user_guide/submit_work.rst:138
 msgid "Executables (where to find tests)"
 msgstr "Исполняемые файлы (где искать тесты)"
 
-#: ../../../../docs/user_guide/submit_work.rst:140
+#: ../../../../docs/user_guide/submit_work.rst:139
 msgid ""
 "``build/bin`` (or ``install/bin``): - ``core_func_tests`` — core library "
 "tests first - ``ppc_func_tests`` — functional tests for all "
@@ -213,7 +212,7 @@ msgstr ""
 "``ppc_func_tests`` — функциональные тесты для всех задач/технологий - "
 "``ppc_perf_tests`` — тесты производительности для всех задач/технологий"
 
-#: ../../../../docs/user_guide/submit_work.rst:145
+#: ../../../../docs/user_guide/submit_work.rst:144
 msgid ""
 "The runner applies gtest filters automatically to select technology "
 "suites."
@@ -221,24 +220,23 @@ msgstr ""
 "Runner автоматически применяет gtest‑фильтры для выбора наборов тестов по"
 " технологиям."
 
-#: ../../../../docs/user_guide/submit_work.rst:148
+#: ../../../../docs/user_guide/submit_work.rst:147
 msgid "Pull Request"
 msgstr "Pull Request"
 
-#: ../../../../docs/user_guide/submit_work.rst:149
+#: ../../../../docs/user_guide/submit_work.rst:148
 msgid "Title format (example):"
 msgstr "Формат заголовка (пример):"
 
-#: ../../../../docs/user_guide/submit_work.rst:151
-#, fuzzy
+#: ../../../../docs/user_guide/submit_work.rst:150
 msgid ""
-"``<Фамилия Имя>. Технология <SEQ/MPI/OSH/...>. <Название задачи>. Вариант"
-" <N>.``"
+"``<Фамилия Имя>. Технология <SEQ/MPI/...>. <Название задачи>. Вариант "
+"<N>.``"
 msgstr ""
 "``<Фамилия Имя>. Технология <SEQ/MPI/...>. <Название задачи>. Вариант "
 "<N>.``"
 
-#: ../../../../docs/user_guide/submit_work.rst:153
+#: ../../../../docs/user_guide/submit_work.rst:152
 msgid ""
 "Description should include: - Полное описание задачи; номер варианта; "
 "используемая технология - Краткое описание реализации и отчёта - Чек-лист"
@@ -252,59 +250,59 @@ msgstr ""
 "функциональные/перф‑тесты ок, ветка названа как директория задачи, "
 "достоверность сведений)."
 
-#: ../../../../docs/user_guide/submit_work.rst:159
+#: ../../../../docs/user_guide/submit_work.rst:160
 msgid "PR checklist template (body)"
 msgstr "Шаблон PR (чек‑лист)"
 
-#: ../../../../docs/user_guide/submit_work.rst:182
+#: ../../../../docs/user_guide/submit_work.rst:208
 msgid "Common pitfalls (read before pushing)"
 msgstr "Частые ошибки (прочтите перед отправкой)"
 
-#: ../../../../docs/user_guide/submit_work.rst:183
+#: ../../../../docs/user_guide/submit_work.rst:209
 msgid "Wrong folder/branch name. Must be ``<last>_<initial>_<short>`` everywhere."
 msgstr ""
 "Неверное имя папки/ветки. Должно быть ``<фамилия>_<инициал>_<краткое>`` "
 "везде."
 
-#: ../../../../docs/user_guide/submit_work.rst:184
+#: ../../../../docs/user_guide/submit_work.rst:210
 msgid "Missing or wrong ``GetStaticTypeOfTask`` value for a technology."
 msgstr "Отсутствует или неверное значение ``GetStaticTypeOfTask`` для технологии."
 
-#: ../../../../docs/user_guide/submit_work.rst:185
+#: ../../../../docs/user_guide/submit_work.rst:211
 msgid "Tests rely on randomness or sleeps instead of env time limits."
 msgstr ""
 "Тесты зависят от случайности или задержек вместо лимитов по времени "
 "окружения."
 
-#: ../../../../docs/user_guide/submit_work.rst:186
+#: ../../../../docs/user_guide/submit_work.rst:212
 msgid "``settings.json`` doesn’t enable a required technology — tests won’t run."
 msgstr "В ``settings.json`` не включена нужная технология — тесты не запустятся."
 
-#: ../../../../docs/user_guide/submit_work.rst:187
+#: ../../../../docs/user_guide/submit_work.rst:213
 msgid "Namespace doesn’t match the folder name and collides with others."
 msgstr "Namespace не соответствует имени папки и конфликтует с другими."
 
-#: ../../../../docs/user_guide/submit_work.rst:188
+#: ../../../../docs/user_guide/submit_work.rst:214
 msgid "Performance tests count or naming deviates from the required patterns."
 msgstr "Количество или именование перфтестов отклоняется от требуемых шаблонов."
 
-#: ../../../../docs/user_guide/submit_work.rst:191
+#: ../../../../docs/user_guide/submit_work.rst:217
 msgid "Useful examples to reference"
 msgstr "Полезные примеры для ориентирования"
 
-#: ../../../../docs/user_guide/submit_work.rst:192
+#: ../../../../docs/user_guide/submit_work.rst:218
 msgid ""
-"Processes: ``tasks/example/processes/t1``, "
-"``tasks/example/processes/t2``, ``tasks/example/processes/t3``"
+"Processes: ``tasks/example/processes/t1``, ``tasks/example/processes/t2``, "
+"``tasks/example/processes/t3``"
 msgstr ""
-"Процессы: ``tasks/example/processes/t1``, ``tasks/example/processes/t2``,"
-" ``tasks/example/processes/t3``"
+"Процессы: ``tasks/example/processes/t1``, ``tasks/example/processes/t2``, "
+"``tasks/example/processes/t3``"
 
-#: ../../../../docs/user_guide/submit_work.rst:193
+#: ../../../../docs/user_guide/submit_work.rst:219
 msgid "Threads: ``tasks/example/threads``"
 msgstr "Потоки: ``tasks/example/threads``"
 
-#: ../../../../docs/user_guide/submit_work.rst:195
+#: ../../../../docs/user_guide/submit_work.rst:221
 msgid ""
 "Work from your fork in a dedicated branch (not ``master``). Branch name "
 "must match your task folder."
@@ -312,11 +310,11 @@ msgstr ""
 "Работайте из своего форка в отдельной ветке (не ``master``). Имя ветки "
 "должно совпадать с именем папки задачи."
 
-#: ../../../../docs/user_guide/submit_work.rst:198
+#: ../../../../docs/user_guide/submit_work.rst:224
 msgid "Notes"
 msgstr "Примечания"
 
-#: ../../../../docs/user_guide/submit_work.rst:199
+#: ../../../../docs/user_guide/submit_work.rst:225
 msgid ""
 "All classes should live in a unique namespace (e.g., "
 "``<last>_<initial>_<short>``)."
@@ -324,7 +322,7 @@ msgstr ""
 "Все классы должны находиться в уникальном пространстве имён (например, "
 "``<фамилия>_<инициал>_<краткое>``)."
 
-#: ../../../../docs/user_guide/submit_work.rst:200
+#: ../../../../docs/user_guide/submit_work.rst:226
 msgid ""
 "Keep tests deterministic and within time limits; prefer env vars over "
 "sleeps."
@@ -332,7 +330,7 @@ msgstr ""
 "Делайте тесты детерминированными и укладывающимися в лимиты времени; "
 "используйте переменные окружения вместо задержек."
 
-#: ../../../../docs/user_guide/submit_work.rst:201
+#: ../../../../docs/user_guide/submit_work.rst:227
 msgid ""
 "Follow code style (clang-format/clang-tidy), and run pre-commit hooks "
 "locally."

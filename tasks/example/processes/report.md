@@ -1,6 +1,6 @@
 # Example Processes
 
-This section aggregates the MPI/OSH process example tasks.
+This section aggregates the MPI/process example tasks.
 
 Child reports:
 
