@@ -84,7 +84,7 @@ msgid "Ubuntu environment with gcc-15, CMake, OpenMP"
 msgstr ""
 
 #: ../../../../docs/user_guide/environment.rst:22
-msgid "Open MPI from the ``learning-process/mpi-extensions`` nightly prerelease"
+msgid "Open MPI from the ``learning-process/mpi-extensions`` main prerelease"
 msgstr ""
 
 #: ../../../../docs/user_guide/environment.rst:23

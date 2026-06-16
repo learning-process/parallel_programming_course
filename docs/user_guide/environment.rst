@@ -19,7 +19,7 @@ The easiest way to set up your development environment is using the provided ``.
 4. The container includes:
 
    - Ubuntu environment with gcc-15, CMake, OpenMP
-   - Open MPI from the ``learning-process/mpi-extensions`` nightly prerelease
+   - Open MPI from the ``learning-process/mpi-extensions`` main prerelease
    - Pre-configured C++ and Python development tools
    - All project dependencies ready to use
 

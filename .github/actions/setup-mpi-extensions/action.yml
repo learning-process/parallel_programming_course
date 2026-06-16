@@ -1,5 +1,5 @@
 name: Setup MPI Extensions Open MPI
-description: Install Open MPI from the mpi-extensions nightly prerelease
+description: Install Open MPI from the mpi-extensions main prerelease
 inputs:
   prefix:
     description: Installation prefix. Defaults to $RUNNER_TEMP/mpi-extensions-openmpi.

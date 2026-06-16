@@ -25,7 +25,7 @@ except ImportError as exc:
 
 
 DEFAULT_REPO = "learning-process/mpi-extensions"
-NIGHTLY_TAG = "nightly"
+RELEASE_TAG = "main"
 SUPPORTED_PLATFORMS = {
     "linux-x86_64",
     "linux-arm64",
@@ -55,7 +55,7 @@ def detect_platform() -> str:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Install Open MPI from the mpi-extensions nightly prerelease."
+        description="Install Open MPI from the mpi-extensions main prerelease."
     )
     parser.add_argument("--repo", default=DEFAULT_REPO, help=f"default: {DEFAULT_REPO}")
     parser.add_argument(
@@ -123,7 +123,7 @@ def select_archive_asset(
             asset.get("name", "<unnamed>") for asset in release.get("assets", [])
         )
         raise SystemExit(
-            f"Expected exactly one nightly archive for {target_platform}, "
+            f"Expected exactly one main release archive for {target_platform}, "
             f"found {len(matches)}. Available assets: {available}"
         )
     return matches[0]
@@ -370,12 +370,12 @@ def main() -> int:
     session = requests.Session()
     session.headers.update(github_headers())
     release_url = (
-        f"https://api.github.com/repos/{args.repo}/releases/tags/{NIGHTLY_TAG}"
+        f"https://api.github.com/repos/{args.repo}/releases/tags/{RELEASE_TAG}"
     )
     release = get_json(session, release_url)
-    if release.get("tag_name") != NIGHTLY_TAG or not release.get("prerelease"):
+    if release.get("tag_name") != RELEASE_TAG or not release.get("prerelease"):
         raise SystemExit(
-            f"Release {args.repo}@{NIGHTLY_TAG} is not the nightly prerelease"
+            f"Release {args.repo}@{RELEASE_TAG} is not the main prerelease"
         )
 
     archive_asset = select_archive_asset(release, target_platform)
@@ -387,7 +387,7 @@ def main() -> int:
         archive_path = temp_dir / archive_name
         checksum_path = temp_dir / f"{archive_name}.sha256"
         print(
-            f"Downloading {archive_name} from {args.repo}@{NIGHTLY_TAG}",
+            f"Downloading {archive_name} from {args.repo}@{RELEASE_TAG}",
             file=sys.stderr,
         )
         download(session, archive_asset["browser_download_url"], archive_path)

@@ -93,8 +93,8 @@ msgid "Ubuntu environment with gcc-15, CMake, OpenMP"
 msgstr "Окружение Ubuntu с gcc-15, CMake и OpenMP"
 
 #: ../../../../docs/user_guide/environment.rst:22
-msgid "Open MPI from the ``learning-process/mpi-extensions`` nightly prerelease"
-msgstr "Open MPI из ночного предварительного релиза ``learning-process/mpi-extensions``"
+msgid "Open MPI from the ``learning-process/mpi-extensions`` main prerelease"
+msgstr "Open MPI из основного предварительного релиза ``learning-process/mpi-extensions``"
 
 #: ../../../../docs/user_guide/environment.rst:23
 msgid "Pre-configured C++ and Python development tools"

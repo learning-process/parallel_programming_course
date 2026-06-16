@@ -11,7 +11,7 @@ if(NOT WIN32)
     message(
       FATAL_ERROR
         "PPC_MPI_EXTENSIONS_HOME is required on Linux and macOS. "
-        "Install the mpi-extensions nightly Open MPI package and configure with "
+        "Install the mpi-extensions main Open MPI package and configure with "
         "-DPPC_MPI_EXTENSIONS_HOME=/path/to/mpi-extensions-openmpi")
   endif()
 
