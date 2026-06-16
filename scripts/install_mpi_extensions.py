@@ -99,19 +99,29 @@ def select_asset(release: dict[str, Any], asset_name: str) -> dict[str, Any]:
     for asset in release.get("assets", []):
         if asset.get("name") == asset_name:
             return asset
-    available = ", ".join(asset.get("name", "<unnamed>") for asset in release.get("assets", []))
-    raise SystemExit(f"Release asset not found: {asset_name}. Available assets: {available}")
+    available = ", ".join(
+        asset.get("name", "<unnamed>") for asset in release.get("assets", [])
+    )
+    raise SystemExit(
+        f"Release asset not found: {asset_name}. Available assets: {available}"
+    )
 
 
-def select_archive_asset(release: dict[str, Any], target_platform: str) -> dict[str, Any]:
-    pattern = re.compile(rf"^mpi-extensions-openmpi-.+-{re.escape(target_platform)}\.tar\.gz$")
+def select_archive_asset(
+    release: dict[str, Any], target_platform: str
+) -> dict[str, Any]:
+    pattern = re.compile(
+        rf"^mpi-extensions-openmpi-.+-{re.escape(target_platform)}\.tar\.gz$"
+    )
     matches = [
         asset
         for asset in release.get("assets", [])
         if pattern.match(str(asset.get("name", "")))
     ]
     if len(matches) != 1:
-        available = ", ".join(asset.get("name", "<unnamed>") for asset in release.get("assets", []))
+        available = ", ".join(
+            asset.get("name", "<unnamed>") for asset in release.get("assets", [])
+        )
         raise SystemExit(
             f"Expected exactly one nightly archive for {target_platform}, "
             f"found {len(matches)}. Available assets: {available}"
@@ -148,30 +158,43 @@ def safe_extract(archive: Path, destination: Path) -> Path:
                 continue
             roots.add(parts[0])
             target = (destination / member.name).resolve()
-            if target != resolved_destination and resolved_destination not in target.parents:
+            if (
+                target != resolved_destination
+                and resolved_destination not in target.parents
+            ):
                 raise SystemExit(f"Archive contains unsafe path: {member.name}")
         if len(roots) != 1:
-            raise SystemExit(f"Expected archive to contain one top-level directory, found: {roots}")
+            raise SystemExit(
+                f"Expected archive to contain one top-level directory, found: {roots}"
+            )
         tar.extractall(destination, members=members)
     return destination / roots.pop()
 
 
 def install_tree(source_root: Path, prefix: Path, force: bool) -> None:
     required_tools = ["mpicc", "mpicxx", "mpirun", "mpiexec"]
-    missing_tools = [tool for tool in required_tools if not (source_root / "bin" / tool).exists()]
+    missing_tools = [
+        tool for tool in required_tools if not (source_root / "bin" / tool).exists()
+    ]
     if missing_tools:
-        raise SystemExit(f"Archive is missing required MPI tools: {', '.join(missing_tools)}")
+        raise SystemExit(
+            f"Archive is missing required MPI tools: {', '.join(missing_tools)}"
+        )
 
     if prefix.exists():
         if not force and any(prefix.iterdir()):
-            raise SystemExit(f"Installation prefix is not empty: {prefix}. Use --force to replace it.")
+            raise SystemExit(
+                f"Installation prefix is not empty: {prefix}. Use --force to replace it."
+            )
         shutil.rmtree(prefix)
     prefix.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(source_root, prefix, symlinks=True)
 
 
 def run_tool(command: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(command, check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    return subprocess.run(
+        command, check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+    )
 
 
 def otool_lines(path: Path) -> list[str]:
@@ -185,7 +208,9 @@ def patch_macos_install_names(prefix: Path) -> None:
     if platform.system() != "Darwin":
         return
     if not shutil.which("install_name_tool") or not shutil.which("otool"):
-        raise SystemExit("macOS install_name_tool and otool are required to install mpi-extensions")
+        raise SystemExit(
+            "macOS install_name_tool and otool are required to install mpi-extensions"
+        )
 
     lib_dir = prefix / "lib"
     if not lib_dir.exists():
@@ -208,12 +233,19 @@ def patch_macos_install_names(prefix: Path) -> None:
         result = run_tool(["otool", "-D", str(path)])
         if result.returncode != 0:
             continue
-        install_names = [line.strip() for line in result.stdout.splitlines()[1:] if line.strip()]
+        install_names = [
+            line.strip() for line in result.stdout.splitlines()[1:] if line.strip()
+        ]
         if install_names:
             local_name = local_libs.get(Path(install_names[0]).name)
             if local_name:
                 subprocess.run(
-                    ["install_name_tool", "-id", f"@rpath/{local_name.name}", str(path)],
+                    [
+                        "install_name_tool",
+                        "-id",
+                        f"@rpath/{local_name.name}",
+                        str(path),
+                    ],
                     check=True,
                 )
 
@@ -231,7 +263,13 @@ def patch_macos_install_names(prefix: Path) -> None:
                 else:
                     replacement = f"@rpath/{local_dependency.name}"
                 subprocess.run(
-                    ["install_name_tool", "-change", dependency, replacement, str(path)],
+                    [
+                        "install_name_tool",
+                        "-change",
+                        dependency,
+                        replacement,
+                        str(path),
+                    ],
                     check=True,
                 )
 
@@ -258,10 +296,14 @@ def main() -> int:
 
     session = requests.Session()
     session.headers.update(github_headers())
-    release_url = f"https://api.github.com/repos/{args.repo}/releases/tags/{NIGHTLY_TAG}"
+    release_url = (
+        f"https://api.github.com/repos/{args.repo}/releases/tags/{NIGHTLY_TAG}"
+    )
     release = get_json(session, release_url)
     if release.get("tag_name") != NIGHTLY_TAG or not release.get("prerelease"):
-        raise SystemExit(f"Release {args.repo}@{NIGHTLY_TAG} is not the nightly prerelease")
+        raise SystemExit(
+            f"Release {args.repo}@{NIGHTLY_TAG} is not the nightly prerelease"
+        )
 
     archive_asset = select_archive_asset(release, target_platform)
     archive_name = archive_asset["name"]
@@ -271,7 +313,10 @@ def main() -> int:
         temp_dir = Path(temp_dir_text)
         archive_path = temp_dir / archive_name
         checksum_path = temp_dir / f"{archive_name}.sha256"
-        print(f"Downloading {archive_name} from {args.repo}@{NIGHTLY_TAG}", file=sys.stderr)
+        print(
+            f"Downloading {archive_name} from {args.repo}@{NIGHTLY_TAG}",
+            file=sys.stderr,
+        )
         download(session, archive_asset["browser_download_url"], archive_path)
         download(session, checksum_asset["browser_download_url"], checksum_path)
 

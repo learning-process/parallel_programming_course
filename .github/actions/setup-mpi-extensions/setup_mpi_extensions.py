@@ -24,7 +24,9 @@ MPI_PACKAGES_MACOS = ["mpich", "open-mpi"]
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Set up mpi-extensions Open MPI for GitHub Actions.")
+    parser = argparse.ArgumentParser(
+        description="Set up mpi-extensions Open MPI for GitHub Actions."
+    )
     parser.add_argument("--repo-root", required=True, type=Path)
     parser.add_argument("--prefix", required=True, type=Path)
     parser.add_argument("--platform", required=True)
@@ -35,7 +37,9 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def run(command: list[str], *, env: dict[str, str] | None = None, check: bool = True) -> subprocess.CompletedProcess[str]:
+def run(
+    command: list[str], *, env: dict[str, str] | None = None, check: bool = True
+) -> subprocess.CompletedProcess[str]:
     print("+ " + " ".join(command), flush=True)
     return subprocess.run(command, check=check, env=env)
 
@@ -68,7 +72,12 @@ def purge_macos_mpi() -> None:
     if not shutil.which("brew"):
         return
     for package in MPI_PACKAGES_MACOS:
-        if subprocess.run(["brew", "list", "--versions", package], check=False).returncode == 0:
+        if (
+            subprocess.run(
+                ["brew", "list", "--versions", package], check=False
+            ).returncode
+            == 0
+        ):
             run(["brew", "uninstall", "--ignore-dependencies", "--force", package])
 
 
@@ -91,9 +100,26 @@ def prepare_python(runner_temp: Path) -> Path:
         run([str(python_bin), "-m", "pip", "install", "requests>=2.31,<3"])
         return python_bin
     except subprocess.CalledProcessError:
-        print("::warning::Python venv setup failed; trying the current interpreter with pip")
-        if subprocess.run([sys.executable, "-m", "pip", "install", "--user", "requests>=2.31,<3"], check=False).returncode != 0:
-            run([sys.executable, "-m", "pip", "install", "--break-system-packages", "requests>=2.31,<3"])
+        print(
+            "::warning::Python venv setup failed; trying the current interpreter with pip"
+        )
+        if (
+            subprocess.run(
+                [sys.executable, "-m", "pip", "install", "--user", "requests>=2.31,<3"],
+                check=False,
+            ).returncode
+            != 0
+        ):
+            run(
+                [
+                    sys.executable,
+                    "-m",
+                    "pip",
+                    "install",
+                    "--break-system-packages",
+                    "requests>=2.31,<3",
+                ]
+            )
         return Path(sys.executable)
 
 
@@ -114,7 +140,9 @@ def install_openmpi(args: argparse.Namespace, python_bin: Path) -> None:
     )
 
 
-def append_github_environment(prefix: Path, github_env: Path, github_path: Path) -> None:
+def append_github_environment(
+    prefix: Path, github_env: Path, github_path: Path
+) -> None:
     lib_path = prefix / "lib"
     env_lines = [
         f"MPI_EXTENSIONS_HOME={prefix}",
