@@ -268,9 +268,13 @@ def otool_lines(path: Path) -> list[str]:
 def patch_macos_install_names(prefix: Path) -> None:
     if platform.system() != "Darwin":
         return
-    if not shutil.which("install_name_tool") or not shutil.which("otool"):
+    if (
+        not shutil.which("install_name_tool")
+        or not shutil.which("otool")
+        or not shutil.which("codesign")
+    ):
         raise SystemExit(
-            "macOS install_name_tool and otool are required to install mpi-extensions"
+            "macOS install_name_tool, otool, and codesign are required to install mpi-extensions"
         )
 
     lib_dir = prefix / "lib"
@@ -289,6 +293,7 @@ def patch_macos_install_names(prefix: Path) -> None:
         for path in base_dir.iterdir()
         if path.is_file() and not path.is_symlink()
     ]
+    patched_paths: set[Path] = set()
 
     for path in local_libs.values():
         result = run_tool(["otool", "-D", str(path)])
@@ -300,15 +305,18 @@ def patch_macos_install_names(prefix: Path) -> None:
         if install_names:
             local_name = local_libs.get(Path(install_names[0]).name)
             if local_name:
-                subprocess.run(
-                    [
-                        "install_name_tool",
-                        "-id",
-                        f"@rpath/{local_name.name}",
-                        str(path),
-                    ],
-                    check=True,
-                )
+                replacement = f"@rpath/{local_name.name}"
+                if install_names[0] != replacement:
+                    subprocess.run(
+                        [
+                            "install_name_tool",
+                            "-id",
+                            replacement,
+                            str(path),
+                        ],
+                        check=True,
+                    )
+                    patched_paths.add(path)
 
     for path in mach_o_candidates:
         for line in otool_lines(path):
@@ -333,6 +341,15 @@ def patch_macos_install_names(prefix: Path) -> None:
                     ],
                     check=True,
                 )
+                patched_paths.add(path)
+
+    for path in patched_paths:
+        subprocess.run(
+            ["codesign", "--force", "--sign", "-", "--timestamp=none", str(path)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True,
+        )
 
 
 def print_environment(prefix: Path) -> None:
