@@ -1,0 +1,27 @@
+name: Setup MPI Extensions Open MPI
+description: Install Open MPI from the mpi-extensions main prerelease
+inputs:
+  prefix:
+    description: Installation prefix. Defaults to $RUNNER_TEMP/mpi-extensions-openmpi.
+    default: ''
+  platform:
+    description: mpi-extensions platform name
+    default: auto
+  purge-system-mpi:
+    description: Remove package-manager MPI installations before installing mpi-extensions
+    default: 'false'
+runs:
+  using: composite
+  steps:
+    - name: Setup MPI extensions Open MPI
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: >-
+        python3 "${GITHUB_WORKSPACE:-$PWD}/scripts/setup_mpi_extensions.py"
+        --repo-root "${GITHUB_WORKSPACE:-$PWD}"
+        --prefix "${{ inputs.prefix }}"
+        --platform "${{ inputs.platform }}"
+        --purge-system-mpi "${{ inputs.purge-system-mpi }}"
+        --github-env "$GITHUB_ENV"
+        --runner-temp "${RUNNER_TEMP:-${TMPDIR:-/tmp}}"

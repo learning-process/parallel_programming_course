@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import json
 import os
 import platform
 import shlex
@@ -67,15 +68,12 @@ class PPCRunner:
             self.mpi_exec = "mpirun"
         self.platform = platform.system()
 
-        # Detect MPI implementation to choose compatible flags
-        self.mpi_env_mode = "unknown"  # one of: openmpi, mpich, unknown
-        self.mpi_np_flag = "-np"
         if self.platform == "Windows":
-            # MSMPI uses -env and -n
             self.mpi_env_mode = "mpich"
             self.mpi_np_flag = "-n"
         else:
-            self.mpi_env_mode, self.mpi_np_flag = self.__detect_mpi_impl()
+            self.mpi_env_mode = "unknown"
+            self.mpi_np_flag = "-np"
 
     @staticmethod
     def __get_project_path():
@@ -105,11 +103,15 @@ class PPCRunner:
             build_dir = project_path / build_dir
         self.__build_dir_path = build_dir
 
-        install_bin_dir = project_path / "install" / "bin"
+        install_dir = project_path / "install"
+        install_bin_dir = install_dir / "bin"
         if install_bin_dir.exists():
+            self.__apply_mpi_runtime_config(install_dir / "ppc_mpi_runtime_env.json")
             self.work_dir = install_bin_dir
+            self.__detect_configured_mpi()
             return
 
+        self.__apply_mpi_runtime_config(build_dir / "ppc_mpi_runtime_env.json")
         bin_dir = build_dir if build_dir.name == "bin" else build_dir / "bin"
         if not bin_dir.exists():
             raise FileNotFoundError(
@@ -117,6 +119,52 @@ class PPCRunner:
                 "Build the project or pass a correct '--build-dir' (e.g. 'build', 'build_seq', or 'build/bin')."
             )
         self.work_dir = bin_dir
+        self.__detect_configured_mpi()
+
+    def __prepend_env_path(self, name, value):
+        current = self.__ppc_env.get(name)
+        self.__ppc_env[name] = (
+            str(value) if not current else f"{value}{os.pathsep}{current}"
+        )
+
+    def __apply_mpi_runtime_config(self, config_path):
+        if self.platform == "Windows":
+            return
+
+        if not config_path.exists():
+            raise FileNotFoundError(
+                f"MPI runtime config not found: '{config_path}'. "
+                "Configure CMake with -DPPC_MPI_EXTENSIONS_HOME=/path/to/mpi-extensions-openmpi."
+            )
+
+        with config_path.open(encoding="utf-8") as input_file:
+            config = json.load(input_file)
+
+        env_values = config.get("env", {})
+        for name, value in env_values.items():
+            self.__ppc_env[name] = str(value)
+
+        path_prepend = config.get("path_prepend")
+        if path_prepend:
+            self.__prepend_env_path("PATH", path_prepend)
+
+        library_path_prepend = config.get("library_path_prepend")
+        if library_path_prepend:
+            self.__prepend_env_path("LD_LIBRARY_PATH", library_path_prepend)
+            self.__prepend_env_path("DYLD_LIBRARY_PATH", library_path_prepend)
+
+        mpi_exec = config.get("mpi_exec")
+        if mpi_exec:
+            mpi_exec_path = Path(mpi_exec)
+            if not mpi_exec_path.exists():
+                raise FileNotFoundError(
+                    f"Configured MPI launcher not found: '{mpi_exec_path}'"
+                )
+            self.mpi_exec = str(mpi_exec_path)
+
+    def __detect_configured_mpi(self):
+        if self.platform != "Windows":
+            self.mpi_env_mode, self.mpi_np_flag = self.__detect_mpi_impl()
 
     def __run_exec(self, command, extra_env=None):
         if self.verbose:
@@ -142,6 +190,7 @@ class PPCRunner:
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
                     text=True,
+                    env=self.__ppc_env,
                 )
                 out = (proc.stdout or "").lower()
                 if out:

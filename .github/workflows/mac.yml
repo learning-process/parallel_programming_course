@@ -24,6 +24,11 @@ jobs:
           submodules: recursive
       - name: Setup macOS toolchain
         uses: ./.github/actions/setup-macos-toolchain
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: macos-arm64
+          purge-system-mpi: 'true'
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -36,6 +41,7 @@ jobs:
           -DCMAKE_C_FLAGS="-I$(brew --prefix)/opt/libomp/include"
           -DCMAKE_CXX_FLAGS="-I$(brew --prefix)/opt/libomp/include"
           -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
+          -D PPC_MPI_EXTENSIONS_HOME="$PPC_MPI_EXTENSIONS_HOME"
           -D PPC_TASKS="${{ inputs.ppc_tasks }}"
       - name: Build project
         run: |
@@ -58,13 +64,18 @@ jobs:
       - uses: actions/checkout@v6
       - name: Setup macOS toolchain
         uses: ./.github/actions/setup-macos-toolchain
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: macos-arm64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
           path: install
           name: macos-clang-install
       - name: Run func tests (MPI)
-        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4 --additional-mpi-args="--oversubscribe"
         env:
           PPC_NUM_THREADS: 1
           PPC_TASK_MAX_TIME: 30
@@ -80,6 +91,11 @@ jobs:
       - uses: actions/checkout@v6
       - name: Setup macOS toolchain
         uses: ./.github/actions/setup-macos-toolchain
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: macos-arm64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:

@@ -12,8 +12,6 @@ RUN set -e \
     ninja-build cmake make \
     ccache \
     valgrind \
-    libmpich-dev mpich \
-    openmpi-bin openmpi-common libopenmpi-dev \
     libomp-dev \
     gcc-15 g++-15 \
     gcovr zip \

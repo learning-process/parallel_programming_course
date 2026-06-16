@@ -18,7 +18,8 @@ The easiest way to set up your development environment is using the provided ``.
 3. VS Code will automatically build the container with all dependencies pre-installed
 4. The container includes:
 
-   - Ubuntu environment with gcc-15, CMake, MPI, OpenMP
+   - Ubuntu environment with gcc-15, CMake, OpenMP
+   - Open MPI from the ``learning-process/mpi-extensions`` main prerelease
    - Pre-configured C++ and Python development tools
    - All project dependencies ready to use
 
@@ -96,29 +97,33 @@ Parallel Programming Technologies
   `Installers link <https://www.microsoft.com/en-us/download/details.aspx?id=105289>`_. You have to install ``msmpisdk.msi`` and ``msmpisetup.exe``.
 
 - **Linux (gcc and clang)**:
-  
+
   .. code-block:: bash
 
-     sudo apt install -y mpich openmpi-bin libopenmpi-dev
+     python3 -m pip install 'requests>=2.31,<3'
+     python3 scripts/install_mpi_extensions.py --prefix "$PWD/_deps/mpi-extensions-openmpi" --force
+     cmake -S . -B build -D PPC_MPI_EXTENSIONS_HOME="$PWD/_deps/mpi-extensions-openmpi"
 
 - **MacOS (apple clang)**:
-  
+
   .. code-block:: bash
 
-     brew install open-mpi
+     python3 -m pip install 'requests>=2.31,<3'
+     python3 scripts/install_mpi_extensions.py --prefix "$PWD/_deps/mpi-extensions-openmpi" --force
+     cmake -S . -B build -D PPC_MPI_EXTENSIONS_HOME="$PWD/_deps/mpi-extensions-openmpi"
 
 ``OpenMP``
 ~~~~~~~~~~
 ``OpenMP`` is included in ``gcc`` and ``msvc``, but some components should be installed additionally:
 
 - **Linux (gcc and clang)**:
-  
+
   .. code-block:: bash
 
      sudo apt install -y libomp-dev
 
 - **MacOS (llvm)**:
-  
+
   .. code-block:: bash
 
      brew install llvm

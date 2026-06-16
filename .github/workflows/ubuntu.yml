@@ -35,10 +35,16 @@ jobs:
           key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=install
+          -D PPC_MPI_EXTENSIONS_HOME="$PPC_MPI_EXTENSIONS_HOME"
           -D PPC_TASKS="${{ inputs.ppc_tasks }}"
         env:
           CC: gcc-15
@@ -81,6 +87,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -110,6 +121,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -139,10 +155,16 @@ jobs:
           key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=install
+          -D PPC_MPI_EXTENSIONS_HOME="$PPC_MPI_EXTENSIONS_HOME"
           -D PPC_TASKS="${{ inputs.ppc_tasks }}"
         env:
           CC: clang-22
@@ -177,6 +199,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -206,6 +233,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -237,12 +269,18 @@ jobs:
           key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RelWithDebInfo
           -D ENABLE_ADDRESS_SANITIZER=ON -D ENABLE_UB_SANITIZER=ON -D ENABLE_LEAK_SANITIZER=ON
           -D CMAKE_INSTALL_PREFIX=install
+          -D PPC_MPI_EXTENSIONS_HOME="$PPC_MPI_EXTENSIONS_HOME"
           -D PPC_TASKS="${{ inputs.ppc_tasks }}"
         env:
           CC: clang-22
@@ -277,6 +315,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -312,6 +355,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -347,12 +395,18 @@ jobs:
           key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
           -D CMAKE_BUILD_TYPE=RELEASE
           -D CMAKE_VERBOSE_MAKEFILE=ON -D USE_COVERAGE=ON
           -DCMAKE_INSTALL_PREFIX=install
+          -D PPC_MPI_EXTENSIONS_HOME="$PPC_MPI_EXTENSIONS_HOME"
           -D PPC_TASKS="${{ inputs.ppc_tasks }}"
       - name: Build project
         run: |
@@ -375,7 +429,7 @@ jobs:
         run: |
           mkdir cov-report
           cd build
-          gcovr --gcov-executable `which gcov-15` \
+          gcovr --gcov-executable "$(which gcov-15)" \
                 -r ../ \
                 --exclude '.*3rdparty/.*' \
                 --exclude '/usr/.*' \
