@@ -13,88 +13,16 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Remove Linux MPI packages
-      if: runner.os == 'Linux' && inputs.purge-system-mpi == 'true'
-      shell: bash
-      run: |
-        set -euo pipefail
-        if command -v apt-get >/dev/null 2>&1; then
-          apt_get=(apt-get)
-          if [ "$(id -u)" -ne 0 ]; then
-            if ! command -v sudo >/dev/null 2>&1; then
-              echo "::warning::sudo is unavailable; skipping Linux MPI package removal"
-              exit 0
-            fi
-            apt_get=(sudo apt-get)
-          fi
-          "${apt_get[@]}" update
-          "${apt_get[@]}" purge -y \
-            mpich libmpich-dev \
-            openmpi-bin openmpi-common libopenmpi-dev \
-            mpi-default-bin mpi-default-dev || true
-          "${apt_get[@]}" autoremove -y || true
-          if [ "$(id -u)" -eq 0 ]; then
-            rm -rf /var/lib/apt/lists/*
-          fi
-        fi
-    - name: Remove Homebrew MPI packages
-      if: runner.os == 'macOS' && inputs.purge-system-mpi == 'true'
-      shell: bash
-      run: |
-        set -euo pipefail
-        if command -v brew >/dev/null 2>&1; then
-          for package in mpich open-mpi; do
-            if brew list --versions "$package" >/dev/null 2>&1; then
-              brew uninstall --ignore-dependencies --force "$package"
-            fi
-          done
-        fi
-    - name: Install Python dependencies
-      id: python
-      shell: bash
-      run: |
-        set -euo pipefail
-        venv_dir='${{ runner.temp }}/mpi-extensions-python'
-        if python3 -m venv "$venv_dir"; then
-          python_bin="$venv_dir/bin/python"
-          "$python_bin" -m pip install --upgrade pip
-          "$python_bin" -m pip install 'requests>=2.31,<3'
-        else
-          python_bin=python3
-          python3 -m pip install --user 'requests>=2.31,<3' || \
-            python3 -m pip install --break-system-packages 'requests>=2.31,<3'
-        fi
-        echo "python=$python_bin" >> "$GITHUB_OUTPUT"
-    - name: Install Open MPI from nightly
+    - name: Setup MPI extensions Open MPI
       shell: bash
       env:
         GITHUB_TOKEN: ${{ github.token }}
-      run: |
-        set -euo pipefail
-        '${{ steps.python.outputs.python }}' scripts/install_mpi_extensions.py \
-          --platform '${{ inputs.platform }}' \
-          --prefix '${{ inputs.prefix }}' \
-          --force
-        {
-          echo "MPI_EXTENSIONS_HOME=${{ inputs.prefix }}"
-          echo "MPI_HOME=${{ inputs.prefix }}"
-          echo "OPAL_PREFIX=${{ inputs.prefix }}"
-          echo "OMPI_MCA_shmem=mmap"
-          echo "LD_LIBRARY_PATH=${{ inputs.prefix }}/lib:${LD_LIBRARY_PATH:-}"
-          echo "DYLD_LIBRARY_PATH=${{ inputs.prefix }}/lib:${DYLD_LIBRARY_PATH:-}"
-        } >> "$GITHUB_ENV"
-        echo '${{ inputs.prefix }}/bin' >> "$GITHUB_PATH"
-    - name: Validate Open MPI selection
-      shell: bash
-      run: |
-        set -euo pipefail
-        expected='${{ inputs.prefix }}/bin'
-        for tool in mpicc mpicxx mpirun mpiexec; do
-          actual="$(command -v "$tool")"
-          if [ "$actual" != "$expected/$tool" ]; then
-            echo "::error::$tool resolves to $actual instead of $expected/$tool"
-            exit 1
-          fi
-        done
-        mpirun --version
-        mpicc --showme:version
+      run: >-
+        python3 "${{ github.action_path }}/setup_mpi_extensions.py"
+        --repo-root "${{ github.workspace }}"
+        --prefix "${{ inputs.prefix }}"
+        --platform "${{ inputs.platform }}"
+        --purge-system-mpi "${{ inputs.purge-system-mpi }}"
+        --github-env "$GITHUB_ENV"
+        --github-path "$GITHUB_PATH"
+        --runner-temp "${{ runner.temp }}"
