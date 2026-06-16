@@ -3,14 +3,14 @@ Continuous Integration (CI)
 
 Overview
 --------
-Your pull request must pass all required CI checks before review/merge. The pipeline validates formatting and static analysis, builds on all platforms, runs functional tests (threads, MPI, and OSH on Linux), measures performance, builds docs, and publishes artifacts (coverage report, docs, scoreboard).
+Your pull request must pass all required CI checks before review/merge. The pipeline validates formatting and static analysis, builds on all platforms, runs functional tests (threads, MPI, and OSH on Linux/macOS), measures performance, builds docs, and publishes artifacts (coverage report, docs, scoreboard).
 
 High‑level pipeline
 -------------------
 
 - Pre-commit checks (fast) — runs repository hooks on changed files; fix locally via ``pre-commit run -a``.
 
-- Platform builds and tests (Ubuntu, macOS, Windows) — Ubuntu (GCC/Clang), macOS (Clang), Windows (MSVC/Clang‑CL); functional tests via ``scripts/run_tests.py`` for threads (``--counts 1 2 3 4``; extended ``5 7 11 13``) and processes (MPI/OSH on Linux, MPI on macOS/Windows, ``--counts 1 2 3 4``).
+- Platform builds and tests (Ubuntu, macOS, Windows) — Ubuntu (GCC/Clang), macOS (Clang), Windows (MSVC/Clang‑CL); functional tests via ``scripts/run_tests.py`` for threads (``--counts 1 2 3 4``; extended ``5 7 11 13``) and processes (MPI/OSH on Linux and macOS, MPI on Windows, ``--counts 1 2 3 4``).
 
 - Sanitizers (Ubuntu/Clang) — Address/UB/Leak; tests use ``PPC_ASAN_RUN=1`` to skip valgrind.
 
@@ -49,7 +49,7 @@ Use the ``scripts/run_tests.py`` helper. Common environment variables:
 
 Execution modes:
 - ``--running-type=threads`` — shared-memory backends (OpenMP/TBB/std::thread)
-- ``--running-type=processes`` — MPI tests, plus OSH tests on Linux
+- ``--running-type=processes`` — MPI tests, plus OSH tests on Linux and macOS
 - ``--running-type=performance`` — performance benchmarks (mirrors CI perf job)
 
 Examples:
@@ -66,7 +66,10 @@ Examples:
    scripts/run_tests.py --running-type=processes --counts 2 4
 
    # OSH only, direct launcher form on Linux
-   ./build/ppc_openmpi/install/bin/oshrun -np 2 ./build/bin/ppc_func_tests --gtest_filter="*_osh_*:*OSHEnabled*"
+   oshrun -np 2 ./build/bin/ppc_func_tests --gtest_filter="*_osh_*:*OSHEnabled*"
+
+   # OSH only, direct launcher form on macOS build tree
+   ./build/ppc_sos/install/bin/oshrun -np 2 ./build/bin/ppc_func_tests --gtest_filter="*_osh_*:*OSHEnabled*"
 
    # Performance (benchmarks)
    scripts/run_tests.py --running-type=performance
@@ -93,7 +96,7 @@ Troubleshooting
 - Tests not found/not running: verify ``settings.json`` enables required technologies and tests exist; see :doc:`submit_work`.
 - Time limits exceeded: reduce data sizes; prefer env vars (:doc:`environment_variables`) like ``PPC_TASK_MAX_TIME``/``PPC_PERF_MAX_TIME``; avoid sleeps/randomness.
 - MPI runs fail locally: set ``PPC_NUM_PROC`` and try ``--additional-mpi-args=\"--oversubscribe\"``.
-- OSH runs fail locally: verify submodules are initialized and ``build/ppc_openmpi/install/bin/oshrun`` exists.
+- OSH runs fail locally: on Linux verify Open MPI with OSH support is installed; on macOS verify submodules are initialized and ``libfabric`` is installed.
 - Docs build fails: fix RST warnings; run ``doxygen Doxyfile`` before Sphinx targets.
 - Performance job fails: ensure performance tests are enabled and keep durations within limits.
 

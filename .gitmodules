@@ -16,8 +16,6 @@
 [submodule "3rdparty/benchmark"]
 	path = 3rdparty/benchmark
 	url = https://github.com/google/benchmark
-[submodule "3rdparty/openmpi"]
-	path = 3rdparty/openmpi
-	url = https://github.com/open-mpi/ompi
-	branch = v5.0.7
-	shallow = true
+[submodule "3rdparty/SOS"]
+	path = 3rdparty/SOS
+	url = https://github.com/Sandia-OpenSHMEM/SOS

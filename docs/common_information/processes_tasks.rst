@@ -5,8 +5,8 @@ Distributed-memory technologies
 -------------------------------
 
 The processes semester targets distributed-memory programming. MPI remains the
-baseline message-passing technology, and OSH is available on Linux as a PGAS /
-one-sided communication alternative for process tasks. Keep OSH
+baseline message-passing technology, and OSH is available on Linux and macOS
+as a PGAS / one-sided communication alternative for process tasks. Keep OSH
 implementations under ``osh`` task backend directories; do not move them to
 the threads semester.
 

@@ -91,9 +91,8 @@ Parallel Programming Technologies
 
 ``MPI``
 ~~~~~~~
-On Linux, MPI is built from the shallow ``3rdparty/openmpi`` source backend
-together with OSH. A separate system MPI installation is not required for the
-Linux course build.
+On Linux and macOS, MPI is provided by the system Open MPI package. Windows
+uses MS-MPI.
 
 - **Windows (MSVC)**:
 
@@ -103,41 +102,42 @@ Linux course build.
   
   .. code-block:: bash
 
-     sudo apt install -y autoconf automake flex libtool make perl bash
+     sudo apt install -y openmpi-bin libopenmpi-dev
 
 - **MacOS (apple clang)**:
   
   .. code-block:: bash
 
-     brew install mpich
+     brew install open-mpi
 
 ``OSH``
 ~~~~~~~~~~~~~
 OSH is used for process tasks as a PGAS / one-sided communication model
 for distributed-memory systems.
 
-The project builds MPI and OSH from the shallow ``3rdparty/openmpi`` source
-backend on Linux. The build installs ``mpirun``, ``libmpi``, ``liboshmem``,
-and ``shmem.h`` into the build tree. Open MPI OSH uses the UCX SPML, so Linux
-needs the UCX development package. macOS and Windows use their system MPI
-installations; OSH implementations are not built there.
+Linux uses the Open MPI OSH implementation from the system package. macOS
+builds Sandia SOS from ``3rdparty/SOS`` and uses Open MPI as its
+launcher/runtime. Windows keeps the existing MPI setup and skips OSH in the
+MSVC/clang-cl configurations.
 
 - **Linux (gcc and clang)**:
 
   .. code-block:: bash
 
-     sudo apt install -y autoconf automake flex libtool libucx-dev make perl pkg-config zlib1g-dev bash
+     sudo apt install -y openmpi-bin libopenmpi-dev
 
 - **MacOS (apple clang)**:
 
-  OSH is skipped on macOS.
+  .. code-block:: bash
+
+     brew install open-mpi autoconf automake libtool libfabric coreutils gnu-sed grep gawk pkgconf
 
 - **Windows (MSVC)**:
 
   Install MS-MPI as described in the MPI section. OSH is skipped on Windows.
 
-No separate system ``shmem.h``/``oshcc``/``oshrun`` package is required for the
-Linux course build.
+No vendored Open MPI source tree is used. Initialize submodules before macOS
+builds so that ``3rdparty/SOS`` and its nested test submodule are available.
 
 ``OpenMP``
 ~~~~~~~~~~

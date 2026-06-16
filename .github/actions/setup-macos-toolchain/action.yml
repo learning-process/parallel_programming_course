@@ -11,5 +11,8 @@ runs:
       shell: bash
       run: |
         brew update
-        brew install ninja mpich llvm libomp openssl
+        brew install \
+          ninja open-mpi llvm libomp openssl \
+          autoconf automake libtool libfabric \
+          coreutils gnu-sed grep gawk pkgconf
         brew link libomp --overwrite --force

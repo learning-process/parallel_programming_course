@@ -93,9 +93,10 @@ msgstr ""
 
 #: ../../../../docs/user_guide/build.rst:42
 msgid ""
-"OSH is part of the process-technology set on Linux. It is built by "
-"default from the shallow ``3rdparty/openmpi`` source backend together with"
-" MPI. A focused example build can be configured as:"
+"OSH is part of the process-technology set on Linux and macOS. Linux uses "
+"Open MPI OSH from the system package. macOS builds Sandia SOS from "
+"``3rdparty/SOS`` and uses the system Open MPI launcher. A focused example "
+"build can be configured as:"
 msgstr ""
 
 #: ../../../../docs/user_guide/build.rst:51
@@ -111,5 +112,5 @@ msgid "Prefer the helper runner described in ``User Guide → CI``."
 msgstr ""
 
 #: ../../../../docs/user_guide/build.rst:61
-msgid "OSH example on Linux:"
+msgid "OSH example on Linux or macOS:"
 msgstr ""

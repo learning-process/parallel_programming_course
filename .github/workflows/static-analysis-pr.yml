@@ -66,11 +66,11 @@ jobs:
           create-symlink: true
           max-size: 1G
 
-      - name: Install Open MPI source build dependencies
+      - name: Install Open MPI/OSH dependencies
         run: >
           apt-get update &&
           apt-get install -y --no-install-recommends
-          autoconf automake flex libtool libucx-dev make perl pkg-config zlib1g-dev
+          openmpi-bin libopenmpi-dev
 
       - name: CMake configure
         run: >
@@ -123,11 +123,11 @@ jobs:
           create-symlink: true
           max-size: 1G
 
-      - name: Install Open MPI source build dependencies
+      - name: Install Open MPI/OSH dependencies
         run: >
           apt-get update &&
           apt-get install -y --no-install-recommends
-          autoconf automake flex libtool libucx-dev make perl pkg-config zlib1g-dev
+          openmpi-bin libopenmpi-dev
 
       - name: CMake configure
         run: >

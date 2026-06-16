@@ -65,8 +65,8 @@ class PPCRunner:
             self.mpi_exec = "mpiexec"
             self.osh_exec = "mpiexec"
         else:
-            self.mpi_exec = "mpirun"
-            self.osh_exec = "oshrun"
+            self.mpi_exec = shutil.which("mpirun.openmpi") or "mpirun"
+            self.osh_exec = shutil.which("oshrun") or "oshrun"
         self.platform = platform.system()
 
         # Detect MPI implementation to choose compatible flags
@@ -172,14 +172,9 @@ class PPCRunner:
         mpi_candidates = []
         if self.work_dir is not None:
             mpi_candidates.append(self.work_dir / "mpirun")
-        mpi_candidates.extend(
-            [
-                self.__build_dir_path / "ppc_openmpi" / "install" / "bin" / "mpirun",
-                project_path / "install" / "bin" / "mpirun",
-            ]
-        )
+        mpi_candidates.append(project_path / "install" / "bin" / "mpirun")
         for launcher in mpi_candidates:
-            if launcher.exists():
+            if launcher.is_file() and os.access(launcher, os.X_OK):
                 self.mpi_exec = str(launcher)
                 self.mpi_env_mode, self.mpi_np_flag = self.__detect_mpi_impl()
                 break
@@ -187,20 +182,17 @@ class PPCRunner:
         osh_candidates = []
         if self.work_dir is not None:
             osh_candidates.append(self.work_dir / "oshrun")
-        osh_candidates.extend(
-            [
-                self.__build_dir_path / "ppc_openmpi" / "install" / "bin" / "oshrun",
-                project_path / "install" / "bin" / "oshrun",
-            ]
+        osh_candidates.append(
+            self.__build_dir_path / "ppc_sos" / "install" / "bin" / "oshrun"
         )
+        osh_candidates.append(project_path / "install" / "bin" / "oshrun")
         for launcher in osh_candidates:
-            if launcher.exists():
+            if launcher.is_file() and os.access(launcher, os.X_OK):
                 self.osh_exec = str(launcher)
                 return
-        self.osh_exec = self.mpi_exec
 
     def __supports_osh(self):
-        return self.platform == "Linux"
+        return self.platform != "Windows"
 
     def __build_mpi_cmd(
         self, ppc_num_proc, additional_mpi_args, extra_env=None, launcher=None

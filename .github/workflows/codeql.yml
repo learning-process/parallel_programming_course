@@ -30,8 +30,7 @@ jobs:
       - name: Setup environment
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-15 g++-15 ninja-build mpich libomp-dev valgrind \
-            autoconf automake flex libtool libucx-dev make perl pkg-config zlib1g-dev
+          sudo apt-get install -y gcc-15 g++-15 ninja-build openmpi-bin libopenmpi-dev libomp-dev valgrind
           python3 -m pip install -r requirements.txt
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2

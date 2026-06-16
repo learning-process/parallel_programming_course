@@ -195,13 +195,11 @@ msgstr "``MPI``"
 
 #: ../../../../docs/user_guide/environment.rst:94
 msgid ""
-"On Linux, MPI is built from the shallow ``3rdparty/openmpi`` source "
-"backend together with OSH. A separate system MPI installation is not "
-"required for the Linux course build."
+"On Linux and macOS, MPI is provided by the system Open MPI package. Windows "
+"uses MS-MPI."
 msgstr ""
-"На Linux MPI собирается из shallow-источникового backend "
-"``3rdparty/openmpi`` вместе с OSH. Отдельная системная установка MPI для "
-"сборки курса на Linux не требуется."
+"На Linux и macOS MPI предоставляется системным пакетом Open MPI. Windows "
+"использует MS-MPI."
 
 #: ../../../../docs/user_guide/environment.rst:94
 #: ../../../../docs/user_guide/environment.rst:135
@@ -243,22 +241,23 @@ msgstr ""
 
 #: ../../../../docs/user_guide/environment.rst:119
 msgid ""
-"The project builds MPI and OSH from the shallow ``3rdparty/openmpi`` "
-"source backend on Linux. The build installs ``mpirun``, ``libmpi``, "
-"``liboshmem``, and ``shmem.h`` into the build tree. Open MPI OSH uses the"
-" UCX SPML, so Linux needs the UCX development package. macOS and Windows "
-"use their system MPI installations; OSH implementations are not built "
-"there."
+"Linux uses the Open MPI OSH implementation from the system package. macOS "
+"builds Sandia SOS from ``3rdparty/SOS`` and uses Open MPI as its "
+"launcher/runtime. Windows keeps the existing MPI setup and skips OSH in the "
+"MSVC/clang-cl configurations."
 msgstr ""
-"На Linux проект собирает MPI и OSH из shallow-источникового backend "
-"``3rdparty/openmpi``. Сборка устанавливает ``mpirun``, ``libmpi``, "
-"``liboshmem`` и ``shmem.h`` в дерево сборки. Open MPI OSH использует UCX "
-"SPML, поэтому Linux нужен development package UCX. macOS и Windows "
-"используют системные установки MPI; OSH-реализации там не собираются."
+"Linux использует Open MPI OSH из системного пакета. macOS собирает Sandia "
+"SOS из ``3rdparty/SOS`` и использует Open MPI как launcher/runtime. "
+"Windows сохраняет существующую настройку MPI и пропускает OSH в "
+"MSVC/clang-cl конфигурациях."
 
 #: ../../../../docs/user_guide/environment.rst:132
-msgid "OSH is skipped on macOS."
-msgstr "OSH на macOS пропускается."
+msgid ""
+"``brew install open-mpi autoconf automake libtool libfabric coreutils gnu-"
+"sed grep gawk pkgconf``"
+msgstr ""
+"``brew install open-mpi autoconf automake libtool libfabric coreutils gnu-"
+"sed grep gawk pkgconf``"
 
 #: ../../../../docs/user_guide/environment.rst:137
 msgid "Install MS-MPI as described in the MPI section. OSH is skipped on Windows."
@@ -266,11 +265,12 @@ msgstr "Установите MS-MPI, как описано в разделе MPI
 
 #: ../../../../docs/user_guide/environment.rst:140
 msgid ""
-"No separate system ``shmem.h``/``oshcc``/``oshrun`` package is required "
-"for the Linux course build."
+"No vendored Open MPI source tree is used. Initialize submodules before macOS "
+"builds so that ``3rdparty/SOS`` and its nested test submodule are available."
 msgstr ""
-"Для сборки курса на Linux не требуется отдельный системный пакет "
-"``shmem.h``/``oshcc``/``oshrun``."
+"Vendored исходники Open MPI не используются. Перед сборкой на macOS "
+"инициализируйте submodules, чтобы были доступны ``3rdparty/SOS`` и его "
+"nested test submodule."
 
 #: ../../../../docs/user_guide/environment.rst:144
 msgid "``OpenMP``"
