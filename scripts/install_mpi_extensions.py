@@ -12,7 +12,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 try:
@@ -146,23 +146,77 @@ def sha256sum(path: Path) -> str:
     return digest.hexdigest()
 
 
+def path_is_inside(path: Path, directory: Path) -> bool:
+    return path == directory or directory in path.parents
+
+
+def archive_member_path(member: tarfile.TarInfo) -> PurePosixPath:
+    member_path = PurePosixPath(member.name)
+    if member_path.is_absolute() or not member_path.parts:
+        raise SystemExit(f"Archive contains unsafe path: {member.name}")
+    if any(part in {"", ".", ".."} for part in member_path.parts):
+        raise SystemExit(f"Archive contains unsafe path: {member.name}")
+    return member_path
+
+
+def validate_archive_link(
+    member: tarfile.TarInfo,
+    member_path: PurePosixPath,
+    destination: Path,
+    resolved_destination: Path,
+) -> None:
+    if not (member.issym() or member.islnk()):
+        return
+    if not member.linkname:
+        raise SystemExit(f"Archive contains empty link target: {member.name}")
+
+    link_path = PurePosixPath(member.linkname)
+    if link_path.is_absolute():
+        raise SystemExit(
+            f"Archive link target is absolute: {member.name} -> {member.linkname}"
+        )
+
+    member_target = (destination / Path(*member_path.parts)).resolve(strict=False)
+    if member.issym():
+        link_target = (member_target.parent / member.linkname).resolve(strict=False)
+    else:
+        link_target = (destination / member.linkname).resolve(strict=False)
+
+    if not path_is_inside(link_target, resolved_destination):
+        raise SystemExit(
+            f"Archive link target escapes destination: "
+            f"{member.name} -> {member.linkname}"
+        )
+
+
 def safe_extract(archive: Path, destination: Path) -> Path:
     destination.mkdir(parents=True, exist_ok=True)
     resolved_destination = destination.resolve()
     with tarfile.open(archive, "r:gz") as tar:
         members = tar.getmembers()
         roots = set()
+        member_paths = []
         for member in members:
-            parts = Path(member.name).parts
-            if not parts:
-                continue
-            roots.add(parts[0])
-            target = (destination / member.name).resolve()
-            if (
-                target != resolved_destination
-                and resolved_destination not in target.parents
-            ):
+            member_path = archive_member_path(member)
+            roots.add(member_path.parts[0])
+            member_paths.append((member, member_path))
+            target = (destination / Path(*member_path.parts)).resolve(strict=False)
+            if not path_is_inside(target, resolved_destination):
                 raise SystemExit(f"Archive contains unsafe path: {member.name}")
+            validate_archive_link(
+                member, member_path, destination, resolved_destination
+            )
+
+        symlink_paths = {
+            member_path for member, member_path in member_paths if member.issym()
+        }
+        for member, member_path in member_paths:
+            for symlink_path in symlink_paths:
+                if symlink_path in member_path.parents:
+                    raise SystemExit(
+                        f"Archive member is nested under a symlink: {member.name}"
+                    )
+
         if len(roots) != 1:
             raise SystemExit(
                 f"Expected archive to contain one top-level directory, found: {roots}"

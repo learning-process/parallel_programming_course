@@ -97,7 +97,7 @@ Parallel Programming Technologies
   `Installers link <https://www.microsoft.com/en-us/download/details.aspx?id=105289>`_. You have to install ``msmpisdk.msi`` and ``msmpisetup.exe``.
 
 - **Linux (gcc and clang)**:
-  
+
   .. code-block:: bash
 
      python3 -m pip install 'requests>=2.31,<3'
@@ -105,7 +105,7 @@ Parallel Programming Technologies
      cmake -S . -B build -D PPC_MPI_EXTENSIONS_HOME="$PWD/_deps/mpi-extensions-openmpi"
 
 - **MacOS (apple clang)**:
-  
+
   .. code-block:: bash
 
      python3 -m pip install 'requests>=2.31,<3'
@@ -117,13 +117,13 @@ Parallel Programming Technologies
 ``OpenMP`` is included in ``gcc`` and ``msvc``, but some components should be installed additionally:
 
 - **Linux (gcc and clang)**:
-  
+
   .. code-block:: bash
 
      sudo apt install -y libomp-dev
 
 - **MacOS (llvm)**:
-  
+
   .. code-block:: bash
 
      brew install llvm
