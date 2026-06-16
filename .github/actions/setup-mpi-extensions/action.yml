@@ -18,7 +18,7 @@ runs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
       run: >-
-        python3 "${GITHUB_WORKSPACE:-$PWD}/.github/actions/setup-mpi-extensions/setup_mpi_extensions.py"
+        python3 "${GITHUB_WORKSPACE:-$PWD}/scripts/setup_mpi_extensions.py"
         --repo-root "${GITHUB_WORKSPACE:-$PWD}"
         --prefix "${{ inputs.prefix }}"
         --platform "${{ inputs.platform }}"
