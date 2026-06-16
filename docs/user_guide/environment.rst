@@ -18,7 +18,8 @@ The easiest way to set up your development environment is using the provided ``.
 3. VS Code will automatically build the container with all dependencies pre-installed
 4. The container includes:
 
-   - Ubuntu environment with gcc-15, CMake, MPI, OpenMP
+   - Ubuntu environment with gcc-15, CMake, OpenMP
+   - Open MPI from the ``learning-process/mpi-extensions`` nightly prerelease
    - Pre-configured C++ and Python development tools
    - All project dependencies ready to use
 
@@ -99,13 +100,27 @@ Parallel Programming Technologies
   
   .. code-block:: bash
 
-     sudo apt install -y mpich openmpi-bin libopenmpi-dev
+     python3 -m pip install 'requests>=2.31,<3'
+     python3 scripts/install_mpi_extensions.py --prefix "$PWD/_deps/mpi-extensions-openmpi" --force
+     export MPI_EXTENSIONS_HOME="$PWD/_deps/mpi-extensions-openmpi"
+     export MPI_HOME="$MPI_EXTENSIONS_HOME"
+     export OPAL_PREFIX="$MPI_EXTENSIONS_HOME"
+     export OMPI_MCA_shmem=mmap
+     export PATH="$MPI_EXTENSIONS_HOME/bin:$PATH"
+     export LD_LIBRARY_PATH="$MPI_EXTENSIONS_HOME/lib:$LD_LIBRARY_PATH"
 
 - **MacOS (apple clang)**:
   
   .. code-block:: bash
 
-     brew install open-mpi
+     python3 -m pip install 'requests>=2.31,<3'
+     python3 scripts/install_mpi_extensions.py --prefix "$PWD/_deps/mpi-extensions-openmpi" --force
+     export MPI_EXTENSIONS_HOME="$PWD/_deps/mpi-extensions-openmpi"
+     export MPI_HOME="$MPI_EXTENSIONS_HOME"
+     export OPAL_PREFIX="$MPI_EXTENSIONS_HOME"
+     export OMPI_MCA_shmem=mmap
+     export PATH="$MPI_EXTENSIONS_HOME/bin:$PATH"
+     export DYLD_LIBRARY_PATH="$MPI_EXTENSIONS_HOME/lib:$DYLD_LIBRARY_PATH"
 
 ``OpenMP``
 ~~~~~~~~~~

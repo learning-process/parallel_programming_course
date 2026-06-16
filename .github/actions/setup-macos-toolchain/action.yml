@@ -1,5 +1,5 @@
 name: 'Setup macOS Toolchain'
-description: 'Configure Xcode, Homebrew packages, MPI, LLVM, OpenMP, OpenSSL, and ninja'
+description: 'Configure Xcode, Homebrew packages, LLVM, OpenMP, OpenSSL, and ninja'
 runs:
   using: 'composite'
   steps:
@@ -11,5 +11,5 @@ runs:
       shell: bash
       run: |
         brew update
-        brew install ninja mpich llvm libomp openssl
+        brew install ninja llvm libomp openssl
         brew link libomp --overwrite --force

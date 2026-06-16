@@ -35,6 +35,11 @@ jobs:
           key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -81,6 +86,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -110,6 +120,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -139,6 +154,11 @@ jobs:
           key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -177,6 +197,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -206,6 +231,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -237,6 +267,11 @@ jobs:
           key: ${{ runner.os }}-clang
           create-symlink: true
           max-size: 1G
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -277,6 +312,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -312,6 +352,11 @@ jobs:
         os: ["ubuntu-26.04"]
     steps:
       - uses: actions/checkout@v6
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: Download installed package
         uses: ./.github/actions/download-install
         with:
@@ -347,6 +392,11 @@ jobs:
           key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -375,7 +425,7 @@ jobs:
         run: |
           mkdir cov-report
           cd build
-          gcovr --gcov-executable `which gcov-15` \
+          gcovr --gcov-executable "$(which gcov-15)" \
                 -r ../ \
                 --exclude '.*3rdparty/.*' \
                 --exclude '/usr/.*' \

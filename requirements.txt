@@ -2,3 +2,4 @@ numpy==2.4.6
 XlsxWriter==3.2.9
 PyYAML==6.0.3
 pre-commit==4.5.1
+requests>=2.31,<3

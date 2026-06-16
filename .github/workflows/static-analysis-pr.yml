@@ -66,6 +66,12 @@ jobs:
           create-symlink: true
           max-size: 1G
 
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
+
       - name: CMake configure
         run: >
           cmake -S . -B build -G Ninja
@@ -116,6 +122,12 @@ jobs:
           key: ${{ runner.os }}-gcc
           create-symlink: true
           max-size: 1G
+
+      - name: Setup MPI extensions Open MPI
+        uses: ./.github/actions/setup-mpi-extensions
+        with:
+          platform: linux-x86_64
+          purge-system-mpi: 'true'
 
       - name: CMake configure
         run: >
