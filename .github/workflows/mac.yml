@@ -75,7 +75,7 @@ jobs:
           path: install
           name: macos-clang-install
       - name: Run func tests (MPI)
-        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4
+        run: scripts/run_tests.py --running-type="processes" --counts 1 2 3 4 --additional-mpi-args="--oversubscribe"
         env:
           PPC_NUM_THREADS: 1
           PPC_TASK_MAX_TIME: 30
