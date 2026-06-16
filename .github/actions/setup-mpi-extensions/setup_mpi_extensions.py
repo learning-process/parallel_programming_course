@@ -27,7 +27,7 @@ def parse_args() -> argparse.Namespace:
         description="Set up mpi-extensions Open MPI for GitHub Actions."
     )
     parser.add_argument("--repo-root", required=True, type=Path)
-    parser.add_argument("--prefix", required=True, type=Path)
+    parser.add_argument("--prefix", required=True)
     parser.add_argument("--platform", required=True)
     parser.add_argument("--purge-system-mpi", choices=["true", "false"], required=True)
     parser.add_argument("--github-env", required=True, type=Path)
@@ -166,7 +166,11 @@ def validate_openmpi(prefix: Path) -> None:
 
 def main() -> int:
     args = parse_args()
-    prefix = args.prefix.resolve()
+    if args.prefix:
+        prefix = Path(args.prefix).resolve()
+    else:
+        prefix = (args.runner_temp / "mpi-extensions-openmpi").resolve()
+    args.prefix = prefix
     purge_system_mpi(args.purge_system_mpi == "true")
     python_bin = prepare_python(args.runner_temp)
     install_openmpi(args, python_bin)

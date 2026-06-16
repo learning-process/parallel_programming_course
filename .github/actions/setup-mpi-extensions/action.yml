@@ -2,8 +2,8 @@ name: Setup MPI Extensions Open MPI
 description: Install Open MPI from the mpi-extensions nightly prerelease
 inputs:
   prefix:
-    description: Installation prefix
-    default: ${{ runner.temp }}/mpi-extensions-openmpi
+    description: Installation prefix. Defaults to $RUNNER_TEMP/mpi-extensions-openmpi.
+    default: ''
   platform:
     description: mpi-extensions platform name
     default: auto
@@ -18,10 +18,10 @@ runs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
       run: >-
-        python3 "${{ github.action_path }}/setup_mpi_extensions.py"
-        --repo-root "${{ github.workspace }}"
+        python3 "${GITHUB_WORKSPACE:-$PWD}/.github/actions/setup-mpi-extensions/setup_mpi_extensions.py"
+        --repo-root "${GITHUB_WORKSPACE:-$PWD}"
         --prefix "${{ inputs.prefix }}"
         --platform "${{ inputs.platform }}"
         --purge-system-mpi "${{ inputs.purge-system-mpi }}"
         --github-env "$GITHUB_ENV"
-        --runner-temp "${{ runner.temp }}"
+        --runner-temp "${RUNNER_TEMP:-${TMPDIR:-/tmp}}"
