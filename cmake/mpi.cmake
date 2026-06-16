@@ -4,19 +4,9 @@ set(PPC_MPI_EXTENSIONS_HOME
     ""
     CACHE PATH "Path to an unpacked mpi-extensions Open MPI package")
 
-function(_ppc_json_escape output value)
-  set(escaped "${value}")
-  string(REPLACE "\\" "\\\\" escaped "${escaped}")
-  string(REPLACE "\"" "\\\"" escaped "${escaped}")
-  string(REPLACE "\n" "\\n" escaped "${escaped}")
-  string(REPLACE "\r" "\\r" escaped "${escaped}")
-  string(REPLACE "\t" "\\t" escaped "${escaped}")
-  set(${output}
-      "${escaped}"
-      PARENT_SCOPE)
-endfunction()
-
 if(NOT WIN32)
+  find_package(Python REQUIRED COMPONENTS Interpreter)
+
   if(NOT PPC_MPI_EXTENSIONS_HOME)
     message(
       FATAL_ERROR
@@ -67,24 +57,23 @@ if(NOT WIN32)
   list(PREPEND CMAKE_INSTALL_RPATH "${_PPC_MPI_EXTENSIONS_LIB}")
 
   set(_PPC_MPI_RUNTIME_CONFIG "${CMAKE_BINARY_DIR}/ppc_mpi_runtime_env.json")
-  _ppc_json_escape(_PPC_MPI_EXTENSIONS_HOME_JSON "${PPC_MPI_EXTENSIONS_HOME}")
-  _ppc_json_escape(_MPIEXEC_EXECUTABLE_JSON "${MPIEXEC_EXECUTABLE}")
-  _ppc_json_escape(_PPC_MPI_EXTENSIONS_BIN_JSON "${_PPC_MPI_EXTENSIONS_BIN}")
-  _ppc_json_escape(_PPC_MPI_EXTENSIONS_LIB_JSON "${_PPC_MPI_EXTENSIONS_LIB}")
-  file(
-    WRITE "${_PPC_MPI_RUNTIME_CONFIG}"
-    "{\n"
-    "  \"mpi_extensions_home\": \"${_PPC_MPI_EXTENSIONS_HOME_JSON}\",\n"
-    "  \"mpi_exec\": \"${_MPIEXEC_EXECUTABLE_JSON}\",\n"
-    "  \"path_prepend\": \"${_PPC_MPI_EXTENSIONS_BIN_JSON}\",\n"
-    "  \"library_path_prepend\": \"${_PPC_MPI_EXTENSIONS_LIB_JSON}\",\n"
-    "  \"env\": {\n"
-    "    \"MPI_EXTENSIONS_HOME\": \"${_PPC_MPI_EXTENSIONS_HOME_JSON}\",\n"
-    "    \"MPI_HOME\": \"${_PPC_MPI_EXTENSIONS_HOME_JSON}\",\n"
-    "    \"OPAL_PREFIX\": \"${_PPC_MPI_EXTENSIONS_HOME_JSON}\",\n"
-    "    \"OMPI_MCA_shmem\": \"mmap\"\n"
-    "  }\n"
-    "}\n")
+  execute_process(
+    COMMAND
+      "${Python_EXECUTABLE}"
+      "${CMAKE_SOURCE_DIR}/scripts/write_mpi_runtime_env.py" --output
+      "${_PPC_MPI_RUNTIME_CONFIG}" --mpi-extensions-home
+      "${PPC_MPI_EXTENSIONS_HOME}" --mpi-exec "${MPIEXEC_EXECUTABLE}"
+      --path-prepend "${_PPC_MPI_EXTENSIONS_BIN}" --library-path-prepend
+      "${_PPC_MPI_EXTENSIONS_LIB}"
+    RESULT_VARIABLE _PPC_MPI_RUNTIME_CONFIG_RESULT
+    OUTPUT_VARIABLE _PPC_MPI_RUNTIME_CONFIG_OUTPUT
+    ERROR_VARIABLE _PPC_MPI_RUNTIME_CONFIG_ERROR)
+  if(NOT _PPC_MPI_RUNTIME_CONFIG_RESULT EQUAL 0)
+    message(
+      FATAL_ERROR
+        "Failed to write MPI runtime config:\n"
+        "${_PPC_MPI_RUNTIME_CONFIG_OUTPUT}${_PPC_MPI_RUNTIME_CONFIG_ERROR}")
+  endif()
   install(FILES "${_PPC_MPI_RUNTIME_CONFIG}" DESTINATION ".")
 endif()
 
