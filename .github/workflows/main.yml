@@ -22,7 +22,7 @@ jobs:
       ppc_tasks: ${{ steps.detect.outputs.ppc_tasks }}
       task_scoped: ${{ steps.detect.outputs.task_scoped }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         if: ${{ github.event_name == 'pull_request' }}
         with:
           fetch-depth: 0

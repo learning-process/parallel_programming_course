@@ -12,7 +12,7 @@ jobs:
     if: github.repository == 'learning-process/parallel_programming_course'
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
@@ -43,7 +43,7 @@ jobs:
             github.event.pull_request.body,
             'Please go to the `Preview` tab and select the appropriate template:')
         run: exit 1
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
           fetch-depth: 0
