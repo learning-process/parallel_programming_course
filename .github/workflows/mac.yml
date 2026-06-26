@@ -19,7 +19,7 @@ jobs:
       matrix:
         build_type: [Release, Debug]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
       - name: Setup macOS toolchain
@@ -55,7 +55,7 @@ jobs:
       - clang-build
     runs-on: macOS-26
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup macOS toolchain
         uses: ./.github/actions/setup-macos-toolchain
       - name: Download installed package
@@ -77,7 +77,7 @@ jobs:
       - clang-test
     runs-on: macOS-26
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup macOS toolchain
         uses: ./.github/actions/setup-macos-toolchain
       - name: Download installed package
