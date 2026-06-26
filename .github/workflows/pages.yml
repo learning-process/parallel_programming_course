@@ -37,10 +37,10 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.14'
-      - name: Install Doxygen and Graphviz
+      - name: Install Graphviz
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y doxygen graphviz
+          sudo apt-get install --no-install-recommends -y graphviz
       - name: Install dependencies
         run: |
           python3 -m pip install -r docs/requirements.txt
