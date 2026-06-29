@@ -5,9 +5,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write
   contents: read
-  pages: write
 
 jobs:
   build-doxygen-xml:
@@ -101,6 +99,10 @@ jobs:
       - build-sphinx
       - build-scoreboard
     runs-on: ubuntu-26.04
+    permissions:
+      id-token: write
+      contents: read
+      pages: write
     environment:
       name: github-pages
     concurrency:
