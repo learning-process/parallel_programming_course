@@ -52,14 +52,15 @@ def _write_github_output(github_output: Path, scope: str, task_scoped: bool) -> 
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Detect the PPC_TASKS value for CI from changed PR paths.",
+        description="Detect the PPC_TASKS value for CI.",
     )
     parser.add_argument(
-        "--base-sha", required=True, help="Base commit for the PR diff."
+        "--event-name",
+        default="pull_request",
+        help="GitHub event name. Non-PR events always run the full suite.",
     )
-    parser.add_argument(
-        "--head-sha", required=True, help="Head commit for the PR diff."
-    )
+    parser.add_argument("--base-sha", help="Base commit for the PR diff.")
+    parser.add_argument("--head-sha", help="Head commit for the PR diff.")
     parser.add_argument(
         "--tasks-root", default="tasks", type=Path, help="Path to the tasks directory."
     )
@@ -73,9 +74,15 @@ def _parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = _parse_args()
-    scope, task_scoped = detect_scope(
-        _changed_files(args.base_sha, args.head_sha), args.tasks_root
-    )
+    if args.event_name != "pull_request":
+        scope, task_scoped = FULL_SUITE, False
+    else:
+        if args.base_sha is None or args.head_sha is None:
+            msg = "--base-sha and --head-sha are required for pull_request events"
+            raise SystemExit(msg)
+        scope, task_scoped = detect_scope(
+            _changed_files(args.base_sha, args.head_sha), args.tasks_root
+        )
 
     print(f"PPC_TASKS={scope}")
     if args.github_output is not None:
