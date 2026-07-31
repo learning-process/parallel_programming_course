@@ -14,7 +14,7 @@ jobs:
     if: ${{ github.repository == 'learning-process/parallel_programming_course' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v10
+      - uses: actions/stale@v11
         with:
           stale-pr-message: 'This pull request is stale for 2 weeks and is going to be closed in a week'
           days-before-pr-stale: 14
