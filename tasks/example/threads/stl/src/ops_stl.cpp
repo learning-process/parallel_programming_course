@@ -10,19 +10,15 @@
 
 namespace example_threads {
 
-NesterovATestTaskSTL::NesterovATestTaskSTL(const InType &in) {
-  SetTypeOfTask(GetStaticTypeOfTask());
-  GetInput() = in;
-  GetOutput() = 0;
-}
+NesterovATestTaskSTL::NesterovATestTaskSTL(const InType &in) : BaseTask(in) {}
 
 bool NesterovATestTaskSTL::ValidationImpl() {
-  return (GetInput() > 0) && (GetOutput() == 0);
+  return (GetInput() > 0) && (GetMutableOutput() == 0);
 }
 
 bool NesterovATestTaskSTL::PreProcessingImpl() {
-  GetOutput() = 2 * GetInput();
-  return GetOutput() > 0;
+  GetMutableOutput() = 2 * GetInput();
+  return GetMutableOutput() > 0;
 }
 
 bool NesterovATestTaskSTL::RunImpl() {
@@ -30,15 +26,15 @@ bool NesterovATestTaskSTL::RunImpl() {
     for (InType j = 0; j < GetInput(); j++) {
       for (InType k = 0; k < GetInput(); k++) {
         std::vector<InType> tmp(i + j + k, 1);
-        GetOutput() += std::accumulate(tmp.begin(), tmp.end(), 0);
-        GetOutput() -= i + j + k;
+        GetMutableOutput() += std::accumulate(tmp.begin(), tmp.end(), 0);
+        GetMutableOutput() -= i + j + k;
       }
     }
   }
 
   const int num_threads = ppc::util::GetNumThreads();
   std::vector<std::thread> threads(num_threads);
-  GetOutput() *= num_threads;
+  GetMutableOutput() *= num_threads;
 
   std::atomic<int> counter(0);
   for (std::thread &thread : threads) {
@@ -46,13 +42,13 @@ bool NesterovATestTaskSTL::RunImpl() {
     thread.join();
   }
 
-  GetOutput() /= counter;
-  return GetOutput() > 0;
+  GetMutableOutput() /= counter;
+  return GetMutableOutput() > 0;
 }
 
 bool NesterovATestTaskSTL::PostProcessingImpl() {
-  GetOutput() -= GetInput();
-  return GetOutput() > 0;
+  GetMutableOutput() -= GetInput();
+  return GetMutableOutput() > 0;
 }
 
 }  // namespace example_threads

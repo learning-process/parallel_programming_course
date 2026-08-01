@@ -1,13 +1,25 @@
 #pragma once
 
-#include <cstddef>
+#include <concepts>
+#include <filesystem>
 #include <string>
 #include <string_view>
 
 #include "task/include/task.hpp"
-#include "util/include/util.hpp"
 
 namespace ppc::util {
+
+template <typename Task>
+std::string ResolveTaskIdentifier(const std::string &settings_path) {
+  if constexpr (requires {
+                  { Task::GetTaskIdentifier() } -> std::convertible_to<std::string_view>;
+                }) {
+    return std::string(Task::GetTaskIdentifier());
+  } else {
+    const std::filesystem::path path(settings_path);
+    return path.has_parent_path() ? path.parent_path().filename().string() : path.stem().string();
+  }
+}
 
 inline ppc::task::TaskDescriptor MakeTaskDescriptor(std::string_view task_namespace, ppc::task::TypeOfTask task_type,
                                                     const std::string &settings_path,
@@ -21,11 +33,6 @@ inline ppc::task::TaskDescriptor MakeTaskDescriptor(std::string_view task_namesp
           .status = status,
           .category = ppc::task::TaskCategoryFromSettingsPath(settings_task_path),
           .display_name = std::string(task_namespace) + "_" + task_name};
-}
-
-template <typename TestParam>
-const ppc::task::TaskDescriptor &GetTaskDescriptor(const TestParam &test_param) {
-  return std::get<static_cast<std::size_t>(GTestParamIndex::kTaskDescriptor)>(test_param);
 }
 
 inline bool IsMpiTaskType(ppc::task::TypeOfTask type) {

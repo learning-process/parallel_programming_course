@@ -114,7 +114,7 @@ template <typename InType, typename OutType>
 double RunTaskForBenchmark(const ppc::task::TaskPtr<InType, OutType> &task) {
   const auto task_type = task->GetDynamicTypeOfTask();
   const auto timer = MakeTechnologyTimer(task_type);
-  task->GetStateOfTesting() = ppc::task::StateOfTesting::kPerf;
+  task->SetStateOfTesting(ppc::task::StateOfTesting::kPerf);
 
   task->Validation();
   task->PreProcessing();
@@ -137,7 +137,8 @@ void RunBenchmarkBody(const TaskGetter &task_getter, const InType &input_data, c
       auto task = task_getter(input_data);
       const double elapsed = RunTaskForBenchmark(task);
       state.SetIterationTime(elapsed);
-      benchmark::DoNotOptimize(task->GetOutput());
+      auto output = task->GetOutput();
+      benchmark::DoNotOptimize(output);
     }
   } catch (const std::exception &e) {
     PerformanceFailureFlag::Set();
@@ -169,8 +170,13 @@ class BenchmarkTaskBody final {
 }  // namespace detail
 
 template <typename InType, typename OutType>
-using PerfTestParam = std::tuple<std::function<ppc::task::TaskPtr<InType, OutType>(InType)>, std::string,
-                                 ppc::task::TaskCategory, ppc::task::TaskDescriptor>;
+struct PerfTestCase {
+  std::function<ppc::task::TaskPtr<InType, OutType>(InType)> task_getter;
+  ppc::task::TaskDescriptor descriptor;
+};
+
+template <typename InType, typename OutType>
+using PerfTestParam = PerfTestCase<InType, OutType>;
 
 template <typename InType, typename OutType>
 /// @brief Base class for performance testing of parallel tasks.
@@ -180,11 +186,11 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
  public:
   /// @brief Generates a readable name for the performance test case.
   static std::string CustomPerfTestName(const ::testing::TestParamInfo<PerfTestParam<InType, OutType>> &info) {
-    return GetTaskDescriptor(info.param).display_name;
+    return info.param.descriptor.display_name;
   }
 
  protected:
-  virtual bool CheckTestOutputData(OutType &output_data) = 0;
+  virtual bool CheckTestOutputData(const OutType &output_data) = 0;
   /// @brief Supplies input data for performance testing.
   virtual InType GetTestInputData() = 0;
 
@@ -193,8 +199,8 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
   }
 
   void ExecuteTest(const PerfTestParam<InType, OutType> &perf_test_param) {
-    auto task_getter = std::get<static_cast<std::size_t>(GTestParamIndex::kTaskGetter)>(perf_test_param);
-    const auto &descriptor = GetTaskDescriptor(perf_test_param);
+    auto task_getter = perf_test_param.task_getter;
+    const auto &descriptor = perf_test_param.descriptor;
 
     ASSERT_NE(descriptor.type, ppc::task::TypeOfTask::kUnknown);
     if (descriptor.status == ppc::task::StatusOfTask::kDisabled) {
@@ -209,12 +215,11 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 
     const auto input_data = GetTestInputData();
     task_ = task_getter(input_data);
-    task_->GetStateOfTesting() = ppc::task::StateOfTesting::kPerf;
+    task_->SetStateOfTesting(ppc::task::StateOfTesting::kPerf);
     SynchronizeMpiRanks();
     detail::RunTaskForValidation(task_);
 
-    OutType output_data = task_->GetOutput();
-    ASSERT_TRUE(CheckTestOutputData(output_data));
+    ASSERT_TRUE(CheckTestOutputData(task_->GetOutput()));
 
     PerfAttr perf_attr;
     SetPerfAttributes(perf_attr);
@@ -236,11 +241,11 @@ class BaseRunPerfTests : public ::testing::TestWithParam<PerfTestParam<InType, O
 
 template <typename TaskType, typename InputType>
 auto MakePerfTaskTuples(const std::string &settings_path, std::string_view settings_task_path = {}) {
-  const auto descriptor =
-      MakeTaskDescriptor(GetNamespace<TaskType>(), TaskType::GetStaticTypeOfTask(), settings_path, settings_task_path);
+  const auto descriptor = MakeTaskDescriptor(ResolveTaskIdentifier<TaskType>(settings_path),
+                                             TaskType::GetStaticTypeOfTask(), settings_path, settings_task_path);
 
-  return std::make_tuple(std::make_tuple(ppc::task::TaskGetter<TaskType, InputType>, descriptor.display_name,
-                                         descriptor.category, descriptor));
+  return std::make_tuple(
+      PerfTestCase<InputType, typename TaskType::OutputType>{ppc::task::TaskGetter<TaskType, InputType>, descriptor});
 }
 
 template <typename Tuple, std::size_t... I>

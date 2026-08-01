@@ -3,7 +3,6 @@
 #include <gtest/gtest-spi.h>
 #include <gtest/gtest.h>
 
-#include <cstddef>
 #include <libenvpp/detail/environment.hpp>
 #include <libenvpp/detail/get.hpp>
 #include <string>
@@ -15,73 +14,10 @@
 #include "task/include/task.hpp"
 #include "util/include/func_test_util.hpp"
 
-namespace my::nested {
-struct Type {};
-}  // namespace my::nested
-
-TEST(UtilTests, ExtractsCorrectNamespace) {
-  std::string k_ns = ppc::util::GetNamespace<my::nested::Type>();
-  EXPECT_EQ(k_ns, "my::nested");
-}
-
 TEST(UtilTests, ThreadsControlCheckOpenmpDisabledValgrind) {
   const auto num_threads_env_var = env::get<int>("PPC_NUM_THREADS");
 
   EXPECT_EQ(ppc::util::GetNumThreads(), omp_get_max_threads());
-}
-
-namespace test_ns {
-struct TypeInNamespace {};
-}  // namespace test_ns
-
-struct PlainType {};
-
-TEST(GetNamespaceTest, ReturnsExpectedNamespace) {
-  std::string k_ns = ppc::util::GetNamespace<test_ns::TypeInNamespace>();
-  EXPECT_EQ(k_ns, "test_ns");
-}
-
-TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespacePrimitiveType) {
-  std::string k_ns = ppc::util::GetNamespace<int>();
-  EXPECT_EQ(k_ns, "");
-}
-
-TEST(GetNamespaceTest, ReturnsEmptyIfNoNamespacePlainStruct) {
-  std::string k_ns = ppc::util::GetNamespace<PlainType>();
-  EXPECT_EQ(k_ns, "");
-}
-
-namespace test_ns {
-struct Nested {};
-}  // namespace test_ns
-
-TEST(GetNamespaceTest, ReturnsNamespaceCorrectly) {
-  std::string k_ns = ppc::util::GetNamespace<test_ns::Nested>();
-  EXPECT_EQ(k_ns, "test_ns");
-}
-
-struct NoNamespaceType {};
-
-TEST(GetNamespaceTest, NoNamespaceInType) {
-  std::string k_ns = ppc::util::GetNamespace<NoNamespaceType>();
-  EXPECT_EQ(k_ns, "");
-}
-
-template <typename T>
-struct NotATemplate {};
-
-TEST(GetNamespaceTest, NoKeyInPrettyFunction) {
-  std::string k_ns = ppc::util::GetNamespace<NotATemplate<void>>();
-  EXPECT_EQ(k_ns, "");
-}
-
-namespace crazy {
-struct VeryLongTypeNameWithOnlyLettersAndUnderscores {};
-}  // namespace crazy
-
-TEST(GetNamespaceTest, NoTerminatorCharactersInPrettyFunction) {
-  std::string k_ns = ppc::util::GetNamespace<crazy::VeryLongTypeNameWithOnlyLettersAndUnderscores>();
-  EXPECT_EQ(k_ns, "crazy");
 }
 
 TEST(GetTaskMaxTime, ReturnsDefaultWhenUnset) {
@@ -136,13 +72,37 @@ namespace {
 
 using FuncTestUtilParam = ppc::util::FuncTestParam<int, int, int>;
 
+class DocumentedTask : public ppc::task::Task<int, int> {
+ public:
+  explicit DocumentedTask(int input) : ppc::task::Task<int, int>(input, ppc::task::TypeOfTask::kSEQ) {}
+
+  static constexpr ppc::task::TypeOfTask GetStaticTypeOfTask() {
+    return ppc::task::TypeOfTask::kSEQ;
+  }
+
+ protected:
+  bool ValidationImpl() override {
+    return true;
+  }
+  bool PreProcessingImpl() override {
+    return true;
+  }
+  bool RunImpl() override {
+    return true;
+  }
+  bool PostProcessingImpl() override {
+    return true;
+  }
+};
+
 FuncTestUtilParam MakeFuncTestUtilParam(const std::string &test_name, ppc::task::TypeOfTask task_type,
                                         ppc::task::StatusOfTask task_status, int value) {
-  return FuncTestUtilParam{[](int) -> ppc::task::TaskPtr<int, int> { return {}; }, test_name, value,
-                           ppc::task::TaskDescriptor{.type = task_type,
-                                                     .status = task_status,
-                                                     .category = ppc::task::TaskCategory::kThreads,
-                                                     .display_name = test_name}};
+  return FuncTestUtilParam{.task_getter = [](int) -> ppc::task::TaskPtr<int, int> { return {}; },
+                           .test_param = value,
+                           .descriptor = ppc::task::TaskDescriptor{.type = task_type,
+                                                                   .status = task_status,
+                                                                   .category = ppc::task::TaskCategory::kThreads,
+                                                                   .display_name = test_name}};
 }
 
 void ExpectSingleNonFatalFailureContains(const ::testing::TestPartResultArray &failures, std::string_view message) {
@@ -154,6 +114,14 @@ void ExpectSingleNonFatalFailureContains(const ::testing::TestPartResultArray &f
 
 }  // namespace
 
+TEST(FuncTestUtil, SupportsDocumentedTaskWithoutExplicitIdentifier) {
+  const auto test_params = std::make_tuple(1);
+  const std::string settings_path = "tasks/example/settings.json";
+  const auto test_cases = ppc::util::AddFuncTask<DocumentedTask, int>(test_params, settings_path, "threads");
+
+  EXPECT_EQ(std::get<0>(test_cases).descriptor.display_name, "example_seq_enabled");
+}
+
 TEST(FuncTestUtil, RunTestCasesWithTagAcceptsBareTags) {
   const auto test_tasks =
       std::make_tuple(MakeFuncTestUtilParam("example_threads_contains_tbb_seq_enabled", ppc::task::TypeOfTask::kSEQ,
@@ -164,9 +132,8 @@ TEST(FuncTestUtil, RunTestCasesWithTagAcceptsBareTags) {
                                             ppc::task::StatusOfTask::kDisabled, 3));
 
   std::vector<int> visited_params;
-  ppc::util::RunTestCasesWithTag(test_tasks, "tbb", [&](const auto &test_param) {
-    visited_params.push_back(std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kTestParams)>(test_param));
-  });
+  ppc::util::RunTestCasesWithTag(test_tasks, "tbb",
+                                 [&](const auto &test_param) { visited_params.push_back(test_param.test_param); });
 
   const std::vector<int> expected_params{2, 3};
   EXPECT_EQ(visited_params, expected_params);

@@ -203,7 +203,11 @@ template <typename InType, typename OutType>
 /// @tparam OutType Output data type.
 class Task {
  public:
+  using InputType = InType;
+  using OutputType = OutType;
+
   Task() = default;
+  explicit Task(InType input, TypeOfTask type_of_task) : input_(std::move(input)), type_of_task_(type_of_task) {}
   Task(const Task &) = delete;
   Task(Task &&) = delete;
   Task &operator=(const Task &) = delete;
@@ -263,28 +267,20 @@ class Task {
     return PostProcessingImpl();
   }
 
-  /// @brief Returns the current testing mode.
-  /// @return Reference to the current StateOfTesting.
-  StateOfTesting &GetStateOfTesting() {
-    return state_of_testing_;
+  /// @brief Sets the current testing mode.
+  void SetStateOfTesting(StateOfTesting state_of_testing) {
+    state_of_testing_ = state_of_testing;
   }
 
-  /// @brief Sets the dynamic task type.
-  /// @param type_of_task Task type to set.
-  void SetTypeOfTask(TypeOfTask type_of_task) {
-    type_of_task_ = type_of_task;
+  /// @brief Returns the current testing mode.
+  [[nodiscard]] StateOfTesting GetStateOfTesting() const {
+    return state_of_testing_;
   }
 
   /// @brief Returns the dynamic task type.
   /// @return Current dynamic task type.
   [[nodiscard]] TypeOfTask GetDynamicTypeOfTask() const {
     return type_of_task_;
-  }
-
-  /// @brief Returns the current task status.
-  /// @return Task status (enabled or disabled).
-  [[nodiscard]] StatusOfTask GetStatusOfTask() const {
-    return status_of_task_;
   }
 
   /// @brief Returns the static task type.
@@ -295,13 +291,13 @@ class Task {
 
   /// @brief Returns a reference to the input data.
   /// @return Reference to the task's input data.
-  InType &GetInput() {
+  [[nodiscard]] const InType &GetInput() const {
     return input_;
   }
 
   /// @brief Returns a reference to the output data.
   /// @return Reference to the task's output data.
-  OutType &GetOutput() {
+  [[nodiscard]] const OutType &GetOutput() const {
     return output_;
   }
 
@@ -317,6 +313,16 @@ class Task {
   }
 
  protected:
+  /// @brief Returns mutable access to the input for task implementations.
+  InType &GetMutableInput() {
+    return input_;
+  }
+
+  /// @brief Returns mutable access to the output for task implementations.
+  OutType &GetMutableOutput() {
+    return output_;
+  }
+
   /// @brief Measures execution time between preprocessing and postprocessing steps.
   /// @throws std::runtime_error If execution exceeds the allowed time limit.
   virtual void InternalTimeTest() final {
@@ -364,7 +370,6 @@ class Task {
   OutType output_{};
   StateOfTesting state_of_testing_ = StateOfTesting::kFunc;
   TypeOfTask type_of_task_ = TypeOfTask::kUnknown;
-  StatusOfTask status_of_task_ = StatusOfTask::kEnabled;
   std::chrono::high_resolution_clock::time_point tmp_time_point_;
   enum class PipelineStage : uint8_t {
     kNone,
@@ -388,8 +393,8 @@ using TaskPtr = std::unique_ptr<Task<InType, OutType>>;
 /// @param in Input to pass to the task constructor.
 /// @return Unique pointer to the newly created task.
 template <typename TaskType, typename InType>
-std::unique_ptr<TaskType> TaskGetter(const InType &in) {
-  return std::make_unique<TaskType>(in);
+std::unique_ptr<TaskType> TaskGetter(InType &&in) {
+  return std::make_unique<TaskType>(std::forward<InType>(in));
 }
 
 }  // namespace ppc::task

@@ -46,9 +46,7 @@ namespace ppc::test {
 template <typename InType, typename OutType>
 class TestTask : public ppc::task::Task<InType, OutType> {
  public:
-  explicit TestTask(const InType &in) {
-    this->GetInput() = in;
-  }
+  explicit TestTask(InType in) : ppc::task::Task<InType, OutType>(std::move(in), TypeOfTask::kUnknown) {}
 
  protected:
   bool ValidationImpl() override {
@@ -56,13 +54,13 @@ class TestTask : public ppc::task::Task<InType, OutType> {
   }
 
   bool PreProcessingImpl() override {
-    this->GetOutput() = 0;
+    this->GetMutableOutput() = 0;
     return true;
   }
 
   bool RunImpl() override {
     for (const auto &value : this->GetInput()) {
-      this->GetOutput() += value;
+      this->GetMutableOutput() += value;
     }
     return true;
   }
@@ -287,9 +285,8 @@ TEST(TaskTest, TaskDestructorThrowsIfStageIncomplete) {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : Task<std::vector<int32_t>, int32_t> {
      public:
-      explicit LocalTask(const std::vector<int32_t> &in) {
-        this->GetInput() = in;
-      }
+      explicit LocalTask(std::vector<int32_t> in)
+          : Task<std::vector<int32_t>, int32_t>(std::move(in), TypeOfTask::kUnknown) {}
 
      protected:
       bool ValidationImpl() override {
@@ -316,9 +313,8 @@ TEST(TaskTest, TaskDestructorThrowsIfEmpty) {
     std::vector<int32_t> in(20, 1);
     struct LocalTask : Task<std::vector<int32_t>, int32_t> {
      public:
-      explicit LocalTask(const std::vector<int32_t> &in) {
-        this->GetInput() = in;
-      }
+      explicit LocalTask(std::vector<int32_t> in)
+          : Task<std::vector<int32_t>, int32_t>(std::move(in), TypeOfTask::kUnknown) {}
 
      protected:
       bool ValidationImpl() override {
@@ -345,9 +341,8 @@ TEST(TaskTest, InternalTimeTestThrowsIfTimeoutExceeded) {
 #endif
   struct SlowTask : Task<std::vector<int32_t>, int32_t> {
    public:
-    explicit SlowTask(const std::vector<int32_t> &in) {
-      this->GetInput() = in;
-    }
+    explicit SlowTask(std::vector<int32_t> in)
+        : Task<std::vector<int32_t>, int32_t>(std::move(in), TypeOfTask::kUnknown) {}
 
    protected:
     bool ValidationImpl() override {
@@ -367,7 +362,7 @@ TEST(TaskTest, InternalTimeTestThrowsIfTimeoutExceeded) {
 
   std::vector<int32_t> in(20, 1);
   SlowTask task(in);
-  task.GetStateOfTesting() = StateOfTesting::kFunc;
+  task.SetStateOfTesting(StateOfTesting::kFunc);
   task.Validation();
   EXPECT_NO_THROW(task.PreProcessing());
   task.Run();
@@ -394,8 +389,7 @@ class DummyTask : public Task<int, int> {
 };
 
 TEST(TaskTest, GetDynamicTypeReturnsCorrectEnum) {
-  DummyTask task;
-  task.SetTypeOfTask(TypeOfTask::kOMP);
+  DummyTask task(0, TypeOfTask::kOMP);
   task.Validation();
   task.PreProcessing();
   task.Run();

@@ -15,7 +15,7 @@ class ExampleRunPerfTestProcesses3 : public ppc::util::BaseRunPerfTests<InType, 
     input_data_ = kCount_;
   }
 
-  bool CheckTestOutputData(OutType &output_data) final {
+  bool CheckTestOutputData(const OutType &output_data) final {
     return input_data_ == output_data;
   }
 

@@ -19,8 +19,14 @@
 namespace ppc::util {
 
 template <typename InType, typename OutType, typename TestType = void>
-using FuncTestParam = std::tuple<std::function<ppc::task::TaskPtr<InType, OutType>(InType)>, std::string, TestType,
-                                 ppc::task::TaskDescriptor>;
+struct FuncTestCase {
+  std::function<ppc::task::TaskPtr<InType, OutType>(InType)> task_getter;
+  TestType test_param;
+  ppc::task::TaskDescriptor descriptor;
+};
+
+template <typename InType, typename OutType, typename TestType = void>
+using FuncTestParam = FuncTestCase<InType, OutType, TestType>;
 
 template <typename InType, typename OutType, typename TestType = void>
 using GTestFuncParam = ::testing::TestParamInfo<FuncTestParam<InType, OutType, TestType>>;
@@ -49,12 +55,11 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   template <typename Derived>
   static std::string PrintFuncTestName(const GTestFuncParam<InType, OutType, TestType> &info) {
     RequireStaticInterface<Derived>();
-    TestType test_param = std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kTestParams)>(info.param);
-    return GetTaskDescriptor(info.param).display_name + "_" + Derived::PrintTestParam(test_param);
+    return info.param.descriptor.display_name + "_" + Derived::PrintTestParam(info.param.test_param);
   }
 
  protected:
-  virtual bool CheckTestOutputData(OutType &output_data) = 0;
+  virtual bool CheckTestOutputData(const OutType &output_data) = 0;
   /// @brief Provides input data for the task.
   /// @return Initialized input data.
   virtual InType GetTestInputData() = 0;
@@ -70,7 +75,7 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   }
 
   void ExecuteTest(const FuncTestParam<InType, OutType, TestType> &test_param) {
-    const auto &descriptor = GetTaskDescriptor(test_param);
+    const auto &descriptor = test_param.descriptor;
 
     ValidateTaskDescriptor(descriptor);
 
@@ -101,13 +106,13 @@ class BaseRunFuncTests : public ::testing::TestWithParam<FuncTestParam<InType, O
   }
 
   bool ShouldSkipTestCase(const FuncTestParam<InType, OutType, TestType> &test_param) {
-    const auto &descriptor = GetTaskDescriptor(test_param);
+    const auto &descriptor = test_param.descriptor;
     return IsTestDisabled(descriptor) || ShouldSkipNonMpiTask(descriptor);
   }
 
   /// @brief Initializes task instance and runs it through the full pipeline.
   void InitializeAndRunTask(const FuncTestParam<InType, OutType, TestType> &test_param) {
-    task_ = std::get<static_cast<std::size_t>(GTestParamIndex::kTaskGetter)>(test_param)(GetTestInputData());
+    task_ = test_param.task_getter(GetTestInputData());
     ExecuteTaskPipeline();
   }
 
@@ -161,7 +166,7 @@ void RunTestCasesWithTag(const TestTasksList &test_tasks_list, std::string_view 
   bool has_matching_task = false;
   std::apply([&](const auto &...test_params) {
     auto run_if_tagged = [&](const auto &test_param) {
-      const auto &descriptor = GetTaskDescriptor(test_param);
+      const auto &descriptor = test_param.descriptor;
       if (descriptor.type == task_type) {
         has_matching_task = true;
         std::invoke(run_test_case, test_param);
@@ -186,10 +191,10 @@ auto ExpandToValues(const Tuple &t) {
 template <typename Task, typename InType, typename SizesContainer, std::size_t... Is>
 auto GenTaskTuplesImpl(const SizesContainer &sizes, const std::string &settings_path,
                        std::string_view settings_task_path, std::index_sequence<Is...> /*unused*/) {
-  const auto descriptor =
-      MakeTaskDescriptor(GetNamespace<Task>(), Task::GetStaticTypeOfTask(), settings_path, settings_task_path);
-  return std::make_tuple(std::make_tuple(ppc::task::TaskGetter<Task, InType>, descriptor.display_name,
-                                         std::get<Is>(sizes), descriptor)...);
+  const auto descriptor = MakeTaskDescriptor(ResolveTaskIdentifier<Task>(settings_path), Task::GetStaticTypeOfTask(),
+                                             settings_path, settings_task_path);
+  return std::make_tuple(FuncTestCase<InType, typename Task::OutputType, std::decay_t<decltype(std::get<Is>(sizes))>>{
+      ppc::task::TaskGetter<Task, InType>, std::get<Is>(sizes), descriptor}...);
 }
 
 template <typename Task, typename InType, typename SizesContainer>

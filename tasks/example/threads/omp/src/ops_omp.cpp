@@ -9,19 +9,15 @@
 
 namespace example_threads {
 
-NesterovATestTaskOMP::NesterovATestTaskOMP(const InType &in) {
-  SetTypeOfTask(GetStaticTypeOfTask());
-  GetInput() = in;
-  GetOutput() = 0;
-}
+NesterovATestTaskOMP::NesterovATestTaskOMP(const InType &in) : BaseTask(in) {}
 
 bool NesterovATestTaskOMP::ValidationImpl() {
-  return (GetInput() > 0) && (GetOutput() == 0);
+  return (GetInput() > 0) && (GetMutableOutput() == 0);
 }
 
 bool NesterovATestTaskOMP::PreProcessingImpl() {
-  GetOutput() = 2 * GetInput();
-  return GetOutput() > 0;
+  GetMutableOutput() = 2 * GetInput();
+  return GetMutableOutput() > 0;
 }
 
 bool NesterovATestTaskOMP::RunImpl() {
@@ -29,26 +25,26 @@ bool NesterovATestTaskOMP::RunImpl() {
     for (InType j = 0; j < GetInput(); j++) {
       for (InType k = 0; k < GetInput(); k++) {
         std::vector<InType> tmp(i + j + k, 1);
-        GetOutput() += std::accumulate(tmp.begin(), tmp.end(), 0);
-        GetOutput() -= i + j + k;
+        GetMutableOutput() += std::accumulate(tmp.begin(), tmp.end(), 0);
+        GetMutableOutput() -= i + j + k;
       }
     }
   }
 
   const int num_threads = ppc::util::GetNumThreads();
-  GetOutput() *= num_threads;
+  GetMutableOutput() *= num_threads;
 
   std::atomic<int> counter(0);
 #pragma omp parallel default(none) shared(counter) num_threads(ppc::util::GetNumThreads())
   counter++;
 
-  GetOutput() /= counter;
-  return GetOutput() > 0;
+  GetMutableOutput() /= counter;
+  return GetMutableOutput() > 0;
 }
 
 bool NesterovATestTaskOMP::PostProcessingImpl() {
-  GetOutput() -= GetInput();
-  return GetOutput() > 0;
+  GetMutableOutput() -= GetInput();
+  return GetMutableOutput() > 0;
 }
 
 }  // namespace example_threads
